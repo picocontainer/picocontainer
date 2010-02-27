@@ -173,26 +173,4 @@ public class ResolveAdapterReductionTestCase {
         }
     }
 
-
-    @Test
-    public void testOldWayResolvingStillWorksAndIsWasteful() throws PicoCompositionException {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                (NameBinding) null);
-
-        CountingComponentParameter ccp = new CountingComponentParameter();
-        final NameBinding pn = new FooNameBinding();
-
-        assertNotNull(adapter);
-        assertNotNull(pico.getComponent(Touchable.class));
-        NullCA nullCA = new NullCA(String.class);
-        Touchable touchable = (Touchable) ccp.resolveInstance(pico, nullCA, Touchable.class, pn, false, null);
-        assertNotNull(touchable);
-        assertEquals(2, resolveAdapterCalls);
-
-        boolean isResolvable = ccp.isResolvable(pico, nullCA, Touchable.class, pn, false, null);
-        assertEquals(true, isResolvable);
-        assertEquals(3, resolveAdapterCalls);
-    }
-
 }

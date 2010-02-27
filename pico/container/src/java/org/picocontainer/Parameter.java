@@ -91,17 +91,6 @@ public interface Parameter {
      */
     void accept(PicoVisitor visitor);
 
-
-    @Deprecated
-    Object resolveInstance(PicoContainer container, ComponentAdapter<?> forAdapter,
-                           Type expectedType, NameBinding expectedNameBinding,
-                           boolean useNames, Annotation binding);
-
-    @Deprecated
-    boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
-                         Type expectedType, NameBinding expectedNameBinding,
-                         boolean useNames, Annotation binding);
-
     /**
      * Resolver is used transitarily during resolving of Parameters.
      * isResolvable() and resolveInstance() in series do not cause resolveAdapter() twice
