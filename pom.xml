@@ -5,7 +5,7 @@ ttp://maven.apache.org/maven-v4_0_0.xsd">
    <groupId>org.picocontainer</groupId>
    <artifactId>picocontainer-root</artifactId>
    <name>PicoContainer Root</name>
-   <version>2.0-SNAPSHOT</version>
+   <version>3.0-SNAPSHOT</version>
    <packaging>pom</packaging>
    <url>http://www.picocontainer.org</url>
    <modules>

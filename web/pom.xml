@@ -4,7 +4,7 @@
   <groupId>org.picocontainer.web</groupId>
   <artifactId>picocontainer-web</artifactId>
   <name>PicoContainer Web</name>
-  <version>2.5-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>http://www.picocontainer.org/web</url>
   <modules>
@@ -46,18 +46,18 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer</artifactId>
-        <version>2.10.2</version>
+        <version>3.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-gems</artifactId>
-        <version>2.10.2</version>
+        <version>3.0-SNAPSHOT</version>
         <optional>true</optional>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.script</groupId>
         <artifactId>picocontainer-script-core</artifactId>
-        <version>2.0</version>
+        <version>3.0-SNAPSHOT</version>
         <exclusions>
           <exclusion>
             <groupId>org.picocontainer</groupId>
@@ -98,19 +98,19 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>2.10.2</version>
+        <version>3.0-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.script</groupId>
         <artifactId>picocontainer-script-testmodel</artifactId>
-        <version>2.0</version>
+        <version>3.0-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.script</groupId>
         <artifactId>picocontainer-script-groovy</artifactId>
-        <version>2.0</version>
+        <version>3.0-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
       <dependency>

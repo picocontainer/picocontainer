@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.picocontainer.web</groupId>
     <artifactId>picocontainer-web</artifactId>
-    <version>2.5-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-web-struts2</artifactId>
   <name>PicoContainer Web Struts2</name>
