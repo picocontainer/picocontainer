@@ -24,7 +24,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import static org.junit.Assert.assertEquals;
-import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
+import static org.picocontainer.gems.PicoGemsBuilder.ASM_IMPL_HIDING;
 import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
 
 public class PicoGemsBuilderTestCase {
@@ -40,7 +40,7 @@ public class PicoGemsBuilderTestCase {
     }
 
     @Test public void testWithImplementationHiding() {
-        MutablePicoContainer actual = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
+        MutablePicoContainer actual = new PicoBuilder().withBehaviors(ASM_IMPL_HIDING()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AsmImplementationHiding().wrap(new AdaptingInjection()),
                 lifecycleStrategy, parent, new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));

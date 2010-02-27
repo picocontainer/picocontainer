@@ -96,11 +96,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         context.setAttribute(ScopedContainers.class.getName(), scopedContainers);
     }
 
-    @Deprecated
-    protected ScopedContainers makeScopedContainers() {
-        return makeScopedContainers(false);
-    }
-
     /**
      * Overide this method if you need a more specialized container tree.
      * Here is the default block of code for this -
