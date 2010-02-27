@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>FAQ</title>
+</head>
+<body>
+<h3 class="headerstyle">
+<table style="width: 100%; padding-right: 2mm">
+  <tr>
+    <td align="left" valign="middle">Why PicoContainer Logging?</td>
+  </tr>
+</table>
+</h3>
+<div>
+<p>PicoContainer Logging provides a logging facade to different logging tools, but unlike some other similar
+facades, it fully and truly supports Inversion of Control and Dependency Injection. In particular, it allows the <b>concurrent</b>
+use of different logging tools for different components in a completely configurable way.</p>
+</div>
+<h3 class="headerstyle">
+<table style="width: 100%; padding-right: 2mm">
+  <tr>
+    <td align="left" valign="middle">What is the difference with Commons Logging?</td>
+  </tr>
+</table>
+</h3>
+<div>
+<p>Unlike Commons Logging it does use any discovery system to look up which tool is present in the classpath. The
+concurrent presence of log4j.jar and other logging libraries and applicable properties does not prevent the user of it with JDK
+logging.</p>
+</div>
+<h3 class="headerstyle">
+<table style="width: 100%; padding-right: 2mm">
+  <tr>
+    <td align="left" valign="middle">Why choose yet another facade when my code is sprinkled with Commons Logging
+    already?</td>
+  </tr>
+</table>
+</h3>
+<div>
+<p>We encourage the use of the <a href="monitor-pattern.html">Monitor pattern</a> to abstract the dependency on any
+logging framework, so it is very easy to upgrade and switch from one to the other.</p>
+<p>Secondly, the PicoContainer Logger interface is actually compatible with the Commons Logging Log interface, and implementations of our 
+Logger can easily be decorated to also implement the Log interface from Commons-Logging</p>
+</div>
+
+</body>
+
+</html>

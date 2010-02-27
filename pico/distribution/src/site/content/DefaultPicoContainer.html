@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Mac OS X (vers 1 September 2005), see www.w3.org" />
+
+  <title>DefaultPicoContainer</title>
+</head>
+
+<body>
+  <p>DefaultPicoContainer is the main workhorse container.</p>
+
+  <p>Here is an example of use:</p>
+
+  <div class="source">
+    <pre>
+DefaultPicoContainer dpc = new DefaultPicoContainer();
+dpc.addComponent(Foo.class, FooImpl.class);
+Foo foo = dpc.getComponent(Foo.class)
+</pre>
+  </div>
+
+  <p>Parameters in its constructors can be:</p>
+
+  <ul>
+    <li><a href="behaviors.html">Behavior Factories or Component
+    Factories</a></li>
+
+    <li><a href="lifecycle.html">Lifecycle Strategies</a></li>
+
+    <li><a href="monitors.html">Component Monitors</a></li>
+
+    <li>Parent Containers of various types</li>
+  </ul>
+</body>
+</html>

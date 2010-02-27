@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<container>
+    <container>
+        <component class="java.util.ArrayList" />
+    </container>
+</container>

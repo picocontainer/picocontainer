@@ -1,0 +1,612 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer.gems.containers;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import org.apache.commons.logging.Log;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.apache.commons.logging.LogFactory;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import org.picocontainer.Converters;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import org.picocontainer.Converting;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.picocontainer.NameBinding;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.picocontainer.Parameter;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.picocontainer.PicoContainer;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.picocontainer.PicoVisitor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.picocontainer.converters.ConvertsNothing;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.picocontainer.lifecycle.LifecycleState;<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    import java.io.Serializable;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.lang.annotation.Annotation;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.lang.reflect.Type;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Collection;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.List;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.Properties;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    /** @author Michael Rimov <a name="line.32"></a>
+<FONT color="green">033</FONT>     * @deprecated As of PicoContainer 2.3  ComponentMonitor now can do all jobs of tracing container.<a name="line.33"></a>
+<FONT color="green">034</FONT>     */<a name="line.34"></a>
+<FONT color="green">035</FONT>    @Deprecated<a name="line.35"></a>
+<FONT color="green">036</FONT>    @SuppressWarnings("serial")<a name="line.36"></a>
+<FONT color="green">037</FONT>    public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Converting, Serializable {<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>            /** Wrapped container. */<a name="line.40"></a>
+<FONT color="green">041</FONT>        private final MutablePicoContainer delegate;<a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>        /** Logger instance used for writing events. */<a name="line.43"></a>
+<FONT color="green">044</FONT>        private transient Log log;<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        /** Serialized log category. */<a name="line.46"></a>
+<FONT color="green">047</FONT>        private final String logCategory;<a name="line.47"></a>
+<FONT color="green">048</FONT>    <a name="line.48"></a>
+<FONT color="green">049</FONT>        /**<a name="line.49"></a>
+<FONT color="green">050</FONT>         * Default typical wrapper that wraps another MutablePicoContainer.<a name="line.50"></a>
+<FONT color="green">051</FONT>         *<a name="line.51"></a>
+<FONT color="green">052</FONT>         * @param delegate Container to be decorated.<a name="line.52"></a>
+<FONT color="green">053</FONT>         *<a name="line.53"></a>
+<FONT color="green">054</FONT>         * @throws NullPointerException if delegate is null.<a name="line.54"></a>
+<FONT color="green">055</FONT>         */<a name="line.55"></a>
+<FONT color="green">056</FONT>        public CommonsLoggingTracingContainerDecorator(final MutablePicoContainer delegate) {<a name="line.56"></a>
+<FONT color="green">057</FONT>            this(delegate, PicoContainer.class.getName());<a name="line.57"></a>
+<FONT color="green">058</FONT>        }<a name="line.58"></a>
+<FONT color="green">059</FONT>    <a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>        /**<a name="line.61"></a>
+<FONT color="green">062</FONT>         * Alternate constructor that allows specification of the Logger to<a name="line.62"></a>
+<FONT color="green">063</FONT>         * use.<a name="line.63"></a>
+<FONT color="green">064</FONT>         *<a name="line.64"></a>
+<FONT color="green">065</FONT>         * @param delegate        Container to be decorated.<a name="line.65"></a>
+<FONT color="green">066</FONT>         * @param loggingCategory specific Log4j Logger to use.<a name="line.66"></a>
+<FONT color="green">067</FONT>         *<a name="line.67"></a>
+<FONT color="green">068</FONT>         * @throws NullPointerException if delegate or log is null.<a name="line.68"></a>
+<FONT color="green">069</FONT>         */<a name="line.69"></a>
+<FONT color="green">070</FONT>        public CommonsLoggingTracingContainerDecorator(final MutablePicoContainer delegate, final String loggingCategory) {<a name="line.70"></a>
+<FONT color="green">071</FONT>            if (delegate == null) {<a name="line.71"></a>
+<FONT color="green">072</FONT>                throw new NullPointerException("delegate");<a name="line.72"></a>
+<FONT color="green">073</FONT>            }<a name="line.73"></a>
+<FONT color="green">074</FONT>    <a name="line.74"></a>
+<FONT color="green">075</FONT>            if (loggingCategory == null) {<a name="line.75"></a>
+<FONT color="green">076</FONT>                throw new NullPointerException("loggingCategory");<a name="line.76"></a>
+<FONT color="green">077</FONT>            }<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>            log = LogFactory.getLog(loggingCategory);<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>            this.delegate = delegate;<a name="line.81"></a>
+<FONT color="green">082</FONT>            logCategory = loggingCategory;<a name="line.82"></a>
+<FONT color="green">083</FONT>        }<a name="line.83"></a>
+<FONT color="green">084</FONT>    <a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>        /**<a name="line.86"></a>
+<FONT color="green">087</FONT>         * Standard message handling for cases when a null object is returned<a name="line.87"></a>
+<FONT color="green">088</FONT>         * for a given key.<a name="line.88"></a>
+<FONT color="green">089</FONT>         *<a name="line.89"></a>
+<FONT color="green">090</FONT>         * @param componentKey Component key that does not exist<a name="line.90"></a>
+<FONT color="green">091</FONT>         * @param target Logger to log into<a name="line.91"></a>
+<FONT color="green">092</FONT>         */<a name="line.92"></a>
+<FONT color="green">093</FONT>        protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKey, final Log target) {<a name="line.93"></a>
+<FONT color="green">094</FONT>            log.info("Could not find component "<a name="line.94"></a>
+<FONT color="green">095</FONT>                     + (componentKey instanceof Class ? ((Class)componentKey).getName() : componentKey)<a name="line.95"></a>
+<FONT color="green">096</FONT>                     + " in container or parent container.");<a name="line.96"></a>
+<FONT color="green">097</FONT>        }<a name="line.97"></a>
+<FONT color="green">098</FONT>    <a name="line.98"></a>
+<FONT color="green">099</FONT>        /**<a name="line.99"></a>
+<FONT color="green">100</FONT>         * {@inheritDoc}<a name="line.100"></a>
+<FONT color="green">101</FONT>         *<a name="line.101"></a>
+<FONT color="green">102</FONT>         * @param visitor<a name="line.102"></a>
+<FONT color="green">103</FONT>         *<a name="line.103"></a>
+<FONT color="green">104</FONT>         * @see org.picocontainer.PicoContainer#accept(org.picocontainer.PicoVisitor)<a name="line.104"></a>
+<FONT color="green">105</FONT>         */<a name="line.105"></a>
+<FONT color="green">106</FONT>        public void accept(final PicoVisitor visitor) {<a name="line.106"></a>
+<FONT color="green">107</FONT>            if (log.isDebugEnabled()) {<a name="line.107"></a>
+<FONT color="green">108</FONT>                log.debug("Visiting Container " + delegate<a name="line.108"></a>
+<FONT color="green">109</FONT>                          + " with visitor " + visitor);<a name="line.109"></a>
+<FONT color="green">110</FONT>            }<a name="line.110"></a>
+<FONT color="green">111</FONT>            delegate.accept(visitor);<a name="line.111"></a>
+<FONT color="green">112</FONT>        }<a name="line.112"></a>
+<FONT color="green">113</FONT>    <a name="line.113"></a>
+<FONT color="green">114</FONT>        /**<a name="line.114"></a>
+<FONT color="green">115</FONT>         * {@inheritDoc}<a name="line.115"></a>
+<FONT color="green">116</FONT>         *<a name="line.116"></a>
+<FONT color="green">117</FONT>         * @param child<a name="line.117"></a>
+<FONT color="green">118</FONT>         *<a name="line.118"></a>
+<FONT color="green">119</FONT>         * @return<a name="line.119"></a>
+<FONT color="green">120</FONT>         *<a name="line.120"></a>
+<FONT color="green">121</FONT>         * @see org.picocontainer.MutablePicoContainer#addChildContainer(org.picocontainer.PicoContainer)<a name="line.121"></a>
+<FONT color="green">122</FONT>         */<a name="line.122"></a>
+<FONT color="green">123</FONT>        public MutablePicoContainer addChildContainer(final PicoContainer child) {<a name="line.123"></a>
+<FONT color="green">124</FONT>            if (log.isDebugEnabled()) {<a name="line.124"></a>
+<FONT color="green">125</FONT>                log.debug("Adding child container: " + child + " to container " + delegate);<a name="line.125"></a>
+<FONT color="green">126</FONT>            }<a name="line.126"></a>
+<FONT color="green">127</FONT>            return delegate.addChildContainer(child);<a name="line.127"></a>
+<FONT color="green">128</FONT>        }<a name="line.128"></a>
+<FONT color="green">129</FONT>    <a name="line.129"></a>
+<FONT color="green">130</FONT>        /**<a name="line.130"></a>
+<FONT color="green">131</FONT>         * {@inheritDoc}<a name="line.131"></a>
+<FONT color="green">132</FONT>         *<a name="line.132"></a>
+<FONT color="green">133</FONT>         * @see org.picocontainer.Disposable#dispose()<a name="line.133"></a>
+<FONT color="green">134</FONT>         */<a name="line.134"></a>
+<FONT color="green">135</FONT>        public void dispose() {<a name="line.135"></a>
+<FONT color="green">136</FONT>            if (log.isDebugEnabled()) {<a name="line.136"></a>
+<FONT color="green">137</FONT>                log.debug("Disposing container " + delegate);<a name="line.137"></a>
+<FONT color="green">138</FONT>            }<a name="line.138"></a>
+<FONT color="green">139</FONT>            delegate.dispose();<a name="line.139"></a>
+<FONT color="green">140</FONT>        }<a name="line.140"></a>
+<FONT color="green">141</FONT>    <a name="line.141"></a>
+<FONT color="green">142</FONT>        /**<a name="line.142"></a>
+<FONT color="green">143</FONT>         * {@inheritDoc}<a name="line.143"></a>
+<FONT color="green">144</FONT>         *<a name="line.144"></a>
+<FONT color="green">145</FONT>         * @param componentKey<a name="line.145"></a>
+<FONT color="green">146</FONT>         *<a name="line.146"></a>
+<FONT color="green">147</FONT>         * @return<a name="line.147"></a>
+<FONT color="green">148</FONT>         *<a name="line.148"></a>
+<FONT color="green">149</FONT>         * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Object)<a name="line.149"></a>
+<FONT color="green">150</FONT>         */<a name="line.150"></a>
+<FONT color="green">151</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(final Object componentKey) {<a name="line.151"></a>
+<FONT color="green">152</FONT>            if (log.isDebugEnabled()) {<a name="line.152"></a>
+<FONT color="green">153</FONT>                log.debug("Locating component adapter with key " + componentKey);<a name="line.153"></a>
+<FONT color="green">154</FONT>            }<a name="line.154"></a>
+<FONT color="green">155</FONT>    <a name="line.155"></a>
+<FONT color="green">156</FONT>            ComponentAdapter adapter = delegate.getComponentAdapter(componentKey);<a name="line.156"></a>
+<FONT color="green">157</FONT>            if (adapter == null) {<a name="line.157"></a>
+<FONT color="green">158</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKey, log);<a name="line.158"></a>
+<FONT color="green">159</FONT>            }<a name="line.159"></a>
+<FONT color="green">160</FONT>            return adapter;<a name="line.160"></a>
+<FONT color="green">161</FONT>        }<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>        /**<a name="line.163"></a>
+<FONT color="green">164</FONT>         * {@inheritDoc}<a name="line.164"></a>
+<FONT color="green">165</FONT>         *<a name="line.165"></a>
+<FONT color="green">166</FONT>         * @param componentType<a name="line.166"></a>
+<FONT color="green">167</FONT>         * @return ComponentAdapter or null.<a name="line.167"></a>
+<FONT color="green">168</FONT>         * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class, NameBinding)<a name="line.168"></a>
+<FONT color="green">169</FONT>         */<a name="line.169"></a>
+<FONT color="green">170</FONT>    <a name="line.170"></a>
+<FONT color="green">171</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(final Class&lt;T&gt; componentType, final NameBinding componentNameBinding) {<a name="line.171"></a>
+<FONT color="green">172</FONT>            if (log.isDebugEnabled()) {<a name="line.172"></a>
+<FONT color="green">173</FONT>                log.debug("Locating component adapter with type " + componentType);<a name="line.173"></a>
+<FONT color="green">174</FONT>            }<a name="line.174"></a>
+<FONT color="green">175</FONT>    <a name="line.175"></a>
+<FONT color="green">176</FONT>            ComponentAdapter&lt;T&gt; ca = delegate.getComponentAdapter(componentType, componentNameBinding);<a name="line.176"></a>
+<FONT color="green">177</FONT>    <a name="line.177"></a>
+<FONT color="green">178</FONT>            if (ca == null) {<a name="line.178"></a>
+<FONT color="green">179</FONT>                onKeyOrTypeDoesNotExistInContainer(ca, log);<a name="line.179"></a>
+<FONT color="green">180</FONT>            }<a name="line.180"></a>
+<FONT color="green">181</FONT>            return ca;<a name="line.181"></a>
+<FONT color="green">182</FONT>        }<a name="line.182"></a>
+<FONT color="green">183</FONT>    <a name="line.183"></a>
+<FONT color="green">184</FONT>        /**<a name="line.184"></a>
+<FONT color="green">185</FONT>         * {@inheritDoc}<a name="line.185"></a>
+<FONT color="green">186</FONT>         *<a name="line.186"></a>
+<FONT color="green">187</FONT>         * @return Collection or null.<a name="line.187"></a>
+<FONT color="green">188</FONT>         *<a name="line.188"></a>
+<FONT color="green">189</FONT>         * @see org.picocontainer.PicoContainer#getComponentAdapters()<a name="line.189"></a>
+<FONT color="green">190</FONT>         */<a name="line.190"></a>
+<FONT color="green">191</FONT>        public Collection&lt;ComponentAdapter&lt;?&gt;&gt; getComponentAdapters() {<a name="line.191"></a>
+<FONT color="green">192</FONT>            if (log.isDebugEnabled()) {<a name="line.192"></a>
+<FONT color="green">193</FONT>                log.debug("Grabbing all component adapters for container: " + delegate);<a name="line.193"></a>
+<FONT color="green">194</FONT>            }<a name="line.194"></a>
+<FONT color="green">195</FONT>            return delegate.getComponentAdapters();<a name="line.195"></a>
+<FONT color="green">196</FONT>        }<a name="line.196"></a>
+<FONT color="green">197</FONT>    <a name="line.197"></a>
+<FONT color="green">198</FONT>        /**<a name="line.198"></a>
+<FONT color="green">199</FONT>         * {@inheritDoc}<a name="line.199"></a>
+<FONT color="green">200</FONT>         *<a name="line.200"></a>
+<FONT color="green">201</FONT>         * @param componentType<a name="line.201"></a>
+<FONT color="green">202</FONT>         *<a name="line.202"></a>
+<FONT color="green">203</FONT>         * @return List of ComponentAdapters<a name="line.203"></a>
+<FONT color="green">204</FONT>         *<a name="line.204"></a>
+<FONT color="green">205</FONT>         * @see org.picocontainer.PicoContainer#getComponentAdapters(java.lang.Class)<a name="line.205"></a>
+<FONT color="green">206</FONT>         */<a name="line.206"></a>
+<FONT color="green">207</FONT>        public &lt;T&gt;List&lt;ComponentAdapter&lt;T&gt;&gt; getComponentAdapters(final Class&lt;T&gt; componentType) {<a name="line.207"></a>
+<FONT color="green">208</FONT>            if (log.isDebugEnabled()) {<a name="line.208"></a>
+<FONT color="green">209</FONT>                log.debug("Grabbing all component adapters for container: "<a name="line.209"></a>
+<FONT color="green">210</FONT>                          + delegate + " of type: " + componentType.getName());<a name="line.210"></a>
+<FONT color="green">211</FONT>            }<a name="line.211"></a>
+<FONT color="green">212</FONT>            return delegate.getComponentAdapters(componentType);<a name="line.212"></a>
+<FONT color="green">213</FONT>        }<a name="line.213"></a>
+<FONT color="green">214</FONT>    <a name="line.214"></a>
+<FONT color="green">215</FONT>        public &lt;T&gt; List&lt;ComponentAdapter&lt;T&gt;&gt; getComponentAdapters(final Class&lt;T&gt; componentType, final Class&lt;? extends Annotation&gt; binding) {<a name="line.215"></a>
+<FONT color="green">216</FONT>            if (log.isDebugEnabled()) {<a name="line.216"></a>
+<FONT color="green">217</FONT>                log.debug("Grabbing all component adapters for container: "<a name="line.217"></a>
+<FONT color="green">218</FONT>                          + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());<a name="line.218"></a>
+<FONT color="green">219</FONT>            }<a name="line.219"></a>
+<FONT color="green">220</FONT>            return delegate.getComponentAdapters(componentType, binding);<a name="line.220"></a>
+<FONT color="green">221</FONT>        }<a name="line.221"></a>
+<FONT color="green">222</FONT>    <a name="line.222"></a>
+<FONT color="green">223</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(final Class&lt;T&gt; componentType, final Class&lt;? extends Annotation&gt; binding) {<a name="line.223"></a>
+<FONT color="green">224</FONT>            if (log.isDebugEnabled()) {<a name="line.224"></a>
+<FONT color="green">225</FONT>                log.debug("Grabbing component adapter for container: "<a name="line.225"></a>
+<FONT color="green">226</FONT>                          + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());<a name="line.226"></a>
+<FONT color="green">227</FONT>            }<a name="line.227"></a>
+<FONT color="green">228</FONT>            return delegate.getComponentAdapter(componentType, binding);<a name="line.228"></a>
+<FONT color="green">229</FONT>        }<a name="line.229"></a>
+<FONT color="green">230</FONT>    <a name="line.230"></a>
+<FONT color="green">231</FONT>        /**<a name="line.231"></a>
+<FONT color="green">232</FONT>         * {@inheritDoc}<a name="line.232"></a>
+<FONT color="green">233</FONT>         *<a name="line.233"></a>
+<FONT color="green">234</FONT>         * @param componentKeyOrType<a name="line.234"></a>
+<FONT color="green">235</FONT>         *<a name="line.235"></a>
+<FONT color="green">236</FONT>         * @return<a name="line.236"></a>
+<FONT color="green">237</FONT>         *<a name="line.237"></a>
+<FONT color="green">238</FONT>         * @see org.picocontainer.PicoContainer#getComponent(java.lang.Object)<a name="line.238"></a>
+<FONT color="green">239</FONT>         */<a name="line.239"></a>
+<FONT color="green">240</FONT>        public Object getComponent(final Object componentKeyOrType) {<a name="line.240"></a>
+<FONT color="green">241</FONT>    <a name="line.241"></a>
+<FONT color="green">242</FONT>            if (log.isDebugEnabled()) {<a name="line.242"></a>
+<FONT color="green">243</FONT>                log.debug("Attempting to load component instance with "<a name="line.243"></a>
+<FONT color="green">244</FONT>                          + (componentKeyOrType instanceof Class ? "type" : "key")<a name="line.244"></a>
+<FONT color="green">245</FONT>                          + ": " + componentKeyOrType + " for container " + delegate);<a name="line.245"></a>
+<FONT color="green">246</FONT>    <a name="line.246"></a>
+<FONT color="green">247</FONT>            }<a name="line.247"></a>
+<FONT color="green">248</FONT>    <a name="line.248"></a>
+<FONT color="green">249</FONT>            Object result = delegate.getComponent(componentKeyOrType);<a name="line.249"></a>
+<FONT color="green">250</FONT>            if (result == null) {<a name="line.250"></a>
+<FONT color="green">251</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, log);<a name="line.251"></a>
+<FONT color="green">252</FONT>            }<a name="line.252"></a>
+<FONT color="green">253</FONT>    <a name="line.253"></a>
+<FONT color="green">254</FONT>            return result;<a name="line.254"></a>
+<FONT color="green">255</FONT>        }<a name="line.255"></a>
+<FONT color="green">256</FONT>    <a name="line.256"></a>
+<FONT color="green">257</FONT>        public Object getComponent(final Object componentKeyOrType, final Type into) {<a name="line.257"></a>
+<FONT color="green">258</FONT>            if (log.isDebugEnabled()) {<a name="line.258"></a>
+<FONT color="green">259</FONT>                log.debug("Attempting to load component instance with "<a name="line.259"></a>
+<FONT color="green">260</FONT>                          + (componentKeyOrType instanceof Class ? "type" : "key")<a name="line.260"></a>
+<FONT color="green">261</FONT>                          + ": " + componentKeyOrType + " for container " + delegate);<a name="line.261"></a>
+<FONT color="green">262</FONT>    <a name="line.262"></a>
+<FONT color="green">263</FONT>            }<a name="line.263"></a>
+<FONT color="green">264</FONT>    <a name="line.264"></a>
+<FONT color="green">265</FONT>            Object result = delegate.getComponent(componentKeyOrType, into);<a name="line.265"></a>
+<FONT color="green">266</FONT>            if (result == null) {<a name="line.266"></a>
+<FONT color="green">267</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, log);<a name="line.267"></a>
+<FONT color="green">268</FONT>            }<a name="line.268"></a>
+<FONT color="green">269</FONT>    <a name="line.269"></a>
+<FONT color="green">270</FONT>            return result;<a name="line.270"></a>
+<FONT color="green">271</FONT>        }<a name="line.271"></a>
+<FONT color="green">272</FONT>    <a name="line.272"></a>
+<FONT color="green">273</FONT>        public &lt;T&gt; T getComponent(final Class&lt;T&gt; componentType) {<a name="line.273"></a>
+<FONT color="green">274</FONT>            return componentType.cast(getComponent((Object)componentType));<a name="line.274"></a>
+<FONT color="green">275</FONT>        }<a name="line.275"></a>
+<FONT color="green">276</FONT>    <a name="line.276"></a>
+<FONT color="green">277</FONT>        public &lt;T&gt; T getComponent(final Class&lt;T&gt; componentType, final Class&lt;? extends Annotation&gt; binding) {<a name="line.277"></a>
+<FONT color="green">278</FONT>            if (log.isDebugEnabled()) {<a name="line.278"></a>
+<FONT color="green">279</FONT>                log.debug("Grabbing component for container: "<a name="line.279"></a>
+<FONT color="green">280</FONT>                          + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());<a name="line.280"></a>
+<FONT color="green">281</FONT>            }<a name="line.281"></a>
+<FONT color="green">282</FONT>            return delegate.getComponent(componentType, binding);<a name="line.282"></a>
+<FONT color="green">283</FONT>        }<a name="line.283"></a>
+<FONT color="green">284</FONT>    <a name="line.284"></a>
+<FONT color="green">285</FONT>        /**<a name="line.285"></a>
+<FONT color="green">286</FONT>         * {@inheritDoc}<a name="line.286"></a>
+<FONT color="green">287</FONT>         *<a name="line.287"></a>
+<FONT color="green">288</FONT>         * @return<a name="line.288"></a>
+<FONT color="green">289</FONT>         *<a name="line.289"></a>
+<FONT color="green">290</FONT>         * @see org.picocontainer.PicoContainer#getComponents()<a name="line.290"></a>
+<FONT color="green">291</FONT>         */<a name="line.291"></a>
+<FONT color="green">292</FONT>        public List getComponents() {<a name="line.292"></a>
+<FONT color="green">293</FONT>            if (log.isDebugEnabled()) {<a name="line.293"></a>
+<FONT color="green">294</FONT>                log.debug("Retrieving all component instances for container "<a name="line.294"></a>
+<FONT color="green">295</FONT>                          + delegate);<a name="line.295"></a>
+<FONT color="green">296</FONT>            }<a name="line.296"></a>
+<FONT color="green">297</FONT>            return delegate.getComponents();<a name="line.297"></a>
+<FONT color="green">298</FONT>        }<a name="line.298"></a>
+<FONT color="green">299</FONT>    <a name="line.299"></a>
+<FONT color="green">300</FONT>        /**<a name="line.300"></a>
+<FONT color="green">301</FONT>         * {@inheritDoc}<a name="line.301"></a>
+<FONT color="green">302</FONT>         *<a name="line.302"></a>
+<FONT color="green">303</FONT>         * @param componentType<a name="line.303"></a>
+<FONT color="green">304</FONT>         *<a name="line.304"></a>
+<FONT color="green">305</FONT>         * @return<a name="line.305"></a>
+<FONT color="green">306</FONT>         *<a name="line.306"></a>
+<FONT color="green">307</FONT>         * @see org.picocontainer.PicoContainer#getComponents(java.lang.Class)<a name="line.307"></a>
+<FONT color="green">308</FONT>         */<a name="line.308"></a>
+<FONT color="green">309</FONT>        public &lt;T&gt; List&lt;T&gt; getComponents(final Class&lt;T&gt; componentType) {<a name="line.309"></a>
+<FONT color="green">310</FONT>            if (log.isDebugEnabled()) {<a name="line.310"></a>
+<FONT color="green">311</FONT>                log.debug("Loading all component instances of type " + componentType<a name="line.311"></a>
+<FONT color="green">312</FONT>                          + " for container " + delegate);<a name="line.312"></a>
+<FONT color="green">313</FONT>            }<a name="line.313"></a>
+<FONT color="green">314</FONT>            List&lt;T&gt; result = delegate.getComponents(componentType);<a name="line.314"></a>
+<FONT color="green">315</FONT>            if (result == null || result.isEmpty()) {<a name="line.315"></a>
+<FONT color="green">316</FONT>                if (log.isInfoEnabled()) {<a name="line.316"></a>
+<FONT color="green">317</FONT>                    log.info("Could not find any components  "<a name="line.317"></a>
+<FONT color="green">318</FONT>                             + " in container or parent container.");<a name="line.318"></a>
+<FONT color="green">319</FONT>                }<a name="line.319"></a>
+<FONT color="green">320</FONT>            }<a name="line.320"></a>
+<FONT color="green">321</FONT>    <a name="line.321"></a>
+<FONT color="green">322</FONT>            return result;<a name="line.322"></a>
+<FONT color="green">323</FONT>        }<a name="line.323"></a>
+<FONT color="green">324</FONT>    <a name="line.324"></a>
+<FONT color="green">325</FONT>        /**<a name="line.325"></a>
+<FONT color="green">326</FONT>         * {@inheritDoc}<a name="line.326"></a>
+<FONT color="green">327</FONT>         *<a name="line.327"></a>
+<FONT color="green">328</FONT>         * @return<a name="line.328"></a>
+<FONT color="green">329</FONT>         *<a name="line.329"></a>
+<FONT color="green">330</FONT>         * @see org.picocontainer.PicoContainer#getParent()<a name="line.330"></a>
+<FONT color="green">331</FONT>         */<a name="line.331"></a>
+<FONT color="green">332</FONT>        public PicoContainer getParent() {<a name="line.332"></a>
+<FONT color="green">333</FONT>            if (log.isDebugEnabled()) {<a name="line.333"></a>
+<FONT color="green">334</FONT>                log.debug("Retrieving the parent for container " + delegate);<a name="line.334"></a>
+<FONT color="green">335</FONT>            }<a name="line.335"></a>
+<FONT color="green">336</FONT>    <a name="line.336"></a>
+<FONT color="green">337</FONT>            return delegate.getParent();<a name="line.337"></a>
+<FONT color="green">338</FONT>        }<a name="line.338"></a>
+<FONT color="green">339</FONT>    <a name="line.339"></a>
+<FONT color="green">340</FONT>        /**<a name="line.340"></a>
+<FONT color="green">341</FONT>         * {@inheritDoc}<a name="line.341"></a>
+<FONT color="green">342</FONT>         *<a name="line.342"></a>
+<FONT color="green">343</FONT>         * @return<a name="line.343"></a>
+<FONT color="green">344</FONT>         *<a name="line.344"></a>
+<FONT color="green">345</FONT>         * @see org.picocontainer.MutablePicoContainer#makeChildContainer()<a name="line.345"></a>
+<FONT color="green">346</FONT>         */<a name="line.346"></a>
+<FONT color="green">347</FONT>        public MutablePicoContainer makeChildContainer() {<a name="line.347"></a>
+<FONT color="green">348</FONT>            if (log.isDebugEnabled()) {<a name="line.348"></a>
+<FONT color="green">349</FONT>                log.debug("Making child container for container " + delegate);<a name="line.349"></a>
+<FONT color="green">350</FONT>            }<a name="line.350"></a>
+<FONT color="green">351</FONT>    <a name="line.351"></a>
+<FONT color="green">352</FONT>            //Wrap the new delegate<a name="line.352"></a>
+<FONT color="green">353</FONT>            return new Log4jTracingContainerDecorator(delegate.makeChildContainer());<a name="line.353"></a>
+<FONT color="green">354</FONT>        }<a name="line.354"></a>
+<FONT color="green">355</FONT>    <a name="line.355"></a>
+<FONT color="green">356</FONT>        /**<a name="line.356"></a>
+<FONT color="green">357</FONT>         * {@inheritDoc}<a name="line.357"></a>
+<FONT color="green">358</FONT>         *<a name="line.358"></a>
+<FONT color="green">359</FONT>         * @param componentAdapter<a name="line.359"></a>
+<FONT color="green">360</FONT>         *<a name="line.360"></a>
+<FONT color="green">361</FONT>         * @return<a name="line.361"></a>
+<FONT color="green">362</FONT>         *<a name="line.362"></a>
+<FONT color="green">363</FONT>         * @see org.picocontainer.MutablePicoContainer#addAdapter(org.picocontainer.ComponentAdapter)<a name="line.363"></a>
+<FONT color="green">364</FONT>         */<a name="line.364"></a>
+<FONT color="green">365</FONT>        public MutablePicoContainer addAdapter(final ComponentAdapter componentAdapter) {<a name="line.365"></a>
+<FONT color="green">366</FONT>            if (log.isDebugEnabled()) {<a name="line.366"></a>
+<FONT color="green">367</FONT>                log.debug("Registering component adapter " + componentAdapter);<a name="line.367"></a>
+<FONT color="green">368</FONT>            }<a name="line.368"></a>
+<FONT color="green">369</FONT>    <a name="line.369"></a>
+<FONT color="green">370</FONT>            return delegate.addAdapter(componentAdapter);<a name="line.370"></a>
+<FONT color="green">371</FONT>        }<a name="line.371"></a>
+<FONT color="green">372</FONT>    <a name="line.372"></a>
+<FONT color="green">373</FONT>        /**<a name="line.373"></a>
+<FONT color="green">374</FONT>         * {@inheritDoc}<a name="line.374"></a>
+<FONT color="green">375</FONT>         *<a name="line.375"></a>
+<FONT color="green">376</FONT>         * @param componentKey<a name="line.376"></a>
+<FONT color="green">377</FONT>         * @param componentImplementationOrInstance<a name="line.377"></a>
+<FONT color="green">378</FONT>         *<a name="line.378"></a>
+<FONT color="green">379</FONT>         * @param parameters<a name="line.379"></a>
+<FONT color="green">380</FONT>         *<a name="line.380"></a>
+<FONT color="green">381</FONT>         * @return<a name="line.381"></a>
+<FONT color="green">382</FONT>         */<a name="line.382"></a>
+<FONT color="green">383</FONT>        public MutablePicoContainer addComponent(final Object componentKey, final Object componentImplementationOrInstance,<a name="line.383"></a>
+<FONT color="green">384</FONT>                                                 final Parameter... parameters)<a name="line.384"></a>
+<FONT color="green">385</FONT>        {<a name="line.385"></a>
+<FONT color="green">386</FONT>            if (log.isDebugEnabled()) {<a name="line.386"></a>
+<FONT color="green">387</FONT>                log.debug("Registering component "<a name="line.387"></a>
+<FONT color="green">388</FONT>                          + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance")<a name="line.388"></a>
+<FONT color="green">389</FONT>                          + " with key "<a name="line.389"></a>
+<FONT color="green">390</FONT>                          + componentKey<a name="line.390"></a>
+<FONT color="green">391</FONT>                          + " and implementation "<a name="line.391"></a>
+<FONT color="green">392</FONT>                          + (componentImplementationOrInstance instanceof Class<a name="line.392"></a>
+<FONT color="green">393</FONT>                             ? ((Class)componentImplementationOrInstance).getCanonicalName()<a name="line.393"></a>
+<FONT color="green">394</FONT>                             : componentImplementationOrInstance.getClass())<a name="line.394"></a>
+<FONT color="green">395</FONT>                          + " using parameters "<a name="line.395"></a>
+<FONT color="green">396</FONT>                          + parameters);<a name="line.396"></a>
+<FONT color="green">397</FONT>            }<a name="line.397"></a>
+<FONT color="green">398</FONT>    <a name="line.398"></a>
+<FONT color="green">399</FONT>            return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);<a name="line.399"></a>
+<FONT color="green">400</FONT>        }<a name="line.400"></a>
+<FONT color="green">401</FONT>    <a name="line.401"></a>
+<FONT color="green">402</FONT>        /**<a name="line.402"></a>
+<FONT color="green">403</FONT>         * {@inheritDoc}<a name="line.403"></a>
+<FONT color="green">404</FONT>         *<a name="line.404"></a>
+<FONT color="green">405</FONT>         * @param implOrInstance<a name="line.405"></a>
+<FONT color="green">406</FONT>         *<a name="line.406"></a>
+<FONT color="green">407</FONT>         * @return<a name="line.407"></a>
+<FONT color="green">408</FONT>         *<a name="line.408"></a>
+<FONT color="green">409</FONT>         * @see org.picocontainer.MutablePicoContainer#addComponent(java.lang.Object)<a name="line.409"></a>
+<FONT color="green">410</FONT>         */<a name="line.410"></a>
+<FONT color="green">411</FONT>        public MutablePicoContainer addComponent(final Object implOrInstance) {<a name="line.411"></a>
+<FONT color="green">412</FONT>            if (log.isDebugEnabled()) {<a name="line.412"></a>
+<FONT color="green">413</FONT>                log.debug("Registering component impl or instance "<a name="line.413"></a>
+<FONT color="green">414</FONT>                          + implOrInstance + "(class: "<a name="line.414"></a>
+<FONT color="green">415</FONT>                          + ((implOrInstance != null) ? implOrInstance.getClass().getName() : " null "));<a name="line.415"></a>
+<FONT color="green">416</FONT>            }<a name="line.416"></a>
+<FONT color="green">417</FONT>    <a name="line.417"></a>
+<FONT color="green">418</FONT>            return delegate.addComponent(implOrInstance);<a name="line.418"></a>
+<FONT color="green">419</FONT>        }<a name="line.419"></a>
+<FONT color="green">420</FONT>    <a name="line.420"></a>
+<FONT color="green">421</FONT>        public MutablePicoContainer addConfig(final String name, final Object val) {<a name="line.421"></a>
+<FONT color="green">422</FONT>            if (log.isDebugEnabled()) {<a name="line.422"></a>
+<FONT color="green">423</FONT>                log.debug("Registering config: " + name);<a name="line.423"></a>
+<FONT color="green">424</FONT>            }<a name="line.424"></a>
+<FONT color="green">425</FONT>    <a name="line.425"></a>
+<FONT color="green">426</FONT>            return delegate.addConfig(name, val);<a name="line.426"></a>
+<FONT color="green">427</FONT>        }<a name="line.427"></a>
+<FONT color="green">428</FONT>    <a name="line.428"></a>
+<FONT color="green">429</FONT>        /**<a name="line.429"></a>
+<FONT color="green">430</FONT>         * {@inheritDoc}<a name="line.430"></a>
+<FONT color="green">431</FONT>         *<a name="line.431"></a>
+<FONT color="green">432</FONT>         * @param child<a name="line.432"></a>
+<FONT color="green">433</FONT>         *<a name="line.433"></a>
+<FONT color="green">434</FONT>         * @return<a name="line.434"></a>
+<FONT color="green">435</FONT>         *<a name="line.435"></a>
+<FONT color="green">436</FONT>         * @see org.picocontainer.MutablePicoContainer#removeChildContainer(org.picocontainer.PicoContainer)<a name="line.436"></a>
+<FONT color="green">437</FONT>         */<a name="line.437"></a>
+<FONT color="green">438</FONT>        public boolean removeChildContainer(final PicoContainer child) {<a name="line.438"></a>
+<FONT color="green">439</FONT>            if (log.isDebugEnabled()) {<a name="line.439"></a>
+<FONT color="green">440</FONT>                log.debug("Removing child container: " + child<a name="line.440"></a>
+<FONT color="green">441</FONT>                          + " from parent: " + delegate);<a name="line.441"></a>
+<FONT color="green">442</FONT>            }<a name="line.442"></a>
+<FONT color="green">443</FONT>            return delegate.removeChildContainer(child);<a name="line.443"></a>
+<FONT color="green">444</FONT>        }<a name="line.444"></a>
+<FONT color="green">445</FONT>    <a name="line.445"></a>
+<FONT color="green">446</FONT>        /**<a name="line.446"></a>
+<FONT color="green">447</FONT>         * {@inheritDoc}<a name="line.447"></a>
+<FONT color="green">448</FONT>         *<a name="line.448"></a>
+<FONT color="green">449</FONT>         * @see org.picocontainer.Startable#start()<a name="line.449"></a>
+<FONT color="green">450</FONT>         */<a name="line.450"></a>
+<FONT color="green">451</FONT>        public void start() {<a name="line.451"></a>
+<FONT color="green">452</FONT>            if (log.isInfoEnabled()) {<a name="line.452"></a>
+<FONT color="green">453</FONT>                log.info("Starting Container " + delegate);<a name="line.453"></a>
+<FONT color="green">454</FONT>            }<a name="line.454"></a>
+<FONT color="green">455</FONT>    <a name="line.455"></a>
+<FONT color="green">456</FONT>            delegate.start();<a name="line.456"></a>
+<FONT color="green">457</FONT>        }<a name="line.457"></a>
+<FONT color="green">458</FONT>    <a name="line.458"></a>
+<FONT color="green">459</FONT>        /**<a name="line.459"></a>
+<FONT color="green">460</FONT>         * {@inheritDoc}<a name="line.460"></a>
+<FONT color="green">461</FONT>         *<a name="line.461"></a>
+<FONT color="green">462</FONT>         * @see org.picocontainer.Startable#stop()<a name="line.462"></a>
+<FONT color="green">463</FONT>         */<a name="line.463"></a>
+<FONT color="green">464</FONT>        public void stop() {<a name="line.464"></a>
+<FONT color="green">465</FONT>            if (log.isInfoEnabled()) {<a name="line.465"></a>
+<FONT color="green">466</FONT>                log.info("Stopping Container " + delegate);<a name="line.466"></a>
+<FONT color="green">467</FONT>            }<a name="line.467"></a>
+<FONT color="green">468</FONT>            delegate.stop();<a name="line.468"></a>
+<FONT color="green">469</FONT>        }<a name="line.469"></a>
+<FONT color="green">470</FONT>    <a name="line.470"></a>
+<FONT color="green">471</FONT>        /**<a name="line.471"></a>
+<FONT color="green">472</FONT>         * {@inheritDoc}<a name="line.472"></a>
+<FONT color="green">473</FONT>         *<a name="line.473"></a>
+<FONT color="green">474</FONT>         * @param componentKey<a name="line.474"></a>
+<FONT color="green">475</FONT>         *<a name="line.475"></a>
+<FONT color="green">476</FONT>         * @return<a name="line.476"></a>
+<FONT color="green">477</FONT>         *<a name="line.477"></a>
+<FONT color="green">478</FONT>         * @see org.picocontainer.MutablePicoContainer#removeComponent(java.lang.Object)<a name="line.478"></a>
+<FONT color="green">479</FONT>         */<a name="line.479"></a>
+<FONT color="green">480</FONT>        public ComponentAdapter removeComponent(final Object componentKey) {<a name="line.480"></a>
+<FONT color="green">481</FONT>            if (log.isDebugEnabled()) {<a name="line.481"></a>
+<FONT color="green">482</FONT>                log.debug("Unregistering component " + componentKey + " from container " + delegate);<a name="line.482"></a>
+<FONT color="green">483</FONT>            }<a name="line.483"></a>
+<FONT color="green">484</FONT>    <a name="line.484"></a>
+<FONT color="green">485</FONT>            return delegate.removeComponent(componentKey);<a name="line.485"></a>
+<FONT color="green">486</FONT>        }<a name="line.486"></a>
+<FONT color="green">487</FONT>    <a name="line.487"></a>
+<FONT color="green">488</FONT>        /**<a name="line.488"></a>
+<FONT color="green">489</FONT>         * {@inheritDoc}<a name="line.489"></a>
+<FONT color="green">490</FONT>         *<a name="line.490"></a>
+<FONT color="green">491</FONT>         * @param componentInstance<a name="line.491"></a>
+<FONT color="green">492</FONT>         *<a name="line.492"></a>
+<FONT color="green">493</FONT>         * @return<a name="line.493"></a>
+<FONT color="green">494</FONT>         *<a name="line.494"></a>
+<FONT color="green">495</FONT>         * @see org.picocontainer.MutablePicoContainer#removeComponentByInstance(java.lang.Object)<a name="line.495"></a>
+<FONT color="green">496</FONT>         */<a name="line.496"></a>
+<FONT color="green">497</FONT>        public ComponentAdapter removeComponentByInstance(final Object componentInstance) {<a name="line.497"></a>
+<FONT color="green">498</FONT>            if (log.isDebugEnabled()) {<a name="line.498"></a>
+<FONT color="green">499</FONT>                log.debug("Unregistering component by instance (" + componentInstance + ") from container " + delegate);<a name="line.499"></a>
+<FONT color="green">500</FONT>            }<a name="line.500"></a>
+<FONT color="green">501</FONT>    <a name="line.501"></a>
+<FONT color="green">502</FONT>            return delegate.removeComponentByInstance(componentInstance);<a name="line.502"></a>
+<FONT color="green">503</FONT>        }<a name="line.503"></a>
+<FONT color="green">504</FONT>    <a name="line.504"></a>
+<FONT color="green">505</FONT>    <a name="line.505"></a>
+<FONT color="green">506</FONT>        /**<a name="line.506"></a>
+<FONT color="green">507</FONT>         * Retrieves the log instance used by this decorator.<a name="line.507"></a>
+<FONT color="green">508</FONT>         *<a name="line.508"></a>
+<FONT color="green">509</FONT>         * @return Logger instance.<a name="line.509"></a>
+<FONT color="green">510</FONT>         */<a name="line.510"></a>
+<FONT color="green">511</FONT>        public Log getLoggerUsed() {<a name="line.511"></a>
+<FONT color="green">512</FONT>            return this.log;<a name="line.512"></a>
+<FONT color="green">513</FONT>        }<a name="line.513"></a>
+<FONT color="green">514</FONT>    <a name="line.514"></a>
+<FONT color="green">515</FONT>        private void readObject(final java.io.ObjectInputStream s)<a name="line.515"></a>
+<FONT color="green">516</FONT>            throws java.io.IOException, java.lang.ClassNotFoundException {<a name="line.516"></a>
+<FONT color="green">517</FONT>                    s.defaultReadObject();                                    <a name="line.517"></a>
+<FONT color="green">518</FONT>                    log = LogFactory.getLog(this.logCategory);<a name="line.518"></a>
+<FONT color="green">519</FONT>            }<a name="line.519"></a>
+<FONT color="green">520</FONT>    <a name="line.520"></a>
+<FONT color="green">521</FONT>        public MutablePicoContainer change(final Properties... properties) {<a name="line.521"></a>
+<FONT color="green">522</FONT>            return delegate.change(properties);<a name="line.522"></a>
+<FONT color="green">523</FONT>        }<a name="line.523"></a>
+<FONT color="green">524</FONT>    <a name="line.524"></a>
+<FONT color="green">525</FONT>        public MutablePicoContainer as(final Properties... properties) {<a name="line.525"></a>
+<FONT color="green">526</FONT>            return delegate.as(properties);<a name="line.526"></a>
+<FONT color="green">527</FONT>        }<a name="line.527"></a>
+<FONT color="green">528</FONT>    <a name="line.528"></a>
+<FONT color="green">529</FONT>        public void setName(String name) {<a name="line.529"></a>
+<FONT color="green">530</FONT>            delegate.setName(name);<a name="line.530"></a>
+<FONT color="green">531</FONT>        }<a name="line.531"></a>
+<FONT color="green">532</FONT>    <a name="line.532"></a>
+<FONT color="green">533</FONT>        public void setLifecycleState(LifecycleState lifecycleState) {<a name="line.533"></a>
+<FONT color="green">534</FONT>            delegate.setLifecycleState(lifecycleState);<a name="line.534"></a>
+<FONT color="green">535</FONT>        }<a name="line.535"></a>
+<FONT color="green">536</FONT>    <a name="line.536"></a>
+<FONT color="green">537</FONT>        /**<a name="line.537"></a>
+<FONT color="green">538</FONT>         * {@inheritDoc} <a name="line.538"></a>
+<FONT color="green">539</FONT>         */<a name="line.539"></a>
+<FONT color="green">540</FONT>        public Converters getConverters() {<a name="line.540"></a>
+<FONT color="green">541</FONT>            if (delegate instanceof Converting) {<a name="line.541"></a>
+<FONT color="green">542</FONT>                return ((Converting) delegate).getConverters();<a name="line.542"></a>
+<FONT color="green">543</FONT>            }<a name="line.543"></a>
+<FONT color="green">544</FONT>            return new ConvertsNothing();<a name="line.544"></a>
+<FONT color="green">545</FONT>        }<a name="line.545"></a>
+<FONT color="green">546</FONT>    }<a name="line.546"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

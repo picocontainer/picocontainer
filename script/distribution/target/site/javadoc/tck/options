@@ -1,0 +1,23 @@
+-classpath '/scm/oss/pico_2_trunk/script/script-tck/target/classes:/Installed/M2_HOME/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Installed/M2_HOME/repository/org/jmock/jmock/2.5.1/jmock-2.5.1.jar:/Installed/M2_HOME/repository/junit/junit-dep/4.4/junit-dep-4.4.jar:/Installed/M2_HOME/repository/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar:/Installed/M2_HOME/repository/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar:/Installed/M2_HOME/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:/Installed/M2_HOME/repository/org/picocontainer/picocontainer/2.10.2/picocontainer-2.10.2.jar:/Installed/M2_HOME/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/scm/oss/pico_2_trunk/script/script-core/target/picocontainer-script-core-2.1.jar' -protected
+-sourcepath
+'/scm/oss/pico_2_trunk/script/script-core/src/test'
+-author
+-bottom
+'Copyright &copy; 2003-2010 <a href="http://codehaus.org/">Codehaus</a>. All Rights Reserved.'
+-charset
+'ISO-8859-1'
+-d
+'/scm/oss/pico_2_trunk/script/script-tck/target/apidocs'
+-doctitle
+'PicoContainer Script TCK 2.1 API'
+-header
+'<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api/'
+-linksource
+-stylesheetfile
+'/scm/oss/pico_2_trunk/script/script-tck/target/apidocs/stylesheet.css'
+-use
+-version
+-windowtitle
+'PicoContainer Script TCK 2.1 API'

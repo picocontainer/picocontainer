@@ -1,0 +1,16 @@
+// For lib/common
+grant codeBase "file:lib${/}common${/}*" {
+	permission java.security.AllPermission;
+};
+
+// For lib/hidden
+grant codeBase "file:lib${/}hidden${/}*" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:lib${/}*" {
+	permission java.security.AllPermission;
+};
+
+
+

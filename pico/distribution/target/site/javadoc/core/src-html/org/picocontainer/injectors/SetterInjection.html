@@ -1,0 +1,129 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.injectors;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.picocontainer.Characteristics;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import org.picocontainer.LifecycleStrategy;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.picocontainer.Parameter;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.picocontainer.behaviors.AbstractBehaviorFactory;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.util.Properties;<a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>    /**<a name="line.24"></a>
+<FONT color="green">025</FONT>     * A {@link org.picocontainer.InjectionFactory} for JavaBeans.<a name="line.25"></a>
+<FONT color="green">026</FONT>     * The factory creates {@link SetterInjector}.<a name="line.26"></a>
+<FONT color="green">027</FONT>     *<a name="line.27"></a>
+<FONT color="green">028</FONT>     * @author J&amp;ouml;rg Schaible<a name="line.28"></a>
+<FONT color="green">029</FONT>     */<a name="line.29"></a>
+<FONT color="green">030</FONT>    @SuppressWarnings("serial")<a name="line.30"></a>
+<FONT color="green">031</FONT>    public class SetterInjection extends AbstractInjectionFactory {<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>        private final String prefix;<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>        public SetterInjection(String prefix) {<a name="line.35"></a>
+<FONT color="green">036</FONT>            this.prefix = prefix;<a name="line.36"></a>
+<FONT color="green">037</FONT>        }<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>        public SetterInjection() {<a name="line.39"></a>
+<FONT color="green">040</FONT>            this("set");<a name="line.40"></a>
+<FONT color="green">041</FONT>        }<a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>        /**<a name="line.43"></a>
+<FONT color="green">044</FONT>         * Create a {@link SetterInjector}.<a name="line.44"></a>
+<FONT color="green">045</FONT>         * <a name="line.45"></a>
+<FONT color="green">046</FONT>         * @param monitor<a name="line.46"></a>
+<FONT color="green">047</FONT>         * @param lifecycleStrategy<a name="line.47"></a>
+<FONT color="green">048</FONT>         * @param componentProperties<a name="line.48"></a>
+<FONT color="green">049</FONT>         * @param componentKey The component's key<a name="line.49"></a>
+<FONT color="green">050</FONT>         * @param componentImplementation The class of the bean.<a name="line.50"></a>
+<FONT color="green">051</FONT>         * @param parameters Any parameters for the setters. If null the adapter<a name="line.51"></a>
+<FONT color="green">052</FONT>         *            solves the dependencies for all setters internally. Otherwise<a name="line.52"></a>
+<FONT color="green">053</FONT>         *            the number parameters must match the number of the setter.<a name="line.53"></a>
+<FONT color="green">054</FONT>         * @return Returns a new {@link SetterInjector}.<a name="line.54"></a>
+<FONT color="green">055</FONT>         * @throws PicoCompositionException if dependencies cannot be solved<a name="line.55"></a>
+<FONT color="green">056</FONT>         */<a name="line.56"></a>
+<FONT color="green">057</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class&lt;T&gt; componentImplementation, Parameter... parameters)<a name="line.57"></a>
+<FONT color="green">058</FONT>                throws PicoCompositionException {<a name="line.58"></a>
+<FONT color="green">059</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.59"></a>
+<FONT color="green">060</FONT>            return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, useNames)), lifecycleStrategy);<a name="line.60"></a>
+<FONT color="green">061</FONT>        }<a name="line.61"></a>
+<FONT color="green">062</FONT>    <a name="line.62"></a>
+<FONT color="green">063</FONT>    }<a name="line.63"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

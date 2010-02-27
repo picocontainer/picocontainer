@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>PicoContainer - Disambiguation</title>
+
+<style type="text/css" media="all">
+@import url("./style/pico.css");
+
+@import url("./style/syntaxhighlighter.css");
+</style>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
+</script>
+<script type="text/javascript">
+	_uacct = "UA-2268879-1";
+	urchinTracker();
+</script>
+<script type="text/javascript" src="./js/prototype.js">
+	//
+</script>
+<meta name="verify-v1" content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><span style="font-size: 72px; font-family: Geneva; font-weight: bold;"><img
+  src="images/pico-logo.png" alt="" /> <span style="color: rgb(58, 150, 27);">Pico</span><span
+  style="color: rgb(131, 131, 131);">Container</span></span>
+<div class="clear"></div>
+</div>
+<div id="breadcrumbs">
+<div class="left">Latest Released Version: 2.10.2</div>
+<div class="clear"></div>
+</div>
+
+<div id="leftColumn">
+<div id="navColumn">
+<h1>About</h1>
+<ul>
+     <li><a href="index.html">What is PicoContainer?</a></li>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="javadoc.html">Javadoc</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="goals.html">Project Goals</a></li>
+      <li><a href="support.html">Support</a></li>
+   
+</ul>
+
+<h1>Core Concepts</h1>
+<ul>
+     <li><a href="lifecycle.html">Component Lifecycle</a></li>
+      <li><a href="injection.html">Dependency Injection</a></li>
+      <li><a href="scopes.html">Scoped Containers</a></li>
+   
+</ul>
+
+<h1>Dependency Injection</h1>
+<ul>
+     <li><a href="constructor-injection.html">Constructor Injection</a></li>
+      <li><a href="setter-injection.html">Setter Injection</a></li>
+      <li><a href="annotated-field-injection.html">Annotated Field Injection</a></li>
+      <li><a href="annotated-method-injection.html">Annotated Method Injection</a></li>
+      <li><a href="typed-field-injection.html">Typed Field Injection</a></li>
+      <li><a href="named-field-injection.html">Named Field Injection</a></li>
+      <li><a href="method-injection.html">Method Injection</a></li>
+      <li><a href="named-method-injection.html">Named Method Injection</a></li>
+      <li><a href="multi-injection.html">Multiple Injection</a></li>
+      <li><a href="composite-injection.html">Composite Injection</a></li>
+      <li><a href="factory-injection.html">Factory Injection</a></li>
+      <li><a href="reinjection.html">Reinjection</a></li>
+      <li><a href="providers.html">Injection via Providers</a></li>
+   
+</ul>
+
+<h1>Configuration</h1>
+<ul>
+   
+  <li class="currentLink">Disambiguation</li>
+ 
+</ul>
+
+<h1>Modifying Component Behaviors</h1>
+<ul>
+     <li><a href="behaviors.html">Behaviors Overview</a></li>
+      <li><a href="caching.html">Caching and Singletons</a></li>
+      <li><a href="hiding.html">Hiding Implementations</a></li>
+      <li><a href="thread-safety.html">Thread Safety Behaviors</a></li>
+      <li><a href="interception.html">AOP Style Interception</a></li>
+      <li><a href="other-behaviors.html">Other Behaviors</a></li>
+   
+</ul>
+
+<h1>Advanced Concepts</h1>
+<ul>
+     <li><a href="fluent-style.html">Fluent Style</a></li>
+      <li><a href="arrays-collections-and-maps.html">Arrays, Collections and Maps</a></li>
+      <li><a href="parameter-names.html">Leveraging Parameter Names</a></li>
+      <li><a href="builder.html">Building Containers</a></li>
+      <li><a href="properties.html">Component Properties</a></li>
+      <li><a href="converters.html">Converters</a></li>
+      <li><a href="component-configuration.html">Component Configuration</a></li>
+      <li><a href="monitors.html">Monitoring Component Events</a></li>
+      <li><a href="regex.html">Regex Composer</a></li>
+   
+</ul>
+
+<h1>PicoContainer's Architecture</h1>
+<ul>
+     <li><a href="patterns.html">Design Patterns</a></li>
+      <li><a href="inversion-of-control.html">Inversion of Control</a></li>
+      <li><a href="adapters.html">Component Adapters</a></li>
+      <li><a href="mock-objects.html">Mock Objects</a></li>
+      <li><a href="terminology.html">Terminology</a></li>
+      <li><a href="comparisons.html">Container Comparisons</a></li>
+      <li><a href="transparency.html">Transparency</a></li>
+   
+</ul>
+
+<h1>Container Choices</h1>
+<ul>
+     <li><a href="DefaultPicoContainer.html">DefaultPicoContainer</a></li>
+      <li><a href="CommandLinePicoContainer.html">CommandLinePicoContainer</a></li>
+      <li><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></li>
+      <li><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></li>
+      <li><a href="TransientPicoContainer.html">TransientPicoContainer</a></li>
+      <li><a href="TieringPicoContainer.html">TieringPicoContainer</a></li>
+   
+</ul>
+
+<h1>Dependant & Related</h1>
+<ul>
+     <li><a href="http://picocontainer.org/web">Web Frameworks</a></li>
+      <li><a href="http://picocontainer.org/script">Scripting Support</a></li>
+      <li><a href="http://picocontainer.org/persistence">Persistence</a></li>
+      <li><a href="http://picocontainer.org/logging">Logging</a></li>
+   
+</ul>
+
+<h1>Anti-patterns</h1>
+<ul>
+     <li><a href="propagating-dependency-antipattern.html">Propagating Dependency</a></li>
+      <li><a href="long-constructor-argument-list-antipattern.html">Long Constructor Argument List</a></li>
+      <li><a href="container-dependency-antipattern.html">Container Dependency</a></li>
+      <li><a href="tests-use-container-antipattern.html">Unit Tests Use Container</a></li>
+      <li><a href="singleton-antipattern.html">Singleton</a></li>
+   
+</ul>
+
+<h1>Help Pages</h1>
+<ul>
+     <li><a href="ambiguous-injectable-help.html">Ambiguous Injectable</a></li>
+      <li><a href="unprocessed-properties-help.html">Unprocessed Properties</a></li>
+   
+</ul>
+
+<h1>History</h1>
+<ul>
+     <li><a href="inversion-of-control-history.html">Inversion of Control History</a></li>
+   
+</ul>
+
+<h1>Project Info</h1>
+<ul>
+     <li><a href="project.html">Project</a></li>
+      <li><a href="team.html">Team</a></li>
+   
+</ul>
+<h1>Hosted by</h1>
+<img alt="Hosted at Codehaus" src="images/codehaus-small.gif" width="120" height="40" /><br />
+<h1>Tools</h1>
+<img alt="Maven" src="images/maven-feather.png" /> <br />
+<img alt="Eclipse" src="images/eclipse-logo-white.jpg" width="100" height="40" /> <br />
+<img alt="IDEA" src="images/idea88x31_white.gif" /> <br />
+</div>
+</div>
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Disambiguation</h2>
+
+<h2>What is Disambiguation?</h2>
+During your first foray into PicoContainer land, you might encounter an <em>AmbiguousComponentResolutionException</em>
+like this:
+<pre>org.picocontainer.injectors<a
+        href="http://www.picocontainer.org/javadoc/core/org/picocontainer/injectors/AbstractInjector.AmbiguousComponentResolutionException.html">.AbstractInjector$AmbiguousComponentResolutionExceptio</a>n: class &lt; Something Here &gt; needs a '&lt; Something Here &gt;' injected, but there are too many choices to inject. These:[class &lt; Something Here &gt;, class &lt; Something Here &gt;], refer http://picocontainer.org/ambiguous-injectable-help.html
+	at org.picocontainer.parameters.BasicComponentParameter.getTargetAdapter(BasicComponentParameter.java:270)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveAdapter(BasicComponentParameter.java:205)
+	at org.picocontainer.parameters.BasicComponentParameter.isResolvable(BasicComponentParameter.java:136)
+	at org.picocontainer.parameters.ComponentParameter.isResolvable(ComponentParameter.java:132)
+	at org.picocontainer.injectors.ConstructorInjector.getGreediestSatisfiableConstructor(ConstructorInjector.java:105)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:155)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.injectors.AbstractInjector.getComponentInstance(AbstractInjector.java:103)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:538)
+</pre>
+<p> Or possibly a <em>CyclicDependencyException</em> like this:</p>
+<pre>
+org.picocontainer.injectors.<a
+        href="http://www.picocontainer.org/javadoc/core/org/picocontainer/injectors/AbstractInjector.CyclicDependencyException.html">AbstractInjector$CyclicDependencyException</a>: Cyclic dependency: [class &lt; Something Here &gt;, class &lt; Something Here &gt;, class &lt; Something Here &gt;]
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:257)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:516)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveInstance(BasicComponentParameter.java:146)
+	at org.picocontainer.parameters.ComponentParameter.resolveInstance(ComponentParameter.java:119)
+	at org.picocontainer.injectors.SingleMemberInjector.getMemberArguments(SingleMemberInjector.java:89)
+	at org.picocontainer.injectors.ConstructorInjector.getMemberArguments(ConstructorInjector.java:199)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:162)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:516)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveInstance(BasicComponentParameter.java:146)
+	at org.picocontainer.parameters.ComponentParameter.resolveInstance(ComponentParameter.java:119)
+	at org.picocontainer.injectors.SingleMemberInjector.getMemberArguments(SingleMemberInjector.java:89)
+	at org.picocontainer.injectors.ConstructorInjector.getMemberArguments(ConstructorInjector.java:199)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:162)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:538)
+</pre>
+<p>And you say to your self something like, &quot;<strong>What the heck happened?!?!?!?</strong>&quot;</p>
+
+<p>The situation here is not as scary as it seems. We'll examine what causes the errors one at a time.</p>
+<h4>CyclicDependencyException</h4>
+
+<p>Here's a test case that shows what can cause a CyclicDependencyException:</p>
+
+<div class="source">
+<pre>
+	@Test public void testCircular() {
+		MutablePicoContainer mpc = new PicoBuilder().build();
+		mpc.addComponent(List.class, ArrayList.class);
+		mpc.addComponent(Set.class, HashSet.class);
+		
+		List l = mpc.getComponent(List.class); //Throws a CircularDependencyException
+	}
+    </pre>
+</div>
+<p>Upon first glance at the code, you might think &quot;Yeah, so?&quot;. But the problem here is that PicoContainer
+    tries to satisfy the <em>greediest</em> constructor; or in other words, it looks for the constructor with the most
+    arguments first. In this case, there is a constructor <em>ArrayList(Collection src), </em>and since it has the most
+    arguments, PicoContainer uses this one.</p>
+
+<p>Unfortunately, this results in the following situation:</p>
+<ol>
+    <li>PicoContainer tries to instantiate <em>ArrayList</em>. It finds a constructor that requires a Collection.</li>
+    <li>It searches itself and finds that it has an object that satisfies the Collection argument: the <em>HashSet</em>.
+    </li>
+    <li>It tries to instantiate the HashSet, and finds it has a constructor that requires are Collection.</li>
+    <li>So it searches itself and finds an object that satisfies the Collection argument: the ArrayList.</li>
+</ol>
+<p>And so on until we either run out of stack space or this document increases to 2 Gb in size explaining the recursion.
+    Fortunately, PicoContainer is smart enough to know where there is a recursive satisfaction like this and throws an
+    exception rather than going into infinite recursion.</p>
+
+<p>That is what causes the Cyclic Dependency Injection.</p>
+
+<p>So how do you solve it? Well, lets back up see what causes the AmbiguousComponentResolutionException first and <em>then</em>
+    we'll talk about how to fix it. (We promise! We won't let you down!)</p>
+
+<h3>AmbiguousComponentResolutionException</h3>
+
+<p>Here's a test case that shows what can cause AmbiguousComponentResolutionException:</p>
+
+<div class="source">
+	<pre>
+	@Test public void testAmbiguous() {
+		MutablePicoContainer mpc = new PicoBuilder().build();
+		mpc.addComponent(List.class, ArrayList.class);
+		mpc.addComponent(Set.class, HashSet.class);
+		mpc.addComponent(Collection.class, TreeSet.class);
+		
+		List l = mpc.getComponent(List.class); //Throws a AmbiguousComponentResolutionException
+	}    	
+    </pre>
+</div>
+<p>The only difference between this example and the CyclicDependencyException example is the introduction of a new
+    object that can satisfy the <em>java.util.Collection</em> requirement. </p>
+<blockquote>
+    <h4>Review</h4>
+
+    <p>Pico will automatically grab the argument that has the most arguments that can be satisfied. </p>
+</blockquote>
+<p>So what happens here?</p>
+<ol>
+    <li>PicoContainer tries to instantiate <em>ArrayList</em>.</li>
+    <li>It finds that there are now <strong>two</strong> components that can satisfy the <em>ArrayList(Collection) </em>argument:
+        <em>Set</em>, and <em>Collection</em>.
+    </li>
+</ol>
+<p>Rather than try to guess which one the developer intended to use. (And frankly, knowing us developers, Pico would
+    guess wrong), we throw an AmbiguousComponentResolutionException instead.</p>
+
+<p>So, what we really need is a way to specify that PicoContainer uses the exact constructor we want with the exact
+    arguments. Making sure that PicoContainer understands which constructor to use in a situation like this is called
+    &quot;Disambiguation&quot;. PicoContainer provides several methods to disambiguate registrations.</p>
+
+<h2>Disambiguation using the <a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/Parameter.html">Parameter</a>
+    Objects.</h2>
+
+<p>Careful examination of MutablePicoContainer.addComponent() will show an optional last object that takes a variable
+    number of org.picocontainer.Parameter objects. Without going into the specifics yet, the general rule is that if you
+    specify three parameter objects in your addComponent() registration, then you will use the constructor that takes
+    three parameters in your object. Use Parameter.ZERO to force the default constructor.</p>
+
+<p>There are two main types of Parameter objects: (Others are possible... hey, this <em>is</em> an interface we're
+    talking about here.)</p>
+<ol>
+    <li><a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/ConstantParameter.html">Constant
+        Parameter</a>: Used to specify constant values such as Integers, Strings, and so on into the component.
+    </li>
+    <li><a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/ComponentParameter.html">Component
+        Parameter</a>: Used to specify a reference to another object registered with addComponent() in the container.
+    </li>
+</ol>
+<p>With these options, it is time to revisit the AmbiguousComponentResolutionException example and modify it with our
+    new found knowledge:</p>
+
+<div class="source">
+	<pre>
+	@Test public void testAmbiguous() {
+		MutablePicoContainer mpc = new PicoBuilder().withCaching().build();
+
+
+		mpc.addComponent(List.class, ArrayList.class, Parameter.ZERO);  //Force Default Constructor
+		mpc.addComponent(Set.class, HashSet.class, new ConstantParameter(33)); //Equiv to new HashSet(33)
+		mpc.addComponent(Collection.class, TreeSet.class, new ComponentParameter(List.class)); //Equiv to new TreeSet(mpc.getComponent(List.class)).
+		
+		Collection c = mpc.getComponent(TreeSet.class);
+	}  	
+</pre>
+</div>
+<p>So how do the Parameters modify the construction?</p>
+<ul>
+    <li>The Parameter.ZERO line forces ArrayList to be constructed with the default constructor. The result of
+        mpc.getComponent(List.class) is new ArrayList()
+    </li>
+    <li>The line with new ConstantParameter(33), forces HashSet to be instantiated with a 1-argument constructor that
+        uses an integer value of 33. In the case of HashSet, that would be the &quot;initial capacity&quot; argument,
+        and thus mpc.getComponent(Set.class) results in new HashSet(33).
+    </li>
+    <li>Finally, the ComponentParameter argument. By having the code in the example, we're telling Pico to use the 1-arg
+        constructor in TreeSet that can be satisfied with the return value from mpc.getComponent(List.class). In this
+        case, new TreeSet(Collection) satisfies the constructor arguments so after resolving the mpc.getComponent()
+        instances, we have something similar to new TreeSet(new ArrayList);
+    </li>
+</ul>
+
+<blockquote>
+    <h4>Note:</h4>
+
+    <p>In this example, we turned on Caching. Because of this, the collection instances are shared. So the following
+        code would work:</p>
+
+    <div class="source">
+    <pre>
+	List myList = mpc.getComponent(List.class);
+	myList.add(&quot;This is a test&quot;);
+
+	
+	Collection c = mpc.getComponent(Collection.class); 
+	assertEquals(&quot;This is a test&quot;, c.iterator().next());
+</pre>
+    </div>
+    <p>Because of caching, the results of myList are shared with the TreeSet retrieved by mpc.getComponent(Collection).
+        Also note, however that because the constructor HashSet(Collection) makes a copy of the passed in collection,
+        the following code would NOT work:</p>
+
+    <div class="source">
+    <pre>
+	List myList = mpc.getComponent(List.class);
+	myList.add(&quot;This is a test&quot;);
+
+	
+	Collection c = mpc.getComponent(Collection.class); 
+ myList.add(0, &quot;Another test&quot;);
+ assertEquals(&quot;This is a test&quot;, c.iterator().next());  //FAILS.  The result of the evaluation is &quot;Another Test&quot;
+ </pre>
+    </div>
+</blockquote>
+<p>&nbsp;</p>
+
+<h2>Disambiguation using parameter names<span style="text-decoration: underline;"></span></h2>
+
+<p>With PicoContainer 2.0 we are able to leverage the parameter names of
+    constructors and methods in order to remove the ambiguity on
+    dependencies.</p>
+
+<div class="source">
+<pre>public class Store {
+  public Store(StockManager workingDayStockManager, StockManager afterHoursStockManager) {
+    // etc
+  }
+}</pre>
+</div>
+If Store is added to the container appropriately, then its parameter
+names <span style="font-family: monospace;">'</span>workingHoursStockManager'
+and 'afterHoursStockManager
+' can be used in conjunction with similarly named components inject the
+right dependency in the right way:<br/>
+
+<div class="source">
+    <pre>pico.as(Characteristics.USE_NAMES).addComponent(Store.class);</pre>
+</div>
+<p>Access to parameter names was dropped from JDK 6.0 and it is uncertain
+    whether it will be added as a feature in another release, so
+    PicoContainer relies on another open source library called <a href="http://paranamer.codehaus.org">Paranamer</a>,
+    without requiring a dependency on its Jar. In other words,
+    PicoContainer has the same classes from Paranamer in its jar.</p>
+<br/>
+See <a href="CommandLinePicoContainer.html">CommandLineArgumentsPicoContainer</a>,
+<a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a>
+and <a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a>
+for implementations of PicoContainer that set up components for
+subsequent parameter name binding.<br/>
+<br/>
+Page <a href="component-configuration.html">component-configuration</a>
+also shows parameter names being used for binding as does <a href="injection.html">injection.</a><br/>
+<br/>
+Usage of parameter names is available for all types of
+Dependency-Injection where parameter names are present.<br/>
+<span style="text-decoration: underline;"></span>
+
+<h2>Disambiguation using Binding Annotations</h2>
+
+<p>This works the same as Guice. Namely you make an
+    annotation that extends our 'Bind' annotation and mark it in your constructor or method's signature like so.</p>
+
+<div class="source">
+    <div>
+<pre>@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Bind
+public static @interface WorkingDayStockManager {	
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Bind
+public static @interface AfterHoursStockManager {	
+}
+
+public class Store {
+  public Store(@WorkingDayStockManager StockManager workingDayStockManager, 
+    @AfterHoursStockManager StockManager afterHoursStockManager) {
+    // etc
+  }
+}</pre>
+    </div>
+</div>
+<p>
+    Making PicoContainer leverage binding annotations if present is
+    automatic.</p>
+
+<p>Binding
+    annotations can be specified for constructor parameters (as shown above),
+    method injection parameters as well as field injection.</p>
+
+<h3>Where Next?</h3>
+<span class="callout">
+The <a href="scopes.html">Scoped Containers</a>
+page describes how trees of containers are good representations of scopes</span>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="right">&#169; 2003-2008 PicoContainer Committers</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<!--  Scripts to highlight code:  MUST be left AFTER the body -->
+<script language="javascript" src="./js/shCore.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushJava.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushXml.js">
+	//
+</script>
+<script type="text/javascript">
+	// <![CDATA[
+	var elements = document.getElementsByClassName('source');
+	elements.each( function(element) {
+		var content = element.getElementsByTagName('pre')[0].innerHTML;
+		var classType = /^&lt;/.test(content) ? "xml" : "java";
+		content = "<textarea name=\"code\" class=\"" + classType + "\">"
+				+ content + "</textarea>";
+		new Insertion.Before(element, content);
+		element.remove(element);
+	});
+
+	dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	// ]]>
+</script>
+
+</html>

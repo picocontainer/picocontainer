@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Downloads</title>
+</head>
+<body>
+<h3>Released Binary and Source Jars</h3>
+<p><a href="http://repository.codehaus.org/org/picocontainer/picocontainer-logging">http://repository.codehaus.org/org/picocontainer/picocontainer-logging/</a></p>
+<h3>Snapshot Binary and Source Jars</h3>
+<p><a href="http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-logging">http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-logging/</a></p>
+
+<h3>Using Maven Artifacts</h3>
+<p>If you use Maven as the build system (or one that is compatible with the Maven Repository), you can declare
+dependencies as 
+<div class="source"><pre>
+  <dependency> 
+    <groupId>org.picontainer.logging</groupId>
+    <artifactId>picocontainer-logging</artifactId>
+    <version>[version]</version>
+  </dependency>
+</pre></div>
+specifying the version.  Declaring this dependency will pull in all other required dependencies (ie transitive dependencies).
+Note that picocontainer-logging has no transitive dependency on <a href="http://picocontainer.org">PicoContainer</a>.
+</p>
+</body>
+</html>

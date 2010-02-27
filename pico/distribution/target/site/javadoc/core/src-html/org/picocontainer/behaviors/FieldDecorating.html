@@ -1,0 +1,121 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by Joerg Schaibe                                            *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.behaviors;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import org.picocontainer.LifecycleStrategy;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import org.picocontainer.Parameter;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.picocontainer.behaviors.AbstractBehaviorFactory;<a name="line.18"></a>
+<FONT color="green">019</FONT>    <a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.util.Properties;<a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>    /**<a name="line.23"></a>
+<FONT color="green">024</FONT>     * BehaviorFactory for Field Decorating. This factory will create {@link org.picocontainer.gems.behaviors.FieldDecorated} that will<a name="line.24"></a>
+<FONT color="green">025</FONT>     * allow you to decorate fields on the component instance that has been created<a name="line.25"></a>
+<FONT color="green">026</FONT>     *<a name="line.26"></a>
+<FONT color="green">027</FONT>     * @author Paul Hammant<a name="line.27"></a>
+<FONT color="green">028</FONT>     */<a name="line.28"></a>
+<FONT color="green">029</FONT>    public abstract class FieldDecorating extends AbstractBehaviorFactory implements FieldDecorated.Decorator {<a name="line.29"></a>
+<FONT color="green">030</FONT>        private final Class&lt;?&gt; fieldClass;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>        public FieldDecorating(Class&lt;?&gt; fieldClass) {<a name="line.32"></a>
+<FONT color="green">033</FONT>            this.fieldClass = fieldClass;<a name="line.33"></a>
+<FONT color="green">034</FONT>        }<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>        public ComponentAdapter createComponentAdapter(<a name="line.36"></a>
+<FONT color="green">037</FONT>                ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)<a name="line.37"></a>
+<FONT color="green">038</FONT>                throws PicoCompositionException {<a name="line.38"></a>
+<FONT color="green">039</FONT>            return componentMonitor.newBehavior(new FieldDecorated(<a name="line.39"></a>
+<FONT color="green">040</FONT>                    super.createComponentAdapter(<a name="line.40"></a>
+<FONT color="green">041</FONT>                            componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters),<a name="line.41"></a>
+<FONT color="green">042</FONT>                    fieldClass, this));<a name="line.42"></a>
+<FONT color="green">043</FONT>        }<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.46"></a>
+<FONT color="green">047</FONT>                                                    LifecycleStrategy lifecycleStrategy,<a name="line.47"></a>
+<FONT color="green">048</FONT>                                                    Properties componentProperties,<a name="line.48"></a>
+<FONT color="green">049</FONT>                                                    ComponentAdapter adapter) {<a name="line.49"></a>
+<FONT color="green">050</FONT>            return super.addComponentAdapter(componentMonitor,<a name="line.50"></a>
+<FONT color="green">051</FONT>                    lifecycleStrategy,<a name="line.51"></a>
+<FONT color="green">052</FONT>                    componentProperties,<a name="line.52"></a>
+<FONT color="green">053</FONT>                    adapter);<a name="line.53"></a>
+<FONT color="green">054</FONT>        }<a name="line.54"></a>
+<FONT color="green">055</FONT>    }<a name="line.55"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

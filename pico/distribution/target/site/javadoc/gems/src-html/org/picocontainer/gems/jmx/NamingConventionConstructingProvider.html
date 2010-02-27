@@ -1,0 +1,155 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by Joerg Schaible                                           *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.gems.jmx;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import javax.management.MBeanInfo;<a name="line.13"></a>
+<FONT color="green">014</FONT>    <a name="line.14"></a>
+<FONT color="green">015</FONT>    <a name="line.15"></a>
+<FONT color="green">016</FONT>    /**<a name="line.16"></a>
+<FONT color="green">017</FONT>     * A DynamicMBeanProvider that constructs StandardMBean instances that follow the JMX naming conventions. The name of<a name="line.17"></a>
+<FONT color="green">018</FONT>     * the management interface must follow the naming conventions with an &lt;em&gt;MBean&lt;/em&gt; appended to the MBean's type.<a name="line.18"></a>
+<FONT color="green">019</FONT>     * The implementation will use the registered MBeanInfoProvider instances of type<a name="line.19"></a>
+<FONT color="green">020</FONT>     * {@link ComponentKeyConventionMBeanInfoProvider} and {@link ComponentTypeConventionMBeanInfoProvider} to provide a<a name="line.20"></a>
+<FONT color="green">021</FONT>     * {@link MBeanInfo} for the component's MBean. If a {@link MBeanInfo} was found, the MBean's type is used from the<a name="line.21"></a>
+<FONT color="green">022</FONT>     * MBeanInfo otherwise the type is the implementation class of the component.<a name="line.22"></a>
+<FONT color="green">023</FONT>     * @author J&amp;ouml;rg Schaible<a name="line.23"></a>
+<FONT color="green">024</FONT>     */<a name="line.24"></a>
+<FONT color="green">025</FONT>    public class NamingConventionConstructingProvider extends AbstractConstructingProvider {<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>        private final ObjectNameFactory objectNameFactory;<a name="line.27"></a>
+<FONT color="green">028</FONT>        private final MBeanInfoProvider[] mBeanProviders;<a name="line.28"></a>
+<FONT color="green">029</FONT>        private final StandardMBeanFactory mBeanFactory;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        /**<a name="line.31"></a>
+<FONT color="green">032</FONT>         * Construct a NamingConventionConstructingProvider. Following {@link MBeanInfoProvider} instances are registered<a name="line.32"></a>
+<FONT color="green">033</FONT>         * with this constructor:<a name="line.33"></a>
+<FONT color="green">034</FONT>         * &lt;ul&gt;<a name="line.34"></a>
+<FONT color="green">035</FONT>         * &lt;li&gt;{@link ComponentKeyConventionMBeanInfoProvider}&lt;/li&gt;<a name="line.35"></a>
+<FONT color="green">036</FONT>         * &lt;li&gt;{@link ComponentTypeConventionMBeanInfoProvider}&lt;/li&gt;<a name="line.36"></a>
+<FONT color="green">037</FONT>         * &lt;/ul&gt;<a name="line.37"></a>
+<FONT color="green">038</FONT>         * @param factory The ObjectNameFactory used to name the created MBeans.<a name="line.38"></a>
+<FONT color="green">039</FONT>         */<a name="line.39"></a>
+<FONT color="green">040</FONT>        public NamingConventionConstructingProvider(final ObjectNameFactory factory) {<a name="line.40"></a>
+<FONT color="green">041</FONT>            if (factory == null) {<a name="line.41"></a>
+<FONT color="green">042</FONT>                throw new NullPointerException("ObjectNameFactory is null");<a name="line.42"></a>
+<FONT color="green">043</FONT>            }<a name="line.43"></a>
+<FONT color="green">044</FONT>            mBeanFactory = new StandardMBeanFactory();<a name="line.44"></a>
+<FONT color="green">045</FONT>            objectNameFactory = factory;<a name="line.45"></a>
+<FONT color="green">046</FONT>            mBeanProviders = new MBeanInfoProvider[]{<a name="line.46"></a>
+<FONT color="green">047</FONT>                    new ComponentKeyConventionMBeanInfoProvider(), new ComponentTypeConventionMBeanInfoProvider()};<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>        /**<a name="line.50"></a>
+<FONT color="green">051</FONT>         * Return a {@link StandardMBeanFactory}.<a name="line.51"></a>
+<FONT color="green">052</FONT>         * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getMBeanFactory()<a name="line.52"></a>
+<FONT color="green">053</FONT>         */<a name="line.53"></a>
+<FONT color="green">054</FONT>        @Override<a name="line.54"></a>
+<FONT color="green">055</FONT>            protected DynamicMBeanFactory getMBeanFactory() {<a name="line.55"></a>
+<FONT color="green">056</FONT>            return mBeanFactory;<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>    <a name="line.58"></a>
+<FONT color="green">059</FONT>        /**<a name="line.59"></a>
+<FONT color="green">060</FONT>         * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getObjectNameFactory()<a name="line.60"></a>
+<FONT color="green">061</FONT>         */<a name="line.61"></a>
+<FONT color="green">062</FONT>        @Override<a name="line.62"></a>
+<FONT color="green">063</FONT>            public ObjectNameFactory getObjectNameFactory() {<a name="line.63"></a>
+<FONT color="green">064</FONT>            return objectNameFactory;<a name="line.64"></a>
+<FONT color="green">065</FONT>        }<a name="line.65"></a>
+<FONT color="green">066</FONT>    <a name="line.66"></a>
+<FONT color="green">067</FONT>        /**<a name="line.67"></a>
+<FONT color="green">068</FONT>         * Return an array with an instance of type {@link ComponentKeyConventionMBeanInfoProvider} and<a name="line.68"></a>
+<FONT color="green">069</FONT>         * {@link ComponentTypeConventionMBeanInfoProvider}.<a name="line.69"></a>
+<FONT color="green">070</FONT>         * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getMBeanInfoProviders()<a name="line.70"></a>
+<FONT color="green">071</FONT>         */<a name="line.71"></a>
+<FONT color="green">072</FONT>        @Override<a name="line.72"></a>
+<FONT color="green">073</FONT>            public MBeanInfoProvider[] getMBeanInfoProviders() {<a name="line.73"></a>
+<FONT color="green">074</FONT>            return mBeanProviders;<a name="line.74"></a>
+<FONT color="green">075</FONT>        }<a name="line.75"></a>
+<FONT color="green">076</FONT>    <a name="line.76"></a>
+<FONT color="green">077</FONT>        /**<a name="line.77"></a>
+<FONT color="green">078</FONT>         * Determin the default management interface using naming convetions of the JMX specification.<a name="line.78"></a>
+<FONT color="green">079</FONT>         * @param implementation The type of the component's implementation.<a name="line.79"></a>
+<FONT color="green">080</FONT>         * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be &lt;code&gt;null&lt;/code&gt;.<a name="line.80"></a>
+<FONT color="green">081</FONT>         * @return Returns the management interface.<a name="line.81"></a>
+<FONT color="green">082</FONT>         * @throws ClassNotFoundException Thrown if no interface can be determined.<a name="line.82"></a>
+<FONT color="green">083</FONT>         */<a name="line.83"></a>
+<FONT color="green">084</FONT>        @Override<a name="line.84"></a>
+<FONT color="green">085</FONT>            protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)<a name="line.85"></a>
+<FONT color="green">086</FONT>                throws ClassNotFoundException {<a name="line.86"></a>
+<FONT color="green">087</FONT>            return mBeanFactory.getDefaultManagementInterface(implementation, mBeanInfo);<a name="line.87"></a>
+<FONT color="green">088</FONT>        }<a name="line.88"></a>
+<FONT color="green">089</FONT>    }<a name="line.89"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

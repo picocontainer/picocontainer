@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+  <display-name>Ajax Email Scenario Runner</display-name>
+
+  <!-- Waffle Registrar and custom components -->
+  <context-param>
+    <param-name>org.codehaus.waffle.registrar.Registrar</param-name>
+    <param-value>org.picocontainer.web.sample.ajaxemail.runner.AjaxEmailRegistrar</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:DateValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.DateValueConverter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:NumberValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.NumberValueConverter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:StringListValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.StringListValueConverter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:NumberListValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.NumberListValueConverter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:StringListMapValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.StringListMapValueConverter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>register:StringNumberListMapValueConverter</param-name>
+    <param-value>org.codehaus.waffle.bind.converters.StringNumberListMapValueConverter</param-value>
+  </context-param>
+  
+  <!-- Waffle context listener -->
+  <listener>
+    <listener-class>org.codehaus.waffle.context.pico.PicoWaffleContextListener</listener-class>
+  </listener>
+
+  <!-- Filters -->
+  <filter>
+    <filter-name>sitemesh-page</filter-name>
+    <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+  </filter>
+
+  <filter>
+    <filter-name>waffle-request</filter-name>
+    <filter-class>org.codehaus.waffle.context.WaffleRequestFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>sitemesh-page</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>waffle-request</filter-name>
+    <url-pattern>*.action</url-pattern>
+  </filter-mapping>
+
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>waffle</servlet-name>
+    <servlet-class>org.codehaus.waffle.servlet.WaffleServlet</servlet-class>
+    <init-param>
+      <param-name>view.suffix</param-name>
+      <param-value>.ftl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>errors.view</param-name>
+      <param-value>ftl/errors</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>sitemesh-freemarker</servlet-name>
+    <servlet-class>com.opensymphony.module.sitemesh.freemarker.FreemarkerDecoratorServlet</servlet-class>
+    <init-param>
+      <param-name>TemplatePath</param-name>
+      <param-value>/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>object_wrapper</param-name>
+      <param-value>beans</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>waffle</servlet-name>
+    <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>sitemesh-freemarker</servlet-name>
+    <url-pattern>*.ftl</url-pattern>
+  </servlet-mapping>
+
+  <!-- Welcome files -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- Security -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>no_access</web-resource-name>
+      <url-pattern>*.jspx</url-pattern>
+    </web-resource-collection>
+    <auth-constraint />
+  </security-constraint>
+
+</web-app>

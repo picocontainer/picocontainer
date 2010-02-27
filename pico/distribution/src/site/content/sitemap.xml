@@ -1,0 +1,108 @@
+<sitemap>
+    <section>
+        <name>About</name>
+        <page>index.html</page>
+        <page>introduction.html</page>
+        <page>javadoc.html</page>
+        <page>downloads.html</page>
+        <page>news.html</page>
+        <page>faq.html</page>
+        <page>goals.html</page>
+        <page>support.html</page>
+    </section>
+    <section>
+        <name>Core Concepts</name>
+        <page>lifecycle.html</page>
+        <page>injection.html</page>
+        <page>scopes.html</page>
+    </section>
+    <section>
+        <name>Dependency Injection</name>
+        <page>constructor-injection.html</page>
+        <page>setter-injection.html</page>
+        <page>annotated-field-injection.html</page>
+        <page>annotated-method-injection.html</page>
+        <page>typed-field-injection.html</page>
+        <page>named-field-injection.html</page>
+        <page>method-injection.html</page>
+        <page>named-method-injection.html</page>
+        <page>multi-injection.html</page>
+        <page>composite-injection.html</page>
+        <page>factory-injection.html</page>
+        <page>reinjection.html</page>
+        <page>providers.html</page>
+    </section>
+    <section>
+        <name>Configuration</name>
+        <page>disambiguation.html</page>
+    </section>
+    <section>
+        <name>Modifying Component Behaviors</name>
+        <page>behaviors.html</page>
+        <page>caching.html</page>
+        <page>hiding.html</page>
+        <page>thread-safety.html</page>
+        <page>interception.html</page>
+        <page>other-behaviors.html</page>
+    </section>
+    <section>
+        <name>Advanced Concepts</name>
+        <page>fluent-style.html</page>
+        <page>arrays-collections-and-maps.html</page>
+        <page>parameter-names.html</page>
+        <page>builder.html</page>
+        <page>properties.html</page>
+        <page>converters.html</page>
+        <page>component-configuration.html</page>
+        <page>monitors.html</page>
+        <page>regex.html</page>
+    </section>
+    <section>
+        <name>PicoContainer's Architecture</name>
+        <page>patterns.html</page>
+        <page>inversion-of-control.html</page>
+        <page>adapters.html</page>
+        <page>mock-objects.html</page>
+        <page>terminology.html</page>
+        <page>comparisons.html</page>
+        <page>transparency.html</page>
+    </section>
+    <section>
+        <name>Container Choices</name>
+        <page>DefaultPicoContainer.html</page>
+	    <page>CommandLinePicoContainer.html</page>
+		<page>PropertiesPicoContainer.html</page>
+		<page>SystemPropertiesPicoContainer.html</page>
+		<page>TransientPicoContainer.html</page>
+		<page>TieringPicoContainer.html</page>
+    </section>
+    <section>
+         <name>Dependant &amp; Related</name>
+         <link title="Web Frameworks">http://picocontainer.org/web</link>
+         <link title="Scripting Support">http://picocontainer.org/script</link>
+         <link title="Persistence">http://picocontainer.org/persistence</link>
+         <link title="Logging">http://picocontainer.org/logging</link>
+    </section>
+    <section>
+         <name>Anti-patterns</name>
+         <page>antipatterns/propagating-dependency-antipattern.html</page>
+         <page>antipatterns/long-constructor-argument-list-antipattern.html</page>
+         <page>antipatterns/container-dependency-antipattern.html</page>
+         <page>antipatterns/tests-use-container-antipattern.html</page>
+         <page>antipatterns/singleton-antipattern.html</page>
+    </section>
+    <section>
+         <name>Help Pages</name>
+         <page>help/ambiguous-injectable-help.html</page>
+         <page>help/unprocessed-properties-help.html</page>
+     </section>    
+    <section>
+         <name>History</name>
+         <page>inversion-of-control-history.html</page>
+    </section>
+    <section>
+         <name>Project Info</name>
+         <page>project.html</page>
+         <page>team.html</page>
+     </section>
+</sitemap>

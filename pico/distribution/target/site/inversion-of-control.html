@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>PicoContainer - Inversion of Control</title>
+
+<style type="text/css" media="all">
+@import url("./style/pico.css");
+
+@import url("./style/syntaxhighlighter.css");
+</style>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
+</script>
+<script type="text/javascript">
+	_uacct = "UA-2268879-1";
+	urchinTracker();
+</script>
+<script type="text/javascript" src="./js/prototype.js">
+	//
+</script>
+<meta name="verify-v1" content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><span style="font-size: 72px; font-family: Geneva; font-weight: bold;"><img
+  src="images/pico-logo.png" alt="" /> <span style="color: rgb(58, 150, 27);">Pico</span><span
+  style="color: rgb(131, 131, 131);">Container</span></span>
+<div class="clear"></div>
+</div>
+<div id="breadcrumbs">
+<div class="left">Latest Released Version: 2.10.2</div>
+<div class="clear"></div>
+</div>
+
+<div id="leftColumn">
+<div id="navColumn">
+<h1>About</h1>
+<ul>
+     <li><a href="index.html">What is PicoContainer?</a></li>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="javadoc.html">Javadoc</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="goals.html">Project Goals</a></li>
+      <li><a href="support.html">Support</a></li>
+   
+</ul>
+
+<h1>Core Concepts</h1>
+<ul>
+     <li><a href="lifecycle.html">Component Lifecycle</a></li>
+      <li><a href="injection.html">Dependency Injection</a></li>
+      <li><a href="scopes.html">Scoped Containers</a></li>
+   
+</ul>
+
+<h1>Dependency Injection</h1>
+<ul>
+     <li><a href="constructor-injection.html">Constructor Injection</a></li>
+      <li><a href="setter-injection.html">Setter Injection</a></li>
+      <li><a href="annotated-field-injection.html">Annotated Field Injection</a></li>
+      <li><a href="annotated-method-injection.html">Annotated Method Injection</a></li>
+      <li><a href="typed-field-injection.html">Typed Field Injection</a></li>
+      <li><a href="named-field-injection.html">Named Field Injection</a></li>
+      <li><a href="method-injection.html">Method Injection</a></li>
+      <li><a href="named-method-injection.html">Named Method Injection</a></li>
+      <li><a href="multi-injection.html">Multiple Injection</a></li>
+      <li><a href="composite-injection.html">Composite Injection</a></li>
+      <li><a href="factory-injection.html">Factory Injection</a></li>
+      <li><a href="reinjection.html">Reinjection</a></li>
+      <li><a href="providers.html">Injection via Providers</a></li>
+   
+</ul>
+
+<h1>Configuration</h1>
+<ul>
+     <li><a href="disambiguation.html">Disambiguation</a></li>
+   
+</ul>
+
+<h1>Modifying Component Behaviors</h1>
+<ul>
+     <li><a href="behaviors.html">Behaviors Overview</a></li>
+      <li><a href="caching.html">Caching and Singletons</a></li>
+      <li><a href="hiding.html">Hiding Implementations</a></li>
+      <li><a href="thread-safety.html">Thread Safety Behaviors</a></li>
+      <li><a href="interception.html">AOP Style Interception</a></li>
+      <li><a href="other-behaviors.html">Other Behaviors</a></li>
+   
+</ul>
+
+<h1>Advanced Concepts</h1>
+<ul>
+     <li><a href="fluent-style.html">Fluent Style</a></li>
+      <li><a href="arrays-collections-and-maps.html">Arrays, Collections and Maps</a></li>
+      <li><a href="parameter-names.html">Leveraging Parameter Names</a></li>
+      <li><a href="builder.html">Building Containers</a></li>
+      <li><a href="properties.html">Component Properties</a></li>
+      <li><a href="converters.html">Converters</a></li>
+      <li><a href="component-configuration.html">Component Configuration</a></li>
+      <li><a href="monitors.html">Monitoring Component Events</a></li>
+      <li><a href="regex.html">Regex Composer</a></li>
+   
+</ul>
+
+<h1>PicoContainer's Architecture</h1>
+<ul>
+     <li><a href="patterns.html">Design Patterns</a></li>
+    
+  <li class="currentLink">Inversion of Control</li>
+    <li><a href="adapters.html">Component Adapters</a></li>
+      <li><a href="mock-objects.html">Mock Objects</a></li>
+      <li><a href="terminology.html">Terminology</a></li>
+      <li><a href="comparisons.html">Container Comparisons</a></li>
+      <li><a href="transparency.html">Transparency</a></li>
+   
+</ul>
+
+<h1>Container Choices</h1>
+<ul>
+     <li><a href="DefaultPicoContainer.html">DefaultPicoContainer</a></li>
+      <li><a href="CommandLinePicoContainer.html">CommandLinePicoContainer</a></li>
+      <li><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></li>
+      <li><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></li>
+      <li><a href="TransientPicoContainer.html">TransientPicoContainer</a></li>
+      <li><a href="TieringPicoContainer.html">TieringPicoContainer</a></li>
+   
+</ul>
+
+<h1>Dependant & Related</h1>
+<ul>
+     <li><a href="http://picocontainer.org/web">Web Frameworks</a></li>
+      <li><a href="http://picocontainer.org/script">Scripting Support</a></li>
+      <li><a href="http://picocontainer.org/persistence">Persistence</a></li>
+      <li><a href="http://picocontainer.org/logging">Logging</a></li>
+   
+</ul>
+
+<h1>Anti-patterns</h1>
+<ul>
+     <li><a href="propagating-dependency-antipattern.html">Propagating Dependency</a></li>
+      <li><a href="long-constructor-argument-list-antipattern.html">Long Constructor Argument List</a></li>
+      <li><a href="container-dependency-antipattern.html">Container Dependency</a></li>
+      <li><a href="tests-use-container-antipattern.html">Unit Tests Use Container</a></li>
+      <li><a href="singleton-antipattern.html">Singleton</a></li>
+   
+</ul>
+
+<h1>Help Pages</h1>
+<ul>
+     <li><a href="ambiguous-injectable-help.html">Ambiguous Injectable</a></li>
+      <li><a href="unprocessed-properties-help.html">Unprocessed Properties</a></li>
+   
+</ul>
+
+<h1>History</h1>
+<ul>
+     <li><a href="inversion-of-control-history.html">Inversion of Control History</a></li>
+   
+</ul>
+
+<h1>Project Info</h1>
+<ul>
+     <li><a href="project.html">Project</a></li>
+      <li><a href="team.html">Team</a></li>
+   
+</ul>
+<h1>Hosted by</h1>
+<img alt="Hosted at Codehaus" src="images/codehaus-small.gif" width="120" height="40" /><br />
+<h1>Tools</h1>
+<img alt="Maven" src="images/maven-feather.png" /> <br />
+<img alt="Eclipse" src="images/eclipse-logo-white.jpg" width="100" height="40" /> <br />
+<img alt="IDEA" src="images/idea88x31_white.gif" /> <br />
+</div>
+</div>
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Inversion of Control</h2>
+
+<h2>Overview</h2>
+
+<p>Inversion of Control (IoC) is a design pattern that addresses a
+    component's <a href="injection.html" title="Dependency Injection">dependency
+    resolution</a>, <a href="component-configuration.html"
+                       title="Component Configuration">configuration</a> and <a
+        href="lifecycle.html" title="Lifecycle">lifecycle</a>. It suggests that the control of those three should not be
+    the concern of the component itself. Thus it is inverted back. Note to confuse
+    things slightly, IoC is also relevant to simple classes, not just
+    components, but we will refer to components throughout this text. The
+    most significant aspect to IoC is dependency resolution and most of the
+    discussion surrounding IoC dwells solely on that. Dependency mis-management is acknowledged to be the biggest
+    problem that IoC is trying to solve.<img src="images/ioc-venn.png" width="538" height="336" alt="IoC venn diagram"/>
+</p>
+
+<h3>Types of IoC</h3>
+
+<p>There are many types of IoC, but we'll concentrate on the type of IoC that PicoContainer introduced to the community
+    - <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>. </p>
+
+<h3>IoC History</h3>
+
+<p>Some detail about the history of Inversion of Control - <a href="inversion-of-control-history.html"
+                                                              title="IoC History">IoC History</a></p>
+
+<h2>Component Dependencies</h2>
+
+<p>It generally favors loose coupling between components. Loose coupling in turn favours:</p>
+<ul>
+    <li>More reusable classes</li>
+    <li>Classes that are easier to test</li>
+    <li>Systems that are easier to assemble and configure</li>
+</ul>
+<h3>Explanation</h3>
+
+<p>Simply put, a component designed according to IoC does not go off and get other components that it needs in order to
+    do its job. It instead <em>declares</em> these dependencies, and the container supplies them. Thus the name
+    IoC/DIP/Hollywood Principle. The control of the dependencies for a given component is inverted. It is no longer the
+    component itself that establishes its own dependencies, but something on the outside. That something could be a
+    container like PicoContainer, but could easily be normal code instantiating the component in an embedded sense.</p>
+
+<h3>Examples</h3>
+
+<p>Here is the simplest possible IoC component :</p>
+
+<div class="source">
+              <pre>public interface Orange {
+  // methods
+}
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public AppleImpl(Orange orange) {
+    this.orange = orange;
+  }
+  // other methods
+}</pre>
+</div>
+<p>Here are some common smells that should lead you to refactor to IoC :</p>
+
+<div class="source">
+              <pre>public class AppleImpl implements Apple{
+  private Orange orange;
+  public Apple() {
+    this.orange = new OrangeImpl();
+  }  
+  // other methods
+}</pre>
+</div>
+<p>The problem is that you are tied to the OrangleImpl implementation for provision of Orange services. Simply put, the
+    above apple cannot be a (configurable) component. It's an application. All hard coded. Not reusable. It is going to
+    be very difficult to have multiple instances in the same classloader with different assembly.</p>
+
+<p>Here are some other smells along the same line :</p>
+
+<div class="source">
+              <pre>public class AppleImpl implements Apple {
+  private static Orange orange = OrangeFactory.getOrange();
+  public Apple() {
+  }  
+  // other methods
+}</pre>
+</div>
+
+<h2>Component Configuration</h2>
+
+<p>Sometimes we see configuration like so ...</p>
+
+<div class="source">
+            <pre>public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent() {
+    ResourceFactory resources = new ResourceFactory(new File(&quot;mycomp.properties&quot;));
+    config01 = resources.get(&quot;config01&quot;);
+    config02 = resources.get(&quot;config02&quot;);
+  }  
+  // other methods
+}</pre>
+</div>
+<p>In the IoC world, it might be better to see the following for simple component designs :</p>
+
+<div class="source">
+            <pre>public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent(String config01, String config02) {
+    this.config01 = config01;
+    this.config02 = config02;
+  }  
+  // other methods
+}</pre>
+</div>
+<p>Or this for more complex ones, or ones designed to be more open to reimplementation ..</p>
+
+<div class="source">
+            <pre>public interface BigFatComponentConfig {
+  String getConfig01();
+  String getConfig02();
+}
+public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent(BigFatComponentConfig config) {
+    this.config01 = config.getConfig01();
+    this.config02 = config.getConfig02();
+  }  
+  // other methods
+}</pre>
+</div>
+<p>With the latter design there could be many different implementations of BigFatComponentConfig. Implementations such
+    as:</p>
+<ol>
+    <li>Hard coded (a default impl)</li>
+    <li>Implementations that take config from an XML document (file, URL based or inlined in using class)</li>
+    <li>Properties File.</li>
+</ol>
+<p>It is the deployer's, embeddor's or container maker's choice on which to use.</p>
+
+<h2>Component Lifecycle</h2>
+
+<p>Simply put, the lifecycle of a component is what happens to it in a controlled sense after it has been instantiated.
+    Say a component has to start threads, do some timed activity or listen on a socket. The component, if not IoC, might
+    do its start in its contructor. Better would be to honor some start/stop functionality from an interface, and have
+    the container or embeddor manage the starting and stopping when they feel it is appropriate:</p>
+
+<div class="source">
+            <pre>public class SomeDaemonComponent implements Startable {
+  public void start() {
+    // listen or whatever
+  }
+  public void stop() {
+  }
+  // other methods
+}</pre>
+</div>
+<h3>Notes </h3>
+
+<p>The lifecycle interfaces for PicoContainer are the only characterising API elements for a component. If Startable was
+    in the JDK, there would be no need for this. Sadly, it also menas that every framework team has to write their own
+    Startable interface. </p>
+
+<p>The vast majority of components do not require lifecycle functionality, and thus don't have to implement
+    anything.</p>
+
+<h2>IoC Exceptions</h2>
+
+<p>Of course, in all of these discussions, it is important to point out that logging is a common exception to the IoC
+    rule. Apache has two static logging frameworks that are in common use: Commons-Logging and Log4J. Neither of these
+    is
+    designed along IoC lines. Their typical use is static accessed whenever it is felt appropriate in an application.
+    Whilst static logging is common, the PicoContainer team do not recommend that developers of reusable components
+    mandate a logging choice. We suggest instead that a Monitor component interface is created and default adapters are
+    provided to a number of the logging frameworks are provided.</p>
+
+<h2>Overview</h2>
+
+<h2>IoC Types - Family Tree</h2>
+
+<p>In recent years different approaches have emerged to deliver an IoC vision. Latter types, as part of a 'LightWeight'
+    agenda have concentrated on simplicity and transparency.</p>
+
+<p>Devised in London at the ThoughtWorks office in December of 2003; Present at the &quot;Dependency Injection&quot;
+    meeting were Paul Hammant, Aslak Hellesoy, Jon Tirsen, Rod Johnson (Lead Developer of the Spring Framework), Mike
+    Royle, Stacy Curl, Marcos Tarruela and Martin Fowler (electronically).</p>
+
+<p><strong>Inversion of Control</strong></p>
+<ul>
+    <li>Dependency Injection
+        <ul>
+            <li>Constructor Dependency Injection (CDI) <br/>
+                <br/>
+                Examples: PicoContainer, Spring Framework, (not in EJB 3.x sadly), Guice with Annotations
+            </li>
+            <li>Setter Dependency Injection<br/>
+                <br/>
+                Examples: Spring Framework, PicoContainer, EJB 3.0 &amp; Guice with Annotations
+            </li>
+            <li>Interface Driven Setter Dependency Injection<br/>
+                <br/>
+                Examples: XWork, WebWork 2
+            </li>
+            <li>Field Dependency Injection<br/>
+                <br/>
+                Examples: Plexus, PicoContainer &amp; Guice with Annotations.
+            </li>
+        </ul>
+    </li>
+    <li>Dependency Lookup
+        <ul>
+            <li>Pull approach (registry concept)<br/>
+                <br/>
+                Examples: EJB 2.x that leverages JNDI, Servlets that leverage JNDI
+            </li>
+            <li>Contextualized Dependency Lookup - AKA Push approach <br/>
+                <br/>
+                Examples: Servlets that leverage ServletContext, Apache's Avalon, OSGi, Keel, Loom (they use Avalon)
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>See also <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>, <a
+        href="setter-injection.html" title="Setter Injection">Setter Injection</a> for more information.</p>
+
+<p>Note Field Injection was categorised but there was was really no interest it until the EJB3.0 specification rolled
+    out. Getter
+    Injection flourished for a while, but did not take and was never supported by the PicoContainer team.</p>
+
+<h2>Examples of Common Types</h2>
+
+<h3>Constructor Dependency Injection</h3>
+
+<p>This is where a dependency is handed into a component via its constructor :</p>
+
+<div class="source">
+              <pre>public interface Orange {
+  // methods
+}
+
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public AppleImpl(Orange orange) {
+    this.orange = orange;
+  }
+  // other methods
+}</pre>
+</div>
+<h3>Setter Dependency Injection
+</h3>
+
+<p>This is where dependencies are injected into a component via setters :</p>
+
+<div class="source">
+    <div>
+              <pre>public interface Orange {
+  // methods
+}
+
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public void setOrange(Orange orange) {
+    this.orange = orange;
+  }
+  // other methods
+}</pre>
+    </div>
+</div>
+
+<h3>Contextualized Dependency Lookup (Push Approach)</h3>
+
+<p>This is where dependencies are looked up from a container that is managing the component :</p>
+
+<div class="source">
+              <pre>public interface Orange {
+  // methods
+}
+
+public class AppleImpl implements Apple, DependencyProvision {
+  private Orange orange;
+  public void doDependencyLookup(DependencyProvider dp) throws DependencyLookupExcpetion{
+    this.orange = (Orange) dp.lookup(&quot;Orange&quot;);
+  }
+  // other methods
+}</pre>
+</div>
+
+<h2>Terms: Service, Component &amp; Class</h2>
+
+<p>Component is the correct name for things managed in an IoC sense. However very small ordinary classes are manageable
+    using IoC tricks, though this is for the very brave or extremists <img class="emoticon"
+                                                                           src="http://docs.codehaus.org/images/icons/emoticons/smile.gif"
+                                                                           height="20" width="20" align="absmiddle"
+                                                                           alt="" border="0"/></p>
+
+<p>A component many have dependencies on others. Thus dependency is the term we prefer to describe the needs of a
+    component.</p>
+
+<p>Service as a term is very popular presently. We think 'Service' dictates marshaling and remoteness. Think of Web
+    Service, Database service, Mail service. All of these have a concept of adaptation and transport. Typically a
+    language neutral form for a request is passed over the wire. In the case of the Web Service method requests are
+    marshaled to SOAP XML and forward to a suitable HTTP server for processing. Most of the time an application coder is
+    hidden from the client/server and marshaling ugliness by a toolkit or API.</p>
+
+<h2>Dependency Injection versus Contextualized Lookup</h2>
+
+<p>Dependency Injection is non-invasive. Typically this means that components can be used without a container or a
+    framework. If you ignore life cycle, there is no import requirements from an applicable framework.</p>
+
+<p>Contextualized Dependency Lookup is invasive. Typically this means components must be used inside a container or with
+    a framework, and requires the component coder to import classes from the applicable framework jar.</p>
+
+<p>Note that Apache's Avalon OSGi are not Dependency Injection types of IoC, they are Contextualized Dependency
+    Lookup.</p>
+
+<p>Ultimately, the contextualized lookup designs are not recommended at all. </p>
+
+<h2>What's wrong with JNDI ?</h2>
+
+<p>With plain JNDI, lookup can be done in a classes' static initialiser, in the constuctor or any method including the
+    finaliser. Thus there is no control (refer C of IoC). With JNDI used under EJB control, and concerning only
+    components looked up from that bean's sisters (implicitly under the same container's control), the specification
+    indicates that the JNDI lookup should only happen at a certain moment in the startup of an EJB application, and only
+    from a set of beans declared in ejb-jar.xml. Hence, for EJB containers, the control element should be back. Should,
+    of course, means that many bean containers have no clue as to when lookups are actually being done, and apps work by
+    accident of deployment. Allowing it for static is truly evil. It means that a container could merely be looking at
+    classes with reflection in some early setup state, and the bean could be going off and availing of remote and local
+    services and components. Thus depending whether JNDI is being used in an Enterprise Java Bean or in a POJO, it is
+    either an example of IoC or not.</p>
+
+<h2>Related Pages </h2>
+<ul>
+    <li>Contextualized Lookup
+        <ul>
+            <li><a href="comparisons.html#comparison-ApacheAvalonanditscontainers" title="Avalon Framework">Avalon
+                Framework</a>
+            </li>
+        </ul>
+    </li>
+    <li><a href="inversion-of-control-history.html" title="IoC History">IoC History</a></li>
+    <li>
+        <ul>
+            <li><a href="injection.html" title="Dependency Injection">Dependency Injection</a>
+                <ul>
+                    <li><a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>
+                    </li>
+                    <li><a href="setter-injection.html" title="Setter Injection">Setter Injection</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="right">&#169; 2003-2008 PicoContainer Committers</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<!--  Scripts to highlight code:  MUST be left AFTER the body -->
+<script language="javascript" src="./js/shCore.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushJava.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushXml.js">
+	//
+</script>
+<script type="text/javascript">
+	// <![CDATA[
+	var elements = document.getElementsByClassName('source');
+	elements.each( function(element) {
+		var content = element.getElementsByTagName('pre')[0].innerHTML;
+		var classType = /^&lt;/.test(content) ? "xml" : "java";
+		content = "<textarea name=\"code\" class=\"" + classType + "\">"
+				+ content + "</textarea>";
+		new Insertion.Before(element, content);
+		element.remove(element);
+	});
+
+	dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	// ]]>
+</script>
+
+</html>

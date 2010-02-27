@@ -1,0 +1,141 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package org.picocontainer.behaviors;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import org.junit.Test;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import static org.junit.Assert.assertNotNull;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import org.picocontainer.DefaultPicoContainer;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import org.picocontainer.Characteristics;<a name="line.6"></a>
+<FONT color="green">007</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.7"></a>
+<FONT color="green">008</FONT>    import org.picocontainer.containers.EmptyPicoContainer;<a name="line.8"></a>
+<FONT color="green">009</FONT>    import org.picocontainer.injectors.SetterInjection;<a name="line.9"></a>
+<FONT color="green">010</FONT>    import org.picocontainer.lifecycle.NullLifecycleStrategy;<a name="line.10"></a>
+<FONT color="green">011</FONT>    import org.picocontainer.testmodel.NullLifecycle;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import static junit.framework.Assert.assertEquals;<a name="line.13"></a>
+<FONT color="green">014</FONT>    <a name="line.14"></a>
+<FONT color="green">015</FONT>    public class CircularTestCase {<a name="line.15"></a>
+<FONT color="green">016</FONT>        <a name="line.16"></a>
+<FONT color="green">017</FONT>        public static interface IFish {<a name="line.17"></a>
+<FONT color="green">018</FONT>            IWater getWater();<a name="line.18"></a>
+<FONT color="green">019</FONT>        }<a name="line.19"></a>
+<FONT color="green">020</FONT>        public static class Fish implements IFish {<a name="line.20"></a>
+<FONT color="green">021</FONT>            IWater water;<a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>            public void setWater(IWater water) {<a name="line.23"></a>
+<FONT color="green">024</FONT>                this.water = water;<a name="line.24"></a>
+<FONT color="green">025</FONT>            }<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>            public IWater getWater() {<a name="line.27"></a>
+<FONT color="green">028</FONT>                return water;<a name="line.28"></a>
+<FONT color="green">029</FONT>            }<a name="line.29"></a>
+<FONT color="green">030</FONT>        }<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>        public static interface IWater {<a name="line.32"></a>
+<FONT color="green">033</FONT>            IFish getFish();<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>        }<a name="line.35"></a>
+<FONT color="green">036</FONT>        public static class Water implements IWater {<a name="line.36"></a>
+<FONT color="green">037</FONT>            IFish fish;<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>            public void setFish(IFish fish) {<a name="line.39"></a>
+<FONT color="green">040</FONT>                this.fish = fish;<a name="line.40"></a>
+<FONT color="green">041</FONT>            }<a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>            public IFish getFish() {<a name="line.43"></a>
+<FONT color="green">044</FONT>                return fish;<a name="line.44"></a>
+<FONT color="green">045</FONT>            }<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>        @Test<a name="line.48"></a>
+<FONT color="green">049</FONT>        public void circularIsPossibleWithACharacteristic() {<a name="line.49"></a>
+<FONT color="green">050</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjection()));<a name="line.50"></a>
+<FONT color="green">051</FONT>            pico.as(Characteristics.ENABLE_CIRCULAR).addComponent(IFish.class, Fish.class);<a name="line.51"></a>
+<FONT color="green">052</FONT>            pico.addComponent(IWater.class, Water.class);<a name="line.52"></a>
+<FONT color="green">053</FONT>            IWater water = pico.getComponent(IWater.class);<a name="line.53"></a>
+<FONT color="green">054</FONT>            IFish fish = pico.getComponent(IFish.class);<a name="line.54"></a>
+<FONT color="green">055</FONT>            assertNotNull(water.getFish());<a name="line.55"></a>
+<FONT color="green">056</FONT>            assertNotNull(fish.getWater());<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>    <a name="line.58"></a>
+<FONT color="green">059</FONT>        @Test<a name="line.59"></a>
+<FONT color="green">060</FONT>        public void enableCircularCharacteristicIsRedundantForImplementationHiding() {<a name="line.60"></a>
+<FONT color="green">061</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());<a name="line.61"></a>
+<FONT color="green">062</FONT>            pico.addComponent(IFish.class, Fish.class);<a name="line.62"></a>
+<FONT color="green">063</FONT>            pico.addComponent(IWater.class, Water.class);<a name="line.63"></a>
+<FONT color="green">064</FONT>            IWater water = pico.getComponent(IWater.class);<a name="line.64"></a>
+<FONT color="green">065</FONT>            IFish fish = pico.getComponent(IFish.class);<a name="line.65"></a>
+<FONT color="green">066</FONT>            assertNotNull(water.getFish());<a name="line.66"></a>
+<FONT color="green">067</FONT>            assertNotNull(fish.getWater());<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>            ComponentAdapter&lt;?&gt; ca = pico.getComponentAdapter(IFish.class);<a name="line.69"></a>
+<FONT color="green">070</FONT>            assertEquals("Hidden:SetterInjector-" + IFish.class,ca.toString());<a name="line.70"></a>
+<FONT color="green">071</FONT>    <a name="line.71"></a>
+<FONT color="green">072</FONT>        }<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>    <a name="line.74"></a>
+<FONT color="green">075</FONT>    }<a name="line.75"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

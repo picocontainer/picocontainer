@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Building Containers</title>
+</head>
+<body>
+<p>Rather than new up a PicoContainer instance with the right ComponentFactory, LifecycleStategy and ComponentMonitor,
+    your can use PicoBuilder for conveniece. Refer to Martin Fowler's <a
+        href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
+    Interface'</a> article, for some of the motivation behing this class.</p>
+
+<p>Some simple examples :</p>
+
+<div class="source"><pre>
+pico = new PicoBuilder().build();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<div class="source"><pre>pico = new PicoBuilder().withCaching().build();
+pico.addComponent(Apple.class);</pre>
+</div>
+<div class="source"><pre>
+pico = new PicoBuilder().withCaching().build();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<div class="source"><pre>pico = new PicoBuilder().withHiddenImplementations().build();
+pico.addComponent(Apple.class);</pre>
+</div>
+
+<p>More varations for behaviors :</p>
+
+<div class="source"><pre>
+pico = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<div class="source"><pre>pico = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
+pico.addComponent(Apple.class);</pre>
+</div>
+<div class="source"><pre>
+import static org.picocontainer.injectors.Injectors.SDI;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.behaviors.Behaviors.synchronizing;
+...  
+pico = new PicoBuilder(SDI()).withBehaviors(caching(), implementationHiding(), synchronizing()).build();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Setting a parent container :</p>
+
+<div class="source"><pre>child = new PicoBuilder(parentContainer).build();
+child.addComponent(Apple.class);</pre>
+</div>
+
+<p>Specifying an injection type:</p>
+
+<div class="source"><pre>
+pico = new PicoBuilder().withAnnotationInjection().build();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Specifying an injection type a different way:</p>
+
+<div class="source"><pre>
+import static org.picocontainer.injectors.Injectors.SDI;
+...
+pico = new PicoBuilder(SDI()).build();
+pico.addComponent(Apple.class);</pre>
+</div>
+<p>A custom container component used by a custom ComponentBehavior (though could be used by ComponentMonitor or
+    LifecycleStrategy as easily): </p>
+
+<div class="source">
+      <pre>
+pico = new PicoBuilder()
+    .withCustomContainerComponent(new MyQuantumPhysicsConnector())
+    .withComponentFactory(MyQuantumPhysicsConnectionNeedingComponentBehavior.class).build();
+pico.addComponent(Apple.class);</pre>
+</div>
+<p>A custom container implementation (DefaultPicoContainer is the default):</p>
+
+<div class="source">
+      <pre>MyCustomPicoContainer pico = (MyCustomPicoContainer) new PicoBuilder().implementedBy(MyCustomPicoContainer.class).build();
+pico.addComponent(Apple.class);</pre>
+</div>
+</body>
+</html>

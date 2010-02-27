@@ -1,0 +1,196 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer.behaviors;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import static org.junit.Assert.assertEquals;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import static org.junit.Assert.assertNotNull;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import static org.junit.Assert.fail;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;<a name="line.15"></a>
+<FONT color="green">016</FONT>    <a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.jmock.Expectations;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.jmock.Mockery;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.jmock.integration.junit4.JMock;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.junit.Test;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.junit.runner.RunWith;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.picocontainer.Behavior;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.ComponentMonitorStrategy;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.DefaultPicoContainer;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.picocontainer.LifecycleStrategy;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import org.picocontainer.PicoContainer;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import org.picocontainer.testmodel.SimpleTouchable;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.picocontainer.testmodel.Touchable;<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>    /**<a name="line.33"></a>
+<FONT color="green">034</FONT>     * @author Mauro Talevi<a name="line.34"></a>
+<FONT color="green">035</FONT>     */<a name="line.35"></a>
+<FONT color="green">036</FONT>    @RunWith(JMock.class)<a name="line.36"></a>
+<FONT color="green">037</FONT>    @SuppressWarnings("serial")<a name="line.37"></a>
+<FONT color="green">038</FONT>    public class BehaviorAdapterTestCase {<a name="line.38"></a>
+<FONT color="green">039</FONT>            <a name="line.39"></a>
+<FONT color="green">040</FONT>            private Mockery mockery = mockeryWithCountingNamingScheme();<a name="line.40"></a>
+<FONT color="green">041</FONT>            <a name="line.41"></a>
+<FONT color="green">042</FONT>        @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {<a name="line.42"></a>
+<FONT color="green">043</FONT>            AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapterThatDoesSupportStrategy());<a name="line.43"></a>
+<FONT color="green">044</FONT>            adapter.changeMonitor(mockMonitorWithNoExpectedMethods());<a name="line.44"></a>
+<FONT color="green">045</FONT>            assertNotNull(adapter.currentMonitor());<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>        <a name="line.47"></a>
+<FONT color="green">048</FONT>        @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {<a name="line.48"></a>
+<FONT color="green">049</FONT>            AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapter());<a name="line.49"></a>
+<FONT color="green">050</FONT>            adapter.changeMonitor(mockMonitorWithNoExpectedMethods());<a name="line.50"></a>
+<FONT color="green">051</FONT>            try {<a name="line.51"></a>
+<FONT color="green">052</FONT>                adapter.currentMonitor();<a name="line.52"></a>
+<FONT color="green">053</FONT>                fail("PicoCompositionException expected");<a name="line.53"></a>
+<FONT color="green">054</FONT>            } catch (PicoCompositionException e) {<a name="line.54"></a>
+<FONT color="green">055</FONT>                assertEquals("No component monitor found in delegate", e.getMessage());<a name="line.55"></a>
+<FONT color="green">056</FONT>            }<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>        <a name="line.58"></a>
+<FONT color="green">059</FONT>        @Test public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {<a name="line.59"></a>
+<FONT color="green">060</FONT>            AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapterThatCanManageLifecycle());<a name="line.60"></a>
+<FONT color="green">061</FONT>            PicoContainer pico = new DefaultPicoContainer();<a name="line.61"></a>
+<FONT color="green">062</FONT>            adapter.start(pico);<a name="line.62"></a>
+<FONT color="green">063</FONT>            adapter.stop(pico);<a name="line.63"></a>
+<FONT color="green">064</FONT>            adapter.dispose(pico);<a name="line.64"></a>
+<FONT color="green">065</FONT>            Touchable touchable = new SimpleTouchable();<a name="line.65"></a>
+<FONT color="green">066</FONT>            adapter.start(touchable);<a name="line.66"></a>
+<FONT color="green">067</FONT>            adapter.stop(touchable);<a name="line.67"></a>
+<FONT color="green">068</FONT>            adapter.dispose(touchable);<a name="line.68"></a>
+<FONT color="green">069</FONT>        }<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>        @Test public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {<a name="line.71"></a>
+<FONT color="green">072</FONT>            AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapter());<a name="line.72"></a>
+<FONT color="green">073</FONT>            PicoContainer pico = new DefaultPicoContainer();<a name="line.73"></a>
+<FONT color="green">074</FONT>            adapter.start(pico);<a name="line.74"></a>
+<FONT color="green">075</FONT>            adapter.stop(pico);<a name="line.75"></a>
+<FONT color="green">076</FONT>            adapter.dispose(pico);<a name="line.76"></a>
+<FONT color="green">077</FONT>            Touchable touchable = new SimpleTouchable();<a name="line.77"></a>
+<FONT color="green">078</FONT>            adapter.start(touchable);<a name="line.78"></a>
+<FONT color="green">079</FONT>            adapter.stop(touchable);<a name="line.79"></a>
+<FONT color="green">080</FONT>            adapter.dispose(touchable);<a name="line.80"></a>
+<FONT color="green">081</FONT>        }<a name="line.81"></a>
+<FONT color="green">082</FONT>        <a name="line.82"></a>
+<FONT color="green">083</FONT>        ComponentMonitor mockMonitorWithNoExpectedMethods() {<a name="line.83"></a>
+<FONT color="green">084</FONT>            return mockery.mock(ComponentMonitor.class);<a name="line.84"></a>
+<FONT color="green">085</FONT>        }<a name="line.85"></a>
+<FONT color="green">086</FONT>    <a name="line.86"></a>
+<FONT color="green">087</FONT>        private ComponentAdapter mockComponentAdapterThatDoesSupportStrategy() {<a name="line.87"></a>
+<FONT color="green">088</FONT>            final ComponentAdapterThatSupportsStrategy ca = mockery.mock(ComponentAdapterThatSupportsStrategy.class);<a name="line.88"></a>
+<FONT color="green">089</FONT>            mockery.checking(new Expectations(){{<a name="line.89"></a>
+<FONT color="green">090</FONT>                    one(ca).changeMonitor(with(any(ComponentMonitor.class)));<a name="line.90"></a>
+<FONT color="green">091</FONT>                    one(ca).currentMonitor();<a name="line.91"></a>
+<FONT color="green">092</FONT>                    will(returnValue(mockMonitorWithNoExpectedMethods()));<a name="line.92"></a>
+<FONT color="green">093</FONT>            }});<a name="line.93"></a>
+<FONT color="green">094</FONT>            return ca;<a name="line.94"></a>
+<FONT color="green">095</FONT>        }<a name="line.95"></a>
+<FONT color="green">096</FONT>    <a name="line.96"></a>
+<FONT color="green">097</FONT>        private ComponentAdapter mockComponentAdapter() {<a name="line.97"></a>
+<FONT color="green">098</FONT>             return mockery.mock(ComponentAdapter.class);<a name="line.98"></a>
+<FONT color="green">099</FONT>        }<a name="line.99"></a>
+<FONT color="green">100</FONT>        <a name="line.100"></a>
+<FONT color="green">101</FONT>        public static interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {<a name="line.101"></a>
+<FONT color="green">102</FONT>        }<a name="line.102"></a>
+<FONT color="green">103</FONT>    <a name="line.103"></a>
+<FONT color="green">104</FONT>        private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {<a name="line.104"></a>
+<FONT color="green">105</FONT>            final ComponentAdapterThatCanManageLifecycle ca = mockery.mock(ComponentAdapterThatCanManageLifecycle.class);<a name="line.105"></a>
+<FONT color="green">106</FONT>            mockery.checking(new Expectations(){{<a name="line.106"></a>
+<FONT color="green">107</FONT>                    one(ca).start(with(any(PicoContainer.class)));<a name="line.107"></a>
+<FONT color="green">108</FONT>                    one(ca).stop(with(any(PicoContainer.class)));<a name="line.108"></a>
+<FONT color="green">109</FONT>                    one(ca).dispose(with(any(PicoContainer.class)));<a name="line.109"></a>
+<FONT color="green">110</FONT>                    one(ca).start(with(any(Touchable.class)));<a name="line.110"></a>
+<FONT color="green">111</FONT>                    one(ca).stop(with(any(Touchable.class)));<a name="line.111"></a>
+<FONT color="green">112</FONT>                    one(ca).dispose(with(any(Touchable.class)));<a name="line.112"></a>
+<FONT color="green">113</FONT>            }});<a name="line.113"></a>
+<FONT color="green">114</FONT>            return ca;<a name="line.114"></a>
+<FONT color="green">115</FONT>        }<a name="line.115"></a>
+<FONT color="green">116</FONT>    <a name="line.116"></a>
+<FONT color="green">117</FONT>        public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, org.picocontainer.Behavior, LifecycleStrategy {<a name="line.117"></a>
+<FONT color="green">118</FONT>        }<a name="line.118"></a>
+<FONT color="green">119</FONT>    <a name="line.119"></a>
+<FONT color="green">120</FONT>        static class FooAbstractBehavior extends AbstractBehavior {<a name="line.120"></a>
+<FONT color="green">121</FONT>    <a name="line.121"></a>
+<FONT color="green">122</FONT>            public FooAbstractBehavior(ComponentAdapter delegate) {<a name="line.122"></a>
+<FONT color="green">123</FONT>                super(delegate);<a name="line.123"></a>
+<FONT color="green">124</FONT>            }<a name="line.124"></a>
+<FONT color="green">125</FONT>    <a name="line.125"></a>
+<FONT color="green">126</FONT>            public String getDescriptor() {<a name="line.126"></a>
+<FONT color="green">127</FONT>                return null;<a name="line.127"></a>
+<FONT color="green">128</FONT>            }<a name="line.128"></a>
+<FONT color="green">129</FONT>        }<a name="line.129"></a>
+<FONT color="green">130</FONT>    }<a name="line.130"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

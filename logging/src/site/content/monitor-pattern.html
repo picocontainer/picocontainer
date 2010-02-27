@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Monitor Pattern</title>
+</head>
+<body>
+<p>A Monitor is an interface that abstract certain events that are relevant to the business domain of then
+application. It should express the business logic of the events being monitored.</p>
+<p>Although monitors can have implementations of very different types, one of the most common is a logging
+implementation. This also helps to avoid the logging framework references are sprinkled all over the code. Instead,
+keeping the logging implementation centralised in one abstract monitor allows not only to swiftly change from one
+logging framework to another - should the need arise - but also to easily provide for, say, localisation of the logged
+messages.</p>
+<p>Let's look at an example. Let's assume that we are developing a persistence layer for some persistable object. A
+simple monitor interface might look like:
+<div class="source"><pre>
+public interface PersistenceMonitor {
+
+  void persistedObjectRetrieved(Object persistable);
+  
+  void retrievalFailed(String key, Exception cause);
+  
+}
+</pre></div>
+Note that the monitor interface purely expresses the business logic of the component, or at least the business logic
+that we want to monitor. The logging implementation will be along the lines of:
+<div class="source"><pre>
+public class LoggingPersistenceMonitor implements PersistenceMonitor {
+
+    private String loggerName;
+    private LoggerStore loggerStore;
+
+    /**
+     * Creates an LoggingPersistenceMonitor with logger name and configuration
+     * 
+     * @param loggerName the logical name of the logger instance
+     * @param configuration the LoggingMonitorConfiguration
+     */
+    protected LoggingPersistenceMonitor(String loggerName, LoggingMonitorConfiguration configuration){
+        this.loggerName = loggerName;
+        this.loggerStore = Configurator.createLoggerStore(configuration.getType(), 
+                    resourceAsStream(configuration.getResource()));
+    }
+
+    private InputStream resourceAsStream(String resource) {
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+    }
+    
+    public void persistedObjectRetrieved(Object persistable){
+        loggerStore.getLogger(loggerName).debug("Retrieved persisted object "+persistable);
+    }
+  
+    public retrievalFailed(String key, Exception cause){
+        loggerStore.getLogger(loggerName).warn("Retrieval for key " + key 
+                    + " failed:  "+cause.getMessage(), cause);
+    }
+}
+</pre></div>
+The logging monitor configuration holds two properties: one is the type of logging configuration resource supported by
+the
+<a href="javadoc/org/picocontainer/logging/store/Configurator.html">Configurator</a>
+(eg "jdk"), the other is the name of the configuration resource, which can be different for each instance of the monitor
+(eg "logging-persistence.properties").
+</p>
+<h3>Mocking</h3>
+<p>Monitors can be mocked easily for unit test purposes. This could either be with industry standard tools like JMock an EasyMock, or by a more manual process:</p> 
+<div class="source"><pre>
+public class FakePersistenceMonitor implements PersistenceMonitor {
+
+  public final StringBuilder journal = new StringBuilder();
+
+  public void persistedObjectRetrieved(Object persistable) {
+	journal.append("persistedObjectRetrieved(").append(persistable).append(")\n");	
+  }
+  
+  public void retrievalFailed(String key, Exception cause) {
+	journal.append("retrievalFailed(").append(key).append(",")
+	    .append(cause.getMessage()).append(")\n");	
+  }
+}
+  
+}
+</pre></div>
+</body>
+</html>

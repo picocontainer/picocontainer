@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Fluent Style</title>
+</head>
+<body>
+<p>PicoContainer allows for a very fluent style of use. Refer to Martin's <a
+        href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
+    Interface'</a> article.</p>
+
+<p>A simple example :</p>
+
+<div class="source">
+      <pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class).addComponent(Orange.class).addComponent(Pear.class)
+    .addComponent(Banana.class)
+    .addComponent(Grape.class, Grenache.class);</pre>
+</div>
+<p>One with per component properties:</p>
+
+<div class="source"><pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class)
+    .as(CACHE).addComponent(Orange.class)
+    .as(CACHE, HIDE_IMPLEMENTATION).addComponent(Pear.class)
+    .as(SYNCHRONIZE, CACHE).addComponent(Banana.class)
+    .addComponent(Grape.class, Grenache.class);</pre>
+</div>
+<p>One with properties that are persistently set, half way through.</p>
+
+<div class="source">
+  <pre>pico = new DefaultPicoContainer();
+pico.addComponent(&quot;Coxs&quot;, CoxsApple.class)
+    .addComponent(&quot;Golden&quot;, GoldenDeliciousApple.class)
+    .addComponent(new ValenciaOrange())
+    .change(SYNCHRONIZE, CACHE, HIDE_IMPLEMENTATION)
+    .addComponent(Pear.class)
+    .addComponent(Banana.class)
+    .addComponent(Grape.class, Grenache.class);</pre>
+</div>
+
+<p>&nbsp;</p>
+</body>
+</html>

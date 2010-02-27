@@ -1,0 +1,102 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package org.picocontainer.injectors;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import org.picocontainer.LifecycleStrategy;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import org.picocontainer.Parameter;<a name="line.6"></a>
+<FONT color="green">007</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.7"></a>
+<FONT color="green">008</FONT>    <a name="line.8"></a>
+<FONT color="green">009</FONT>    import java.util.Properties;<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    public class NamedMethodInjection extends AbstractInjectionFactory {<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>        private final String prefix;<a name="line.13"></a>
+<FONT color="green">014</FONT>        private final boolean optional;<a name="line.14"></a>
+<FONT color="green">015</FONT>    <a name="line.15"></a>
+<FONT color="green">016</FONT>        public NamedMethodInjection(String prefix) {<a name="line.16"></a>
+<FONT color="green">017</FONT>            this(prefix, true);<a name="line.17"></a>
+<FONT color="green">018</FONT>        }<a name="line.18"></a>
+<FONT color="green">019</FONT>    <a name="line.19"></a>
+<FONT color="green">020</FONT>        public NamedMethodInjection() {<a name="line.20"></a>
+<FONT color="green">021</FONT>            this("set");<a name="line.21"></a>
+<FONT color="green">022</FONT>        }<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>        public NamedMethodInjection(boolean optional) {<a name="line.24"></a>
+<FONT color="green">025</FONT>            this("set", optional);<a name="line.25"></a>
+<FONT color="green">026</FONT>        }<a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>        public NamedMethodInjection(String prefix, boolean optional) {<a name="line.28"></a>
+<FONT color="green">029</FONT>            this.prefix = prefix;<a name="line.29"></a>
+<FONT color="green">030</FONT>            this.optional = optional;<a name="line.30"></a>
+<FONT color="green">031</FONT>        }<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class&lt;T&gt; componentImplementation, Parameter... parameters) throws PicoCompositionException {<a name="line.33"></a>
+<FONT color="green">034</FONT>            return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(componentKey, componentImplementation, parameters, monitor, prefix, optional)), lifecycleStrategy);<a name="line.34"></a>
+<FONT color="green">035</FONT>        }<a name="line.35"></a>
+<FONT color="green">036</FONT>    }<a name="line.36"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

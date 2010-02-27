@@ -1,0 +1,124 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     * Original Code By: Centerline Computers, Inc.                              *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *****************************************************************************/<a name="line.8"></a>
+<FONT color="green">009</FONT>    package org.picocontainer.injectors;<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    import java.lang.reflect.AccessibleObject;<a name="line.11"></a>
+<FONT color="green">012</FONT>    import java.lang.reflect.Constructor;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import java.lang.reflect.Field;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import java.lang.reflect.Method;<a name="line.14"></a>
+<FONT color="green">015</FONT>    <a name="line.15"></a>
+<FONT color="green">016</FONT>    /**<a name="line.16"></a>
+<FONT color="green">017</FONT>     * <a name="line.17"></a>
+<FONT color="green">018</FONT>     * @author Michael Rimov<a name="line.18"></a>
+<FONT color="green">019</FONT>     */<a name="line.19"></a>
+<FONT color="green">020</FONT>    public class PrimitiveMemberChecker {<a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>        /**<a name="line.22"></a>
+<FONT color="green">023</FONT>         * Checks if the target argument is primative.<a name="line.23"></a>
+<FONT color="green">024</FONT>         * @param member target member instance, may be constructor, field, or method.<a name="line.24"></a>
+<FONT color="green">025</FONT>         * @param i parameter index.<a name="line.25"></a>
+<FONT color="green">026</FONT>         * @return true if the target object's "i"th parameter is a primitive (ie, int, float, etc)<a name="line.26"></a>
+<FONT color="green">027</FONT>         * @throws UnsupportedOperationException if for some reason the member parameter<a name="line.27"></a>
+<FONT color="green">028</FONT>         * is not a Constructor, Method, or Field.  <a name="line.28"></a>
+<FONT color="green">029</FONT>         * @throws ArrayIndexOutOfBoundsException if 'i' is an inappropriate index for the<a name="line.29"></a>
+<FONT color="green">030</FONT>         * given parameters.  For example, i should never be anything but zero for a field.<a name="line.30"></a>
+<FONT color="green">031</FONT>         */<a name="line.31"></a>
+<FONT color="green">032</FONT>        public static boolean isPrimitiveArgument(AccessibleObject member, int i) throws ArrayIndexOutOfBoundsException, UnsupportedOperationException {<a name="line.32"></a>
+<FONT color="green">033</FONT>            Class[] types;<a name="line.33"></a>
+<FONT color="green">034</FONT>            if (member instanceof Constructor) {<a name="line.34"></a>
+<FONT color="green">035</FONT>                types = ((Constructor)member).getParameterTypes();           <a name="line.35"></a>
+<FONT color="green">036</FONT>            } else if (member instanceof Method) {<a name="line.36"></a>
+<FONT color="green">037</FONT>                types = ((Method)member).getParameterTypes();<a name="line.37"></a>
+<FONT color="green">038</FONT>            } else if (member instanceof Field) {<a name="line.38"></a>
+<FONT color="green">039</FONT>                types = new Class[1];<a name="line.39"></a>
+<FONT color="green">040</FONT>                types[0] = ((Field)member).getType();<a name="line.40"></a>
+<FONT color="green">041</FONT>            } else {<a name="line.41"></a>
+<FONT color="green">042</FONT>                //Should be field/constructor/method only.<a name="line.42"></a>
+<FONT color="green">043</FONT>                throw new UnsupportedOperationException("Unsupported member type: " + member.getClass());<a name="line.43"></a>
+<FONT color="green">044</FONT>            }<a name="line.44"></a>
+<FONT color="green">045</FONT>            <a name="line.45"></a>
+<FONT color="green">046</FONT>            if (i &gt;= types.length) {<a name="line.46"></a>
+<FONT color="green">047</FONT>                throw new ArrayIndexOutOfBoundsException("Index i &gt; types array length "<a name="line.47"></a>
+<FONT color="green">048</FONT>                    + types.length + " for member " + member);<a name="line.48"></a>
+<FONT color="green">049</FONT>            }<a name="line.49"></a>
+<FONT color="green">050</FONT>            <a name="line.50"></a>
+<FONT color="green">051</FONT>            if (types[i].isPrimitive()) {<a name="line.51"></a>
+<FONT color="green">052</FONT>                return true;<a name="line.52"></a>
+<FONT color="green">053</FONT>            }<a name="line.53"></a>
+<FONT color="green">054</FONT>            <a name="line.54"></a>
+<FONT color="green">055</FONT>            return false;<a name="line.55"></a>
+<FONT color="green">056</FONT>        }<a name="line.56"></a>
+<FONT color="green">057</FONT>    <a name="line.57"></a>
+<FONT color="green">058</FONT>    }<a name="line.58"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,115 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.behaviors;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.picocontainer.Behavior;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import org.picocontainer.ObjectReference;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import org.picocontainer.references.SimpleReference;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    /**<a name="line.18"></a>
+<FONT color="green">019</FONT>     * &lt;p&gt;<a name="line.19"></a>
+<FONT color="green">020</FONT>     * {@link ComponentAdapter} implementation that caches the component instance.<a name="line.20"></a>
+<FONT color="green">021</FONT>     * &lt;/p&gt;<a name="line.21"></a>
+<FONT color="green">022</FONT>     * &lt;p&gt;<a name="line.22"></a>
+<FONT color="green">023</FONT>     * This adapter supports components with a lifecycle, as it is a<a name="line.23"></a>
+<FONT color="green">024</FONT>     * {@link Behavior lifecycle manager} which will apply the delegate's<a name="line.24"></a>
+<FONT color="green">025</FONT>     * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached<a name="line.25"></a>
+<FONT color="green">026</FONT>     * component instance. The lifecycle state is maintained so that the component<a name="line.26"></a>
+<FONT color="green">027</FONT>     * instance behaves in the expected way: it can't be started if already started,<a name="line.27"></a>
+<FONT color="green">028</FONT>     * it can't be started or stopped if disposed, it can't be stopped if not<a name="line.28"></a>
+<FONT color="green">029</FONT>     * started, it can't be disposed if already disposed.<a name="line.29"></a>
+<FONT color="green">030</FONT>     * &lt;/p&gt;<a name="line.30"></a>
+<FONT color="green">031</FONT>     * <a name="line.31"></a>
+<FONT color="green">032</FONT>     * @author Mauro Talevi<a name="line.32"></a>
+<FONT color="green">033</FONT>     */<a name="line.33"></a>
+<FONT color="green">034</FONT>    @SuppressWarnings("serial")<a name="line.34"></a>
+<FONT color="green">035</FONT>    public class Cached&lt;T&gt; extends Stored&lt;T&gt; {<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>    <a name="line.37"></a>
+<FONT color="green">038</FONT>        public Cached(ComponentAdapter delegate) {<a name="line.38"></a>
+<FONT color="green">039</FONT>                    this(delegate, new SimpleReference&lt;Instance&lt;T&gt;&gt;());<a name="line.39"></a>
+<FONT color="green">040</FONT>            }<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>            public Cached(ComponentAdapter delegate, ObjectReference&lt;Instance&lt;T&gt;&gt; instanceReference) {<a name="line.42"></a>
+<FONT color="green">043</FONT>                    super(delegate, instanceReference);<a name="line.43"></a>
+<FONT color="green">044</FONT>            }<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        public String getDescriptor() {<a name="line.46"></a>
+<FONT color="green">047</FONT>            return "Cached" + getLifecycleDescriptor();<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    }<a name="line.49"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

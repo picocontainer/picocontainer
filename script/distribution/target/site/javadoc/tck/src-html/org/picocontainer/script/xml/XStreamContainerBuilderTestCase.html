@@ -1,0 +1,281 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by Aslak Hellesoy and Paul Hammant                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer.script.xml;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import static org.junit.Assert.assertEquals;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import static org.junit.Assert.assertNotNull;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import static org.junit.Assert.assertNull;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import static org.junit.Assert.assertSame;<a name="line.15"></a>
+<FONT color="green">016</FONT>    <a name="line.16"></a>
+<FONT color="green">017</FONT>    import java.io.Reader;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import java.io.StringReader;<a name="line.18"></a>
+<FONT color="green">019</FONT>    <a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.junit.Test;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.picocontainer.script.testmodel.DefaultWebServerConfig;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.picocontainer.script.testmodel.WebServerImpl;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.script.xml.XStreamContainerBuilder;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.picocontainer.NameBinding;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import org.picocontainer.PicoBuilder;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import org.picocontainer.PicoContainer;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.picocontainer.behaviors.AbstractBehavior;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.picocontainer.behaviors.Cached;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.picocontainer.behaviors.Locked;<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>    public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        @Test public void testContainerBuilding() {<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>            Reader script = new StringReader("" +<a name="line.39"></a>
+<FONT color="green">040</FONT>                    "&lt;container&gt;" +<a name="line.40"></a>
+<FONT color="green">041</FONT>                    "    &lt;instance key='foo'&gt;" +<a name="line.41"></a>
+<FONT color="green">042</FONT>                    "       &lt;string&gt;foo bar&lt;/string&gt;" +<a name="line.42"></a>
+<FONT color="green">043</FONT>                    "    &lt;/instance&gt;" +<a name="line.43"></a>
+<FONT color="green">044</FONT>                    "    &lt;instance key='bar'&gt;" +<a name="line.44"></a>
+<FONT color="green">045</FONT>                    "       &lt;int&gt;239&lt;/int&gt;" +<a name="line.45"></a>
+<FONT color="green">046</FONT>                    "    &lt;/instance&gt;" +<a name="line.46"></a>
+<FONT color="green">047</FONT>                    "    &lt;instance&gt;" +<a name="line.47"></a>
+<FONT color="green">048</FONT>                    "       &lt;org.picocontainer.script.testmodel.DefaultWebServerConfig&gt;" +<a name="line.48"></a>
+<FONT color="green">049</FONT>                    "                       &lt;port&gt;555&lt;/port&gt;" +<a name="line.49"></a>
+<FONT color="green">050</FONT>                    "       &lt;/org.picocontainer.script.testmodel.DefaultWebServerConfig&gt;" +<a name="line.50"></a>
+<FONT color="green">051</FONT>                    "    &lt;/instance&gt;" +<a name="line.51"></a>
+<FONT color="green">052</FONT>                    "        &lt;implementation class='org.picocontainer.script.testmodel.WebServerImpl'&gt;" +<a name="line.52"></a>
+<FONT color="green">053</FONT>                    "               &lt;dependency class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/&gt;" +<a name="line.53"></a>
+<FONT color="green">054</FONT>                    "        &lt;/implementation&gt;" +<a name="line.54"></a>
+<FONT color="green">055</FONT>                    "        &lt;implementation key='konstantin needs beer' class='org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor'&gt;" +<a name="line.55"></a>
+<FONT color="green">056</FONT>                    "               &lt;constant&gt;" +<a name="line.56"></a>
+<FONT color="green">057</FONT>                    "                       &lt;string&gt;it's really late&lt;/string&gt;" +<a name="line.57"></a>
+<FONT color="green">058</FONT>                    "               &lt;/constant&gt;" +<a name="line.58"></a>
+<FONT color="green">059</FONT>                    "               &lt;constant&gt;" +<a name="line.59"></a>
+<FONT color="green">060</FONT>                    "                       &lt;int&gt;239&lt;/int&gt;" +<a name="line.60"></a>
+<FONT color="green">061</FONT>                    "               &lt;/constant&gt;" +<a name="line.61"></a>
+<FONT color="green">062</FONT>                    "        &lt;/implementation&gt;" +<a name="line.62"></a>
+<FONT color="green">063</FONT>                    "&lt;/container&gt;");<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");<a name="line.65"></a>
+<FONT color="green">066</FONT>            assertEquals(5, pico.getComponents().size());<a name="line.66"></a>
+<FONT color="green">067</FONT>            assertEquals("foo bar", pico.getComponent("foo"));<a name="line.67"></a>
+<FONT color="green">068</FONT>            assertEquals(239, pico.getComponent("bar"));<a name="line.68"></a>
+<FONT color="green">069</FONT>            assertEquals(555, pico.getComponent(DefaultWebServerConfig.class).getPort());<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>            assertNotNull(pico.getComponent(WebServerImpl.class));<a name="line.71"></a>
+<FONT color="green">072</FONT>            assertNotNull(pico.getComponent(ThingThatTakesParamsInConstructor.class));<a name="line.72"></a>
+<FONT color="green">073</FONT>            final Object o = pico.getComponent("konstantin needs beer");<a name="line.73"></a>
+<FONT color="green">074</FONT>            final ThingThatTakesParamsInConstructor o2 = pico.getComponent(ThingThatTakesParamsInConstructor.class);<a name="line.74"></a>
+<FONT color="green">075</FONT>            assertSame(o, o2);<a name="line.75"></a>
+<FONT color="green">076</FONT>            assertEquals("it's really late239", ((ThingThatTakesParamsInConstructor) pico.getComponent("konstantin needs beer")).getValue());<a name="line.76"></a>
+<FONT color="green">077</FONT>        }<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>        @Test public void testComponentAdapterInjection() throws Throwable {<a name="line.79"></a>
+<FONT color="green">080</FONT>            Reader script = new StringReader("&lt;container&gt;" +<a name="line.80"></a>
+<FONT color="green">081</FONT>                    "&lt;adapter key='testAdapter'&gt;" +<a name="line.81"></a>
+<FONT color="green">082</FONT>                    "&lt;instance key='firstString'&gt;" +<a name="line.82"></a>
+<FONT color="green">083</FONT>                    "&lt;string&gt;bla bla&lt;/string&gt;" +<a name="line.83"></a>
+<FONT color="green">084</FONT>                    "&lt;/instance&gt;" +<a name="line.84"></a>
+<FONT color="green">085</FONT>                    "&lt;instance key='secondString' &gt;" +<a name="line.85"></a>
+<FONT color="green">086</FONT>                    "&lt;string&gt;glarch&lt;/string&gt;" +<a name="line.86"></a>
+<FONT color="green">087</FONT>                    "&lt;/instance&gt;" +<a name="line.87"></a>
+<FONT color="green">088</FONT>                    "&lt;instance key='justInt'&gt;" +<a name="line.88"></a>
+<FONT color="green">089</FONT>                    "&lt;int&gt;777&lt;/int&gt;" +<a name="line.89"></a>
+<FONT color="green">090</FONT>                    "&lt;/instance&gt;" +<a name="line.90"></a>
+<FONT color="green">091</FONT>                    "&lt;implementation key='testAdapter' class='org.picocontainer.script.xml.TestAdapter'&gt;" +<a name="line.91"></a>
+<FONT color="green">092</FONT>                    "&lt;dependency key='firstString'/&gt;" +<a name="line.92"></a>
+<FONT color="green">093</FONT>                    "&lt;dependency key='justInt'/&gt;" +<a name="line.93"></a>
+<FONT color="green">094</FONT>                    "&lt;dependency key='secondString'/&gt;" +<a name="line.94"></a>
+<FONT color="green">095</FONT>                    "&lt;/implementation&gt;" +<a name="line.95"></a>
+<FONT color="green">096</FONT>                    "&lt;/adapter&gt;" +<a name="line.96"></a>
+<FONT color="green">097</FONT>                    "&lt;/container&gt;");<a name="line.97"></a>
+<FONT color="green">098</FONT>    <a name="line.98"></a>
+<FONT color="green">099</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");<a name="line.99"></a>
+<FONT color="green">100</FONT>            Cached&lt;TestAdapter&gt; ca = (Cached&lt;TestAdapter&gt;) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);<a name="line.100"></a>
+<FONT color="green">101</FONT>    <a name="line.101"></a>
+<FONT color="green">102</FONT>            assertNotNull((TestAdapter)ca.getDelegate());<a name="line.102"></a>
+<FONT color="green">103</FONT>        }<a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>        @Test public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {<a name="line.105"></a>
+<FONT color="green">106</FONT>            Reader script = new StringReader("" +<a name="line.106"></a>
+<FONT color="green">107</FONT>                    "&lt;container&gt;" +<a name="line.107"></a>
+<FONT color="green">108</FONT>                    "  &lt;instance key='bean1'&gt;" +<a name="line.108"></a>
+<FONT color="green">109</FONT>                    "       &lt;org.picocontainer.script.xml.TestBean&gt;" +<a name="line.109"></a>
+<FONT color="green">110</FONT>                    "               &lt;foo&gt;10&lt;/foo&gt;" +<a name="line.110"></a>
+<FONT color="green">111</FONT>                    "               &lt;bar&gt;hello1&lt;/bar&gt;" +<a name="line.111"></a>
+<FONT color="green">112</FONT>                    "       &lt;/org.picocontainer.script.xml.TestBean&gt;" +<a name="line.112"></a>
+<FONT color="green">113</FONT>                    "  &lt;/instance&gt;" +<a name="line.113"></a>
+<FONT color="green">114</FONT>                    "  &lt;instance key='bean2'&gt;" +<a name="line.114"></a>
+<FONT color="green">115</FONT>                    "       &lt;org.picocontainer.script.xml.TestBean&gt;" +<a name="line.115"></a>
+<FONT color="green">116</FONT>                    "               &lt;foo&gt;10&lt;/foo&gt;" +<a name="line.116"></a>
+<FONT color="green">117</FONT>                    "               &lt;bar&gt;hello2&lt;/bar&gt;" +<a name="line.117"></a>
+<FONT color="green">118</FONT>                    "       &lt;/org.picocontainer.script.xml.TestBean&gt;" +<a name="line.118"></a>
+<FONT color="green">119</FONT>                    "  &lt;/instance&gt;" +<a name="line.119"></a>
+<FONT color="green">120</FONT>                    "  &lt;implementation class='org.picocontainer.script.xml.TestBeanComposer'&gt;" +<a name="line.120"></a>
+<FONT color="green">121</FONT>                    "               &lt;dependency key='bean1'/&gt;" +<a name="line.121"></a>
+<FONT color="green">122</FONT>                    "               &lt;dependency key='bean2'/&gt;" +<a name="line.122"></a>
+<FONT color="green">123</FONT>                    "  &lt;/implementation&gt;" +<a name="line.123"></a>
+<FONT color="green">124</FONT>                    "&lt;/container&gt;");<a name="line.124"></a>
+<FONT color="green">125</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");<a name="line.125"></a>
+<FONT color="green">126</FONT>            assertNotNull(pico.getComponent(TestBeanComposer.class));<a name="line.126"></a>
+<FONT color="green">127</FONT>            TestBeanComposer composer = pico.getComponent(TestBeanComposer.class);<a name="line.127"></a>
+<FONT color="green">128</FONT>            assertEquals("bean1", "hello1", composer.getBean1().getBar());<a name="line.128"></a>
+<FONT color="green">129</FONT>            assertEquals("bean2", "hello2", composer.getBean2().getBar());<a name="line.129"></a>
+<FONT color="green">130</FONT>        }<a name="line.130"></a>
+<FONT color="green">131</FONT>        <a name="line.131"></a>
+<FONT color="green">132</FONT>        // do not know how to extract parameters off adapter....<a name="line.132"></a>
+<FONT color="green">133</FONT>        @Test public void testThatDependencyUsesClassAsKey() {<a name="line.133"></a>
+<FONT color="green">134</FONT>            Reader script = new StringReader("" +<a name="line.134"></a>
+<FONT color="green">135</FONT>            "&lt;container&gt;" +                                          <a name="line.135"></a>
+<FONT color="green">136</FONT>            "   &lt;implementation class='java.lang.String'/&gt;" +<a name="line.136"></a>
+<FONT color="green">137</FONT>            "   &lt;implementation key='foo' class='org.picocontainer.script.xml.TestBean'&gt;" +<a name="line.137"></a>
+<FONT color="green">138</FONT>            "       &lt;dependency class='java.lang.String'/&gt;" +<a name="line.138"></a>
+<FONT color="green">139</FONT>            "   &lt;/implementation&gt;" + <a name="line.139"></a>
+<FONT color="green">140</FONT>            "&lt;/container&gt;"<a name="line.140"></a>
+<FONT color="green">141</FONT>            );<a name="line.141"></a>
+<FONT color="green">142</FONT>            <a name="line.142"></a>
+<FONT color="green">143</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,<a name="line.143"></a>
+<FONT color="green">144</FONT>                    null);<a name="line.144"></a>
+<FONT color="green">145</FONT>            ComponentAdapter&lt;?&gt; componentAdapter = pico.getComponentAdapter("foo");<a name="line.145"></a>
+<FONT color="green">146</FONT>            AbstractBehavior&lt;?&gt; adapter = (AbstractBehavior&lt;?&gt;) componentAdapter;<a name="line.146"></a>
+<FONT color="green">147</FONT>            assertNotNull(adapter);<a name="line.147"></a>
+<FONT color="green">148</FONT>        }<a name="line.148"></a>
+<FONT color="green">149</FONT>        <a name="line.149"></a>
+<FONT color="green">150</FONT>        <a name="line.150"></a>
+<FONT color="green">151</FONT>        @Test public void testDefaultContsructorRegistration() throws Exception {<a name="line.151"></a>
+<FONT color="green">152</FONT>            <a name="line.152"></a>
+<FONT color="green">153</FONT>            Reader script = new StringReader(<a name="line.153"></a>
+<FONT color="green">154</FONT>            "&lt;container&gt;" + <a name="line.154"></a>
+<FONT color="green">155</FONT>            "   &lt;implementation class='org.picocontainer.script.xml.TestBean' constructor='default'/&gt;" +<a name="line.155"></a>
+<FONT color="green">156</FONT>            "   &lt;instance&gt;" + <a name="line.156"></a>
+<FONT color="green">157</FONT>            "       &lt;string&gt;blurge&lt;/string&gt;" + <a name="line.157"></a>
+<FONT color="green">158</FONT>            "   &lt;/instance&gt;" + <a name="line.158"></a>
+<FONT color="green">159</FONT>            "&lt;/container&gt;"<a name="line.159"></a>
+<FONT color="green">160</FONT>             );  <a name="line.160"></a>
+<FONT color="green">161</FONT>            <a name="line.161"></a>
+<FONT color="green">162</FONT>            <a name="line.162"></a>
+<FONT color="green">163</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);<a name="line.163"></a>
+<FONT color="green">164</FONT>            TestBean bean = pico.getComponent(TestBean.class);<a name="line.164"></a>
+<FONT color="green">165</FONT>            assertEquals("default",bean.getConstructorCalled());<a name="line.165"></a>
+<FONT color="green">166</FONT>        }<a name="line.166"></a>
+<FONT color="green">167</FONT>        <a name="line.167"></a>
+<FONT color="green">168</FONT>        <a name="line.168"></a>
+<FONT color="green">169</FONT>        @Test<a name="line.169"></a>
+<FONT color="green">170</FONT>        public void testInheritanceOfBehaviorsFromParentContainer() {<a name="line.170"></a>
+<FONT color="green">171</FONT>            Reader comparison = new StringReader("" +<a name="line.171"></a>
+<FONT color="green">172</FONT>                            "&lt;container inheritBehaviors=\"false\"&gt;\n" +<a name="line.172"></a>
+<FONT color="green">173</FONT>                    "  &lt;implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/&gt;" +<a name="line.173"></a>
+<FONT color="green">174</FONT>                    "&lt;/container&gt;"<a name="line.174"></a>
+<FONT color="green">175</FONT>                    );      <a name="line.175"></a>
+<FONT color="green">176</FONT>    <a name="line.176"></a>
+<FONT color="green">177</FONT>            MutablePicoContainer parent = new PicoBuilder().withLocking().build();<a name="line.177"></a>
+<FONT color="green">178</FONT>            PicoContainer comparisonPico = buildContainer(new XStreamContainerBuilder(comparison, getClass().getClassLoader()), parent, "SOME_SCOPE");<a name="line.178"></a>
+<FONT color="green">179</FONT>            //Verify not locking by default<a name="line.179"></a>
+<FONT color="green">180</FONT>            //assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));<a name="line.180"></a>
+<FONT color="green">181</FONT>            assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));<a name="line.181"></a>
+<FONT color="green">182</FONT>            <a name="line.182"></a>
+<FONT color="green">183</FONT>            //Verify parent caching propagates to child.<a name="line.183"></a>
+<FONT color="green">184</FONT>            Reader script = new StringReader("" +<a name="line.184"></a>
+<FONT color="green">185</FONT>                    "&lt;container inheritBehaviors=\"true\"&gt;\n" +<a name="line.185"></a>
+<FONT color="green">186</FONT>                "  &lt;implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/&gt;" +<a name="line.186"></a>
+<FONT color="green">187</FONT>                "&lt;/container&gt;"<a name="line.187"></a>
+<FONT color="green">188</FONT>            );<a name="line.188"></a>
+<FONT color="green">189</FONT>            <a name="line.189"></a>
+<FONT color="green">190</FONT>            parent = new PicoBuilder().withLocking().build();<a name="line.190"></a>
+<FONT color="green">191</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");<a name="line.191"></a>
+<FONT color="green">192</FONT>            <a name="line.192"></a>
+<FONT color="green">193</FONT>            assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));<a name="line.193"></a>
+<FONT color="green">194</FONT>        }<a name="line.194"></a>
+<FONT color="green">195</FONT>        <a name="line.195"></a>
+<FONT color="green">196</FONT>        @Test<a name="line.196"></a>
+<FONT color="green">197</FONT>        public void testParameterZero() {<a name="line.197"></a>
+<FONT color="green">198</FONT>            Reader script = new StringReader("" + <a name="line.198"></a>
+<FONT color="green">199</FONT>                    "&lt;container&gt;\n" +<a name="line.199"></a>
+<FONT color="green">200</FONT>                                    "&lt;implementation key='java.util.List' class='java.util.ArrayList'&gt; \n" +  <a name="line.200"></a>
+<FONT color="green">201</FONT>                                    "    &lt;parameter-zero/&gt;\n" +<a name="line.201"></a>
+<FONT color="green">202</FONT>                                    "&lt;/implementation&gt; \n" +<a name="line.202"></a>
+<FONT color="green">203</FONT>                                    "&lt;implementation key='java.util.Set' class='java.util.HashSet'&gt; \n" +<a name="line.203"></a>
+<FONT color="green">204</FONT>                                    "    &lt;parameter-zero/&gt;\n" +<a name="line.204"></a>
+<FONT color="green">205</FONT>                                    "&lt;/implementation&gt;\n" +<a name="line.205"></a>
+<FONT color="green">206</FONT>                    "&lt;/container&gt;\n"<a name="line.206"></a>
+<FONT color="green">207</FONT>            );<a name="line.207"></a>
+<FONT color="green">208</FONT>            PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");      <a name="line.208"></a>
+<FONT color="green">209</FONT>            assertNotNull(pico.getComponent(java.util.List.class));<a name="line.209"></a>
+<FONT color="green">210</FONT>            assertNotNull(pico.getComponent(java.util.Set.class));<a name="line.210"></a>
+<FONT color="green">211</FONT>        }<a name="line.211"></a>
+<FONT color="green">212</FONT>        <a name="line.212"></a>
+<FONT color="green">213</FONT>        <a name="line.213"></a>
+<FONT color="green">214</FONT>    }<a name="line.214"></a>
+<FONT color="green">215</FONT>    <a name="line.215"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

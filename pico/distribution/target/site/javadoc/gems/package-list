@@ -1,0 +1,12 @@
+org.picocontainer.gems
+org.picocontainer.gems.adapters
+org.picocontainer.gems.behaviors
+org.picocontainer.gems.constraints
+org.picocontainer.gems.containers
+org.picocontainer.gems.injectors
+org.picocontainer.gems.jmx
+org.picocontainer.gems.jmx.mx4j
+org.picocontainer.gems.jndi
+org.picocontainer.gems.monitors
+org.picocontainer.gems.monitors.prefuse
+org.picocontainer.gems.util

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Downloads</title>
+</head>
+<body>
+<h3>Released Binary and Source Jars (1.x and 2.x) </h3>
+
+<p>Core: <a href="http://repository.codehaus.org/org/picocontainer/picocontainer/">http://repository.codehaus.org/org/picocontainer/picocontainer/</a>
+</p>
+
+<p>Gems: <a href="http://repository.codehaus.org/org/picocontainer/picocontainer-gems/">http://repository.codehaus.org/org/picocontainer/picocontainer-gems/</a>
+</p>
+
+<p>Distribution: <a href="http://repository.codehaus.org/org/picocontainer/picocontainer-distribution/">http://repository.codehaus.org/org/picocontainer/picocontainer-distribution/</a>
+</p>
+
+<h3>Snapshot Binary and Source Jars</h3>
+
+<p><em>(Current work in progress) </em></p>
+
+<p>Core: <a href="http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer/">http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer/</a>
+</p>
+
+<p>Gems: <a href="http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-gems/">http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-gems/</a>
+</p>
+
+<p>Distribution: <a href="http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-distribution/">http://snapshots.repository.codehaus.org/org/picocontainer/picocontainer-distribution/</a>
+</p>
+<hr/>
+<p>Currently, the Core jar is ~247K, and the Gems jar is ~112K. The distribution zip contains all jars and
+    documentation.</p>
+
+<h3>Using Maven Artifacts</h3>
+
+<p>If you use Maven as the build system (or one that is compatible with the Maven Repository), you can declare
+    dependencies as
+</p>
+
+<div class="source"><pre>
+  <dependency>
+      <groupId>org.picocontainer</groupId>
+      <artifactId>picocontainer[-gems]</artifactId>
+      <version>[version]</version>
+  </dependency>
+</pre>
+</div>
+<p>
+    specifying the version. Declaring this dependency will pull in all other required dependencies (ie transitive
+    dependencies). Note that PicoContainer core artifactId is simply "picocontainer".
+</p>
+</body>
+</html>

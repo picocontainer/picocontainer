@@ -1,0 +1,103 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the license.html file.                                                    *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    /**<a name="line.13"></a>
+<FONT color="green">014</FONT>     * &lt;p&gt;An interface which is implemented by components that can be started and stopped. The {@link Startable#start()}<a name="line.14"></a>
+<FONT color="green">015</FONT>     * must be called at the begin of the component lifecycle. It can be called again only after a call to<a name="line.15"></a>
+<FONT color="green">016</FONT>     * {@link Startable#stop()}. The {@link Startable#stop()} method must be called at the end of the component lifecycle,<a name="line.16"></a>
+<FONT color="green">017</FONT>     * and can further be called after every {@link Startable#start()}. If a component implements the {@link Disposable}<a name="line.17"></a>
+<FONT color="green">018</FONT>     * interface as well, {@link Startable#stop()} should be called before {@link Disposable#dispose()}.&lt;/p&gt;<a name="line.18"></a>
+<FONT color="green">019</FONT>     * &lt;p/&gt;<a name="line.19"></a>
+<FONT color="green">020</FONT>     * &lt;p&gt;For more advanced and pluggable lifecycle support, see the functionality offered by picocontainer-gems<a name="line.20"></a>
+<FONT color="green">021</FONT>     * subproject.&lt;/p&gt;<a name="line.21"></a>
+<FONT color="green">022</FONT>     * @see org.picocontainer.Disposable the Disposable interface if you need to &lt;code&gt;dispose()&lt;/code&gt; semantics.<a name="line.22"></a>
+<FONT color="green">023</FONT>     * @author Paul Hammant<a name="line.23"></a>
+<FONT color="green">024</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.24"></a>
+<FONT color="green">025</FONT>     */<a name="line.25"></a>
+<FONT color="green">026</FONT>    public interface Startable {<a name="line.26"></a>
+<FONT color="green">027</FONT>        /**<a name="line.27"></a>
+<FONT color="green">028</FONT>         * Start this component. Called initially at the begin of the lifecycle. It can be called again after a stop.<a name="line.28"></a>
+<FONT color="green">029</FONT>         */<a name="line.29"></a>
+<FONT color="green">030</FONT>        void start();<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>        /**<a name="line.32"></a>
+<FONT color="green">033</FONT>         * Stop this component. Called near the end of the lifecycle. It can be called again after a further start. Implement<a name="line.33"></a>
+<FONT color="green">034</FONT>         * {@link Disposable} if you need a single call at the definite end of the lifecycle.<a name="line.34"></a>
+<FONT color="green">035</FONT>         */<a name="line.35"></a>
+<FONT color="green">036</FONT>        void stop();<a name="line.36"></a>
+<FONT color="green">037</FONT>    }<a name="line.37"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

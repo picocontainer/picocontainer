@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  color:#0a2509;
+  background-color: #fff;
+}
+body, td, select, input, li{
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+a {
+  text-decoration: none;
+}
+a:link {
+  color:#177154;
+}
+a:visited  {
+  color:#2aa426;
+}
+a:active, a:hover {
+  color:#ff5a00;
+}
+h2 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #7ee27c;
+  color: #fff;
+  background-color: #2aa526;
+  font-weight: 900;
+  font-size: x-large;
+}
+h3 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #2aa526;
+  color: #0a2509;
+  background-color: #7ee27c;
+  font-weight: 500;
+  font-size: large;
+}
+p {
+  line-height: 1.2em;
+  font-size: 1em;
+}
+#breadcrumbs {
+  border-top: 1px solid #2aa526;
+  border-bottom: 1px solid #2aa526;
+  background-color: #7ee27c;
+  font-size: small;
+}
+#leftColumn {
+  margin: 10px 0 0 10px;
+  border: 1px solid #2aa526;
+  background-color: #ebebeb;
+}
+#navcolumn h5 {
+   font-size: smaller;
+   border-bottom: 1px solid #2aa526;
+   padding-top: 2px;
+}
+
+table {
+  border-spacing:0;
+  border-collapse:collapse;
+}
+
+table.bodyTable th {
+  color: #686868;
+  background-color: #e5e3db;
+  text-align: left;
+  font-weight: bold;
+}
+
+table.bodyTable th, table.bodyTable td {
+  border: 1px solid #2aa526;
+  font-size: 1em;
+}
+
+table.bodyTable tr.a {
+  background-color: #f5f4f1;
+}
+
+table.bodyTable tr.b {
+  background-color: #f5f4f1;
+}
+
+.source {
+  border: 1px solid #2aa526;
+}

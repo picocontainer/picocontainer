@@ -1,0 +1,253 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Idea by Rachel Davies, Original code by various                           *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import org.picocontainer.lifecycle.LifecycleState;<a name="line.12"></a>
+<FONT color="green">013</FONT>    <a name="line.13"></a>
+<FONT color="green">014</FONT>    import java.util.Properties;<a name="line.14"></a>
+<FONT color="green">015</FONT>    <a name="line.15"></a>
+<FONT color="green">016</FONT>    /**<a name="line.16"></a>
+<FONT color="green">017</FONT>     * This is the core interface used for registration of components with a container. It is possible to register<a name="line.17"></a>
+<FONT color="green">018</FONT>     * implementations and instances here<a name="line.18"></a>
+<FONT color="green">019</FONT>     *<a name="line.19"></a>
+<FONT color="green">020</FONT>     * @author Paul Hammant<a name="line.20"></a>
+<FONT color="green">021</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.21"></a>
+<FONT color="green">022</FONT>     * @author Jon Tirs&amp;eacute;n<a name="line.22"></a>
+<FONT color="green">023</FONT>     * @see &lt;a href="package-summary.html#package_description"&gt;See package description for basic overview how to use PicoContainer.&lt;/a&gt;<a name="line.23"></a>
+<FONT color="green">024</FONT>     */<a name="line.24"></a>
+<FONT color="green">025</FONT>    public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>        /**<a name="line.27"></a>
+<FONT color="green">028</FONT>         * Register a component and creates specific instructions on which constructor to use, along with<a name="line.28"></a>
+<FONT color="green">029</FONT>         * which components and/or constants to provide as constructor arguments.  These &amp;quot;directives&amp;quot; are<a name="line.29"></a>
+<FONT color="green">030</FONT>         * provided through an array of &lt;tt&gt;Parameter&lt;/tt&gt; objects.  Parameter[0] correspondes to the first constructor<a name="line.30"></a>
+<FONT color="green">031</FONT>         * argument, Parameter[N] corresponds to the  N+1th constructor argument.<a name="line.31"></a>
+<FONT color="green">032</FONT>         * &lt;h4&gt;Tips for Parameter usage&lt;/h4&gt;<a name="line.32"></a>
+<FONT color="green">033</FONT>         * &lt;ul&gt;<a name="line.33"></a>
+<FONT color="green">034</FONT>         * &lt;li&gt;&lt;strong&gt;Partial Autowiring: &lt;/strong&gt;If you have two constructor args to match and you only wish to specify one of the constructors and<a name="line.34"></a>
+<FONT color="green">035</FONT>         * let PicoContainer wire the other one, you can use as parameters:<a name="line.35"></a>
+<FONT color="green">036</FONT>         * &lt;code&gt;&lt;strong&gt;new ComponentParameter()&lt;/strong&gt;, new ComponentParameter("someService")&lt;/code&gt;<a name="line.36"></a>
+<FONT color="green">037</FONT>         * The default constructor for the component parameter indicates auto-wiring should take place for<a name="line.37"></a>
+<FONT color="green">038</FONT>         * that parameter.<a name="line.38"></a>
+<FONT color="green">039</FONT>         * &lt;/li&gt;<a name="line.39"></a>
+<FONT color="green">040</FONT>         * &lt;li&gt;&lt;strong&gt;Force No-Arg constructor usage:&lt;/strong&gt; If you wish to force a component to be constructed with<a name="line.40"></a>
+<FONT color="green">041</FONT>         * the no-arg constructor, use a zero length Parameter array.  Ex:  &lt;code&gt;new Parameter[0]&lt;/code&gt;<a name="line.41"></a>
+<FONT color="green">042</FONT>         * &lt;ul&gt;<a name="line.42"></a>
+<FONT color="green">043</FONT>         *<a name="line.43"></a>
+<FONT color="green">044</FONT>         * @param componentKey a key that identifies the component. Must be unique within the container. The type<a name="line.44"></a>
+<FONT color="green">045</FONT>         *                     of the key object has no semantic significance unless explicitly specified in the<a name="line.45"></a>
+<FONT color="green">046</FONT>         *                     documentation of the implementing container.<a name="line.46"></a>
+<FONT color="green">047</FONT>         * @param componentImplementationOrInstance<a name="line.47"></a>
+<FONT color="green">048</FONT>         *                     the component's implementation class. This must be a concrete class (ie, a<a name="line.48"></a>
+<FONT color="green">049</FONT>         *                     class that can be instantiated). Or an intance of the compoent.<a name="line.49"></a>
+<FONT color="green">050</FONT>         * @param parameters   the parameters that gives the container hints about what arguments to pass<a name="line.50"></a>
+<FONT color="green">051</FONT>         *                     to the constructor when it is instantiated. Container implementations may ignore<a name="line.51"></a>
+<FONT color="green">052</FONT>         *                     one or more of these hints.<a name="line.52"></a>
+<FONT color="green">053</FONT>         *<a name="line.53"></a>
+<FONT color="green">054</FONT>         * @return the same instance of MutablePicoContainer<a name="line.54"></a>
+<FONT color="green">055</FONT>         *<a name="line.55"></a>
+<FONT color="green">056</FONT>         * @throws PicoCompositionException if registration of the component fails.<a name="line.56"></a>
+<FONT color="green">057</FONT>         * @see org.picocontainer.Parameter<a name="line.57"></a>
+<FONT color="green">058</FONT>         * @see org.picocontainer.parameters.ConstantParameter<a name="line.58"></a>
+<FONT color="green">059</FONT>         * @see org.picocontainer.parameters.ComponentParameter<a name="line.59"></a>
+<FONT color="green">060</FONT>         */<a name="line.60"></a>
+<FONT color="green">061</FONT>        MutablePicoContainer addComponent(Object componentKey,<a name="line.61"></a>
+<FONT color="green">062</FONT>                                          Object componentImplementationOrInstance,<a name="line.62"></a>
+<FONT color="green">063</FONT>                                          Parameter... parameters);<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>        /**<a name="line.65"></a>
+<FONT color="green">066</FONT>         * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to<a name="line.66"></a>
+<FONT color="green">067</FONT>         * calling  &lt;code&gt;addComponent(componentImplementation, componentImplementation)&lt;/code&gt;.<a name="line.67"></a>
+<FONT color="green">068</FONT>         *<a name="line.68"></a>
+<FONT color="green">069</FONT>         * @param implOrInstance Component implementation or instance<a name="line.69"></a>
+<FONT color="green">070</FONT>         *<a name="line.70"></a>
+<FONT color="green">071</FONT>         * @return the same instance of MutablePicoContainer<a name="line.71"></a>
+<FONT color="green">072</FONT>         *<a name="line.72"></a>
+<FONT color="green">073</FONT>         * @throws PicoCompositionException if registration fails.<a name="line.73"></a>
+<FONT color="green">074</FONT>         */<a name="line.74"></a>
+<FONT color="green">075</FONT>        MutablePicoContainer addComponent(Object implOrInstance);<a name="line.75"></a>
+<FONT color="green">076</FONT>    <a name="line.76"></a>
+<FONT color="green">077</FONT>        /**<a name="line.77"></a>
+<FONT color="green">078</FONT>         * Register a config item.<a name="line.78"></a>
+<FONT color="green">079</FONT>         *<a name="line.79"></a>
+<FONT color="green">080</FONT>         * @param name the name of the config item<a name="line.80"></a>
+<FONT color="green">081</FONT>         * @param val the value of the config item<a name="line.81"></a>
+<FONT color="green">082</FONT>         *<a name="line.82"></a>
+<FONT color="green">083</FONT>         * @return the same instance of MutablePicoContainer<a name="line.83"></a>
+<FONT color="green">084</FONT>         *<a name="line.84"></a>
+<FONT color="green">085</FONT>         * @throws PicoCompositionException if registration fails.<a name="line.85"></a>
+<FONT color="green">086</FONT>         */<a name="line.86"></a>
+<FONT color="green">087</FONT>        MutablePicoContainer addConfig(String name, Object val);<a name="line.87"></a>
+<FONT color="green">088</FONT>    <a name="line.88"></a>
+<FONT color="green">089</FONT>        /**<a name="line.89"></a>
+<FONT color="green">090</FONT>         * Register a component via a ComponentAdapter. Use this if you need fine grained control over what<a name="line.90"></a>
+<FONT color="green">091</FONT>         * ComponentAdapter to use for a specific component.  The adapter will be wrapped in whatever behaviors that the <a name="line.91"></a>
+<FONT color="green">092</FONT>         * the container has been set up with.  If you want to bypass that behavior for the adapter you are adding, <a name="line.92"></a>
+<FONT color="green">093</FONT>         * you should use Characteristics.NONE like so pico.as(Characteristics.NONE).addAdapter(...)<a name="line.93"></a>
+<FONT color="green">094</FONT>         *<a name="line.94"></a>
+<FONT color="green">095</FONT>         * @param componentAdapter the adapter<a name="line.95"></a>
+<FONT color="green">096</FONT>         *<a name="line.96"></a>
+<FONT color="green">097</FONT>         * @return the same instance of MutablePicoContainer<a name="line.97"></a>
+<FONT color="green">098</FONT>         *<a name="line.98"></a>
+<FONT color="green">099</FONT>         * @throws PicoCompositionException if registration fails.<a name="line.99"></a>
+<FONT color="green">100</FONT>         */<a name="line.100"></a>
+<FONT color="green">101</FONT>        MutablePicoContainer addAdapter(ComponentAdapter&lt;?&gt; componentAdapter);<a name="line.101"></a>
+<FONT color="green">102</FONT>    <a name="line.102"></a>
+<FONT color="green">103</FONT>        /**<a name="line.103"></a>
+<FONT color="green">104</FONT>         * Unregister a component by key.<a name="line.104"></a>
+<FONT color="green">105</FONT>         *<a name="line.105"></a>
+<FONT color="green">106</FONT>         * @param componentKey key of the component to unregister.<a name="line.106"></a>
+<FONT color="green">107</FONT>         *<a name="line.107"></a>
+<FONT color="green">108</FONT>         * @return the ComponentAdapter that was associated with this component.<a name="line.108"></a>
+<FONT color="green">109</FONT>         */<a name="line.109"></a>
+<FONT color="green">110</FONT>        &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponent(Object componentKey);<a name="line.110"></a>
+<FONT color="green">111</FONT>    <a name="line.111"></a>
+<FONT color="green">112</FONT>        /**<a name="line.112"></a>
+<FONT color="green">113</FONT>         * Unregister a component by instance.<a name="line.113"></a>
+<FONT color="green">114</FONT>         *<a name="line.114"></a>
+<FONT color="green">115</FONT>         * @param componentInstance the component instance to unregister.<a name="line.115"></a>
+<FONT color="green">116</FONT>         *<a name="line.116"></a>
+<FONT color="green">117</FONT>         * @return the same instance of MutablePicoContainer<a name="line.117"></a>
+<FONT color="green">118</FONT>         */<a name="line.118"></a>
+<FONT color="green">119</FONT>        &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponentByInstance(T componentInstance);<a name="line.119"></a>
+<FONT color="green">120</FONT>    <a name="line.120"></a>
+<FONT color="green">121</FONT>        /**<a name="line.121"></a>
+<FONT color="green">122</FONT>         * Make a child container, using the same implementation of MutablePicoContainer as the parent.<a name="line.122"></a>
+<FONT color="green">123</FONT>         * It will have a reference to this as parent.  This will list the resulting MPC as a child.<a name="line.123"></a>
+<FONT color="green">124</FONT>         * Lifecycle events will be cascaded from parent to child<a name="line.124"></a>
+<FONT color="green">125</FONT>         * as a consequence of this.<a name="line.125"></a>
+<FONT color="green">126</FONT>         *<a name="line.126"></a>
+<FONT color="green">127</FONT>         * @return the new child container.<a name="line.127"></a>
+<FONT color="green">128</FONT>         *<a name="line.128"></a>
+<FONT color="green">129</FONT>         */<a name="line.129"></a>
+<FONT color="green">130</FONT>        MutablePicoContainer makeChildContainer();<a name="line.130"></a>
+<FONT color="green">131</FONT>    <a name="line.131"></a>
+<FONT color="green">132</FONT>        /**<a name="line.132"></a>
+<FONT color="green">133</FONT>         * Add a child container. This action will list the the 'child' as exactly that in the parents scope.<a name="line.133"></a>
+<FONT color="green">134</FONT>         * It will not change the child's view of a parent.  That is determined by the constructor arguments of the child<a name="line.134"></a>
+<FONT color="green">135</FONT>         * itself. Lifecycle events will be cascaded from parent to child<a name="line.135"></a>
+<FONT color="green">136</FONT>         * as a consequence of calling this method.<a name="line.136"></a>
+<FONT color="green">137</FONT>         *<a name="line.137"></a>
+<FONT color="green">138</FONT>         * @param child the child container<a name="line.138"></a>
+<FONT color="green">139</FONT>         *<a name="line.139"></a>
+<FONT color="green">140</FONT>         * @return the same instance of MutablePicoContainer<a name="line.140"></a>
+<FONT color="green">141</FONT>         *<a name="line.141"></a>
+<FONT color="green">142</FONT>         */<a name="line.142"></a>
+<FONT color="green">143</FONT>        MutablePicoContainer addChildContainer(PicoContainer child);<a name="line.143"></a>
+<FONT color="green">144</FONT>    <a name="line.144"></a>
+<FONT color="green">145</FONT>        /**<a name="line.145"></a>
+<FONT color="green">146</FONT>         * Remove a child container from this container. It will not change the child's view of a parent.<a name="line.146"></a>
+<FONT color="green">147</FONT>         * Lifecycle event will no longer be cascaded from the parent to the child.<a name="line.147"></a>
+<FONT color="green">148</FONT>         *<a name="line.148"></a>
+<FONT color="green">149</FONT>         * @param child the child container<a name="line.149"></a>
+<FONT color="green">150</FONT>         *<a name="line.150"></a>
+<FONT color="green">151</FONT>         * @return &lt;code&gt;true&lt;/code&gt; if the child container has been removed.<a name="line.151"></a>
+<FONT color="green">152</FONT>         *<a name="line.152"></a>
+<FONT color="green">153</FONT>         */<a name="line.153"></a>
+<FONT color="green">154</FONT>        boolean removeChildContainer(PicoContainer child);<a name="line.154"></a>
+<FONT color="green">155</FONT>    <a name="line.155"></a>
+<FONT color="green">156</FONT>    <a name="line.156"></a>
+<FONT color="green">157</FONT>        /**<a name="line.157"></a>
+<FONT color="green">158</FONT>         * You can change the characteristic of registration of all subsequent components in this container.<a name="line.158"></a>
+<FONT color="green">159</FONT>         *<a name="line.159"></a>
+<FONT color="green">160</FONT>         * @param properties<a name="line.160"></a>
+<FONT color="green">161</FONT>         * @return the same Pico instance with changed properties<a name="line.161"></a>
+<FONT color="green">162</FONT>         */<a name="line.162"></a>
+<FONT color="green">163</FONT>        MutablePicoContainer change(Properties... properties);<a name="line.163"></a>
+<FONT color="green">164</FONT>    <a name="line.164"></a>
+<FONT color="green">165</FONT>        /**<a name="line.165"></a>
+<FONT color="green">166</FONT>         * You can set for the following operation only the characteristic of registration of a component on the fly.<a name="line.166"></a>
+<FONT color="green">167</FONT>         *<a name="line.167"></a>
+<FONT color="green">168</FONT>         * @param properties<a name="line.168"></a>
+<FONT color="green">169</FONT>         * @return the same Pico instance with temporary properties<a name="line.169"></a>
+<FONT color="green">170</FONT>         */<a name="line.170"></a>
+<FONT color="green">171</FONT>        MutablePicoContainer as(Properties... properties);<a name="line.171"></a>
+<FONT color="green">172</FONT>    <a name="line.172"></a>
+<FONT color="green">173</FONT>        /**<a name="line.173"></a>
+<FONT color="green">174</FONT>         * Name the container instance, to assit debugging.<a name="line.174"></a>
+<FONT color="green">175</FONT>         *<a name="line.175"></a>
+<FONT color="green">176</FONT>         * @param name the name to call it.<a name="line.176"></a>
+<FONT color="green">177</FONT>         * @since 2.8<a name="line.177"></a>
+<FONT color="green">178</FONT>         */<a name="line.178"></a>
+<FONT color="green">179</FONT>        void setName(String name);<a name="line.179"></a>
+<FONT color="green">180</FONT>    <a name="line.180"></a>
+<FONT color="green">181</FONT>        /**<a name="line.181"></a>
+<FONT color="green">182</FONT>         * To assist ThreadLocal usage, LifecycleState can be set.  No need to use this for normal usages.<a name="line.182"></a>
+<FONT color="green">183</FONT>         * @param lifecycleState the lifecyle state to use.<a name="line.183"></a>
+<FONT color="green">184</FONT>         * @since 2.8<a name="line.184"></a>
+<FONT color="green">185</FONT>         */<a name="line.185"></a>
+<FONT color="green">186</FONT>        void setLifecycleState(LifecycleState lifecycleState);<a name="line.186"></a>
+<FONT color="green">187</FONT>    }<a name="line.187"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

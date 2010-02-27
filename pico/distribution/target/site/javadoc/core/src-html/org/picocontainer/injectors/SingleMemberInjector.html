@@ -1,0 +1,191 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *****************************************************************************/<a name="line.8"></a>
+<FONT color="green">009</FONT>    package org.picocontainer.injectors;<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    import com.thoughtworks.paranamer.AdaptiveParanamer;<a name="line.11"></a>
+<FONT color="green">012</FONT>    import com.thoughtworks.paranamer.AnnotationParanamer;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import com.thoughtworks.paranamer.CachingParanamer;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import com.thoughtworks.paranamer.Paranamer;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import java.lang.annotation.Annotation;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import java.lang.reflect.AccessibleObject;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import java.lang.reflect.Type;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.picocontainer.LifecycleStrategy;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.picocontainer.Parameter;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.picocontainer.PicoContainer;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.picocontainer.annotations.Bind;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgument;<a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>    /**<a name="line.28"></a>
+<FONT color="green">029</FONT>     * Injection will happen in a single member function on the component.<a name="line.29"></a>
+<FONT color="green">030</FONT>     *<a name="line.30"></a>
+<FONT color="green">031</FONT>     * @author Paul Hammant <a name="line.31"></a>
+<FONT color="green">032</FONT>     * <a name="line.32"></a>
+<FONT color="green">033</FONT>     */<a name="line.33"></a>
+<FONT color="green">034</FONT>    @SuppressWarnings("serial")<a name="line.34"></a>
+<FONT color="green">035</FONT>    public abstract class SingleMemberInjector&lt;T&gt; extends AbstractInjector&lt;T&gt; {<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        private transient Paranamer paranamer;<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>        public SingleMemberInjector(Object componentKey,<a name="line.39"></a>
+<FONT color="green">040</FONT>                                    Class componentImplementation,<a name="line.40"></a>
+<FONT color="green">041</FONT>                                    Parameter[] parameters,<a name="line.41"></a>
+<FONT color="green">042</FONT>                                    ComponentMonitor monitor,<a name="line.42"></a>
+<FONT color="green">043</FONT>                                    boolean useNames) {<a name="line.43"></a>
+<FONT color="green">044</FONT>            super(componentKey, componentImplementation, parameters, monitor, useNames);<a name="line.44"></a>
+<FONT color="green">045</FONT>        }<a name="line.45"></a>
+<FONT color="green">046</FONT>    <a name="line.46"></a>
+<FONT color="green">047</FONT>        protected Paranamer getParanamer() {<a name="line.47"></a>
+<FONT color="green">048</FONT>            if (paranamer == null) {<a name="line.48"></a>
+<FONT color="green">049</FONT>                paranamer = new CachingParanamer(new AnnotationParanamer(new AdaptiveParanamer()));<a name="line.49"></a>
+<FONT color="green">050</FONT>            }<a name="line.50"></a>
+<FONT color="green">051</FONT>            return paranamer;<a name="line.51"></a>
+<FONT color="green">052</FONT>        }<a name="line.52"></a>
+<FONT color="green">053</FONT>    <a name="line.53"></a>
+<FONT color="green">054</FONT>        @SuppressWarnings("unchecked")<a name="line.54"></a>
+<FONT color="green">055</FONT>        protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {<a name="line.55"></a>
+<FONT color="green">056</FONT>            boxParameters(parameterTypes);<a name="line.56"></a>
+<FONT color="green">057</FONT>            Object[] result = new Object[parameterTypes.length];<a name="line.57"></a>
+<FONT color="green">058</FONT>            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);<a name="line.58"></a>
+<FONT color="green">059</FONT>    <a name="line.59"></a>
+<FONT color="green">060</FONT>            for (int i = 0; i &lt; currentParameters.length; i++) {<a name="line.60"></a>
+<FONT color="green">061</FONT>                result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null);<a name="line.61"></a>
+<FONT color="green">062</FONT>            }<a name="line.62"></a>
+<FONT color="green">063</FONT>    <a name="line.63"></a>
+<FONT color="green">064</FONT>            return result;<a name="line.64"></a>
+<FONT color="green">065</FONT>        }<a name="line.65"></a>
+<FONT color="green">066</FONT>    <a name="line.66"></a>
+<FONT color="green">067</FONT>        protected void boxParameters(Type[] parameterTypes) {<a name="line.67"></a>
+<FONT color="green">068</FONT>            for (int i = 0; i &lt; parameterTypes.length; i++) {<a name="line.68"></a>
+<FONT color="green">069</FONT>                parameterTypes[i] = box(parameterTypes[i]);<a name="line.69"></a>
+<FONT color="green">070</FONT>            }<a name="line.70"></a>
+<FONT color="green">071</FONT>        }<a name="line.71"></a>
+<FONT color="green">072</FONT>    <a name="line.72"></a>
+<FONT color="green">073</FONT>        protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding,<a name="line.73"></a>
+<FONT color="green">074</FONT>                                      Parameter currentParameter, ComponentAdapter&lt;?&gt; injecteeAdapter) {<a name="line.74"></a>
+<FONT color="green">075</FONT>            ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);<a name="line.75"></a>
+<FONT color="green">076</FONT>            Object result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance();<a name="line.76"></a>
+<FONT color="green">077</FONT>            nullCheck(member, i, expectedNameBinding, result);<a name="line.77"></a>
+<FONT color="green">078</FONT>            return result;<a name="line.78"></a>
+<FONT color="green">079</FONT>        }<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>        @SuppressWarnings("synthetic-access")<a name="line.81"></a>
+<FONT color="green">082</FONT>        protected void nullCheck(AccessibleObject member, int i, ParameterNameBinding expectedNameBinding, Object result) {<a name="line.82"></a>
+<FONT color="green">083</FONT>            if (result == null &amp;&amp; !isNullParamAllowed(member, i)) {<a name="line.83"></a>
+<FONT color="green">084</FONT>                throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());<a name="line.84"></a>
+<FONT color="green">085</FONT>            }<a name="line.85"></a>
+<FONT color="green">086</FONT>        }<a name="line.86"></a>
+<FONT color="green">087</FONT>    <a name="line.87"></a>
+<FONT color="green">088</FONT>        /**<a name="line.88"></a>
+<FONT color="green">089</FONT>         * Checks to see if a null parameter is allowed in the given<a name="line.89"></a>
+<FONT color="green">090</FONT>         * constructor/field/method.  The default version allows null <a name="line.90"></a>
+<FONT color="green">091</FONT>         * if the target object is not a primitive type.<a name="line.91"></a>
+<FONT color="green">092</FONT>         * @param member constructor method or field<a name="line.92"></a>
+<FONT color="green">093</FONT>         * @param i parameter #.<a name="line.93"></a>
+<FONT color="green">094</FONT>         * @return true if the null parameter might be allowed.<a name="line.94"></a>
+<FONT color="green">095</FONT>         */<a name="line.95"></a>
+<FONT color="green">096</FONT>        protected boolean isNullParamAllowed(AccessibleObject member, int i) {<a name="line.96"></a>
+<FONT color="green">097</FONT>            return !(isPrimitiveArgument(member, i));<a name="line.97"></a>
+<FONT color="green">098</FONT>        }<a name="line.98"></a>
+<FONT color="green">099</FONT>    <a name="line.99"></a>
+<FONT color="green">100</FONT>        protected Annotation[] getBindings(Annotation[][] annotationss) {<a name="line.100"></a>
+<FONT color="green">101</FONT>            Annotation[] retVal = new Annotation[annotationss.length];<a name="line.101"></a>
+<FONT color="green">102</FONT>            for (int i = 0; i &lt; annotationss.length; i++) {<a name="line.102"></a>
+<FONT color="green">103</FONT>                Annotation[] annotations = annotationss[i];<a name="line.103"></a>
+<FONT color="green">104</FONT>                for (Annotation annotation : annotations) {<a name="line.104"></a>
+<FONT color="green">105</FONT>                    if (annotation.annotationType().getAnnotation(Bind.class) != null) {<a name="line.105"></a>
+<FONT color="green">106</FONT>                        retVal[i] = annotation;<a name="line.106"></a>
+<FONT color="green">107</FONT>                        break;<a name="line.107"></a>
+<FONT color="green">108</FONT>                    }<a name="line.108"></a>
+<FONT color="green">109</FONT>                }<a name="line.109"></a>
+<FONT color="green">110</FONT>            }<a name="line.110"></a>
+<FONT color="green">111</FONT>            return retVal;<a name="line.111"></a>
+<FONT color="green">112</FONT>        }<a name="line.112"></a>
+<FONT color="green">113</FONT>    <a name="line.113"></a>
+<FONT color="green">114</FONT>        public static class ParameterCannotBeNullException extends PicoCompositionException {<a name="line.114"></a>
+<FONT color="green">115</FONT>            private final String name;<a name="line.115"></a>
+<FONT color="green">116</FONT>            private ParameterCannotBeNullException(int ix, AccessibleObject member, String name) {<a name="line.116"></a>
+<FONT color="green">117</FONT>                super("Parameter " + ix + " of '" + member + "' named '" + name + "' cannot be null");<a name="line.117"></a>
+<FONT color="green">118</FONT>                this.name = name;<a name="line.118"></a>
+<FONT color="green">119</FONT>            }<a name="line.119"></a>
+<FONT color="green">120</FONT>            public String getParameterName() {<a name="line.120"></a>
+<FONT color="green">121</FONT>                return name;<a name="line.121"></a>
+<FONT color="green">122</FONT>            }<a name="line.122"></a>
+<FONT color="green">123</FONT>        }<a name="line.123"></a>
+<FONT color="green">124</FONT>    <a name="line.124"></a>
+<FONT color="green">125</FONT>    }<a name="line.125"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

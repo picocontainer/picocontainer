@@ -1,0 +1,6 @@
+<container>
+    <instance key="applicationScopedInstance">
+        <string>foo bar</string>
+    </instance>
+    <implementation class="org.picocontainer.web.Foo" key="testFoo" />
+</container>

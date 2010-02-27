@@ -1,0 +1,11 @@
+<sitemap>
+  <section>
+    <name>About</name>
+    <page>index.html</page>
+    <link title="JavaDoc">javadoc/index.html</link>
+    <link title="Reports">project-reports.html</link>
+    <page>downloads.html</page>
+    <page>monitor-pattern.html</page>
+    <page>faq.html</page>
+  </section>
+</sitemap>

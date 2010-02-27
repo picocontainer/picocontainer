@@ -1,0 +1,27 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+
+    <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.picocontainer.web.struts2.PicoObjectFactory" />
+
+    <package name="default" extends="struts-default">
+
+        <action name="cheeses" class="org.picocontainer.web.sample.struts2.pwr.CheeseInventory">
+            <result>cheeses.jsp</result>
+        </action>
+
+        <action name="addcheese" class="org.picocontainer.web.sample.struts2.pwr.AddCheese">
+            <result name="input">cheeses.jsp</result>
+            <result name="success" type="redirect">cheeses.action</result>
+        </action>
+
+        <action name="removecheese" class="org.picocontainer.web.sample.struts2.pwr.RemoveCheese">
+            <result name="input">cheeses.jsp</result>
+            <result name="success" type="redirect">cheeses.action</result>
+        </action>
+        
+    </package>
+
+</struts>

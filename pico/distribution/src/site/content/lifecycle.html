@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Component Lifecycle</title></head>
+
+
+<body>
+<p>Inversion of Control is three things: component dependencies and configuration, but also Component Lifecycle.</p>
+
+<p>After instantiation, if the component warrants it, a 'start'
+    stage may be required. More specifically, if a container has injected
+    and instantiated all components in a set, one or more of them may
+    require starting in the same order they were instantiated. Later, in
+    reverse order, the same component(s) may require stopping. In fact start
+    and stop may happen more than one for the life of an application.
+    Disposal may happen once only, before the component is eligible for
+    garbage collection.</p>
+
+<p><strong>Lifecycle is really only going to work for PicoContainers
+    that are also caching component instances. Caching was a default in
+    PicoContainer 1.x, but is not for 2.x - be warned!</strong></p>
+
+<p>Thus lifecycle implies three methods:</p>
+<ul>
+    <li>start</li>
+    <li>stop</li>
+    <li>dispose</li>
+</ul>
+<p>In PicoContainer we think allow a pluggable LifecycleStrategy.</p>
+
+<h3>Startable</h3>
+
+<p>Our own interface for startable. We wish it were in the JDK,
+    because we're big into making components unencumbered by the trappings of
+    containment. In English: we'd rather not make components
+    implement/extend/throw anything from our framework. Its a 'transparency'
+    thing.</p>
+
+<p>Here's an example of components fitting that ideal</p>
+
+<div class="source"><pre>public class Apple implements Startable{
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new StartableLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre>
+</div>
+<p>The StartableLifecycleStrategy can be extended if you prefer your
+    own interface for Startable. Just override</p>
+
+<h3>Reflection based start/stop/dispose</h3>
+
+<p>This works without an interface. Instead it works via reflection,
+    and appropriate method names.</p>
+
+<div class="source"><pre>public class Apple {
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new ReflectionLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre>
+</div>
+
+<p>If you have other synonyms for start/stop/dispose, just extend
+    the ReflectionLifecycleStrategy class and provide them.</p>
+
+<h3>Java EE 5 annotation based start/dispose</h3>
+
+<p>This works without an interface, but with annotations in front of the designated methods</p>
+
+<div class="source"><pre>public class Apple {
+  @PostConstruct
+  public void startUp() {
+    // listen on socket, start thread etc.
+  }
+  @PreDestroy
+  public void allOver() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new JavaEE5LifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre>
+</div>
+
+<p>These annotations are supplied with Java 6, but come in a jar for Java 5 and below. See <a
+        href="http://mvnrepository.com/artifact/javax.annotation/jsr250-api">http://mvnrepository.com/artifact/javax.annotation/jsr250-api</a>
+</p>
+
+<h3>No Lifecycle</h3>
+
+<p>DefaultPicoContainer does sets StartableLifecycleStrategy by
+    default. You can specify NullLifecycleStrategy instead if you are sure
+    that no components honor any lifecycle concept..</p>
+
+<h3>Lazy Lifecycles</h3>
+
+<p>By default PicoContainer will start all startable (or appropriate) components when pico.start() is called.  Lazy lifecycle is where the component in question is not started when pico.start() is called, but when the first access to it happens.</p>  It is available for any concept of startable component, but can only happen if you override the the isLazy() method of those classes:
+
+<div class="source"><pre>
+pico = new DefaultPicoContainer(new StartableLifecycleStrategy() {
+	@Override
+	public boolean isLazy(ComponentAdapter&lt;?> adapter) {
+		return true; // or something more conditional
+	}
+});
+pico.addComponent(Apple.class);
+pico.start();   // start does not get called yet
+Apple a = pico.getComponent(Apple.class);    // start gets called now as part of getComponent(..)
+pico.stop(); // stop all components that are startable whether lazy or not
+</pre>
+</div>
+
+<h3>Custom Lifecycles</h3>
+
+<p>Write a class that implements LifecycleStrategy, there are just
+    four methods to implement. See LifecycleStrategy.</p>
+
+<h3>Where Next?</h3>
+<span class="callout">
+The&nbsp;<a href="disambiguation.html">Disambiguation</a>
+page outlines strategies<br/>
+for dealing with choosing which of two<br/> 
+potential injectables for one component</span>
+
+<p></p>
+</body>
+</html>

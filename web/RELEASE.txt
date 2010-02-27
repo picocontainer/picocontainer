@@ -1,0 +1,13 @@
+RELEASE STEPS
+
+1. mvn -Preporting,distribution release:prepare -> verifies dependendies and tags release in SCM.  
+NOTE: the reporting,distribution profiles MUST be activated during the prepare stage for distribution archives to be included in the release
+2. mvn  -Preporting,distribution release:perform -> deploys artifacts from tag 
+NOTE: it only deploys site for the distribution modules
+3. The site can be manually deployed by invoking from distribution module: 
+mvn site-deploy
+
+NOTE: Ben Walding will be posting update of SOAP4R to avoid dav-access http://jira.codehaus.org/browse/HAUS-1704
+
+Note:  Releasing/deploying on Mac/Intel with SVN 1.4 is affected by http://jira.codehaus.org/browse/MNG-3361 (Brett's hack works though).
+All is working fine with SVN 1.5 and OS X 10.5.3.

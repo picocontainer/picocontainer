@@ -1,0 +1,14 @@
+Scenario: User sends an email
+
+Given test data
+And user is viewing their Inbox
+When the 'Compose' button is clicked
+Then the main page should be obscured
+And a blocking mail-form should be visible
+And from,to,message in the form should be blank
+
+When the mail-form is filled
+And the 'Send' button is clicked
+Then the main page should not be obscured
+And a blocking mail-form should be gone
+And the mail should be visible in the sent mails list

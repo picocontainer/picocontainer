@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Thread Safety Behaviors</title>
+
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
+    </style>
+</head>
+<body>
+<h2>Thread Safety</h2>
+
+<p>When components are created by two threads concurrently, with
+    the intention of the instance being cached, it is possible in a small
+    percentage of cases for the first instance into the cache to be
+    replaced with a second instance. To prevent this, you may want to try
+    one of two behaviors to make the operation thread safe.</p>
+
+<h3>Synchronizing</h3>
+
+<p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> feature:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>pico = new DefaultPicoContainer();
+pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>pico = new PicoBuilder().withSynchronizing().withCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>import static org.picocontainer.behaviors.Behaviors.synchronizing;
+import static org.picocontainer.behaviors.Behaviors.caching;
+...
+pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<h3>Locking</h3>
+
+<p>Locking wraps object creation in JDK 1.5's ReentrantLock
+    facility.
+    It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour
+    above:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>pico = new DefaultPicoContainer();
+pico.as(LOCK, CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>pico = new PicoBuilder().withLocking().withCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+<pre>import static org.picocontainer.behaviors.Behaviors.locking;
+import static org.picocontainer.behaviors.Behaviors.caching;
+...
+pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+</body>
+</html>

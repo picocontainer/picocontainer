@@ -1,0 +1,220 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import java.util.Collection;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import java.util.List;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import java.lang.annotation.Annotation;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import java.lang.reflect.Type;<a name="line.15"></a>
+<FONT color="green">016</FONT>    <a name="line.16"></a>
+<FONT color="green">017</FONT>    /**<a name="line.17"></a>
+<FONT color="green">018</FONT>     * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only<a name="line.18"></a>
+<FONT color="green">019</FONT>     * has accessor methods (in addition to the {@link #accept(PicoVisitor)} method). In order to register components in a<a name="line.19"></a>
+<FONT color="green">020</FONT>     * PicoContainer, use a {@link MutablePicoContainer}, such as {@link DefaultPicoContainer}.<a name="line.20"></a>
+<FONT color="green">021</FONT>     *<a name="line.21"></a>
+<FONT color="green">022</FONT>     * @author Paul Hammant<a name="line.22"></a>
+<FONT color="green">023</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.23"></a>
+<FONT color="green">024</FONT>     * @author Jon Tirs&amp;eacute;n<a name="line.24"></a>
+<FONT color="green">025</FONT>     * @see &lt;a href="package-summary.html#package_description"&gt;See package description for basic overview how to use<a name="line.25"></a>
+<FONT color="green">026</FONT>     *      PicoContainer.&lt;/a&gt;<a name="line.26"></a>
+<FONT color="green">027</FONT>     */<a name="line.27"></a>
+<FONT color="green">028</FONT>    public interface PicoContainer {<a name="line.28"></a>
+<FONT color="green">029</FONT>    <a name="line.29"></a>
+<FONT color="green">030</FONT>        /**<a name="line.30"></a>
+<FONT color="green">031</FONT>         * Retrieve a component instance registered with a specific key or type. If a component cannot be found in this container,<a name="line.31"></a>
+<FONT color="green">032</FONT>         * the parent container (if one exists) will be searched.<a name="line.32"></a>
+<FONT color="green">033</FONT>         *<a name="line.33"></a>
+<FONT color="green">034</FONT>         * @param componentKeyOrType the key or Type that the component was registered with.<a name="line.34"></a>
+<FONT color="green">035</FONT>         * @return an instantiated component, or &lt;code&gt;null&lt;/code&gt; if no component has been registered for the specified<a name="line.35"></a>
+<FONT color="green">036</FONT>         *         key.<a name="line.36"></a>
+<FONT color="green">037</FONT>         */<a name="line.37"></a>
+<FONT color="green">038</FONT>        Object getComponent(Object componentKeyOrType);<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>        Object getComponent(Object componentKeyOrType, Type into);<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>        /**<a name="line.42"></a>
+<FONT color="green">043</FONT>         * Retrieve a component keyed by the component type.<a name="line.43"></a>
+<FONT color="green">044</FONT>         * @param componentType the type of the component<a name="line.44"></a>
+<FONT color="green">045</FONT>         * @return the typed resulting object instance or null if the object does not exist.<a name="line.45"></a>
+<FONT color="green">046</FONT>         */<a name="line.46"></a>
+<FONT color="green">047</FONT>        &lt;T&gt; T getComponent(Class&lt;T&gt; componentType);<a name="line.47"></a>
+<FONT color="green">048</FONT>    <a name="line.48"></a>
+<FONT color="green">049</FONT>        /**<a name="line.49"></a>
+<FONT color="green">050</FONT>         * Retrieve a component keyed by the component type and binding type.<a name="line.50"></a>
+<FONT color="green">051</FONT>         * @param componentType the type of the component<a name="line.51"></a>
+<FONT color="green">052</FONT>         * @param binding the binding type of the component<a name="line.52"></a>
+<FONT color="green">053</FONT>         * @return the typed resulting object instance or null if the object does not exist.<a name="line.53"></a>
+<FONT color="green">054</FONT>         */<a name="line.54"></a>
+<FONT color="green">055</FONT>        &lt;T&gt; T getComponent(Class&lt;T&gt; componentType, Class&lt;? extends Annotation&gt; binding);<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>        /**<a name="line.57"></a>
+<FONT color="green">058</FONT>         * Retrieve all the registered component instances in the container, (not including those in the parent container).<a name="line.58"></a>
+<FONT color="green">059</FONT>         * The components are returned in their order of instantiation, which depends on the dependency order between them.<a name="line.59"></a>
+<FONT color="green">060</FONT>         *<a name="line.60"></a>
+<FONT color="green">061</FONT>         * @return all the components.<a name="line.61"></a>
+<FONT color="green">062</FONT>         * @throws PicoException if the instantiation of the component fails<a name="line.62"></a>
+<FONT color="green">063</FONT>         */<a name="line.63"></a>
+<FONT color="green">064</FONT>        List&lt;Object&gt; getComponents();<a name="line.64"></a>
+<FONT color="green">065</FONT>    <a name="line.65"></a>
+<FONT color="green">066</FONT>        /**<a name="line.66"></a>
+<FONT color="green">067</FONT>         * Retrieve the parent container of this container.<a name="line.67"></a>
+<FONT color="green">068</FONT>         *<a name="line.68"></a>
+<FONT color="green">069</FONT>         * @return a {@link PicoContainer} instance, or &lt;code&gt;null&lt;/code&gt; if this container does not have a parent.<a name="line.69"></a>
+<FONT color="green">070</FONT>         */<a name="line.70"></a>
+<FONT color="green">071</FONT>        PicoContainer getParent();<a name="line.71"></a>
+<FONT color="green">072</FONT>    <a name="line.72"></a>
+<FONT color="green">073</FONT>        /**<a name="line.73"></a>
+<FONT color="green">074</FONT>         * Find a component adapter associated with the specified key. If a component adapter cannot be found in this<a name="line.74"></a>
+<FONT color="green">075</FONT>         * container, the parent container (if one exists) will be searched.<a name="line.75"></a>
+<FONT color="green">076</FONT>         *<a name="line.76"></a>
+<FONT color="green">077</FONT>         * @param componentKey the key that the component was registered with.<a name="line.77"></a>
+<FONT color="green">078</FONT>         * @return the component adapter associated with this key, or &lt;code&gt;null&lt;/code&gt; if no component has been<a name="line.78"></a>
+<FONT color="green">079</FONT>         *         registered for the specified key.<a name="line.79"></a>
+<FONT color="green">080</FONT>         */<a name="line.80"></a>
+<FONT color="green">081</FONT>        ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey);<a name="line.81"></a>
+<FONT color="green">082</FONT>    <a name="line.82"></a>
+<FONT color="green">083</FONT>        /**<a name="line.83"></a>
+<FONT color="green">084</FONT>         * Find a component adapter associated with the specified type and binding name. If a component adapter cannot be found in this<a name="line.84"></a>
+<FONT color="green">085</FONT>         * container, the parent container (if one exists) will be searched.<a name="line.85"></a>
+<FONT color="green">086</FONT>         *<a name="line.86"></a>
+<FONT color="green">087</FONT>         * @param componentType the type of the component.<a name="line.87"></a>
+<FONT color="green">088</FONT>         * @return the component adapter associated with this class, or &lt;code&gt;null&lt;/code&gt; if no component has been<a name="line.88"></a>
+<FONT color="green">089</FONT>         *         registered for the specified key.<a name="line.89"></a>
+<FONT color="green">090</FONT>         * @param componentNameBinding the name binding to use<a name="line.90"></a>
+<FONT color="green">091</FONT>         */<a name="line.91"></a>
+<FONT color="green">092</FONT>        &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(Class&lt;T&gt; componentType, NameBinding componentNameBinding);<a name="line.92"></a>
+<FONT color="green">093</FONT>    <a name="line.93"></a>
+<FONT color="green">094</FONT>        /**<a name="line.94"></a>
+<FONT color="green">095</FONT>         * Find a component adapter associated with the specified type and binding type. If a component adapter cannot be found in this<a name="line.95"></a>
+<FONT color="green">096</FONT>         * container, the parent container (if one exists) will be searched.<a name="line.96"></a>
+<FONT color="green">097</FONT>         *<a name="line.97"></a>
+<FONT color="green">098</FONT>         * @param componentType the type of the component.<a name="line.98"></a>
+<FONT color="green">099</FONT>         * @return the component adapter associated with this class, or &lt;code&gt;null&lt;/code&gt; if no component has been<a name="line.99"></a>
+<FONT color="green">100</FONT>         *         registered for the specified key.<a name="line.100"></a>
+<FONT color="green">101</FONT>         * @param binding the typed binding to use<a name="line.101"></a>
+<FONT color="green">102</FONT>         */<a name="line.102"></a>
+<FONT color="green">103</FONT>        &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(Class&lt;T&gt; componentType, Class&lt;? extends Annotation&gt; binding);<a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>        /**<a name="line.105"></a>
+<FONT color="green">106</FONT>         * Retrieve all the component adapters inside this container. The component adapters from the parent container are<a name="line.106"></a>
+<FONT color="green">107</FONT>         * not returned.<a name="line.107"></a>
+<FONT color="green">108</FONT>         *<a name="line.108"></a>
+<FONT color="green">109</FONT>         * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will not<a name="line.109"></a>
+<FONT color="green">110</FONT>         *         be modifiable.<a name="line.110"></a>
+<FONT color="green">111</FONT>         * @see #getComponentAdapters(Class) a variant of this method which returns the component adapters inside this<a name="line.111"></a>
+<FONT color="green">112</FONT>         *      container that are associated with the specified type.<a name="line.112"></a>
+<FONT color="green">113</FONT>         */<a name="line.113"></a>
+<FONT color="green">114</FONT>        Collection&lt;ComponentAdapter&lt;?&gt;&gt; getComponentAdapters();<a name="line.114"></a>
+<FONT color="green">115</FONT>    <a name="line.115"></a>
+<FONT color="green">116</FONT>        /**<a name="line.116"></a>
+<FONT color="green">117</FONT>         * Retrieve all component adapters inside this container that are associated with the specified type. The addComponent<a name="line.117"></a>
+<FONT color="green">118</FONT>         * adapters from the parent container are not returned.<a name="line.118"></a>
+<FONT color="green">119</FONT>         *<a name="line.119"></a>
+<FONT color="green">120</FONT>         * @param componentType the type of the components.<a name="line.120"></a>
+<FONT color="green">121</FONT>         * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with<a name="line.121"></a>
+<FONT color="green">122</FONT>         *         the specified type. Changes to this collection will not be reflected in the container itself.<a name="line.122"></a>
+<FONT color="green">123</FONT>         */<a name="line.123"></a>
+<FONT color="green">124</FONT>        &lt;T&gt; List&lt;ComponentAdapter&lt;T&gt;&gt; getComponentAdapters(Class&lt;T&gt; componentType);<a name="line.124"></a>
+<FONT color="green">125</FONT>    <a name="line.125"></a>
+<FONT color="green">126</FONT>        /**<a name="line.126"></a>
+<FONT color="green">127</FONT>         * Retrieve all component adapters inside this container that are associated with the specified type and binding type. The addComponent<a name="line.127"></a>
+<FONT color="green">128</FONT>         * adapters from the parent container are not returned.<a name="line.128"></a>
+<FONT color="green">129</FONT>         *<a name="line.129"></a>
+<FONT color="green">130</FONT>         * @param componentType the type of the components.<a name="line.130"></a>
+<FONT color="green">131</FONT>         * @param binding the typed binding to use<a name="line.131"></a>
+<FONT color="green">132</FONT>         * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with<a name="line.132"></a>
+<FONT color="green">133</FONT>         *         the specified type. Changes to this collection will not be reflected in the container itself.<a name="line.133"></a>
+<FONT color="green">134</FONT>         */<a name="line.134"></a>
+<FONT color="green">135</FONT>        &lt;T&gt; List&lt;ComponentAdapter&lt;T&gt;&gt; getComponentAdapters(Class&lt;T&gt; componentType, Class&lt;? extends Annotation&gt; binding);<a name="line.135"></a>
+<FONT color="green">136</FONT>    <a name="line.136"></a>
+<FONT color="green">137</FONT>        /**<a name="line.137"></a>
+<FONT color="green">138</FONT>         * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting<a name="line.138"></a>
+<FONT color="green">139</FONT>         * with the components instantiated first at the beginning.<a name="line.139"></a>
+<FONT color="green">140</FONT>         *<a name="line.140"></a>
+<FONT color="green">141</FONT>         * @param componentType the searched type.<a name="line.141"></a>
+<FONT color="green">142</FONT>         * @return a List of components.<a name="line.142"></a>
+<FONT color="green">143</FONT>         * @throws PicoException if the instantiation of a component fails<a name="line.143"></a>
+<FONT color="green">144</FONT>         */<a name="line.144"></a>
+<FONT color="green">145</FONT>        &lt;T&gt; List&lt;T&gt; getComponents(Class&lt;T&gt; componentType);<a name="line.145"></a>
+<FONT color="green">146</FONT>    <a name="line.146"></a>
+<FONT color="green">147</FONT>        /**<a name="line.147"></a>
+<FONT color="green">148</FONT>         * Accepts a visitor that should visit the child containers, component adapters and component instances.<a name="line.148"></a>
+<FONT color="green">149</FONT>         *<a name="line.149"></a>
+<FONT color="green">150</FONT>         * @param visitor the visitor<a name="line.150"></a>
+<FONT color="green">151</FONT>         */<a name="line.151"></a>
+<FONT color="green">152</FONT>        void accept(PicoVisitor visitor);<a name="line.152"></a>
+<FONT color="green">153</FONT>    <a name="line.153"></a>
+<FONT color="green">154</FONT>    }<a name="line.154"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

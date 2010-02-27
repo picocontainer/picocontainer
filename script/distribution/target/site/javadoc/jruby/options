@@ -1,0 +1,23 @@
+-classpath '/scm/oss/pico_2_trunk/script/script-jruby/target/classes:/Installed/M2_HOME/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Installed/M2_HOME/repository/org/jruby/jruby-complete/1.4.0/jruby-complete-1.4.0.jar:/Installed/M2_HOME/repository/org/picocontainer/picocontainer/2.10.2/picocontainer-2.10.2.jar:/Installed/M2_HOME/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/scm/oss/pico_2_trunk/script/script-core/target/picocontainer-script-core-2.1.jar' -protected
+-sourcepath
+'/scm/oss/pico_2_trunk/script/script-jruby/src/java'
+-author
+-bottom
+'Copyright &copy; 2003-2010 <a href="http://codehaus.org/">Codehaus</a>. All Rights Reserved.'
+-charset
+'ISO-8859-1'
+-d
+'/scm/oss/pico_2_trunk/script/script-jruby/target/apidocs'
+-doctitle
+'PicoContainer Script JRuby 2.1 API'
+-header
+'<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>'
+-link
+'http://java.sun.com/j2se/1.5.0/docs/api/'
+-linksource
+-stylesheetfile
+'/scm/oss/pico_2_trunk/script/script-jruby/target/apidocs/stylesheet.css'
+-use
+-version
+-windowtitle
+'PicoContainer Script JRuby 2.1 API'

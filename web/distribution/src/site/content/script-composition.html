@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Composition by Script</title>
+</head>
+<body>
+<p>While PicoContainer Web's composition abstraction - the <a
+  href="javadoc/core/org/picocontainer/web/WebappComposer.html">WebappComposer</a> interface - does not mandate the use
+of any script, the user may choose to use <a href="http://picocontainer.org/script">PicoContainer Script</a> to leverage
+script support to compose the content of a script directly to a webapp scope. To this end, the <a
+  href="javadoc/core/org/picocontainer/web/script/ScriptedWebappComposer.html">ScriptedWebappComposer</a> is provided.
+By default, it assumes XML as the scripting metadata (using "pico-application.xml", "pico-session.xml", "pico-request.xml" as the 
+conventional names of the three scoped scripts), but any script supported by PicoContainer Script can be used.  For example, to use
+Ruby as the scripting language simply define a composer like:
+<div class="source"><pre>
+    public class RubyWebappComposer extends ScriptedWebappComposer {
+
+        public RubyWebappComposer(){
+            super(JRubyContainerBuilder.class.getName(), "pico-application.rb", "pico-session.rb", "pico-request.rb");
+        }
+    }   
+</pre></div>
+Equally, if the user wishes to use other names or paths in the classpath for the scripts:
+<div class="source"><pre>
+    public class MyXMLWebappComposer extends ScriptedWebappComposer {
+
+        public MyXMLWebappComposer(){
+            super(XMLContainerBuilder.class.getName(), "config/application.xml", "config/session.xml", "config/request.xml");
+        }
+    }   
+</pre></div>
+
+</body>
+</html>

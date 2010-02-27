@@ -1,0 +1,13 @@
+Scenario: User reads an email
+
+Given test data
+And user is viewing their Inbox
+When the first email listed is double-clicked to read an email
+Then the main page should be obscured
+And a blocking mail-form should be visible
+And the mail-form should show the clicked email
+
+When the 'Cancel' button is clicked
+Then the main page should not be obscured
+And a blocking mail-form should be gone
+

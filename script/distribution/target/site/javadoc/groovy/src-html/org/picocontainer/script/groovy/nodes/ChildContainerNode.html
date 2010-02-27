@@ -1,0 +1,277 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*******************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ---------------------------------------------------------------------------<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD style<a name="line.4"></a>
+<FONT color="green">005</FONT>     * license a copy of which has been included with this distribution in the<a name="line.5"></a>
+<FONT color="green">006</FONT>     * LICENSE.txt file.<a name="line.6"></a>
+<FONT color="green">007</FONT>     ******************************************************************************/<a name="line.7"></a>
+<FONT color="green">008</FONT>    package org.picocontainer.script.groovy.nodes;<a name="line.8"></a>
+<FONT color="green">009</FONT>    <a name="line.9"></a>
+<FONT color="green">010</FONT>    import java.util.Map;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import org.picocontainer.DefaultPicoContainer;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import java.security.PrivilegedAction;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.ComponentFactory;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import java.security.AccessController;<a name="line.15"></a>
+<FONT color="green">016</FONT>    <a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.picocontainer.behaviors.Caching;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.picocontainer.PicoContainer;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.picocontainer.monitors.AbstractComponentMonitor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.picocontainer.classname.DefaultClassLoadingPicoContainer;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.picocontainer.script.ScriptedPicoContainerMarkupException;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.picocontainer.script.NodeBuilderDecorator;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.classname.ClassLoadingPicoContainer;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.ComponentMonitorStrategy;<a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>    /**<a name="line.28"></a>
+<FONT color="green">029</FONT>     * Creates a new PicoContainer node. There may or may not be a parent container<a name="line.29"></a>
+<FONT color="green">030</FONT>     * involved.<a name="line.30"></a>
+<FONT color="green">031</FONT>     * <a name="line.31"></a>
+<FONT color="green">032</FONT>     * @author James Strachan<a name="line.32"></a>
+<FONT color="green">033</FONT>     * @author Paul Hammant<a name="line.33"></a>
+<FONT color="green">034</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.34"></a>
+<FONT color="green">035</FONT>     * @author Michael Rimov<a name="line.35"></a>
+<FONT color="green">036</FONT>     * @author Mauro Talevi<a name="line.36"></a>
+<FONT color="green">037</FONT>     */<a name="line.37"></a>
+<FONT color="green">038</FONT>    @SuppressWarnings("serial")<a name="line.38"></a>
+<FONT color="green">039</FONT>    public class ChildContainerNode extends AbstractBuilderNode {<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>        /**<a name="line.41"></a>
+<FONT color="green">042</FONT>         * Node name.<a name="line.42"></a>
+<FONT color="green">043</FONT>         */<a name="line.43"></a>
+<FONT color="green">044</FONT>        public static final String NODE_NAME = "container";<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        /**<a name="line.46"></a>
+<FONT color="green">047</FONT>         * Supported Attribute: 'class' Reference to a classname of the container to<a name="line.47"></a>
+<FONT color="green">048</FONT>         * use.<a name="line.48"></a>
+<FONT color="green">049</FONT>         */<a name="line.49"></a>
+<FONT color="green">050</FONT>        private static final String CLASS = "class";<a name="line.50"></a>
+<FONT color="green">051</FONT>    <a name="line.51"></a>
+<FONT color="green">052</FONT>        /**<a name="line.52"></a>
+<FONT color="green">053</FONT>         * The node decorator.<a name="line.53"></a>
+<FONT color="green">054</FONT>         */<a name="line.54"></a>
+<FONT color="green">055</FONT>        private final NodeBuilderDecorator decorator;<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>        /**<a name="line.57"></a>
+<FONT color="green">058</FONT>         * Attribute: 'componentFactory' a reference to an instance of a component<a name="line.58"></a>
+<FONT color="green">059</FONT>         * factory.<a name="line.59"></a>
+<FONT color="green">060</FONT>         */<a name="line.60"></a>
+<FONT color="green">061</FONT>        private static final String COMPONENT_ADAPTER_FACTORY = "componentFactory";<a name="line.61"></a>
+<FONT color="green">062</FONT>    <a name="line.62"></a>
+<FONT color="green">063</FONT>        /**<a name="line.63"></a>
+<FONT color="green">064</FONT>         * Attribute: 'componentMonitor' a reference to an instance of a component<a name="line.64"></a>
+<FONT color="green">065</FONT>         * monitor.<a name="line.65"></a>
+<FONT color="green">066</FONT>         */<a name="line.66"></a>
+<FONT color="green">067</FONT>        private static final String COMPONENT_MONITOR = "componentMonitor";<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>        /**<a name="line.69"></a>
+<FONT color="green">070</FONT>         * Attribute that exists in test cases, but not necessarily used?<a name="line.70"></a>
+<FONT color="green">071</FONT>         */<a name="line.71"></a>
+<FONT color="green">072</FONT>        private static final String SCOPE = "scope";<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>        /**<a name="line.74"></a>
+<FONT color="green">075</FONT>         * Attribute: 'parent' a reference to the parent for this new container.<a name="line.75"></a>
+<FONT color="green">076</FONT>         */<a name="line.76"></a>
+<FONT color="green">077</FONT>        private static final String PARENT = "parent";<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>        /**<a name="line.79"></a>
+<FONT color="green">080</FONT>         * Constructs a child container node with a given decorator<a name="line.80"></a>
+<FONT color="green">081</FONT>         * <a name="line.81"></a>
+<FONT color="green">082</FONT>         * @param decorator NodeBuilderDecorator<a name="line.82"></a>
+<FONT color="green">083</FONT>         */<a name="line.83"></a>
+<FONT color="green">084</FONT>        public ChildContainerNode(NodeBuilderDecorator decorator) {<a name="line.84"></a>
+<FONT color="green">085</FONT>            super(NODE_NAME);<a name="line.85"></a>
+<FONT color="green">086</FONT>            this.decorator = decorator;<a name="line.86"></a>
+<FONT color="green">087</FONT>    <a name="line.87"></a>
+<FONT color="green">088</FONT>            this.addAttribute(CLASS).addAttribute(COMPONENT_ADAPTER_FACTORY).addAttribute(COMPONENT_MONITOR).addAttribute(<a name="line.88"></a>
+<FONT color="green">089</FONT>                    PARENT).addAttribute(SCOPE);<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>        }<a name="line.91"></a>
+<FONT color="green">092</FONT>    <a name="line.92"></a>
+<FONT color="green">093</FONT>        /**<a name="line.93"></a>
+<FONT color="green">094</FONT>         * Creates a new container. There may or may not be a parent to this<a name="line.94"></a>
+<FONT color="green">095</FONT>         * container. Supported attributes are<a name="line.95"></a>
+<FONT color="green">096</FONT>         * &lt;p&gt;<a name="line.96"></a>
+<FONT color="green">097</FONT>         * {@inheritDoc}<a name="line.97"></a>
+<FONT color="green">098</FONT>         * &lt;/p&gt;<a name="line.98"></a>
+<FONT color="green">099</FONT>         * <a name="line.99"></a>
+<FONT color="green">100</FONT>         * @param current PicoContainer<a name="line.100"></a>
+<FONT color="green">101</FONT>         * @param attributes Map<a name="line.101"></a>
+<FONT color="green">102</FONT>         * @return Object<a name="line.102"></a>
+<FONT color="green">103</FONT>         * @throws ScriptedPicoContainerMarkupException<a name="line.103"></a>
+<FONT color="green">104</FONT>         */<a name="line.104"></a>
+<FONT color="green">105</FONT>        @SuppressWarnings("unchecked")<a name="line.105"></a>
+<FONT color="green">106</FONT>        public Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException {<a name="line.106"></a>
+<FONT color="green">107</FONT>    <a name="line.107"></a>
+<FONT color="green">108</FONT>            return createChildContainer(attributes, (ClassLoadingPicoContainer) current);<a name="line.108"></a>
+<FONT color="green">109</FONT>        }<a name="line.109"></a>
+<FONT color="green">110</FONT>    <a name="line.110"></a>
+<FONT color="green">111</FONT>        /**<a name="line.111"></a>
+<FONT color="green">112</FONT>         * Returns the decorator<a name="line.112"></a>
+<FONT color="green">113</FONT>         * <a name="line.113"></a>
+<FONT color="green">114</FONT>         * @return A NodeBuilderDecorator<a name="line.114"></a>
+<FONT color="green">115</FONT>         */<a name="line.115"></a>
+<FONT color="green">116</FONT>        private NodeBuilderDecorator getDecorator() {<a name="line.116"></a>
+<FONT color="green">117</FONT>            return decorator;<a name="line.117"></a>
+<FONT color="green">118</FONT>        }<a name="line.118"></a>
+<FONT color="green">119</FONT>    <a name="line.119"></a>
+<FONT color="green">120</FONT>        /**<a name="line.120"></a>
+<FONT color="green">121</FONT>         * Creates a new container. There may or may not be a parent to this<a name="line.121"></a>
+<FONT color="green">122</FONT>         * container. Supported attributes are:<a name="line.122"></a>
+<FONT color="green">123</FONT>         * &lt;ul&gt;<a name="line.123"></a>
+<FONT color="green">124</FONT>         * &lt;li&gt;&lt;tt&gt;componentFactory&lt;/tt&gt;: The ComponentFactory used for new<a name="line.124"></a>
+<FONT color="green">125</FONT>         * container&lt;/li&gt;<a name="line.125"></a>
+<FONT color="green">126</FONT>         * &lt;li&gt;&lt;tt&gt;componentMonitor&lt;/tt&gt;: The ComponentMonitor used for new<a name="line.126"></a>
+<FONT color="green">127</FONT>         * container&lt;/li&gt;<a name="line.127"></a>
+<FONT color="green">128</FONT>         * &lt;/ul&gt;<a name="line.128"></a>
+<FONT color="green">129</FONT>         * <a name="line.129"></a>
+<FONT color="green">130</FONT>         * @param attributes Map Attributes defined by the builder in the script.<a name="line.130"></a>
+<FONT color="green">131</FONT>         * @param parent The parent container<a name="line.131"></a>
+<FONT color="green">132</FONT>         * @return The PicoContainer<a name="line.132"></a>
+<FONT color="green">133</FONT>         */<a name="line.133"></a>
+<FONT color="green">134</FONT>        @SuppressWarnings("unchecked")<a name="line.134"></a>
+<FONT color="green">135</FONT>        protected ClassLoadingPicoContainer createChildContainer(Map&lt;String,Object&gt; attributes, ClassLoadingPicoContainer parent) {<a name="line.135"></a>
+<FONT color="green">136</FONT>    <a name="line.136"></a>
+<FONT color="green">137</FONT>            ClassLoader parentClassLoader;<a name="line.137"></a>
+<FONT color="green">138</FONT>            MutablePicoContainer childContainer;<a name="line.138"></a>
+<FONT color="green">139</FONT>            if (parent != null) {<a name="line.139"></a>
+<FONT color="green">140</FONT>                parentClassLoader = parent.getComponentClassLoader();<a name="line.140"></a>
+<FONT color="green">141</FONT>                if (isAttribute(attributes, COMPONENT_ADAPTER_FACTORY)) {<a name="line.141"></a>
+<FONT color="green">142</FONT>                    ComponentFactory componentFactory = createComponentFactory(attributes);<a name="line.142"></a>
+<FONT color="green">143</FONT>                    childContainer = new DefaultPicoContainer(getDecorator()<a name="line.143"></a>
+<FONT color="green">144</FONT>                            .decorate(componentFactory, attributes), parent);<a name="line.144"></a>
+<FONT color="green">145</FONT>                    if (isAttribute(attributes, COMPONENT_MONITOR)) {<a name="line.145"></a>
+<FONT color="green">146</FONT>                        changeComponentMonitor(childContainer, createComponentMonitor(attributes));<a name="line.146"></a>
+<FONT color="green">147</FONT>                    }<a name="line.147"></a>
+<FONT color="green">148</FONT>                    parent.addChildContainer(childContainer);<a name="line.148"></a>
+<FONT color="green">149</FONT>                } else if (isAttribute(attributes, COMPONENT_MONITOR)) {<a name="line.149"></a>
+<FONT color="green">150</FONT>                    ComponentFactory componentFactory = new Caching();<a name="line.150"></a>
+<FONT color="green">151</FONT>                    childContainer = new DefaultPicoContainer(getDecorator()<a name="line.151"></a>
+<FONT color="green">152</FONT>                            .decorate(componentFactory, attributes), parent);<a name="line.152"></a>
+<FONT color="green">153</FONT>                    changeComponentMonitor(childContainer, createComponentMonitor(attributes));<a name="line.153"></a>
+<FONT color="green">154</FONT>                } else {<a name="line.154"></a>
+<FONT color="green">155</FONT>                    childContainer = parent.makeChildContainer();<a name="line.155"></a>
+<FONT color="green">156</FONT>                }<a name="line.156"></a>
+<FONT color="green">157</FONT>            } else {<a name="line.157"></a>
+<FONT color="green">158</FONT>                parentClassLoader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {<a name="line.158"></a>
+<FONT color="green">159</FONT>                    public Object run() {<a name="line.159"></a>
+<FONT color="green">160</FONT>                        return PicoContainer.class.getClassLoader();<a name="line.160"></a>
+<FONT color="green">161</FONT>                    }<a name="line.161"></a>
+<FONT color="green">162</FONT>                });<a name="line.162"></a>
+<FONT color="green">163</FONT>                ComponentFactory componentFactory = createComponentFactory(attributes);<a name="line.163"></a>
+<FONT color="green">164</FONT>                childContainer = new DefaultPicoContainer(getDecorator().decorate(componentFactory, attributes));<a name="line.164"></a>
+<FONT color="green">165</FONT>                if (isAttribute(attributes, COMPONENT_MONITOR)) {<a name="line.165"></a>
+<FONT color="green">166</FONT>                    changeComponentMonitor(childContainer, createComponentMonitor(attributes));<a name="line.166"></a>
+<FONT color="green">167</FONT>                }<a name="line.167"></a>
+<FONT color="green">168</FONT>            }<a name="line.168"></a>
+<FONT color="green">169</FONT>    <a name="line.169"></a>
+<FONT color="green">170</FONT>            MutablePicoContainer decoratedPico = getDecorator().decorate(childContainer);<a name="line.170"></a>
+<FONT color="green">171</FONT>            if (isAttribute(attributes, CLASS)) {<a name="line.171"></a>
+<FONT color="green">172</FONT>                Class&lt;?&gt; clazz = (Class&lt;?&gt;) attributes.get(CLASS);<a name="line.172"></a>
+<FONT color="green">173</FONT>                return createPicoContainer(clazz, decoratedPico, parentClassLoader);<a name="line.173"></a>
+<FONT color="green">174</FONT>            } else {<a name="line.174"></a>
+<FONT color="green">175</FONT>                return new DefaultClassLoadingPicoContainer(parentClassLoader, decoratedPico);<a name="line.175"></a>
+<FONT color="green">176</FONT>            }<a name="line.176"></a>
+<FONT color="green">177</FONT>        }<a name="line.177"></a>
+<FONT color="green">178</FONT>    <a name="line.178"></a>
+<FONT color="green">179</FONT>        private void changeComponentMonitor(MutablePicoContainer childContainer, ComponentMonitor monitor) {<a name="line.179"></a>
+<FONT color="green">180</FONT>            if (childContainer instanceof ComponentMonitorStrategy) {<a name="line.180"></a>
+<FONT color="green">181</FONT>                ((ComponentMonitorStrategy) childContainer).changeMonitor(monitor);<a name="line.181"></a>
+<FONT color="green">182</FONT>            }<a name="line.182"></a>
+<FONT color="green">183</FONT>        }<a name="line.183"></a>
+<FONT color="green">184</FONT>    <a name="line.184"></a>
+<FONT color="green">185</FONT>        private ClassLoadingPicoContainer createPicoContainer(Class&lt;?&gt; clazz, MutablePicoContainer decoratedPico,<a name="line.185"></a>
+<FONT color="green">186</FONT>                ClassLoader parentClassLoader) {<a name="line.186"></a>
+<FONT color="green">187</FONT>            DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();<a name="line.187"></a>
+<FONT color="green">188</FONT>            instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);<a name="line.188"></a>
+<FONT color="green">189</FONT>            instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);<a name="line.189"></a>
+<FONT color="green">190</FONT>            instantiatingContainer.addComponent(ClassLoadingPicoContainer.class, clazz);<a name="line.190"></a>
+<FONT color="green">191</FONT>            Object componentInstance = instantiatingContainer.getComponent(ClassLoadingPicoContainer.class);<a name="line.191"></a>
+<FONT color="green">192</FONT>            return (ClassLoadingPicoContainer) componentInstance;<a name="line.192"></a>
+<FONT color="green">193</FONT>        }<a name="line.193"></a>
+<FONT color="green">194</FONT>    <a name="line.194"></a>
+<FONT color="green">195</FONT>        private ComponentFactory createComponentFactory(Map&lt;String,Object&gt; attributes) {<a name="line.195"></a>
+<FONT color="green">196</FONT>            final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);<a name="line.196"></a>
+<FONT color="green">197</FONT>            if (factory == null) {<a name="line.197"></a>
+<FONT color="green">198</FONT>                return new Caching();<a name="line.198"></a>
+<FONT color="green">199</FONT>            }<a name="line.199"></a>
+<FONT color="green">200</FONT>            return factory;<a name="line.200"></a>
+<FONT color="green">201</FONT>        }<a name="line.201"></a>
+<FONT color="green">202</FONT>    <a name="line.202"></a>
+<FONT color="green">203</FONT>        private ComponentMonitor createComponentMonitor(Map&lt;String,Object&gt; attributes) {<a name="line.203"></a>
+<FONT color="green">204</FONT>            final ComponentMonitor monitor = (ComponentMonitor) attributes.remove(COMPONENT_MONITOR);<a name="line.204"></a>
+<FONT color="green">205</FONT>            if (monitor == null) {<a name="line.205"></a>
+<FONT color="green">206</FONT>                return new AbstractComponentMonitor();<a name="line.206"></a>
+<FONT color="green">207</FONT>            }<a name="line.207"></a>
+<FONT color="green">208</FONT>            return monitor;<a name="line.208"></a>
+<FONT color="green">209</FONT>        }<a name="line.209"></a>
+<FONT color="green">210</FONT>    <a name="line.210"></a>
+<FONT color="green">211</FONT>    }<a name="line.211"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

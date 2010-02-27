@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Overview</title>
+</head>
+
+<body>
+<p>This introduction to web applications follows on from the PicoContainer <a
+  href="http://picocontainer.org/scopes.html">scopes</a> page</p>
+<p>There are only about a million Java web-frameworks for Java. There more recent and sophisticated ones try to do
+Dependency Injection for 'actions' or 'controllers'.</p>
+<p>The most logical and commonly adopted paradigm when using Dependency Injection in a web framework is to define
+three container, one for each webapp scope:
+<ul>
+  <li><strong>application-scoped</strong> container: the root container created when the context is initialized</li>
+  <li><strong>session-scoped</strong> container: the session container, created when the session is initialized,
+  and having the application container as its parent</li>
+  <li><strong>request-scoped</strong> container: the request container, created upon each request, and having the
+  session one as its parent.
+  </p>
+  </li>
+</ul>
+</p>
+<p>The <a href="javadoc/core/org/picocontainer/web/WebappComposer.html">WebappComposer</a> interface allows the user
+to define which components are registered at each scope. These can either be defined programmatically, ie in Java, or
+read from scripts using the <a href="javadoc/core/org/picocontainer/web/script/ScriptedWebappComposer.html">ScriptedWebappComposer</a>.</p>
+<p>The <a href="javadoc/core/org/picocontainer/web/PicoServletContainerListener.html">org.picocontainer.web.PicoServletContainerListener</a>
+is the servlet listener that manages te instantiation, assembly and disposal of the the appropriate PicoContainers when
+applications/sessions start/stop. It actually creates a single instance of the scoped containers as the web app loads.
+For the application one, caching is set. For the session and request level ones, we store instantiated components for
+those scopes in ThreadLocal. For the session container, the same components are stored in the HttpSession as an
+attribute.</p>
+<p>Here is an example of a web.xml:</p>
+<div class="source">
+<pre>
+&lt;web-app>
+  &lt;context-param>
+    &lt;param-name>webapp-composer-class</param-name>
+    &lt;param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
+  &lt;/context-param>
+
+  &lt;filter>
+    &lt;filter-name>picoFilter</filter-name>
+    &lt;filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>
+  &lt;/filter>
+
+  &lt;filter-mapping>
+    &lt;filter-name>picoFilter</filter-name>
+    &lt;url-pattern>/*</url-pattern>
+  &lt;/filter-mapping>
+
+  &lt;listener>
+    &lt;listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+  &lt;/listener>
+
+&lt;/web-app>
+</pre>
+</div>
+<p>The above web.xml may not be sufficient for all web frameworks. Refer to the left menu for details of each supported web framework.</p>
+</body>
+</html>

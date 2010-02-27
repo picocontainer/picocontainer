@@ -1,0 +1,187 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by Paul Hammaant                                            *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.monitors;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import static org.picocontainer.monitors.ComponentMonitorHelper.format;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.io.PrintWriter;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.io.Writer;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.lang.reflect.Constructor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import java.lang.reflect.Member;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import java.lang.reflect.Method;<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.ComponentMonitor;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.picocontainer.PicoContainer;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import org.picocontainer.Injector;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import org.picocontainer.Behavior;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    /**<a name="line.32"></a>
+<FONT color="green">033</FONT>     * A {@link ComponentMonitor} which writes to a {@link Writer}. <a name="line.33"></a>
+<FONT color="green">034</FONT>     * <a name="line.34"></a>
+<FONT color="green">035</FONT>     * @author Paul Hammant<a name="line.35"></a>
+<FONT color="green">036</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.36"></a>
+<FONT color="green">037</FONT>     * @author Mauro Talevi<a name="line.37"></a>
+<FONT color="green">038</FONT>     */<a name="line.38"></a>
+<FONT color="green">039</FONT>    public class WriterComponentMonitor implements ComponentMonitor {<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>        private final PrintWriter out;<a name="line.41"></a>
+<FONT color="green">042</FONT>        private final ComponentMonitor delegate;<a name="line.42"></a>
+<FONT color="green">043</FONT>    <a name="line.43"></a>
+<FONT color="green">044</FONT>        public WriterComponentMonitor(Writer out) {<a name="line.44"></a>
+<FONT color="green">045</FONT>            this(out, new NullComponentMonitor());<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>        public WriterComponentMonitor(Writer out, ComponentMonitor delegate) {<a name="line.48"></a>
+<FONT color="green">049</FONT>            this.out = new PrintWriter(out);<a name="line.49"></a>
+<FONT color="green">050</FONT>            this.delegate = delegate;<a name="line.50"></a>
+<FONT color="green">051</FONT>        }<a name="line.51"></a>
+<FONT color="green">052</FONT>    <a name="line.52"></a>
+<FONT color="green">053</FONT>        public &lt;T&gt; Constructor&lt;T&gt; instantiating(PicoContainer container, ComponentAdapter&lt;T&gt; componentAdapter,<a name="line.53"></a>
+<FONT color="green">054</FONT>                                         Constructor&lt;T&gt; constructor) {<a name="line.54"></a>
+<FONT color="green">055</FONT>            out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));<a name="line.55"></a>
+<FONT color="green">056</FONT>            return delegate.instantiating(container, componentAdapter, constructor);<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>    <a name="line.58"></a>
+<FONT color="green">059</FONT>        public &lt;T&gt; void instantiated(PicoContainer container, ComponentAdapter&lt;T&gt; componentAdapter,<a name="line.59"></a>
+<FONT color="green">060</FONT>                                 Constructor&lt;T&gt; constructor,<a name="line.60"></a>
+<FONT color="green">061</FONT>                                 Object instantiated,<a name="line.61"></a>
+<FONT color="green">062</FONT>                                 Object[] injected,<a name="line.62"></a>
+<FONT color="green">063</FONT>                                 long duration) {<a name="line.63"></a>
+<FONT color="green">064</FONT>            out.println(format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(injected)));<a name="line.64"></a>
+<FONT color="green">065</FONT>            delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);<a name="line.65"></a>
+<FONT color="green">066</FONT>        }<a name="line.66"></a>
+<FONT color="green">067</FONT>    <a name="line.67"></a>
+<FONT color="green">068</FONT>        public &lt;T&gt; void instantiationFailed(PicoContainer container,<a name="line.68"></a>
+<FONT color="green">069</FONT>                                        ComponentAdapter&lt;T&gt; componentAdapter,<a name="line.69"></a>
+<FONT color="green">070</FONT>                                        Constructor&lt;T&gt; constructor,<a name="line.70"></a>
+<FONT color="green">071</FONT>                                        Exception cause) {<a name="line.71"></a>
+<FONT color="green">072</FONT>            out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()));<a name="line.72"></a>
+<FONT color="green">073</FONT>            delegate.instantiationFailed(container, null, constructor, cause);<a name="line.73"></a>
+<FONT color="green">074</FONT>        }<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>        public Object invoking(PicoContainer container,<a name="line.76"></a>
+<FONT color="green">077</FONT>                               ComponentAdapter&lt;?&gt; componentAdapter,<a name="line.77"></a>
+<FONT color="green">078</FONT>                               Member member,<a name="line.78"></a>
+<FONT color="green">079</FONT>                               Object instance, Object[] args) {<a name="line.79"></a>
+<FONT color="green">080</FONT>            out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));<a name="line.80"></a>
+<FONT color="green">081</FONT>            return delegate.invoking(container, componentAdapter, member, instance, args);<a name="line.81"></a>
+<FONT color="green">082</FONT>        }<a name="line.82"></a>
+<FONT color="green">083</FONT>    <a name="line.83"></a>
+<FONT color="green">084</FONT>        public void invoked(PicoContainer container,<a name="line.84"></a>
+<FONT color="green">085</FONT>                            ComponentAdapter&lt;?&gt; componentAdapter,<a name="line.85"></a>
+<FONT color="green">086</FONT>                            Member member,<a name="line.86"></a>
+<FONT color="green">087</FONT>                            Object instance,<a name="line.87"></a>
+<FONT color="green">088</FONT>                            long duration, Object[] args, Object retVal) {<a name="line.88"></a>
+<FONT color="green">089</FONT>            out.println(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));<a name="line.89"></a>
+<FONT color="green">090</FONT>            delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);<a name="line.90"></a>
+<FONT color="green">091</FONT>        }<a name="line.91"></a>
+<FONT color="green">092</FONT>    <a name="line.92"></a>
+<FONT color="green">093</FONT>        public void invocationFailed(Member member, Object instance, Exception cause) {<a name="line.93"></a>
+<FONT color="green">094</FONT>            out.println(format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()));<a name="line.94"></a>
+<FONT color="green">095</FONT>            delegate.invocationFailed(member, instance, cause);<a name="line.95"></a>
+<FONT color="green">096</FONT>        }<a name="line.96"></a>
+<FONT color="green">097</FONT>    <a name="line.97"></a>
+<FONT color="green">098</FONT>        public void lifecycleInvocationFailed(MutablePicoContainer container,<a name="line.98"></a>
+<FONT color="green">099</FONT>                                              ComponentAdapter&lt;?&gt; componentAdapter, Method method,<a name="line.99"></a>
+<FONT color="green">100</FONT>                                              Object instance,<a name="line.100"></a>
+<FONT color="green">101</FONT>                                              RuntimeException cause) {<a name="line.101"></a>
+<FONT color="green">102</FONT>            out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));<a name="line.102"></a>
+<FONT color="green">103</FONT>            delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);<a name="line.103"></a>
+<FONT color="green">104</FONT>        }<a name="line.104"></a>
+<FONT color="green">105</FONT>    <a name="line.105"></a>
+<FONT color="green">106</FONT>        public Object noComponentFound(MutablePicoContainer container, Object componentKey) {<a name="line.106"></a>
+<FONT color="green">107</FONT>            out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));<a name="line.107"></a>
+<FONT color="green">108</FONT>            return delegate.noComponentFound(container, componentKey);<a name="line.108"></a>
+<FONT color="green">109</FONT>        }<a name="line.109"></a>
+<FONT color="green">110</FONT>    <a name="line.110"></a>
+<FONT color="green">111</FONT>        public Injector newInjector(Injector injector) {<a name="line.111"></a>
+<FONT color="green">112</FONT>            return delegate.newInjector(injector);<a name="line.112"></a>
+<FONT color="green">113</FONT>        }<a name="line.113"></a>
+<FONT color="green">114</FONT>    <a name="line.114"></a>
+<FONT color="green">115</FONT>        /** {@inheritDoc} **/<a name="line.115"></a>
+<FONT color="green">116</FONT>        public Behavior newBehavior(Behavior behavior) {<a name="line.116"></a>
+<FONT color="green">117</FONT>            return delegate.newBehavior(behavior);<a name="line.117"></a>
+<FONT color="green">118</FONT>        }<a name="line.118"></a>
+<FONT color="green">119</FONT>    <a name="line.119"></a>
+<FONT color="green">120</FONT>    <a name="line.120"></a>
+<FONT color="green">121</FONT>    }<a name="line.121"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

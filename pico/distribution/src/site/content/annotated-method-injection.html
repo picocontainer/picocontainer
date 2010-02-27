@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta name="generator" content=
+            "HTML Tidy for Mac OS X (vers 1 September 2005), see www.w3.org"/>
+    <meta http-equiv="Content-Type" content=
+            "text/html; charset=us-ascii"/>
+
+    <title>Annotated Method Injection</title>
+</head>
+
+<body>
+<h3>Overview</h3>
+
+<p>This is where a component has an empty constructor and gets
+    its dependencies injected into annotated methods after
+    instantiation:</p>
+
+<div class="source"><pre>
+public class Apple {
+    private Orange orange;
+    private Pear pear;
+    private Banana banana;
+
+    @Inject
+    public injectOrange(Orange orange) {
+        this.orange = orange;
+    }
+
+    @Inject
+    public setPear(Pear pear) {
+        this.pear = pear;
+    }
+
+    @Inject
+    public provideBanana(Banana banana) {
+        this.banana = banana;
+    }
+
+    // other methods
+}
+</pre>
+</div>
+
+<h3>Usage</h3>
+
+<div class="source">
+    <pre>
+pico = new DefaultPicoContainer(new AnnotatedMethodInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);
+</pre>
+</div>
+
+<p>With an custom annotation instead of PicoContainer's
+    @Inject</p>
+
+<div class="source">
+    <pre>
+pico = new DefaultPicoContainer(new AnnotatedMethodInjection(MyInjectAnnotaton.class);
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);
+</pre>
+</div>
+
+<p>The method (whatever its name) needs an @Inject annotation.
+    That is from our codebase (org.picocontainer.Inject).</p>
+
+<p>The component factory for this is
+    <strong>AnnotatedMethodInjection</strong>. It only handles
+    method-annotation injection types of components.</p>
+
+<p>Additionally the default component factory
+    <strong>AdaptiveInjection</strong> can also handle
+    method-annotation injection types, if the @Inject annotation from
+    PicoContainer's code-base is used as the marker for injection.
+    AdaptiveInjection will also fall through to constructor injection
+    if there is no recognized annotation.</p>
+</body>
+</html>

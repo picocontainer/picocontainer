@@ -1,0 +1,125 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package org.picocontainer.script.bsh;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import java.io.IOException;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import java.io.Reader;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import java.net.URL;<a name="line.5"></a>
+<FONT color="green">006</FONT>    <a name="line.6"></a>
+<FONT color="green">007</FONT>    import org.picocontainer.PicoContainer;<a name="line.7"></a>
+<FONT color="green">008</FONT>    import org.picocontainer.script.LifecycleMode;<a name="line.8"></a>
+<FONT color="green">009</FONT>    import org.picocontainer.script.ScriptedPicoContainerMarkupException;<a name="line.9"></a>
+<FONT color="green">010</FONT>    import org.picocontainer.script.ScriptedContainerBuilder;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import bsh.EvalError;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import bsh.Interpreter;<a name="line.13"></a>
+<FONT color="green">014</FONT>    <a name="line.14"></a>
+<FONT color="green">015</FONT>    /**<a name="line.15"></a>
+<FONT color="green">016</FONT>     * {@inheritDoc}<a name="line.16"></a>
+<FONT color="green">017</FONT>     * The script has to assign a "pico" variable with an instance of<a name="line.17"></a>
+<FONT color="green">018</FONT>     * {@link org.picocontainer.PicoContainer}.<a name="line.18"></a>
+<FONT color="green">019</FONT>     * There is an implicit variable named "parent" that may contain a reference to a parent<a name="line.19"></a>
+<FONT color="green">020</FONT>     * container. It is recommended to use this as a constructor argument to the instantiated<a name="line.20"></a>
+<FONT color="green">021</FONT>     * PicoContainer.<a name="line.21"></a>
+<FONT color="green">022</FONT>     *<a name="line.22"></a>
+<FONT color="green">023</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.23"></a>
+<FONT color="green">024</FONT>     * @author Michael Rimov<a name="line.24"></a>
+<FONT color="green">025</FONT>     * @author Mauro Talevi<a name="line.25"></a>
+<FONT color="green">026</FONT>     */<a name="line.26"></a>
+<FONT color="green">027</FONT>    public class BeanShellContainerBuilder extends ScriptedContainerBuilder {<a name="line.27"></a>
+<FONT color="green">028</FONT>    <a name="line.28"></a>
+<FONT color="green">029</FONT>        public BeanShellContainerBuilder(Reader script, ClassLoader classLoader) {<a name="line.29"></a>
+<FONT color="green">030</FONT>            this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);<a name="line.30"></a>
+<FONT color="green">031</FONT>        }<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>        public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {<a name="line.33"></a>
+<FONT color="green">034</FONT>            this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);<a name="line.34"></a>
+<FONT color="green">035</FONT>        }<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        public BeanShellContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {<a name="line.37"></a>
+<FONT color="green">038</FONT>            super(script, classLoader, lifecycleMode);<a name="line.38"></a>
+<FONT color="green">039</FONT>        }<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>        public BeanShellContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {<a name="line.41"></a>
+<FONT color="green">042</FONT>            super(script, classLoader, lifecycleMode);<a name="line.42"></a>
+<FONT color="green">043</FONT>        }<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>        protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {<a name="line.45"></a>
+<FONT color="green">046</FONT>            Interpreter i = new Interpreter();<a name="line.46"></a>
+<FONT color="green">047</FONT>            try {<a name="line.47"></a>
+<FONT color="green">048</FONT>                i.set("parent", parentContainer);<a name="line.48"></a>
+<FONT color="green">049</FONT>                i.set("assemblyScope", assemblyScope);<a name="line.49"></a>
+<FONT color="green">050</FONT>                i.setClassLoader(this.getClassLoader());<a name="line.50"></a>
+<FONT color="green">051</FONT>                i.eval(getScriptReader(), i.getNameSpace(), "picocontainer.bsh");<a name="line.51"></a>
+<FONT color="green">052</FONT>                return (PicoContainer) i.get("pico");<a name="line.52"></a>
+<FONT color="green">053</FONT>            } catch (EvalError e) {<a name="line.53"></a>
+<FONT color="green">054</FONT>                throw new ScriptedPicoContainerMarkupException(e);<a name="line.54"></a>
+<FONT color="green">055</FONT>            } catch (IOException e) {<a name="line.55"></a>
+<FONT color="green">056</FONT>                throw new ScriptedPicoContainerMarkupException(e);<a name="line.56"></a>
+<FONT color="green">057</FONT>            }<a name="line.57"></a>
+<FONT color="green">058</FONT>        }<a name="line.58"></a>
+<FONT color="green">059</FONT>    }<a name="line.59"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

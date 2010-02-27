@@ -1,0 +1,13 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+Integrates Struts with PicoContainer.  Uses Pico to inject dependencies into Struts actions.  This package is intended to be used in conjuntion with nano-servlet.  Use nano-servlet to configure component your actions depend on, and nano-struts will inject those dependencies into your Struts actions using constructor injection.  
+<p>
+To use with Struts 1.1, specify either the {@link org.picocontainer.web.struts.PicoRequestProcessor}, or if you are using the Tiles library, the {@link org.picocontainer.web.struts.PicoTilesRequestProcessor}, as the controller class in your Struts configuration file.
+<p>
+If you are using Struts 1.0, you can use the {@link org.picocontainer.web.struts.PicoActionServlet} instead.  If you have your own request processor or action servlet class, you can use {@link org.picocontainer.web.struts.ActionFactory} in the <code>processActionCreate</code> method of your action servlet or request processor.
+
+</body>
+</html>

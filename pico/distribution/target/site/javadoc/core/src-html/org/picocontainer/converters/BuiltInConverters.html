@@ -1,0 +1,128 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package org.picocontainer.converters;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import org.picocontainer.Converters;<a name="line.3"></a>
+<FONT color="green">004</FONT>    <a name="line.4"></a>
+<FONT color="green">005</FONT>    import java.io.File;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import java.io.Serializable;<a name="line.6"></a>
+<FONT color="green">007</FONT>    import java.lang.reflect.Type;<a name="line.7"></a>
+<FONT color="green">008</FONT>    import java.net.URL;<a name="line.8"></a>
+<FONT color="green">009</FONT>    import java.util.HashMap;<a name="line.9"></a>
+<FONT color="green">010</FONT>    import java.util.Map;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    /**<a name="line.12"></a>
+<FONT color="green">013</FONT>     * Provides some built-in converters used by {@link DefaultPicoContainer}. It<a name="line.13"></a>
+<FONT color="green">014</FONT>     * supports by default primitive types (and boxed equivalents) and for<a name="line.14"></a>
+<FONT color="green">015</FONT>     * {@link File} and {@link URL} types. Built-in converters can be changed by<a name="line.15"></a>
+<FONT color="green">016</FONT>     * extending the class and overriding the method {@link #addBuiltInConverters()}.<a name="line.16"></a>
+<FONT color="green">017</FONT>     */<a name="line.17"></a>
+<FONT color="green">018</FONT>    @SuppressWarnings("serial")<a name="line.18"></a>
+<FONT color="green">019</FONT>    public class BuiltInConverters implements Converters, Serializable {<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>        private final Map&lt;Class&lt;?&gt;, Converter&lt;?&gt;&gt; converters = new HashMap&lt;Class&lt;?&gt;, Converter&lt;?&gt;&gt;();<a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>        public BuiltInConverters() {<a name="line.23"></a>
+<FONT color="green">024</FONT>            addBuiltInConverters();<a name="line.24"></a>
+<FONT color="green">025</FONT>        }<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>        protected void addBuiltInConverters() {<a name="line.27"></a>
+<FONT color="green">028</FONT>            addMultiTypeConverter(new IntegerConverter(), Integer.class, Integer.TYPE);<a name="line.28"></a>
+<FONT color="green">029</FONT>            addMultiTypeConverter(new DoubleConverter(), Double.class, Double.TYPE);<a name="line.29"></a>
+<FONT color="green">030</FONT>            addMultiTypeConverter(new BooleanConverter(), Boolean.class, Boolean.TYPE);<a name="line.30"></a>
+<FONT color="green">031</FONT>            addMultiTypeConverter(new LongConverter(), Long.class, Long.TYPE);<a name="line.31"></a>
+<FONT color="green">032</FONT>            addMultiTypeConverter(new FloatConverter(), Float.class, Float.TYPE);<a name="line.32"></a>
+<FONT color="green">033</FONT>            addMultiTypeConverter(new CharacterConverter(), Character.class, Character.TYPE);<a name="line.33"></a>
+<FONT color="green">034</FONT>            addMultiTypeConverter(new ByteConverter(), Byte.class, Byte.TYPE);<a name="line.34"></a>
+<FONT color="green">035</FONT>            addMultiTypeConverter(new ShortConverter(), Short.class, Short.TYPE);<a name="line.35"></a>
+<FONT color="green">036</FONT>            addConverter(new FileConverter(), File.class);<a name="line.36"></a>
+<FONT color="green">037</FONT>            addConverter(new UrlConverter(), URL.class);<a name="line.37"></a>
+<FONT color="green">038</FONT>        }<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>        private void addMultiTypeConverter(Converter&lt;?&gt; converter, Class&lt;?&gt;... types) {<a name="line.40"></a>
+<FONT color="green">041</FONT>            for (Class&lt;?&gt; type : types) {<a name="line.41"></a>
+<FONT color="green">042</FONT>                addConverter(converter, type);<a name="line.42"></a>
+<FONT color="green">043</FONT>            }<a name="line.43"></a>
+<FONT color="green">044</FONT>        }<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        protected void addConverter(Converter&lt;?&gt; converter, Class&lt;?&gt; key) {<a name="line.46"></a>
+<FONT color="green">047</FONT>            converters.put(key, converter);<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>        public boolean canConvert(Type type) {<a name="line.50"></a>
+<FONT color="green">051</FONT>            return converters.containsKey(type);<a name="line.51"></a>
+<FONT color="green">052</FONT>        }<a name="line.52"></a>
+<FONT color="green">053</FONT>    <a name="line.53"></a>
+<FONT color="green">054</FONT>        public Object convert(String paramValue, Type type) {<a name="line.54"></a>
+<FONT color="green">055</FONT>            Converter&lt;?&gt; converter = converters.get(type);<a name="line.55"></a>
+<FONT color="green">056</FONT>            if (converter == null) {<a name="line.56"></a>
+<FONT color="green">057</FONT>                return null;<a name="line.57"></a>
+<FONT color="green">058</FONT>            }<a name="line.58"></a>
+<FONT color="green">059</FONT>            return converter.convert(paramValue);<a name="line.59"></a>
+<FONT color="green">060</FONT>        }<a name="line.60"></a>
+<FONT color="green">061</FONT>    <a name="line.61"></a>
+<FONT color="green">062</FONT>    }<a name="line.62"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

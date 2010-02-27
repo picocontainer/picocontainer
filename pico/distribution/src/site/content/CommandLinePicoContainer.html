@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Mac OS X (vers 1 September 2005), see www.w3.org" />
+
+  <title>CommandLinePicoContainer</title>
+</head>
+
+<body>
+  <p>CommandLineArgumentsPicoContainer is a special type of
+  PicoContainer that processes the arguments passed into from the
+  command line, and sets them up as configuration for other
+  components.</p>
+
+  <p>Here is an example of how to use
+  CommandLineArgumentsPicoContainer to map command line arguments
+  as configuration for a component, with parameter names as the
+  bindings.</p>
+
+  <p>Consider this component:</p>
+
+  <div class="source">
+    <pre>
+public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  public String toString() {
+    return "URL=" + spellWebService + ", timeout=" + timeout;  
+  }
+
+  // other methods
+}
+
+</pre>
+  </div>
+
+  <p>For automatic binding of command line arguments to parameter
+  names of the component:</p>
+
+  <div class="source">
+    <pre>
+public static void main(String[] args) {
+    PicoContainer argsContainer = new CommandLineArgumentsPicoContainer(args);
+                
+    MutablePicoContainer mpc = new DefaultPicoContainer(argsContainer);
+                
+    mpc.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
+   
+    Object o = mpc.getComponent(BigFatComponent.class);
+
+}
+
+...
+
+java -jar myAppJar.jar -cp picocontainer-2.0.jar timeout=100 spellingWebServiceURL=http://ws.com/someService.wsdl
+</pre>
+  </div>
+
+  <p>Here is another manual use forcing an association between a
+  item in the properties file, and the relative position of a
+  parameter in the constructor:</p>
+
+  <div class="source">
+    <pre>
+mpc.addComponent(BigFatComponent.class, ConfigParameter("config1"), ConfigParameter("moreConfig"));
+...
+
+java -jar myAppJar.jar -cp picocontainer-2.0.jar config1=http://ws.com/someService.wsd moreConfig=100 
+</pre>
+  </div>
+
+  <p>Type conversion is automatic in many cases. Properties in a
+  properties file are clearly strings. Parameters can be any
+  of:</p>
+
+  <ul>
+    <li>String</li>
+
+    <li>All numeric types, boxed as well as primitives</li>
+
+    <li>java.util.Date</li>
+
+    <li>java.io.File as well as java.io.URL</li>
+
+    <li>java.util.Date</li>
+
+    <li>java.sql.(Date|Time|Timestamp)</li>
+
+    <li>Any type sporting accessible constructor taking single
+    string parameter.</li>
+  </ul>
+
+  <p>CommandLineArgumentsPicoContainer can be part of a tree of
+  containers. It makes sense, of course, being more near the root
+  of that tree.</p>
+</body>
+</html>

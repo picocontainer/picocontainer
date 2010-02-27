@@ -1,0 +1,8 @@
+<container component-instance-factory='org.picocontainer.script.xml.XStreamComponentInstanceFactory'>
+    <component-instance key="requestScopedInstance">
+        <string>foo bar</string>
+    </component-instance>
+    <component-implementation class="org.picocontainer.web.FooHierarchy" key="testFooHierarchy">
+    		<parameter key="testFoo"/>
+    </component-implementation>    
+</container>

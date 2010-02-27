@@ -1,0 +1,8 @@
+<container>
+    <instance key="requestScopedInstance">
+        <string>foo bar</string>
+    </instance>
+    <implementation class="org.picocontainer.web.FooHierarchy" key="testFooHierarchy">
+    	<parameter key="testFoo" />
+    </implementation>
+</container>

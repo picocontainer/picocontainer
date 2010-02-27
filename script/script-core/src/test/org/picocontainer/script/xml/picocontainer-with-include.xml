@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE container [
+<!ENTITY include SYSTEM "include.xml">
+]>
+
+<container>
+    &include;
+</container>

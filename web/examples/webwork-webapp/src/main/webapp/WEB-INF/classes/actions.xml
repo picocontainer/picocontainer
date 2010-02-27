@@ -1,0 +1,6 @@
+<actions>
+    <action name="CheeseAction" alias="cheese">
+        <view name="success">cheese.vm</view>
+        <view name="error">cheese.vm</view>
+    </action>
+</actions>

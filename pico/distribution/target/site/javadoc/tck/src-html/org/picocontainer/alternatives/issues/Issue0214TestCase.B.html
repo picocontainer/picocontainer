@@ -1,0 +1,151 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer.alternatives.issues;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import org.junit.Test;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.picocontainer.DefaultPicoContainer;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import org.picocontainer.behaviors.ImplementationHiding;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import org.picocontainer.injectors.ConstructorInjection;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import org.picocontainer.visitors.VerifyingVisitor;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    public class Issue0214TestCase {<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>        // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.<a name="line.21"></a>
+<FONT color="green">022</FONT>        @Test public void testTheBug() {<a name="line.22"></a>
+<FONT color="green">023</FONT>            final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));<a name="line.23"></a>
+<FONT color="green">024</FONT>            pico.addComponent(A.class);<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>            /* This is a workaround for the bug described further down. Normally<a name="line.26"></a>
+<FONT color="green">027</FONT>             * this method call should only be needed if specific requirements for<a name="line.27"></a>
+<FONT color="green">028</FONT>             * parameters exist, but not if PicoContainer shall resolve the<a name="line.28"></a>
+<FONT color="green">029</FONT>             * dependencies itself. However, with ImplementationHidingPicoContainer<a name="line.29"></a>
+<FONT color="green">030</FONT>             * this is currently the only way to register a class/interface such<a name="line.30"></a>
+<FONT color="green">031</FONT>             * that the automatic resolution works.<a name="line.31"></a>
+<FONT color="green">032</FONT>             */<a name="line.32"></a>
+<FONT color="green">033</FONT>            pico.addComponent(I1.class, B.class);<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>            /* The following addAdapter(Object, Class) of<a name="line.35"></a>
+<FONT color="green">036</FONT>             * ImplementationHidingPicoContainer is buggy, as it contains<a name="line.36"></a>
+<FONT color="green">037</FONT>             * "ComponentAdapter delegate = componentFactory.createComponentAdapter(componentKey,<a name="line.37"></a>
+<FONT color="green">038</FONT>             * componentImplementation, new Parameter[0]);". Instead of "new<a name="line.38"></a>
+<FONT color="green">039</FONT>             * Parameter[0]" it should be "null" to have a behaviour consistent to<a name="line.39"></a>
+<FONT color="green">040</FONT>             * DefaultPicoContainer, i.e. if PicoContainer shall resolve<a name="line.40"></a>
+<FONT color="green">041</FONT>             * dependencies itself.<a name="line.41"></a>
+<FONT color="green">042</FONT>             */<a name="line.42"></a>
+<FONT color="green">043</FONT>            pico.addComponent(I2.class, C.class);<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>            /* The following verify() throws the exception, but is expected not to<a name="line.45"></a>
+<FONT color="green">046</FONT>             * throw: "org.picocontainer.PicoVerificationException:<a name="line.46"></a>
+<FONT color="green">047</FONT>             * [[org.picocontainer.PicoCompositionException: Either do the<a name="line.47"></a>
+<FONT color="green">048</FONT>             * specified parameters not match any of the following constructors:<a name="line.48"></a>
+<FONT color="green">049</FONT>             * [public PicoContainerBugTest$C(PicoContainerBugTest$A)] or the<a name="line.49"></a>
+<FONT color="green">050</FONT>             * constructors were not accessible for 'class<a name="line.50"></a>
+<FONT color="green">051</FONT>             * PicoContainerBugTest$C']]".<a name="line.51"></a>
+<FONT color="green">052</FONT>             *<a name="line.52"></a>
+<FONT color="green">053</FONT>             * I believe that the error comes this way: In method<a name="line.53"></a>
+<FONT color="green">054</FONT>             * getGreediestSatisfiableConstructor parameters are checked against<a name="line.54"></a>
+<FONT color="green">055</FONT>             * null and if parameters is not null it is assumed that specific<a name="line.55"></a>
+<FONT color="green">056</FONT>             * parameters have been given so that no automatic resolution takes<a name="line.56"></a>
+<FONT color="green">057</FONT>             * place. As now during registration instead of "null" falsly "new<a name="line.57"></a>
+<FONT color="green">058</FONT>             * Parameter[0]" was stored, this is now interpreted as if only the<a name="line.58"></a>
+<FONT color="green">059</FONT>             * nullary constructor shall be used, and if that doesn't exist, the<a name="line.59"></a>
+<FONT color="green">060</FONT>             * exception is thrown.<a name="line.60"></a>
+<FONT color="green">061</FONT>             */<a name="line.61"></a>
+<FONT color="green">062</FONT>            new VerifyingVisitor().traverse(pico);<a name="line.62"></a>
+<FONT color="green">063</FONT>        }<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>        public static interface I1 {<a name="line.65"></a>
+<FONT color="green">066</FONT>        }<a name="line.66"></a>
+<FONT color="green">067</FONT>    <a name="line.67"></a>
+<FONT color="green">068</FONT>        public static interface I2 {<a name="line.68"></a>
+<FONT color="green">069</FONT>        }<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>        public static class A {<a name="line.71"></a>
+<FONT color="green">072</FONT>            public A() {<a name="line.72"></a>
+<FONT color="green">073</FONT>            }<a name="line.73"></a>
+<FONT color="green">074</FONT>        }<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>        public static class B implements I1 {<a name="line.76"></a>
+<FONT color="green">077</FONT>            public B(final A a) {<a name="line.77"></a>
+<FONT color="green">078</FONT>            }<a name="line.78"></a>
+<FONT color="green">079</FONT>        }<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>        public static class C implements I2 {<a name="line.81"></a>
+<FONT color="green">082</FONT>            public C(final A a) {<a name="line.82"></a>
+<FONT color="green">083</FONT>            }<a name="line.83"></a>
+<FONT color="green">084</FONT>        }<a name="line.84"></a>
+<FONT color="green">085</FONT>    }<a name="line.85"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

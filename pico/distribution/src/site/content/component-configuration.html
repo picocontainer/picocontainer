@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Component Configuration</title>
+</head>
+<body>
+<div>
+    <h2>Choices</h2>
+
+    <p>In true IoC style, configuration for a component is pushed into it. </p>
+
+    <p>With PicoContainer, there are a few ways to do this:</p>
+    <ul>
+        <li>Design a class to hold the configuration and have getters on it to allow depending components to access
+            configuration.
+        </li>
+        <li>Manually set the configuration for components as you add them to a container</li>
+        <li>Leverage the fact that PicoContainer can pick up on named components</li>
+    </ul>
+    <h3>Configuration Object</h3>
+
+    <div class="source">
+    <pre>public interface BigFatComponentConfig {
+  String getSpellingWebServiceURL();
+  String getTimeout();
+}
+public class BigFatComponent {
+  URL spellWebService;
+  String timeout;
+  public BigFatComponent(BigFatComponentConfig config) {
+    this.spellWebService = new URL(config.getSpellingWebServiceURL());
+    this.timeout = config.getTimeout();
+  }  
+  // other methods
+}
+...
+pico.addComponent(BigFatComponent.class)
+pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&quot;, 120))</pre>
+    </div>
+    <h3>Setting config as part of addComponent(..) </h3>
+
+    <div class="source">
+      <pre>public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  // other methods
+}
+
+
+...
+pico.addComponent(BigFatComponent.class, new ConstantParameter(&quot;http://foo.com/foo.wsdl&quot;), new ConstantParameter(120));</pre>
+    </div>
+    <h3>Configuration using parameter names </h3>
+
+    <p>Consider this component ...</p>
+
+    <div class="source">
+    <pre>public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  public String toString() {
+    return &quot;URL=&quot; + spellWebService + &quot;, timeout=&quot; + timeout;  
+  }
+
+  // other methods
+}
+
+</pre>
+    </div>
+    <p>And this composition ...</p>
+
+    <div class="source">
+        <pre>
+pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;); // matches constructor parameter name
+pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
+pico.addConfig(&quot;timeout&quot;, 120); // matches constructor parameter name
+pico.addConfig(&quot;timeout2&quot;, 456);
+pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
+
+BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
+System.out.println(&quot;bfc: &quot; + bfc.toString());
+// Prints .. &quot;bfg: URL=http://foo.com/spelling.wsdl, timeout=120&quot;</pre>
+    </div>
+    <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods
+        and constructors</strong>. In this case named parameters spellingWebServiceURL and timeout.</p>
+
+    <p>There are two ways for this to work: </p>
+    <ul>
+        <li>relying on the fact that your component classes have debug info compiled into them.</li>
+        <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing
+            them in their jar
+        </li>
+    </ul>
+    <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to
+        differentiate between potential injectable classes of the same type and throws an exception that suggests that
+        there is an ambiguity.</p>
+
+    <p>This is <strong>not</strong> a global variable facility. Its scoped with the container in question and its child
+        containers.</p>
+</div>
+<h2>Taking configuration from the elsewhere</h2>
+
+<p>Configuration can also be bound to components with :</p>
+<blockquote>
+    <p><a href="CommandLinePicoContainer.html">CommandLineArgumentsPicoContainer</a></p>
+
+    <p><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></p>
+
+    <p><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></p>
+</blockquote>
+</body>
+</html>

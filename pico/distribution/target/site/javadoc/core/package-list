@@ -1,0 +1,15 @@
+org.picocontainer
+org.picocontainer.adapters
+org.picocontainer.annotations
+org.picocontainer.behaviors
+org.picocontainer.classname
+org.picocontainer.composers
+org.picocontainer.containers
+org.picocontainer.converters
+org.picocontainer.injectors
+org.picocontainer.lifecycle
+org.picocontainer.monitors
+org.picocontainer.parameters
+org.picocontainer.references
+org.picocontainer.security
+org.picocontainer.visitors

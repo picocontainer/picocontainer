@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>PicoContainer - Component Configuration</title>
+
+<style type="text/css" media="all">
+@import url("./style/pico.css");
+
+@import url("./style/syntaxhighlighter.css");
+</style>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
+</script>
+<script type="text/javascript">
+	_uacct = "UA-2268879-1";
+	urchinTracker();
+</script>
+<script type="text/javascript" src="./js/prototype.js">
+	//
+</script>
+<meta name="verify-v1" content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><span style="font-size: 72px; font-family: Geneva; font-weight: bold;"><img
+  src="images/pico-logo.png" alt="" /> <span style="color: rgb(58, 150, 27);">Pico</span><span
+  style="color: rgb(131, 131, 131);">Container</span></span>
+<div class="clear"></div>
+</div>
+<div id="breadcrumbs">
+<div class="left">Latest Released Version: 2.10.2</div>
+<div class="clear"></div>
+</div>
+
+<div id="leftColumn">
+<div id="navColumn">
+<h1>About</h1>
+<ul>
+     <li><a href="index.html">What is PicoContainer?</a></li>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="javadoc.html">Javadoc</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="goals.html">Project Goals</a></li>
+      <li><a href="support.html">Support</a></li>
+   
+</ul>
+
+<h1>Core Concepts</h1>
+<ul>
+     <li><a href="lifecycle.html">Component Lifecycle</a></li>
+      <li><a href="injection.html">Dependency Injection</a></li>
+      <li><a href="scopes.html">Scoped Containers</a></li>
+   
+</ul>
+
+<h1>Dependency Injection</h1>
+<ul>
+     <li><a href="constructor-injection.html">Constructor Injection</a></li>
+      <li><a href="setter-injection.html">Setter Injection</a></li>
+      <li><a href="annotated-field-injection.html">Annotated Field Injection</a></li>
+      <li><a href="annotated-method-injection.html">Annotated Method Injection</a></li>
+      <li><a href="typed-field-injection.html">Typed Field Injection</a></li>
+      <li><a href="named-field-injection.html">Named Field Injection</a></li>
+      <li><a href="method-injection.html">Method Injection</a></li>
+      <li><a href="named-method-injection.html">Named Method Injection</a></li>
+      <li><a href="multi-injection.html">Multiple Injection</a></li>
+      <li><a href="composite-injection.html">Composite Injection</a></li>
+      <li><a href="factory-injection.html">Factory Injection</a></li>
+      <li><a href="reinjection.html">Reinjection</a></li>
+      <li><a href="providers.html">Injection via Providers</a></li>
+   
+</ul>
+
+<h1>Configuration</h1>
+<ul>
+     <li><a href="disambiguation.html">Disambiguation</a></li>
+   
+</ul>
+
+<h1>Modifying Component Behaviors</h1>
+<ul>
+     <li><a href="behaviors.html">Behaviors Overview</a></li>
+      <li><a href="caching.html">Caching and Singletons</a></li>
+      <li><a href="hiding.html">Hiding Implementations</a></li>
+      <li><a href="thread-safety.html">Thread Safety Behaviors</a></li>
+      <li><a href="interception.html">AOP Style Interception</a></li>
+      <li><a href="other-behaviors.html">Other Behaviors</a></li>
+   
+</ul>
+
+<h1>Advanced Concepts</h1>
+<ul>
+     <li><a href="fluent-style.html">Fluent Style</a></li>
+      <li><a href="arrays-collections-and-maps.html">Arrays, Collections and Maps</a></li>
+      <li><a href="parameter-names.html">Leveraging Parameter Names</a></li>
+      <li><a href="builder.html">Building Containers</a></li>
+      <li><a href="properties.html">Component Properties</a></li>
+      <li><a href="converters.html">Converters</a></li>
+    
+  <li class="currentLink">Component Configuration</li>
+    <li><a href="monitors.html">Monitoring Component Events</a></li>
+      <li><a href="regex.html">Regex Composer</a></li>
+   
+</ul>
+
+<h1>PicoContainer's Architecture</h1>
+<ul>
+     <li><a href="patterns.html">Design Patterns</a></li>
+      <li><a href="inversion-of-control.html">Inversion of Control</a></li>
+      <li><a href="adapters.html">Component Adapters</a></li>
+      <li><a href="mock-objects.html">Mock Objects</a></li>
+      <li><a href="terminology.html">Terminology</a></li>
+      <li><a href="comparisons.html">Container Comparisons</a></li>
+      <li><a href="transparency.html">Transparency</a></li>
+   
+</ul>
+
+<h1>Container Choices</h1>
+<ul>
+     <li><a href="DefaultPicoContainer.html">DefaultPicoContainer</a></li>
+      <li><a href="CommandLinePicoContainer.html">CommandLinePicoContainer</a></li>
+      <li><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></li>
+      <li><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></li>
+      <li><a href="TransientPicoContainer.html">TransientPicoContainer</a></li>
+      <li><a href="TieringPicoContainer.html">TieringPicoContainer</a></li>
+   
+</ul>
+
+<h1>Dependant & Related</h1>
+<ul>
+     <li><a href="http://picocontainer.org/web">Web Frameworks</a></li>
+      <li><a href="http://picocontainer.org/script">Scripting Support</a></li>
+      <li><a href="http://picocontainer.org/persistence">Persistence</a></li>
+      <li><a href="http://picocontainer.org/logging">Logging</a></li>
+   
+</ul>
+
+<h1>Anti-patterns</h1>
+<ul>
+     <li><a href="propagating-dependency-antipattern.html">Propagating Dependency</a></li>
+      <li><a href="long-constructor-argument-list-antipattern.html">Long Constructor Argument List</a></li>
+      <li><a href="container-dependency-antipattern.html">Container Dependency</a></li>
+      <li><a href="tests-use-container-antipattern.html">Unit Tests Use Container</a></li>
+      <li><a href="singleton-antipattern.html">Singleton</a></li>
+   
+</ul>
+
+<h1>Help Pages</h1>
+<ul>
+     <li><a href="ambiguous-injectable-help.html">Ambiguous Injectable</a></li>
+      <li><a href="unprocessed-properties-help.html">Unprocessed Properties</a></li>
+   
+</ul>
+
+<h1>History</h1>
+<ul>
+     <li><a href="inversion-of-control-history.html">Inversion of Control History</a></li>
+   
+</ul>
+
+<h1>Project Info</h1>
+<ul>
+     <li><a href="project.html">Project</a></li>
+      <li><a href="team.html">Team</a></li>
+   
+</ul>
+<h1>Hosted by</h1>
+<img alt="Hosted at Codehaus" src="images/codehaus-small.gif" width="120" height="40" /><br />
+<h1>Tools</h1>
+<img alt="Maven" src="images/maven-feather.png" /> <br />
+<img alt="Eclipse" src="images/eclipse-logo-white.jpg" width="100" height="40" /> <br />
+<img alt="IDEA" src="images/idea88x31_white.gif" /> <br />
+</div>
+</div>
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Component Configuration</h2>
+
+<div>
+    <h2>Choices</h2>
+
+    <p>In true IoC style, configuration for a component is pushed into it. </p>
+
+    <p>With PicoContainer, there are a few ways to do this:</p>
+    <ul>
+        <li>Design a class to hold the configuration and have getters on it to allow depending components to access
+            configuration.
+        </li>
+        <li>Manually set the configuration for components as you add them to a container</li>
+        <li>Leverage the fact that PicoContainer can pick up on named components</li>
+    </ul>
+    <h3>Configuration Object</h3>
+
+    <div class="source">
+    <pre>public interface BigFatComponentConfig {
+  String getSpellingWebServiceURL();
+  String getTimeout();
+}
+public class BigFatComponent {
+  URL spellWebService;
+  String timeout;
+  public BigFatComponent(BigFatComponentConfig config) {
+    this.spellWebService = new URL(config.getSpellingWebServiceURL());
+    this.timeout = config.getTimeout();
+  }  
+  // other methods
+}
+...
+pico.addComponent(BigFatComponent.class)
+pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&quot;, 120))</pre>
+    </div>
+    <h3>Setting config as part of addComponent(..) </h3>
+
+    <div class="source">
+      <pre>public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  // other methods
+}
+
+
+...
+pico.addComponent(BigFatComponent.class, new ConstantParameter(&quot;http://foo.com/foo.wsdl&quot;), new ConstantParameter(120));</pre>
+    </div>
+    <h3>Configuration using parameter names </h3>
+
+    <p>Consider this component ...</p>
+
+    <div class="source">
+    <pre>public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  public String toString() {
+    return &quot;URL=&quot; + spellWebService + &quot;, timeout=&quot; + timeout;  
+  }
+
+  // other methods
+}
+
+</pre>
+    </div>
+    <p>And this composition ...</p>
+
+    <div class="source">
+        <pre>
+pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;); // matches constructor parameter name
+pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
+pico.addConfig(&quot;timeout&quot;, 120); // matches constructor parameter name
+pico.addConfig(&quot;timeout2&quot;, 456);
+pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
+
+BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
+System.out.println(&quot;bfc: &quot; + bfc.toString());
+// Prints .. &quot;bfg: URL=http://foo.com/spelling.wsdl, timeout=120&quot;</pre>
+    </div>
+    <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods
+        and constructors</strong>. In this case named parameters spellingWebServiceURL and timeout.</p>
+
+    <p>There are two ways for this to work: </p>
+    <ul>
+        <li>relying on the fact that your component classes have debug info compiled into them.</li>
+        <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing
+            them in their jar
+        </li>
+    </ul>
+    <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to
+        differentiate between potential injectable classes of the same type and throws an exception that suggests that
+        there is an ambiguity.</p>
+
+    <p>This is <strong>not</strong> a global variable facility. Its scoped with the container in question and its child
+        containers.</p>
+</div>
+<h2>Taking configuration from the elsewhere</h2>
+
+<p>Configuration can also be bound to components with :</p>
+<blockquote>
+    <p><a href="CommandLinePicoContainer.html">CommandLineArgumentsPicoContainer</a></p>
+
+    <p><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></p>
+
+    <p><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="right">&#169; 2003-2008 PicoContainer Committers</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<!--  Scripts to highlight code:  MUST be left AFTER the body -->
+<script language="javascript" src="./js/shCore.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushJava.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushXml.js">
+	//
+</script>
+<script type="text/javascript">
+	// <![CDATA[
+	var elements = document.getElementsByClassName('source');
+	elements.each( function(element) {
+		var content = element.getElementsByTagName('pre')[0].innerHTML;
+		var classType = /^&lt;/.test(content) ? "xml" : "java";
+		content = "<textarea name=\"code\" class=\"" + classType + "\">"
+				+ content + "</textarea>";
+		new Insertion.Before(element, content);
+		element.remove(element);
+	});
+
+	dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	// ]]>
+</script>
+
+</html>

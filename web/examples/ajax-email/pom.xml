@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.picocontainer.web</groupId>
+    <artifactId>picocontainer-web-examples</artifactId>
+    <version>2.4-SNAPSHOT</version>
+  </parent>
+  <artifactId>ajaxemail-parent</artifactId>
+  <name>Ajax Email Parent</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>ajax-email-webapp</module>
+    <module>ajax-email-scenarios</module>
+  </modules>
+
+  <properties>
+    <jbehave.core.version>2.3.2</jbehave.core.version>
+    <jbehave.web.version>2.1.4</jbehave.web.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jbehave</groupId>
+        <artifactId>jbehave-core</artifactId>
+        <version>${jbehave.core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jbehave.web</groupId>
+        <artifactId>jbehave-web-selenium</artifactId>
+        <version>${jbehave.web.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

@@ -1,0 +1,10 @@
+To run scenarios in IDE:
+
+- open terminal window and run
+
+./jetty-server.sh
+
+- open terminal window and run 
+
+./selenium-server.sh
+

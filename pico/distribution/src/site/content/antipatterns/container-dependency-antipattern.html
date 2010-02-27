@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Container Dependency</title>
+</head>
+<body>
+<div>
+    <h2>Symptoms</h2>
+
+    <p>Classes that depend on the container.</p>
+
+    <p>Consider the following example. We have a class BImpl that requires an A instance. It declares the dependency on
+       the container so it can look up that A:</p>
+
+    <div class="source">
+        <div>
+            <pre>public interface A {
+}
+
+public class AImpl implements A {
+}
+
+public class BImpl implements B {
+    private final A a;
+
+    public BImpl(PicoContainer pico) {
+        a = (A) pico.getComponentOfType(A.class);
+        
+        /*
+        alternatively:
+        a = (A) pico.getComponent(&quot;a&quot;);
+        */
+    }
+}</pre>
+        </div>
+    </div>
+    <p>The usage would probably look similar to:</p>
+
+    <div class="source">
+        <div>
+            <pre>MutablePicoContainer pico = new DefaultPicoContainer();
+pico.addComponent(&quot;a&quot;, AImpl.class);
+pico.addComponent(&quot;b&quot;, BImpl.class);
+pico.addComponent(pico);
+
+...
+B b = (B) pico.getComponent(&quot;b&quot;);</pre>
+        </div>
+    </div>
+    <p>It will work, but it is an antipattern. </p>
+
+    <p>The reasons why the above implementation of BImpl is an antipattern are:</p>
+    <ul>
+        <li>It introduces an unneeded dependency from BImpl to the container, breaking the core principal of Inversion of Control</li>
+        <li>This makes BImpl harder to unit test</li>
+        <li>B assumes that the container has a registered an A. As a result, B won't fail fast if it has not. Instead, a
+            will reference null, and BImpl will fail later.
+        </li>
+    </ul>
+</div>
+<div>
+    <h2>Causes</h2>
+    <ul>
+      <li>Missing the historical context of PicoContainer, Dependency Injection and Inversion of Control.</li> 
+	  <li>Love of 'God class' designs.</li>
+    </ul>
+</div>
+<div>
+    <h2>What to do</h2>
+
+    <p>The simple and elegant solution to this antipattern is not to complicate the world more than it is.<br />
+        <br />
+       Here is how it should be:</p>
+
+    <div class="source">
+        <div>
+            <pre>public class BImpl implements B {
+    private final A a;
+
+    BImpl(A a) {
+        this.a = a;
+    }
+}</pre>
+        </div>
+    </div>
+    <p>PicoContainer will figure out that BImpl needs an A instance, and will pass in the AImpl, as this is an
+       implementation of A.</p>
+     
+    <h2>The One Major Exception</h2>
+    <p>When you go to integrate all your components into a single application, SOMETHING is going to have to wire all these components together. In Pico-land, we call that the &quot;bootstrap&quot; script. (Script, is a loose term, it could easily be a reference to PicoContainer inside a class' main() function.) The pattern of this code will often look like this:</p>
+<div class="source">
+<pre>
+public class Bootstrap {
+	
+   private PicoContainer pico = new PicoBuilder().withLifecycle().withCaching().build();
+
+
+	public static void main(String[] args) {
+		Bootstrap bootstrap = new BootStap();
+		bootstrap.start();
+	}
+
+
+	public void start() {
+		/*  pico.addComponent(A.class), pico.addComponent(B.class) */
+		/*  etc. */
+
+		
+		pico.start();
+		//enter some sort of event loop.
+
+
+		//Event loop broken.
+
+  		pico.stop(); 
+ 	}
+
+
+	public void stop() {
+		pico.stop();
+		pico.dispose();
+	}
+}
+</pre>
+</div>
+    <p>PicoContainer has a sample project called &quot;bootstrap&quot; that does just this sort of thing. For web applications, Pico uses a WebappContextListener to bootstrap an application-level container, and a Servlet filter to bootstrap a request-level container.<br>
+    </p>
+</div>
+</body>
+</html>

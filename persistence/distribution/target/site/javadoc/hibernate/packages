@@ -1,0 +1,2 @@
+org.picocontainer.persistence.hibernate
+org.picocontainer.persistence.hibernate.annotations

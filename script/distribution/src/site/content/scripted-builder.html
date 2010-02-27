@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Scripted Builder</title>
+</head>
+
+<body>
+<p><a
+	href="javadoc/core/org/picocontainer/script/ScriptedPicoContainer.html">ScriptedPicoContainer</a>
+is primarily intended to be embedded inside other applications and
+frameworks. We recommend using a scripted container when your
+application consists of many loosely-coupled components that need
+composition driven by external scripts at runtime, ie when
+re-compilation is not possible.</p>
+
+<p>Building a PicoContainer from a script is simple and
+straightforward using a <a
+	href="javadoc/core/org/picocontainer/script/ScriptedContainerBuilder.html">ScriptedContainerBuilder</a>.
+Let's look at an example: <textarea class="java:nogutter:nocontrols"
+	name="code">
+// Instantiate the reader. It should point to a script.
+FileReader scriptReader = new FileReader(new File("/path/to/script"));
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+// Build the container from the script. GroovyContainerBuilder is used in this example
+// but any ScriptedContainerBuilder can be used depending on the script type being read.
+ScriptedContainerBuilder builder = new GroovyContainerBuilder(scriptReader, classLoader)
+PicoContainer parent = new DefaultPicoContainer(classLoader);
+Object assemblyScope = "an assembly scope";
+boolean addChildToParent = true;
+PicoContainer container = builder.buildContainer(parent, assemblyScope, addChildToParent);
+  </textarea></p>
+<p>Do note that both parent container and assembly scope are
+optional and may be set to <code>null</code>. The assembly scope is
+simply a hint that may be used by container builders to build multiple
+container content. The container may or may not be added to the parent
+container - provided it is present.</p>
+
+<p>The <b>contract for interpreted languages</b> is defined as
+follows:
+<ol>
+	<li>The scripts have to define a <code>pico</code> variable of
+	type MutablePicoContainer</li>
+	<li>The script has access to a variable named "parent", which is a
+	MutablePicoContainer instance or <code>null</code>. It should be used
+	when constructing the <code>pico</code> MutablePicoContainer</li>
+	<li>The script has access to a variable named <code>assemblyScope</code>
+	that may be used in order to decide how to compose the container. The
+	value of this variable can be any kind of object.</li>
+</ol>
+</p>
+
+<p>Let's now in more detail at the supported interpreted languages
+for container composition, giving a sample script for each:
+<ul>
+	<li><a href="http://beanshell.org">Beanshell</a>: we can just use
+	Java <textarea class="java:nogutter:nocontrols" name="code">
+pico = new org.picocontainer.DefaultPicoContainer(parent);
+pico.registerComponent(org.picocontainer.script.testmodel.DefaultWebServerConfig);
+pico.registerComponent(org.picocontainer.script.testmodel.WebServerImpl);</textarea>
+	</li>
+	<li><a href="http://groovy.codehaus.org">Groovy</a>: we can use
+	Java as in Beanshell or use the builder syntax <textarea
+		class="java:nogutter:nocontrols" name="code">
+pico = builder.container(parent:parent) {
+    component(class:org.picocontainer.script.testmodel.DefaultWebServerConfig)
+    component(class:org.picocontainer.script.testmodel.WebServerImpl)
+}</textarea></li>
+	<li><a href="http://jruby.org">JRuby</a>: a similar builder syntax
+	to Groovy <textarea class="java:nogutter:nocontrols" name="code">
+DefaultWebServerConfig = org.picocontainer.script.testmodel.DefaultWebServerConfig
+WebServerImpl = org.picocontainer.script.testmodel.WebServerImpl
+container {
+    component(:class => DefaultWebServerConfig)
+    component(:class => WebServerImpl)
+}</textarea></li>
+	<li><a href="http://jython.org">Jython</a>: <textarea
+		class="java:nogutter:nocontrols" name="code">
+from org.picocontainer.script import *
+from org.picocontainer.script.testmodel import *
+pico = DefaultPicoContainer(parent);
+pico.registerComponent(DefaultWebServerConfig);
+pico.registerComponent(WebServerImpl);</textarea></li>
+	<li><a href="http://www.mozilla.org/rhino/">Rhino</a>: <textarea
+		class="java:nogutter:nocontrols" name="code">
+importPackage(Packages.org.picocontainer)
+importPackage(Packages.org.picocontainer.script)
+importPackage(Packages.org.picocontainer.script.testmodel)
+var pico = new DefaultPicoContainer(parent)
+pico.registerComponent(DefaultWebServerConfig)
+pico.registerComponent(WebServerImpl)</textarea></li>
+</ul>
+</p>
+
+<p>The above examples in XML would be rendered as: <textarea
+	class="xml:nogutter:nocontrols" name="code">
+<container>
+  <component-implementation
+	class='org.picocontainer.script.testmodel.DefaultWebServerConfig' />
+  <component-implementation
+	class='org.picocontainer.script.testmodel.WebServerImpl' />
+</container>
+</textarea></p>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Behaviors Overview</title>
+
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
+    </style>
+</head>
+<body>
+<p>PicoContainer can add behaviors to components automatically
+    during instantiation.</p>
+
+<p>Behaviors are delivered by passing a BehaviorFactory
+    reference into the PicoContainer instance on construction. For the most
+    part BehaviorFactories are completely stateless, and the Behavior
+    instances they make are not.</p>
+
+<h3>General use</h3>
+
+<p>DefaultPicoContainer can take a behavior factory instance in
+    its constructor:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new BehaviorClass());
+
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.</pre>
+</div>
+<p>Or it can take behaviours that wrap each other:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new BehaviorClass().wrap(new AnotherBehaviorClass()));
+&nbsp;
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two additonal behaviors.
+
+</pre>
+</div>
+<p>Behaviors can be signalled by properties per component:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer();
+
+pico.as(SOME_BEHAVIOR).addComponent(Foo.class); // the behavior has a property marking it, and the default 
+ component facory understands that property
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.
+</pre>
+</div>
+<p>You can build a container with the applicable property:</p>
+
+<div class="source">
+<pre>pico = new PicoBuilder().withXXXBehavior().build();
+
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.
+</pre>
+</div>
+<p>Behaviors can be chained together by PicoBuilder:</p>
+
+<div class="source">
+<pre>import static org.picocontainer.behaviors.Behaviors.xxxxxxx;
+import static org.picocontainer.behaviors.Behaviors.yyyyyyy;
+...
+pico = new PicoBuilder().withBehaviors(xxxxxxx(), yyyyyyy()).build();
+
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two additonal behaviors.
+</pre>
+</div>
+
+<h3>Specific Behaviors</h3>
+
+<h4>Caching</h4>
+
+<p>Caching is where PicoContainer ensures that the same component instance is returned for second and subsequent getComponent() invocations.  See the <a href="caching.html">Caching</a> behavior page.  Other Dependency Injection Containers call this Singleton behavior.</p>
+
+<h4>Implementation Hiding</h4>
+
+<p>Hiding Implementations is where PicoContainer ensures that the component that implements a abstract type can only be used as that abstract type by components that depend on it.  Casting back to the implementation is vetoed.  See the <a href="hiding.html">Hiding</a> behavior page.</p>
+
+<h4>Thread Safety</h4>
+
+<p>Synchronizing and Locking are variations on where PicoContainer ensures that components can used in a thread-safe way.  See the <a href="thread-safety.html">Thread Safety</a> behavior page.</p>
+
+<h4>Interception</h4>
+
+<p>AOP Style Interception is where PicoContainer can invoke functionality before or after component method execution.  See the <a href="interception.html">Interception</a> behavior page.</p>
+
+<h3>Where Next?</h3>
+<span class="callout">
+The <a href="lifecycle.html">Component Lifecycle</a>
+page details the lifecycle concepts applicable to some components</span>
+</body>
+</html>

@@ -1,0 +1,43 @@
+p.small
+{
+  margin-top:12px;	
+}
+h1
+{
+   margin-bottom:6px;	
+}
+.content_divider
+{
+   margin-bottom:12px;	
+}
+#content
+{
+  top:-16px;
+}
+#mailboxes
+{
+   left:-110px;
+}
+.textfield
+{
+  height:22px;
+}
+#topnavigation
+{
+   padding-bottom:3px;
+   height:32px;
+   padding-top:3px;
+}
+.iButton
+{
+  position:relative;
+  top:2px;
+  padding-left:1px;
+  padding-right:1px;
+  padding-top:1px;
+  padding-bottom:1px;
+}
+form
+{
+   margin:0px;
+}

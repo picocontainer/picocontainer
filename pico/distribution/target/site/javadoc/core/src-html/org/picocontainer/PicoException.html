@@ -1,0 +1,124 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    /**<a name="line.12"></a>
+<FONT color="green">013</FONT>     * Superclass for all Exceptions in PicoContainer. You can use this if you want to catch all exceptions thrown by<a name="line.13"></a>
+<FONT color="green">014</FONT>     * PicoContainer. Be aware that some parts of the PicoContainer API will also throw {@link NullPointerException} when<a name="line.14"></a>
+<FONT color="green">015</FONT>     * &lt;code&gt;null&lt;/code&gt; values are provided for method arguments, and this is not allowed.<a name="line.15"></a>
+<FONT color="green">016</FONT>     * <a name="line.16"></a>
+<FONT color="green">017</FONT>     * @author Paul Hammant<a name="line.17"></a>
+<FONT color="green">018</FONT>     * @author Aslak Helles&amp;oslash;y<a name="line.18"></a>
+<FONT color="green">019</FONT>     */<a name="line.19"></a>
+<FONT color="green">020</FONT>    public abstract class PicoException extends RuntimeException {<a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>        /**<a name="line.22"></a>
+<FONT color="green">023</FONT>         * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception<a name="line.23"></a>
+<FONT color="green">024</FONT>         * that caused this one.<a name="line.24"></a>
+<FONT color="green">025</FONT>         */<a name="line.25"></a>
+<FONT color="green">026</FONT>        protected PicoException() {<a name="line.26"></a>
+<FONT color="green">027</FONT>        }<a name="line.27"></a>
+<FONT color="green">028</FONT>    <a name="line.28"></a>
+<FONT color="green">029</FONT>        /**<a name="line.29"></a>
+<FONT color="green">030</FONT>         * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the<a name="line.30"></a>
+<FONT color="green">031</FONT>         * exception that caused this one.<a name="line.31"></a>
+<FONT color="green">032</FONT>         *<a name="line.32"></a>
+<FONT color="green">033</FONT>         * @param message the message detailing the exception.<a name="line.33"></a>
+<FONT color="green">034</FONT>         */<a name="line.34"></a>
+<FONT color="green">035</FONT>        protected PicoException(final String message) {<a name="line.35"></a>
+<FONT color="green">036</FONT>            super(message);<a name="line.36"></a>
+<FONT color="green">037</FONT>        }<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>        /**<a name="line.39"></a>
+<FONT color="green">040</FONT>         * Construct a new exception with the specified cause and no detail message.<a name="line.40"></a>
+<FONT color="green">041</FONT>         * <a name="line.41"></a>
+<FONT color="green">042</FONT>         * @param cause the exception that caused this one.<a name="line.42"></a>
+<FONT color="green">043</FONT>         */<a name="line.43"></a>
+<FONT color="green">044</FONT>        protected PicoException(final Throwable cause) {<a name="line.44"></a>
+<FONT color="green">045</FONT>            super(cause);<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>        /**<a name="line.48"></a>
+<FONT color="green">049</FONT>         * Construct a new exception with the specified cause and the specified detail message.<a name="line.49"></a>
+<FONT color="green">050</FONT>         *<a name="line.50"></a>
+<FONT color="green">051</FONT>         * @param message the message detailing the exception.<a name="line.51"></a>
+<FONT color="green">052</FONT>         * @param cause   the exception that caused this one.<a name="line.52"></a>
+<FONT color="green">053</FONT>         */<a name="line.53"></a>
+<FONT color="green">054</FONT>        protected PicoException(final String message, final Throwable cause) {<a name="line.54"></a>
+<FONT color="green">055</FONT>            super(message,cause);<a name="line.55"></a>
+<FONT color="green">056</FONT>        }<a name="line.56"></a>
+<FONT color="green">057</FONT>    <a name="line.57"></a>
+<FONT color="green">058</FONT>    }<a name="line.58"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

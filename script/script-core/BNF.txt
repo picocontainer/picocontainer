@@ -1,0 +1,59 @@
+
+Scripted PicoContainer BNF syntax
+
+Terminology:
+    <S> ::= D  	Symbol S uniquely defined by the content of definition D 
+    <E>*     	repeat expression E zero or more times 
+    <E>+     	repeat expression E one or more times 
+    <E>?     	optional expression E  
+    {<A>|<B>}  	either A or B 
+
+Syntax:
+<container> ::= <classpath>* 
+				<container>* 
+				<component-implementation>* 
+				<component-adapter>* 
+				<component-instance>*
+
+<container> ::= <container-class> <container-parent> <assembly-scope>
+
+<container-class> ::= <scripted-container>
+
+<container-parent> ::= { <scripted-container> | <null> }
+
+<scripted-container> ::= org.picocontainer.script.ScriptedPicoContainer reference
+
+<null> ::= Null reference
+
+<assembly-scope> ::= java.lang.Object
+
+<classpath> ::= <classloader-url>* 
+ 
+<classloader-url> ::= java.net.URL  
+
+<component-implementation> ::= <key>? <implementation-class> <parameter>*
+
+<component-adapter> ::= { <adapter-class> | <adapter-factory } 
+						<key> 
+						{ <implementation-class> <parameters>* | <instance> } 
+
+<component-instance> ::= <key>? <instance>
+
+<adapter-class> :== java.lang.Class
+
+<adapter-factory> :== java.lang.Class
+
+<implementation-class> :== java.lang.Class
+
+<instance> :== { java.lang.Object | <instance-factory> }
+
+<instance-factory> :== java.lang.Class
+ 
+<parameter> :== { <component-parameter> | <constant-parameter> }
+
+<component-parameter> :== <key>
+
+<constant-parameter> :== <instance>
+
+<key> :== java.lang.Object
+

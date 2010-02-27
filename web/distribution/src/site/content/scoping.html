@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>Scoping Web Components</title>
+</head>
+<body>
+<p>Choosing which scope for you components requires you to understand
+understand how scopes work.&nbsp; Consider a contrived stateful web
+application that is
+all about buying cars. A subset of the functions it must perform are
+'add car to cart', 'remove car from cart' and 'go to checkout'<br>
+</p>
+<p>The Components we are going to need for this minimalistic web
+application are 'ShoppingCart' and 'Store'.&nbsp; The actual functions
+above are also going to be transient components 'AddToCart',
+'RemoveFromCart' and 'GotoCheckout'.<br>
+</p>
+<p>Assuming a <a href="composition.html">composition script</a> for
+these components, the initial state of the stack is one where all the
+components are in place, but nothing has been instantiated yet.<br>
+</p>
+<p><img alt="composition diag" src="images/Composition.png"></p>
+<p>The components we've described above are shapes, and the
+dependencies describes with arrowed lines.&nbsp; For these diagrams it
+does not matter which type of <a
+ href="http://picocontainer.org/injection.html">Dependency
+Injection</a> is being used.<br>
+</p>
+<p>Next, consider the web container starting up, or where there are no
+active sessions:<br>
+</p>
+<p><img alt="composition diag" src="images/WebAppStart.png">
+</p>
+<p>Colored shapes are instantiated, whereas dotted shapes are not (for that session).  Solid arrows are actual injections, whereas dotted arrows are ones that could injections were the corresponding components to be instantiated.<br>
+</p>
+<p>Then after the first web request from a new session, a session
+scoped component is instantiated, and an action that will modify it
+based on input:<br>
+</p>
+<p>Cart is stateful at the session level, because it contains a list of
+items to potentially purchase.</p>
+<p><img alt="composition diag" src="images/AddingACar.png">
+</p>
+<p>Alternatively, a car could be removed from the cart. In this case
+the AddToCart component that had previously been instantiated, is has
+already been garbage collected for this session...</p>
+<p><img alt="composition diag" src="images/RemovingACar.png">
+</p>
+<p>Finally, the user could go to the checkout with the contents of the
+cart ...</p>
+<p><img alt="composition diag" src="images/GoingToCheckout.png">
+</p>
+<p>Checkout is stateful at the session level because it not only refers
+to the contents of a cart, but also contains new details like a payment
+mechanism for the pending purchase.<br>
+</p>
+<p>
+</p>
+</body>
+</html>

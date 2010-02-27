@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Overview</title>
+</head>
+
+<body>
+<h2>Why PicoContainer Logging?</h2>
+<p><a href="http://picocontainer.org">PicoContainer</a>'s primary mission statement is to provide an Inversion of
+Control (IoC) container for components honor the Dependency Injection (DI) pattern. Logging is an important and useful
+function of many enterprise-level applications. Yet the logging tools and frameworks available remain stubbornly wed to
+the static lookup and discovery approach that defies the concepts of IoC and DI. The main problem with static lookup is
+that it allows only one configuration per JVM, even if there are completely different applications deployed. To compound
+problems, static lookup is often coupled with auto-discovery mechanisms of which logging framework is deployed by
+looking for classes in the classpath. This makes it impossible to use a chosen logging framework per application, as
+would be expected of any configurable system.</p>
+
+<h2>Monitors Preferred</h2>
+<p>Following the general PicoContainer philosophy, we strive to interoperate and are not trying to propose an
+alternative logging facade. Rather, we generally propose an alternative approach to logging, based on the <a
+  href="monitor-pattern.html">Monitor pattern</a> to abstract the dependency on <i>any</i> logging framework.</p>
+<p>However, some situations demand a generalized logging environment...</p>
+</p>
+<h2>What PicoContainer's Logging is..</h2>
+<ul>
+	<li>It is not dependent on PicoContainer itself. It can be used with or without other IoC or DI containers/frameworks</li>
+	<li>It is design to be injected into components that need it</li>
+	<li>It can route through to Log4J, JDK-Logging</li>
+	<li>It can be used completely independently of Log4J or JDK-Logging</li>
+</ul>
+<h2>How mature is this Logging framework?</h2>
+<p>Though only released in June of 2008 as library from the PicoContainer team, the technology has existed and been used in production apps since 2003. It was formerly part of lesser known set of components from the 'Spice' project evolved by Peter Donald (an IoC pioneer) and Mauro Talevi. Peter recently donated these to the PicoContainer team for a new release.</p>
+</p>
+</body>
+</html>

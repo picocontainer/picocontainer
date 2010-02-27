@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false" threshold="null" xmlns:log4j="http://jakarta.apache.org/log4j/">
+	
+	<appender class="org.picocontainer.gems.monitors.ForTestSakeAppender" name="FILE">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+		</layout>
+	</appender>
+
+	<appender class="org.apache.log4j.ConsoleAppender" name="CONSOLE">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+		</layout>
+	</appender>
+
+	<logger additivity="true" name="org.picocontainer">
+		<level value="DEBUG"/>
+		<appender-ref ref="FILE"/>
+	</logger>
+
+    <logger additivity="true" name="java.lang">
+        <level value="DEBUG"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+	<root>
+		<level value="DEBUG"/>
+	</root>
+</log4j:configuration>

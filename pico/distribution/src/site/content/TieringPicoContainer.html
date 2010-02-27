@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Mac OS X (vers 1 September 2005), see www.w3.org" />
+
+  <title>TieringPicoContainer</title>
+</head>
+
+<body>
+  <p>TieringPicoContainer is the same as DefaultPicoContainer,
+  except that child containers can only seek to locate unsatisfied
+  injection dependencies for their immediate parent container.
+  Their grandparents are out of bounds for dependency resolution.
+  Example:</p>
+
+  <div class="source">
+    <pre>
+MutablePicoContainer grandparent = new TieringPicoContainer();
+    MutablePicoContainer parent = grandparent.makeChildContainer();
+    MutablePicoContainer child = parent.makeChildContainer();
+    grandparent.addComponent(Couch.class);
+    child.addComponent(TiredPerson.class);
+
+    TiredPerson tp = child.getComponent(TiredPerson.class); // will fail.
+</pre>
+  </div>
+
+  <p>A PicoCompositionException will be thrown indicating that
+  there was a unsatisfied dependency. Namely TiredPerson needed a
+  couch, but none were available.</p>
+</body>
+</html>

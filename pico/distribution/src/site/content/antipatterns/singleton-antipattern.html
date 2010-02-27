@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Singleton</title>
+</head>
+<body>
+<p>The singleton pattern was described in the GoF <a href="http://en.wikipedia.org/wiki/Design_Patterns">Design
+                                                                                                         Patterns</a>
+   book. Because of its static nature and global availability, it allows component writers to obscurely reference other
+   components. Overuse makes for bad solutions. Overuse at the enterprise level, it makes for very bad solutions.</p>
+
+<p>We claim that the GoF Singleton pattern is, in fact, quite often an anti-pattern. The downside of the singleton is
+   that there are many transitive dependancies that are not easy to spot. Singletons cannot easily be replaced with <a
+    href="mock-objects.html" title="Mock Objects">Mock Objects</a> for the sake of easy unit testing.</p>
+
+<p>With PicoContainer we would replace this with a container <em>managed single instance</em>, possibly in a container
+   hierarchy (see <a href="introduction.html">Introduction</a>
+   and <a href="behaviors.html" title="Caching">Caching</a>).</p>
+
+<p>Quite often with J2EE solutions, the component model is honored to a degree for the sake of external APIs, but is
+   sidestepped for the sake of the internals of the application. Session beans Foo and Bar are likely to leverage a
+   hairball of singletons to achieve their ends. Systems developed along these lines, rapidly become entangled and
+   unmaintainable. These entangled systems can also be referred to as:</p>
+<ul>
+    <li>Raymen Noodle Design</li>
+    <li>Big Ball of Mud <a href="http://www.laputan.org/pub/foote/mud.pdf">http://www.laputan.org/pub/foote/mud.pdf</a>
+    </li>
+    <li>Spaghetti Code</li>
+</ul>
+<p>In case its not clear, Singletons as a core feature of a component design are mutually exclusive with <a
+    href="inversion-of-control.html">Inversion of Control</a>.</p>
+</body>
+</html>

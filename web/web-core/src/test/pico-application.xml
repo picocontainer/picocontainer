@@ -1,0 +1,6 @@
+<container component-instance-factory='org.picocontainer.script.xml.XStreamComponentInstanceFactory'>
+    <component-instance key="applicationScopedInstance">
+        <string>foo bar</string>
+    </component-instance>
+    <component-implementation class="org.picocontainer.web.Foo"  key="testFoo"/>    
+</container>

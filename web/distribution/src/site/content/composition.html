@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Composition</title>
+</head>
+<body>
+<p>PicoContainer Web composition is abstracted via the <a
+  href="javadoc/core/org/picocontainer/web/WebappComposer.html">WebappComposer</a> interface, which defines how
+components are registered at the different webapp scopes - application, session and request. Typically, request-scoped
+components are 'actions'.</p>
+<div class="source"><pre>
+	public class ExampleWebappComposer implements WebappComposer {
+
+	    public void composeApplication(MutablePicoContainer appContainer) {
+	        appContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
+	    }
+
+	    public void composeSession(MutablePicoContainer sessionContainer) {
+	        sessionContainer.addComponent(CheeseService.class, DefaultCheeseService.class);
+	    }
+
+	    public void composeRequest(MutablePicoContainer requestContainer) {
+		    // for Struts1 &amp; 2 and Webwork 1 &amp; 2 the request level components are added lazily
+		    // as they have their own XML for defining action mappings.
+	    }
+	}	
+</pre></div>
+</body>
+</html>

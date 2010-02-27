@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>PicoContainer - Inversion of Control History</title>
+
+<style type="text/css" media="all">
+@import url("./style/pico.css");
+
+@import url("./style/syntaxhighlighter.css");
+</style>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
+</script>
+<script type="text/javascript">
+	_uacct = "UA-2268879-1";
+	urchinTracker();
+</script>
+<script type="text/javascript" src="./js/prototype.js">
+	//
+</script>
+<meta name="verify-v1" content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><span style="font-size: 72px; font-family: Geneva; font-weight: bold;"><img
+  src="images/pico-logo.png" alt="" /> <span style="color: rgb(58, 150, 27);">Pico</span><span
+  style="color: rgb(131, 131, 131);">Container</span></span>
+<div class="clear"></div>
+</div>
+<div id="breadcrumbs">
+<div class="left">Latest Released Version: 2.10.2</div>
+<div class="clear"></div>
+</div>
+
+<div id="leftColumn">
+<div id="navColumn">
+<h1>About</h1>
+<ul>
+     <li><a href="index.html">What is PicoContainer?</a></li>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="javadoc.html">Javadoc</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="goals.html">Project Goals</a></li>
+      <li><a href="support.html">Support</a></li>
+   
+</ul>
+
+<h1>Core Concepts</h1>
+<ul>
+     <li><a href="lifecycle.html">Component Lifecycle</a></li>
+      <li><a href="injection.html">Dependency Injection</a></li>
+      <li><a href="scopes.html">Scoped Containers</a></li>
+   
+</ul>
+
+<h1>Dependency Injection</h1>
+<ul>
+     <li><a href="constructor-injection.html">Constructor Injection</a></li>
+      <li><a href="setter-injection.html">Setter Injection</a></li>
+      <li><a href="annotated-field-injection.html">Annotated Field Injection</a></li>
+      <li><a href="annotated-method-injection.html">Annotated Method Injection</a></li>
+      <li><a href="typed-field-injection.html">Typed Field Injection</a></li>
+      <li><a href="named-field-injection.html">Named Field Injection</a></li>
+      <li><a href="method-injection.html">Method Injection</a></li>
+      <li><a href="named-method-injection.html">Named Method Injection</a></li>
+      <li><a href="multi-injection.html">Multiple Injection</a></li>
+      <li><a href="composite-injection.html">Composite Injection</a></li>
+      <li><a href="factory-injection.html">Factory Injection</a></li>
+      <li><a href="reinjection.html">Reinjection</a></li>
+      <li><a href="providers.html">Injection via Providers</a></li>
+   
+</ul>
+
+<h1>Configuration</h1>
+<ul>
+     <li><a href="disambiguation.html">Disambiguation</a></li>
+   
+</ul>
+
+<h1>Modifying Component Behaviors</h1>
+<ul>
+     <li><a href="behaviors.html">Behaviors Overview</a></li>
+      <li><a href="caching.html">Caching and Singletons</a></li>
+      <li><a href="hiding.html">Hiding Implementations</a></li>
+      <li><a href="thread-safety.html">Thread Safety Behaviors</a></li>
+      <li><a href="interception.html">AOP Style Interception</a></li>
+      <li><a href="other-behaviors.html">Other Behaviors</a></li>
+   
+</ul>
+
+<h1>Advanced Concepts</h1>
+<ul>
+     <li><a href="fluent-style.html">Fluent Style</a></li>
+      <li><a href="arrays-collections-and-maps.html">Arrays, Collections and Maps</a></li>
+      <li><a href="parameter-names.html">Leveraging Parameter Names</a></li>
+      <li><a href="builder.html">Building Containers</a></li>
+      <li><a href="properties.html">Component Properties</a></li>
+      <li><a href="converters.html">Converters</a></li>
+      <li><a href="component-configuration.html">Component Configuration</a></li>
+      <li><a href="monitors.html">Monitoring Component Events</a></li>
+      <li><a href="regex.html">Regex Composer</a></li>
+   
+</ul>
+
+<h1>PicoContainer's Architecture</h1>
+<ul>
+     <li><a href="patterns.html">Design Patterns</a></li>
+      <li><a href="inversion-of-control.html">Inversion of Control</a></li>
+      <li><a href="adapters.html">Component Adapters</a></li>
+      <li><a href="mock-objects.html">Mock Objects</a></li>
+      <li><a href="terminology.html">Terminology</a></li>
+      <li><a href="comparisons.html">Container Comparisons</a></li>
+      <li><a href="transparency.html">Transparency</a></li>
+   
+</ul>
+
+<h1>Container Choices</h1>
+<ul>
+     <li><a href="DefaultPicoContainer.html">DefaultPicoContainer</a></li>
+      <li><a href="CommandLinePicoContainer.html">CommandLinePicoContainer</a></li>
+      <li><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></li>
+      <li><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></li>
+      <li><a href="TransientPicoContainer.html">TransientPicoContainer</a></li>
+      <li><a href="TieringPicoContainer.html">TieringPicoContainer</a></li>
+   
+</ul>
+
+<h1>Dependant & Related</h1>
+<ul>
+     <li><a href="http://picocontainer.org/web">Web Frameworks</a></li>
+      <li><a href="http://picocontainer.org/script">Scripting Support</a></li>
+      <li><a href="http://picocontainer.org/persistence">Persistence</a></li>
+      <li><a href="http://picocontainer.org/logging">Logging</a></li>
+   
+</ul>
+
+<h1>Anti-patterns</h1>
+<ul>
+     <li><a href="propagating-dependency-antipattern.html">Propagating Dependency</a></li>
+      <li><a href="long-constructor-argument-list-antipattern.html">Long Constructor Argument List</a></li>
+      <li><a href="container-dependency-antipattern.html">Container Dependency</a></li>
+      <li><a href="tests-use-container-antipattern.html">Unit Tests Use Container</a></li>
+      <li><a href="singleton-antipattern.html">Singleton</a></li>
+   
+</ul>
+
+<h1>Help Pages</h1>
+<ul>
+     <li><a href="ambiguous-injectable-help.html">Ambiguous Injectable</a></li>
+      <li><a href="unprocessed-properties-help.html">Unprocessed Properties</a></li>
+   
+</ul>
+
+<h1>History</h1>
+<ul>
+   
+  <li class="currentLink">Inversion of Control History</li>
+ 
+</ul>
+
+<h1>Project Info</h1>
+<ul>
+     <li><a href="project.html">Project</a></li>
+      <li><a href="team.html">Team</a></li>
+   
+</ul>
+<h1>Hosted by</h1>
+<img alt="Hosted at Codehaus" src="images/codehaus-small.gif" width="120" height="40" /><br />
+<h1>Tools</h1>
+<img alt="Maven" src="images/maven-feather.png" /> <br />
+<img alt="Eclipse" src="images/eclipse-logo-white.jpg" width="100" height="40" /> <br />
+<img alt="IDEA" src="images/idea88x31_white.gif" /> <br />
+</div>
+</div>
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Inversion of Control History</h2>
+
+<p>Here is some of the history of the pattern or principle known as
+    Inversion of Control (IoC). There is some confusion online as to
+    whether IoC has been renamed Dependency Injection (DI). This is not the
+    case, DI concerns just one aspect of IoC - component assembly. The
+    other two are configuration and lifecycle. </p>
+
+<p>See also the <a href="comparisons.html">comparisons</a> page. </p>
+
+<h2>Avalon</h2>
+
+<p>Inversion of Control, as a term, was popularised in 1998 by <a href="http://www.betaversion.org/%7Estefano/">Stefano
+    Mazzocchi</a>
+    as consequence of trying to engineer a 'Java Apache Server Framework'
+    for the growing set of server side Java components and tools at <a href="http://www.apache.org/">Apache</a>.
+    Sun were just starting to protect the word Java when used for
+    branding/naming of software and computing functions, so Apache had to
+    look for alternative names. Avalon was chosen as a project name (queue
+    images of <a href="http://en.wikipedia.org/wiki/Avalon">Arthurian legend</a>).</p>
+
+<p>To the Avalon team, it was clear that components receiving various aspects of <strong>component assembly</strong>,
+    <strong>configuration</strong> and <strong>lifecycle</strong> was a superior design to those components going at
+    getting the same themselves. </p>
+
+<p>It is important to point out that The Open Services Gateway (OSGi)
+    initiative was also started around the same time as the Avalon
+    framework and was similar to a degree. It was born in Europe and
+    specified/controlled by a foundation formed around it.&nbsp; </p>
+
+<p>Latterly this type of IoC has been given a new name - Contextualized Dependency Lookup.</p>
+
+<p>Avalon was cancelled as an Apache project in 2004, by the Apache Software Foundation.</p>
+
+<h2>Setter Injection</h2>
+
+<p><a href="http://joe.truemesh.com/blog/">Joe Walnes</a>, <a href="http://joe.truemesh.com/blog/">Mike Cannon
+    Brookes</a> and others found themselves writing <a href="http://www.opensymphony.com/xwork/">XWork</a> and <a
+        href="http://www.opensymphony.com/webwork/">WebWork2</a> to support their forthcoming book, <a
+        href="http://www.amazon.com/Java-Open-Source-Programming-Hibernate/dp/0471463620">Java Open Source
+    Programming</a>.
+    Joe pointed out that the concepts were very much like those from
+    IoC/Avalon that Paul had been trying to convince Joe to adopt for a
+    couple of years, but that dependencies were passed into the component
+    via setters. The need for those dependencies was declared in some
+    accompanying XML.</p>
+
+<p>Paul who worked with Joe at an energy trading company in London,
+    suggested this was a &quot;second type&quot; of Inversion of Control. Type two IoC, as a
+    term, has been obsoleted for "Setter Injection" of course. </p>
+
+<p><a href="http://blog.interface21.com/main/author/rodj/">Rod Johnson</a>, lead for the <a
+        href="http://www.springframework.org/">Spring Framework</a> wrote a book <a
+        href="http://www.wrox.com/WileyCDA/WroxTitle/productCd-0764543857.html">Expert One-on-One J2EE Design and
+    Development</a>
+    (published Oct 2002) that also discussed the concepts of setter
+    injection, and introduced the codeline that ultimately became the <a
+        href="http://sourceforge.net/projects/springframework">Spring Framework</a> at SourceForge in February of 2003.
+</p>
+
+<p>Martin Fowler has suggested that it may be better to have such
+    dependency resolving methods prefixed with init rather than setter.
+    With init or set prefixes to dependency receiving methods, a container
+    could automatically assemble SDI components without the manifest. SDI,
+    under container control, works best with the manifest though. Without a
+    container, SDI Components are very much like simple Java beans to use:</p>
+
+<p>A downside of direct bean user of an SDI component is that it is
+    possible to instantiate a component without setting all the
+    dependencies. As mistakes, these should be quite quick to catch
+    post-compile with a simple test of that application. Months later
+    though, when a jar of components is replaced in an application with a
+    latter version of the same, a new dependency may be missed, and a
+    non-functioning application may be shipped to live. Again, that could
+    be caught with diligent testing.</p>
+
+<h2>Constructor Injection </h2>
+
+<p>Rachel Davies, as one of the enthusiastic reviewers of Joe's book,
+    left a margin note for the paragraphs that discussed the elegance of
+    type two. The margin-note simply suggested that resolving dependencies
+    by constructor was more elegant. Latterly we are inclined to agree. At
+    that moment in time (the spring of 2003) there were no implementation
+    of the constructor injection idea, so it seemed logical for the initial
+    PicoContainer leads (Paul Hammant and Aslak Hellesoy) who liked the
+    idea, to kick off the project.</p>
+
+<p>The added advantage is that CDI Components cannot be instantiated
+    with missing dependencies. Thus the compiler or IDE will catch
+    mismatches between any constructor and the parameters passed into the
+    class on instantiation.</p>
+
+<p><a href="http://www.atg.com/en/company/dynamo.jhtml">ATG Dynamo</a>
+    was a commercial product that was successful in the market place in the
+    late 90's. It also used constructors for dependency resolution.
+    Dynamo's commercial success yielded a little when Apache made Struts,
+    but it should not be forgotten that Dynamo casually used constructors
+    for dependencies in web-applications first. </p>
+
+<h2>Types 1, 2 &amp; 3 renamed </h2>
+
+<p>In 2003, Paul was refering to the Avalon style of IoC as "type 1",
+    setter as "type 2" and constructor as "type 3". He went as far as
+    publishing an <a href="http://java.sys-con.com/read/38102.htm">article</a> on it in Java Developer Journal. </p>
+
+<p><em>December 2003</em>; Rod Johnson of the Spring Framework team,
+    Paul Hammant (former Avaloner, and co-lead of PicoContainer), Mike
+    Royle, with Martin Fowler (by email) say down and played with some of
+    the language of Martin's forthcoming article. Martin had drafted this
+    article entirely independently of this team but had be kind enough to
+    show a draft to them. The problem the team had was with the naming of
+    the patterns related to Inversion of Control, and the examples of use
+    that Martin had shown. Rod had been using the injection phrase before
+    so it was felt that the component resolving style being "Dependency
+    Injection" would be a good thing. </p>
+
+<p>Thus when Dependency Injection rightly took over:</p>
+
+<blockquote>
+    <p> Type 1 becomes Contextualized Dependency Lookup<br/>
+        <br/>
+        Type 2 becomes Setter Dependency Injection<br/>
+        <br/>
+        Type 3 becomes Constructor Dependency Injection</p>
+
+    <p>Type 4 was Field Injection or getter injection depending on who you spoke to. </p>
+</blockquote>
+<h2>Timelines</h2>
+
+<p><img src="images/ioc-timeline.png" alt="timeline picture" height="347" width="691"/></p>
+
+<h2>Prior Art</h2>
+
+<p>As a concept, Inversion of Control was not entirely new when
+    Steffano popularised it at Apache in 1998. Parts of it been talked
+    about before as Dependency Inversion Principle (Bob Martin) and the
+    'Hollywood Principle' (don't call us, we'll call you), and the term
+    cropped had been cropping up since 1996. </p>
+
+<p>Gang of Four, <a href="http://en.wikipedia.org/wiki/Design_Patterns">Design Patterns</a>, 1994 "Hollywood Pattern"
+    (don't call us, we'll call you) as discussion point on 'Template' Pattern. </p>
+
+<p>Robert C. Martin, "Dependency Inversion" in posting on comp.lang.c++, August 1994: <a
+        href="http://groups.google.com/group/comp.lang.c++/msg/b9c929f55c52e4a2?">OO Design Quality Metrics: An Analysis
+    of Dependencies</a></p>
+
+<p>Robert C. Martin, : "Principle of Depenency Inversion" in posting on comp.lang.c++, June 1995: <a
+        href="http://groups.google.com/group/comp.lang.c++/msg/30f7c7701209faba?dmode=source">The Principles of OOD</a>
+    with follow up postings through July 1995 </p>
+
+<p>Robert C. Martin, The Dependency Inversion Principle, In: C++ Report, Vol. 8, May 1996. See more recent <a
+        href="http://www.objectmentor.com/resources/articles/dip.pdf">PDF</a></p>
+
+<p>Michael Mattesson, 1996, <a
+        href="http://web.archive.org/web/20000815083810/www.ipd.hk-r.se/michaelm/thesis/toc.html">Object-Oriented
+    Frameworks : A survey of methodological issues</a> "inversion of control" used in passing. </p>
+
+<p>Brian Foote and Joseph Yoder, June 1998. <a href="http://www.laputan.org/mud/">Big Ball of Mud</a>. Not so much on
+    IoC, but setting the scene. </p>
+
+<p>Ralph E. Johnson and Brian Foote, June 1998, <a href="http://www.laputan.org/drc/drc.html">Designing Reusable
+    Classes</a> "inversion of control" used in passing. </p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="right">&#169; 2003-2008 PicoContainer Committers</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<!--  Scripts to highlight code:  MUST be left AFTER the body -->
+<script language="javascript" src="./js/shCore.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushJava.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushXml.js">
+	//
+</script>
+<script type="text/javascript">
+	// <![CDATA[
+	var elements = document.getElementsByClassName('source');
+	elements.each( function(element) {
+		var content = element.getElementsByTagName('pre')[0].innerHTML;
+		var classType = /^&lt;/.test(content) ? "xml" : "java";
+		content = "<textarea name=\"code\" class=\"" + classType + "\">"
+				+ content + "</textarea>";
+		new Insertion.Before(element, content);
+		element.remove(element);
+	});
+
+	dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	// ]]>
+</script>
+
+</html>

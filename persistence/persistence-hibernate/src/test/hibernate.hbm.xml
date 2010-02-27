@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.picocontainer.persistence.hibernate.Pojo" table="pojo">
+        <id unsaved-value="null" name="id" type="java.lang.Integer" access="field">
+            <generator class="native"/>
+        </id>
+        <property name="foo" update="false" unique="true" not-null="true" insert="true" access="field"/>
+    </class>
+</hibernate-mapping>

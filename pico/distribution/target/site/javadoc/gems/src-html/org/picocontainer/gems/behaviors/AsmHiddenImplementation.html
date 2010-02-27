@@ -1,0 +1,340 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by                                                          *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    package org.picocontainer.gems.behaviors;<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>    import java.lang.reflect.Constructor;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import java.lang.reflect.InvocationTargetException;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import java.lang.reflect.Method;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import java.util.HashSet;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import java.util.Set;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import java.util.concurrent.Future;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.objectweb.asm.ClassWriter;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.objectweb.asm.FieldVisitor;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.objectweb.asm.MethodVisitor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.objectweb.asm.Opcodes;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.objectweb.asm.Type;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.PicoContainer;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.behaviors.AbstractBehavior;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.picocontainer.behaviors.Cached;<a name="line.27"></a>
+<FONT color="green">028</FONT>    <a name="line.28"></a>
+<FONT color="green">029</FONT>    <a name="line.29"></a>
+<FONT color="green">030</FONT>    /**<a name="line.30"></a>
+<FONT color="green">031</FONT>     * This component adapter makes it possible to hide the implementation of a real subject (behind a proxy).<a name="line.31"></a>
+<FONT color="green">032</FONT>     * The proxy will implement all the interfaces of the<a name="line.32"></a>
+<FONT color="green">033</FONT>     * underlying subject. If you want caching,<a name="line.33"></a>
+<FONT color="green">034</FONT>     * use a {@link Cached} around this one.<a name="line.34"></a>
+<FONT color="green">035</FONT>     *<a name="line.35"></a>
+<FONT color="green">036</FONT>     * @author Paul Hammant<a name="line.36"></a>
+<FONT color="green">037</FONT>     */<a name="line.37"></a>
+<FONT color="green">038</FONT>    @SuppressWarnings("serial")<a name="line.38"></a>
+<FONT color="green">039</FONT>    public class AsmHiddenImplementation&lt;T&gt; extends AbstractBehavior&lt;T&gt; implements Opcodes {<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>            public AsmHiddenImplementation(final ComponentAdapter&lt;T&gt; delegate) {<a name="line.42"></a>
+<FONT color="green">043</FONT>            super(delegate);<a name="line.43"></a>
+<FONT color="green">044</FONT>        }<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>        @Override<a name="line.46"></a>
+<FONT color="green">047</FONT>            public T getComponentInstance(final PicoContainer container, final java.lang.reflect.Type into) {<a name="line.47"></a>
+<FONT color="green">048</FONT>            T o = getDelegate().getComponentInstance(container, into);<a name="line.48"></a>
+<FONT color="green">049</FONT>            Class[] interfaces = o.getClass().getInterfaces();<a name="line.49"></a>
+<FONT color="green">050</FONT>            if (interfaces.length != 0) {<a name="line.50"></a>
+<FONT color="green">051</FONT>                byte[] bytes = makeProxy("XX", interfaces, true);<a name="line.51"></a>
+<FONT color="green">052</FONT>                AsmClassLoader cl = new AsmClassLoader(HotSwappable.Swappable.class.getClassLoader());<a name="line.52"></a>
+<FONT color="green">053</FONT>                Class&lt;?&gt; pClazz = cl.defineClass("XX", bytes);<a name="line.53"></a>
+<FONT color="green">054</FONT>                try {<a name="line.54"></a>
+<FONT color="green">055</FONT>                    Constructor&lt;T&gt; ctor = (Constructor&lt;T&gt;) pClazz.getConstructor(HotSwappable.Swappable.class);<a name="line.55"></a>
+<FONT color="green">056</FONT>                    final HotSwappable.Swappable swappable = getSwappable();<a name="line.56"></a>
+<FONT color="green">057</FONT>                    swappable.swap(o);<a name="line.57"></a>
+<FONT color="green">058</FONT>                    return ctor.newInstance(swappable);<a name="line.58"></a>
+<FONT color="green">059</FONT>                } catch (NoSuchMethodException e) {<a name="line.59"></a>
+<FONT color="green">060</FONT>                } catch (InstantiationException e) {<a name="line.60"></a>
+<FONT color="green">061</FONT>                } catch (IllegalAccessException e) {<a name="line.61"></a>
+<FONT color="green">062</FONT>                } catch (InvocationTargetException e) {<a name="line.62"></a>
+<FONT color="green">063</FONT>                }<a name="line.63"></a>
+<FONT color="green">064</FONT>            }<a name="line.64"></a>
+<FONT color="green">065</FONT>            return o;<a name="line.65"></a>
+<FONT color="green">066</FONT>        }<a name="line.66"></a>
+<FONT color="green">067</FONT>    <a name="line.67"></a>
+<FONT color="green">068</FONT>        public String getDescriptor() {<a name="line.68"></a>
+<FONT color="green">069</FONT>            return "Hidden";<a name="line.69"></a>
+<FONT color="green">070</FONT>        }<a name="line.70"></a>
+<FONT color="green">071</FONT>    <a name="line.71"></a>
+<FONT color="green">072</FONT>        protected HotSwappable.Swappable getSwappable() {<a name="line.72"></a>
+<FONT color="green">073</FONT>            return new HotSwappable.Swappable();<a name="line.73"></a>
+<FONT color="green">074</FONT>        }<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>        public byte[] makeProxy(final String proxyName, final Class[] interfaces, final boolean setter) {<a name="line.76"></a>
+<FONT color="green">077</FONT>    <a name="line.77"></a>
+<FONT color="green">078</FONT>            ClassWriter cw = new ClassWriter(0);<a name="line.78"></a>
+<FONT color="green">079</FONT>            FieldVisitor fv;<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>            Class&lt;Object&gt; superclass = Object.class;<a name="line.81"></a>
+<FONT color="green">082</FONT>    <a name="line.82"></a>
+<FONT color="green">083</FONT>            cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, Type.getInternalName(superclass), getNames(interfaces));<a name="line.83"></a>
+<FONT color="green">084</FONT>    <a name="line.84"></a>
+<FONT color="green">085</FONT>            {<a name="line.85"></a>
+<FONT color="green">086</FONT>                fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(HotSwappable.Swappable.class), null, null);<a name="line.86"></a>
+<FONT color="green">087</FONT>                fv.visitEnd();<a name="line.87"></a>
+<FONT color="green">088</FONT>            }<a name="line.88"></a>
+<FONT color="green">089</FONT>            doConstructor(proxyName, cw);<a name="line.89"></a>
+<FONT color="green">090</FONT>            Set&lt;String&gt; methodsDone = new HashSet&lt;String&gt;();<a name="line.90"></a>
+<FONT color="green">091</FONT>            for (Class&lt;?&gt; iface : interfaces) {<a name="line.91"></a>
+<FONT color="green">092</FONT>                Method[] meths = iface.getMethods();<a name="line.92"></a>
+<FONT color="green">093</FONT>                for (Method meth : meths) {<a name="line.93"></a>
+<FONT color="green">094</FONT>                    if (!methodsDone.contains(meth.toString())) {<a name="line.94"></a>
+<FONT color="green">095</FONT>                        doMethod(proxyName, cw, iface, meth);<a name="line.95"></a>
+<FONT color="green">096</FONT>                        methodsDone.add(meth.toString());<a name="line.96"></a>
+<FONT color="green">097</FONT>                    }<a name="line.97"></a>
+<FONT color="green">098</FONT>                }<a name="line.98"></a>
+<FONT color="green">099</FONT>            }<a name="line.99"></a>
+<FONT color="green">100</FONT>    <a name="line.100"></a>
+<FONT color="green">101</FONT>            cw.visitEnd();<a name="line.101"></a>
+<FONT color="green">102</FONT>    <a name="line.102"></a>
+<FONT color="green">103</FONT>            return cw.toByteArray();<a name="line.103"></a>
+<FONT color="green">104</FONT>        }<a name="line.104"></a>
+<FONT color="green">105</FONT>    <a name="line.105"></a>
+<FONT color="green">106</FONT>        private String[] getNames(final Class[] interfaces) {<a name="line.106"></a>
+<FONT color="green">107</FONT>            String[] retVal = new String[interfaces.length];<a name="line.107"></a>
+<FONT color="green">108</FONT>            for (int i = 0; i &lt; interfaces.length; i++) {<a name="line.108"></a>
+<FONT color="green">109</FONT>                retVal[i] = Type.getInternalName(interfaces[i]);<a name="line.109"></a>
+<FONT color="green">110</FONT>            }<a name="line.110"></a>
+<FONT color="green">111</FONT>            return retVal;<a name="line.111"></a>
+<FONT color="green">112</FONT>        }<a name="line.112"></a>
+<FONT color="green">113</FONT>    <a name="line.113"></a>
+<FONT color="green">114</FONT>        private void doConstructor(final String proxyName, final ClassWriter cw) {<a name="line.114"></a>
+<FONT color="green">115</FONT>            MethodVisitor mv;<a name="line.115"></a>
+<FONT color="green">116</FONT>            mv = cw.visitMethod(ACC_PUBLIC, "&lt;init&gt;", "(L"+ Type.getInternalName(HotSwappable.Swappable.class)+";)V", null, null);<a name="line.116"></a>
+<FONT color="green">117</FONT>            mv.visitCode();<a name="line.117"></a>
+<FONT color="green">118</FONT>            mv.visitVarInsn(ALOAD, 0);<a name="line.118"></a>
+<FONT color="green">119</FONT>            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "&lt;init&gt;", "()V");<a name="line.119"></a>
+<FONT color="green">120</FONT>            mv.visitVarInsn(ALOAD, 0);<a name="line.120"></a>
+<FONT color="green">121</FONT>            mv.visitVarInsn(ALOAD, 1);<a name="line.121"></a>
+<FONT color="green">122</FONT>            mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));<a name="line.122"></a>
+<FONT color="green">123</FONT>            mv.visitInsn(RETURN);<a name="line.123"></a>
+<FONT color="green">124</FONT>            mv.visitMaxs(2, 2);<a name="line.124"></a>
+<FONT color="green">125</FONT>            mv.visitEnd();<a name="line.125"></a>
+<FONT color="green">126</FONT>        }<a name="line.126"></a>
+<FONT color="green">127</FONT>    <a name="line.127"></a>
+<FONT color="green">128</FONT>        private void doMethod(final String proxyName, final ClassWriter cw, final Class&lt;?&gt; iface, final Method meth) {<a name="line.128"></a>
+<FONT color="green">129</FONT>    <a name="line.129"></a>
+<FONT color="green">130</FONT>            String cn = Type.getInternalName(iface);<a name="line.130"></a>
+<FONT color="green">131</FONT>            String sig = Type.getMethodDescriptor(meth);<a name="line.131"></a>
+<FONT color="green">132</FONT>    <a name="line.132"></a>
+<FONT color="green">133</FONT>            String[] exceptions = encodedExceptionNames(meth.getExceptionTypes());<a name="line.133"></a>
+<FONT color="green">134</FONT>            MethodVisitor mv;<a name="line.134"></a>
+<FONT color="green">135</FONT>            mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), sig, null, exceptions);<a name="line.135"></a>
+<FONT color="green">136</FONT>            mv.visitCode();<a name="line.136"></a>
+<FONT color="green">137</FONT>            mv.visitVarInsn(ALOAD, 0);<a name="line.137"></a>
+<FONT color="green">138</FONT>            mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));<a name="line.138"></a>
+<FONT color="green">139</FONT>            mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(HotSwappable.Swappable.class), "getInstance", "()Ljava/lang/Object;");<a name="line.139"></a>
+<FONT color="green">140</FONT>            mv.visitTypeInsn(CHECKCAST, cn);<a name="line.140"></a>
+<FONT color="green">141</FONT>            Class[] types = meth.getParameterTypes();<a name="line.141"></a>
+<FONT color="green">142</FONT>            int ix = 1;<a name="line.142"></a>
+<FONT color="green">143</FONT>            for (Class type : types) {<a name="line.143"></a>
+<FONT color="green">144</FONT>                int load = whichLoad(type);<a name="line.144"></a>
+<FONT color="green">145</FONT>                mv.visitVarInsn(load, ix);<a name="line.145"></a>
+<FONT color="green">146</FONT>                ix = indexOf(ix, load);<a name="line.146"></a>
+<FONT color="green">147</FONT>            }<a name="line.147"></a>
+<FONT color="green">148</FONT>            mv.visitMethodInsn(INVOKEINTERFACE, cn, meth.getName(), sig);<a name="line.148"></a>
+<FONT color="green">149</FONT>            mv.visitInsn(whichReturn(meth.getReturnType()));<a name="line.149"></a>
+<FONT color="green">150</FONT>            mv.visitMaxs(ix, ix);<a name="line.150"></a>
+<FONT color="green">151</FONT>            mv.visitEnd();<a name="line.151"></a>
+<FONT color="green">152</FONT>        }<a name="line.152"></a>
+<FONT color="green">153</FONT>    <a name="line.153"></a>
+<FONT color="green">154</FONT>        private int indexOf(final int ix, final int loadType) {<a name="line.154"></a>
+<FONT color="green">155</FONT>            if (loadType == LLOAD) {<a name="line.155"></a>
+<FONT color="green">156</FONT>                return ix + 2;<a name="line.156"></a>
+<FONT color="green">157</FONT>            } else if (loadType == DLOAD) {<a name="line.157"></a>
+<FONT color="green">158</FONT>                return ix + 2;<a name="line.158"></a>
+<FONT color="green">159</FONT>            } else if (loadType == ILOAD) {<a name="line.159"></a>
+<FONT color="green">160</FONT>                return ix + 1;<a name="line.160"></a>
+<FONT color="green">161</FONT>            } else if (loadType == ALOAD) {<a name="line.161"></a>
+<FONT color="green">162</FONT>                return ix + 1;<a name="line.162"></a>
+<FONT color="green">163</FONT>            } else if (loadType == FLOAD) {<a name="line.163"></a>
+<FONT color="green">164</FONT>                return ix + 1;<a name="line.164"></a>
+<FONT color="green">165</FONT>            }<a name="line.165"></a>
+<FONT color="green">166</FONT>            return 0;<a name="line.166"></a>
+<FONT color="green">167</FONT>        }<a name="line.167"></a>
+<FONT color="green">168</FONT>    <a name="line.168"></a>
+<FONT color="green">169</FONT>        private String[] encodedExceptionNames(final Class[] exceptionTypes) {<a name="line.169"></a>
+<FONT color="green">170</FONT>            if (exceptionTypes.length == 0) {<a name="line.170"></a>
+<FONT color="green">171</FONT>                return null;<a name="line.171"></a>
+<FONT color="green">172</FONT>            }<a name="line.172"></a>
+<FONT color="green">173</FONT>            String[] retVal = new String[exceptionTypes.length];<a name="line.173"></a>
+<FONT color="green">174</FONT>            for (int i = 0; i &lt; exceptionTypes.length; i++) {<a name="line.174"></a>
+<FONT color="green">175</FONT>                Class clazz = exceptionTypes[i];<a name="line.175"></a>
+<FONT color="green">176</FONT>                retVal[i] = Type.getInternalName(clazz);<a name="line.176"></a>
+<FONT color="green">177</FONT>            }<a name="line.177"></a>
+<FONT color="green">178</FONT>            return retVal;<a name="line.178"></a>
+<FONT color="green">179</FONT>        }<a name="line.179"></a>
+<FONT color="green">180</FONT>    <a name="line.180"></a>
+<FONT color="green">181</FONT>        private int whichReturn(final Class&lt;?&gt; clazz) {<a name="line.181"></a>
+<FONT color="green">182</FONT>            if (!clazz.isPrimitive()) {<a name="line.182"></a>
+<FONT color="green">183</FONT>                return ARETURN;<a name="line.183"></a>
+<FONT color="green">184</FONT>            } else if (clazz.isArray()) {<a name="line.184"></a>
+<FONT color="green">185</FONT>                return ARETURN;<a name="line.185"></a>
+<FONT color="green">186</FONT>            } else if (clazz == int.class) {<a name="line.186"></a>
+<FONT color="green">187</FONT>                return IRETURN;<a name="line.187"></a>
+<FONT color="green">188</FONT>            } else if (clazz == long.class) {<a name="line.188"></a>
+<FONT color="green">189</FONT>                return LRETURN;<a name="line.189"></a>
+<FONT color="green">190</FONT>            } else if (clazz == byte.class) {<a name="line.190"></a>
+<FONT color="green">191</FONT>                return IRETURN;<a name="line.191"></a>
+<FONT color="green">192</FONT>            } else if (clazz == float.class) {<a name="line.192"></a>
+<FONT color="green">193</FONT>                return FRETURN;<a name="line.193"></a>
+<FONT color="green">194</FONT>            } else if (clazz == double.class) {<a name="line.194"></a>
+<FONT color="green">195</FONT>                return DRETURN;<a name="line.195"></a>
+<FONT color="green">196</FONT>            } else if (clazz == char.class) {<a name="line.196"></a>
+<FONT color="green">197</FONT>                return IRETURN;<a name="line.197"></a>
+<FONT color="green">198</FONT>            } else if (clazz == short.class) {<a name="line.198"></a>
+<FONT color="green">199</FONT>                return IRETURN;<a name="line.199"></a>
+<FONT color="green">200</FONT>            } else if (clazz == boolean.class) {<a name="line.200"></a>
+<FONT color="green">201</FONT>                return IRETURN;<a name="line.201"></a>
+<FONT color="green">202</FONT>            } else if (clazz == void.class) {<a name="line.202"></a>
+<FONT color="green">203</FONT>                return RETURN;<a name="line.203"></a>
+<FONT color="green">204</FONT>            } else {<a name="line.204"></a>
+<FONT color="green">205</FONT>                return 0;<a name="line.205"></a>
+<FONT color="green">206</FONT>            }<a name="line.206"></a>
+<FONT color="green">207</FONT>        }<a name="line.207"></a>
+<FONT color="green">208</FONT>    <a name="line.208"></a>
+<FONT color="green">209</FONT>        private int whichLoad(final Class&lt;?&gt; clazz) {<a name="line.209"></a>
+<FONT color="green">210</FONT>            if (!clazz.isPrimitive()) {<a name="line.210"></a>
+<FONT color="green">211</FONT>                return ALOAD;<a name="line.211"></a>
+<FONT color="green">212</FONT>            } else if (clazz.isArray()) {<a name="line.212"></a>
+<FONT color="green">213</FONT>                return ALOAD;<a name="line.213"></a>
+<FONT color="green">214</FONT>            } else if (clazz == int.class) {<a name="line.214"></a>
+<FONT color="green">215</FONT>                return ILOAD;<a name="line.215"></a>
+<FONT color="green">216</FONT>            } else if (clazz == long.class) {<a name="line.216"></a>
+<FONT color="green">217</FONT>                return LLOAD;<a name="line.217"></a>
+<FONT color="green">218</FONT>            } else if (clazz == byte.class) {<a name="line.218"></a>
+<FONT color="green">219</FONT>                return ILOAD;<a name="line.219"></a>
+<FONT color="green">220</FONT>            } else if (clazz == float.class) {<a name="line.220"></a>
+<FONT color="green">221</FONT>                return FLOAD;<a name="line.221"></a>
+<FONT color="green">222</FONT>            } else if (clazz == double.class) {<a name="line.222"></a>
+<FONT color="green">223</FONT>                return DLOAD;<a name="line.223"></a>
+<FONT color="green">224</FONT>            } else if (clazz == char.class) {<a name="line.224"></a>
+<FONT color="green">225</FONT>                return ILOAD;<a name="line.225"></a>
+<FONT color="green">226</FONT>            } else if (clazz == short.class) {<a name="line.226"></a>
+<FONT color="green">227</FONT>                return ILOAD;<a name="line.227"></a>
+<FONT color="green">228</FONT>            } else if (clazz == boolean.class) {<a name="line.228"></a>
+<FONT color="green">229</FONT>                return ILOAD;<a name="line.229"></a>
+<FONT color="green">230</FONT>            } else {<a name="line.230"></a>
+<FONT color="green">231</FONT>                return 0;<a name="line.231"></a>
+<FONT color="green">232</FONT>            }<a name="line.232"></a>
+<FONT color="green">233</FONT>        }<a name="line.233"></a>
+<FONT color="green">234</FONT>    <a name="line.234"></a>
+<FONT color="green">235</FONT>        private String encodedClassName(final Class&lt;?&gt; clazz) {<a name="line.235"></a>
+<FONT color="green">236</FONT>            if (clazz.getName().startsWith("[")) {<a name="line.236"></a>
+<FONT color="green">237</FONT>                return Type.getInternalName(clazz);<a name="line.237"></a>
+<FONT color="green">238</FONT>            } else if (!clazz.isPrimitive()) {<a name="line.238"></a>
+<FONT color="green">239</FONT>                return "L" + Type.getInternalName(clazz) + ";";<a name="line.239"></a>
+<FONT color="green">240</FONT>            } else if (clazz == int.class) {<a name="line.240"></a>
+<FONT color="green">241</FONT>                return "I";<a name="line.241"></a>
+<FONT color="green">242</FONT>            } else if (clazz == long.class) {<a name="line.242"></a>
+<FONT color="green">243</FONT>                return "J";<a name="line.243"></a>
+<FONT color="green">244</FONT>            } else if (clazz == byte.class) {<a name="line.244"></a>
+<FONT color="green">245</FONT>                return "B";<a name="line.245"></a>
+<FONT color="green">246</FONT>            } else if (clazz == float.class) {<a name="line.246"></a>
+<FONT color="green">247</FONT>                return "F";<a name="line.247"></a>
+<FONT color="green">248</FONT>            } else if (clazz == double.class) {<a name="line.248"></a>
+<FONT color="green">249</FONT>                return "D";<a name="line.249"></a>
+<FONT color="green">250</FONT>            } else if (clazz == char.class) {<a name="line.250"></a>
+<FONT color="green">251</FONT>                return "C";<a name="line.251"></a>
+<FONT color="green">252</FONT>            } else if (clazz == short.class) {<a name="line.252"></a>
+<FONT color="green">253</FONT>                return "S";<a name="line.253"></a>
+<FONT color="green">254</FONT>            } else if (clazz == boolean.class) {<a name="line.254"></a>
+<FONT color="green">255</FONT>                return "Z";<a name="line.255"></a>
+<FONT color="green">256</FONT>            } else if (clazz == void.class) {<a name="line.256"></a>
+<FONT color="green">257</FONT>                return "V";<a name="line.257"></a>
+<FONT color="green">258</FONT>            } else {<a name="line.258"></a>
+<FONT color="green">259</FONT>                return null;<a name="line.259"></a>
+<FONT color="green">260</FONT>            }<a name="line.260"></a>
+<FONT color="green">261</FONT>        }<a name="line.261"></a>
+<FONT color="green">262</FONT>    <a name="line.262"></a>
+<FONT color="green">263</FONT>        private static class AsmClassLoader extends ClassLoader {<a name="line.263"></a>
+<FONT color="green">264</FONT>    <a name="line.264"></a>
+<FONT color="green">265</FONT>            public AsmClassLoader(final ClassLoader parent) {<a name="line.265"></a>
+<FONT color="green">266</FONT>                super(parent);<a name="line.266"></a>
+<FONT color="green">267</FONT>            }<a name="line.267"></a>
+<FONT color="green">268</FONT>    <a name="line.268"></a>
+<FONT color="green">269</FONT>            public Class&lt;?&gt; defineClass(final String name, final byte[] b) {<a name="line.269"></a>
+<FONT color="green">270</FONT>                return defineClass(name, b, 0, b.length);<a name="line.270"></a>
+<FONT color="green">271</FONT>            }<a name="line.271"></a>
+<FONT color="green">272</FONT>        }<a name="line.272"></a>
+<FONT color="green">273</FONT>    <a name="line.273"></a>
+<FONT color="green">274</FONT>    }<a name="line.274"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

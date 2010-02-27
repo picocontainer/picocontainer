@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>AJAX Email Demo App (Pico Web Remoting)</title>
+    <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.dimensions.min.js"></script>
+<script type="text/javascript" src="js/jquery.corner.min.js"></script>
+<script type="text/javascript" src="js/jquery.dates.js"></script>
+<script type="text/javascript" src="js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="js/date.format.js"></script>
+
+<script type="text/javascript"type="text/javascript">
+
+var isIE = 0;
+if (navigator.appName.toUpperCase().match(/MICROSOFT INTERNET EXPLORER/) != null) {
+    isIE = 1;
+    document.writeln("<link href=\"style_ie.css\" type=\"text/css\" rel=\"stylesheet\" >");
+}
+
+$(document).ready(function() {
+
+    view = "Inbox";
+    if (window.location.href.indexOf("?view=Sent") != -1) {
+        view = "Sent";
+    }
+
+    $("#content").corner("12px");
+
+    $("#mailboxes").corner("8px");
+    $("#topnavigation").corner("8px");
+    $("#about").corner("8px");
+    $("#selectall").click(selectAll);
+
+    if (view == "Inbox") {
+        $("#inbox").addClass("mailbox_selected");
+    } else {
+        $("#sentBox").addClass("mailbox_selected");
+        $("#replyMessage").hide();
+    }
+
+    $.post("json/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
+        if (loggedInUser == "") {
+            $.blockUI({message: $('#loginPlease'), css: {width:'540px', height:'180px'}});
+        } else {
+            loadRows(loggedInUser);
+        }
+    }, "json");
+
+    // For composing a message
+    $("#compose").click(function() {
+        $.blockUI({message: $('#composeMessage'), css: {width:'540px', height:'300px'}});
+    });
+
+    $("#cancelCompose").click(function() {
+        document.composeMessageForm.reset();
+        $.unblockUI();
+    });
+
+    $("#submitMessage").click(function() {
+        sendMessage();
+        $.unblockUI();
+    });
+
+    // For deleting a message
+    $("#delete").click(function() {
+        $.blockUI({message: $('#deleteMessage'), css: {width:'380px', height:'120px'}});
+    });
+
+    $("#submitDelete").click(function() {
+        deleteMessages();
+        $.unblockUI();
+    });
+
+    $("#submitLogin").click(function() {
+        submitLogin();
+    });
+
+    $("#cancelDelete").click(function() {
+        $.unblockUI();
+    });
+
+    // For reading/replying to a message
+    var subject = document.composeMessageForm.subject;
+    var message = document.composeMessageForm.message;
+    var to = document.composeMessageForm.to;
+
+    $("#replyMessage").click(function() {
+        var subj = "RE: " + document.readMessageForm.subject.value;
+        var mess = "\n\n***************\n\n" + document.readMessageForm.message.value;
+        var from = document.readMessageForm.from.value;
+        subject.value = subj;
+        message.value = mess;
+        to.value = from;
+        $.blockUI({message: compose, css: {width:'540px', height:'300px'}});
+    });
+
+    $("#cancelRead").click(function() {
+        document.readMessageForm.reset();
+        $.unblockUI();
+    });
+
+    rowToClone = $('#mailtable tr:last').remove();
+
+});
+
+function highlightRow() {
+    $(".messageRow").removeClass("message_selected");
+    $(this).addClass("message_selected");
+}
+
+function submitLogin() {
+    $.post("json/Auth/logIn", {
+        userName: document.loginForm.userName.value,
+        password: document.loginForm.password.value
+    }, function(data) {
+        if (data == "OK") {
+            loadRows(document.loginForm.userName.value);
+            document.loginForm.reset();
+            $.unblockUI();
+        } else if (data.ERROR = true) {
+            $('td[class*=error_message]', document.loginForm).html(data.message);
+        }
+    }, "json");
+}
+
+function logOut() {
+    $.post("json/Auth/logOut", {}, function(data) {
+        if (data == "OK") {
+            loadRows("????");
+            window.location.reload();
+        }
+    }, "json");
+}
+
+function loadRows(who) {
+	$("#mail_for").html("Mail for " + who);
+    $.get("json/" + view + "/messages", {}, function(data) {
+        if (data.ERROR != true) {
+            for (var i = 0; i < data.length; i++) {
+                var sentTime = data[i].sentTime;
+                var mailDate = sentTime.substr(0, 19) + "Z"; // drop millis etc
+                var myStringDate = mailDate.replace(/\D/g, " ");
+                var dObj = myStringDate.split(" ");
+                var myDate = new Date(dObj[0], (dObj[1]-1), dObj[2], dObj[3], dObj[4], dObj[5]);
+                var pd = dateFormat(myDate, "m/dd/yy h:MM:ss TT");
+                insertRow(data[i].id, data[i].to, data[i].from, data[i].subject, pd, data[i].read);
+            }
+        }
+    }, "json");
+}
+
+function readMessage() {
+    if ($(this).hasClass("mail_unread"))
+    {
+        $(this).removeClass("mail_unread");
+    }
+    $.get("json/" + view + "/read", {id: this.id}, function(data) {
+        if (data.ERROR == undefined) {
+            // using JSON objects
+            document.readMessageForm.subject.value = data.subject;
+            document.readMessageForm.message.value = data.message;
+            document.readMessageForm.from.value = data.from;
+        } else if (data.message.equals("not logged in")) {
+            document.href = "Login.html";
+        }
+
+    }, "json");
+    var readMess = $('#readMessage');
+    $.blockUI({message: readMess, css: {width:'540px', height:'300px'}});
+}
+
+function insertRow(id, to, from, subject, mailDate, isRead) {
+
+    var newRow = rowToClone.clone();
+
+    newRow.attr("id", id);
+    $('input', newRow).attr("value", id);
+    $('td[class*=mail-to]', newRow).html(to);
+    $('td[class*=mail-from]', newRow).html(from);
+    $('td[class*=mail-subj]', newRow).html(subject);
+    $('td[class*=mail-date]', newRow).html(mailDate);
+
+    if (isRead) {
+        newRow.removeClass("mail_unread");
+    }
+
+    newRow.dblclick(readMessage);
+    newRow.click(highlightRow);
+
+    $('#mailtable').append(newRow);
+
+}
+
+function selectAll()
+{
+    var checked = $("#selectall").attr("checked");
+    $(".selectable").each(function() {
+        var subChecked = $(this).attr("checked");
+        if (subChecked != checked)
+            $(this).click();
+    });
+}
+
+function deleteMessages()
+{
+    $(".selectable:checked").each(function() {
+        $("#" + $(this).val()).remove();
+        $.post("json/" + view + "/delete", {id: $(this).val()});
+    });
+}
+
+function sendMessage() {
+
+    var subject = document.composeMessageForm.subject.value;
+    var message = document.composeMessageForm.message.value;
+    var to = document.composeMessageForm.to.value;
+
+    $.post("json/Sent/send", {subject: subject, message: message, to: to},
+            function(data) {
+
+                if (data != undefined)
+                {
+                    document.composeMessageForm.reset();
+                    insertRow(data.id, to, data.from, subject, data.mailDate, data.read);
+                }
+            }, "json");
+}
+
+
+</script>
+<body>
+
+<center>
+
+    <div id=content>
+        <!-- start page specific -->
+
+        <img src="images/messages.gif" style="position:absolute;left:10px;top:4px;" alt="messages icon">
+
+        <h1 id="mail_for">Mail for ?????</h1>
+        <hr class=content_divider>
+
+        <div style="position:relative;">
+
+            <div id=mailboxes>
+                <p><span id=inbox><a href="index.html?view=Inbox">Inbox</a></span>
+
+                <p><span id=sentBox><a href="index.html?view=Sent">Sent</a></span>
+
+                <p><span id="logOut"><a href="javascript:logOut();">Log Out</a></span>
+
+            </div>
+
+
+            <div id="topnavigation" style="width:690px;">
+                <input type="button" class="iButton" id="compose" value="Compose">
+                <input type="button" class="iButton" id="delete" value="Delete">
+            </div>
+
+            <form name="mailForm" id="mailForm">
+
+                <p>
+                <table id="mailtable" cellpadding=0 cellspacing=0>
+                    <thead>
+                        <tr class="header">
+                            <th width="5%"><input type="checkbox" id="selectall"></th>
+                            <th width="15%">To</th>
+                            <th width="20%">From</th>
+                            <th width="40%">Subject</th>
+                            <th width="20%">Sent</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr class="mail_unread messageRow" id="unreadRow">
+                            <td class="mail"><input type=checkbox name="delId" value="1" class="selectable"></td>
+                            <td class="mail mail-to">TO</td>
+                            <td class="mail mail-from">FROM</td>
+                            <td class="mail mail-subj">SUBJECT</td>
+                            <td class="mail mail-date">DATE-TIME</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </form>
+            <script type="text/javascript">
+                if (isIE)
+                {
+                    document.writeln("<p><br><br><br><br><br><br><br><br><br>");
+                }
+            </script>
+
+            <div id="about" style="width:690px;">
+
+                <p><b>Technical infomation for this Web Application</b></p>
+
+                <p>This app is a fork of one made for an IBM AlphaWorks article:
+                    <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">"Working with jQuery, Part 1:
+                        Bringing desktop applications to the browser"</a>.<br><br>
+                    This version has been enhanced to include Login features, and has had serverside
+                    technologies changed to use Pico Web Remoting rather than JSON libraries and a
+                    custom servlet. You can mimick the remoting methods that JQuery invokes with these URLs:</p>
+                <ul>
+                    <li><a href="json/Inbox/read?id=1">json/Inbox/read?id=1 - read a message (and have it marked as
+                        read on the backend)</a></li>
+                    <li><a href="json/Inbox/messages">json/Inbox/messages - see the contents of the
+                        inbox</a></li>
+                    <li><a href="json/Sent/messages">json/Sent/messages - see the contents of the sent
+                        box</a></li>
+                    <li><a href="json/Sent/send?to=fred&subject=hello&message=goodbye">json/Sent/send?to=fred&subject=hello&message=goodbye
+                        - see send an email (this is normally a POST operation)</a></li>
+                    <li><a href="json/Auth/logIn?userName=Gill%20Bates&password=1234">json/Auth/logIn?userName=Gill%20Bates&password=1234
+                        - to log in (this is normally a POST operation)</a></li>
+                    <li><a href="json/Auth/logOut">json/Auth/logOut
+                        - to log in (this is normally a POST operation)</a></li>
+                    <li><a href="json/Auth/whoIsLoggedIn">json/Auth/whoIsLoggedIn
+                        - check with server to see who is logged in</a></li>
+                </ul>
+                <p>See also, the Ruby output for the same.  Replace /json/ for /ruby/ in the URLs above.</p>
+            </div>
+        </div>
+
+        <!-- end page specific -->
+    </div>
+</center>
+
+<div id="composeMessage" style="display:none;cursor:default;">
+
+    <h2>Compose Mail</h2>
+
+    <form name="composeMessageForm" id="composeMessageForm">
+        <table width="100%" class="content_table">
+            <tr>
+                <td class="right">To</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" name="to" id="to"> <span class="error_message" id="subject_error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="right">Subject</td>
+                <td class=left_offset>
+                    <input class="textfield" type="text" name="subject" id="subject"> <span class="error_message" id="subject_error"></span></td>
+            </tr>
+            <tr>
+                <td class="right">Message</td>
+                <td class="left_offset">
+                    <textarea class="textfield" name="message" id="message" style="height:120px;width:400px;"></textarea> <span class="error_message" id="message_error"></span>
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input class="iButton" type="button" id="submitMessage" value="Send">
+            <input class="iButton" type="button" id="cancelCompose" value="Cancel">
+        </p>
+    </form>
+</div>
+
+<div id="readMessage" style="display:none;cursor:default;">
+
+    <h2>Read Message</h2>
+
+    <form id="readMessageForm" name="readMessageForm">
+        <table width="100%" class="content_table">
+            <tr>
+                <td class="right">From</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" id="from" name="from"></td>
+            </tr>
+            <tr>
+                <td class="right">Subject</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" id="subject" name="subject"></td>
+            </tr>
+            <tr>
+                <td class="right">Message</td>
+                <td class="left_offset">
+                    <textarea name="message" id="message" class="textfield" style="height:120px;width:400px;"></textarea>
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input class="iButton" type="button" id="replyMessage" value="Reply">
+            <input class="iButton" type="button" id="cancelRead" value="Cancel">
+        </p>
+    </form>
+</div>
+
+<div id="deleteMessage" style="display:none;cursor:default;">
+
+    <h2>Delete Message</h2>
+
+    <span id="deleteConfirm">Are you sure you want to delete these messages?</span>
+
+    <p>
+       <input class="iButton" type="button" id="submitDelete" value="Yes">
+       <input class="iButton" type="button" id="cancelDelete" value="No">
+    </p>
+</div>
+
+<div id="loginPlease" style="display:none;cursor:default;">
+
+    <h2>Login please</h2>
+
+    <form name="loginForm" id="loginForm">
+        <table width="100%" class="content_table">
+            <tr>
+                <td class="right">User ID</td>
+                <td class="left_offset"><input class="textfield" type="text" name="userName" id="userName"></td>
+            </tr>
+            <tr>
+                <td class="right">Password</td>
+                <td class="left_offset"><input class="textfield" type="password" name="password" id="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="login_err" class=error_message></td>
+            </tr>
+        </table>
+        <input class="iButton" type="button" id="submitLogin" value="Login">
+
+        <p>Login as 'Gill Bates' or 'Beeve Salmer'. Both have a password of '1234'.</p>
+    </form>
+</div>
+
+
+</body>
+</html>

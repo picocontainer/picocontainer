@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>JSF</title>
+</head>
+<body>
+<p>JSF binds to PicoContainer-Web quite well.</p>
+<p>To configure PicoContainer to handle the dependency injection of JSF components, refer to the
+web.xml below. For JSF there is a slightly different listener
+to the one defined in the <a href="index.html">main page</a>. Also, instead of using JSF servlet, use ours.
+Everything else from the standard JSF setup is appropriate.</p>
+<div class="source"><pre>
+	<web-app>
+	  <display-name>PicoContainer-Web JSF Demo</display-name>
+
+	  <context-param>
+	    <param-name>webapp-composer-class</param-name>
+	    <param-value>*your web app composer class name*</param-value>
+	  </context-param>
+
+	  <filter>
+	    <filter-name>picoFilter</filter-name>
+	    <filter-class>org.picocontainer.web.jsf.PicoVariableResolver$ServletFilter</filter-class>
+	  </filter>
+
+	  <filter-mapping>
+	    <filter-name>picoFilter</filter-name>
+	    <url-pattern>*.jsf</url-pattern>
+	  </filter-mapping>
+
+	  <listener>
+	    <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+	  </listener>
+
+    <!-- 
+    	JSF Installation.
+     -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>	
+
+
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	  </welcome-file-list>
+
+	</web-app>
+	</pre></div>
+<p>With this design you can use Constructor Injection and three tier container scoping for JSF web
+applications. Make sure you make
+and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
+<p>See <a href="downloads.html">downloads</a> on how to download the webwork module either using Maven or by
+downloading full distribution.</p>
+<p>We have a sample application.  It is a small form-style web-app that shows and list of cheeses, allows you to add and delete from the list.  <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jsf-webapp/">See the Maven2 source for it</a>. Here is a screenshot of it running:</p>
+	<img src="images/JSF_App.jpg"/>
+<p><a href="http://picocontainer/web/warfiles/pico-jsf-demo.war">Download the war file for it</a> (full Java source in WEB-INF/classes).</p>
+</body>
+</html>

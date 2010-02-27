@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Monitoring Component Events</title></head>
+<body>
+<p>A ComponentMonitor if injected into DefultPicoContainer allows for certain events to be monitored for the whole
+    container. These are:</p>
+<ul>
+    <li>instantiating - referring to a component</li>
+    <li>instantiated - referring to a component</li>
+    <li>instantiationFailed - referring to a component</li>
+    <li>invoking - referring to a method on a component</li>
+    <li>invoked - referring to a method on a component</li>
+    <li>invocationFailed - referring to a method on a component</li>
+    <li>lifecycleInvocationFailed - referring to start/stop/dispose methods on a component</li>
+    <li>noComponentFound - referring to getComponent(..) on a PicoContainer instance.</li>
+</ul>
+<p>Refer to the <a href="http://picocontainer.org/javadoc/core/org/picocontainer/ComponentMonitor.html">API
+    documentation</a> for ComponentMonitor.
+</p>
+
+<p>Using a ComponentMonitor is quite easy, you pass it into the constructor of DefaultPicoContainer. It will also be
+    passed to child containers:</p>
+
+<div class="source">
+<pre>parent = new DefaultPicoContainer(new MyComponentMonitor());
+child = parent.makeChildContainer(); // will use the same monitor impl.
+...
+public class MyComponentMonitor implements ComponentMonitor {
+	// etc
+}
+</pre>
+</div>
+<h2>Making your own ComponentMonitor implementation</h2>
+
+<h3>Return Values </h3>
+
+<p><em>Instantiating</em> returns a Constructor. An implementor of ComponentMonitor can choose to return a different
+    Constructor reference. This is one way that implementations can be replaced or decorated (AOP style) with
+    additional/changed functionality. </p>
+
+<p><em>noComponentFound</em> returns an Object (default of null in most cases). An implementor can choose to return an
+    instance instead. That instance should be of a type that makes sense to the component that was being sought. The
+    getComponent(..) would have otherwise failed, but this hypothetical ComponentMonitor intercepted that failure and
+    provided something that makes sense. </p>
+
+<h3>General rules</h3>
+
+<ol>
+    <li>ComponentMonitor can generally be chained together. Meaning you can use them in combination.</li>
+    <li>Most have NullComponentMonitor (see below) as their end stop.</li>
+    <li>Any method on ComponentMonitor is open for interpretation. That means they can throw exceptions as well as
+        return different values, making them modify PicoContainer's behavior.
+    </li>
+</ol>
+<br/>
+<h2>Supplied ComponentMonitor implementations</h2>
+
+<h3>Logging or text-centric varieties of ComponentMonitor </h3>
+
+<p> The PicoContainer team are ideologically opposed to a forced choice of logging framework. If you're hell bent on
+    logging, chose from a ComponentMonitor implementation below:</p>
+
+<ul>
+    <li>
+        <a href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/CommonsLoggingComponentMonitor.html">CommonsLoggingComponentMonitor</a>
+        (Gems) // uses Apache's Commons-Logging
+    </li>
+    <li><a href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/Log4JComponentMonitor.html">Log4JComponentMonitor</a>
+        (Gems) // uses Apache's Log4J
+    </li>
+    <li><a href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/Slf4jComponentMonitor.html">Slf4jComponentMonitor</a>
+        (Gems) // uses Simple Logging Framework for Java (SLF4J)
+    </li>
+    <li><a href="http://picocontainer.org/javadoc/core/org/picocontainer/monitors/ConsoleComponentMonitor.html">ConsoleComponentMonitor</a>
+        // prints to System.out
+    </li>
+    <li><a href="http://picocontainer.org/javadoc/core/org/picocontainer/monitors/WriterComponentMonitor.html">WriterComponentMonitor</a>
+        // prints to a supplied OutputStream
+    </li>
+</ul>
+
+<h3>NullComponentMonitor</h3>
+
+<p><a href="http://picocontainer.org/javadoc/core/org/picocontainer/monitors/NullComponentMonitor.html">NullComponentMonitor</a>
+    is PicoContainer's default ComponentMonitor. It generally fits the NullObject pattern, but it does add behavior.
+    Specifically if it encounters a lifecycleInvocationFailed(..) method invocation, it throws a PicoLifecycleException
+    in response. If you use something other than NullComponentMonitor (bear in mind the default 'end stop' for most
+    others is also NullComponentMonitor) then you could change the way PicoContainer responds to components it cannot
+    start, stop of dispose of. </p>
+
+<h3>LifecycleComponentMonitor</h3>
+
+<p><a href="http://picocontainer.org/javadoc/core/org/picocontainer/monitors/LifecycleComponentMonitor.html">LifecycleComponentMonitor</a>
+    is a ComponentMonitor that stores life-cycle failures and rethrows them later if rethrowLifecycleFailuresException()
+    is called. </p>
+
+<h3>DotDependencyGraphComponentMonitor (Gems)</h3>
+
+<p>
+    <a href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/DotDependencyGraphComponentMonitor.html">DotDependencyGraphComponentMonitor</a>
+    is a ComponentMonitor that makes a dot graph for instantiations of components. You would use it to visualize a graph
+    of the injections in a container or tree of PicoContainers after they have run for some time. Call
+    getClassDependencyGraph() on the monitor instance when you are ready to retrieve the Dot representation. See the <a
+        href="http://www.graphviz.org/">Graphviz</a> website for applications that can read the .dot format and
+    visualize.</p>
+
+<h3>Prefuse (Gems)</h3>
+
+<p>In a similar way to the DotDependencyGraph above a visualization using <a href="http://prefuse.org/">Prefuse</a> is
+    possible by coupling a <a
+        href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/prefuse/PrefuseDependencyGraph.html">PrefuseDependencyGraph</a>
+    instance to a <a
+        href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/ComponentDependencyMonitor.html">ComponentDependencyMonitor</a>
+    one. Call getGraph() to retrieve the graph for use with Prefuse</p>
+<br/>
+<h2><a name="composers">Composers</a></h2>
+
+	<p>ComposingMonitor is an implementation of the Monitor design that works specifically in conjunction with noComponentFound(..) to allow greater collaboration in the supply of components for the purposes of injection.  By definition it is only going to work if the type or object key that's required is missing from the container.</p>
+
+<div class="source">
+<pre>MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor( /* varargs of composer instances */));
+</pre>
+</div>
+<p>If more than one is specified in the varargs above, then the first in the list to actually return non-null will be used.  It is also possible for a fallback component monitor to be specified:</p>
+<div class="source">
+<pre>ComponentMonitor otherCM = ...
+MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor(otherCM, /* varargs of composer instances */));
+</pre>
+</div>
+<p>See <a href="regex.html">Regex Composer</a></p>	
+<h2>Future work</h2>
+
+	<p>Implementations that:</p>
+	<ul>
+	    <li>Record component injections and play them back later (optimized web frameworks)</li>
+	</ul>
+
+</body>
+</html>

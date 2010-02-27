@@ -1,0 +1,167 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Original code by Joerg Schaible                                           *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.gems.jmx;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import org.picocontainer.ComponentAdapter;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import org.picocontainer.PicoContainer;<a name="line.14"></a>
+<FONT color="green">015</FONT>    <a name="line.15"></a>
+<FONT color="green">016</FONT>    import javax.management.DynamicMBean;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import javax.management.MBeanInfo;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import javax.management.MalformedObjectNameException;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import javax.management.ObjectName;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>    /**<a name="line.22"></a>
+<FONT color="green">023</FONT>     * A DynamicMBeanProvider that constructs StandardMBean instances that as long as an ObjectName and a MBeanInfo can be<a name="line.23"></a>
+<FONT color="green">024</FONT>     * generated for the component.<a name="line.24"></a>
+<FONT color="green">025</FONT>     * @author J&amp;ouml;rg Schaible<a name="line.25"></a>
+<FONT color="green">026</FONT>     */<a name="line.26"></a>
+<FONT color="green">027</FONT>    public abstract class AbstractConstructingProvider implements DynamicMBeanProvider {<a name="line.27"></a>
+<FONT color="green">028</FONT>    <a name="line.28"></a>
+<FONT color="green">029</FONT>        /**<a name="line.29"></a>
+<FONT color="green">030</FONT>         * Create a StandardMBean from the component provided by the ComponentAdapter. One of the registered<a name="line.30"></a>
+<FONT color="green">031</FONT>         * {@link MBeanInfoProvider} instances must provide a {@link MBeanInfo} for the component and the registered<a name="line.31"></a>
+<FONT color="green">032</FONT>         * {@link ObjectNameFactory} has to provide a proper {@link ObjectName}.<a name="line.32"></a>
+<FONT color="green">033</FONT>         * &lt;p&gt;<a name="line.33"></a>
+<FONT color="green">034</FONT>         * Note: An instance of the component is only created, if a management interface is available.<a name="line.34"></a>
+<FONT color="green">035</FONT>         * &lt;/p&gt;<a name="line.35"></a>
+<FONT color="green">036</FONT>         * @see org.picocontainer.gems.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,<a name="line.36"></a>
+<FONT color="green">037</FONT>         *      org.picocontainer.ComponentAdapter)<a name="line.37"></a>
+<FONT color="green">038</FONT>         */<a name="line.38"></a>
+<FONT color="green">039</FONT>        public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>            // locate MBeanInfo<a name="line.41"></a>
+<FONT color="green">042</FONT>            MBeanInfo mBeanInfo = null;<a name="line.42"></a>
+<FONT color="green">043</FONT>            MBeanInfoProvider[] mBeanInfoProviders = getMBeanInfoProviders();<a name="line.43"></a>
+<FONT color="green">044</FONT>            for (int i = 0; i &lt; mBeanInfoProviders.length &amp;&amp; mBeanInfo == null; ++i) {<a name="line.44"></a>
+<FONT color="green">045</FONT>                mBeanInfo = mBeanInfoProviders[i].provide(picoContainer, componentAdapter);<a name="line.45"></a>
+<FONT color="green">046</FONT>            }<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>                    Class management = null;<a name="line.48"></a>
+<FONT color="green">049</FONT>                    try {<a name="line.49"></a>
+<FONT color="green">050</FONT>                    // throws ClassNotFoundException if not successful<a name="line.50"></a>
+<FONT color="green">051</FONT>                             management = getManagementInterface(componentAdapter.getComponentImplementation(), mBeanInfo);<a name="line.51"></a>
+<FONT color="green">052</FONT>                    } catch (final ClassNotFoundException e) {<a name="line.52"></a>
+<FONT color="green">053</FONT>                            // No management interface available<a name="line.53"></a>
+<FONT color="green">054</FONT>                    }<a name="line.54"></a>
+<FONT color="green">055</FONT>    <a name="line.55"></a>
+<FONT color="green">056</FONT>                    if( management != null || mBeanInfo != null ) {<a name="line.56"></a>
+<FONT color="green">057</FONT>                            try {<a name="line.57"></a>
+<FONT color="green">058</FONT>                                    // create MBean<a name="line.58"></a>
+<FONT color="green">059</FONT>                                    final DynamicMBean mBean = getMBeanFactory().create(<a name="line.59"></a>
+<FONT color="green">060</FONT>                                                    componentAdapter.getComponentInstance(picoContainer,null), management, mBeanInfo);<a name="line.60"></a>
+<FONT color="green">061</FONT>                                    final ObjectName objectName = getObjectNameFactory().create(componentAdapter.getComponentKey(), mBean);<a name="line.61"></a>
+<FONT color="green">062</FONT>                                    if (objectName != null) {<a name="line.62"></a>
+<FONT color="green">063</FONT>                                            return new JMXRegistrationInfo(objectName, mBean);<a name="line.63"></a>
+<FONT color="green">064</FONT>                                    }<a name="line.64"></a>
+<FONT color="green">065</FONT>                            } catch (final MalformedObjectNameException e) {<a name="line.65"></a>
+<FONT color="green">066</FONT>                                    throw new JMXRegistrationException("Cannot create ObjectName for component '"<a name="line.66"></a>
+<FONT color="green">067</FONT>                                                    + componentAdapter.getComponentKey()<a name="line.67"></a>
+<FONT color="green">068</FONT>                                                    + "'", e);<a name="line.68"></a>
+<FONT color="green">069</FONT>                            }<a name="line.69"></a>
+<FONT color="green">070</FONT>                    }<a name="line.70"></a>
+<FONT color="green">071</FONT>                    return null;<a name="line.71"></a>
+<FONT color="green">072</FONT>        }<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>        /**<a name="line.74"></a>
+<FONT color="green">075</FONT>         * @return Returns the {@link DynamicMBeanFactory} to use.<a name="line.75"></a>
+<FONT color="green">076</FONT>         */<a name="line.76"></a>
+<FONT color="green">077</FONT>        protected abstract DynamicMBeanFactory getMBeanFactory();<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>        /**<a name="line.79"></a>
+<FONT color="green">080</FONT>         * Deliver the ObjectNameFactory used to provide the {@link ObjectName} instances registering the MBeans.<a name="line.80"></a>
+<FONT color="green">081</FONT>         * @return Return the {@link ObjectNameFactory} instance.<a name="line.81"></a>
+<FONT color="green">082</FONT>         */<a name="line.82"></a>
+<FONT color="green">083</FONT>        protected abstract ObjectNameFactory getObjectNameFactory();<a name="line.83"></a>
+<FONT color="green">084</FONT>    <a name="line.84"></a>
+<FONT color="green">085</FONT>        /**<a name="line.85"></a>
+<FONT color="green">086</FONT>         * Deliver the MBeanInfoProvider instances to use. The instances are used in the delivered sequence to retrieve a<a name="line.86"></a>
+<FONT color="green">087</FONT>         * {@link MBeanInfo} for a MBean to create. It is valid for an implementation to return an empty array.<a name="line.87"></a>
+<FONT color="green">088</FONT>         * @return Return an array of {@link MBeanInfoProvider} instances.<a name="line.88"></a>
+<FONT color="green">089</FONT>         */<a name="line.89"></a>
+<FONT color="green">090</FONT>        protected abstract MBeanInfoProvider[] getMBeanInfoProviders();<a name="line.90"></a>
+<FONT color="green">091</FONT>    <a name="line.91"></a>
+<FONT color="green">092</FONT>        /**<a name="line.92"></a>
+<FONT color="green">093</FONT>         * Determin the management interface from the component implementation type and an optional MBeanInfo instance.<a name="line.93"></a>
+<FONT color="green">094</FONT>         * @param implementation The type of the component's implementation.<a name="line.94"></a>
+<FONT color="green">095</FONT>         * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be &lt;code&gt;null&lt;/code&gt;.<a name="line.95"></a>
+<FONT color="green">096</FONT>         * @return Returns the management interface.<a name="line.96"></a>
+<FONT color="green">097</FONT>         * @throws ClassNotFoundException Thrown if no interface can be determined.<a name="line.97"></a>
+<FONT color="green">098</FONT>         */<a name="line.98"></a>
+<FONT color="green">099</FONT>        protected abstract Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)<a name="line.99"></a>
+<FONT color="green">100</FONT>                throws ClassNotFoundException;<a name="line.100"></a>
+<FONT color="green">101</FONT>    }<a name="line.101"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

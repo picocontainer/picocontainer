@@ -1,0 +1,278 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*****************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) PicoContainer Committers, 2010. All rights reserved.            *<a name="line.2"></a>
+<FONT color="green">003</FONT>     * ------------------------------------------------------------------------- *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD      *<a name="line.4"></a>
+<FONT color="green">005</FONT>     * style license a copy of which has been included with this distribution in *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the LICENSE.txt file.                                                     *<a name="line.6"></a>
+<FONT color="green">007</FONT>     *                                                                           *<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *****************************************************************************/<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    package org.picocontainer.defaults;<a name="line.11"></a>
+<FONT color="green">012</FONT>    <a name="line.12"></a>
+<FONT color="green">013</FONT>    import static org.junit.Assert.assertEquals;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import static org.junit.Assert.assertFalse;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import static org.junit.Assert.assertNotNull;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import static org.junit.Assert.assertNull;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import static org.junit.Assert.assertSame;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import static org.junit.Assert.assertTrue;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import static org.junit.Assert.fail;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.util.ArrayList;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import java.util.List;<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.junit.Test;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.picocontainer.DefaultPicoContainer;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.picocontainer.NameBinding;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.picocontainer.PicoCompositionException;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import org.picocontainer.parameters.ComponentParameter;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import org.picocontainer.parameters.ConstantParameter;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.picocontainer.testmodel.DependsOnTouchable;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.picocontainer.testmodel.SimpleTouchable;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.picocontainer.testmodel.Touchable;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.picocontainer.testmodel.Webster;<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>    public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {<a name="line.36"></a>
+<FONT color="green">037</FONT>    <a name="line.37"></a>
+<FONT color="green">038</FONT>        //TODO - move to AbstractComponentRegistryTestCase<a name="line.38"></a>
+<FONT color="green">039</FONT>        @Test public void testGetComponentSpecification() throws PicoCompositionException {<a name="line.39"></a>
+<FONT color="green">040</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>            assertNull(pico.getComponentAdapter(Touchable.class, (NameBinding) null));<a name="line.42"></a>
+<FONT color="green">043</FONT>            pico.addComponent(SimpleTouchable.class);<a name="line.43"></a>
+<FONT color="green">044</FONT>            assertNotNull(pico.getComponentAdapter(SimpleTouchable.class, (NameBinding) null));<a name="line.44"></a>
+<FONT color="green">045</FONT>            assertNotNull(pico.getComponentAdapter(Touchable.class,(NameBinding)  null));<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>    <a name="line.48"></a>
+<FONT color="green">049</FONT>        //TODO move<a name="line.49"></a>
+<FONT color="green">050</FONT>        @Test public void testMultipleImplementationsAccessedThroughKey()<a name="line.50"></a>
+<FONT color="green">051</FONT>                throws PicoCompositionException<a name="line.51"></a>
+<FONT color="green">052</FONT>        {<a name="line.52"></a>
+<FONT color="green">053</FONT>            SimpleTouchable Touchable1 = new SimpleTouchable();<a name="line.53"></a>
+<FONT color="green">054</FONT>            SimpleTouchable Touchable2 = new SimpleTouchable();<a name="line.54"></a>
+<FONT color="green">055</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.55"></a>
+<FONT color="green">056</FONT>            pico.addComponent("Touchable1", Touchable1);<a name="line.56"></a>
+<FONT color="green">057</FONT>            pico.addComponent("Touchable2", Touchable2);<a name="line.57"></a>
+<FONT color="green">058</FONT>            pico.addComponent("fred1", DependsOnTouchable.class, new ComponentParameter("Touchable1"));<a name="line.58"></a>
+<FONT color="green">059</FONT>            pico.addComponent("fred2", DependsOnTouchable.class, new ComponentParameter("Touchable2"));<a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>            DependsOnTouchable fred1 = (DependsOnTouchable) pico.getComponent("fred1");<a name="line.61"></a>
+<FONT color="green">062</FONT>            DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");<a name="line.62"></a>
+<FONT color="green">063</FONT>    <a name="line.63"></a>
+<FONT color="green">064</FONT>            assertFalse(fred1 == fred2);<a name="line.64"></a>
+<FONT color="green">065</FONT>            assertSame(Touchable1, fred1.getTouchable());<a name="line.65"></a>
+<FONT color="green">066</FONT>            assertSame(Touchable2, fred2.getTouchable());<a name="line.66"></a>
+<FONT color="green">067</FONT>        }<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>        //TODO - move<a name="line.69"></a>
+<FONT color="green">070</FONT>        @Test public void testRegistrationByName() throws Exception {<a name="line.70"></a>
+<FONT color="green">071</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.71"></a>
+<FONT color="green">072</FONT>    <a name="line.72"></a>
+<FONT color="green">073</FONT>            Webster one = new Webster(new ArrayList());<a name="line.73"></a>
+<FONT color="green">074</FONT>            Touchable two = new SimpleTouchable();<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>            pico.addComponent("one", one);<a name="line.76"></a>
+<FONT color="green">077</FONT>            pico.addComponent("two", two);<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>            assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>            assertEquals("Looking up one Touchable", one, pico.getComponent("one"));<a name="line.81"></a>
+<FONT color="green">082</FONT>            assertEquals("Looking up two Touchable", two, pico.getComponent("two"));<a name="line.82"></a>
+<FONT color="green">083</FONT>    <a name="line.83"></a>
+<FONT color="green">084</FONT>            assertTrue("Object one the same", one == pico.getComponent("one"));<a name="line.84"></a>
+<FONT color="green">085</FONT>            assertTrue("Object two the same", two == pico.getComponent("two"));<a name="line.85"></a>
+<FONT color="green">086</FONT>    <a name="line.86"></a>
+<FONT color="green">087</FONT>            assertEquals("Lookup of unknown key should return null", null, pico.getComponent("unknown"));<a name="line.87"></a>
+<FONT color="green">088</FONT>        }<a name="line.88"></a>
+<FONT color="green">089</FONT>    <a name="line.89"></a>
+<FONT color="green">090</FONT>        @Test public void testRegistrationByNameAndClassWithResolving() throws Exception {<a name="line.90"></a>
+<FONT color="green">091</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.91"></a>
+<FONT color="green">092</FONT>    <a name="line.92"></a>
+<FONT color="green">093</FONT>            pico.addComponent(List.class, new ArrayList());<a name="line.93"></a>
+<FONT color="green">094</FONT>            pico.addComponent("one", Webster.class);<a name="line.94"></a>
+<FONT color="green">095</FONT>            pico.addComponent("two", SimpleTouchable.class);<a name="line.95"></a>
+<FONT color="green">096</FONT>    <a name="line.96"></a>
+<FONT color="green">097</FONT>            assertEquals("Wrong number of comps in the internals", 3, pico.getComponents().size());<a name="line.97"></a>
+<FONT color="green">098</FONT>    <a name="line.98"></a>
+<FONT color="green">099</FONT>            assertNotNull("Object one the same", pico.getComponent("one"));<a name="line.99"></a>
+<FONT color="green">100</FONT>            assertNotNull("Object two the same", pico.getComponent("two"));<a name="line.100"></a>
+<FONT color="green">101</FONT>    <a name="line.101"></a>
+<FONT color="green">102</FONT>            assertNull("Lookup of unknown key should return null", pico.getComponent("unknown"));<a name="line.102"></a>
+<FONT color="green">103</FONT>        }<a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>        @Test public void testDuplicateRegistrationWithTypeAndObject() throws PicoCompositionException {<a name="line.105"></a>
+<FONT color="green">106</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.106"></a>
+<FONT color="green">107</FONT>    <a name="line.107"></a>
+<FONT color="green">108</FONT>            pico.addComponent(SimpleTouchable.class);<a name="line.108"></a>
+<FONT color="green">109</FONT>            try {<a name="line.109"></a>
+<FONT color="green">110</FONT>                pico.addComponent(SimpleTouchable.class, new SimpleTouchable());<a name="line.110"></a>
+<FONT color="green">111</FONT>                fail("Should have barfed with dupe registration");<a name="line.111"></a>
+<FONT color="green">112</FONT>            } catch (PicoCompositionException e) {<a name="line.112"></a>
+<FONT color="green">113</FONT>                // expected<a name="line.113"></a>
+<FONT color="green">114</FONT>                assertTrue(e.getMessage().startsWith("Duplicate"));<a name="line.114"></a>
+<FONT color="green">115</FONT>                assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) &gt; 0);<a name="line.115"></a>
+<FONT color="green">116</FONT>            }<a name="line.116"></a>
+<FONT color="green">117</FONT>        }<a name="line.117"></a>
+<FONT color="green">118</FONT>    <a name="line.118"></a>
+<FONT color="green">119</FONT>    <a name="line.119"></a>
+<FONT color="green">120</FONT>        @Test public void testComponentRegistrationMismatch() throws PicoCompositionException {<a name="line.120"></a>
+<FONT color="green">121</FONT>            MutablePicoContainer pico = new DefaultPicoContainer();<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>            try {<a name="line.123"></a>
+<FONT color="green">124</FONT>                pico.addComponent(List.class, SimpleTouchable.class);<a name="line.124"></a>
+<FONT color="green">125</FONT>            } catch (ClassCastException e) {<a name="line.125"></a>
+<FONT color="green">126</FONT>                // not worded in message<a name="line.126"></a>
+<FONT color="green">127</FONT>                assertTrue(e.getMessage().indexOf(List.class.getName()) &gt; 0);<a name="line.127"></a>
+<FONT color="green">128</FONT>                assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) == 0);<a name="line.128"></a>
+<FONT color="green">129</FONT>            }<a name="line.129"></a>
+<FONT color="green">130</FONT>    <a name="line.130"></a>
+<FONT color="green">131</FONT>        }<a name="line.131"></a>
+<FONT color="green">132</FONT>    <a name="line.132"></a>
+<FONT color="green">133</FONT>        interface Animal {<a name="line.133"></a>
+<FONT color="green">134</FONT>    <a name="line.134"></a>
+<FONT color="green">135</FONT>            String getFood();<a name="line.135"></a>
+<FONT color="green">136</FONT>        }<a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>        public static class Dino implements Animal {<a name="line.138"></a>
+<FONT color="green">139</FONT>            final String food;<a name="line.139"></a>
+<FONT color="green">140</FONT>    <a name="line.140"></a>
+<FONT color="green">141</FONT>            public Dino(String food) {<a name="line.141"></a>
+<FONT color="green">142</FONT>                this.food = food;<a name="line.142"></a>
+<FONT color="green">143</FONT>            }<a name="line.143"></a>
+<FONT color="green">144</FONT>    <a name="line.144"></a>
+<FONT color="green">145</FONT>            public String getFood() {<a name="line.145"></a>
+<FONT color="green">146</FONT>                return food;<a name="line.146"></a>
+<FONT color="green">147</FONT>            }<a name="line.147"></a>
+<FONT color="green">148</FONT>        }<a name="line.148"></a>
+<FONT color="green">149</FONT>    <a name="line.149"></a>
+<FONT color="green">150</FONT>        public static class Dino2 extends Dino {<a name="line.150"></a>
+<FONT color="green">151</FONT>            public Dino2(int number) {<a name="line.151"></a>
+<FONT color="green">152</FONT>                super(String.valueOf(number));<a name="line.152"></a>
+<FONT color="green">153</FONT>            }<a name="line.153"></a>
+<FONT color="green">154</FONT>        }<a name="line.154"></a>
+<FONT color="green">155</FONT>    <a name="line.155"></a>
+<FONT color="green">156</FONT>        public static class Dino3 extends Dino {<a name="line.156"></a>
+<FONT color="green">157</FONT>            public Dino3(String a, String b) {<a name="line.157"></a>
+<FONT color="green">158</FONT>                super(a + b);<a name="line.158"></a>
+<FONT color="green">159</FONT>            }<a name="line.159"></a>
+<FONT color="green">160</FONT>        }<a name="line.160"></a>
+<FONT color="green">161</FONT>    <a name="line.161"></a>
+<FONT color="green">162</FONT>        public static class Dino4 extends Dino {<a name="line.162"></a>
+<FONT color="green">163</FONT>            public Dino4(String a, int n, String b, Touchable Touchable) {<a name="line.163"></a>
+<FONT color="green">164</FONT>                super(a + n + b + " " + Touchable.getClass().getName());<a name="line.164"></a>
+<FONT color="green">165</FONT>            }<a name="line.165"></a>
+<FONT color="green">166</FONT>        }<a name="line.166"></a>
+<FONT color="green">167</FONT>    <a name="line.167"></a>
+<FONT color="green">168</FONT>        @Test public void testParameterCanBePassedToConstructor() throws Exception {<a name="line.168"></a>
+<FONT color="green">169</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.169"></a>
+<FONT color="green">170</FONT>            pico.addComponent(Animal.class,<a name="line.170"></a>
+<FONT color="green">171</FONT>                    Dino.class,<a name="line.171"></a>
+<FONT color="green">172</FONT>                    new ConstantParameter("bones"));<a name="line.172"></a>
+<FONT color="green">173</FONT>    <a name="line.173"></a>
+<FONT color="green">174</FONT>            Animal animal = pico.getComponent(Animal.class);<a name="line.174"></a>
+<FONT color="green">175</FONT>            assertNotNull("Component not null", animal);<a name="line.175"></a>
+<FONT color="green">176</FONT>            assertEquals("bones", animal.getFood());<a name="line.176"></a>
+<FONT color="green">177</FONT>        }<a name="line.177"></a>
+<FONT color="green">178</FONT>    <a name="line.178"></a>
+<FONT color="green">179</FONT>        @Test public void testParameterCanBePrimitive() throws Exception {<a name="line.179"></a>
+<FONT color="green">180</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.180"></a>
+<FONT color="green">181</FONT>            pico.addComponent(Animal.class, Dino2.class, new ConstantParameter(22));<a name="line.181"></a>
+<FONT color="green">182</FONT>    <a name="line.182"></a>
+<FONT color="green">183</FONT>            Animal animal = pico.getComponent(Animal.class);<a name="line.183"></a>
+<FONT color="green">184</FONT>            assertNotNull("Component not null", animal);<a name="line.184"></a>
+<FONT color="green">185</FONT>            assertEquals("22", animal.getFood());<a name="line.185"></a>
+<FONT color="green">186</FONT>        }<a name="line.186"></a>
+<FONT color="green">187</FONT>    <a name="line.187"></a>
+<FONT color="green">188</FONT>        @Test public void testMultipleParametersCanBePassed() throws Exception {<a name="line.188"></a>
+<FONT color="green">189</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.189"></a>
+<FONT color="green">190</FONT>            pico.addComponent(Animal.class, Dino3.class, new ConstantParameter("a"),<a name="line.190"></a>
+<FONT color="green">191</FONT>                    new ConstantParameter("b"));<a name="line.191"></a>
+<FONT color="green">192</FONT>    <a name="line.192"></a>
+<FONT color="green">193</FONT>            Animal animal = pico.getComponent(Animal.class);<a name="line.193"></a>
+<FONT color="green">194</FONT>            assertNotNull("Component not null", animal);<a name="line.194"></a>
+<FONT color="green">195</FONT>            assertEquals("ab", animal.getFood());<a name="line.195"></a>
+<FONT color="green">196</FONT>    <a name="line.196"></a>
+<FONT color="green">197</FONT>        }<a name="line.197"></a>
+<FONT color="green">198</FONT>    <a name="line.198"></a>
+<FONT color="green">199</FONT>        @Test public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {<a name="line.199"></a>
+<FONT color="green">200</FONT>            DefaultPicoContainer pico = new DefaultPicoContainer();<a name="line.200"></a>
+<FONT color="green">201</FONT>            pico.addComponent(Touchable.class, SimpleTouchable.class);<a name="line.201"></a>
+<FONT color="green">202</FONT>            pico.addComponent(Animal.class, Dino4.class, new ConstantParameter("a"),<a name="line.202"></a>
+<FONT color="green">203</FONT>                    new ConstantParameter(3),<a name="line.203"></a>
+<FONT color="green">204</FONT>                    new ConstantParameter("b"),<a name="line.204"></a>
+<FONT color="green">205</FONT>                    ComponentParameter.DEFAULT);<a name="line.205"></a>
+<FONT color="green">206</FONT>    <a name="line.206"></a>
+<FONT color="green">207</FONT>            Animal animal = pico.getComponent(Animal.class);<a name="line.207"></a>
+<FONT color="green">208</FONT>            assertNotNull("Component not null", animal);<a name="line.208"></a>
+<FONT color="green">209</FONT>            assertEquals("a3b org.picocontainer.testmodel.SimpleTouchable", animal.getFood());<a name="line.209"></a>
+<FONT color="green">210</FONT>        }<a name="line.210"></a>
+<FONT color="green">211</FONT>    <a name="line.211"></a>
+<FONT color="green">212</FONT>    }<a name="line.212"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Hibernate</title>
+</head>
+<body>
+<p><a href="http://hibernate.org">Hibernate</a> is a de-facto
+standard object/relational persistence tool for Java. This partly
+explains the lack of other tools supported by PicoContainer Persistence.
+</p>
+<p>The Persistence Hibernate module provides support for DI and
+lifecycle.</p>
+
+<p>Let's walk through a typical use case: how to configure a
+Hibernate persister using a given configuration file. We want the
+hibernate configuration path to be configurable via a PicoContainer
+script - let's say XML for the sake of this example, although of course
+anything said for XML will hold for other scripts too. The <code>hibernate.cfg.xml</code>
+will look something like</p>
+
+<div class="source"><pre>
+<hibernate-configuration>
+
+  <session-factory>
+    <!-- properties such as dialect, connection, caching etc -->
+
+    <!-- mapping classes -->
+    <mapping class="MyEntity" />
+  </session-factory>
+
+</hibernate-configuration>
+</pre></div>
+and we want to use this config file to create a Hibernate
+<code>SessionFactory</code>
+that will be injected in the persister:
+<div class="source"><pre>
+public class MyHibernatePersister {
+
+    private SessionFactory factory;
+
+    /**
+     * Creates an MyHibernatePersister with a Hibernate SessionFactory
+     * 
+     * @param factory the SessionFactory
+     */
+    public MyHibernatePersister(SessionFactory factory){
+        this.factory = factory;
+    }
+
+    // ... your hibernate code
+}
+</pre></div>
+to manage persisted entities such as
+<code>MyEntity</code>
+<div class="source"><pre>
+@Entity
+@Table(name = "ENTITY")
+public class MyEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
+
+    @Column(name = "NAME", nullable = true)
+    private String name;
+
+}
+</pre></div>
+Note that we are using annotations here to define the mapping - although
+their use is optional even though highly recommended. To provide the
+required dependency via PicoContainer all we need to do is register the
+following two adapters of Hibernate objects
+<a
+	href="javadoc/hibernate/org/picocontainer/persistence/hibernate/annotations/ConstructableAnnotationConfiguration.html">
+org.picocontainer.persistence.hibernate.annotations.ConstructableAnnotationConfiguration</a>
+and
+<a
+	href="javadoc/hibernate/org/picocontainer/persistence/hibernate/ConfigurableSessionFactory.html">org.picocontainer.persistence.hibernate.ConfigurableSessionFactory</a>
+:
+
+<div class="source"><pre>
+<container
+	component-instance-factory='org.picocontainer.script.xml.XStreamComponentInstanceFactory'>
+ <component-implementation
+	class='org.picocontainer.persistence.hibernate.annotations.ConstructableAnnotationConfiguration'>
+    <parameter><string>hibernate.cfg.xml</string></parameter>
+  </component-implementation>
+  <component-implementation
+	class='org.picocontainer.persistence.hibernate.ConfigurableSessionFactory' />
+  <component-implementation class='MyHibernatePersister' />
+</container>
+</pre></div>
+If you wanted to not use annotations, all you had to do was to use
+<a
+	href="javadoc/hibernate/org/picocontainer/persistence/hibernate/ConstructableConfiguration.html">
+org.picocontainer.persistence.hibernate.ConstructableConfiguration</a>
+in place of the
+<code>ConstructableAnnotationConfiguration</code>
+(and of course define the mapping manually via a hibernate.hbm.xml
+file).
+</p>
+</body>
+</html>

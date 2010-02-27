@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Propagating Dependency</title>
+</head>
+<body>
+<div>
+    <h2>Symptoms</h2>
+
+    <p>A dependency exists solely to be propagated to another class, but no methods are called upon the dependent object
+       itself. For example:</p>
+
+    <div class="source">
+        <div>
+            <pre>public class AControllerImpl implements AController {
+
+    private SomeService service;
+    private int someId;
+
+    public AControllerImpl(SomeService service) {
+        this.service = service;
+        this.someId = generateRandomNumber();
+    }
+
+    public launchAnotherController() {
+        AnotherController anotherController = new AnotherControllerImpl(service, fooId);
+        anotherController.launch();
+    }
+
+    // ...
+}</pre>
+        </div>
+    </div>
+    <p>In this example, no method-calls are made upon 'service', it is simply propagated to the constructor of
+       'AnotherControllerImpl'. Therefore, it is not a valid dependency for 'AControllerImpl'. </p>
+</div>
+<div>
+    <h2>Causes</h2>
+
+    <p>DependencyInjection has been partially applied to a hierarchy of classes. This could be because some classes in
+       the hierarchy depend upon instance state not available at container-registration time.</p>
+</div>
+<div>
+    <h2>What To Do</h2>
+
+    <p>Apply DependencyInjection to 'AControllerImpl' by replacing the dependency on 'SomeService' with a dependency on
+       'AnotherController'. If, as in the example above, 'AnotherControllerImpl' has a dependency upon some state that
+       is not available at container-registration time, then we need to introduce a factory for creating
+       'AnotherController' as follows:</p>
+
+    <p>TODO: This is maybe a little contrieved for this example. Maybe remove or simplify. (AH).</p>
+
+    <div class="source">
+        <div>
+            <pre>public class AControllerImpl implements AController {
+
+    private AnotherControllerFactory anotherControllerFactory;
+    private int someId;
+
+    public AControllerImpl(AnotherControllerFactory anotherControllerFactory) {
+        this.anotherControllerFactory = anotherControllerFactory;
+        this.someId = generateRandomNumber();
+    }
+
+    public launchAnotherController() {
+        AnotherController anotherController = anotherControllerFactory.createAnotherController(someId);
+        anotherController.launch();
+    }
+
+    // ...
+}</pre>
+        </div>
+    </div>
+    <p>'AnotherControllerFactory' is an interface:</p>
+
+    <div class="source">
+        <div>
+            <pre>public interface AnotherControllerFactory {
+    AnotherController createAnotherController(int someId);
+}</pre>
+        </div>
+    </div>
+    <p>It can be implemented as follows::</p>
+
+    <div class="source">
+        <div>
+            <pre>public class AnotherControllerFactoryImpl implements AnotherControllerFactory {
+    private SomeService service;
+
+    public AnotherControllerFactoryImpl(SomeService service) {
+        this.service = service;
+    }
+
+    public AnotherController createAnotherController(int someId) {
+        return new AnotherControllerImpl(service, someId);
+    }
+}</pre>
+        </div>
+    </div>
+    <p>Now we can register both 'AControllerImpl' and 'AnotherControllerFactoryImpl' in the container. When
+       'AControllerImpl' is instantiated, it is supplied with an implementation of 'AnotherControlFactory' that it can
+       use to create an 'AnotherController' instance.</p>
+
+    <div class="section_1">
+        <h1>Exceptions</h1>
+
+        <p>When [Migrating from executors to services], it can sometimes be difficult to avoid introducing a Propagating
+           Dependency. In these cases, the Propogating Dependency can be considered as a good first step towards
+           PicoFication of a set of classes. An effort should be made to complete PicoFication at some stage by making a
+           series of further steps as described above.</p>
+    </div>
+</div>
+
+</body>
+</html>

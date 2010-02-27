@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>PicoContainer - Design Patterns</title>
+
+<style type="text/css" media="all">
+@import url("./style/pico.css");
+
+@import url("./style/syntaxhighlighter.css");
+</style>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
+</script>
+<script type="text/javascript">
+	_uacct = "UA-2268879-1";
+	urchinTracker();
+</script>
+<script type="text/javascript" src="./js/prototype.js">
+	//
+</script>
+<meta name="verify-v1" content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><span style="font-size: 72px; font-family: Geneva; font-weight: bold;"><img
+  src="images/pico-logo.png" alt="" /> <span style="color: rgb(58, 150, 27);">Pico</span><span
+  style="color: rgb(131, 131, 131);">Container</span></span>
+<div class="clear"></div>
+</div>
+<div id="breadcrumbs">
+<div class="left">Latest Released Version: 2.10.2</div>
+<div class="clear"></div>
+</div>
+
+<div id="leftColumn">
+<div id="navColumn">
+<h1>About</h1>
+<ul>
+     <li><a href="index.html">What is PicoContainer?</a></li>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="javadoc.html">Javadoc</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="goals.html">Project Goals</a></li>
+      <li><a href="support.html">Support</a></li>
+   
+</ul>
+
+<h1>Core Concepts</h1>
+<ul>
+     <li><a href="lifecycle.html">Component Lifecycle</a></li>
+      <li><a href="injection.html">Dependency Injection</a></li>
+      <li><a href="scopes.html">Scoped Containers</a></li>
+   
+</ul>
+
+<h1>Dependency Injection</h1>
+<ul>
+     <li><a href="constructor-injection.html">Constructor Injection</a></li>
+      <li><a href="setter-injection.html">Setter Injection</a></li>
+      <li><a href="annotated-field-injection.html">Annotated Field Injection</a></li>
+      <li><a href="annotated-method-injection.html">Annotated Method Injection</a></li>
+      <li><a href="typed-field-injection.html">Typed Field Injection</a></li>
+      <li><a href="named-field-injection.html">Named Field Injection</a></li>
+      <li><a href="method-injection.html">Method Injection</a></li>
+      <li><a href="named-method-injection.html">Named Method Injection</a></li>
+      <li><a href="multi-injection.html">Multiple Injection</a></li>
+      <li><a href="composite-injection.html">Composite Injection</a></li>
+      <li><a href="factory-injection.html">Factory Injection</a></li>
+      <li><a href="reinjection.html">Reinjection</a></li>
+      <li><a href="providers.html">Injection via Providers</a></li>
+   
+</ul>
+
+<h1>Configuration</h1>
+<ul>
+     <li><a href="disambiguation.html">Disambiguation</a></li>
+   
+</ul>
+
+<h1>Modifying Component Behaviors</h1>
+<ul>
+     <li><a href="behaviors.html">Behaviors Overview</a></li>
+      <li><a href="caching.html">Caching and Singletons</a></li>
+      <li><a href="hiding.html">Hiding Implementations</a></li>
+      <li><a href="thread-safety.html">Thread Safety Behaviors</a></li>
+      <li><a href="interception.html">AOP Style Interception</a></li>
+      <li><a href="other-behaviors.html">Other Behaviors</a></li>
+   
+</ul>
+
+<h1>Advanced Concepts</h1>
+<ul>
+     <li><a href="fluent-style.html">Fluent Style</a></li>
+      <li><a href="arrays-collections-and-maps.html">Arrays, Collections and Maps</a></li>
+      <li><a href="parameter-names.html">Leveraging Parameter Names</a></li>
+      <li><a href="builder.html">Building Containers</a></li>
+      <li><a href="properties.html">Component Properties</a></li>
+      <li><a href="converters.html">Converters</a></li>
+      <li><a href="component-configuration.html">Component Configuration</a></li>
+      <li><a href="monitors.html">Monitoring Component Events</a></li>
+      <li><a href="regex.html">Regex Composer</a></li>
+   
+</ul>
+
+<h1>PicoContainer's Architecture</h1>
+<ul>
+   
+  <li class="currentLink">Design Patterns</li>
+    <li><a href="inversion-of-control.html">Inversion of Control</a></li>
+      <li><a href="adapters.html">Component Adapters</a></li>
+      <li><a href="mock-objects.html">Mock Objects</a></li>
+      <li><a href="terminology.html">Terminology</a></li>
+      <li><a href="comparisons.html">Container Comparisons</a></li>
+      <li><a href="transparency.html">Transparency</a></li>
+   
+</ul>
+
+<h1>Container Choices</h1>
+<ul>
+     <li><a href="DefaultPicoContainer.html">DefaultPicoContainer</a></li>
+      <li><a href="CommandLinePicoContainer.html">CommandLinePicoContainer</a></li>
+      <li><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></li>
+      <li><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></li>
+      <li><a href="TransientPicoContainer.html">TransientPicoContainer</a></li>
+      <li><a href="TieringPicoContainer.html">TieringPicoContainer</a></li>
+   
+</ul>
+
+<h1>Dependant & Related</h1>
+<ul>
+     <li><a href="http://picocontainer.org/web">Web Frameworks</a></li>
+      <li><a href="http://picocontainer.org/script">Scripting Support</a></li>
+      <li><a href="http://picocontainer.org/persistence">Persistence</a></li>
+      <li><a href="http://picocontainer.org/logging">Logging</a></li>
+   
+</ul>
+
+<h1>Anti-patterns</h1>
+<ul>
+     <li><a href="propagating-dependency-antipattern.html">Propagating Dependency</a></li>
+      <li><a href="long-constructor-argument-list-antipattern.html">Long Constructor Argument List</a></li>
+      <li><a href="container-dependency-antipattern.html">Container Dependency</a></li>
+      <li><a href="tests-use-container-antipattern.html">Unit Tests Use Container</a></li>
+      <li><a href="singleton-antipattern.html">Singleton</a></li>
+   
+</ul>
+
+<h1>Help Pages</h1>
+<ul>
+     <li><a href="ambiguous-injectable-help.html">Ambiguous Injectable</a></li>
+      <li><a href="unprocessed-properties-help.html">Unprocessed Properties</a></li>
+   
+</ul>
+
+<h1>History</h1>
+<ul>
+     <li><a href="inversion-of-control-history.html">Inversion of Control History</a></li>
+   
+</ul>
+
+<h1>Project Info</h1>
+<ul>
+     <li><a href="project.html">Project</a></li>
+      <li><a href="team.html">Team</a></li>
+   
+</ul>
+<h1>Hosted by</h1>
+<img alt="Hosted at Codehaus" src="images/codehaus-small.gif" width="120" height="40" /><br />
+<h1>Tools</h1>
+<img alt="Maven" src="images/maven-feather.png" /> <br />
+<img alt="Eclipse" src="images/eclipse-logo-white.jpg" width="100" height="40" /> <br />
+<img alt="IDEA" src="images/idea88x31_white.gif" /> <br />
+</div>
+</div>
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Design Patterns</h2>
+
+<h3>Key Patterns </h3>
+
+<p><strong>Inversion of Control (IoC). </strong></p>
+
+<p>The idea that an application is controlled from the top down</p>
+
+<p><strong>Separation of Concerns (SoC) </strong></p>
+
+<p>The idea that a class (aspect) should do one job and do it well</p>
+
+<p><strong>Separation of API (or Interface) from Implementation</strong></p>
+
+<p>The idea that you define and code to work interfaces</p>
+
+<p><strong>Aspect Oriented Programming (AOP) </strong></p>
+
+<p>Mostly lightweight nowadays where you add a chain of interceptors around a method call that can handle orthogonal
+    concerns</p>
+
+<p><strong>Component Oriented Programming (COP) </strong></p>
+
+<p>The idea that you decompose your software into components</p>
+
+<p><strong>Declarative Programming</strong></p>
+
+<p>Where you use a declarative-style language (usually xml) to determine things like component wiring (i.e. your average
+    tomcat config file, generalized)</p>
+
+<p><strong>Event Based Programming (EBP) </strong></p>
+
+<p>Basically making the inter-object method call asynchronous and encapsulating such a call into some kind of event
+    object that can be queued, modified, etc</p>
+
+<h3>More Thinking </h3>
+
+<p><strong>Good Citizen: Least surprise, least paranoia</strong></p>
+
+<p>Authors: Dan North, Aslak Hellesoy</p>
+
+<p>Imagine a software system where there is no need for you to spend your time programming defensively; your objects
+    will be used responsibly, and your methods will always be passed sensible arguments.</p>
+
+<p>This low-friction utopia can be approached by establishing some simple programming rules so that every class acts as
+    a 'good citizen' in the society of classes collaborating at runtime.</p>
+
+<p>This page outlines some rules that we, and others, believe lead to good citizenship. All are aimed at improving
+    clarity, reducing surprise, and promoting basic consistency.</p>
+
+<p>As a good citizen, I...</p>
+<ul>
+    <li> Keep a consistent state at all times - init() or populate() is a code smell.</li>
+    <li>Have no static fields or methods</li>
+    <li>Never expect or return null.</li>
+    <li>Fail fast - even when constructing.</li>
+    <li>Am Easy to test- all dependent object I use can be passed to me, often in my constructor (typically as Mock
+        Objects).
+    </li>
+    <li>Accept dependent object that can easily be substituted with Mock Objects (I don't use Concrete Class
+        Dependency).
+    </li>
+    <li>Chain multiple constructors to a common place (using this(...)).</li>
+    <li>Always define hashCode() alongside equals()</li>
+    <li>Prefer immutable value objects that I can easily throw away.</li>
+    <li>Have a special value for 'nothing' - e.g. Collections.EMPTY_SET.</li>
+    <li>Raise checked exceptions when the caller asked for something unreasonable - e.g. open a non-existant file.</li>
+    <li>Raise unchecked exceptions when I can't do something reasonable that the caller asked of me - e.g. disk error
+        when reading from an opened file.
+    </li>
+    <li>Only catch exceptions that can be handled fully.</li>
+    <li>Only log information that someone needs to see.</li>
+</ul>
+<p>Classes that are designed for <a href="injection.html">Constructor Injection</a> are better citizens than those that
+    are not.</p>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="right">&#169; 2003-2008 PicoContainer Committers</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<!--  Scripts to highlight code:  MUST be left AFTER the body -->
+<script language="javascript" src="./js/shCore.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushJava.js">
+	//
+</script>
+<script language="javascript" src="./js/shBrushXml.js">
+	//
+</script>
+<script type="text/javascript">
+	// <![CDATA[
+	var elements = document.getElementsByClassName('source');
+	elements.each( function(element) {
+		var content = element.getElementsByTagName('pre')[0].innerHTML;
+		var classType = /^&lt;/.test(content) ? "xml" : "java";
+		content = "<textarea name=\"code\" class=\"" + classType + "\">"
+				+ content + "</textarea>";
+		new Insertion.Before(element, content);
+		element.remove(element);
+	});
+
+	dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	// ]]>
+</script>
+
+</html>

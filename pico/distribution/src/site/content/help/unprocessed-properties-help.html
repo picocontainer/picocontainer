@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Unprocessed Properties</title></head>
+<body>
+<p>Properties are a powerful mechanism to add hints at registration time as to what the behavior of a component should be. It only works though when the right component factories are set for the container. Ones that recognise the property and can process it. For example, DefaultPicoConstructor's default constructor sets up an adaptive ComponentFactory that can handle HIDE_IMPL: </p>
+
+<div class="source">
+  <pre>pico = new DefaultPicoContainer();
+pico.as(HIDE_IMPL).addComponent(Apple.class);</pre>
+</div>
+But with a custom ComponentFactory, it may not:
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new MyComponentFactory);
+pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionException</pre>
+</div>
+The trick is (in this case) to make sure that the right chain of component factories are setup:
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new MyComponentFactory().wrap(new AdaptiveBehaviorFactory()));
+pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionException</pre>
+</div>
+
+<p>A component may have many properties as it is added to the container.  As each is processed, it is removed from the set.  If there are any left after the component has been added the behavior or action that the property suggests has not been setup.  Thus a PicoCompositionException being thrown warning of unprocessed properties only happens one or more properties are left - whether they are PicoContainer's own properties or custom ones</p>
+</body>
+</html>

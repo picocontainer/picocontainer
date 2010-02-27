@@ -1,0 +1,26 @@
+Build system: 
+
+JDK required: 1.5+
+Maven (http://maven.apache.org) required: 2.0.9+
+
+Build profiles:  
+
+- default: builds all releasable modules
+- reporting:  builds reports and javadoc/source attachment of artifacts
+- distribution:  builds distribution
+- nt: no-test, builds skipping unit tests 
+
+Note:  profiles are additive and the default profile is always active.
+Eg, build with reporting and distribution:
+
+mvn -Preporting,distribution install
+
+IMPORTANT NOTE ON REPOSITORIES: 
+Some dependencies are not synched with central maven repo.  
+Rather than configuring lots of remote repositories to the root POM, which implies lots of redundant lookups to several remote servers, 
+it is the responsibility of the user building the code to ensure that these are configured in the user ~/.m2/settings.xml, as profiles, 
+and then build (just once) with the corresponding profiles to retrieve the dependency.  
+A good practice is to leave a note next to dependency declaration where it is found, if not in central repo.
+Another option is to define a picocontainer profile with all the remote repositories needed by project and activate it on demand.
+A settings.xml template is found at http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/distribution/src/config/settings.xml.
+

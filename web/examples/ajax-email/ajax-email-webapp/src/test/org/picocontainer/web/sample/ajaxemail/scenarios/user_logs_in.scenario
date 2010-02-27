@@ -1,0 +1,21 @@
+Scenario: User logs in successfully
+
+Given sample data is loaded
+And nobody is logged in
+When user Gill Bates with password 1234 attempts to log in
+Then the Inbox is displayed
+And there are some messages listed
+
+Scenario: User fails to login with invalid password
+
+Given nobody is logged in
+When user Gill Bates with password 99999 attempts to log in
+And there are no messages listed
+And the text "Invalid Login" should be visible
+
+Scenario: User fails to login with invalid username
+
+Given nobody is logged in
+When user Fred with password 1234 attempts to log in
+Then the Inbox should not be visible
+And the text "Invalid Login" should be visible

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Method Injection</title></head>
+
+<body>
+<h3>Overview</h3>
+
+<p>This is where a component has an empty constructor and gets <span style="font-weight: bold;">all</span> its
+    dependencies injected into single method after instantiation:</p>
+
+<div class="source">
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana;
+ public inject(Orange orange, Pear pear, Banana banana) {
+ this.orange = orange;
+ this.pear = pear;
+ this.banana = banana;
+ }
+ // other methods
+}</pre>
+</div>
+<h3>Usage</h3>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new MethodInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+<p>Custom injection method prefix:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer(new MethodInjection("mySynonymForInject");
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+<p>Via the default AdaptiveInjection Method injection, via a
+    characteristic:</p>
+
+<div class="source">
+<pre>pico = new DefaultPicoContainer();
+pico.as(Characteristics.METHOD_INJECTION).addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);
+</pre>
+</div>
+<p>The method name needs be 'inject' unless overridden in the
+    InjectionFactory.</p>
+
+<p>The component factory for this is <strong>MethodInjection</strong>.
+    It only handles method-injection types of components.</p>
+
+<p>Additionally the default component factory <strong>AdaptiveInjection</strong>
+    can also handle method-injection types, but only if the
+    METHOD_INJECTION characteristic is specified.</p>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.picocontainer.web</groupId>
+    <artifactId>picocontainer-web-examples</artifactId>
+    <version>2.4-SNAPSHOT</version>
+  </parent>
+  <artifactId>struts2-webapp-with-remoting</artifactId>
+  <name>Struts 2 Webapp with Remoting</name>
+  <packaging>war</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-struts2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-remoting</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>oscore</artifactId>
+      <version>2.2.4</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>selenium-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

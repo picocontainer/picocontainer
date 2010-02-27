@@ -1,0 +1,124 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*******************************************************************************<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (C) PicoContainer Committers, 2010. All rights reserved.<a name="line.2"></a>
+<FONT color="green">003</FONT>     * --------------------------------------------------------------------------<a name="line.3"></a>
+<FONT color="green">004</FONT>     * The software in this package is published under the terms of the BSD style<a name="line.4"></a>
+<FONT color="green">005</FONT>     * license a copy of which has been included with this distribution in the<a name="line.5"></a>
+<FONT color="green">006</FONT>     * LICENSE.txt file.<a name="line.6"></a>
+<FONT color="green">007</FONT>     ******************************************************************************/<a name="line.7"></a>
+<FONT color="green">008</FONT>    package org.picocontainer.web.struts2;<a name="line.8"></a>
+<FONT color="green">009</FONT>    <a name="line.9"></a>
+<FONT color="green">010</FONT>    import com.opensymphony.xwork2.interceptor.AliasInterceptor;<a name="line.10"></a>
+<FONT color="green">011</FONT>    import com.opensymphony.xwork2.interceptor.ChainingInterceptor;<a name="line.11"></a>
+<FONT color="green">012</FONT>    import com.opensymphony.xwork2.interceptor.DefaultWorkflowInterceptor;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import com.opensymphony.xwork2.interceptor.I18nInterceptor;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import com.opensymphony.xwork2.interceptor.ParametersInterceptor;<a name="line.16"></a>
+<FONT color="green">017</FONT>    import com.opensymphony.xwork2.interceptor.PrepareInterceptor;<a name="line.17"></a>
+<FONT color="green">018</FONT>    import com.opensymphony.xwork2.interceptor.ScopedModelDrivenInterceptor;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import com.opensymphony.xwork2.interceptor.StaticParametersInterceptor;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import org.apache.struts2.interceptor.CheckboxInterceptor;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.apache.struts2.interceptor.ExecuteAndWaitInterceptor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.apache.struts2.interceptor.FileUploadInterceptor;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.apache.struts2.interceptor.ProfilingActivationInterceptor;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.apache.struts2.interceptor.ServletConfigInterceptor;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.apache.struts2.interceptor.StrutsConversionErrorInterceptor;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.apache.struts2.interceptor.debugging.DebuggingInterceptor;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.apache.struts2.interceptor.validation.AnnotationValidationInterceptor;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.picocontainer.MutablePicoContainer;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import org.picocontainer.web.WebappComposer;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>    import javax.servlet.ServletContext;<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>    import ognl.OgnlRuntime;<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>    public abstract class Struts2Composer implements WebappComposer {<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        public void composeApplication(MutablePicoContainer container, ServletContext servletContext) {<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>            container.addComponent(ExceptionMappingInterceptor.class);<a name="line.39"></a>
+<FONT color="green">040</FONT>            container.addComponent(ServletConfigInterceptor.class);<a name="line.40"></a>
+<FONT color="green">041</FONT>            container.addComponent(PrepareInterceptor.class);<a name="line.41"></a>
+<FONT color="green">042</FONT>            container.addComponent(CheckboxInterceptor.class);<a name="line.42"></a>
+<FONT color="green">043</FONT>            container.addComponent(ParametersInterceptor.class);<a name="line.43"></a>
+<FONT color="green">044</FONT>            container.addComponent(StrutsConversionErrorInterceptor.class);<a name="line.44"></a>
+<FONT color="green">045</FONT>            container.addComponent(AnnotationValidationInterceptor.class);<a name="line.45"></a>
+<FONT color="green">046</FONT>            container.addComponent(DefaultWorkflowInterceptor.class);<a name="line.46"></a>
+<FONT color="green">047</FONT>            container.addComponent(FileUploadInterceptor.class);<a name="line.47"></a>
+<FONT color="green">048</FONT>            container.addComponent(ModelDrivenInterceptor.class);<a name="line.48"></a>
+<FONT color="green">049</FONT>            container.addComponent(ChainingInterceptor.class);<a name="line.49"></a>
+<FONT color="green">050</FONT>            container.addComponent(I18nInterceptor.class);<a name="line.50"></a>
+<FONT color="green">051</FONT>            container.addComponent(AliasInterceptor.class);<a name="line.51"></a>
+<FONT color="green">052</FONT>            container.addComponent(StaticParametersInterceptor.class);<a name="line.52"></a>
+<FONT color="green">053</FONT>            container.addComponent(DebuggingInterceptor.class);<a name="line.53"></a>
+<FONT color="green">054</FONT>            container.addComponent(ProfilingActivationInterceptor.class);<a name="line.54"></a>
+<FONT color="green">055</FONT>            container.addComponent(ScopedModelDrivenInterceptor.class);<a name="line.55"></a>
+<FONT color="green">056</FONT>            container.addComponent(ExecuteAndWaitInterceptor.class);<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>    }<a name="line.58"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

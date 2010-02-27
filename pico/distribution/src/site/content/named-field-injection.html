@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Named Field Injection</title></head>
+<body>
+<h3>Overview</h3>
+
+<p>This is where a component has an empty constructor with
+    dependencies
+    indicated by a on a per component basis with an array of field-names to
+    be injected into. These will be provided automatically by the
+    container after instantiation.</p>
+
+<div class="source">
+	<pre>public class FruitBasket {
+    private Orange orange;
+    private Pear pear;
+    private Banana banana;
+    // methods
+}</pre>
+</div>
+<h3>Usage</h3>
+
+<div class="source"><pre>
+import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
+pico = new DefaultPicoContainer(new NamedFieldInjection();
+pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(FruitBasket.class);
+// etc
+FruitBasket fruitBasket = pico.getComponent(FruitBasket.class);</pre>
+</div>
+<p>
+    Yes that's right, there's no constructor needed. It means that for a
+    Unit Test, you cannot simply 'new' the class without some magic to
+    populate the dependency fields.</p>
+
+<p>The component factory for this is a class<strong>
+    NamedFieldInjection</strong>. It only handles named-field
+    injection for components.</p>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<container component-instance-factory='org.picocontainer.script.xml.XStreamComponentInstanceFactory'>
+    <component-instance key="sessionScopedInstance">
+        <string>foo bar</string>
+    </component-instance>
+</container>

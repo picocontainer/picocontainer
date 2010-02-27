@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>News</title>
+</head>
+<body>
+
+	<p><strong>Feb 25, 2010 - PicoContainer 2.10.2 released (308K jar)</strong></p>
+
+	<p>Changes (versus 2.10.1):</p>
+	<ul>
+	    <li>A fix of a NullPointerException issue when using ProviderAdapter</li>
+	</ul>
+	<br/>	
+
+	<p><strong>Feb 23, 2010 - PicoContainer 2.10.1 released (308K jar)</strong></p>
+
+	<p>Changes (versus 2.10):</p>
+	<ul>
+	    <li>Further generics work on ComponentAdapter signature as per <a href="http://jira.codehaus.org/browse/PICO-369">PICO-369</a></li>
+	</ul>
+	<br/>
+	
+	<p><strong>Feb 21, 2010 - PicoContainer 2.10 released (308K jar)</strong></p>
+
+	<p>New (since 2.9):</p>
+	<ul>
+	    <li>String <a href="converters.html">Converters</a> are now overridable and can be leveraged from parent containers if not specified in a child</li>
+	    <li><a href="named-method-injection.html">Named Method Injection</a></li>
+		<li>@Named from JSR 330 (@Inject) now supported.</li>
+	</ul>
+	<p>Changes (versus 2.9):</p>
+	<ul>
+	    <li>FactoryInjectors issue with 'into' being unspecified fixed<a href="http://jira.codehaus.org/browse/PICO-364">PICO-368</a></li>
+	    <li>Provided instances can now participate in lifecycles</li>
+	</ul>
+	<br/>
+
+	<p><strong>Nov 2, 2009 - PicoContainer 2.9 released (299K jar)</strong></p>
+
+	<p>New (since 2.8.3):</p>
+	<ul>
+	    <li>Lifecycle strategy allows for concept of lazy starting.  This means components are started at first access. <a href="http://jira.codehaus.org/browse/PICO-355">PICO-355</a></li>
+	    <li>Regex collecting of components for injection, or just on getComponent() now built in. </li>
+	</ul>
+	<p>Changes (versus 2.8.3):</p>
+	<ul>
+	    <li>Purposeful injection of a Null parameter fixed <a href="http://jira.codehaus.org/browse/PICO-364">PICO-364</a></li>
+	    <li>Small performance improvements for getAdapter/getInstance</li>
+	    <li>Dependencies for Log4J and SLF4J moved forward</li>
+        <li>Paranamer upgraded to 2.1</li>
+	    <li>Exception in Lifecycle methods bug fixed <a href="http://jira.codehaus.org/browse/PICO-363">PICO-363</a></li>
+	    <li>PicoBuilder able to do more with Lifecycle strategies</li>
+	    <li>Factory Injection improved with an 'InjectInto' type <a href="http://jira.codehaus.org/browse/PICO-358">PICO-358</a></li>
+	</ul>
+	<br/>
+	<p><strong>Jun 18, 2009 - PicoContainer 2.8.3 released (299K jar)</strong></p>
+
+	<p>New (since 2.8.2):</p>
+	<ul>
+	    <li>DefaultPicoContainer opened up a to facilitate rudimentary lazy lifecycle<a> 
+	</ul>
+	<p>Changes (versus 2.8.2):</p>
+	<ul>
+	    <li>Providers not passing on exceptions bug fixed: <a href="http://jira.codehaus.org/browse/PICO-357">PICO-357</a></li>
+	</ul>
+	<br/>
+
+	<p><strong>May 27, 2009 - PicoContainer 2.8.2 released (298K jar)</strong></p>
+	<p>Changes (versus 2.8.1):</p>
+	<ul>
+	    <li>Constructor Injection is slightly faster for second/subsequent injections and for multi-constructor components</li>
+	    <li>More optimized Paranamer usage and upgrade to 2.0</li>
+	    <li>Generic Collections more consistent between Setter and Constructor injection <a href="http://jira.codehaus.org/browse/PICO-354">PICO-354</a></li>
+	</ul>
+	<br/>
+	
+	<p><strong>May 20, 2009 - PicoContainer 2.8.1 released (298K jar)</strong></p>
+
+	<p>New (since 2.8):</p>
+	<ul>
+	    <li>Reinjection calls can use cached results for method invocations</li>
+	</ul>
+	<p>Changes (versus 2.8):</p>
+	<ul>
+	    <li>Constructor Injection is slightly faster for second/subsequent injections and for multi-constructor components</li>
+	    <li>Compatibility with Google's AppEngine</li>
+	    <li>Paranamer upgraded to 1.5</li>
+	    <li>A couple of bugs fixed <a href="http://jira.codehaus.org/browse/PICO-352">PICO-352</a> and <a href="http://jira.codehaus.org/browse/PICO-353">353</a></li>
+	</ul>
+	<br/>
+
+<p><strong>Feb 26, 2009 - PicoContainer-Web 2.3 released</strong></p>
+
+<p>See the <a href="http://picocontainer.org/web/news.html">news page</a> for it</p>
+<br/>
+
+<p><strong>Feb 26, 2009 - PicoContainer 2.8 released (286K jar)</strong></p>
+
+<p>New (since 2.7):</p>
+<ul>
+    <li>Automatic type conversion for named parameters (from String)</li>
+</ul>
+<p>Changes (versus 2.7):</p>
+<ul>
+    <li>JSR 250 annotations themselves (@PostConstruct etc) not included in the Jar anymore</li>
+    <li>Paranamer upgraded to 1.3 and PicoContainer's usage of it changed to better caching and fallback model</li>
+    <li>Improved handling of Constant Parameters for class instances</li>
+    <li>Adapter.findAdapterofType() null handling improved</li>
+</ul>
+<br/>
+
+<p><strong>Jan 20, 2009 - PicoContainer 2.7 released (278K jar) </strong></p>
+<p>New (since 2.6):</p>
+<ul>
+    <li>Provider added as a type of Injector.  Subclasses of this supply one method called provide that takes
+        dependencies and returns an instance of the type it is trying to provide</li>
+    <li>ComponentMonitor: new method newBehavior</li>
+    <li>ReflectionMethodInjection: new annotation @Nullable allows for individual parameters to be null</li>
+    <li>Guarding behaviour : before components are injected, another seeming unrelated can be injected too and veto if it sees fit</li>
+</ul>
+<p>Changes (versus 2.6):</p>
+<ul>
+    <li>Reinjection changed to allow access to the result in the reinjection method invocation</li>
+    <li>Method decorateComponentInstance on Injector changed to have a return value</li>
+    <li>Scoped components stored in ThreadLocal can now can honor lifecycle concepts reliably</li>
+    <li>ComponentMonitor: newInjectorFactory method renamed to newInjector</li>
+    <li>Fix of issue where ImplementationHiding and Caching together on a component in threadlocal</li>
+    <li>AnnotatedFieldInjection changed to traverse into parent classes for annotated fields to inject into</li>
+    <li>Paranamer (included in PicoContainer jar) has had a couple of bugs fixed.</li>
+    <li>Issued 343 fixed where generic collections were not not being injected correctly</li>
+</ul>
+<br/>
+
+<p><strong>October 14, 2008 - PicoContainer 2.6 released (265K jar)</strong></p>
+
+<p>New (since 2.5.1):</p>
+<ul>
+    <li>CompositeLifecycleStrategy supports a mix of LifecycleStrategies in one container tree</li>
+    <li>Method Injection changed to also allow a specific reflection method to be implicated</li>
+    <li>Reinjection added to allow components to be injected into a second time (reflection method injection only)</li>
+</ul>
+<p>Changes (versus 2.5.1):</p>
+<ul>
+    <li>Permissions fix for AdaptingInjection</li>
+</ul>
+<br/>
+
+<p><strong>Aug 14, 2008 - PicoContainer 2.5.1 released (255K jar)</strong></p>
+
+<p>Changes (versus 2.5):</p>
+<ul>
+    <li>makeChildContainer passes componentMonitor to the child container.</li>
+</ul>
+<br/>
+
+<p><strong>July 25, 2008 - PicoContainer 2.5 released (255K jar) </strong></p>
+
+<p>New (since 2.4):</p>
+<ul>
+    <li>Circular dependencies, while always supported via the implementation hiding behavior are now supported
+        explicitly for individual components
+    </li>
+    <li>PicoBuilder improved in that it can add child containers to their parents if wanted. Refer
+        PicoBuilder.addChildToParent()
+    </li>
+    <li>Components can now declare generic collections as dependencies to be Injected. It works the same was as an Array
+        of the type in question always did.
+    </li>
+    <li>Concrete extensions of generic components can satisfy dependencies now. This is <i>a</i> way of beating type
+        erasure.
+    </li>
+</ul>
+<p>Changes (versus 2.4):</p>
+<ul>
+    <li>ConsoleComponentMonitor does need to be final, thus is not now.</li>
+    <li>Attempts to chain a series of MutablePicoContainer.as() statements are blocked now. Instead users are directed
+        towards the varargs feature of the same method.
+    </li>
+</ul>
+<br/>
+
+<p><strong>July 02, 2008</strong></p>
+
+<p>PicoContainer <a href="http://picocontainer.org/web/news.html">Web</a>, <a
+        href="http://picocontainer.org/script/news.html">Script</a>, <a
+        href="http://picocontainer.org/persistence/news.html">Persistence</a> and <a
+        href="http://picocontainer.org/logging/news.html">Logging</a> 2.x released </p>
+
+<p>See links above for respective news pages </p>
+<br/>
+
+<p><strong>June 26, 2008 - PicoContainer 2.4 released (253K jar)</strong></p>
+
+<p>New (since 2.3):</p>
+<ul>
+    <li>DefaultClassLoadingPicoContainer added. Components can now be referenced in different classloaders and by class
+        name. This was formerly DefaultNanoContainer
+    </li>
+    <li>Locking behaviors are now characterizable as LOCK and NO_LOCK</li>
+    <li>Synchronizing behaviors are now characterizable as SYNCHRONIZE and NO_SYNCHRONIZE</li>
+    <li>Pooling behaviors are now characterizable as NO_POOL and POOL</li>
+    <li>HotSwapping behaviors are now characterizable as HOT_SWAP and NO_HOT_SWAP</li>
+</ul>
+<p>Changes (versus 2.3):</p>
+<ul>
+    <li>Visitor for trees of PicoContainers, can issue a halt instruction now to stop the visitation early</li>
+    <li>PICO-0316 fixed, whereby iterative injectors would not always find the dependencies to inject, when there were
+        present
+    </li>
+    <li>AsmHiddenImplementation behavior in Gems replaces by HiddenImplementation</li>
+    <li>CommandLinePicoContainer replaces by CommandLineArgumentsPicoContainer (now deprecated)</li>
+    <li>ReflectionLifecycleStrategy can be subclassed now</li>
+    <li>PICO-0314 fixed - StartableLifecycleStrategy can now have custom Disposable alternate classes correctly</li>
+    <li>PICO-0303 fixed - ReflectionLifecycleStrategy was not bubbling lifecycle exceptions correctly</li>
+</ul>
+<br/>
+
+<p><strong>May 24, 2008 - PicoContainer 2.3 released (241K jar) </strong></p>
+<p>New (since 2.2):</p>
+<ul>
+    <li>FactoryInjector implementations for Log4J, Commons-logging, Java-Logging and SL4FJ</li>
+    <li>JSR-250 compatible (@PreDestroy and @PostConstruct) lifecycle strategy</li>
+    <li>Slf4j based component monitor</li>
+    <li>Visitor for component factories (PICO-221)</li>
+    <li>Thread local Storing behavior now has a mechanism to report the store size</li>
+</ul>
+<p>Changes (versus 2.2):</p>
+<ul>
+    <li>Implementation-hiding Behavior has a bug PICO-310 that has been fixed</li>
+    <li>FactoryInjection bug fixed - PICO-311</li>
+    <li>Embedded Paranamer now upgraded to 1.1.3</li>
+    <li>Some of the monitors are now serializable when they were not formerly</li>
+</ul>
+<br/>
+
+<p><strong>May 9, 2008 - PicoContainer 2.2 released (224K jar)</strong></p>
+
+<p>New (since 2.1):</p>
+<ul>
+    <li>A new TieringPicoContainer that when used in a container tree, forbids children from seeking dependencies from
+        their grandparents (they can only seek such from their parents)
+    </li>
+    <li>A new ReusablePicoContainer that is 2.5x faster for some niche usages where you are repeatedly discarding a
+        container and then repopulating it (Gems)
+    </li>
+    <li>NamedFieldInjection allows named fields to be injected into (per component) - use when AnnotatedFieldInjection
+        is not what you want
+    </li>
+    <li>TypedFieldInjection allows fields of a specified type to be injected into (per component) - use when
+        AnnotatedFieldInjection is not what you want
+    </li>
+    <li>CompositeInjection allows a very custom setup of what injection-types you want your instance to support. Use
+        when speed of execution is of the essence and AdaptiveInjection is not
+        right for you.
+    </li>
+    <li>Decorating (behavior factory) - do something to a component instance immediately after its instantiation (and
+        formal injection)
+    </li>
+    <li>FactoryAdapter - Allows for a custom instance to be injected into a component. E.g. 'new Logger(Foo.class)' for
+        a Logger type and a Foo instance being the injectee
+    </li>
+</ul>
+<p>Changes (versus 2.1):</p>
+<ul>
+    <li>Teams embedding PicoContainer and (completely hiding it from user communities) can extend
+        StartableLifecycleStrategy and provide their own Startable interface (was buggy)
+    </li>
+</ul>
+<br/>
+
+<p><strong>Mar 31, 2008 - PicoContainer 2.1 released (194K jar)</strong></p>
+
+<p>New (since 2.0):</p>
+<ul>
+    <li>A new ComponentMonitor method to allow allow for better mocking of select components during unit testing.</li>
+</ul>
+<br/>
+
+<p><strong>Jan 19, 2008 - PicoContainer 2.0 released (190K jar)</strong></p>
+
+<p>New (since 2.0-beta-2):</p>
+<ul>
+    <li>Binding Annotations support (disambiguation)</li>
+    <li>Newer and rewritten properties backed containers</li>
+    <li>Parameter names can be leveraged for all relevant types of injection</li>
+</ul>
+<p>Changes (versus 2.0-beta-2):</p>
+<ul>
+    <li>Yet More Java5 generics</li>
+    <li>Build moved to JUnit 4.x and JMock 2.x (does not affect users of PicoContainer)</li>
+    <li>Built-in parameter name access, as opposed jar dependency</li>
+</ul>
+<br/>
+
+<p><strong>August 26, 2007 - PicoContainer 2.0 beta 2 released (152K jar)</strong></p>
+
+<p>New (versus 2.0-beta-1):</p>
+<ul>
+    <li>Rudimentary AOP capability for components built in</li>
+    <li>Method Injection (one method post-construction with multiple arguments)</li>
+    <li>Automatic JNDI exposure</li>
+    <li>Multi Injection (Setter and after Constructor injection)</li>
+    <li>Store behavior (can extract/replace component store per thread)</li>
+    <li>Automatic components (instantiate irrespective of need)</li>
+    <li>Reentrant-Lock version of Synchronizing behavior</li>
+</ul>
+<p>Changes (versus 2.0-beta-1):</p>
+<ul>
+    <li>Better Java5 generics</li>
+    <li>Renames of behaviors and injectors to more verb-like style</li>
+    <li>Startable interface more easily overridden to own choice</li>
+</ul>
+<br/>
+
+<p><strong>July 15, 2007 - PicoContainer 2.0 BETA-1 released (128K jar)</strong></p>
+
+<p>New:</p>
+<ul>
+    <li>Properties for components as they are added to containers makes for increased flexibility</li>
+    <li>Field and Method annotation types of injection in addition to traditional Constructor (recommended) and Setter
+        types
+    </li>
+    <li>Parameters names for constructors can now drive otherwise ambiguous injections, as well as configuration</li>
+    <li>Large sets of configuration can be taken from properties files and command line arguments</li>
+    <li>PicoBuilder to make a container with desired behavior.</li>
+</ul>
+<p>Changes:</p>
+<ul>
+    <li>Java 5 style (use of generics, varargs, among others)</li>
+    <li>Large scale Refactoring of packages and class names</li>
+    <li>Fluent interface for adding of components to a container</li>
+</ul>
+<br/>
+<br/>
+<span class="callout">April, 2007:
+Work begins on PicoContainer 2.x.  It is substantially a refactoring of the PicoContainer 1.x codeline using the inbuilt
+    features of Intellij IDEA and Eclipse.  Using the existing unit tests as a guide, many small commits were made to
+    the code-base to take PicoContainer in a more JDK 1.5 direction, and add in other features not seen in competing
+    containers like parameter name access. Along the way, the API was simplified and parts of NanoContainer were bought
+    closer to the core of PicoContainer.</span>
+<br/><br/>
+
+<p><strong>Mar 18, 2007</strong></p>
+
+<p>PicoContainer 1.3 released (113K jar) </p>
+
+<p><strong>January 19, 2006</strong></p>
+
+<p>PicoContainer 1.2 released (112K jar) </p>
+
+<p><strong>November 4, 2004</strong></p>
+
+<p>PicoContainer 1.1 released (75K jar) </p>
+
+<p><strong>June 5, 2004</strong></p>
+
+<p>PicoContainer 1.0 released (49K jar) </p>
+
+<p><strong>February 21, 2004</strong></p>
+
+<p>PicoContainer 1.0 beta-5 (50K jar) </p>
+
+<p>PicoContainer split into a core jar and 'gems' for things less often used</p>
+
+<p><strong>January 23, 2004</strong></p>
+
+<p>PicoContainer 1.0 beta-4 (64K jar) </p>
+
+<p><strong>November 03, 2003</strong></p>
+
+<p>PicoContainer 1.0 beta-3 (52K jar) </p>
+
+<p><strong>September 10, 2003</strong></p>
+
+<p>PicoContainer 1.0 beta-2 (44K jar) </p>
+
+<p><strong>August 14, 2003</strong></p>
+
+<p>PicoContainer 1.0 beta-1 (39K jar) </p>
+
+<p><strong>July 17, 2003</strong></p>
+
+<p>PicoContainer 1.0 alpha-2 (36K jar) </p>
+
+<p>Setter Injection added (this was after the Pico team learned of the Spring-Framework project, Spring did not add
+    Constructor Injection until the run up to 1.0-Milestone-3 in November '03 and 'autowiring' in the run up to
+    1-0-Milestone-4 in January of '04)
+
+<p><strong>June 29, 2003</strong></p>
+
+<p>PicoContainer 1.0 alpha-1 (25K jar) </p>
+
+<p>Generalized Constructor Injection available for the first time. This was very much PicoContainer's idiom. ATG Dynamo
+    had something similar for web components, but Pico released this first as a general embedable API for the Java
+    world. Goals for Pico are a) lightweight/embeddable, b) no XML or meta-data - 'autowiring' only, c) no lock-in, d)
+    popularize Constructor Injection over Avalon and OSGi style of IoC, e) no dependencies for the container itself.</p>
+
+<p><strong>June 1, 2003</strong></p>
+
+<p>PicoContainer experimentation begins</p>
+
+<p>Paul and Aslak pair on a precursor to PicoContainer called 'xContainer'. <a
+        href="http://paulhammant.com/downloads/xContainer.zip">See the source</a></p>
+</body>
+</html>
