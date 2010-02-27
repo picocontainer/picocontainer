@@ -22,10 +22,6 @@ public class NullCA implements ComponentAdapter {
         return NOTHING.class;
     }
 
-    public Object getComponentInstance(PicoContainer container)  {
-        return null;
-    }
-
     public Object getComponentInstance(PicoContainer container, Type into)  {
         return null;
     }

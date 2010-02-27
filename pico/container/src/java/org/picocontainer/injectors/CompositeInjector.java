@@ -28,12 +28,6 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         this.injectors = injectors;
     }
 
-
-    @Override
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, NOTHING.class);
-    }
-
     @Override
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         T instance = null;

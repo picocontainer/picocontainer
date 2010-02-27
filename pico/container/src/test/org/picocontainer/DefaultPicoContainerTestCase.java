@@ -417,10 +417,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			return instance.getClass();
 		}
 
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return getComponentInstance(container, null);
-        }
-
         public Object getComponentInstance(PicoContainer container, Type into)
 				throws PicoCompositionException {
 			return instance;
@@ -850,10 +846,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		public Injector newInjector(Injector injector) {
             if (injector.getComponentKey() == List.class) {
                 return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, false) {
-                    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-                        return getComponentInstance(container, null);
-                    }
-
                     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");

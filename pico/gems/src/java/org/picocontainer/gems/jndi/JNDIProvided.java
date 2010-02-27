@@ -74,10 +74,6 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 		return (Class<? extends T>) jndiReference.get().getClass();
 	}
 
-    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, null);
-    }
-
     /**
 	 * retrieve instance out of JNDI
 	 */

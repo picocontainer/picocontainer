@@ -102,9 +102,6 @@ public class WriterComponentMonitorTestCase  {
         try {
             componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
                                                        new AbstractAdapter(Map.class, HashMap.class) {
-                                                           public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-                                                               return getComponentInstance(container, null);
-                                                           }
 
                                                            public Object getComponentInstance(PicoContainer container, Type into)
                                                                throws PicoCompositionException {

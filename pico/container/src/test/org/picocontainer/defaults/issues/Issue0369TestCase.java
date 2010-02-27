@@ -33,10 +33,6 @@ public class Issue0369TestCase {
             return null;
         }
 
-        public List getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return null;
-        }
-
         public List getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return null;
         }

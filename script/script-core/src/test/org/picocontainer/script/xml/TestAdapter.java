@@ -32,13 +32,7 @@ public final class TestAdapter extends AbstractAdapter {
         this.blurge = blurge;
     }
 
-
     public void verify(PicoContainer pico) {
-    }
-
-
-    public Object getComponentInstance(PicoContainer pico) {
-        return null;
     }
 
     public Object getComponentInstance(PicoContainer pico, Type into) {

@@ -87,11 +87,6 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         return key;
     }
 
-    @Deprecated
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, NOTHING.class);
-    }
-
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         return new Reinjector(container).reinject(key, provider.getClass(), provider, properties, new MethodInjection(provideMethod));
     }

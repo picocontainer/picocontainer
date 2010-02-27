@@ -105,11 +105,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     public void verify(PicoContainer container) throws PicoCompositionException {
     }
 
-    @Override
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, NOTHING.class);
-    }
-
     public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
     @SuppressWarnings("unused") 

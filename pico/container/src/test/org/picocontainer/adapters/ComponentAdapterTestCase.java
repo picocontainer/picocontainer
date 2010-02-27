@@ -43,11 +43,6 @@ public class ComponentAdapterTestCase {
             super(componentKey, componentImplementation);
         }
 
-        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return null;
-        }
-
-
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return null;
         }
@@ -63,10 +58,6 @@ public class ComponentAdapterTestCase {
 	private static class TestMonitoringComponentAdapter<T> extends AbstractAdapter<T> {
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(null, null, componentMonitor);
-        }
-
-        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return null;
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
@@ -98,10 +89,6 @@ public class ComponentAdapterTestCase {
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            return null;
-        }
-
-        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
 

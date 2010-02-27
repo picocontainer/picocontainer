@@ -332,10 +332,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return ca.getComponentImplementation();
         }
 
-        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return ca.getComponentInstance(container);
-        }
-
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return ca.getComponentInstance(container, into);
         }

@@ -48,10 +48,6 @@ public abstract class AbstractInjectionFactory implements InjectionFactory, Seri
             return injector.getComponentImplementation();
         }
 
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-            return injector.getComponentInstance(container);
-        }
-
         public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return injector.getComponentInstance(container, into);
         }

@@ -56,10 +56,6 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
         return delegate.getComponentImplementation();
     }
 
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, NOTHING.class);
-    }
-
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         return (T) delegate.getComponentInstance(container, into);
     }

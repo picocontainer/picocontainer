@@ -175,13 +175,6 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 	}
 
 	/** {@inheritDoc} **/
-	@Deprecated
-	public T getComponentInstance(final PicoContainer container)
-			throws PicoCompositionException {
-		return getComponentInstance(container, null);
-	}
-
-	/** {@inheritDoc} **/
 	public Object getComponentKey() {
 		return key;
 	}

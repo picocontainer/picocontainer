@@ -54,21 +54,6 @@ public interface ComponentAdapter<T> {
      * is not required. For example, {@link org.picocontainer.behaviors.Cached} will always return the
      * same instance.
      *
-     * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @return the component instance.
-     * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
-     *                                     instantiation of the component lead to an ambigous situation within the
-     *                                     container.
-     * @deprecated since PicoContainer 2.2.  Use {@link getComponentInstance(PicoContainer,Type)} with {@link ComponentAdapter.NOTHING.class} as type
-     * if no type available.
-     */
-    T getComponentInstance(PicoContainer container) throws PicoCompositionException;
-
-    /**
-     * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
-     * is not required. For example, {@link org.picocontainer.behaviors.Cached} will always return the
-     * same instance.
-     *
      * @param container the {@link org.picocontainer.PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @param into the class that is about to be injected into. Use ComponentAdapter.NOTHING.class if this is not important to you.
      * @return the component instance.

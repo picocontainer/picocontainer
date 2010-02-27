@@ -9,24 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.picocontainer.Characteristics.USE_NAMES;
-
-import java.util.Properties;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
-import org.picocontainer.testmodel.NullLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle.One;
+
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.Characteristics.USE_NAMES;
 
 /**
  * @author Mauro Talevi
@@ -91,7 +88,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
         ConstructorInjector cica =  (ConstructorInjector)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, new ConstantParameter(String.class));
         
-        ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer);
+        ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
         assertNotNull(instance);
     	
     }

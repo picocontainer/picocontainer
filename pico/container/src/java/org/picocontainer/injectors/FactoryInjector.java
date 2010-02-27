@@ -138,10 +138,6 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return null;
     }
 
-    public T getComponentInstance(PicoContainer container) {
-        throw new UnsupportedOperationException();
-    }
-
     public abstract T getComponentInstance(PicoContainer container, Type into);
 
     public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
