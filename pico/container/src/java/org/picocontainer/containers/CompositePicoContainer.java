@@ -9,14 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
-import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
 import java.io.Serializable;
-import java.util.List;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * CompositePicoContainer takes a var-args list of containers and will query them
@@ -55,14 +60,18 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         this.containers = containers;
     }
 
-    public <T> T getComponent(Class<T> componentType) {
+    public <T> T getComponent(Class<T> componentType, Type into) {
         for (PicoContainer container : containers) {
-            T inst = container.getComponent(componentType);
+            T inst = container.getComponent(componentType, into);
             if (inst != null) {
                 return inst;
             }
         }
         return null;
+    }
+
+    public Object getComponent(Object componentKeyOrType) {
+        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
     }
 
     public Object getComponent(Object componentKeyOrType, Type into) {
@@ -75,14 +84,8 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return null;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        for (PicoContainer container : containers) {
-            Object inst = container.getComponent(componentKeyOrType);
-            if (inst != null) {
-                return inst;
-            }
-        }
-        return null;
+    public <T> T getComponent(Class<T> componentType) {
+        return getComponent(componentType, ComponentAdapter.NOTHING.class);
     }
 
     public ComponentAdapter getComponentAdapter(Object componentKey) {
@@ -115,7 +118,7 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return null;
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
         return null;
     }
 

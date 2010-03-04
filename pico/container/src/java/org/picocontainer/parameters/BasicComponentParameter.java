@@ -93,7 +93,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             public boolean isResolved() {
                 return componentAdapter != null;
             }
-            public Object resolveInstance() {
+            public Object resolveInstance(Type into) {
                 if (componentAdapter == null) {
                     return null;
                 }

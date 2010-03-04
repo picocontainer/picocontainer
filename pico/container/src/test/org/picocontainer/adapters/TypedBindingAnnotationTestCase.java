@@ -1,16 +1,7 @@
 package org.picocontainer.adapters;
 
-import static org.picocontainer.BindKey.bindKey;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.annotations.Bind;
@@ -20,6 +11,15 @@ import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.SetterInjection;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.BindKey.bindKey;
 
 /** @author Paul Hammant */
 public class TypedBindingAnnotationTestCase  {
@@ -94,6 +94,10 @@ public class TypedBindingAnnotationTestCase  {
         int getX();
     }
     public static class AppleImpl1 implements Apple {
+        public AppleImpl1() {
+            System.out.println("");
+        }
+
         public int getX() {
             return 1;
         }

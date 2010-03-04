@@ -9,18 +9,18 @@
 
 package org.picocontainer.injectors;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.annotations.Nullable;
 
 /**
  * Injection will happen through a single method for the component.
@@ -75,7 +75,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     }
 
     @Override
-    public T getComponentInstance(final PicoContainer container, @SuppressWarnings("unused") Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, final @SuppressWarnings("unused") Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
@@ -90,7 +90,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                         Object[] methodParameters = null;
                         inst = getComponentImplementation().newInstance();
                         if (method != null) {
-                            methodParameters = getMemberArguments(guardedContainer, method);
+                            methodParameters = getMemberArguments(guardedContainer, method, into);
                             invokeMethod(method, methodParameters, inst, container);
                         }
                         componentMonitor.instantiated(container, MethodInjector.this,
@@ -109,8 +109,8 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return (T) instantiationGuard.observe(getComponentImplementation());
     }
 
-    protected Object[] getMemberArguments(PicoContainer container, final Method method) {
-        return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()));
+    protected Object[] getMemberArguments(PicoContainer container, final Method method, Type into) {
+        return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()), into);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 public Object run() {
                     Method method = getInjectorMethod();
                     if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
-                        Object[] methodParameters = getMemberArguments(guardedContainer, method);
+                        Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
                         return invokeMethod(method, methodParameters, instance, container);
                     }
                     return null;

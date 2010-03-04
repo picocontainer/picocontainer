@@ -1,13 +1,17 @@
 package org.picocontainer.injectors;
 
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.AnnotationParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +19,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -23,11 +26,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.thoughtworks.paranamer.Paranamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.AnnotationParanamer;
 
 /**
  * Injection will happen iteratively after component instantiation
@@ -135,14 +133,14 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
-    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     Object componentInstance = makeInstance(container, constructor, currentMonitor());
-                    return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer);
+                    return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer, into);
                 }
             };
         }
@@ -150,7 +148,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return (T) instantiationGuard.observe(getComponentImplementation());
     }
 
-    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer) {
+    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
         Object lastReturn = null;
@@ -160,7 +158,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 if (matchingParameters[i] != null) {
                     Object toInject = matchingParameters[i].resolve(guardedContainer, this, null, injectionTypes[i],
                                                                             makeParameterNameImpl(injectionMembers.get(i)),
-                                                                            useNames(), bindings[i]).resolveInstance();
+                                                                            useNames(), bindings[i]).resolveInstance(into);
                     Object rv = componentMonitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
                     if (rv == ComponentMonitor.KEEP) {
                         long str = System.currentTimeMillis();
@@ -212,12 +210,12 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     @Override
-    public Object decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+    public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    return decorateComponentInstance(matchingParameters, currentMonitor(), instance, container, guardedContainer);
+                    return decorateComponentInstance(matchingParameters, currentMonitor(), instance, container, guardedContainer, into);
                 }
             };
         }

@@ -104,8 +104,9 @@ public interface Parameter {
 
         /**
          * @return the instance to be used to inject as a parameter
+         * @param into
          */
-        public Object resolveInstance();
+        public Object resolveInstance(Type into);
 
         /**
          * @return the ComponentAdapter for the parameter in question
@@ -122,7 +123,7 @@ public interface Parameter {
             return false;
         }
 
-        public Object resolveInstance() {
+        public Object resolveInstance(Type into) {
             return null;
         }
 
@@ -145,8 +146,8 @@ public interface Parameter {
             return delegate.isResolved();
         }
 
-        public Object resolveInstance() {
-            return delegate.resolveInstance();
+        public Object resolveInstance(Type into) {
+            return delegate.resolveInstance(into);
         }
 
         public ComponentAdapter<?> getComponentAdapter() {
@@ -173,7 +174,7 @@ public interface Parameter {
             return resolvable;
         }
 
-        public Object resolveInstance() {
+        public Object resolveInstance(Type into) {
             return value;
         }
 

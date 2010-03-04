@@ -9,6 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.SetterInjector;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.File;
@@ -16,20 +23,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashMap;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Decorating component adapter that can be used to set additional properties
@@ -165,7 +163,7 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
 
             // TODO: null check only because of test-case, otherwise null is impossible
             if (container != null) {
-                Object component = container.getComponent(propertyValue);
+                Object component = container.getComponent(propertyValue, ComponentAdapter.NOTHING.class);
                 if (component != null && type.isAssignableFrom(component.getClass())) {
                     return component;
                 }

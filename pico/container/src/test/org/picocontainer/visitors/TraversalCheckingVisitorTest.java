@@ -7,14 +7,6 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,9 +23,16 @@ import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Michael Rimov
@@ -161,10 +160,10 @@ public class TraversalCheckingVisitorTest {
         assertTrue(allParameters.get(0) instanceof ConstantParameter);
         ConstantParameter constantParameter = (ConstantParameter) allParameters.get(0);
         Parameter.Resolver resolver = constantParameter.resolve(null, null, null, null, null, false, null);
-        Object o = resolver.resolveInstance();
+        Object o = resolver.resolveInstance(ComponentAdapter.NOTHING.class);
         assertTrue( o instanceof Integer);
         assertEquals(3, ( (Integer) ( (ConstantParameter) allParameters.get(0)).resolve(null, null,
-                null, null, null, false, null).resolveInstance()).intValue());
+                null, null, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class)).intValue());
     }
 
 }    

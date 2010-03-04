@@ -609,32 +609,31 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return (ComponentAdapter<T>)componentAdapter;
     }
 
-    public Object getComponent(final Object componentKeyOrType) {
-        return getComponent(componentKeyOrType, null);
+
+    public Object getComponent(Object componentKeyOrType) {
+        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
     }
 
     public Object getComponent(final Object componentKeyOrType, Type into) {
-        synchronized (this) {
-            if (intoThreadLocal == null) {
-                intoThreadLocal = new IntoThreadLocal();
-            }
-        }
-        intoThreadLocal.set(into);
-        return getComponent(componentKeyOrType, (Class<? extends Annotation>) null);
+        return getComponent(componentKeyOrType, (Class<? extends Annotation>) null, into);
     }
 
-    public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
+    public <T> T getComponent(Class<T> componentType) {
+        return getComponent(componentType, ComponentAdapter.NOTHING.class);
+    }
+
+    public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation, Type into) {
         ComponentAdapter<?> componentAdapter;
         Object component;
         if (annotation != null) {
             componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
         } else if (componentKeyOrType instanceof Class) {
             componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType, into);
         } else {
             componentAdapter = getComponentAdapter(componentKeyOrType);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
         }
         return decorateComponent(component, componentAdapter);
     }
@@ -655,18 +654,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return component;
     }
 
-    public <T> T getComponent(final Class<T> componentType) {
-        Object o = getComponent((Object)componentType, null);
+    public <T> T getComponent(final Class<T> componentType, Type into) {
+        Object o = getComponent((Object)componentType, null, into);
         return componentType.cast(o);
     }
 
-    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
-        Object o = getComponent((Object)componentType, binding);
+    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding, Type into) {
+        Object o = getComponent((Object)componentType, binding, into);
         return componentType.cast(o);
     }
 
 
-    private Object getInstance(final ComponentAdapter<?> componentAdapter, Class componentKey) {
+    private Object getInstance(final ComponentAdapter<?> componentAdapter, Class componentKey, Type into) {
         // check whether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);
@@ -675,18 +674,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             Object instance;
             try {
                 if (componentAdapter instanceof FactoryInjector) {
-                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, intoThreadLocal.get());
+                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, into);
                 } else {
-                    synchronized (this) {
-                        if (intoThreadLocal == null) {
-                            intoThreadLocal = new IntoThreadLocal();
-                        }
-                    }
-                    instance = componentAdapter.getComponentInstance(this, intoThreadLocal.get());
+                    instance = componentAdapter.getComponentInstance(this, into);
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
-                    instance = getParent().getComponent(componentAdapter.getComponentKey());
+                    instance = getParent().getComponent(componentAdapter.getComponentKey(), into);
                     if (instance != null) {
                         return instance;
                     }
@@ -697,7 +691,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
             return instance;
         } else if (parent != null) {
-            return getParent().getComponent(componentAdapter.getComponentKey());
+            return getParent().getComponent(componentAdapter.getComponentKey(), into);
         }
 
         return null;

@@ -5,7 +5,6 @@ import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
 public class Emjection {
 
@@ -26,10 +25,10 @@ public class Emjection {
         for (Object arg : args) {
             tpc.addComponent(arg);
         }
-        T inst = tpc.getComponent(type);
+        T inst = tpc.getComponent(type, ComponentAdapter.NOTHING.class);
         if (inst == null) {
             tpc.addComponent(type);
-            inst = tpc.getComponent(type);
+            inst = tpc.getComponent(type, ComponentAdapter.NOTHING.class);
         }
         setPico(inst, tpc);
         return inst;

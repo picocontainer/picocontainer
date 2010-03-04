@@ -9,14 +9,10 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentLifecycle;
 
 import java.lang.reflect.Type;
-import java.io.Serializable;
 
 /**
  * behaviour for allows components to be guarded by another component
@@ -34,7 +30,7 @@ public class Guarded<T> extends AbstractBehavior<T> {
     }
 
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-        container.getComponent(guard);
+        container.getComponent(guard, into);
         return super.getComponentInstance(container, into);
     }
 

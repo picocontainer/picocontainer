@@ -9,16 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.StringReader;
-import java.util.List;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * CommandLineArgumentsPicoContainer configured itself from array of strings
@@ -69,13 +70,13 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     }
 
     private void addConfig(String key, Object val) {
-        if (getDelegate().getComponent(key) != null) {
+        if (getDelegate().getComponent(key, ComponentAdapter.NOTHING.class) != null) {
             getDelegate().removeComponent(key);
         }
         getDelegate().addConfig(key, val);
     }
 
-    public <T> T getComponent(Class<T> componentType) {
+    public <T> T getComponent(Class<T> componentType, Type into) {
         return null;
     }
 

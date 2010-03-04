@@ -12,16 +12,16 @@ import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Type;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Type;
 
 import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgument;
 
@@ -52,13 +52,13 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
     @SuppressWarnings("unchecked")
-    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {
+    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings, Type into) {
         boxParameters(parameterTypes);
         Object[] result = new Object[parameterTypes.length];
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
-            result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null);
+            result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null, into);
         }
 
         return result;
@@ -71,9 +71,9 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
     protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding,
-                                  Parameter currentParameter, ComponentAdapter<?> injecteeAdapter) {
+                                  Parameter currentParameter, ComponentAdapter<?> injecteeAdapter, Type into) {
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);
-        Object result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance();
+        Object result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance(into);
         nullCheck(member, i, expectedNameBinding, result);
         return result;
     }

@@ -10,12 +10,6 @@
 
 package org.picocontainer.classname;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Properties;
-
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -25,11 +19,15 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTest;
+
+import java.util.List;
+import java.util.Properties;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Paul Hammant
@@ -52,7 +50,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
         StringBuffer sb = new StringBuffer();
         final ClassLoadingPicoContainer parent = (ClassLoadingPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
-        final ClassLoadingPicoContainer child = (ClassLoadingPicoContainer) parent.makeChildContainer("foo");
+        final ClassLoadingPicoContainer child = parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
