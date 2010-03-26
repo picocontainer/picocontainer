@@ -130,16 +130,16 @@ public class ComponentParameter
                 return superResolved;
             }
 
-            public Object resolveInstance() {
+            public Object resolveInstance(Type into) {
                 Object result = null;
                 if (expectedType instanceof Class) {
-                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding).resolveInstance();
+                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding).resolveInstance(into);
                 } else if (expectedType instanceof ParameterizedType) {
-                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding).resolveInstance();
+                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding).resolveInstance(into);
                 }
                 if (result == null && collectionParameter != null) {
                     result = collectionParameter.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding,
-                                                                 useNames, binding).resolveInstance();
+                                                                 useNames, binding).resolveInstance(into);
                 }
                 return result;
             }

@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter.Resolver;
@@ -49,7 +50,7 @@ public class NullParameterTestCase {
 		
 		assertNotNull(result);
 		assertTrue(result.isResolved());
-		assertNull(result.resolveInstance());
+		assertNull(result.resolveInstance(ComponentAdapter.NOTHING.class));
 		
 		result = instance.resolve(null, null, null, Void.TYPE, null, false, null);
 		assertNotNull(result);

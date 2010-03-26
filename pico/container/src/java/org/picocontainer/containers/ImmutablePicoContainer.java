@@ -37,7 +37,7 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
     }
 
     public Object getComponent(Object componentKeyOrType) {
-        return delegate.getComponent(componentKeyOrType);
+        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
     }
 
     public Object getComponent(Object componentKeyOrType, Type into) {
@@ -45,11 +45,15 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return delegate.getComponent(componentType);
+        return getComponent(componentType, ComponentAdapter.NOTHING.class);
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
-        return delegate.getComponent(componentType, binding);
+    public <T> T getComponent(Class<T> componentType, Type into) {
+        return delegate.getComponent(componentType, into);
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
+        return delegate.getComponent(componentType, binding, into);
     }
 
     public List getComponents() {

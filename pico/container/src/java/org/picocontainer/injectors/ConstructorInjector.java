@@ -269,7 +269,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             return ctor;
         }
 
-        public Object[] getParameterArguments(PicoContainer container) {
+        public Object[] getParameterArguments(PicoContainer container, Type into) {
             Type[] parameterTypes = ctor.getGenericParameterTypes();
             // as per fixParameterType()
             for (int i = 0; i < parameterTypes.length; i++) {
@@ -284,7 +284,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             for (int i = 0; i < constructorParameters.length; i++) {
 
                 result[i] = getParameter(container, ctor, i, parameterTypes[i],
-                        bindings[i], constructorParameters[i], injecteeAdapters[i]);
+                        bindings[i], constructorParameters[i], injecteeAdapters[i], into);
             }
             return result;
         }
@@ -299,7 +299,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     }
 
     @Override
-    public T getComponentInstance(final PicoContainer container, @SuppressWarnings("unused") Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, final @SuppressWarnings("unused") Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 @Override
@@ -309,7 +309,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     ComponentMonitor componentMonitor = currentMonitor();
                     Constructor<T> ctor = ctorAndAdapters.getConstructor();
                     try {
-                        Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer);
+                        Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
                         ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
                         if(ctorAndAdapters == null) {
                             throw new NullPointerException("Component Monitor " + componentMonitor 

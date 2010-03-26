@@ -46,20 +46,24 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.equals(obj) || this == obj;
 	}
 
-	public <T> T getComponent(Class<T> componentType) {
-		return componentType.cast(getComponent((Object) componentType));
+	public <T> T getComponent(Class<T> componentType, Type into) {
+		return componentType.cast(getComponent((Object) componentType, into));
 	}
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
-        return delegate.getComponent(componentType, binding);
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
+        return delegate.getComponent(componentType, binding, into);
     }
 
     public Object getComponent(Object componentKeyOrType) {
-		return delegate.getComponent(componentKeyOrType);
-	}
+        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
+    }
 
     public Object getComponent(Object componentKeyOrType, Type into) {
         return delegate.getComponent(componentKeyOrType, into);
+    }
+
+    public <T> T getComponent(Class<T> componentType) {
+        return getComponent(componentType, ComponentAdapter.NOTHING.class);
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,

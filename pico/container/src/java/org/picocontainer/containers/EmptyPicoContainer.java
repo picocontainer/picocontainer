@@ -29,23 +29,28 @@ import java.lang.reflect.Type;
 @SuppressWarnings("serial")
 public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
-    @SuppressWarnings("unused") 
+    @SuppressWarnings("unused")
     public Object getComponent(Object componentKeyOrType) {
         return null;
     }
 
-    @SuppressWarnings("unused") 
+    @SuppressWarnings("unused")
     public Object getComponent(Object componentKeyOrType, Type into) {
         return null;
     }
 
-    @SuppressWarnings("unused") 
+    @SuppressWarnings("unused")
     public <T> T getComponent(Class<T> componentType) {
         return null;
     }
 
+    @SuppressWarnings("unused")
+    public <T> T getComponent(Class<T> componentType, Type into) {
+        return null;
+    }
+
     @SuppressWarnings("unused") 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
         return null;
     }
 
