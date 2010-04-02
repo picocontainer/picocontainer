@@ -163,7 +163,7 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
 
             // TODO: null check only because of test-case, otherwise null is impossible
             if (container != null) {
-                Object component = container.getComponent(propertyValue, ComponentAdapter.NOTHING.class);
+                Object component = container.getComponentInto(propertyValue, ComponentAdapter.NOTHING.class);
                 if (component != null && type.isAssignableFrom(component.getClass())) {
                     return component;
                 }

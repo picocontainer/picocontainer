@@ -30,7 +30,7 @@ public class Guarded<T> extends AbstractBehavior<T> {
     }
 
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-        container.getComponent(guard, into);
+        container.getComponentInto(guard, into);
         return super.getComponentInstance(container, into);
     }
 

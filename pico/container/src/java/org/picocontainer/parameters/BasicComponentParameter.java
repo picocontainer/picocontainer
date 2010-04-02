@@ -102,7 +102,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
 //                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
                 } else {
-                    return convert(getConverters(container), container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
+                    return convert(getConverters(container), container.getComponentInto(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
             }
 

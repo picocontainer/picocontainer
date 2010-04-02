@@ -35,7 +35,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public Object getComponent(Object componentKeyOrType, Type into) {
+    public Object getComponentInto(Object componentKeyOrType, Type into) {
         return null;
     }
 
@@ -45,12 +45,16 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> T getComponent(Class<T> componentType, Type into) {
+    public <T> T getComponentInto(Class<T> componentType, Type into) {
         return null;
     }
 
     @SuppressWarnings("unused") 
     public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
+        return null;
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
 

@@ -176,20 +176,56 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     	throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");
     }
 
-//    private Object getComponentInstanceFromChildren(Object componentKey) {
-//        String componentKeyPath = componentKey.toString();
-//        int ix = componentKeyPath.indexOf('/');
-//        if (ix != -1) {
-//            String firstElement = componentKeyPath.substring(0, ix);
-//            String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());
-//            Object o = getNamedContainers().get(firstElement);
-//            if (o != null) {
-//                MutablePicoContainer child = (MutablePicoContainer) o;
-//                return child.getComponent(remainder);
-//            }
-//        }
-//        return null;
-//    }
+    @Override
+    public final Object getComponent(Object componentKeyOrType) {
+        return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
+    }
+
+    public final Object getComponentInto(Object componentKeyOrType, Type into) {
+
+        if (componentKeyOrType instanceof ClassName) {
+            componentKeyOrType = loadClass(componentKeyOrType.toString());
+        }
+
+        Object instance = getDelegate().getComponentInto(componentKeyOrType, into);
+
+        if (instance != null) {
+            return instance;
+        }
+
+        ComponentAdapter<?> componentAdapter = null;
+        if (componentKeyOrType.toString().startsWith("*")) {
+            String candidateClassName = componentKeyOrType.toString().substring(1);
+            Collection<ComponentAdapter<?>> cas = getComponentAdapters();
+            for (ComponentAdapter<?> ca : cas) {
+                Object key = ca.getComponentKey();
+                if (key instanceof Class && candidateClassName.equals(((Class<?>) key).getName())) {
+                    componentAdapter = ca;
+                    break;
+                }
+            }
+        }
+        if (componentAdapter != null) {
+            return componentAdapter.getComponentInstance(this, into);
+        } else {
+            return getComponentInstanceFromChildren(componentKeyOrType, into);
+        }
+    }
+
+    private Object getComponentInstanceFromChildren(Object componentKey, Type into) {
+        String componentKeyPath = componentKey.toString();
+        int ix = componentKeyPath.indexOf('/');
+        if (ix != -1) {
+            String firstElement = componentKeyPath.substring(0, ix);
+            String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());
+            Object o = getNamedContainers().get(firstElement);
+            if (o != null) {
+                MutablePicoContainer child = (MutablePicoContainer) o;
+                return child.getComponentInto(remainder, into);
+            }
+        }
+        return null;
+    }
 
     public final MutablePicoContainer makeChildContainer() {
         return makeChildContainer("containers" + namedChildContainers.size());
@@ -418,23 +454,27 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public Object getComponent(Object componentKeyOrType) {
-            return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
+            return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
         }
 
-        public Object getComponent(Object componentKeyOrType, Type into) {
-            return DefaultClassLoadingPicoContainer.this.getComponent(componentKeyOrType, into);
+        public Object getComponentInto(Object componentKeyOrType, Type into) {
+            return DefaultClassLoadingPicoContainer.this.getComponentInto(componentKeyOrType, into);
         }
 
         public <T> T getComponent(Class<T> componentType) {
-            return getComponent(componentType, ComponentAdapter.NOTHING.class);
+            return getComponentInto(componentType, ComponentAdapter.NOTHING.class);
         }
 
-        public <T> T getComponent(Class<T> componentType, Type into) {
-            return DefaultClassLoadingPicoContainer.this.getComponent(componentType, into);
+        public <T> T getComponentInto(Class<T> componentType, Type into) {
+            return DefaultClassLoadingPicoContainer.this.getComponentInto(componentType, into);
         }
 
         public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponent(componentType, binding, into);
+        }
+
+        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+            return DefaultClassLoadingPicoContainer.this.getComponent(componentType, binding);
         }
 
         public List<Object> getComponents() {

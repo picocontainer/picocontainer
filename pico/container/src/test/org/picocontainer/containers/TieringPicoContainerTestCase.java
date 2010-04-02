@@ -1,21 +1,22 @@
 package org.picocontainer.containers;
 
 import org.junit.Test;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import static org.picocontainer.BindKey.bindKey;
 import org.picocontainer.annotations.Bind;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.BindKey.bindKey;
 
 public class TieringPicoContainerTestCase {
     

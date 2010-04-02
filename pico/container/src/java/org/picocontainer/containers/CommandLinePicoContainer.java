@@ -70,13 +70,13 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     }
 
     private void addConfig(String key, Object val) {
-        if (getDelegate().getComponent(key, ComponentAdapter.NOTHING.class) != null) {
+        if (getDelegate().getComponentInto(key, ComponentAdapter.NOTHING.class) != null) {
             getDelegate().removeComponent(key);
         }
         getDelegate().addConfig(key, val);
     }
 
-    public <T> T getComponent(Class<T> componentType, Type into) {
+    public <T> T getComponentInto(Class<T> componentType, Type into) {
         return null;
     }
 

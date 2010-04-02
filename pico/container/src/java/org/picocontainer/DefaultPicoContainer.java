@@ -611,15 +611,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     public Object getComponent(Object componentKeyOrType) {
-        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
+        return getComponent(componentKeyOrType, null, ComponentAdapter.NOTHING.class);
     }
 
-    public Object getComponent(final Object componentKeyOrType, Type into) {
-        return getComponent(componentKeyOrType, (Class<? extends Annotation>) null, into);
+    public Object getComponentInto(final Object componentKeyOrType, Type into) {
+        return getComponent(componentKeyOrType, null, into);
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponent(componentType, ComponentAdapter.NOTHING.class);
+        Object o = getComponent((Object) componentType, null, ComponentAdapter.NOTHING.class);
+        return componentType.cast(o);
     }
 
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation, Type into) {
@@ -654,16 +655,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return component;
     }
 
-    public <T> T getComponent(final Class<T> componentType, Type into) {
-        Object o = getComponent((Object)componentType, null, into);
-        return componentType.cast(o);
-    }
-
     public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding, Type into) {
         Object o = getComponent((Object)componentType, binding, into);
         return componentType.cast(o);
     }
 
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        return getComponent(componentType, binding, ComponentAdapter.NOTHING.class);
+    }
+
+    public <T> T getComponentInto(final Class<T> componentType, Type into) {
+        Object o = getComponent((Object)componentType, null, into);
+        return componentType.cast(o);
+    }
 
     private Object getInstance(final ComponentAdapter<?> componentAdapter, Class componentKey, Type into) {
         // check whether this is our adapter
@@ -680,7 +684,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
-                    instance = getParent().getComponent(componentAdapter.getComponentKey(), into);
+                    instance = getParent().getComponentInto(componentAdapter.getComponentKey(), into);
                     if (instance != null) {
                         return instance;
                     }
@@ -691,7 +695,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
             return instance;
         } else if (parent != null) {
-            return getParent().getComponent(componentAdapter.getComponentKey(), into);
+            return getParent().getComponentInto(componentAdapter.getComponentKey(), into);
         }
 
         return null;

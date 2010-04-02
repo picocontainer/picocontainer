@@ -309,7 +309,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         final Object[] result = (Object[]) Array.newInstance(expectedType.getComponentType(), adapterList.size());
         int i = 0;
         for (ComponentAdapter componentAdapter : adapterList.values()) {
-            result[i] = container.getComponent(componentAdapter.getComponentKey(), into);
+            result[i] = container.getComponentInto(componentAdapter.getComponentKey(), into);
             i++;
         }
         return result;
@@ -340,7 +340,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
             Collection result = collectionType.newInstance();
             for (ComponentAdapter componentAdapter : adapterList.values()) {
                 if (!useNames || componentAdapter.getComponentKey() == expectedNameBinding)
-                result.add(container.getComponent(componentAdapter.getComponentKey(), into));
+                result.add(container.getComponentInto(componentAdapter.getComponentKey(), into));
             }
             return result;
         } catch (InstantiationException e) {
@@ -373,7 +373,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
             Map result = collectionType.newInstance();
             for (Map.Entry<Object, ComponentAdapter<?>> entry : adapterList.entrySet()) {
                 final Object key = entry.getKey();
-                result.put(key, container.getComponent(key, into));
+                result.put(key, container.getComponentInto(key, into));
             }
             return result;
         } catch (InstantiationException e) {

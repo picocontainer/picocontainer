@@ -37,23 +37,27 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
     }
 
     public Object getComponent(Object componentKeyOrType) {
-        return getComponent(componentKeyOrType, ComponentAdapter.NOTHING.class);
+        return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
     }
 
-    public Object getComponent(Object componentKeyOrType, Type into) {
-        return delegate.getComponent(componentKeyOrType, into);
+    public Object getComponentInto(Object componentKeyOrType, Type into) {
+        return delegate.getComponentInto(componentKeyOrType, into);
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponent(componentType, ComponentAdapter.NOTHING.class);
+        return getComponentInto(componentType, ComponentAdapter.NOTHING.class);
     }
 
-    public <T> T getComponent(Class<T> componentType, Type into) {
-        return delegate.getComponent(componentType, into);
+    public <T> T getComponentInto(Class<T> componentType, Type into) {
+        return delegate.getComponentInto(componentType, into);
     }
 
     public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
         return delegate.getComponent(componentType, binding, into);
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponent(componentType, binding);
     }
 
     public List getComponents() {

@@ -62,7 +62,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Method reinjectionMethod) {
-        return reinject(key, key, parent.getComponent(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(reinjectionMethod));
+        return reinject(key, key, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(reinjectionMethod));
     }
 
     /**
@@ -72,7 +72,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Enum reinjectionMethodEnum) {
-        return reinject(key, key, parent.getComponent(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
+        return reinject(key, key, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
     }
 
     private Method toMethod(final Enum reinjectionMethodEnum) {
@@ -103,7 +103,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, InjectionFactory reinjectionFactory) {
-        Object o = reinject(key, key, parent.getComponent(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
+        Object o = reinject(key, key, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
         return o;
     }
 
@@ -115,7 +115,7 @@ public class Reinjector {
      * @return
      */
     public Object reinject(Class<?> key, Class<?> impl, InjectionFactory reinjectionFactory) {
-        return reinject(key, impl, parent.getComponent(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
+        return reinject(key, impl, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
     }
 
     /**
@@ -143,7 +143,7 @@ public class Reinjector {
                            InjectionFactory reinjectionFactory) {
         Reinjection reinjection = new Reinjection(reinjectionFactory, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
-                monitor, NO_LIFECYCLE, properties, key, implementation);
+                monitor, NO_LIFECYCLE, properties, key, implementation, null);
         return injector.decorateComponentInstance(parent, ComponentAdapter.NOTHING.class, instance);
     }
 

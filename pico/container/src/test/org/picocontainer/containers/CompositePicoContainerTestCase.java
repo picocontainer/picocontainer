@@ -2,12 +2,10 @@ package org.picocontainer.containers;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoVisitor;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-import org.picocontainer.monitors.NullComponentMonitor;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -22,10 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.lang.reflect.Constructor;
 import java.lang.annotation.Annotation;
 
 @RunWith(JMock.class)
@@ -69,7 +65,7 @@ public class CompositePicoContainerTestCase {
 
     @Test
     public void testTypeAndIntoCanBePrioritizedFromFirstInCompositeList() {
-        Map map = (Map) composite.getComponent(Map.class, Object.class);
+        Map map = (Map) composite.getComponentInto(Map.class, Object.class);
         assertNotNull(map);
         assertTrue(map instanceof HashMap);
     }
@@ -77,14 +73,14 @@ public class CompositePicoContainerTestCase {
     @Test
     public void testTypeAndIntoCanBeFoundInSecondInCompositeList() {
         one.removeComponent(Map.class);
-        Map map = (Map) composite.getComponent(Map.class, Object.class);
+        Map map = (Map) composite.getComponentInto(Map.class, Object.class);
         assertNotNull(map);
         assertTrue(map instanceof ConcurrentMap);
     }
 
     @Test
     public void testTypeAndIntoMissingFromAllReportedAsMissing() {
-        Set set = (Set) composite.getComponent(Set.class, Object.class);
+        Set set = (Set) composite.getComponentInto(Set.class, Object.class);
         assertNull(set);
     }
 

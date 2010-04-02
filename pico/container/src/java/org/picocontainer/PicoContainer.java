@@ -37,7 +37,7 @@ public interface PicoContainer {
      */
     Object getComponent(Object componentKeyOrType);
 
-    Object getComponent(Object componentKeyOrType, Type into);
+    Object getComponentInto(Object componentKeyOrType, Type into);
 
     /**
      * Retrieve a component keyed by the component type.
@@ -52,7 +52,7 @@ public interface PicoContainer {
      * @param into
      * @return the typed resulting object instance or null if the object does not exist.
      */
-    <T> T getComponent(Class<T> componentType, Type into);
+    <T> T getComponentInto(Class<T> componentType, Type into);
 
     /**
      * Retrieve a component keyed by the component type and binding type.
@@ -62,6 +62,8 @@ public interface PicoContainer {
      * @return the typed resulting object instance or null if the object does not exist.
      */
     <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into);
+
+    <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding);
 
     /**
      * Retrieve all the registered component instances in the container, (not including those in the parent container).

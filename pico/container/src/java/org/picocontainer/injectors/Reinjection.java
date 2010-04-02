@@ -44,7 +44,7 @@ public class Reinjection extends CompositeInjection {
         }
 
         public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            return parent.getComponent(getComponentKey(), ComponentAdapter.NOTHING.class);
+            return parent.getComponentInto(getComponentKey(), ComponentAdapter.NOTHING.class);
         }
 
     }

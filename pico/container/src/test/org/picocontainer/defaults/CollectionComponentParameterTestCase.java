@@ -80,9 +80,9 @@ public class CollectionComponentParameterTestCase {
 						new NullComponentMonitor()), new InstanceAdapter("z",
 						"World", new NullLifecycleStrategy(),
 						new NullComponentMonitor()))));
-				one(pico).getComponent(with(equal("z")));
+				one(pico).getComponentInto(with(equal("z")), with(equal(ComponentAdapter.NOTHING.class)));
 				will(returnValue("World"));
-				one(pico).getComponent(with(equal("y")));
+				one(pico).getComponentInto(with(equal("y")), with(equal(ComponentAdapter.NOTHING.class)));
 				will(returnValue("Hello"));
 				one(pico).getParent();
 				will(returnValue(null));
