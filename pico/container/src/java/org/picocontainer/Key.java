@@ -14,13 +14,12 @@ import java.lang.annotation.Annotation;
 
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
-public class BindKey<T> implements Serializable {
+public class Key<T> implements Serializable {
 
-	
 	private final Class<T> type;
     private final Class<? extends Annotation> annotation;
 
-    public BindKey(Class<T> type, Class<? extends Annotation> annotation) {
+    public Key(Class<T> type, Class<? extends Annotation> annotation) {
         this.type = type;
         this.annotation = annotation;
     }
@@ -41,10 +40,10 @@ public class BindKey<T> implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BindKey<?> bindKey = (BindKey<?>)o;
+        Key<?> key = (Key<?>)o;
 
-        if (!annotation.equals(bindKey.annotation)) return false;
-        if (!type.equals(bindKey.type)) return false;
+        if (!annotation.equals(key.annotation)) return false;
+        if (!type.equals(key.type)) return false;
 
         return true;
     }
@@ -56,8 +55,8 @@ public class BindKey<T> implements Serializable {
         return result;
     }
 
-    public static <T> BindKey<T> bindKey(Class<T> type, Class<? extends Annotation> annotation) {
-        return new BindKey<T>(type, annotation);
+    public static <T> Key<T> annotatedKey(Class<T> type, Class<? extends Annotation> annotation) {
+        return new Key<T>(type, annotation);
     }
 
 }

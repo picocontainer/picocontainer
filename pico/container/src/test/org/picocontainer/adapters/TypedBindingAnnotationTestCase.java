@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.picocontainer.BindKey.bindKey;
+import static org.picocontainer.Key.annotatedKey;
 
 /** @author Paul Hammant */
 public class TypedBindingAnnotationTestCase  {
@@ -84,10 +84,10 @@ public class TypedBindingAnnotationTestCase  {
 
     private void addFiveComponents(MutablePicoContainer mpc, Class clazz) {
         mpc.addComponent(clazz);
-        mpc.addComponent(bindKey(Apple.class, Bramley.class), AppleImpl1.class);
-        mpc.addComponent(bindKey(Apple.class, Cox.class), AppleImpl2.class);
-        mpc.addComponent(bindKey(Apple.class, Granny.class), AppleImpl3.class);
-        mpc.addComponent(bindKey(Apple.class, Braeburn.class), AppleImpl4.class);
+        mpc.addComponent(annotatedKey(Apple.class, Bramley.class), AppleImpl1.class);
+        mpc.addComponent(annotatedKey(Apple.class, Cox.class), AppleImpl2.class);
+        mpc.addComponent(annotatedKey(Apple.class, Granny.class), AppleImpl3.class);
+        mpc.addComponent(annotatedKey(Apple.class, Braeburn.class), AppleImpl4.class);
     }
 
     public interface Apple {

@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.picocontainer.BindKey.bindKey;
+import static org.picocontainer.Key.annotatedKey;
 
 public class TieringPicoContainerTestCase {
     
@@ -138,8 +138,8 @@ public class TieringPicoContainerTestCase {
         MutablePicoContainer parent = grandparent.makeChildContainer();
         MutablePicoContainer child = parent.makeChildContainer();
         grandparent.addComponent(Couch.class);
-        grandparent.addComponent(bindKey(TiredPerson.class, Polite.class), PoliteTiredPerson.class);
-        grandparent.addComponent(bindKey(TiredPerson.class, Grouchy.class), GrouchyTiredPerson.class);
+        grandparent.addComponent(annotatedKey(TiredPerson.class, Polite.class), PoliteTiredPerson.class);
+        grandparent.addComponent(annotatedKey(TiredPerson.class, Grouchy.class), GrouchyTiredPerson.class);
         child.addComponent(DiscerningDoctor.class);
 
         assertNotNull(grandparent.getComponent(TiredPerson.class, Polite.class));
@@ -159,8 +159,8 @@ public class TieringPicoContainerTestCase {
     public void testThatGrandparentTraversalForComponentsCanBeBlockedEvenForAnnotatedInjections2() {
         MutablePicoContainer grandparent = new TieringPicoContainer();
         grandparent.addComponent(Couch.class);
-        grandparent.addComponent(bindKey(TiredPerson.class, Polite.class), PoliteTiredPerson.class);
-        grandparent.addComponent(bindKey(TiredPerson.class, Grouchy.class), GrouchyTiredPerson.class);
+        grandparent.addComponent(annotatedKey(TiredPerson.class, Polite.class), PoliteTiredPerson.class);
+        grandparent.addComponent(annotatedKey(TiredPerson.class, Grouchy.class), GrouchyTiredPerson.class);
         grandparent.addComponent(DiscerningDoctor.class);
 
         assertNotNull(grandparent.getComponent(TiredPerson.class, Polite.class));

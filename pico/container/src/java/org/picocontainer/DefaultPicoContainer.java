@@ -419,8 +419,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             Object k = componentAdapter.getComponentKey();
 
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation()) &&
-                (!(k instanceof BindKey) || (k instanceof BindKey && (((BindKey<?>)k).getAnnotation() == null || binding == null ||
-                                                                      ((BindKey<?>)k).getAnnotation() == binding)))) {
+                (!(k instanceof Key) || (k instanceof Key && (((Key<?>)k).getAnnotation() == null || binding == null ||
+                                                                      ((Key<?>)k).getAnnotation() == binding)))) {
                 found.add((ComponentAdapter<T>)typeComponentAdapter(componentAdapter));
             }
         }
