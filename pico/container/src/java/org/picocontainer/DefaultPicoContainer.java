@@ -133,7 +133,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
 
 
-    private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
     private Converters converters;
 
 
@@ -1138,9 +1137,4 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
     }
 
-    private static class IntoThreadLocal extends ThreadLocal<Type> implements Serializable {
-        protected Type initialValue() {
-            return ComponentAdapter.NOTHING.class;
-        }
-    }
 }
