@@ -37,13 +37,14 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 	public Resolver resolve(final PicoContainer container,
                          final ComponentAdapter<?> forAdapter,
                          ComponentAdapter<?> injecteeAdapter, final Type expectedType,
-                         final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException {
+                         final NameBinding expectedNameBinding, final boolean useNames,
+                         final Annotation binding) throws PicoCompositionException {
         final Resolver resolver;
         return new Parameter.DelegateResolver(super.resolve(container, forAdapter,
                 null, getArrayType((Class) expectedType), expectedNameBinding, useNames, binding)) {
             @Override
-            public Object resolveInstance() {
-                final Object[] array = (Object[]) super.resolveInstance();
+            public Object resolveInstance(Type into) {
+                final Object[] array = (Object[]) super.resolveInstance(into);
                 if (array.length == 1) {
                     return array[0];
                 }

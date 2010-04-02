@@ -8,12 +8,6 @@
 
 package org.picocontainer.gems.constraints;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -21,12 +15,12 @@ import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.AlternativeTouchable;
@@ -34,6 +28,12 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 /**
  * Test some <code>Constraint</code>s.
@@ -63,7 +63,7 @@ public class ConstraintsTestCase {
 
         ComponentAdapter<DependsOnTouchable> forAdapter = container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null);
         Parameter.Resolver resolver = c.resolve(container, forAdapter, null, Touchable.class, null, false, null);
-        Object inst = resolver.resolveInstance();
+        Object inst = resolver.resolveInstance(ComponentAdapter.NOTHING.class);
         assertEquals(SimpleTouchable.class, inst.getClass());
     }
 
@@ -72,7 +72,7 @@ public class ConstraintsTestCase {
 
         Object object = c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                null, Touchable.class, null, false, null).resolveInstance();
+                null, Touchable.class, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class);
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
 
@@ -86,7 +86,7 @@ public class ConstraintsTestCase {
 
         assertSame(t, c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                null, Touchable.class, null, false, null).resolveInstance());
+                null, Touchable.class, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class));
     }
 
     @Test public void testConstraintTooBroadThrowsAmbiguityException() {
@@ -95,7 +95,7 @@ public class ConstraintsTestCase {
         try {
             c.resolve(container,
                     container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                    null, Touchable.class, null, false, null).resolveInstance();
+                    null, Touchable.class, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class);
             fail("did not throw ambiguous resolution exception");
         } catch (AbstractInjector.AmbiguousComponentResolutionException acre) {
             // success
@@ -109,7 +109,7 @@ public class ConstraintsTestCase {
                 new Not(new IsType(DecoratedTouchable.class))));
         Touchable[] touchables = (Touchable[]) c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class,(NameBinding) null),
-                null, Touchable[].class, null, false, null).resolveInstance();
+                null, Touchable[].class, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class);
         assertEquals(2, touchables.length);
         for (Touchable touchable : touchables) {
             assertFalse(touchable instanceof DecoratedTouchable);
