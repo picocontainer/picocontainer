@@ -141,4 +141,5 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     }
 
 
+
 }

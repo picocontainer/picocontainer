@@ -102,4 +102,6 @@ public interface ComponentAdapter<T> {
      */
     String getDescriptor();
 
+
+
 }

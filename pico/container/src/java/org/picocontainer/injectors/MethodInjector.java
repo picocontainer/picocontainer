@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Injection will happen through a single method for the component.
@@ -58,7 +60,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         this.methodName = methodName;
     }
 
-    protected Method getInjectorMethod() {
+    protected List<Method> getInjectorMethods() {
         Method[] methods = new Method[0];
         try {
             methods = super.getComponentImplementation().getMethods();
@@ -66,12 +68,13 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             e.setComponent(getComponentImplementation());
             throw e;
         }
+        List<Method> methodz = new ArrayList<Method>();
         for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                return method;
+            if (method.getName().startsWith(methodName)) {
+                methodz.add(method);
             }
         }
-        return null;
+        return methodz;
     }
 
     @Override
@@ -81,15 +84,17 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 @Override
                 @SuppressWarnings("synthetic-access")
                 public Object run() {
-                    Method method = getInjectorMethod();
+                    List<Method> methods = getInjectorMethods();
                     T inst = null;
                     ComponentMonitor componentMonitor = currentMonitor();
+                    Method lastMethod = null;
                     try {
                         componentMonitor.instantiating(container, MethodInjector.this, null);
                         long startTime = System.currentTimeMillis();
                         Object[] methodParameters = null;
                         inst = getComponentImplementation().newInstance();
-                        if (method != null) {
+                        for (Method method : methods) {
+                            lastMethod = method;
                             methodParameters = getMemberArguments(guardedContainer, method, into);
                             invokeMethod(method, methodParameters, inst, container);
                         }
@@ -99,7 +104,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                     } catch (InstantiationException e) {
                         return caughtInstantiationException(componentMonitor, null, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, method, inst, e);
+                        return caughtIllegalAccessException(componentMonitor, lastMethod, inst, e);
 
                     }
                 }
@@ -120,12 +125,15 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 @Override
                 @SuppressWarnings("synthetic-access")
                 public Object run() {
-                    Method method = getInjectorMethod();
-                    if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
-                        Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
-                        return invokeMethod(method, methodParameters, instance, container);
+                    List<Method> methods = getInjectorMethods();
+                    Object lastReturn = null;
+                    for (Method method : methods) {
+                        if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
+                            Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
+                            lastReturn = invokeMethod(method, methodParameters, instance, container);
+                        }
                     }
-                    return null;
+                    return lastReturn;
                 }
             };
         }
@@ -163,13 +171,16 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
                 public Object run() {
-                    final Method method = getInjectorMethod();
-                    final Class[] parameterTypes = method.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
-                            new ParameterNameBinding(getParanamer(), method, i), useNames(),
-                                                    getBindings(method.getParameterAnnotations())[i]);
+                    final List<Method> methods = getInjectorMethods();
+                    for (Method method : methods) {
+                        final Class[] parameterTypes = method.getParameterTypes();
+                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                        for (int i = 0; i < currentParameters.length; i++) {
+                            currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
+                                    new ParameterNameBinding(getParanamer(), method, i), useNames(),
+                                    getBindings(method.getParameterAnnotations())[i]);
+                        }
+
                     }
                     return null;
                 }
@@ -181,7 +192,11 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
 
     @Override
     public String getDescriptor() {
-        return "MethodInjector-";
+        StringBuilder mthds = new StringBuilder();
+        for (Method method : getInjectorMethods()) {
+            mthds.append(",").append(method.getName());
+        }
+        return "MethodInjector["+mthds.substring(1)+"]-";
     }
 
     @Override
@@ -195,23 +210,28 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return false;
     }
 
-
     public static class ByReflectionMethod extends MethodInjector {
-        private final Method injectionMethod;
+        private final List<Method> injectionMethods;
 
         public ByReflectionMethod(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
             super(componentKey, componentImplementation, parameters, monitor, null, useNames);
-            this.injectionMethod = injectionMethod;
+            ArrayList<Method> methods = new ArrayList<Method>();
+            methods.add(injectionMethod);
+            this.injectionMethods = methods;
         }
         
         @Override
-        protected Method getInjectorMethod() {
-            return injectionMethod;
+        protected List<Method> getInjectorMethods() {
+            return injectionMethods;
         }
         
         @Override
         public String getDescriptor() {
-            return "ReflectionMethodInjector[" + injectionMethod + "]-";
+            StringBuilder mthds = new StringBuilder();
+            for (Method method : injectionMethods) {
+                mthds.append(",").append(method.getName());
+            }
+            return "ByReflectionMethod[" + mthds.substring(1) + "]-";
         }
 
     }
