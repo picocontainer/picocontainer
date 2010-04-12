@@ -69,7 +69,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("ByReflectionMethod[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("SpecificReflectionMethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaMethodDefViaInterface() {
@@ -83,7 +83,7 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.num);
         ComponentAdapter<?> adapter = pico.getComponentAdapter(Foo.class);
         String foo2 = adapter.toString();
-        assertEquals("ByReflectionMethod[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", foo2);
+        assertEquals("SpecificReflectionMethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", foo2);
     }
 
 
@@ -180,7 +180,7 @@ public class MethodInjectionTestCase {
         try {
             Foo foo = pico.getComponent(Foo.class);
             fail("should have barfed");
-        } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
+        } catch (MultiArgMemberInjector.ParameterCannotBeNullException e) {
             assertEquals("num", e.getParameterName());
             assertTrue(e.getMessage().indexOf("Parameter 1") != -1);
             assertTrue(e.getMessage().indexOf(Foo.class.getMethods()[0].toString()) != -1);

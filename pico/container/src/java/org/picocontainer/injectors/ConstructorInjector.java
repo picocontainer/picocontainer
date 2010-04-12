@@ -48,7 +48,7 @@ import java.util.Set;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public class ConstructorInjector<T> extends SingleMemberInjector<T> {
+public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
 	
 	private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;

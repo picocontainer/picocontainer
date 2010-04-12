@@ -37,9 +37,9 @@ import java.util.List;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public class MethodInjector<T> extends SingleMemberInjector<T> {
+public class MethodInjector<T> extends MultiArgMemberInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    private final String methodName;
+    private final String methodNamePrefix;
 
     /**
      * Creates a MethodInjector
@@ -57,7 +57,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     public MethodInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                           String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, useNames);
-        this.methodName = methodName;
+        this.methodNamePrefix = methodName;
     }
 
     protected List<Method> getInjectorMethods() {
@@ -70,11 +70,15 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         }
         List<Method> methodz = new ArrayList<Method>();
         for (Method method : methods) {
-            if (method.getName().startsWith(methodName)) {
+            if (isInjectorMethod(method)) {
                 methodz.add(method);
             }
         }
         return methodz;
+    }
+
+    protected boolean isInjectorMethod(Method method) {
+        return method.getName().startsWith(methodNamePrefix);
     }
 
     @Override
@@ -208,32 +212,6 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             }
         }
         return false;
-    }
-
-    public static class ByReflectionMethod extends MethodInjector {
-        private final List<Method> injectionMethods;
-
-        public ByReflectionMethod(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
-            super(componentKey, componentImplementation, parameters, monitor, null, useNames);
-            ArrayList<Method> methods = new ArrayList<Method>();
-            methods.add(injectionMethod);
-            this.injectionMethods = methods;
-        }
-        
-        @Override
-        protected List<Method> getInjectorMethods() {
-            return injectionMethods;
-        }
-        
-        @Override
-        public String getDescriptor() {
-            StringBuilder mthds = new StringBuilder();
-            for (Method method : injectionMethods) {
-                mthds.append(",").append(method.getName());
-            }
-            return "ByReflectionMethod[" + mthds.substring(1) + "]-";
-        }
-
     }
 
 }

@@ -61,7 +61,7 @@ import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
-import org.picocontainer.injectors.SingleMemberInjector.ParameterCannotBeNullException;
+import org.picocontainer.injectors.MultiArgMemberInjector.ParameterCannotBeNullException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.BasicComponentParameter;

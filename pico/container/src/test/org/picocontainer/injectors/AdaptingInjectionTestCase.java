@@ -10,14 +10,12 @@
 
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -34,12 +32,13 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
@@ -174,7 +173,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
-                     "  <prefix></prefix>\n" +
+                     "  <methodNamePrefix></methodNamePrefix>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</Method-Injection>", foo);
 

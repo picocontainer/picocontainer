@@ -26,17 +26,18 @@ import java.lang.reflect.Type;
 import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgument;
 
 /**
- * Injection will happen in a single member function on the component.
+ * Injection will happen in a member with multiple arguments on the component.
+ * Member can be either Constructor or Method of course. See subclasses.
  *
  * @author Paul Hammant 
  * 
  */
 @SuppressWarnings("serial")
-public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
+public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     private transient Paranamer paranamer;
 
-    public SingleMemberInjector(Object componentKey,
+    public MultiArgMemberInjector(Object componentKey,
                                 Class componentImplementation,
                                 Parameter[] parameters,
                                 ComponentMonitor monitor,
