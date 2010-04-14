@@ -48,17 +48,37 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public Object getComponent(Object o, Type type) {
-            return null;
-        }
-
         public <T> T getComponent(Class<T> componentType) {
             return null;
         }
 
-        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
-            return null;
-        }
+		public <T> T getComponent(Class<T> componentType,
+				Class<? extends Annotation> binding, Type into) {
+			return null;
+		}
+
+		public <T> T getComponent(Class<T> componentType,
+				Class<? extends Annotation> binding) {
+			return null;
+		}
+
+		public <T> ComponentAdapter<T> getComponentAdapter(
+				Class<T> componentType, Class<? extends Annotation> binding) {
+			return null;
+		}
+
+		public <T> List<ComponentAdapter<T>> getComponentAdapters(
+				Class<T> componentType, Class<? extends Annotation> binding) {
+			return null;
+		}
+
+		public Object getComponentInto(Object componentKeyOrType, Type into) {
+			return null;
+		}
+
+		public <T> T getComponentInto(Class<T> componentType, Type into) {
+			return null;
+		}
 
         public List getComponents() {
             return null;
@@ -80,9 +100,6 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        }
-
         public <T> List<T> getComponents(Class<T> type) throws PicoException {
             return null;
         }
@@ -93,24 +110,6 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
             return null;
         }
-
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
-            return null;
-        }
-
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
-            return null;
-        }
-
-        public void start() {
-        }
-
-        public void stop() {
-        }
-
-        public void dispose() {
-        }
-
     }
 
     @Test public void testCreateSimpleContainerWithPicoContainer()

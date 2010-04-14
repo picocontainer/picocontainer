@@ -29,9 +29,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.MethodInjection;
+import org.picocontainer.injectors.MultiArgMemberInjector;
 import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.injectors.Reinjector;
-import org.picocontainer.injectors.SingleMemberInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.DELETE;
 import org.picocontainer.web.GET;
@@ -135,7 +135,7 @@ public class PicoWebRemoting {
 				throw makeNothingMatchingException();
 			}
 
-		} catch (SingleMemberInjector.ParameterCannotBeNullException e) {
+		} catch (MultiArgMemberInjector.ParameterCannotBeNullException e) {
 			return errorResult(this.monitor.nullParameterForMethodInvocation(e
 					.getParameterName()));
 		} catch (PicoCompositionException e) {

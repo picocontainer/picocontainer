@@ -38,12 +38,11 @@ import org.picocontainer.Injector;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AbstractInjectionFactory;
-import org.picocontainer.injectors.SingleMemberInjector;
+import org.picocontainer.injectors.MultiArgMemberInjector;
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
-//import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -584,7 +583,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
     @SuppressWarnings("serial")
-    private static class MySingleMemberInjector extends SingleMemberInjector {
+    private static class MySingleMemberInjector extends MultiArgMemberInjector {
         private final String otherKey;
         private final Injector injector;
 
