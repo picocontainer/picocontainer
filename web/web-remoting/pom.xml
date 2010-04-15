@@ -13,7 +13,7 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.picocontainer.script</groupId>
@@ -37,25 +37,25 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-struts</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-struts2</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork2</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <optional>true</optional>
     </dependency>
   </dependencies>

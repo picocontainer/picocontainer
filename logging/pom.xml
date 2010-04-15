@@ -325,9 +325,9 @@
                   <overWriteSnapshots>true</overWriteSnapshots>
                   <artifactItems>
                     <artifactItem>
-                      <groupId>${pom.groupId}</groupId>
-                      <artifactId>${pom.artifactId}</artifactId>
-                      <version>${pom.version}</version>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>${project.artifactId}</artifactId>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
                     </artifactItem>

@@ -11,16 +11,16 @@
   <name>Picocontainer Distribution</name>
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer</artifactId>
     </dependency>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer-gems</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer-tck</artifactId>
     </dependency>
   </dependencies>
@@ -41,19 +41,19 @@
               <overWriteSnapshots>true</overWriteSnapshots>
               <artifactItems>
                 <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>picocontainer</artifactId>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>picocontainer-gems</artifactId>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/gems</outputDirectory>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>picocontainer-tck</artifactId>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/tck</outputDirectory>
@@ -115,7 +115,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-${pom.version}</finalName>
+              <finalName>picocontainer-${project.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -129,7 +129,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-${pom.version}</finalName>
+              <finalName>picocontainer-${project.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
           </execution>

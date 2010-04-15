@@ -27,47 +27,47 @@
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-core</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-axis</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-jsf</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-nanoweb</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-remoting</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-struts</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-struts2</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-webwork</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-webwork2</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.seleniumhq.selenium.client-drivers</groupId>
@@ -90,7 +90,7 @@
     <profile>
       <id>selenium</id>
       <build>
-        <finalName>${pom.artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <pluginManagement>
           <plugins>
             <plugin>
@@ -218,7 +218,7 @@
     </profile>
   </profiles>
   <properties>
-    <context.path>${pom.artifactId}</context.path>
+    <context.path>${project.artifactId}</context.path>
   </properties>
 
 </project>

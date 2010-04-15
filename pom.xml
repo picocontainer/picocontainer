@@ -10,12 +10,15 @@ ttp://maven.apache.org/maven-v4_0_0.xsd">
    <url>http://www.picocontainer.org</url>
    <modules>
         <module>site-resources</module>
-	<module>logging</module>
-	<module>pico</module>
+		<module>logging</module>
+		<module>pico</module>
         <module>persistence</module>
         <module>script</module>
         <module>web</module>
-	<module>jetty</module>
-	<module>booter</module>
+		<module>jetty</module>
+		<module>booter</module>
    </modules>
+   <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
 </project>

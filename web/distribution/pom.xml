@@ -14,32 +14,32 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-axis</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-jsf</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-struts</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork2</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -61,49 +61,49 @@
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-core</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-axis</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/axis</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-jsf</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/jsf</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-struts</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/struts</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-struts2</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/struts2</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-webwork</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/webwork</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-webwork2</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/webwork2</outputDirectory>
                 </artifactItem>
@@ -164,7 +164,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-web-${pom.version}</finalName>
+              <finalName>picocontainer-web-${project.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -178,7 +178,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-web-${pom.version}</finalName>
+              <finalName>picocontainer-web-${project.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
           </execution>

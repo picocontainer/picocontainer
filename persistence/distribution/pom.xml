@@ -14,7 +14,7 @@
     <dependency>
       <groupId>org.picocontainer.persistence</groupId>
       <artifactId>picocontainer-persistence-hibernate</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -36,7 +36,7 @@
                 <artifactItem>
                   <groupId>org.picocontainer.persistence</groupId>
                   <artifactId>picocontainer-persistence-hibernate</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/hibernate</outputDirectory>
                 </artifactItem>
@@ -97,7 +97,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-persistence-${pom.version}</finalName>
+              <finalName>picocontainer-persistence-${project.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -111,7 +111,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-persistence-${pom.version}</finalName>
+              <finalName>picocontainer-persistence-${project.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
           </execution>

@@ -188,13 +188,13 @@
                     <include name="composition.*" />
                   </fileset>
                   <filterset>
-                    <filter token="VER" value="${pom.version}" />
+                    <filter token="VER" value="${project.version}" />
                   </filterset>
                 </copy>
                 <chmod file="${project.build.directory}/booter/picocontainer.sh" perm="+x" />
                 <copy todir="${project.build.directory}/booter/lib">
                   <fileset dir="${project.build.directory}">
-                    <include name="${pom.artifactId}-${pom.version}.jar" />
+                    <include name="${project.artifactId}-${project.version}.jar" />
                   </fileset>
                 </copy>                                
                 <!-- Copy to booter/test-comps -->

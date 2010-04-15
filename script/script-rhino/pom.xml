@@ -12,7 +12,7 @@
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>rhino</groupId>
@@ -23,13 +23,13 @@
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-tck</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-testmodel</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

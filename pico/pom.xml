@@ -48,14 +48,14 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>${pom.groupId}</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>picocontainer</artifactId>
-				<version>${pom.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>${pom.groupId}</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>picocontainer-tck</artifactId>
-				<version>${pom.version}</version>
+				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- For JavaEE5 annotations -->
