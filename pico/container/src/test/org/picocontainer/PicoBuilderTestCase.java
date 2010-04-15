@@ -12,6 +12,7 @@ package org.picocontainer;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Locking;
@@ -35,10 +36,12 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
@@ -328,6 +331,22 @@ public class PicoBuilderTestCase {
         Object expected = new TestPicoContainer(ai, ncm, lifecycle, parent);
         assertEquals(toXml(expected), toXml(actual));
     }
+    
+    
+    @Test
+    public void testMultipleUsesAreSupported() {
+        PicoBuilder picoBuilder = new PicoBuilder().withCaching().withLifecycle();
+        MutablePicoContainer pico = picoBuilder.build();
+        
+        pico.addComponent(Map.class, HashMap.class);
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        
+        pico = picoBuilder.build();
+        pico.addComponent(Map.class, HashMap.class);
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        
+        
+    }    
 
 
     public static class TestPicoContainer extends DefaultPicoContainer {

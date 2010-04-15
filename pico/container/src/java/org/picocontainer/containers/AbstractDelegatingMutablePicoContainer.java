@@ -97,5 +97,15 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     public void setLifecycleState(LifecycleState lifecycleState) {
         getDelegate().setLifecycleState(lifecycleState);
     }
+    
+    /** {@inheritDoc} **/
+    public LifecycleState getLifecycleState() {
+        return getDelegate().getLifecycleState();
+    }
+    
+    /** {@inheritDoc} **/
+    public String getName() {
+        return getDelegate().getName();
+    }    
 
 }

@@ -1,1 +1,8 @@
 picocontainer-root.iws
+/.project
+/booter/.classpath
+/booter/.project
+/jetty/.project
+/jetty/core/.classpath
+/jetty/core/.project
+/pico/.project

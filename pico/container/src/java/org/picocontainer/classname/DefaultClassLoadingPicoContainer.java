@@ -541,6 +541,22 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         public Converters getConverter() {
             return DefaultClassLoadingPicoContainer.this.getConverters();
         }
+        
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getLifecycleState()
+         */
+        public LifecycleState getLifecycleState() {
+            return DefaultClassLoadingPicoContainer.this.getLifecycleState();
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getName(java.lang.String)
+         */
+        public String getName() {
+            return DefaultClassLoadingPicoContainer.this.getName();
+        }        
     }
 
 }

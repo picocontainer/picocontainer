@@ -184,4 +184,20 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @since 2.8
      */
     void setLifecycleState(LifecycleState lifecycleState);
+    
+    /**
+     * Retrieve the name set (if any).
+     * @return Retrieve the arbitrary name of the container set by calling {@link #setName(String) setName}.
+     * @since 2.10.2
+     */
+    String getName();
+    
+    
+    /**
+     * Allow querying of the current lifecycle state of a MutablePicoContainer.
+     * @return the current Lifecycle State.
+     * @since 2.10.2
+     */
+    LifecycleState getLifecycleState();
+    
 }
