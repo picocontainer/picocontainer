@@ -239,7 +239,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param member constructor/method/field who's callback is required.
      * @return the Commons logging instance.
      */
-    protected Log getLog(final Member member) {
+    protected synchronized Log getLog(final Member member) {
         if ( log != null ){
             return log;
         } 
