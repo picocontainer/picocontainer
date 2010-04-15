@@ -239,7 +239,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         return delegate.newBehavior(behavior);
     }
 
-    protected Logger getLogger(final Member member) {
+    protected synchronized Logger getLogger(final Member member) {
         if ( logger != null ){
             return logger;
         } 

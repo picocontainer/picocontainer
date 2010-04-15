@@ -13,37 +13,37 @@
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-bsh</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-groovy</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-jruby</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-jython</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-rhino</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-tck</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -65,49 +65,49 @@
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-core</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-bsh</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/bsh</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-groovy</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/groovy</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-jruby</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/jruby</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-jython</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/jython</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-rhino</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/rhino</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.script</groupId>
                   <artifactId>picocontainer-script-tck</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/tck</outputDirectory>
                 </artifactItem>
@@ -168,7 +168,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-script-${pom.version}</finalName>
+              <finalName>picocontainer-script-${project.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -182,7 +182,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
-              <finalName>picocontainer-script-${pom.version}</finalName>
+              <finalName>picocontainer-script-${project.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
           </execution>

@@ -278,7 +278,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	 *            Source method/constructor, etc being instantiated.
 	 * @return an appropriate logger instance for this callback.
 	 */
-	protected Logger getLogger(final Member member) {
+	protected synchronized Logger getLogger(final Member member) {
 		if (logger != null) {
 			return logger;
 		}

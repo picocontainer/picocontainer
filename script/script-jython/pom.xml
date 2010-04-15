@@ -17,7 +17,7 @@
           <systemProperties>
             <property>
               <name>python.cachedir</name>
-              <value>${pom.build.outputDirectory}/cachedir</value>
+              <value>${project.build.outputDirectory}/cachedir</value>
             </property>
           </systemProperties>
         </configuration>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.python</groupId>
@@ -39,13 +39,13 @@
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-tck</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-testmodel</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
