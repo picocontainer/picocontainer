@@ -16,7 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.Cached;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
 
 import java.util.Properties;
@@ -36,12 +36,12 @@ import java.util.Properties;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  */
 @SuppressWarnings("serial")
-public class OptInCaching extends AbstractBehaviorFactory {
+public class OptInCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, 
     			Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
             return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
@@ -49,7 +49,7 @@ public class OptInCaching extends AbstractBehaviorFactory {
                                                                                         componentImplementation,
                                                                                         parameters)));
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                             componentProperties, componentKey, componentImplementation, parameters);
     }
@@ -59,13 +59,13 @@ public class OptInCaching extends AbstractBehaviorFactory {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter<T> adapter) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
             return componentMonitor.newBehavior(new Cached<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter)));
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

@@ -21,13 +21,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -163,7 +162,7 @@ public class SynchronizedTestCase {
         runConcurrencyTest(pico);
     }
 
-    protected BehaviorFactory makeBehaviorFactory() {
+    protected Behavior makeBehaviorFactory() {
         return new Synchronizing();
     }
 

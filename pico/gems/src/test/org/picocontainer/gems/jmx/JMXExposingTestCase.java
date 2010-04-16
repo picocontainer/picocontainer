@@ -28,7 +28,7 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -81,7 +81,7 @@ public class JMXExposingTestCase  {
     
     @Test
     public void testPicoContainerIntegration() throws Exception {
-        final BehaviorFactory componentFactory = new JMXExposing(mBeanServer);
+        final Behavior componentFactory = new JMXExposing(mBeanServer);
         
         MutablePicoContainer pico = new PicoBuilder()
         				.withBehaviors(componentFactory)

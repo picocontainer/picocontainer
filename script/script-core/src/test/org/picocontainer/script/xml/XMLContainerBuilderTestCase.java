@@ -39,7 +39,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Locked;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.injectors.AdaptingInjection;
@@ -731,13 +731,13 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
     @SuppressWarnings("serial")
-    public static class MyComponentFactory2 extends AbstractBehaviorFactory {
+    public static class MyComponentFactory2 extends AbstractBehavior {
         public MyComponentFactory2(ComponentFactory delegate) {
             wrap(delegate);
         }
     }
     @SuppressWarnings("serial")
-    public static class MyComponentFactory3 extends AbstractBehaviorFactory {
+    public static class MyComponentFactory3 extends AbstractBehavior {
         public MyComponentFactory3(ComponentFactory delegate) {
             wrap(delegate);
         }

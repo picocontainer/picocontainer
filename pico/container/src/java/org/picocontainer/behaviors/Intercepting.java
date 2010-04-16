@@ -19,7 +19,7 @@ import java.util.Properties;
 
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
-public class Intercepting extends AbstractBehaviorFactory {
+public class Intercepting extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

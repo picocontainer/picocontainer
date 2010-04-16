@@ -7,7 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.script;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.InjectionType;
@@ -94,7 +94,7 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withBehaviors(BehaviorFactory... factories) {
+    public ScriptedBuilder withBehaviors(Behavior... factories) {
         picoBuilder.withBehaviors(factories);
         return this;
     }

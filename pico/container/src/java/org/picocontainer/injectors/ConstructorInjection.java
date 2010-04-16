@@ -18,7 +18,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * A {@link org.picocontainer.InjectionType} for constructor injection.
@@ -55,9 +55,9 @@ public class ConstructorInjection extends AbstractInjectionType {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
+        boolean useNames = AbstractBehavior.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
         ConstructorInjector injector = new ConstructorInjector(componentKey, componentImplementation, parameters, monitor, useNames, rememberChosenConstructor);
-        injector.enableEmjection(AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
+        injector.enableEmjection(AbstractBehavior.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
         return wrapLifeCycle(monitor.newInjector(injector), lifecycleStrategy);
     }
 }

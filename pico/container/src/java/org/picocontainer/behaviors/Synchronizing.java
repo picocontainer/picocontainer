@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -25,7 +25,7 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
-public class Synchronizing extends AbstractBehaviorFactory {
+public class Synchronizing extends AbstractBehavior {
 
 	
     /** {@inheritDoc} **/

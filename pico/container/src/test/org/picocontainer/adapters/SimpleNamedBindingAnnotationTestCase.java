@@ -20,7 +20,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AbstractInjectionType;
 
@@ -109,7 +109,7 @@ public class SimpleNamedBindingAnnotationTestCase {
             Properties componentProperties, Object componentKey,
             Class<T> componentImplementation, Parameter ... parameters)
             throws PicoCompositionException {
-            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(
+            boolean useNames = AbstractBehavior.arePropertiesPresent(
                 componentProperties, Characteristics.USE_NAMES, true);
             return new FieldInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames);
         }

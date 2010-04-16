@@ -18,7 +18,7 @@ import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * A Composite of other types on InjectionFactories - pass them into the varargs constructor.
@@ -49,7 +49,7 @@ public class CompositeInjection extends AbstractInjectionType {
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
         }
 
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+        boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
         return wrapLifeCycle(monitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters,
                 monitor, useNames, injectors)), lifecycleStrategy);
     }

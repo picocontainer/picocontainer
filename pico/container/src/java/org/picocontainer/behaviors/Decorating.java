@@ -16,7 +16,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.Decorated;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -27,7 +27,7 @@ import java.util.Properties;
  *
  * @author Paul Hammant
  */
-public abstract class Decorating extends AbstractBehaviorFactory implements Decorated.Decorator {
+public abstract class Decorating extends AbstractBehavior implements Decorated.Decorator {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,

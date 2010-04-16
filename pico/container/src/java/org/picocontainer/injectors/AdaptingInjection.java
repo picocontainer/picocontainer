@@ -21,7 +21,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Inject;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * Creates injector instances, depending on the injection characteristics of the component class. 
@@ -117,7 +117,7 @@ public class AdaptingInjection extends AbstractInjectionType {
                                                   LifecycleStrategy lifecycleStrategy,
                                                   Object componentKey,
                                                   Class<T> componentImplementation, Parameter... parameters) {
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
         return new ConstructorInjection().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
                                                                         componentProperties,
@@ -133,7 +133,7 @@ public class AdaptingInjection extends AbstractInjectionType {
                                                    Class<T> componentImplementation,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
             componentAdapter = new SetterInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                                     componentProperties,
                                                                                                     componentKey,
@@ -150,7 +150,7 @@ public class AdaptingInjection extends AbstractInjectionType {
                                                    Class<T> componentImplementation,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.METHOD_INJECTION)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.METHOD_INJECTION)) {
             componentAdapter = new MethodInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                                     componentProperties,
                                                                                                     componentKey,

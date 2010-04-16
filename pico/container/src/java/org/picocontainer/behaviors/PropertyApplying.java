@@ -16,7 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.PropertyApplicator;
 
 import java.util.Properties;
@@ -28,7 +28,7 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
-public final class PropertyApplying extends AbstractBehaviorFactory {
+public final class PropertyApplying extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,

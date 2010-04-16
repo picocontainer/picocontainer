@@ -7,7 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.web;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
@@ -170,8 +170,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         return new NullComponentMonitor();
     }
 
-    protected BehaviorFactory addRequestBehaviors(BehaviorFactory beforeThisBehaviorFactory) {
-        return beforeThisBehaviorFactory;
+    protected Behavior addRequestBehaviors(Behavior beforeThisBehavior) {
+        return beforeThisBehavior;
     }
 
     /**

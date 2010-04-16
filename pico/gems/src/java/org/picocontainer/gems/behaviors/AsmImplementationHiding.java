@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ import java.util.Properties;
  * @see org.picocontainer.Characteristics.NO_HIDE_IMPL
  */
 @SuppressWarnings("serial")
-public class AsmImplementationHiding extends AbstractBehaviorFactory {
+public class AsmImplementationHiding extends AbstractBehavior {
 
 
 	@Override
@@ -36,11 +36,11 @@ public class AsmImplementationHiding extends AbstractBehaviorFactory {
                                                    final Object componentKey,
                                                    final Class<T> componentImplementation,
                                                    final Parameter... parameters) throws PicoCompositionException {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                 componentProperties, componentKey, componentImplementation, parameters);
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor,
                                                                          lifecycleStrategy,
                                                                          componentProperties,
@@ -55,13 +55,13 @@ public class AsmImplementationHiding extends AbstractBehaviorFactory {
                                                 final LifecycleStrategy lifecycleStrategy,
                                                 final Properties componentProperties,
                                                 final ComponentAdapter<T> adapter) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return super.addComponentAdapter(componentMonitor,
                                              lifecycleStrategy,
                                              componentProperties,
                                              adapter);
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
         return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,

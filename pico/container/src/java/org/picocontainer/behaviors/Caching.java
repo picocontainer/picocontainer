@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.LifecycleStrategy;
 
@@ -28,7 +28,7 @@ import java.util.Properties;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public class Caching extends AbstractBehaviorFactory {
+public class Caching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(
 			ComponentMonitor componentMonitor,

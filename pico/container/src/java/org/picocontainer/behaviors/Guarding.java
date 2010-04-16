@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
 
 import java.util.Properties;
@@ -26,7 +26,7 @@ import java.util.Properties;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class Guarding extends AbstractBehaviorFactory {
+public class Guarding extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor componentMonitor,

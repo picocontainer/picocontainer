@@ -15,7 +15,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ import java.util.Properties;
  *
  * @author Paul Hammant
  */
-public abstract class FieldDecorating extends AbstractBehaviorFactory implements FieldDecorated.Decorator {
+public abstract class FieldDecorating extends AbstractBehavior implements FieldDecorated.Decorator {
     private final Class<?> fieldClass;
 
     public FieldDecorating(Class<?> fieldClass) {

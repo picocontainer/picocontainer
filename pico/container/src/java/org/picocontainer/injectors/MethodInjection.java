@@ -15,7 +15,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 import java.lang.reflect.Method;
@@ -56,7 +56,7 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
             return wrapLifeCycle(new MethodInjector(componentKey, componentImplementation, parameters, monitor, injectionMethodName, useNames), lifecycleStrategy);
         }
     }
@@ -69,7 +69,7 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
             if (injectionMethod.getDeclaringClass().isAssignableFrom(componentImplementation)) {
                 return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(componentKey, componentImplementation, parameters, monitor, injectionMethod, useNames)), lifecycleStrategy);
             } else {

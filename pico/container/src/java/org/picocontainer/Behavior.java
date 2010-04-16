@@ -17,7 +17,7 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public interface BehaviorFactory extends ComponentFactory {
+public interface Behavior extends ComponentFactory {
 
     ComponentFactory wrap(ComponentFactory delegate);
 

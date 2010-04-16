@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.gems.behaviors;
 
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -20,7 +20,7 @@ import org.picocontainer.PicoCompositionException;
 import java.util.Properties;
 
 @SuppressWarnings("serial")
-public class Pooling extends AbstractBehaviorFactory {
+public class Pooling extends AbstractBehavior {
 
  	private final Pooled.Context poolContext;
 
@@ -38,11 +38,11 @@ public class Pooling extends AbstractBehaviorFactory {
         ComponentAdapter delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
 
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
         	return delegate;
 		} 
         
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
         Pooled behavior = new Pooled(delegate, poolContext);
         //TODO
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
@@ -55,14 +55,14 @@ public class Pooling extends AbstractBehaviorFactory {
                                                 final Properties componentProperties,
                                                 final ComponentAdapter adapter) {
 
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
         	return super.addComponentAdapter(componentMonitor,
                     lifecycleStrategy,
                     componentProperties,
                     adapter);
 		} 
     	
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
     	return componentMonitor.newBehavior(new Pooled(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

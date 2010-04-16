@@ -7,7 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -621,7 +621,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
         @Override
         public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            BehaviorFactory bf = (BehaviorFactory) injector.getComponentInstance(container, into);
+            Behavior bf = (Behavior) injector.getComponentInstance(container, into);
             bf.wrap((ComponentFactory) container.getComponent(otherKey));
             return bf;
         }

@@ -11,7 +11,7 @@ package org.picocontainer;
 
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
@@ -214,7 +214,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         ComponentFactory componentFactory = componentFactories[i];
         while (i > 0) {
             try {
-                componentFactory = ((BehaviorFactory) componentFactories[i-1]).wrap(componentFactory);
+                componentFactory = ((Behavior) componentFactories[i-1]).wrap(componentFactory);
             } catch (ClassCastException e) {
                 throw new PicoCompositionException("Check the order of the BehaviorFactories " +
                         "in the varargs list of ComponentFactories. Index " + (i-1)
@@ -481,8 +481,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
         Properties tmpProperties = (Properties) properties.clone();
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
-            MutablePicoContainer container = addAdapterInternal(((BehaviorFactory) componentFactory).addComponentAdapter(
+        if (AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof Behavior) {
+            MutablePicoContainer container = addAdapterInternal(((Behavior) componentFactory).addComponentAdapter(
                     componentMonitor,
                     lifecycleStrategy,
                     tmpProperties,
@@ -567,7 +567,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                     componentKey,
                     (Class<?>) componentImplementationOrInstance,
                     parameters);
-            AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
+            AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
             throwIfPropertiesLeft(tmpProperties);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);

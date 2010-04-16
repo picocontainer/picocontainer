@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -25,7 +25,7 @@ import java.util.Properties;
  * @author Paul Hammant.
  */
 @SuppressWarnings("serial")
-public class Locking extends AbstractBehaviorFactory {
+public class Locking extends AbstractBehavior {
 
     /** {@inheritDoc} **/
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,

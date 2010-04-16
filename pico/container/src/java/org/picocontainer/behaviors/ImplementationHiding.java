@@ -15,7 +15,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
@@ -24,7 +24,7 @@ import java.util.Properties;
  * @see org.picocontainer.gems.adapters.HotSwappingComponentFactory for a more feature-rich version of the class
  */
 @SuppressWarnings("serial")
-public class ImplementationHiding extends AbstractBehaviorFactory {
+public class ImplementationHiding extends AbstractBehavior {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
 

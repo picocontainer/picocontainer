@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.gems;
 
+import org.picocontainer.Behavior;
 import org.picocontainer.gems.adapters.ThreadLocalizing;
 import org.picocontainer.gems.behaviors.AsmImplementationHiding;
 import org.picocontainer.gems.behaviors.HotSwapping;
@@ -18,7 +19,6 @@ import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.gems.monitors.Slf4jComponentMonitor;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.BehaviorFactory;
 
 
 /**
@@ -33,7 +33,7 @@ public class PicoGemsBuilder {
 	 * @return a new AsmImplementationHiding() instance.
 	 * @since PicoContainer-Gems 2.4
      */
-    public static BehaviorFactory ASM_IMPL_HIDING() {
+    public static Behavior ASM_IMPL_HIDING() {
         return new AsmImplementationHiding();    	
     }
     
@@ -41,7 +41,7 @@ public class PicoGemsBuilder {
      * Creates a {@link org.picocontainer.gems.behaviors.HotSwapping HotSwapping} behavior factory.
      * @return
      */
-    public static BehaviorFactory HOT_SWAPPING() {
+    public static Behavior HOT_SWAPPING() {
     	return new HotSwapping();
     }
     
@@ -50,7 +50,7 @@ public class PicoGemsBuilder {
      * constructors that give you more flexibility in exposing your objects.
      * @return JMX Exposing behavior factory.
      */
-    public static BehaviorFactory JMX() {
+    public static Behavior JMX() {
     	return new JMXExposing();
     }
 
@@ -58,7 +58,7 @@ public class PicoGemsBuilder {
      * Creates a thread localizing adapter factory.
      * @return
      */
-    public static BehaviorFactory THREAD_LOCAL() {
+    public static Behavior THREAD_LOCAL() {
     	return new ThreadLocalizing();
     }
     
@@ -66,7 +66,7 @@ public class PicoGemsBuilder {
      * Creates an instance pooling adapter factory.
      * @return 
      */
-    public static BehaviorFactory POOLING() {
+    public static Behavior POOLING() {
     	return new Pooling();
     }
     

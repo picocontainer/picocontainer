@@ -17,8 +17,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Cached;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.references.ThreadLocalReference;
@@ -56,7 +56,7 @@ import java.util.Properties;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public final class ThreadLocalizing extends AbstractBehaviorFactory {
+public final class ThreadLocalizing extends AbstractBehavior {
 
 
 	/**

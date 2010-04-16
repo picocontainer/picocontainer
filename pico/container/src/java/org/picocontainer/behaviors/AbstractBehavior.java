@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -25,7 +25,7 @@ import org.picocontainer.InjectionType;
 import org.picocontainer.injectors.AdaptingInjection;
 
 @SuppressWarnings("serial")
-public class AbstractBehaviorFactory implements ComponentFactory, Serializable, BehaviorFactory {
+public class AbstractBehavior implements ComponentFactory, Serializable, Behavior {
 
     private ComponentFactory delegate;
 
@@ -66,8 +66,8 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
-        if (delegate != null && delegate instanceof BehaviorFactory) {
-            return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy,
+        if (delegate != null && delegate instanceof Behavior) {
+            return ((Behavior) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy,
                     componentProperties, adapter);
         }
         return adapter;

@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 
 /** @author Paul Hammant */
@@ -19,7 +19,7 @@ public final class LockedTestCase extends SynchronizedTestCase {
         return new Locked(componentAdapter);
     }
 
-    protected BehaviorFactory makeBehaviorFactory() {
+    protected Behavior makeBehaviorFactory() {
         return new Locking();
     }
 

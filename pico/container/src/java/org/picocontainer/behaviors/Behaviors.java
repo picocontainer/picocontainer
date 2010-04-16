@@ -10,7 +10,7 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.Behaving;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
 
@@ -29,27 +29,27 @@ public class Behaviors {
         // no-op
     }
     
-    public static BehaviorFactory implementationHiding() {
+    public static Behavior implementationHiding() {
         return new ImplementationHiding();
     }
 
-    public static BehaviorFactory caching() {
+    public static Behavior caching() {
         return new Caching();
     }
 
-    public static BehaviorFactory synchronizing() {
+    public static Behavior synchronizing() {
         return new Synchronizing();
     }
 
-    public static BehaviorFactory locking() {
+    public static Behavior locking() {
         return new Locking();
     }
 
-    public static BehaviorFactory propertyApplying() {
+    public static Behavior propertyApplying() {
         return new PropertyApplying();
     }
 
-    public static BehaviorFactory automatic() {
+    public static Behavior automatic() {
         return new Automating();
     }
 

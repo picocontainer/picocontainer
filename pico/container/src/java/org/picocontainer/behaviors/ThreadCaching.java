@@ -21,7 +21,7 @@ import java.util.Properties;
 
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
-public class ThreadCaching extends AbstractBehaviorFactory {
+public class ThreadCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

@@ -9,10 +9,8 @@
 
 package org.picocontainer.web.remoting;
 
-import org.picocontainer.BehaviorFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Intercepting;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerListener;

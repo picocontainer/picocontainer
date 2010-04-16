@@ -29,7 +29,7 @@ import java.util.Collections;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class Storing extends AbstractBehaviorFactory {
+public class Storing extends AbstractBehavior {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 

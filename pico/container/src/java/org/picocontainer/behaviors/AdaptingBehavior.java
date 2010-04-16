@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -28,7 +28,7 @@ import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
 
 @SuppressWarnings("serial")
-public class AdaptingBehavior implements BehaviorFactory, Serializable {
+public class AdaptingBehavior implements Behavior, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
@@ -37,7 +37,7 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
+        List<Behavior> list = new ArrayList<Behavior>();
         ComponentFactory lastFactory = makeInjectionFactory();
         processSynchronizing(componentProperties, list);
         processLocking(componentProperties, list);
@@ -49,8 +49,8 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
-            if (lastFactory != null && componentFactory instanceof BehaviorFactory) {
-                ((BehaviorFactory)componentFactory).wrap(lastFactory);
+            if (lastFactory != null && componentFactory instanceof Behavior) {
+                ((Behavior)componentFactory).wrap(lastFactory);
             }
             lastFactory = componentFactory;
         }
@@ -68,15 +68,15 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
+        List<Behavior> list = new ArrayList<Behavior>();
         processSynchronizing(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCaching(componentProperties, adapter.getComponentImplementation(), list);
         processGuarding(componentProperties, adapter.getComponentImplementation(), list);
 
         //Instantiate Chain of ComponentFactories
-        BehaviorFactory lastFactory = null;
-        for (BehaviorFactory componentFactory : list) {
+        Behavior lastFactory = null;
+        for (Behavior componentFactory : list) {
             if (lastFactory != null) {
                 componentFactory.wrap(lastFactory);
             }
@@ -103,52 +103,52 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
         return new AdaptingInjection();
     }
 
-    protected void processSynchronizing(Properties componentProperties, List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE)) {
+    protected void processSynchronizing(Properties componentProperties, List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE)) {
             list.add(new Synchronizing());
         }
     }
 
-    protected void processLocking(Properties componentProperties, List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.LOCK)) {
+    protected void processLocking(Properties componentProperties, List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.LOCK)) {
             list.add(new Locking());
         }
     }
 
     protected void processCaching(Properties componentProperties,
                                        Class componentImplementation,
-                                       List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
+                                       List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new Caching());
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
     }
 
-    protected void processGuarding(Properties componentProperties, Class componentImplementation, List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {
+    protected void processGuarding(Properties componentProperties, Class componentImplementation, List<Behavior> list) {
+        if (AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {
             list.add(new Guarding());
         }
     }
 
     protected void processImplementationHiding(Properties componentProperties,
-                                             List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
+                                             List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHiding());
         }
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);
+        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);
     }
 
     protected void processPropertyApplying(Properties componentProperties,
-                                             List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {
+                                             List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {
             list.add(new PropertyApplying());
         }
     }
 
     protected void processAutomatic(Properties componentProperties,
-                                             List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
+                                             List<Behavior> list) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
             list.add(new Automating());
         }
     }

@@ -18,7 +18,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
 
 import java.util.Properties;
@@ -33,7 +33,7 @@ import java.util.Properties;
  * for this type?  I've been unable to actually get it working.
  */
 @SuppressWarnings("serial")
-public class Assimilating extends AbstractBehaviorFactory {
+public class Assimilating extends AbstractBehavior {
 
 	private final ProxyFactory proxyFactory;
     private final Class<?> assimilationType;

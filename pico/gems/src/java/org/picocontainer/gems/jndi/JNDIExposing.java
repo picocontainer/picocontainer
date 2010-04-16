@@ -18,7 +18,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * produce JNDI exposing behaviour
@@ -28,7 +28,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @param <T>
  */
 @SuppressWarnings("serial")
-public class JNDIExposing extends AbstractBehaviorFactory {
+public class JNDIExposing extends AbstractBehavior {
 
 	@Override
 	public <T> ComponentAdapter<T> addComponentAdapter(

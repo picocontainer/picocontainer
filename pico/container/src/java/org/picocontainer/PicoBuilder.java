@@ -205,8 +205,8 @@ public class PicoBuilder {
             tmpContainer.addComponent(ComponentFactory.class, lastCaf);
         }
         ComponentFactory newlastCaf = (ComponentFactory) tmpContainer.getComponent("componentFactory");
-        if (newlastCaf instanceof BehaviorFactory) {
-            ((BehaviorFactory) newlastCaf).wrap(lastCaf);
+        if (newlastCaf instanceof Behavior) {
+            ((Behavior) newlastCaf).wrap(lastCaf);
         }
         return newlastCaf;
     }
@@ -276,8 +276,8 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withBehaviors(BehaviorFactory... factories) {
-        for (BehaviorFactory componentFactory : factories) {
+    public PicoBuilder withBehaviors(Behavior... factories) {
+        for (Behavior componentFactory : factories) {
             behaviors.push(componentFactory);
         }
         return this;

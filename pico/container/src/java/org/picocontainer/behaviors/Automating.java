@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 @SuppressWarnings("serial")
-public class Automating extends AbstractBehaviorFactory implements Serializable {
+public class Automating extends AbstractBehavior implements Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
