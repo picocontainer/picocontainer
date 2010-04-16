@@ -22,7 +22,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AbstractInjectionFactory;
+import org.picocontainer.injectors.AbstractInjectionType;
 
 
 /**
@@ -102,7 +102,7 @@ public class SimpleNamedBindingAnnotationTestCase {
         return type.getName() + "/" + bindingId;
     }
 
-    public class FieldInjection extends AbstractInjectionFactory {
+    public class FieldInjection extends AbstractInjectionType {
 
         public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,

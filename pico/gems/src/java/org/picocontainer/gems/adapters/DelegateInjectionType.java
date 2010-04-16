@@ -3,22 +3,22 @@
  */
 package org.picocontainer.gems.adapters;
 
-import java.util.Properties;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.gems.util.DelegateMethod;
-import org.picocontainer.injectors.AbstractInjectionFactory;
+import org.picocontainer.injectors.AbstractInjectionType;
+
+import java.util.Properties;
 
 /**
- * Mirrored AdaptorFactory for handling delegate methods.
+ * Mirrored InjectionType for handling delegate methods.
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
-public class DelegateAdaptorFactory extends AbstractInjectionFactory {
+public class DelegateInjectionType extends AbstractInjectionType {
 
     
 	/**
@@ -35,12 +35,12 @@ public class DelegateAdaptorFactory extends AbstractInjectionFactory {
 	/**
 	 * Default constructor.
 	 */
-	public DelegateAdaptorFactory() {
+	public DelegateInjectionType() {
 		super();
 	}
 
 
-	/**
+    /**
 	 * {@inheritDoc}
 	 * 
 	 */

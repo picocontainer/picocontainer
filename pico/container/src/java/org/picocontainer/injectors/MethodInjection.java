@@ -21,15 +21,15 @@ import java.util.Properties;
 import java.lang.reflect.Method;
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for methods.
+ * A {@link org.picocontainer.InjectionType} for methods.
  * The factory creates {@link MethodInjector}.
  * 
  *  @author Paul Hammant 
  */
 @SuppressWarnings("serial")
-public class MethodInjection extends AbstractInjectionFactory {
+public class MethodInjection extends AbstractInjectionType {
 
-    private final AbstractInjectionFactory delegate;
+    private final AbstractInjectionType delegate;
 
     public MethodInjection(String injectionMethodName) {
         delegate = new MethodInjectionByName(injectionMethodName);
@@ -48,7 +48,7 @@ public class MethodInjection extends AbstractInjectionFactory {
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
     }
 
-    public class MethodInjectionByName extends AbstractInjectionFactory {
+    public class MethodInjectionByName extends AbstractInjectionType {
         private final String injectionMethodName;
 
         public MethodInjectionByName(String injectionMethodName) {
@@ -61,7 +61,7 @@ public class MethodInjection extends AbstractInjectionFactory {
         }
     }
 
-    public class MethodInjectionByReflectionMethod extends AbstractInjectionFactory {
+    public class MethodInjectionByReflectionMethod extends AbstractInjectionType {
         private final Method injectionMethod;
 
         public MethodInjectionByReflectionMethod(Method injectionMethod) {

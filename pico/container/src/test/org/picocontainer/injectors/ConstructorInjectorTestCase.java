@@ -33,19 +33,16 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.InjectionType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -54,7 +51,7 @@ import org.picocontainer.testmodel.Touchable;
 public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+
     protected Class getComponentAdapterType() {
         return ConstructorInjector.class;
     }
@@ -385,20 +382,20 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testSpeedOfRememberedConstructor()  {
         long with, without;
-        injectionFactory = new ForgetfulConstructorInjection();
+        injectionType = new ForgetfulConstructorInjection();
         timeIt(); // discard
         timeIt(); // discard
         timeIt(); // discard
         without = timeIt();
-        injectionFactory = new ConstructorInjection();
+        injectionType = new ConstructorInjection();
         with = timeIt();
         assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
     }
 
-    InjectionFactory injectionFactory;
+    InjectionType injectionType;
     private long timeIt() {
         int iterations = 20000;
-        DefaultPicoContainer dpc = new DefaultPicoContainer(injectionFactory);
+        DefaultPicoContainer dpc = new DefaultPicoContainer(injectionType);
         Two two = new Two();
         dpc.addComponent(two);
         dpc.addComponent(One.class);

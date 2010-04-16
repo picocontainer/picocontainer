@@ -21,7 +21,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for constructor injection.
+ * A {@link org.picocontainer.InjectionType} for constructor injection.
  * The factory creates {@link ConstructorInjector}.
  *
  * If there is more than one constructor for the component, the one with the
@@ -32,7 +32,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Jon Tirs&eacute;n
  */
 @SuppressWarnings("serial")
-public class ConstructorInjection extends AbstractInjectionFactory  {
+public class ConstructorInjection extends AbstractInjectionType {
 
     private final boolean rememberChosenConstructor;
 

@@ -22,13 +22,13 @@ import java.util.Properties;
 
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for Guice-style annotated methods.
+ * A {@link org.picocontainer.InjectionType} for Guice-style annotated methods.
  * The factory creates {@link AnnotatedMethodInjector}.
  *
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class AnnotatedMethodInjection extends AbstractInjectionFactory {
+public class AnnotatedMethodInjection extends AbstractInjectionType {
 
 
 	private final Class<? extends Annotation> injectionAnnotation;

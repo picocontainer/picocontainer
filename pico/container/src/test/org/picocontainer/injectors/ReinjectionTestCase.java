@@ -16,7 +16,6 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.*;
-import org.picocontainer.Injector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -31,7 +30,6 @@ import org.jmock.api.Invocation;
 import org.hamcrest.Description;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -124,7 +122,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         cachedComponentCanBeReinjectedByATransientChildContainer(new AnnotatedMethodInjection(Hurrah.class, false));
     }
 
-    private void cachedComponentCanBeReinjectedByATransientChildContainer(AbstractInjectionFactory methodInjection) {
+    private void cachedComponentCanBeReinjectedByATransientChildContainer(AbstractInjectionType methodInjection) {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(INeedsShoe.class, NeedsShoe.class);
         parent.addComponent(Shoe.class);
@@ -234,7 +232,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    private void cachedComponentCanBeReinjectedByATransientReinjector(AbstractInjectionFactory methodInjection) {
+    private void cachedComponentCanBeReinjectedByATransientReinjector(AbstractInjectionType methodInjection) {
         final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.setName("parent");
         parent.addComponent(INeedsShoe.class, NeedsShoe.class);

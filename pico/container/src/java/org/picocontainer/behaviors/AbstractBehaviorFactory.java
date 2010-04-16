@@ -21,7 +21,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Characteristics;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 import org.picocontainer.injectors.AdaptingInjection;
 
 @SuppressWarnings("serial")
@@ -45,7 +45,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
                 componentImplementation, parameters);
 
         boolean enableCircular = removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
-        if (enableCircular && delegate instanceof InjectionFactory) {
+        if (enableCircular && delegate instanceof InjectionType) {
             return componentMonitor.newBehavior(new HiddenImplementation(compAdapter));
         } else {
             return compAdapter;

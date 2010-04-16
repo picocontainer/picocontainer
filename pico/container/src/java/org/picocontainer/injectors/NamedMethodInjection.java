@@ -8,7 +8,7 @@ import org.picocontainer.PicoCompositionException;
 
 import java.util.Properties;
 
-public class NamedMethodInjection extends AbstractInjectionFactory {
+public class NamedMethodInjection extends AbstractInjectionType {
 
     private final String prefix;
     private final boolean optional;

@@ -20,7 +20,7 @@ import java.util.Properties;
 
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
-public class MultiInjection extends AbstractInjectionFactory {
+public class MultiInjection extends AbstractInjectionType {
     private final String setterPrefix;
 
     public MultiInjection(String setterPrefix) {

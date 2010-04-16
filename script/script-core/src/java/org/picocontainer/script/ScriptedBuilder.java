@@ -10,12 +10,12 @@ package org.picocontainer.script;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.InjectionType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
@@ -36,7 +36,7 @@ public final class ScriptedBuilder {
     private ClassLoader classLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     private List<URL> urls = new ArrayList<URL>();
 
-    public ScriptedBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
+    public ScriptedBuilder(PicoContainer parentcontainer, InjectionType injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
     }
 
@@ -44,7 +44,7 @@ public final class ScriptedBuilder {
         picoBuilder = new PicoBuilder(parentcontainer);
     }
 
-    public ScriptedBuilder(InjectionFactory injectionType) {
+    public ScriptedBuilder(InjectionType injectionType) {
         picoBuilder = new PicoBuilder(injectionType);
     }
 

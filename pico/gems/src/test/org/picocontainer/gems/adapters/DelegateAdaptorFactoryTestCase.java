@@ -35,8 +35,8 @@ public class DelegateAdaptorFactoryTestCase {
 		testMap.put("b", "b value");
 		
 		ConsoleComponentMonitor monitor = new ConsoleComponentMonitor();
-        DelegateAdaptorFactory factory = new DelegateAdaptorFactory();
-        Properties getSizeProps = DelegateAdaptorFactory.createDelegateProprties(testMap, "size");
+        DelegateInjectionType factory = new DelegateInjectionType();
+        Properties getSizeProps = DelegateInjectionType.createDelegateProprties(testMap, "size");
         
         ComponentAdapter<Integer> ca = factory.createComponentAdapter(monitor, new StartableLifecycleStrategy(monitor),
         		getSizeProps, Integer.class, Integer.class, Parameter.DEFAULT);

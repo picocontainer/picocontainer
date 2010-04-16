@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -99,11 +99,11 @@ public class Reinjector {
     /**
      * Reinjecting into a method.
      * @param key the component-key from the parent set of components to inject into (key and impl are the same)
-     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, InjectionFactory reinjectionFactory) {
-        Object o = reinject(key, key, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
+    public Object reinject(Class<?> key, InjectionType reinjectionType) {
+        Object o = reinject(key, key, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
         return o;
     }
 
@@ -111,11 +111,11 @@ public class Reinjector {
      * Reinjecting into a method.
      * @param key the component-key from the parent set of components to inject into
      * @param impl the implementation of the component that is going to result.
-     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return
      */
-    public Object reinject(Class<?> key, Class<?> impl, InjectionFactory reinjectionFactory) {
-        return reinject(key, impl, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionFactory);
+    public Object reinject(Class<?> key, Class<?> impl, InjectionType reinjectionType) {
+        return reinject(key, impl, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
     }
 
     /**
@@ -123,11 +123,11 @@ public class Reinjector {
      * @param key the component-key from the parent set of components to inject into
      * @param implementation the implementation of the component that is going to result.
      * @param instance the object that has the provider method to be invoked
-     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Class implementation, Object instance, InjectionFactory reinjectionFactory) {
-        return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionFactory);
+    public Object reinject(Class<?> key, Class implementation, Object instance, InjectionType reinjectionType) {
+        return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionType);
     }
 
     /**
@@ -136,12 +136,12 @@ public class Reinjector {
      * @param implementation the implementation of the component that is going to result.
      * @param instance the object that has the provider method to be invoked
      * @param properties for reinjection
-     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Class implementation, Object instance, Properties properties,
-                           InjectionFactory reinjectionFactory) {
-        Reinjection reinjection = new Reinjection(reinjectionFactory, parent);
+                           InjectionType reinjectionType) {
+        Reinjection reinjection = new Reinjection(reinjectionType, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
                 monitor, NO_LIFECYCLE, properties, key, implementation, null);
         return injector.decorateComponentInstance(parent, ComponentAdapter.NOTHING.class, instance);

@@ -59,12 +59,12 @@ public class PicoBuilder {
     private boolean addChildToParent;
     private LifecycleStrategy lifecycleStrategy;
     private final Stack<Object> behaviors = new Stack<Object>();
-    private final List<InjectionFactory> injectors = new ArrayList<InjectionFactory>();
+    private final List<InjectionType> injectors = new ArrayList<InjectionType>();
     private Class<? extends ComponentMonitor> componentMonitorClass = NullComponentMonitor.class;
     private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
 
 
-    public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
+    public PicoBuilder(PicoContainer parentContainer, InjectionType injectionType) {
         this(parentContainer);
         injectors.add(injectionType);
     }
@@ -77,7 +77,7 @@ public class PicoBuilder {
         }
     }
 
-    public PicoBuilder(InjectionFactory injectionType) {
+    public PicoBuilder(InjectionType injectionType) {
         this(new EmptyPicoContainer(), injectionType);
     }
 
@@ -147,7 +147,7 @@ public class PicoBuilder {
         } else if (injectors.size() == 0) {
             componentFactory = adaptiveDI();
         } else {
-            componentFactory = new CompositeInjection(injectors.toArray(new InjectionFactory[injectors.size()]));
+            componentFactory = new CompositeInjection(injectors.toArray(new InjectionType[injectors.size()]));
         }
         
         Stack<Object> clonedBehaviors = (Stack< Object >) behaviors.clone();

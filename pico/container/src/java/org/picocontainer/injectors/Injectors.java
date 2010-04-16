@@ -9,39 +9,39 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 
 public class Injectors {
 
-    public static InjectionFactory adaptiveDI() {
+    public static InjectionType adaptiveDI() {
         return new AdaptingInjection();
     }
 
-    public static InjectionFactory SDI() {
+    public static InjectionType SDI() {
         return new SetterInjection();
     }
 
-    public static InjectionFactory CDI() {
+    public static InjectionType CDI() {
         return new ConstructorInjection();
     }
 
-    public static InjectionFactory namedMethod() {
+    public static InjectionType namedMethod() {
         return new NamedMethodInjection();
     }
 
-    public static InjectionFactory namedField() {
+    public static InjectionType namedField() {
         return new NamedFieldInjection();
     }
 
-    public static InjectionFactory annotatedMethodDI() {
+    public static InjectionType annotatedMethodDI() {
         return new AnnotatedMethodInjection();
     }
 
-    public static InjectionFactory annotatedFieldDI() {
+    public static InjectionType annotatedFieldDI() {
         return new AnnotatedFieldInjection();
     }
 
-    public static InjectionFactory typedFieldDI() {
+    public static InjectionType typedFieldDI() {
         return new TypedFieldInjection();
     }
 

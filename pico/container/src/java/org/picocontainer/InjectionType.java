@@ -9,5 +9,5 @@
  *****************************************************************************/
 package org.picocontainer;
 
-public interface InjectionFactory extends ComponentFactory {
+public interface InjectionType extends ComponentFactory {
 }

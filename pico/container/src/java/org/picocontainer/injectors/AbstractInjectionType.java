@@ -3,7 +3,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoCompositionException;
@@ -14,7 +14,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
-public abstract class AbstractInjectionFactory implements InjectionFactory, Serializable {
+public abstract class AbstractInjectionType implements InjectionType, Serializable {
 
     public void verify(PicoContainer container) {
     }

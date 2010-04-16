@@ -13,7 +13,7 @@ import java.util.Properties;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
@@ -26,12 +26,12 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class CompositeInjection extends AbstractInjectionFactory {
+public class CompositeInjection extends AbstractInjectionType {
 
-    private final InjectionFactory[] injectionFactories;
+    private final InjectionType[] injectionTypes;
 
-    public CompositeInjection(InjectionFactory... injectionFactories) {
-        this.injectionFactories = injectionFactories;
+    public CompositeInjection(InjectionType... injectionTypes) {
+        this.injectionTypes = injectionTypes;
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
@@ -41,11 +41,11 @@ public class CompositeInjection extends AbstractInjectionFactory {
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
 
-        Injector[] injectors = new Injector[injectionFactories.length];
+        Injector[] injectors = new Injector[injectionTypes.length];
 
-        for (int i = 0; i < injectionFactories.length; i++) {
-            InjectionFactory injectionFactory = injectionFactories[i];
-            injectors[i] = (Injector) injectionFactory.createComponentAdapter(monitor,
+        for (int i = 0; i < injectionTypes.length; i++) {
+            InjectionType injectionType = injectionTypes[i];
+            injectors[i] = (Injector) injectionType.createComponentAdapter(monitor,
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
         }
 

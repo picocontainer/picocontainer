@@ -28,37 +28,24 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Collection;
 
 import javax.swing.JButton;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locked;
 import org.picocontainer.behaviors.Cached;
-import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -738,8 +725,8 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
 
     @SuppressWarnings("serial")
-    public static class MyComponentFactory extends ConstructorInjection {
-        public MyComponentFactory() {
+    public static class MyInjectionType extends ConstructorInjection {
+        public MyInjectionType() {
             super();
         }
     }
@@ -761,7 +748,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "<container>" +
                 "  <component-adapter-factory class='"+ MyComponentFactory3.class.getName()+"' key='factory'>" +
                 "    <component-adapter-factory class='"+ MyComponentFactory2.class.getName()+"'>" +
-                "      <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
+                "      <component-adapter-factory class='"+ MyInjectionType.class.getName()+"'/>" +
                 "    </component-adapter-factory>" +
                 "  </component-adapter-factory>" +
                 "</container>");
@@ -775,7 +762,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    <componentKeyToAdapterCache/>\n" +
                 "    <componentFactory class='"+ MyComponentFactory3.class.getName()+"'>\n" +
                 "      <delegate class='"+ MyComponentFactory2.class.getName()+"'>\n" +
-                "        <delegate class='"+ MyComponentFactory.class.getName()+"'>\n" +
+                "        <delegate class='"+ MyInjectionType.class.getName()+"'>\n" +
                 "        </delegate>\n" +
                 "      </delegate>\n" +
                 "    </componentFactory>\n" +
@@ -807,7 +794,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.behaviors.ImplementationHiding' key='factory'>" +
-                "    <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
+                "    <component-adapter-factory class='"+ MyInjectionType.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "  <component-implementation class='" + Hello.class.getName() + "'/>" +

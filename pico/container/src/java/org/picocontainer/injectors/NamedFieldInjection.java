@@ -19,7 +19,7 @@ import static org.picocontainer.Characteristics.immutable;
 import java.util.Properties;
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for named fields.
+ * A {@link org.picocontainer.InjectionType} for named fields.
  *
  * Use like so: pico.as(injectionFieldNames("field1", "field2")).addComponent(...)
  *
@@ -28,7 +28,7 @@ import java.util.Properties;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class NamedFieldInjection extends AbstractInjectionFactory {
+public class NamedFieldInjection extends AbstractInjectionType {
 
 
     private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";

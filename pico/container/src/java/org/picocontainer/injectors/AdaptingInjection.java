@@ -43,7 +43,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @see ConstructorInjection
  */
 @SuppressWarnings("serial")
-public class AdaptingInjection extends AbstractInjectionFactory {
+public class AdaptingInjection extends AbstractInjectionType {
 
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,

@@ -22,13 +22,13 @@ import java.util.Properties;
 
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for JavaBeans.
+ * A {@link org.picocontainer.InjectionType} for JavaBeans.
  * The factory creates {@link SetterInjector}.
  *
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public class SetterInjection extends AbstractInjectionFactory {
+public class SetterInjection extends AbstractInjectionType {
 
     private final String prefix;
 

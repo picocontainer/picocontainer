@@ -10,7 +10,7 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.InjectionType;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
@@ -23,8 +23,8 @@ import java.util.Properties;
 
 public class Reinjection extends CompositeInjection {
 
-    public Reinjection(InjectionFactory reinjectionFactory, final PicoContainer parent) {
-        super(new AbstractInjectionFactory() {
+    public Reinjection(InjectionType reinjectionType, final PicoContainer parent) {
+        super(new AbstractInjectionType() {
             public <T> ComponentAdapter<T> createComponentAdapter(
                     ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                     Properties componentProperties, final Object componentKey, Class<T> componentImplementation,
@@ -32,7 +32,7 @@ public class Reinjection extends CompositeInjection {
                 boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
                 return new ReinjectionInjector(componentKey, componentImplementation, parameters, componentMonitor, parent, useNames);
             }
-        }, reinjectionFactory);
+        }, reinjectionType);
     }
 
     private static class ReinjectionInjector<T> extends AbstractInjector {
