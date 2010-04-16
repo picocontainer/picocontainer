@@ -53,18 +53,15 @@ public class Behaviors {
         return new Automating();
     }
 
-    public static Behaving cached(ComponentAdapter delegate) {
-        return new Cached(delegate);
+    public static <T> Behaving<T> cached(ComponentAdapter<T> delegate) {
+        return new Cached<T>(delegate);
     }
 
-    public static Behaving cached(ComponentAdapter delegate, ObjectReference instanceReference) {
-        return new Cached(delegate,instanceReference);
+    public static <T> Behaving<T> cached(ComponentAdapter<T> delegate, ObjectReference instanceReference) {
+        return new Cached<T>(delegate, instanceReference);
     }
 
-
-    public static Behaving decorated(ComponentAdapter delegate, Decorated.Decorator decorator) {
-        return new Decorated(delegate,decorator);
+    public static <T> Behaving<T> decorated(ComponentAdapter<T> delegate, Decorated.Decorator decorator) {
+        return new Decorated<T>(delegate, decorator);
     }
-
-
 }
