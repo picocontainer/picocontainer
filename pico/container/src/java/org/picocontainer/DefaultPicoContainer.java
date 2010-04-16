@@ -754,11 +754,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * container start successfully.  The child container for which start is attempted
      * is tracked so that upon stop, only those need to be stopped.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behavior lifecycle manager}.
+     * if it is an instance of {@link Behaving lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behavior
+     * @see Behaving
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -783,11 +783,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * The stopping of the child containers is only attempted for those that have been
      * started, possibly not successfully.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behavior lifecycle manager}.
+     * if it is an instance of {@link Behaving lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behavior
+     * @see Behaving
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -832,11 +832,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behavior lifecycle manager}.
+     * if it is an instance of {@link Behaving lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behavior
+     * @see Behaving
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)

@@ -27,7 +27,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
-import org.picocontainer.Behavior;
+import org.picocontainer.Behaving;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -230,8 +230,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public Behavior newBehavior(Behavior behavior) {
-        return delegate.newBehavior(behavior);
+    public Behaving newBehavior(Behaving behaving) {
+        return delegate.newBehavior(behaving);
     }
 
     /**

@@ -142,8 +142,8 @@ public interface ComponentMonitor {
     /**
      * A mechanism to monitor or override the Behaviors being made for components.
      *
-     * @param behavior
+     * @param behaving
      * @return an Behavior. For most implementations, the same one as was passed in.
      */
-    Behavior newBehavior(Behavior behavior);
+    Behaving newBehavior(Behaving behaving);
 }

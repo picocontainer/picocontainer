@@ -10,6 +10,7 @@
 
 package org.picocontainer.behaviors;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -39,12 +40,12 @@ import java.lang.reflect.Type;
  * @author Aslak Hellesoy
  * @author Mauro Talevi
  */
-public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<T>, ComponentMonitorStrategy,
+public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonitorStrategy,
                                                   LifecycleStrategy, Serializable {
 
     protected final ComponentAdapter<T> delegate;
 
-    public AbstractBehavior(ComponentAdapter<T> delegate) {
+    public AbstractBehaving(ComponentAdapter<T> delegate) {
         this.delegate = delegate;
     }
     
@@ -111,8 +112,8 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
      * {@inheritDoc}
      */
     public void start(PicoContainer container) {
-        if (delegate instanceof org.picocontainer.Behavior) {
-            ((org.picocontainer.Behavior<?>)delegate).start(container);
+        if (delegate instanceof Behaving) {
+            ((Behaving<?>)delegate).start(container);
         }
     }
 
@@ -121,8 +122,8 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
      * {@inheritDoc}
      */
     public void stop(PicoContainer container) {
-        if (delegate instanceof org.picocontainer.Behavior) {
-            ((org.picocontainer.Behavior<?>)delegate).stop(container);
+        if (delegate instanceof Behaving) {
+            ((Behaving<?>)delegate).stop(container);
         }
     }
     
@@ -131,8 +132,8 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
      * {@inheritDoc}
      */
     public void dispose(PicoContainer container) {
-        if (delegate instanceof org.picocontainer.Behavior) {
-            ((org.picocontainer.Behavior<?>)delegate).dispose(container);
+        if (delegate instanceof Behaving) {
+            ((Behaving<?>)delegate).dispose(container);
         }
     }
 
@@ -141,15 +142,15 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
      * {@inheritDoc}
      */
     public boolean componentHasLifecycle() {
-        if (delegate instanceof org.picocontainer.Behavior) {
-            return ((org.picocontainer.Behavior<?>)delegate).componentHasLifecycle();
+        if (delegate instanceof Behaving) {
+            return ((Behaving<?>)delegate).componentHasLifecycle();
         }
         return false;
     }
 
     public boolean isStarted() {
-        if (delegate instanceof org.picocontainer.Behavior) {
-            return ((org.picocontainer.Behavior<?>)delegate).isStarted();
+        if (delegate instanceof Behaving) {
+            return ((Behaving<?>)delegate).isStarted();
         }
         return false;
     }

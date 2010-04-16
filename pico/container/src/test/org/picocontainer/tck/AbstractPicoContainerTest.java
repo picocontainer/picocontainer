@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.junit.Test;
-import org.picocontainer.Behavior;
+import org.picocontainer.Behaving;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -56,7 +56,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.AbstractBehaving;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -613,11 +613,11 @@ public abstract class AbstractPicoContainerTest {
     }
 
     @SuppressWarnings("unused") 
-    public static final class TestBehavior extends AbstractBehavior implements Behavior {
+    public static final class TestBehaving extends AbstractBehaving implements Behaving {
 
         public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
 
-        public TestBehavior(ComponentAdapter delegate) {
+        public TestBehaving(ComponentAdapter delegate) {
             super(delegate);
         }
 

@@ -49,7 +49,7 @@ import java.util.Set;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public class PropertyApplicator<T> extends AbstractBehavior<T> {
+public class PropertyApplicator<T> extends AbstractBehaving<T> {
     private Map<String, String> properties;
     private transient Map<String, Method> setters = null;
 

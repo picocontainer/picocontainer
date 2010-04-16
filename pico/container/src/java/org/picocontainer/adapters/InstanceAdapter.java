@@ -21,7 +21,7 @@ import java.lang.reflect.Type;
  * Component adapter which wraps a component instance.
  * </p>
  * <p>
- * This component adapter supports both a {@link Behavior Behavior} and a
+ * This component adapter supports both a {@link org.picocontainer.Behaving Behavior} and a
  * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods
  * on the component instance.

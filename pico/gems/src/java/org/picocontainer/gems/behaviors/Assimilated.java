@@ -17,7 +17,7 @@ import com.thoughtworks.proxy.toys.delegate.Delegating;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.AbstractBehaving;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -53,7 +53,7 @@ import java.lang.reflect.Type;
  * @author Michael Ward
  */
 @SuppressWarnings("serial")
-public final class Assimilated<T> extends AbstractBehavior<T> {
+public final class Assimilated<T> extends AbstractBehaving<T> {
 
 	private final Class<T> type;
     private final ProxyFactory proxyFactory;
@@ -112,7 +112,7 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * Create and return a component instance. If the component instance and the type to assimilate is not compatible, a proxy
      * for the instance is generated, that implements the assimilated type.
      * 
-     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class into)
+     * @see org.picocontainer.behaviors.AbstractBehaving#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class into)
      */
     @Override
 	public T getComponentInstance(final PicoContainer container, final Type into)
@@ -129,7 +129,7 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * Return the type of the component. If the component type is not compatible with the type to assimilate, the assimilated
      * type is returned.
      * 
-     * @see AbstractBehavior#getComponentImplementation()
+     * @see org.picocontainer.behaviors.AbstractBehaving#getComponentImplementation()
      */
     @Override
 	public Class<? extends T> getComponentImplementation() {
@@ -140,7 +140,7 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * Return the key of the component. If the key of the delegated component is a type, that is not compatible with the type to
      * assimilate, then the assimilated type replaces the original type.
      * 
-     * @see AbstractBehavior#getComponentKey()
+     * @see org.picocontainer.behaviors.AbstractBehaving#getComponentKey()
      */
     @Override
 	public Object getComponentKey() {

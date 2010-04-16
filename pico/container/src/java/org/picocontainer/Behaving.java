@@ -18,6 +18,6 @@ package org.picocontainer;
  * @author Mauro Talevi
  * @see LifecycleStrategy
  */
-public interface Behavior<T> extends ComponentAdapter<T>, ComponentLifecycle<T> {
+public interface Behaving<T> extends ComponentAdapter<T>, ComponentLifecycle<T> {
 
 }

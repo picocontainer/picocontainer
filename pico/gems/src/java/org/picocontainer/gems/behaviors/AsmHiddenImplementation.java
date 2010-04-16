@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Future;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -23,7 +22,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.AbstractBehaving;
 import org.picocontainer.behaviors.Cached;
 
 
@@ -36,7 +35,7 @@ import org.picocontainer.behaviors.Cached;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements Opcodes {
+public class AsmHiddenImplementation<T> extends AbstractBehaving<T> implements Opcodes {
 
 
 	public AsmHiddenImplementation(final ComponentAdapter<T> delegate) {

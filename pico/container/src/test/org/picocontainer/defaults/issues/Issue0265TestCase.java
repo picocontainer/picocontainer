@@ -30,7 +30,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.DefaultPicoContainerTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.Behavior;
+import org.picocontainer.Behaving;
 import org.picocontainer.injectors.AbstractInjector;
 
 @RunWith(JMock.class)
@@ -45,7 +45,7 @@ public class Issue0265TestCase {
         final ComponentMonitor monitor2 = mockery.mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         mockery.checking(new Expectations(){{
-            one(monitor1).newBehavior(with(any(Behavior.class)));
+            one(monitor1).newBehavior(with(any(Behaving.class)));
             will(returnParameterAction(0));
             one(monitor1).newInjector(with(any(AbstractInjector.class)));
             will(returnParameterAction(0));

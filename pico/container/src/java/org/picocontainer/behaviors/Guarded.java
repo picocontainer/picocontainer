@@ -21,7 +21,7 @@ import java.lang.reflect.Type;
  * @param <T>
  */
 @SuppressWarnings("serial")
-public class Guarded<T> extends AbstractBehavior<T> {
+public class Guarded<T> extends AbstractBehaving<T> {
     private final String guard;
 
     public Guarded(ComponentAdapter delegate, String guard) {

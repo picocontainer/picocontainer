@@ -15,13 +15,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
-import org.picocontainer.Behavior;
 
 /**
  * <p>
@@ -116,8 +116,8 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         return injector;
     }
 
-    public Behavior newBehavior(Behavior behavior) {
-        return behavior;
+    public Behaving newBehavior(Behaving behaving) {
+        return behaving;
     }
 
     /**

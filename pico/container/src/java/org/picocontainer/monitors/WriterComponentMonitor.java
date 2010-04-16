@@ -22,12 +22,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
-import org.picocontainer.Behavior;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link Writer}. 
@@ -113,8 +113,8 @@ public class WriterComponentMonitor implements ComponentMonitor {
     }
 
     /** {@inheritDoc} **/
-    public Behavior newBehavior(Behavior behavior) {
-        return delegate.newBehavior(behavior);
+    public Behaving newBehavior(Behaving behaving) {
+        return delegate.newBehavior(behaving);
     }
 
 

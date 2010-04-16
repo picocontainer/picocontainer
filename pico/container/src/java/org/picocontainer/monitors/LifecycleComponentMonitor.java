@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -23,7 +24,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Injector;
-import org.picocontainer.Behavior;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -110,8 +110,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     }
 
     /** {@inheritDoc} **/
-    public Behavior newBehavior(Behavior behavior) {
-        return delegate.newBehavior(behavior);
+    public Behaving newBehavior(Behaving behaving) {
+        return delegate.newBehavior(behaving);
     }
 
 

@@ -23,12 +23,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
-import org.picocontainer.Behavior;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.slf4j.Logger;
@@ -266,8 +266,8 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
     /** {@inheritDoc} **/
-    public Behavior newBehavior(Behavior behavior) {
-        return delegate.newBehavior(behavior);
+    public Behaving newBehavior(Behaving behaving) {
+        return delegate.newBehavior(behaving);
     }
 
 

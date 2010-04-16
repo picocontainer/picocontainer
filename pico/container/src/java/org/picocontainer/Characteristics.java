@@ -19,7 +19,7 @@ import java.util.Properties;
  * 
  * @author Paul Hammant
  * @see org.picocontainer.ComponentAdapter
- * @see org.picocontainer.Behavior
+ * @see Behaving
  */
 @SuppressWarnings("serial")
 public final class Characteristics {

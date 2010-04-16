@@ -1,5 +1,6 @@
 package org.picocontainer.behaviors;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
 
@@ -10,16 +11,16 @@ import org.picocontainer.ObjectReference;
  */
 public class Behavior {
 
-    public static final org.picocontainer.Behavior cached(ComponentAdapter delegate) {
+    public static final Behaving cached(ComponentAdapter delegate) {
         return new Cached(delegate);
     }
 
-    public static final org.picocontainer.Behavior cached(ComponentAdapter delegate, ObjectReference instanceReference) {
+    public static final Behaving cached(ComponentAdapter delegate, ObjectReference instanceReference) {
         return new Cached(delegate,instanceReference);
     }
 
 
-    public static final  org.picocontainer.Behavior decorated(ComponentAdapter delegate, Decorated.Decorator decorator) {
+    public static final Behaving decorated(ComponentAdapter delegate, Decorated.Decorator decorator) {
         return new Decorated(delegate,decorator);
     }
 }

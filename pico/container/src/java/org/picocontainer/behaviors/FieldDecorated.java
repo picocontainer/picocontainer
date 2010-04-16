@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
-public class FieldDecorated extends AbstractBehavior {
+public class FieldDecorated extends AbstractBehaving {
     private final Class<?> fieldClass;
     private final Decorator decorator;
 
