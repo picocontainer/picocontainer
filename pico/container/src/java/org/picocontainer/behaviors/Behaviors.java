@@ -9,7 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import org.picocontainer.Behaving;
 import org.picocontainer.BehaviorFactory;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ObjectReference;
 
 /**
  * Static collection of factory methods for different BehaviourFactory implementations.
@@ -49,5 +52,19 @@ public class Behaviors {
     public static BehaviorFactory automatic() {
         return new Automating();
     }
+
+    public static Behaving cached(ComponentAdapter delegate) {
+        return new Cached(delegate);
+    }
+
+    public static Behaving cached(ComponentAdapter delegate, ObjectReference instanceReference) {
+        return new Cached(delegate,instanceReference);
+    }
+
+
+    public static Behaving decorated(ComponentAdapter delegate, Decorated.Decorator decorator) {
+        return new Decorated(delegate,decorator);
+    }
+
 
 }
