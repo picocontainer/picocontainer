@@ -10,7 +10,6 @@ package org.picocontainer.lifecycle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.Ignore;
 import static org.picocontainer.Characteristics.CACHE;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
@@ -108,7 +107,7 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testThirdPartyStartableAndDisposable() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new MyStartableLifecycleStrategy());
         StringBuilder sb = new StringBuilder();
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
@@ -120,7 +119,7 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testLateAdditionofStartableAlsoStarted() {
-    	DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+    	DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new MyStartableLifecycleStrategy());
     	StringBuilder sb = new StringBuilder();
     	pico.addComponent(sb);
     	pico.as(CACHE).addComponent(NonStartable.class);
@@ -138,10 +137,10 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testMixOfThirdPartyAndBuiltInStartableAndDisposable() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CompositeLifecycleStrategy(
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new CompositeLifecycleStrategy(
                     new MyStartableLifecycleStrategy(),
-                    new StartableLifecycleStrategy(new NullComponentMonitor())),
-                new EmptyPicoContainer());
+                    new StartableLifecycleStrategy(new NullComponentMonitor()))
+        );
         StringBuilder sb = new StringBuilder();
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
@@ -153,7 +152,7 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testThirdPartyStartableCanNoteLifecycleRuntimeException() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new MyStartableLifecycleStrategy());
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent2.class);
         try {
             pico.start();
@@ -168,7 +167,7 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testThirdPartyStartableCanNoteLifecycleException() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new MyStartableLifecycleStrategy());
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent3.class);
         try {
             pico.start();

@@ -50,7 +50,7 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void testMethodInjection() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection());
         pico.addComponent(123);
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -62,7 +62,7 @@ public class MethodInjectionTestCase {
 
     @Test public void testMethodInjectionViaMethodDef() {
         Method mthd = Foo.class.getMethods()[0];
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection(mthd));
         pico.addComponent(123);
         pico.addComponent(Foo.class);
         pico.addComponent(new Bar());
@@ -74,7 +74,7 @@ public class MethodInjectionTestCase {
 
     @Test public void testMethodInjectionViaMethodDefViaInterface() {
         Method mthd = IFoo.class.getMethods()[0];
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection(mthd));
         pico.addComponent(123);
         pico.addComponent(Foo.class);
         pico.addComponent(new Bar());
@@ -88,7 +88,7 @@ public class MethodInjectionTestCase {
 
 
     @Test public void testMethodInjectionViaCharacteristics() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy());
         pico.addComponent(123);
         pico.as(Characteristics.METHOD_INJECTION).addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -148,8 +148,8 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void testMethodInjectionWithAllowedNullableParam() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(),
-                new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection()
+        );
         pico.addComponent(Foo2.class);
         pico.addComponent(Bar.class);
         Foo2 foo = pico.getComponent(Foo2.class);
@@ -159,8 +159,8 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void aComponentWithMoreThanOneInjectMethodAndMoreThanOneParam() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(),
-                new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection()
+        );
         pico.addComponent(Foo3.class);
         pico.addComponent(Bar.class);
         Foo3 foo3 = pico.getComponent(Foo3.class);
@@ -188,7 +188,7 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void testMethodInjectionWithIntegerParamCanBeconvertedFromString() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection());
         pico.as(USE_NAMES).addComponent(Foo.class);
         pico.addComponent(Bar.class);
         pico.addComponent("num", "123");

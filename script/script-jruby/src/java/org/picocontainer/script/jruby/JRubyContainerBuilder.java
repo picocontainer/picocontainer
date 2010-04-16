@@ -9,27 +9,27 @@
 
 package org.picocontainer.script.jruby;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.util.Collections;
-
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.behaviors.Caching;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.util.Collections;
 
 /**
  * The script uses the {@code scriptedcontainer.rb} script to create an instance of
@@ -76,7 +76,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	 */
 	protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         if ( parentContainer == null ){
-            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
+            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new EmptyPicoContainer(), new Caching()));
         }
 		
         if (! (parentContainer instanceof ClassLoadingPicoContainer)) {
@@ -84,19 +84,16 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
         		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), (MutablePicoContainer)parentContainer);
         	} else {
         		//We want this last because it will never propagate parent behaviors
-        		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), parentContainer));
+        		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(parentContainer, new Caching()));
         	}
         }
 
-		
-		
 		RubyInstanceConfig rubyConfig = new RubyInstanceConfig();
 		rubyConfig.setLoader(this.getClassLoader());
 		Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST, rubyConfig);
 		ruby.getLoadService().require("org/picocontainer/script/jruby/scriptedbuilder");
 		ruby.defineReadonlyVariable("$parent", JavaEmbedUtils.javaToRuby(ruby, parentContainer));
 		ruby.defineReadonlyVariable("$assembly_scope", JavaEmbedUtils.javaToRuby(ruby, assemblyScope));
-		
 		
 		try {
 			

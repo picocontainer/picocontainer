@@ -129,12 +129,45 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
     private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
 
-
     protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
-
 
     private Converters converters;
 
+    /**
+     * Creates a new container with a custom ComponentFactory and no parent container.
+     *
+     * @param componentFactory the ComponentFactory to use.
+     */
+    public DefaultPicoContainer(final ComponentFactory componentFactory) {
+        this((PicoContainer) null, componentFactory);
+    }
+
+    /**
+     * Creates a new container with the AdaptingInjection using a
+     * custom ComponentMonitor
+     *
+     * @param monitor the ComponentMonitor to use
+     */
+    public DefaultPicoContainer(final ComponentMonitor monitor) {
+        this((PicoContainer) null, new StartableLifecycleStrategy(monitor), monitor);
+    }
+
+    /**
+     * Creates a new container with a (caching) {@link AdaptingInjection}
+     * and a parent container.
+     *
+     * @param parent the parent container (used for component dependency lookups).
+     */
+    public DefaultPicoContainer(final PicoContainer parent) {
+        this(parent, new AdaptingBehavior());
+    }
+
+    /**
+     * Creates a new container with a {@link AdaptingBehavior} and no parent container.
+     */
+    public DefaultPicoContainer() {
+        this((PicoContainer) null, new AdaptingBehavior());
+    }
 
     /**
      * Creates a new container with a custom ComponentFactory and a parent container.
@@ -146,11 +179,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * other ComponentAdapterFactories.
      * </em>
      *
-     * @param componentFactory the factory to use for creation of ComponentAdapters.
      * @param parent           the parent container (used for component dependency lookups).
+     * @param componentFactories the factory to use for creation of ComponentAdapters.
      */
-    public DefaultPicoContainer(final ComponentFactory componentFactory, final PicoContainer parent) {
-        this(componentFactory, new StartableLifecycleStrategy(new NullComponentMonitor()), parent, new NullComponentMonitor());
+    public DefaultPicoContainer(final PicoContainer parent, final ComponentFactory... componentFactories) {
+        this(parent, new StartableLifecycleStrategy(new NullComponentMonitor()), new NullComponentMonitor(), componentFactories);
     }
 
     /**
@@ -164,22 +197,33 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * other ComponentAdapterFactories.
      * </em>
      *
-     * @param componentFactory  the factory to use for creation of ComponentAdapters.
+     * @param parent            the parent container (used for component dependency lookups).
      * @param lifecycleStrategy the lifecycle strategy chosen for registered
      *                          instance (not implementations!)
-     * @param parent            the parent container (used for component dependency lookups).
+     * @param componentFactories  the factory to use for creation of ComponentAdapters.
      */
-    public DefaultPicoContainer(final ComponentFactory componentFactory,
-                                final LifecycleStrategy lifecycleStrategy,
-                                final PicoContainer parent) {
-        this(componentFactory, lifecycleStrategy, parent, new NullComponentMonitor());
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentFactory... componentFactories) {
+        this(parent, lifecycleStrategy, new NullComponentMonitor(), componentFactories);
     }
 
-    public DefaultPicoContainer(final ComponentFactory componentFactory,
-                                final LifecycleStrategy lifecycleStrategy,
-                                final PicoContainer parent, final ComponentMonitor componentMonitor) {
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor componentMonitor, final ComponentFactory... componentFactories) {
+        if (componentFactories.length == 0) {
+            throw new NullPointerException("at least one componentFactory");
+        }
+        int i = componentFactories.length -1;
+        ComponentFactory componentFactory = componentFactories[i];
+        while (i > 0) {
+            try {
+                componentFactory = ((BehaviorFactory) componentFactories[i-1]).wrap(componentFactory);
+            } catch (ClassCastException e) {
+                throw new PicoCompositionException("Check the order of the BehaviorFactories " +
+                        "in the varargs list of ComponentFactories. Index " + (i-1)
+                        + " ("+componentFactories[i-1].getClass().getName()+") should be a BehaviorFactory but is not.");
+            }
+            i--;
+        }
         if (componentFactory == null) {
-            throw new NullPointerException("componentFactory");
+            throw new NullPointerException("one of the componentFactories");
         }
         if (lifecycleStrategy == null) {
             throw new NullPointerException("lifecycleStrategy");
@@ -197,71 +241,43 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor
      *
-     * @param monitor the ComponentMonitor to use
      * @param parent  the parent container (used for component dependency lookups).
+     * @param monitor the ComponentMonitor to use
      */
-    public DefaultPicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {
-        this(new AdaptingBehavior(), new StartableLifecycleStrategy(monitor), parent, monitor);
+    public DefaultPicoContainer(final PicoContainer parent, final ComponentMonitor monitor) {
+        this(parent, new StartableLifecycleStrategy(monitor), monitor, new AdaptingBehavior());
     }
 
     /**
      * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor and lifecycle strategy
      *
-     * @param monitor           the ComponentMonitor to use
-     * @param lifecycleStrategy the lifecycle strategy to use.
      * @param parent            the parent container (used for component dependency lookups).
+     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param monitor           the ComponentMonitor to use
      */
-    public DefaultPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-        this(new AdaptingBehavior(), lifecycleStrategy, parent, monitor);
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor monitor) {
+        this(parent, lifecycleStrategy, monitor, new AdaptingBehavior());
     }
 
     /**
      * Creates a new container with the AdaptingInjection using a
      * custom lifecycle strategy
      *
-     * @param lifecycleStrategy the lifecycle strategy to use.
      * @param parent            the parent container (used for component dependency lookups).
+     * @param lifecycleStrategy the lifecycle strategy to use.
      */
-    public DefaultPicoContainer(final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-        this(new NullComponentMonitor(), lifecycleStrategy, parent);
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy) {
+        this(parent, lifecycleStrategy, new NullComponentMonitor());
     }
-
 
     /**
      * Creates a new container with a custom ComponentFactory and no parent container.
      *
-     * @param componentFactory the ComponentFactory to use.
+     * @param componentFactories the ComponentFactory to use.
      */
-    public DefaultPicoContainer(final ComponentFactory componentFactory) {
-        this(componentFactory, null);
-    }
-
-    /**
-     * Creates a new container with the AdaptingInjection using a
-     * custom ComponentMonitor
-     *
-     * @param monitor the ComponentMonitor to use
-     */
-    public DefaultPicoContainer(final ComponentMonitor monitor) {
-        this(monitor, new StartableLifecycleStrategy(monitor), null);
-    }
-
-    /**
-     * Creates a new container with a (caching) {@link AdaptingInjection}
-     * and a parent container.
-     *
-     * @param parent the parent container (used for component dependency lookups).
-     */
-    public DefaultPicoContainer(final PicoContainer parent) {
-        this(new AdaptingBehavior(), parent);
-    }
-
-    /**
-     * Creates a new container with a {@link AdaptingBehavior} and no parent container.
-     */
-    public DefaultPicoContainer() {
-        this(new AdaptingBehavior(), null);
+    public DefaultPicoContainer(final ComponentFactory... componentFactories) {
+        this(null, componentFactories);
     }
 
     /**
@@ -270,7 +286,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return Collections.unmodifiableList(getModifiableComponentAdapterList());
     }
-
 
     /**
      * {@inheritDoc} *
@@ -855,7 +870,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this, componentMonitor);
+        DefaultPicoContainer pc = new DefaultPicoContainer(this, lifecycleStrategy, componentMonitor, componentFactory);
         addChildContainer(pc);
         return pc;
     }

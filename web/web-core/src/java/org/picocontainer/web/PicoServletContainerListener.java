@@ -7,7 +7,19 @@
  ******************************************************************************/
 package org.picocontainer.web;
 
-import java.io.Serializable;
+import org.picocontainer.BehaviorFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Guarding;
+import org.picocontainer.behaviors.Storing;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -15,20 +27,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.BehaviorFactory;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.behaviors.Storing;
-import org.picocontainer.behaviors.Guarding;
-import org.picocontainer.behaviors.Caching;
+import java.io.Serializable;
 
 /**
  * Servlet listener class that hooks into the underlying servlet container and
@@ -127,7 +126,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @return
      */
     protected ScopedContainers makeScopedContainers(boolean stateless) {
-        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeLifecycleStrategy(), makeParentContainer(), makeAppComponentMonitor());
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(makeParentContainer(), makeLifecycleStrategy(), makeAppComponentMonitor(), new Guarding().wrap(new Caching()));
         DefaultPicoContainer sessCtnr;
         PicoContainer parentOfRequestContainer;
         ThreadLocalLifecycleState sessionState;
@@ -140,12 +139,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         } else {
             sessionState = new ThreadLocalLifecycleState();
             sessStoring = new Storing();
-            sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), makeLifecycleStrategy(), appCtnr, makeSessionComponentMonitor());
+            sessCtnr = new DefaultPicoContainer(appCtnr, makeLifecycleStrategy(), makeSessionComponentMonitor(), new Guarding().wrap(sessStoring));
             sessCtnr.setLifecycleState(sessionState);
             parentOfRequestContainer = sessCtnr;
         }
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), makeLifecycleStrategy(), parentOfRequestContainer, makeRequestComponentMonitor());
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(parentOfRequestContainer, makeLifecycleStrategy(), makeRequestComponentMonitor(), new Guarding().wrap(addRequestBehaviors(reqStoring)));
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
         reqCtnr.setLifecycleState(requestState);
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring, sessionState, requestState);

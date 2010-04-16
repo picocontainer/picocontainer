@@ -55,7 +55,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
 
     @Test public void testAddComponentNoesNotUseCachingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+            new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Caching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());

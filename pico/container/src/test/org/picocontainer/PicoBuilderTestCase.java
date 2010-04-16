@@ -65,13 +65,13 @@ public class PicoBuilderTestCase {
 
     @Test public void testDefaultHasNullComponentManagerAndNullLifecycleAndAdaptingInjection() {
         Object actual = new PicoBuilder().build();
-        Object expected = new DefaultPicoContainer(ai, lifecycle, parent);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithStartableLifecycle() {
         Object actual = new PicoBuilder().withLifecycle().build();
-        Object expected = new DefaultPicoContainer(ai, new StartableLifecycleStrategy(ncm), parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, new StartableLifecycleStrategy(ncm), ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -80,58 +80,58 @@ public class PicoBuilderTestCase {
 
     @Test public void testWithCustomLifecycle() {
         Object actual = new PicoBuilder().withLifecycle(FooLifecycleStrategy.class).build();
-        Object expected = new DefaultPicoContainer(ai, new FooLifecycleStrategy(), parent);
+        Object expected = new DefaultPicoContainer(parent, new FooLifecycleStrategy(), ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithCustomLifecycle2() {
         Object actual = new PicoBuilder().withLifecycle(new FooLifecycleStrategy()).build();
-        Object expected = new DefaultPicoContainer(ai, new FooLifecycleStrategy(), parent);
+        Object expected = new DefaultPicoContainer(parent, new FooLifecycleStrategy(), ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithJEE5Lifecycle() {
 
         Object actual = new PicoBuilder().withJavaEE5Lifecycle().build();
-        Object expected = new DefaultPicoContainer(ai, new JavaEE5LifecycleStrategy(ncm), parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(ncm), ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithLifecycleInstance() {
 
         Object actual = new PicoBuilder().withLifecycle(new FooLifecycleStrategy()).build();
-        Object expected = new DefaultPicoContainer(ai, new FooLifecycleStrategy(), parent);
+        Object expected = new DefaultPicoContainer(parent, new FooLifecycleStrategy(), ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testThatLastOfInstanceOrClassLifecycleIsDominant() {
         Object actual = new PicoBuilder().withLifecycle(new FooLifecycleStrategy()).withLifecycle().build();
-        Object expected = new DefaultPicoContainer(ai, new StartableLifecycleStrategy(ncm), parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, new StartableLifecycleStrategy(ncm), ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
         actual = new PicoBuilder().withLifecycle().withLifecycle(new FooLifecycleStrategy()).build();
-        expected = new DefaultPicoContainer(ai,
-                new FooLifecycleStrategy(), parent);
+        expected = new DefaultPicoContainer(parent, new FooLifecycleStrategy(), ai
+        );
         assertEquals(toXml(expected), toXml(actual));
     }
 
 
     @Test public void testWithReflectionLifecycle() {
         Object actual = new PicoBuilder().withReflectionLifecycle().build();
-        Object expected = new DefaultPicoContainer(ai, new ReflectionLifecycleStrategy(ncm), parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, new ReflectionLifecycleStrategy(ncm), ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
 
     @Test public void testWithConsoleMonitor() {
         Object actual = new PicoBuilder().withConsoleMonitor().build();
-        Object expected = new DefaultPicoContainer(ai, lifecycle, parent, new ConsoleComponentMonitor());
+        Object expected = new DefaultPicoContainer(parent, lifecycle, new ConsoleComponentMonitor(), ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithConsoleMonitorAndLifecycleUseTheSameUltimateMonitor() {
         Object actual = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        Object expected = new DefaultPicoContainer(ai, new StartableLifecycleStrategy(cm), parent, cm);
+        Object expected = new DefaultPicoContainer(parent, new StartableLifecycleStrategy(cm), cm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -139,7 +139,7 @@ public class PicoBuilderTestCase {
     @Test public void testWithCustomMonitorByClass() {
         Object actual = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        Object expected = new DefaultPicoContainer(ai, lifecycle, parent, cm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, cm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -157,20 +157,20 @@ public class PicoBuilderTestCase {
 
     @Test public void testWithImplementationHiding() {
         Object actual = new PicoBuilder().withHiddenImplementations().build();
-        Object expected = new DefaultPicoContainer(new ImplementationHiding().wrap(ai), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new ImplementationHiding().wrap(ai));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithImplementationHidingInstance() {
         Object actual = new PicoBuilder().withComponentFactory(new ImplementationHiding()).build();
-        Object expected = new DefaultPicoContainer(new ImplementationHiding().wrap(ai), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new ImplementationHiding().wrap(ai));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithInjectionFactoryChain() {
         Object actual = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
-        Object expected = new DefaultPicoContainer(new Caching().wrap(new Synchronizing()
-                .wrap(new ImplementationHiding().wrap(new SetterInjection()))), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new Caching().wrap(new Synchronizing()
+                .wrap(new ImplementationHiding().wrap(new SetterInjection()))));
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -178,13 +178,13 @@ public class PicoBuilderTestCase {
 
     @Test public void testCustomParentContainer() {
         Object actual = new PicoBuilder(new CustomParentcontainer()).build();
-        Object expected = new DefaultPicoContainer(ai, lifecycle, new CustomParentcontainer(), ncm);
+        Object expected = new DefaultPicoContainer(new CustomParentcontainer(), lifecycle, ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testBogusParentContainerBehavesAsIfNotSet() {
         Object actual = new PicoBuilder((PicoContainer)null).build();
-        Object expected = new DefaultPicoContainer(ai, lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, ai);
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -193,7 +193,7 @@ public class PicoBuilderTestCase {
         MutablePicoContainer actual = new PicoBuilder(parent).addChildToParent().build();
 
         MutablePicoContainer parentExpected = new PicoBuilder().build();
-        MutablePicoContainer expected = new DefaultPicoContainer(ai, lifecycle, parentExpected, ncm);
+        MutablePicoContainer expected = new DefaultPicoContainer(parentExpected, lifecycle, ncm, ai);
         parentExpected.addChildContainer(expected); 
 
         assertEquals(toXml(expected), toXml(actual));
@@ -213,90 +213,90 @@ public class PicoBuilderTestCase {
 
     @Test public void testWithSetterInjection() {
         Object actual = new PicoBuilder().withSetterInjection().build();
-        Object expected = new DefaultPicoContainer(new SetterInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new SetterInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithConstructorAndSetterInjectionMakesHiddenCompositeInjection() {
         Object actual = new PicoBuilder().withConstructorInjection().withSetterInjection().build();
         Object expected = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new SetterInjection()), lifecycle, parent, ncm);
+                parent, lifecycle, ncm, new CompositeInjection(new ConstructorInjection(), new SetterInjection()));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithAnnotatedMethodDI() {
         Object actual = new PicoBuilder().withAnnotatedMethodInjection().build();
-        Object expected = new DefaultPicoContainer(new AnnotatedMethodInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new AnnotatedMethodInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithAnnotatedFieldDI() {
         Object actual = new PicoBuilder().withAnnotatedFieldInjection().build();
-        Object expected = new DefaultPicoContainer(new AnnotatedFieldInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new AnnotatedFieldInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithTypedFieldDI() {
         Object actual = new PicoBuilder().withTypedFieldInjection().build();
-        Object expected = new DefaultPicoContainer(new TypedFieldInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new TypedFieldInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithCtorDI() {
         Object actual = new PicoBuilder().withConstructorInjection().build();
-        Object expected = new DefaultPicoContainer(new ConstructorInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new ConstructorInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithNamedMethodInjection() {
         Object actual = new PicoBuilder().withNamedMethodInjection().build();
-        Object expected = new DefaultPicoContainer(new NamedMethodInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new NamedMethodInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithNamedFieldInjection() {
         Object actual = new PicoBuilder().withNamedFieldInjection().build();
-        Object expected = new DefaultPicoContainer(new NamedFieldInjection(), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new NamedFieldInjection());
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithImplementationHidingAndSetterDI() {
         Object actual = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
-        Object expected = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()),
-                lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new ImplementationHiding().wrap(new SetterInjection())
+        );
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithCachingImplementationHidingAndSetterDI() {
         Object actual = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
-        Object expected = new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection())),
-                lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection()))
+        );
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithSynchronizing() {
         Object actual = new PicoBuilder().withSynchronizing().build();
-        Object expected = new DefaultPicoContainer(new Synchronizing().wrap(ai), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new Synchronizing().wrap(ai));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithLocking() {
         Object actual = new PicoBuilder().withLocking().build();
-        Object expected = new DefaultPicoContainer(new Locking().wrap(ai), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new Locking().wrap(ai));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithPropertyApplier() {
         Object actual = new PicoBuilder().withPropertyApplier().build();
-        Object expected = new DefaultPicoContainer(new PropertyApplying().wrap(ai), lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new PropertyApplying().wrap(ai));
         assertEquals(toXml(expected), toXml(actual));
     }
 
     //TODO - fix up to refer to SomeContainerDependency
     @Test public void testWithCustomComponentFactory() {
         Object actual = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
-        Object expected = new DefaultPicoContainer(new CustomComponentFactory(new SomeContainerDependency()),
-                lifecycle, parent, ncm);
+        Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new CustomComponentFactory(new SomeContainerDependency())
+        );
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -351,7 +351,7 @@ public class PicoBuilderTestCase {
 
     public static class TestPicoContainer extends DefaultPicoContainer {
         public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(componentFactory, lifecycleStrategy, parent, monitor);
+            super(parent, lifecycleStrategy, monitor, componentFactory);
         }
     }
 

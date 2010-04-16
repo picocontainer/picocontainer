@@ -13,23 +13,22 @@ import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyObject;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
-
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.DefaultPicoContainer;
 
 /**
  * {@inheritDoc}
@@ -66,7 +65,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         Binding binding = new Binding();
         if ( parentContainer == null ){
-            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
+            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new EmptyPicoContainer(), new Caching()));
         }
         binding.setVariable("parent", parentContainer);
         binding.setVariable("builder", createNodeBuilder());

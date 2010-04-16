@@ -49,7 +49,7 @@ public class Issue0303TestCase {
 	public void testCanSwallowExceptionFromReflectionLifecycleStrategy() {
 		ComponentMonitor monitor = new SwallowingComponentMonitor();
 		DefaultPicoContainer container =
-				new DefaultPicoContainer(monitor, new StartableLifecycleStrategy(monitor), null);
+				new DefaultPicoContainer(null, new StartableLifecycleStrategy(monitor), monitor);
 		container.addComponent(new Starter());
 		container.start();
 	}
@@ -59,7 +59,7 @@ public class Issue0303TestCase {
 	public void testCanSwallowExceptionFromStarableLifecycleStrategy() {
 		ComponentMonitor monitor = new SwallowingComponentMonitor();
 		DefaultPicoContainer container =
-				new DefaultPicoContainer(monitor, new ReflectionLifecycleStrategy(monitor), null);
+				new DefaultPicoContainer(null, new ReflectionLifecycleStrategy(monitor), monitor);
 		container.addComponent(new Starter());
 		container.start();
 	}

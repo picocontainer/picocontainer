@@ -7,23 +7,22 @@
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
-import java.util.Map;
-
-import org.picocontainer.DefaultPicoContainer;
-import java.security.PrivilegedAction;
 import org.picocontainer.ComponentFactory;
-import java.security.AccessController;
-
-import org.picocontainer.behaviors.Caching;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.NodeBuilderDecorator;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.script.NodeBuilderDecorator;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Map;
 
 /**
  * Creates a new PicoContainer node. There may or may not be a parent container
@@ -140,16 +139,16 @@ public class ChildContainerNode extends AbstractBuilderNode {
             parentClassLoader = parent.getComponentClassLoader();
             if (isAttribute(attributes, COMPONENT_ADAPTER_FACTORY)) {
                 ComponentFactory componentFactory = createComponentFactory(attributes);
-                childContainer = new DefaultPicoContainer(getDecorator()
-                        .decorate(componentFactory, attributes), parent);
+                childContainer = new DefaultPicoContainer(parent, getDecorator()
+                        .decorate(componentFactory, attributes));
                 if (isAttribute(attributes, COMPONENT_MONITOR)) {
                     changeComponentMonitor(childContainer, createComponentMonitor(attributes));
                 }
                 parent.addChildContainer(childContainer);
             } else if (isAttribute(attributes, COMPONENT_MONITOR)) {
                 ComponentFactory componentFactory = new Caching();
-                childContainer = new DefaultPicoContainer(getDecorator()
-                        .decorate(componentFactory, attributes), parent);
+                childContainer = new DefaultPicoContainer(parent, getDecorator()
+                        .decorate(componentFactory, attributes));
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
                 childContainer = parent.makeChildContainer();

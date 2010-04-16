@@ -8,7 +8,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.testmodel.NullLifecycle;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -58,7 +57,7 @@ public class CircularTestCase {
 
     @Test
     public void enableCircularCharacteristicIsRedundantForImplementationHiding() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new ImplementationHiding().wrap(new SetterInjection()));
         pico.addComponent(IFish.class, Fish.class);
         pico.addComponent(IWater.class, Water.class);
         IWater water = pico.getComponent(IWater.class);

@@ -158,7 +158,7 @@ public class CommandLinePicoContainerTestCase {
 
     @Test public void testSetterInjectionComponentCanDependOnConfig() {
         CommandLinePicoContainer apc = new CommandLinePicoContainer(new String[] {"a=a", "b=2", "c=true"});
-        DefaultPicoContainer pico = new DefaultPicoContainer(new SetterInjection(), apc);
+        DefaultPicoContainer pico = new DefaultPicoContainer(apc, new SetterInjection());
         pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew2.class);
         NeedsAFew2 needsAFew = pico.getComponent(NeedsAFew2.class);
@@ -179,7 +179,7 @@ public class CommandLinePicoContainerTestCase {
 
     @Test public void testAnnotatedFieldInjectionComponentCanDependOnConfig() {
         CommandLinePicoContainer apc = new CommandLinePicoContainer(new String[] {"a=a", "b=2", "c=true"});
-        DefaultPicoContainer pico = new DefaultPicoContainer(new AnnotatedFieldInjection(), apc);
+        DefaultPicoContainer pico = new DefaultPicoContainer(apc, new AnnotatedFieldInjection());
         pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew3.class);
         NeedsAFew3 needsAFew = pico.getComponent(NeedsAFew3.class);

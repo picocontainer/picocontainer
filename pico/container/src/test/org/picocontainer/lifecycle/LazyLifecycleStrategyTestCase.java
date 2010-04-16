@@ -13,12 +13,12 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
             public boolean isLazy(ComponentAdapter<?> adapter) {
                 return true;
             }
-        }, new EmptyPicoContainer());        
+        });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
@@ -35,12 +35,12 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazyWithoutGet() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
             public boolean isLazy(ComponentAdapter<?> adapter) {
                 return true;
             }
-        }, new EmptyPicoContainer());
+        });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
@@ -54,12 +54,12 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeConditionallyLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
             public boolean isLazy(ComponentAdapter<?> adapter) {
                 return adapter.getComponentImplementation() == MyStartableComp.class;
             }
-        }, new EmptyPicoContainer());
+        });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.as(CACHE).addComponent(MyDifferentStartableComp.class);

@@ -55,7 +55,7 @@ public class JavaEE5LifecycleStrategyTestCase {
     @Before
     public void setUp(){
         strategy = new JavaEE5LifecycleStrategy(new NullComponentMonitor());
-        pico = new DefaultPicoContainer(new Caching(), strategy, new EmptyPicoContainer());
+        pico = new DefaultPicoContainer(new EmptyPicoContainer(), strategy, new Caching());
         pico.addComponent(StringBuilder.class);
         pico.addComponent(ProPostAnnotationJava5Startable.class);
     }

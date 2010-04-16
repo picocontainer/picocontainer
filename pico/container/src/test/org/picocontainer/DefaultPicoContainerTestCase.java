@@ -9,20 +9,25 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.Characteristics.CDI;
-import static org.picocontainer.Characteristics.SDI;
+import org.junit.Test;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.lang.StringBuilder;
-import java.lang.reflect.Member;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,21 +38,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Test;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.tck.AbstractPicoContainerTest;
-import org.picocontainer.testmodel.DecoratedTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.CDI;
+import static org.picocontainer.Characteristics.SDI;
 
 /**
  * @author Aslak Helles&oslashp;y
@@ -68,7 +66,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testInstantiationWithNullComponentFactory() {
 		try {
-			new DefaultPicoContainer((ComponentFactory) null, null);
+			new DefaultPicoContainer((PicoContainer) null, (ComponentFactory) null);
 			fail("NPE expected");
 		} catch (NullPointerException e) {
 			// expected
@@ -230,7 +228,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		StringWriter writer = new StringWriter();
 		ComponentMonitor monitor = new WriterComponentMonitor(writer);
 		DefaultPicoContainer parent = new DefaultPicoContainer();
-		DefaultPicoContainer child = new DefaultPicoContainer(monitor, parent);
+		DefaultPicoContainer child = new DefaultPicoContainer(parent, monitor);
 		parent.addComponent("st", SimpleTouchable.class);
 		child.addComponent("dot", DependsOnTouchable.class);
 		DependsOnTouchable dot = (DependsOnTouchable) child.getComponent("dot");
@@ -477,7 +475,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
-				new FailingLifecycleStrategy(), null);
+                null, new FailingLifecycleStrategy());
 		dpc.as(Characteristics.CACHE).addComponent(Startable.class,
 				MyStartable.class);
 		try {
@@ -490,7 +488,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testCanUseCustomLifecycleStrategyForInstanceRegistrations() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
-				new FailingLifecycleStrategy(), null);
+                null, new FailingLifecycleStrategy());
 		Startable myStartable = new MyStartable();
 		dpc.addComponent(Startable.class, myStartable);
 		try {
@@ -861,5 +859,22 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             return behavior;
         }
     }
+
+    @Test public void testVarargsComponentFactories() {
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
+        pico.addComponent(List.class, ArrayList.class);
+        assertEquals("Cached:LifecycleAdapter:ConstructorInjector-interface java.util.List", pico.getComponentAdapter(List.class).toString());
+    }
+
+    @Test public void testMessedUpVarargsComponentFactories() {
+        try {
+            new DefaultPicoContainer(new ConstructorInjection(), new Caching());
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+            assertEquals("Check the order of the BehaviorFactories in the varargs list of ComponentFactories. " +
+                    "Index 0 (org.picocontainer.injectors.ConstructorInjection) should be a BehaviorFactory but is not.", e.getMessage());
+        }
+    }
+
 
 }

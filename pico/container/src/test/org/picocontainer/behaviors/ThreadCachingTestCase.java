@@ -16,7 +16,6 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class ThreadCachingTestCase {
@@ -38,7 +37,7 @@ public class ThreadCachingTestCase {
     @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
-        DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent);
+        DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), new ThreadCaching());
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -58,7 +57,7 @@ public class ThreadCachingTestCase {
         final Foo[] foos = new Foo[4];
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), new ThreadCaching());
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -96,8 +95,8 @@ public class ThreadCachingTestCase {
         final Bar[] bars = new Bar[4];
 
         DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), appScope);
-        final DefaultPicoContainer requestScope = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), sessionScope);
+        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(appScope, new NullLifecycleStrategy(), new ThreadCaching());
+        final DefaultPicoContainer requestScope = new DefaultPicoContainer(sessionScope, new NullLifecycleStrategy(), new ThreadCaching());
 
         appScope.addComponent(StringBuilder.class);
         sessionScope.addComponent(Foo.class);

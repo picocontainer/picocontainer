@@ -1,14 +1,6 @@
 package org.picocontainer.script;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implementationHiding;
-import static org.picocontainer.injectors.Injectors.SDI;
-
-import java.io.IOException;
-import java.util.HashMap;
-
+import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -16,11 +8,11 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Synchronizing;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
@@ -32,7 +24,14 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.injectors.Injectors.SDI;
 
 public class ScriptedBuilderTestCase {
 
@@ -169,7 +168,7 @@ public class ScriptedBuilderTestCase {
 
     @Test public void testWithCustomScriptedContainer() throws IOException {
         ClassLoadingPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).build();
-        ClassLoadingPicoContainer expected = new TestScriptedContainer(null,new DefaultPicoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        ClassLoadingPicoContainer expected = new TestScriptedContainer(null,new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new AdaptingInjection()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
@@ -183,14 +182,14 @@ public class ScriptedBuilderTestCase {
 
     @Test public void testWithCustomScriptedAndPicoContainer() throws IOException {
         ClassLoadingPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).picoImplementedBy(TestPicoContainer.class).build();
-        ClassLoadingPicoContainer expected = new TestScriptedContainer(null, new TestPicoContainer(new AdaptingInjection(), new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        ClassLoadingPicoContainer expected = new TestScriptedContainer(null, new TestPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new NullComponentMonitor(), new AdaptingInjection()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @SuppressWarnings("serial")
 	public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(componentFactory, lifecycleStrategy, parent, monitor);
+        public TestPicoContainer(PicoContainer parent, LifecycleStrategy lifecycleStrategy, ComponentMonitor monitor, ComponentFactory componentFactory) {
+            super(parent, lifecycleStrategy, monitor, componentFactory);
         }
     }
 

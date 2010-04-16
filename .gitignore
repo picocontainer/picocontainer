@@ -1,4 +1,6 @@
-picocontainer-root.iws
+*.iws
+*.iml
+*.ipr
 .classpath
 .project
 .settings

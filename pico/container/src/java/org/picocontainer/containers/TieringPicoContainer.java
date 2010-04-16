@@ -33,12 +33,12 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      */
     public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
                                 final PicoContainer parent) {
-        super(componentFactory, lifecycleStrategy, parent);
+        super(parent, lifecycleStrategy, componentFactory);
     }
 
     public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
                                 final PicoContainer parent, final ComponentMonitor componentMonitor) {
-        super(componentFactory, lifecycleStrategy, parent, componentMonitor);
+        super(parent, lifecycleStrategy, componentMonitor, componentFactory);
     }
 
     /**
@@ -49,7 +49,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * @param parent  the parent container (used for component dependency lookups).
      */
     public TieringPicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {
-        super(monitor, parent);
+        super(parent, monitor);
     }
 
     /**
@@ -62,7 +62,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      */
     public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy,
                                 final PicoContainer parent) {
-        super(monitor, lifecycleStrategy, parent);
+        super(parent, lifecycleStrategy, monitor);
     }
 
     /**
@@ -73,7 +73,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * @param parent            the parent container (used for component dependency lookups).
      */
     public TieringPicoContainer(final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-        super(lifecycleStrategy, parent);
+        super(parent, lifecycleStrategy);
     }
 
 

@@ -280,8 +280,8 @@ public class ProviderTestCase {
         LifecycleStrategy lifecycleStrategy = new
                 ReflectionLifecycleStrategy(componentMonitor);
 
-        MutablePicoContainer pico = new DefaultPicoContainer(new
-                ThreadCaching(), lifecycleStrategy, null);
+        MutablePicoContainer pico = new DefaultPicoContainer(null, lifecycleStrategy, new
+                ThreadCaching());
 
         StringBuilder sb = new StringBuilder();
         pico.addComponent(Configuration.class);

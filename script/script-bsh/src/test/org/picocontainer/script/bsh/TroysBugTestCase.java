@@ -1,23 +1,23 @@
 package org.picocontainer.script.bsh;
 
+import org.junit.Test;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.junit.Test;import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import java.io.Reader;
 import java.io.StringReader;
+
+import static org.junit.Assert.assertTrue;
 
 public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -37,7 +37,7 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
         ComponentMonitor componentMonitor = new ConsoleComponentMonitor();
         LifecycleStrategy lifecycleStrategy = new CustomLifecycleStrategy(componentMonitor); // starts/stops CustomStartable
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(componentFactory, lifecycleStrategy, null, componentMonitor);
+        DefaultPicoContainer parent = new DefaultPicoContainer(null, lifecycleStrategy, componentMonitor, componentFactory);
         parent.setName("parent");
         PicoContainer container = builder.buildContainer(parent, "defaultScope", true);
 

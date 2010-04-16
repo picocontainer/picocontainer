@@ -1,18 +1,5 @@
 package org.picocontainer.script;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -24,6 +11,19 @@ import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
 import org.picocontainer.script.testmodel.Wilma;
 import org.picocontainer.script.testmodel.WilmaImpl;
 import org.picocontainer.script.xml.XMLContainerBuilder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Test case to prove that the DefaultContainerRecorder can be replaced by use of Storing behaviours.
@@ -46,7 +46,7 @@ public class StoringContainerTestCase {
                 ComponentParameter.DEFAULT);
 
         Storing storing1 = new Storing();
-        DefaultPicoContainer child1 = new DefaultPicoContainer(storing1, parent);
+        DefaultPicoContainer child1 = new DefaultPicoContainer(parent, storing1);
         assertEquals("store should be empty", 0, storing1.getCacheSize());
         Object a1 = child1.getComponent("fruit");
         assertEquals("store should still be empty: its not used", 0, storing1.getCacheSize());
@@ -56,7 +56,7 @@ public class StoringContainerTestCase {
 
         // test that we can replay once more
         Storing storing2 = new Storing();
-        DefaultPicoContainer child2 = new DefaultPicoContainer(storing2, parent);
+        DefaultPicoContainer child2 = new DefaultPicoContainer(parent, storing2);
         assertEquals("store should be empty", 0, storing2.getCacheSize());
         Object b1 = child2.getComponent("fruit");
         assertEquals("store should still be empty: its not used", 0, storing2.getCacheSize());
@@ -71,7 +71,7 @@ public class StoringContainerTestCase {
     @Test public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
         DefaultPicoContainer recorded = new DefaultPicoContainer(new Caching());
         recorded.addComponent("fruit", "apple");
-        DefaultPicoContainer replayed = new DefaultPicoContainer(new Storing(), recorded);
+        DefaultPicoContainer replayed = new DefaultPicoContainer(recorded, new Storing());
         DefaultPicoContainer serializedReplayed = (DefaultPicoContainer) serializeAndDeserialize(replayed);
         assertEquals("apple", serializedReplayed.getComponent("fruit"));
     }
@@ -92,7 +92,7 @@ public class StoringContainerTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
 
         // parent has nothing populated in it
-        DefaultPicoContainer child = new DefaultPicoContainer(new Storing(), parent);
+        DefaultPicoContainer child = new DefaultPicoContainer(parent, new Storing());
 
         new XMLContainerBuilder(new StringReader(""
                 + "<container>"
@@ -103,7 +103,7 @@ public class StoringContainerTestCase {
         assertNull(child.getComponent("fred"));
         assertNotNull(child.getComponent("wilma"));
 
-        DefaultPicoContainer grandchild = new DefaultPicoContainer(new Storing(), child);
+        DefaultPicoContainer grandchild = new DefaultPicoContainer(child, new Storing());
 
         new XMLContainerBuilder(new StringReader(
                   "<container>"

@@ -34,7 +34,7 @@ public class ContainerElementHelper {
         if (componentFactory == null) {
             componentFactory = new Caching();
         }
-        return new DefaultClassLoadingPicoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
+        return new DefaultClassLoadingPicoContainer(classLoader, new DefaultPicoContainer(parent, componentFactory));
 
     }
 

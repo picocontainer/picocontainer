@@ -328,7 +328,7 @@ public class DefaultPicoContainerLifecycleTestCase {
                 return false;
             }
         };
-        MutablePicoContainer pico = new DefaultPicoContainer( new AdaptingInjection(), strategy, null );
+        MutablePicoContainer pico = new DefaultPicoContainer(null, strategy, new AdaptingInjection());
 
         StringBuffer sb = new StringBuffer();
 
@@ -365,7 +365,7 @@ public class DefaultPicoContainerLifecycleTestCase {
                 return false;
             }
         };
-        MutablePicoContainer parent = new DefaultPicoContainer(strategy, null);
+        MutablePicoContainer parent = new DefaultPicoContainer(null, strategy);
         MutablePicoContainer pico = parent.makeChildContainer();
 
         StringBuffer sb = new StringBuffer();

@@ -61,7 +61,7 @@ public class JMXVisitorTestCase  {
 
     @Before
     public void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());        
+        picoContainer = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy());
     }
 
     private JMXVisitor createVisitor(final int providerCount) {
@@ -136,7 +136,7 @@ public class JMXVisitorTestCase  {
      */
     @Test public void testTraversal() {
         final JMXVisitor jmxVisitor = createVisitor(1);
-        final MutablePicoContainer child = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());
+        final MutablePicoContainer child = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy());
         picoContainer.addChildContainer(child);
 
         final ComponentAdapter componentAdapter = child.addComponent(Person.class).getComponentAdapter(Person.class,

@@ -80,7 +80,7 @@ public class CompositeInjectionTestCase {
 
     @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new SetterInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+                new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new SetterInjection()));
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
         dpc.addComponent(Foo.class);
@@ -92,7 +92,7 @@ public class CompositeInjectionTestCase {
 
     @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new SetterInjection("inject")), new NullLifecycleStrategy(), new EmptyPicoContainer());
+                new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new SetterInjection("inject")));
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
         dpc.addComponent(Foo2.class);
@@ -104,7 +104,7 @@ public class CompositeInjectionTestCase {
 
     @Test public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new AnnotatedMethodInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+                new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new AnnotatedMethodInjection()));
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
         dpc.addComponent(Foo3.class);
@@ -117,7 +117,7 @@ public class CompositeInjectionTestCase {
 
     @Test public void testComponentWithCtorAndNamedFieldWorkToegether() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new NamedFieldInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+                new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new NamedFieldInjection()));
         dpc.addComponent(Bar.class);
         dpc.addConfig("one", "1");
         dpc.addConfig("two", "2");

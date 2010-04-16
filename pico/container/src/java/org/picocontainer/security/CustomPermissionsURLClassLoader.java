@@ -19,7 +19,7 @@ import java.security.PrivilegedAction;
 import java.util.Map;
 
 /**
- * CustomPermissionsURLClassLoader extends URLClassLoader, adding the abilty to programatically add permissions easily.
+ * CustomPermissionsURLClassLoader extends URLClassLoader, adding the ability to programatically add permissions easily.
  * To be effective for permission management, it should be run in conjunction with a policy that restricts
  * some of the classloaders, but not all.
  * It's not ordinarily used by PicoContainer, but is here because PicoContainer is common

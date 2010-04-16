@@ -17,7 +17,7 @@ public class TestContainer extends DefaultClassLoadingPicoContainer {
     }
 
     public TestContainer(PicoContainer parent) {
-        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
+        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(parent, new Caching()));
     }
 
     public TestContainer() {

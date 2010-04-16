@@ -14,17 +14,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import static org.picocontainer.Characteristics.GUARD;
-import org.picocontainer.adapters.InstanceAdapter;
+
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
 
@@ -38,7 +36,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testAddComponentUsesGuardingBehavior() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(createComponentFactory(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), createComponentFactory());
         pico.addComponent("guard", MyGuard.class);
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
@@ -59,7 +57,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testAddComponentDoesNotUseGuardingBehaviorIfNoProperty() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(createComponentFactory(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), createComponentFactory());
         pico.addComponent("guard", MyGuard.class);
         pico.addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
@@ -68,7 +66,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testAddComponentUsesGuardingBehaviorWithCustomGuardKey() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(createComponentFactory(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), createComponentFactory());
         pico.addComponent("my_guard", MyGuard.class);
         pico.as(GUARD("my_guard")).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
@@ -83,7 +81,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testAddComponentUsesGuardingBehaviorByAdapitveDefault() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy());
         pico.addComponent("guard", MyGuard.class);
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");

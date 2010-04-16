@@ -7,24 +7,22 @@
  ******************************************************************************/
 package org.picocontainer.web.struts2;
 
-import org.picocontainer.web.PicoServletContainerListener;
-import org.picocontainer.web.ThreadLocalLifecycleState;
-import org.picocontainer.web.ScopedContainers;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.Result;
+import ognl.OgnlRuntime;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Storing;
 import org.picocontainer.behaviors.Guarding;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.Result;
+import org.picocontainer.behaviors.Storing;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.web.PicoServletContainerListener;
+import org.picocontainer.web.ScopedContainers;
+import org.picocontainer.web.ThreadLocalLifecycleState;
 
 import javax.servlet.ServletContextEvent;
-
-import ognl.OgnlRuntime;
 
 public class Struts2PicoServletContainerListener extends PicoServletContainerListener {
 
@@ -37,11 +35,11 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
         //NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
-        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeLifecycleStrategy(), makeParentContainer(), makeAppComponentMonitor());
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(makeParentContainer(), makeLifecycleStrategy(), makeAppComponentMonitor(), new Guarding().wrap(new Caching()));
         Storing sessStoring = new Storing();
-        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), makeLifecycleStrategy(), appCtnr, makeSessionComponentMonitor());
+        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(appCtnr, makeLifecycleStrategy(), makeSessionComponentMonitor(), new Guarding().wrap(sessStoring));
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), makeLifecycleStrategy(), sessCtnr, makeRequestComponentMonitor());
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(sessCtnr, makeLifecycleStrategy(), makeRequestComponentMonitor(), new Guarding().wrap(addRequestBehaviors(reqStoring)));
         ThreadLocalLifecycleState sessionState = new ThreadLocalLifecycleState();
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
         sessCtnr.setLifecycleState(sessionState);

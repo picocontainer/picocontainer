@@ -37,7 +37,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
 
     @Test public void testAddComponentDoesNotUseCachingBehaviorByDefault() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+            new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
@@ -45,7 +45,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
 
     @Test public void testAddComponentUsesOptinBehaviorWithRedundantCacheProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+            new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
@@ -54,7 +54,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
 
     @Test public void testAddComponentNoesNotUseOptinBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
+            new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());

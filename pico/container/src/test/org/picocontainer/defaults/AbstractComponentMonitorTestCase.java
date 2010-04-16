@@ -103,7 +103,7 @@ public class AbstractComponentMonitorTestCase {
         final String ourIntendedInjectee1 = "hullo";
         final DefaultPicoContainer parent = new DefaultPicoContainer();
         final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
-        final DefaultPicoContainer child = new DefaultPicoContainer(new AbstractComponentMonitor(monitor), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new AbstractComponentMonitor(monitor));
         final Constructor needsACoupleOfThings = NeedsACoupleOfThings.class.getConstructors()[0];
         final Matcher<Long> durationIsGreaterThanOrEqualToZero = new BaseMatcher<Long>() {
 			public boolean matches(Object item) {

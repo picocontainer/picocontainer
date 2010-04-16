@@ -21,14 +21,14 @@ import org.picocontainer.monitors.NullComponentMonitor;
 public class TransientPicoContainer extends DefaultPicoContainer {
 
     public TransientPicoContainer() {
-        super(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), null, new NullComponentMonitor());
+        super(null, new NullLifecycleStrategy(), new NullComponentMonitor(), new Caching().wrap(new ConstructorInjection()));
     }
 
     public TransientPicoContainer(PicoContainer parent) {
-        super(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
+        super(parent, new NullLifecycleStrategy(), new NullComponentMonitor(), new Caching().wrap(new ConstructorInjection()));
     }
     
     public TransientPicoContainer(ComponentFactory componentFactory, PicoContainer parent) {
-        super(componentFactory, new NullLifecycleStrategy(), parent, new NullComponentMonitor());
+        super(parent, new NullLifecycleStrategy(), new NullComponentMonitor(), componentFactory);
     }
 }

@@ -95,7 +95,6 @@ public class TypedBindingAnnotationTestCase  {
     }
     public static class AppleImpl1 implements Apple {
         public AppleImpl1() {
-            System.out.println("");
         }
 
         public int getX() {

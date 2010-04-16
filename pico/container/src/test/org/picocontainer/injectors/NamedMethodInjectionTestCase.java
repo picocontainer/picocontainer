@@ -33,7 +33,7 @@ public class NamedMethodInjectionTestCase {
 
     @Test
     public void containerShouldMakeUsableNamedMethodInjector() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new NamedMethodInjection(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new NamedMethodInjection());
         picoContainer.addComponent(Bean.class);
         picoContainer.addConfig("something", "hello there");
         assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
@@ -42,7 +42,7 @@ public class NamedMethodInjectionTestCase {
 
     @Test
     public void containerShouldMakeNamedMethodInjectorThatIsOptionalInUse() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new NamedMethodInjection(true), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new NamedMethodInjection(true));
         picoContainer.addComponent(Bean.class);
         assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
         assertNull(picoContainer.getComponent(Bean.class).something);

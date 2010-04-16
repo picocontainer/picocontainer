@@ -39,7 +39,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
 
 	
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
+        return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(parent, new Caching()));
     }
 
     protected Properties[] getProperties() {

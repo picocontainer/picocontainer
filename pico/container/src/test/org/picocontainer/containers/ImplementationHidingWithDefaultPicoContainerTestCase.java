@@ -48,7 +48,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())), parent);
+        return new DefaultPicoContainer(parent, new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())));
     }
 
     @Test

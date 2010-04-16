@@ -11,10 +11,10 @@ public class CompositeLifecycleStrategyTestCase {
     
     @Test
     public void testMixOfThirdPartyAndBuiltInStartableAndDisposable() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CompositeLifecycleStrategy(
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new CompositeLifecycleStrategy(
                     new MyStartableLifecycleStrategy(),
-                    new StartableLifecycleStrategy(new NullComponentMonitor())),
-                new EmptyPicoContainer());
+                    new StartableLifecycleStrategy(new NullComponentMonitor()))
+        );
         StringBuilder sb = new StringBuilder();
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);

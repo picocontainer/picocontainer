@@ -77,17 +77,17 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
 			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent,
 			final ComponentMonitor componentMonitor) {
-		super(componentFactory, lifecycleStrategy, parent, componentMonitor);
+		super(parent, lifecycleStrategy, componentMonitor, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
 			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-		super(componentFactory, lifecycleStrategy, parent);
+		super(parent, lifecycleStrategy, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
 			final PicoContainer parent) {
-		super(componentFactory, parent);
+		super(parent, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory) {
@@ -96,11 +96,11 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	public ReusablePicoContainer(final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-		super(monitor, lifecycleStrategy, parent);
+		super(parent, lifecycleStrategy, monitor);
 	}
 
 	public ReusablePicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {
-		super(monitor, parent);
+		super(parent, monitor);
 	}
 
 	public ReusablePicoContainer(final ComponentMonitor monitor) {
@@ -109,7 +109,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	public ReusablePicoContainer(final LifecycleStrategy lifecycleStrategy,
 			final PicoContainer parent) {
-		super(lifecycleStrategy, parent);
+		super(parent, lifecycleStrategy);
 	}
 
 	public ReusablePicoContainer(final PicoContainer parent) {

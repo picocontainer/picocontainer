@@ -41,29 +41,29 @@ public class PicoGemsBuilderTestCase {
 
     @Test public void testWithImplementationHiding() {
         MutablePicoContainer actual = new PicoBuilder().withBehaviors(ASM_IMPL_HIDING()).build();
-        MutablePicoContainer expected = new DefaultPicoContainer(new AsmImplementationHiding().wrap(new AdaptingInjection()),
-                lifecycleStrategy, parent, new NullComponentMonitor());
+        MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycleStrategy, new NullComponentMonitor(), new AsmImplementationHiding().wrap(new AdaptingInjection())
+        );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
-        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                lifecycleStrategy, parent, new Log4JComponentMonitor());
+        MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycleStrategy, new Log4JComponentMonitor(), new AdaptingInjection()
+        );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitorByInstance() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(LOG4J()).build();
-        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                lifecycleStrategy, parent, new Log4JComponentMonitor());
+        MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycleStrategy, new Log4JComponentMonitor(), new AdaptingInjection()
+        );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCommonsLoggingComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
-        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                lifecycleStrategy, parent, new CommonsLoggingComponentMonitor());
+        MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycleStrategy, new CommonsLoggingComponentMonitor(), new AdaptingInjection()
+        );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 

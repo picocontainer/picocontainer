@@ -19,7 +19,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class StoringTestCase {
@@ -42,7 +41,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         Storing storeCaching = new Storing();
-        DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
+        DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), storeCaching);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -64,7 +63,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storing = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storing, new NullLifecycleStrategy(), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), storing);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -107,8 +106,8 @@ public class StoringTestCase {
         final Bar[] bars = new Bar[4];
 
         DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), appScope);
-        final DefaultPicoContainer requestScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), sessionScope);
+        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(appScope, new NullLifecycleStrategy(), new Storing());
+        final DefaultPicoContainer requestScope = new DefaultPicoContainer(sessionScope, new NullLifecycleStrategy(), new Storing());
 
         appScope.addComponent(StringBuilder.class);
         sessionScope.addComponent(Foo.class);
@@ -148,7 +147,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), storeCaching);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -194,7 +193,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(), storeCaching);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -226,7 +225,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, storeCaching);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
