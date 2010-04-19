@@ -17,46 +17,118 @@ import java.lang.annotation.Annotation;
 public class Key<T> implements Serializable {
 
 	private final Class<T> type;
-    private final Class<? extends Annotation> annotation;
 
-    public Key(Class<T> type, Class<? extends Annotation> annotation) {
+    public Key(Class<T> type) {
         this.type = type;
-        this.annotation = annotation;
     }
 
     public Class<T> getType() {
         return type;
     }
 
-    public Class<? extends Annotation> getAnnotation() {
-        return annotation;
-    }
-
     public String toString() {
-        return type.getName() + ":" + annotation.getName();
+        return "K{" + getType().getName() + "}";
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Key<?> key = (Key<?>)o;
+        Key key = (Key) o;
 
-        if (!annotation.equals(key.annotation)) return false;
         if (!type.equals(key.type)) return false;
 
         return true;
     }
 
+    @Override
     public int hashCode() {
-        int result;
-        result = type.hashCode();
-        result = 31 * result + annotation.hashCode();
-        return result;
+        return type.hashCode();
     }
 
     public static <T> Key<T> annotatedKey(Class<T> type, Class<? extends Annotation> annotation) {
-        return new Key<T>(type, annotation);
+        return new AnKey<T>(type, annotation);
+    }
+
+    public static <T> Key<T> namedKey(Class<T> type, String name) {
+        return new StrKey<T>(type, name);
+    }
+
+    public static class StrKey<T> extends Key<T> {
+        private final String name;
+
+        public StrKey(Class<T> type, String name) {
+            super(type);
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String toString() {
+            return "K{" + getType().getName() + ":" + name + "}";
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            StrKey strKey = (StrKey) o;
+
+            if (!name.equals(strKey.name)) return false;
+            if (!getType().equals(strKey.getType())) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name.hashCode();
+            result = 31 * result + getType().hashCode();
+            return result;
+        }
+    }
+
+    public static class AnKey<T> extends Key<T> {
+        private final Class<? extends Annotation> annotation;
+
+        public AnKey(Class<T> type, Class<? extends Annotation> annotation) {
+            super(type);
+            this.annotation = annotation;
+        }
+
+        public Class<? extends Annotation> getAnnotation() {
+            return annotation;
+        }
+
+        public String toString() {
+            return "K{" + getType().getName() + ":" + annotation.getName() + "}";
+        }
+
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Key<?> key = (Key<?>)o;
+
+            if (!annotation.equals(annotation)) return false;
+            if (!getType().equals(key.type)) return false;
+
+            return true;
+        }
+
+        public int hashCode() {
+            int result;
+            result = getType().hashCode();
+            result = 31 * result + annotation.hashCode();
+            return result;
+        }
+
+
     }
 
 }
