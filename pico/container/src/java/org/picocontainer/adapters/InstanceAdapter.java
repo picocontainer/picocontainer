@@ -10,7 +10,6 @@
 package org.picocontainer.adapters;
 
 import org.picocontainer.*;
-import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -21,7 +20,7 @@ import java.lang.reflect.Type;
  * Component adapter which wraps a component instance.
  * </p>
  * <p>
- * This component adapter supports both a {@link org.picocontainer.Behaving Behavior} and a
+ * This component adapter supports both a {@link org.picocontainer.Behaved Behavior} and a
  * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods
  * on the component instance.

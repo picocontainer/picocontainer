@@ -23,7 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -266,8 +266,8 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
     /** {@inheritDoc} **/
-    public Behaving newBehavior(Behaving behaving) {
-        return delegate.newBehavior(behaving);
+    public Behaved newBehavior(Behaved behaved) {
+        return delegate.newBehavior(behaved);
     }
 
 

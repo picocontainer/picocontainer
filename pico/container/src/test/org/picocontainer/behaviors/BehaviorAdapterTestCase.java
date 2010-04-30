@@ -19,7 +19,7 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -40,13 +40,13 @@ public class BehaviorAdapterTestCase {
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
-        AbstractBehaving adapter = new FooAbstractBehaving(mockComponentAdapterThatDoesSupportStrategy());
+        AbstractBehaved adapter = new FooAbstractBehaved(mockComponentAdapterThatDoesSupportStrategy());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         assertNotNull(adapter.currentMonitor());
     }
     
     @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
-        AbstractBehaving adapter = new FooAbstractBehaving(mockComponentAdapter());
+        AbstractBehaved adapter = new FooAbstractBehaved(mockComponentAdapter());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         try {
             adapter.currentMonitor();
@@ -57,7 +57,7 @@ public class BehaviorAdapterTestCase {
     }
     
     @Test public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
-        AbstractBehaving adapter = new FooAbstractBehaving(mockComponentAdapterThatCanManageLifecycle());
+        AbstractBehaved adapter = new FooAbstractBehaved(mockComponentAdapterThatCanManageLifecycle());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -69,7 +69,7 @@ public class BehaviorAdapterTestCase {
     }
 
     @Test public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
-        AbstractBehaving adapter = new FooAbstractBehaving(mockComponentAdapter());
+        AbstractBehaved adapter = new FooAbstractBehaved(mockComponentAdapter());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -114,12 +114,12 @@ public class BehaviorAdapterTestCase {
         return ca;
     }
 
-    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behaving, LifecycleStrategy {
+    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behaved, LifecycleStrategy {
     }
 
-    static class FooAbstractBehaving extends AbstractBehaving {
+    static class FooAbstractBehaved extends AbstractBehaved {
 
-        public FooAbstractBehaving(ComponentAdapter delegate) {
+        public FooAbstractBehaved(ComponentAdapter delegate) {
             super(delegate);
         }
 

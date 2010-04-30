@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public class Stored<T> extends AbstractBehaving<T> {
+public class Stored<T> extends AbstractBehaved<T> {
 
     private final ObjectReference<Instance<T>> instanceReference;
     private final ComponentLifecycle lifecycleDelegate;

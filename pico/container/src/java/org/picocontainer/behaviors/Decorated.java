@@ -11,12 +11,11 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaving;
 
 import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
-public class Decorated<T> extends AbstractBehaving<T> {
+public class Decorated<T> extends AbstractBehaved<T> {
     private final Decorator decorator;
 
 

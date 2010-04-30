@@ -10,7 +10,7 @@
 
 package org.picocontainer.behaviors;
 
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -40,12 +40,12 @@ import java.lang.reflect.Type;
  * @author Aslak Hellesoy
  * @author Mauro Talevi
  */
-public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonitorStrategy,
+public abstract class AbstractBehaved<T> implements Behaved<T>, ComponentMonitorStrategy,
                                                   LifecycleStrategy, Serializable {
 
     protected final ComponentAdapter<T> delegate;
 
-    public AbstractBehaving(ComponentAdapter<T> delegate) {
+    public AbstractBehaved(ComponentAdapter<T> delegate) {
         this.delegate = delegate;
     }
     
@@ -112,8 +112,8 @@ public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonit
      * {@inheritDoc}
      */
     public void start(PicoContainer container) {
-        if (delegate instanceof Behaving) {
-            ((Behaving<?>)delegate).start(container);
+        if (delegate instanceof Behaved) {
+            ((Behaved<?>)delegate).start(container);
         }
     }
 
@@ -122,8 +122,8 @@ public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonit
      * {@inheritDoc}
      */
     public void stop(PicoContainer container) {
-        if (delegate instanceof Behaving) {
-            ((Behaving<?>)delegate).stop(container);
+        if (delegate instanceof Behaved) {
+            ((Behaved<?>)delegate).stop(container);
         }
     }
     
@@ -132,8 +132,8 @@ public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonit
      * {@inheritDoc}
      */
     public void dispose(PicoContainer container) {
-        if (delegate instanceof Behaving) {
-            ((Behaving<?>)delegate).dispose(container);
+        if (delegate instanceof Behaved) {
+            ((Behaved<?>)delegate).dispose(container);
         }
     }
 
@@ -142,15 +142,15 @@ public abstract class AbstractBehaving<T> implements Behaving<T>, ComponentMonit
      * {@inheritDoc}
      */
     public boolean componentHasLifecycle() {
-        if (delegate instanceof Behaving) {
-            return ((Behaving<?>)delegate).componentHasLifecycle();
+        if (delegate instanceof Behaved) {
+            return ((Behaved<?>)delegate).componentHasLifecycle();
         }
         return false;
     }
 
     public boolean isStarted() {
-        if (delegate instanceof Behaving) {
-            return ((Behaving<?>)delegate).isStarted();
+        if (delegate instanceof Behaved) {
+            return ((Behaved<?>)delegate).isStarted();
         }
         return false;
     }

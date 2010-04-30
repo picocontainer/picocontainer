@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class Locked<T> extends AbstractBehaving<T> {
+public class Locked<T> extends AbstractBehaved<T> {
 	
 	/**
 	 * Reentrant lock.

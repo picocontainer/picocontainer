@@ -18,6 +18,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.parameters.ComponentParameter;
 
 import org.picocontainer.Converting;
@@ -40,7 +41,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.junit.Test;
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -56,7 +57,6 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AbstractBehaving;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -613,11 +613,11 @@ public abstract class AbstractPicoContainerTest {
     }
 
     @SuppressWarnings("unused") 
-    public static final class TestBehaving extends AbstractBehaving implements Behaving {
+    public static final class TestBehaved extends AbstractBehaved implements Behaved {
 
         public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
 
-        public TestBehaving(ComponentAdapter delegate) {
+        public TestBehaved(ComponentAdapter delegate) {
             super(delegate);
         }
 

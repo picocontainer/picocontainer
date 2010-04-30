@@ -45,7 +45,7 @@ import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -113,10 +113,10 @@ public abstract class AbstractComponentAdapterTest  {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
-        final ComponentAdapter notInstantiatablecomponentAdapter = new NotInstantiatableBehaving(
+        final ComponentAdapter notInstantiatablecomponentAdapter = new NotInstantiatableBehaved(
                 componentAdapter);
         final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                NotInstantiatableBehaving.class, picoContainer, null);
+                NotInstantiatableBehaved.class, picoContainer, null);
         notInstantiatablecomponentAdapter.verify(wrappedPicoContainer);
     }
 
@@ -438,7 +438,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CollectingBehaving.class, picoContainer, wrapperDependencies);
+                    CollectingBehaved.class, picoContainer, wrapperDependencies);
             final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             assertTrue(dependencies.size() > 0);
@@ -468,7 +468,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CycleDetectorBehaving.class, picoContainer, wrapperDependencies);
+                    CycleDetectorBehaved.class, picoContainer, wrapperDependencies);
             try {
                 componentAdapter.verify(wrappedPicoContainer);
                 fail("Thrown PicoVerificationException excpected");
@@ -502,7 +502,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CycleDetectorBehaving.class, picoContainer, wrapperDependencies);
+                    CycleDetectorBehaved.class, picoContainer, wrapperDependencies);
             try {
                 componentAdapter.getComponentInstance(wrappedPicoContainer, ComponentAdapter.NOTHING.class);
                 fail("Thrown CyclicDependencyException excpected");
@@ -542,8 +542,8 @@ public abstract class AbstractComponentAdapterTest  {
         }
     }
 
-    static public class NotInstantiatableBehaving extends AbstractBehaving {
-        public NotInstantiatableBehaving(final ComponentAdapter delegate) {
+    static public class NotInstantiatableBehaved extends AbstractBehaved {
+        public NotInstantiatableBehaved(final ComponentAdapter delegate) {
             super(delegate);
         }
 
@@ -557,10 +557,10 @@ public abstract class AbstractComponentAdapterTest  {
         
     }
 
-    static public class CollectingBehaving extends AbstractBehaving {
+    static public class CollectingBehaved extends AbstractBehaved {
         final List list;
 
-        public CollectingBehaving(final ComponentAdapter delegate, final List list) {
+        public CollectingBehaved(final ComponentAdapter delegate, final List list) {
             super(delegate);
             this.list = list;
         }
@@ -576,11 +576,11 @@ public abstract class AbstractComponentAdapterTest  {
         }
     }
 
-    static public class CycleDetectorBehaving extends AbstractBehaving {
+    static public class CycleDetectorBehaved extends AbstractBehaved {
         private final Set set;
         private final ObjectReference reference;
 
-        public CycleDetectorBehaving(
+        public CycleDetectorBehaved(
                 final ComponentAdapter delegate, final Set set, final ObjectReference reference) {
             super(delegate);
             this.set = set;
@@ -636,7 +636,7 @@ public abstract class AbstractComponentAdapterTest  {
     final protected PicoContainer wrapComponentInstances(
             final Class decoratingComponentAdapterClass, final PicoContainer picoContainer,
             final Object[] wrapperDependencies) {
-        assertTrue(AbstractBehaving.class.isAssignableFrom(decoratingComponentAdapterClass));
+        assertTrue(AbstractBehaved.class.isAssignableFrom(decoratingComponentAdapterClass));
         final MutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
         final int size = (wrapperDependencies != null ? wrapperDependencies.length : 0) + 1;
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();

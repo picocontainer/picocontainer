@@ -19,7 +19,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaving;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -33,7 +32,7 @@ import org.picocontainer.behaviors.AbstractBehaving;
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  */
 @SuppressWarnings("serial")
-public class HiddenImplementation<T> extends AbstractBehaving<T> {
+public class HiddenImplementation<T> extends AbstractBehaved<T> {
 
 	/**
      * Creates an ImplementationHidingComponentAdapter with a delegate 

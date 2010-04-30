@@ -18,7 +18,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.junit.Test;
-import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.testmodel.DefaultWebServerConfig;
@@ -142,7 +142,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,
                 null);
         ComponentAdapter<?> componentAdapter = pico.getComponentAdapter("foo");
-        AbstractBehaving<?> adapter = (AbstractBehaving<?>) componentAdapter;
+        AbstractBehaved<?> adapter = (AbstractBehaved<?>) componentAdapter;
         assertNotNull(adapter);
     }
     

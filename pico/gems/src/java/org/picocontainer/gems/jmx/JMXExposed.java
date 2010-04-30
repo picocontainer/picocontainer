@@ -13,7 +13,7 @@ package org.picocontainer.gems.jmx;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.behaviors.Caching;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import javax.management.InstanceNotFoundException;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public class JMXExposed<T> extends AbstractBehaving<T> {
+public class JMXExposed<T> extends AbstractBehaved<T> {
 
 	
 	private final MBeanServer mBeanServer;
@@ -82,7 +82,7 @@ public class JMXExposed<T> extends AbstractBehaving<T> {
      * </p>
      * @throws PicoCompositionException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see org.picocontainer.behaviors.AbstractBehaving#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class)
+     * @see org.picocontainer.behaviors.AbstractBehaved#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class)
      */
     @Override
 	public T getComponentInstance(final PicoContainer container, final Type into)

@@ -208,8 +208,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
 
     @Test public void testDelegateIsAccessible() {
-        AbstractBehaving componentAdapter =
-            (AbstractBehaving)createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
+        AbstractBehaved componentAdapter =
+            (AbstractBehaved)createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                               new NullLifecycleStrategy(),
                                                                               new Properties(Characteristics
                                                                                   .CDI),

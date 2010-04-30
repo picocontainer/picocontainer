@@ -9,13 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class Automated<T> extends AbstractBehaving<T> implements Behaving<T>, Serializable {
+public class Automated<T> extends AbstractBehaved<T> implements Behaved<T>, Serializable {
 
 
 	public Automated(ComponentAdapter<T> delegate) {

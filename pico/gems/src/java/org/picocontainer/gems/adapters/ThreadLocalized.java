@@ -17,9 +17,9 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.references.ThreadLocalReference;
-import org.picocontainer.behaviors.AbstractBehaving;
 import org.picocontainer.behaviors.Stored;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +44,7 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public final class ThreadLocalized<T> extends AbstractBehaving<T> {
+public final class ThreadLocalized<T> extends AbstractBehaved<T> {
 
 
 	private transient Class[] interfaces;

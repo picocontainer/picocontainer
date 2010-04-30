@@ -13,7 +13,6 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehaving;
 
 import java.lang.reflect.Type;
 
@@ -23,7 +22,7 @@ import java.lang.reflect.Type;
  * @author Manish Shah
  */
 @SuppressWarnings("serial")
-public class Synchronized<T> extends AbstractBehaving<T> {
+public class Synchronized<T> extends AbstractBehaved<T> {
 
 
 	public Synchronized(ComponentAdapter<T> delegate) {

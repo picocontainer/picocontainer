@@ -21,7 +21,7 @@ import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.AbstractBehaved;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoCompositionException;
 
@@ -69,7 +69,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
-public final class Pooled<T> extends AbstractBehaving<T> {
+public final class Pooled<T> extends AbstractBehaved<T> {
 
 
 

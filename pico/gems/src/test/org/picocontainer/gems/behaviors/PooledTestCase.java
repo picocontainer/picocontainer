@@ -19,7 +19,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.junit.Before;
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -310,7 +310,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     public void testDEF_lifecycleManagerSupport() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Class type = getComponentAdapterType();
-            if (Behaving.class.isAssignableFrom(type)) {
+            if (Behaved.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentFactory());
@@ -347,7 +347,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Class type = getComponentAdapterType();
-            if (Behaving.class.isAssignableFrom(type)) {
+            if (Behaved.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentFactory());

@@ -22,7 +22,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.AbstractBehaved;
 
 
 /**
@@ -34,7 +34,7 @@ import org.picocontainer.behaviors.AbstractBehaving;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class AsmHiddenImplementation<T> extends AbstractBehaving<T> implements Opcodes {
+public class AsmHiddenImplementation<T> extends AbstractBehaved<T> implements Opcodes {
 
 
 	public AsmHiddenImplementation(final ComponentAdapter<T> delegate) {

@@ -70,7 +70,7 @@ public class Caching extends AbstractBehavior {
      * </p>
      * <p>
      * This adapter supports components with a lifecycle, as it is a
-     * {@link org.picocontainer.Behaving lifecycle manager} which will apply the delegate's
+     * {@link org.picocontainer.Behaved lifecycle manager} which will apply the delegate's
      * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached
      * component instance. The lifecycle state is maintained so that the component
      * instance behaves in the expected way: it can't be started if already started,

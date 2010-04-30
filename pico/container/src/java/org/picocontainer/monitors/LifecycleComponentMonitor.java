@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.picocontainer.Behaving;
+import org.picocontainer.Behaved;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -110,8 +110,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     }
 
     /** {@inheritDoc} **/
-    public Behaving newBehavior(Behaving behaving) {
-        return delegate.newBehavior(behaving);
+    public Behaved newBehavior(Behaved behaved) {
+        return delegate.newBehavior(behaved);
     }
 
 

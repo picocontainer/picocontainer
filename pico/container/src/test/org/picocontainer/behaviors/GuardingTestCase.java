@@ -41,7 +41,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
         assertEquals(Guarded.class, fooAdapter.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaving) fooAdapter).getDelegate().getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehaved) fooAdapter).getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");
             fail("should have barfed");
