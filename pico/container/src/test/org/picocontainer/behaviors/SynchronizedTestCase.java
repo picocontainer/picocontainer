@@ -115,7 +115,7 @@ public class SynchronizedTestCase {
     }
 
     protected ComponentAdapter makeComponentAdapter(ComponentAdapter componentAdapter) {
-        return new Synchronized(componentAdapter);
+        return new Synchronizing.Synchronized(componentAdapter);
     }
 
     @Test public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
@@ -144,7 +144,7 @@ public class SynchronizedTestCase {
     // This is overkill - an outer sync adapter is enough
     @Test public void testSingletonCreationWithSynchronizedAdapterAndDoubleLocking() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(makeComponentAdapter(new Caching.Cached(new Synchronized(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), false)))));
+        pico.addAdapter(makeComponentAdapter(new Caching.Cached(new Synchronizing.Synchronized(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), false)))));
         runConcurrencyTest(pico);
     }
 

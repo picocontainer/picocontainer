@@ -9,13 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class InterceptingTestCase {
 
@@ -66,8 +66,8 @@ public class InterceptingTestCase {
         pico.addComponent(StringBuilder.class, sb);
         pico.addComponent(Person.class, Englishman.class);
 
-        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Controller interceptor = intercepted.getController();
+        Intercepting.Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepting.Intercepted.class);
+        final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             public String greeting() {
                 sb.append("</english-greeting>");
@@ -95,8 +95,8 @@ public class InterceptingTestCase {
         pico.addComponent(StringBuilder.class, sb);
         pico.addComponent(Person.class, Englishman.class);
 
-        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Controller interceptor = intercepted.getController();
+        Intercepting.Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepting.Intercepted.class);
+        final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             public String parting(String a) {
                 assertEquals("Goodbye Fred.", interceptor.getOriginalRetVal().toString());
@@ -124,8 +124,8 @@ public class InterceptingTestCase {
         pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
 
-        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Controller interceptor = intercepted.getController();
+        Intercepting.Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepting.Intercepted.class);
+        final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String parting(String who) {
                 interceptor.veto();
@@ -145,8 +145,8 @@ public class InterceptingTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
-        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Controller interceptor = intercepted.getController();
+        Intercepting.Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepting.Intercepted.class);
+        final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String parting(String who) {
                 sb.append("[Before parting]");

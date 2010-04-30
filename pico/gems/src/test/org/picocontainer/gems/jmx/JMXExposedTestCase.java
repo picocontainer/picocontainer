@@ -48,7 +48,7 @@ public class JMXExposedTestCase {
 
     @Test public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final DynamicMBeanPerson person = new DynamicMBeanPerson();
-        final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
+        final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
         mockery.checking(new Expectations(){{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
@@ -59,7 +59,7 @@ public class JMXExposedTestCase {
 
     @Test public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException, InstanceNotFoundException {
         final DynamicMBeanPerson person = new DynamicMBeanPerson();
-        final JMXExposed componentAdapter = new JMXExposed(new InstanceAdapter(
+        final JMXExposing.JMXExposed componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
         mockery.checking(new Expectations(){{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
@@ -78,7 +78,7 @@ public class JMXExposedTestCase {
         final DynamicMBean mBean = new DynamicMBeanPerson();
         final JMXRegistrationInfo info = new JMXRegistrationInfo(objectName, mBean);
 
-        final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
+        final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer, new DynamicMBeanProvider[]{
                 provider1, provider2});
         mockery.checking(new Expectations(){{
@@ -95,7 +95,7 @@ public class JMXExposedTestCase {
     @Test public void testThrowsPicoInitializationExceptionIfMBeanIsAlreadyRegistered() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new InstanceAlreadyExistsException("JUnit");
-        final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
+        final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
         mockery.checking(new Expectations(){{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
@@ -113,7 +113,7 @@ public class JMXExposedTestCase {
     @Test public void testThrowsPicoInitializationExceptionIfMBeanCannotBeRegistered() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new MBeanRegistrationException(new Exception(), "JUnit");
-        final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
+        final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), mBeanServer);
         mockery.checking(new Expectations(){{
@@ -132,7 +132,7 @@ public class JMXExposedTestCase {
     @Test public void testThrowsPicoInitializationExceptionIfMBeanNotCompliant() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new NotCompliantMBeanException("JUnit");
-        final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
+        final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), mBeanServer);
 
@@ -151,14 +151,14 @@ public class JMXExposedTestCase {
 
     @Test public void testConstructorThrowsNPE() {
         try {
-			new JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
+			new JMXExposing.JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
 					new NullLifecycleStrategy(), new NullComponentMonitor()),
 					null, new DynamicMBeanProvider[] {});
 			fail("NullPointerException expected");
 		} catch (final NullPointerException e) {
 		}
 		try {
-			new JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
+			new JMXExposing.JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
 					new NullLifecycleStrategy(), new NullComponentMonitor()),
 					mBeanServer, null);
 			fail("NullPointerException expected");

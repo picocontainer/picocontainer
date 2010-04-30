@@ -163,8 +163,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     @Test public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -184,8 +184,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     @Test public void testPropertySetAfterAdapterCreationShouldBeTakenIntoAccount() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -208,8 +208,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
 
     @Test public void testDelegateIsAccessible() {
-        AbstractBehaved componentAdapter =
-            (AbstractBehaved)createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
+        AbstractBehavior.AbstractChangedBehavior componentAdapter =
+            (AbstractBehavior.AbstractChangedBehavior)createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                               new NullLifecycleStrategy(),
                                                                               new Properties(Characteristics
                                                                                   .CDI),
@@ -226,8 +226,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -253,8 +253,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         properties.put("url_", "http://www.picocontainer.org/");
         properties.put("string_", "g string");
         properties.put("class_", "javax.swing.JLabel");
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -286,8 +286,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -315,7 +315,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                      (Parameter[])null);
 
 
-        PropertyApplicator pa = adapter.findAdapterOfType(PropertyApplicator.class);
+        PropertyApplying.PropertyApplicator pa = adapter.findAdapterOfType(PropertyApplying.PropertyApplicator.class);
 
         pa.setProperty("message", "hello");
 
@@ -331,8 +331,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         properties.put("lenient", Boolean.FALSE);
         properties.put("2DigitYearStart", new Date(0));
 
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -365,8 +365,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
 
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -400,8 +400,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
         // Set two digit year to a boolean (should throw error)
         properties.put("2DigitYearStart", Boolean.FALSE);
-        PropertyApplicator adapter =
-            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplying.PropertyApplicator adapter =
+            (PropertyApplying.PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),

@@ -24,8 +24,8 @@ public class LockingTestCase extends AbstractComponentFactoryTest {
 		mpc.as(LOCK).addComponent("locked","It is locked");
 		mpc.as(NO_LOCK).addComponent("not locked", "It is not locked");
 		
-		assertNotNull(mpc.getComponentAdapter("locked").findAdapterOfType(Locked.class));
-		assertNull(mpc.getComponentAdapter("not locked").findAdapterOfType(Locked.class));
+		assertNotNull(mpc.getComponentAdapter("locked").findAdapterOfType(Locking.Locked.class));
+		assertNull(mpc.getComponentAdapter("not locked").findAdapterOfType(Locking.Locked.class));
 		
 	}
 

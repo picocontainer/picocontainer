@@ -21,7 +21,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AbstractBehaved;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.gems.adapters.Elephant;
 import org.picocontainer.gems.adapters.ElephantImpl;
@@ -44,8 +44,8 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test
@@ -54,8 +54,8 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test
@@ -73,8 +73,8 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.addAdapter(new InstanceAdapter<String>("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
 
     }
 
@@ -84,8 +84,8 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test

@@ -3,9 +3,9 @@ package org.picocontainer.defaults.issues;
 import org.junit.Test;import static org.junit.Assert.assertFalse;import static org.junit.Assert.assertSame;
 
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Storing;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.MultiArgMemberInjector;
-import org.picocontainer.behaviors.Stored;
 
 public class Issue0352TestCase {
 
@@ -24,7 +24,7 @@ public class Issue0352TestCase {
 	public void testShouldFindSupertypeOfAdapterOnAbstractBehaviorDerivative() {
 		ConstructorInjector<Foo> injector = new ConstructorInjector<Foo>("key", Foo.class);
 		Caching.Cached<Foo> adapter = new Caching.Cached<Foo>(injector);
-		assertSame(adapter, adapter.findAdapterOfType(Stored.class));
+		assertSame(adapter, adapter.findAdapterOfType(Storing.Stored.class));
 		assertSame(injector, adapter.findAdapterOfType(MultiArgMemberInjector.class));
 	}
 

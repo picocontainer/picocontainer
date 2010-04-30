@@ -14,7 +14,6 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.AbstractDelegatingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -62,7 +61,7 @@ import java.util.Set;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link HiddenImplementation}.
+ * {@link org.picocontainer.behaviors.ImplementationHiding.HiddenImplementation}.
  * </p>
  * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
@@ -753,11 +752,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * container start successfully.  The child container for which start is attempted
      * is tracked so that upon stop, only those need to be stopped.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behaved lifecycle manager}.
+     * if it is an instance of {@link ChangedBehavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behaved
+     * @see ChangedBehavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -782,11 +781,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * The stopping of the child containers is only attempted for those that have been
      * started, possibly not successfully.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behaved lifecycle manager}.
+     * if it is an instance of {@link ChangedBehavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behaved
+     * @see ChangedBehavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -831,11 +830,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link Behaved lifecycle manager}.
+     * if it is an instance of {@link ChangedBehavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see Behaved
+     * @see ChangedBehavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)

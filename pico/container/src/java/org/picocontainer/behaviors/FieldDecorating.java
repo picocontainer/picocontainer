@@ -12,44 +12,82 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Decorator;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 
 /**
- * BehaviorFactory for Field Decorating. This factory will create {@link org.picocontainer.gems.behaviors.FieldDecorated} that will
+ * BehaviorFactory for Field Decorating. This factory will create {@link org.picocontainer.behaviors.FieldDecorating.FieldDecorated} that will
  * allow you to decorate fields on the component instance that has been created
  *
  * @author Paul Hammant
  */
-public abstract class FieldDecorating extends AbstractBehavior implements FieldDecorated.Decorator {
+public abstract class FieldDecorating extends AbstractBehavior implements Decorator {
     private final Class<?> fieldClass;
 
     public FieldDecorating(Class<?> fieldClass) {
         this.fieldClass = fieldClass;
     }
 
-    public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
-        return componentMonitor.newBehavior(new FieldDecorated(
-                super.createComponentAdapter(
-                        componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters),
+        return componentMonitor.newBehavior(new FieldDecorated<T>(
+                super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, 
+                        componentKey, componentImplementation, parameters),
                 fieldClass, this));
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {
         return super.addComponentAdapter(componentMonitor,
                 lifecycleStrategy,
                 componentProperties,
                 adapter);
+    }
+
+    @SuppressWarnings("serial")
+    public static class FieldDecorated<T> extends AbstractChangedBehavior<T> {
+        private final Class<?> fieldClass;
+        private final Decorator decorator;
+
+        public FieldDecorated(ComponentAdapter<T> delegate, Class<?> fieldClass, Decorator decorator) {
+            super(delegate);
+            this.fieldClass = fieldClass;
+            this.decorator = decorator;
+        }
+
+        public T getComponentInstance(final PicoContainer container, Type into)
+                throws PicoCompositionException {
+            T instance = super.getComponentInstance(container, into);
+            Field[] fields = instance.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getType() == fieldClass) {
+                    Object value = decorator.decorate(instance);
+                    field.setAccessible(true);
+                    try {
+                        field.set(instance, value);
+                    } catch (IllegalAccessException e) {
+                        throw new PicoCompositionException(e);
+                    }
+                }
+            }
+            return instance;
+        }
+
+
+        public String getDescriptor() {
+            return "FieldDecorated";
+        }
     }
 }

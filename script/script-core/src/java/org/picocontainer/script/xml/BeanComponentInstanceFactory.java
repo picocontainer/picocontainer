@@ -11,10 +11,10 @@ package org.picocontainer.script.xml;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.ComponentFactory;
 
 import java.util.Properties;
@@ -41,13 +41,13 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         Object instance;
 
         if (element.getChildNodes().getLength() == 1) {
-            instance = PropertyApplicator.convert(className, element.getFirstChild().getNodeValue(), classLoader);
+            instance = PropertyApplying.PropertyApplicator.convert(className, element.getFirstChild().getNodeValue(), classLoader);
         } else {
 
             //TODO componentMonitor.newBehavior( .. ) stuff
 
-            PropertyApplicator propertyAdapter =
-                    new PropertyApplicator(createComponentAdapter(className, classLoader));
+            PropertyApplying.PropertyApplicator propertyAdapter =
+                    new PropertyApplying.PropertyApplicator(createComponentAdapter(className, classLoader));
             java.util.Properties properties = createProperties(element.getChildNodes());
             propertyAdapter.setProperties(properties);
             instance = propertyAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);

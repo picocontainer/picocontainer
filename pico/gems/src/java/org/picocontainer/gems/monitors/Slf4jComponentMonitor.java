@@ -9,11 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.ComponentMonitorHelper;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,16 +28,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.picocontainer.Behaved;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Injector;
-import org.picocontainer.monitors.ComponentMonitorHelper;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 /**
  * A {@link org.picocontainer.ComponentMonitor} which writes to a Slf4j
@@ -266,8 +266,8 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
     /** {@inheritDoc} **/
-    public Behaved newBehavior(Behaved behaved) {
-        return delegate.newBehavior(behaved);
+    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+        return delegate.newBehavior(changedBehavior);
     }
 
 

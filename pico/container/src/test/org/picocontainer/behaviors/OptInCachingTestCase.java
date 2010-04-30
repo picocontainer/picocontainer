@@ -49,7 +49,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Caching.Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddComponentNoesNotUseOptinBehaviorWhenNoCachePropertyIsSpecified() {
@@ -74,7 +74,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Caching.Cached.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddAdapterNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {

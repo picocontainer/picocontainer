@@ -10,13 +10,15 @@
 package org.picocontainer.behaviors;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.ConstructorInjection;
 
-import java.lang.reflect.Field;import static junit.framework.Assert.assertEquals;
+import java.lang.reflect.Field;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DecoratingTestCase {
 
@@ -78,10 +80,9 @@ public class DecoratingTestCase {
     }
 
     private static class SwedeDecorating extends Decorating {
-        public void decorate(final Object instance) {
+        public Object decorate(final Object instance) {
             Field[] fields = instance.getClass().getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                Field field = fields[i];
+            for (Field field : fields) {
                 if (field.getType() == Swede.class) {
                     Swede value = new Swede() {
                         public String toString() {
@@ -97,6 +98,7 @@ public class DecoratingTestCase {
                 }
 
             }
+            return null;
         }
     }
 

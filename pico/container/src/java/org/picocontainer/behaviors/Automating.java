@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -23,14 +24,14 @@ import java.util.Properties;
 public class Automating extends AbstractBehavior implements Serializable {
 
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,
-                                                   Class componentImplementation,
+                                                   Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
-        return componentMonitor.newBehavior(new Automated(super.createComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Automated<T>(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
                                             componentProperties,
                                             componentKey,
@@ -38,14 +39,31 @@ public class Automating extends AbstractBehavior implements Serializable {
                                             parameters)));
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
-        return componentMonitor.newBehavior(new Automated(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Automated<T>(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter)));
+    }
+
+    @SuppressWarnings("serial")
+    public static class Automated<T> extends AbstractChangedBehavior<T> implements ChangedBehavior<T>, Serializable {
+
+
+        public Automated(ComponentAdapter<T> delegate) {
+            super(delegate);
+        }
+
+        public boolean hasLifecycle(Class<?> type) {
+            return true;
+        }
+
+        public String getDescriptor() {
+            return "Automated";
+        }
     }
 }

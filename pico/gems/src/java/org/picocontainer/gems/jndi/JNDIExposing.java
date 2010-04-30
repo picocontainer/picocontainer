@@ -11,6 +11,7 @@ package org.picocontainer.gems.jndi;
 
 import java.util.Properties;
 
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.picocontainer.ComponentAdapter;
@@ -19,6 +20,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.Storing;
 
 /**
  * produce JNDI exposing behaviour
@@ -65,4 +67,55 @@ public class JNDIExposing extends AbstractBehavior {
 		}
 	}
 
+    /**
+     * exposes component to JNDI basically does same thing as cached, but uses JNDI
+     * reference instead. Maybe Cached shall be refactored? as there is little new
+     * functionality.
+     *
+     * @author Konstantin Pribluda
+     *
+     */
+    @SuppressWarnings("serial")
+    public static class JNDIExposed<T> extends Storing.Stored<T> {
+
+
+        /**
+         * construct reference itself using vanilla initial context.
+         * JNDI name is stringified component key
+         * @param delegate
+         *            delegate adapter
+
+         * @throws javax.naming.NamingException
+         */
+        public JNDIExposed(final ComponentAdapter<T> delegate) throws NamingException {
+            super(delegate, new JNDIObjectReference<Instance<T>>(delegate.getComponentKey()
+                    .toString(), new InitialContext()));
+        }
+
+        /**
+         * create with provided reference
+         *
+         * @param delegate
+         * @param instanceReference
+         */
+        public JNDIExposed(final ComponentAdapter<T> delegate,
+                final JNDIObjectReference<Instance<T>> instanceReference) {
+            super(delegate, instanceReference);
+        }
+
+        /**
+         * create adapter with desired name
+         * @param delegate
+         * @param name
+         * @throws javax.naming.NamingException
+         */
+        public JNDIExposed(final ComponentAdapter<T> delegate, final String name) throws NamingException {
+            super(delegate, new JNDIObjectReference<Instance<T>>(name, new InitialContext()));
+        }
+
+        @Override
+        public String toString() {
+            return "JNDI" + getDelegate().toString();
+        }
+    }
 }

@@ -40,8 +40,8 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent("guard", MyGuard.class);
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
-        assertEquals(Guarded.class, fooAdapter.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) fooAdapter).getDelegate().getClass());
+        assertEquals(Guarding.Guarded.class, fooAdapter.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) fooAdapter).getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");
             fail("should have barfed");
@@ -70,7 +70,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent("my_guard", MyGuard.class);
         pico.as(GUARD("my_guard")).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
-        assertEquals(Guarded.class, fooAdapter.getClass());
+        assertEquals(Guarding.Guarded.class, fooAdapter.getClass());
         assertEquals(ConstructorInjector.class, fooAdapter.getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");
@@ -85,7 +85,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent("guard", MyGuard.class);
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
-        assertEquals(Guarded.class, fooAdapter.getClass());
+        assertEquals(Guarding.Guarded.class, fooAdapter.getClass());
         assertEquals(ConstructorInjector.class, fooAdapter.getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");

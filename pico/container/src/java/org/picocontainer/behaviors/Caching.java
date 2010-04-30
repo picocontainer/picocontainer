@@ -46,7 +46,7 @@ public class Caching extends AbstractBehavior {
         return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, componentKey,
 				componentImplementation, parameters),
-                new SimpleReference<Stored.Instance<T>>()));
+                new SimpleReference<Storing.Stored.Instance<T>>()));
 
 	}
 
@@ -61,7 +61,7 @@ public class Caching extends AbstractBehavior {
 		}
 		removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         ComponentAdapter<T> delegate = super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
-        return componentMonitor.newBehavior(componentMonitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Stored.Instance<T>>())));
+        return componentMonitor.newBehavior(componentMonitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Storing.Stored.Instance<T>>())));
 	}
 
     /**
@@ -70,7 +70,7 @@ public class Caching extends AbstractBehavior {
      * </p>
      * <p>
      * This adapter supports components with a lifecycle, as it is a
-     * {@link org.picocontainer.Behaved lifecycle manager} which will apply the delegate's
+     * {@link org.picocontainer.ChangedBehavior lifecycle manager} which will apply the delegate's
      * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached
      * component instance. The lifecycle state is maintained so that the component
      * instance behaves in the expected way: it can't be started if already started,
@@ -81,13 +81,13 @@ public class Caching extends AbstractBehavior {
      * @author Mauro Talevi
      */
     @SuppressWarnings("serial")
-    public static class Cached<T> extends Stored<T> {
+    public static class Cached<T> extends Storing.Stored<T> {
 
-        public Cached(ComponentAdapter delegate) {
+        public Cached(ComponentAdapter<T> delegate) {
             this(delegate, new SimpleReference<Instance<T>>());
         }
 
-        public Cached(ComponentAdapter delegate, ObjectReference<Instance<T>> instanceReference) {
+        public Cached(ComponentAdapter<T> delegate, ObjectReference<Instance<T>> instanceReference) {
             super(delegate, instanceReference);
         }
 

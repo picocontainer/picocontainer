@@ -22,7 +22,7 @@ import org.picocontainer.testmodel.CoupleBean;
  */
 public class PropertyApplyingBehaviorTestCase {
     @Test public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
-        Object c = PropertyApplicator.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
+        Object c = PropertyApplying.PropertyApplicator.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);
         assertTrue(c instanceof CoupleBean);
         assertEquals("Camilla", ((CoupleBean) c).getPersonA().getName());

@@ -49,7 +49,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
-        mpc.addAdapter(new Assimilated<Touchable>(Touchable.class, componentAdapter));
+        mpc.addAdapter(new Assimilating.Assimilated<Touchable>(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = mpc.getComponent(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
@@ -65,7 +65,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), false));
-        mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
+        mpc.addAdapter(new Assimilating.Assimilated(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
@@ -79,7 +79,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
+        mpc.addAdapter(new Assimilating.Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
         final AbstractComponentAdapterTest self = mpc.getComponent(AbstractComponentAdapterTest.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
@@ -91,7 +91,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
+        mpc.addAdapter(new Assimilating.Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
         final AbstractComponentAdapterTest self = mpc.getComponent(getClass());
         assertNotNull(self);
@@ -103,7 +103,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testComponentMustImplementInterface() {
         try {
-            new Assimilated(SimpleTouchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
+            new Assimilating.Assimilated(SimpleTouchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
@@ -118,7 +118,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     @Test public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
         final Method touch = Touchable.class.getMethod("touch", (Class[])null);
         try {
-            new Assimilated(Touchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
+            new Assimilating.Assimilated(Touchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
@@ -130,7 +130,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected Class getComponentAdapterType() {
-        return Assimilated.class;
+        return Assimilating.Assimilated.class;
     }
 
     @Override
@@ -139,7 +139,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     }
 
     private ComponentAdapter createComponentAdapterWithTouchable() {
-        return new Assimilated(Touchable.class, new ConstructorInjector(
+        return new Assimilating.Assimilated(Touchable.class, new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
     }
 
@@ -160,7 +160,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
-        return new Assimilated(Touchable.class, new InstanceAdapter<CompatibleTouchable>(
+        return new Assimilating.Assimilated(Touchable.class, new InstanceAdapter<CompatibleTouchable>(
                 CompatibleTouchable.class, new CompatibleTouchable(), new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), new CglibProxyFactory());
     }

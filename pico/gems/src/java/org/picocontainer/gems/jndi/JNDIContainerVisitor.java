@@ -36,7 +36,7 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 	{
 		super.visitComponentAdapter(componentAdapter);
 
-		if(componentAdapter instanceof JNDIExposed) {
+		if(componentAdapter instanceof JNDIExposing.JNDIExposed) {
 			componentAdapter.getComponentInstance(container,null);
 		}
 

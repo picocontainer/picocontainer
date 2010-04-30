@@ -24,7 +24,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.Stored;
+import org.picocontainer.behaviors.Storing;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
@@ -56,12 +56,12 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		pico.stop();
 
 		ComponentAdapter<ArrayList> listCa = (ComponentAdapter<ArrayList>) pico.getComponentAdapter(ArrayList.class);
-		Stored<ArrayList> storedValue = listCa.findAdapterOfType(Stored.class);
+		Storing.Stored<ArrayList> storedValue = listCa.findAdapterOfType(Storing.Stored.class);
 		assertNotNull(storedValue);
 		assertNull(storedValue.getStoredObject());
 
 		ComponentAdapter<HashSet> setCA = (ComponentAdapter<HashSet>) pico.getComponentAdapter(List.class);
-		Stored<HashSet> setValue = listCa.findAdapterOfType(Stored.class);
+		Storing.Stored<HashSet> setValue = listCa.findAdapterOfType(Storing.Stored.class);
 		assertNotNull(setValue);
 		assertNull(setValue.getStoredObject());
 	

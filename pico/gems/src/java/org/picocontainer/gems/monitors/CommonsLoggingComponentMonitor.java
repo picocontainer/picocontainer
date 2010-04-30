@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.picocontainer.Behaved;
+import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -230,8 +230,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public Behaved newBehavior(Behaved behaved) {
-        return delegate.newBehavior(behaved);
+    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+        return delegate.newBehavior(changedBehavior);
     }
 
     /**

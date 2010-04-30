@@ -82,7 +82,7 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.HIDE_IMPL,cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof HiddenImplementation);
+        assertTrue(ca instanceof ImplementationHiding.HiddenImplementation);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -97,8 +97,8 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.PROPERTY_APPLYING,cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap2.class);
-        assertTrue(ca instanceof PropertyApplicator);
-        PropertyApplicator pa = (PropertyApplicator)ca;
+        assertTrue(ca instanceof PropertyApplying.PropertyApplicator);
+        PropertyApplying.PropertyApplicator pa = (PropertyApplying.PropertyApplicator)ca;
         pa.setProperty("foo", "bar");
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
@@ -139,8 +139,8 @@ public class AdaptingBehaviorTestCase {
         XStream xs = new XStream();
         String foo = xs.toXML(ca);
 
-        int ih = foo.indexOf(HiddenImplementation.class.getName());
-        int sb = foo.indexOf(Synchronized.class.getName());
+        int ih = foo.indexOf(ImplementationHiding.HiddenImplementation.class.getName());
+        int sb = foo.indexOf(Synchronizing.Synchronized.class.getName());
 
         // check right nesting order
         assertTrue(ih>0);

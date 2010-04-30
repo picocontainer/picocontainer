@@ -15,9 +15,10 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -58,4 +59,30 @@ public class Guarding extends AbstractBehavior {
         }
     }
 
+    /**
+     * behaviour for allows components to be guarded by another component
+     *
+     * @author Paul Hammant
+     * @param <T>
+     */
+    @SuppressWarnings("serial")
+    public static class Guarded<T> extends AbstractChangedBehavior<T> {
+        private final String guard;
+
+        public Guarded(ComponentAdapter<T> delegate, String guard) {
+            super(delegate);
+            this.guard = guard;
+        }
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            container.getComponentInto(guard, into);
+            return super.getComponentInstance(container, into);
+        }
+
+        public String getDescriptor() {
+            return "Guarded(with " + guard + ")";
+        }
+
+
+    }
 }

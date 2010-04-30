@@ -38,8 +38,8 @@ public class SynchronizingTestCase extends AbstractComponentFactoryTest {
 		mpc.as(SYNCHRONIZE).addComponent("a", "This is a test");
 		mpc.as(NO_SYNCHRONIZE).addComponent("b","This is a test");
 		
-		assertNotNull(mpc.getComponentAdapter("a").findAdapterOfType(Synchronized.class));
-		assertNull(mpc.getComponentAdapter("b").findAdapterOfType(Synchronized.class));
+		assertNotNull(mpc.getComponentAdapter("a").findAdapterOfType(Synchronizing.Synchronized.class));
+		assertNull(mpc.getComponentAdapter("b").findAdapterOfType(Synchronizing.Synchronized.class));
 	}
 	
 	

@@ -41,7 +41,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Locked;
+import org.picocontainer.behaviors.Locking;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.SetterInjection;
@@ -832,7 +832,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     	PicoContainer comparisonPico = buildContainer(new XMLContainerBuilder(comparison, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	//Verify not locking by default
     	//assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));
-    	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
+    	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
     	
     	//Verify parent caching propagates to child.
     	Reader script = new StringReader("" +
@@ -844,7 +844,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     	parent = new PicoBuilder().withLocking().build();
     	PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	
-    	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
+    	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
     }
     
     

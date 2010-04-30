@@ -25,7 +25,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.Stored;
+import org.picocontainer.behaviors.Storing;
 
 /**
  * Normal PicoContainers are meant to be created, started, stopped, disposed and
@@ -65,7 +65,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	 */
     private final List<ComponentAdapter<?>> adapterRegistrations = new ArrayList<ComponentAdapter<?>>();
 	
-	private final Map<ComponentAdapter<?>, Stored<?>> storedReferences = new HashMap<ComponentAdapter<?>, Stored<?>>();
+	private final Map<ComponentAdapter<?>, Storing.Stored<?>> storedReferences = new HashMap<ComponentAdapter<?>, Storing.Stored<?>>();
 
 	/**
 	 * Default constructor.
@@ -160,7 +160,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	 */
 	private void addStoredReference(final Object key) {
 		ComponentAdapter<?> ca = this.getComponentAdapter(key);
-		Stored<?> stored =  ca.findAdapterOfType(Stored.class);
+		Storing.Stored<?> stored =  ca.findAdapterOfType(Storing.Stored.class);
 	    if (stored != null) {
 	    	storedReferences.put(ca, stored);
 	    }
@@ -189,7 +189,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		adapterRegistrations.clear();
 		
 		//Flush all remaining objects.
-		for (Stored<?> eachStoredBehavior : this.storedReferences.values()) {
+		for (Storing.Stored<?> eachStoredBehavior : this.storedReferences.values()) {
 			eachStoredBehavior.flush();			
 		}
     }

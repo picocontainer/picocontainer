@@ -35,8 +35,8 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(HiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(ImplementationHiding.HiddenImplementation.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddComponentUsesImplementationHidingBehaviorWithRedundantHideImplProperty() {
@@ -44,8 +44,8 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(HiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(ImplementationHiding.HiddenImplementation.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddComponentNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
@@ -61,8 +61,8 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(HiddenImplementation.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(ImplementationHiding.HiddenImplementation.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddAdapterUsesImplementationHidingBehaviorWithRedundantHideImplProperty() {
@@ -70,8 +70,8 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(HiddenImplementation.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehaved) foo).getDelegate().getClass());
+        assertEquals(ImplementationHiding.HiddenImplementation.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddAdapterNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {

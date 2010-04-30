@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.picocontainer.Behaved;
+import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -235,8 +235,8 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public Behaved newBehavior(Behaved behaved) {
-        return delegate.newBehavior(behaved);
+    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+        return delegate.newBehavior(changedBehavior);
     }
 
     protected synchronized Logger getLogger(final Member member) {

@@ -137,13 +137,13 @@ public interface ComponentMonitor {
      * @param injector
      * @return an Injector. For most implementations, the same one as was passed in.
      */
-    Injector newInjector(Injector injector);
+    <T> Injector<T> newInjector(Injector<T> injector);
 
     /**
      * A mechanism to monitor or override the Behaviors being made for components.
      *
-     * @param behaved
+     * @param changedBehavior
      * @return an Behavior. For most implementations, the same one as was passed in.
      */
-    Behaved newBehavior(Behaved behaved);
+    <T> ChangedBehavior<T> newBehavior(ChangedBehavior<T> changedBehavior);
 }

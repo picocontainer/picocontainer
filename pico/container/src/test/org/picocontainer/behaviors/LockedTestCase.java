@@ -16,7 +16,7 @@ import org.picocontainer.ComponentAdapter;
 public final class LockedTestCase extends SynchronizedTestCase {
 
     protected ComponentAdapter makeComponentAdapter(ComponentAdapter componentAdapter) {
-        return new Locked(componentAdapter);
+        return new Locking.Locked(componentAdapter);
     }
 
     protected Behavior makeBehaviorFactory() {

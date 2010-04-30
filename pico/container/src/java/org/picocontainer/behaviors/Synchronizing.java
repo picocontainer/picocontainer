@@ -14,8 +14,10 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -26,7 +28,6 @@ import java.util.Properties;
  */
 @SuppressWarnings("serial")
 public class Synchronizing extends AbstractBehavior {
-
 	
     /** {@inheritDoc} **/
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) {
@@ -67,5 +68,27 @@ public class Synchronizing extends AbstractBehavior {
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter)));
+    }
+
+    /**
+     * Component Adapter that uses java synchronized around getComponentInstance().
+     * @author Aslak Helles&oslash;y
+     * @author Manish Shah
+     */
+    @SuppressWarnings("serial")
+    public static class Synchronized<T> extends AbstractChangedBehavior<T> {
+
+        public Synchronized(ComponentAdapter<T> delegate) {
+            super(delegate);
+        }
+
+        public synchronized T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return super.getComponentInstance(container, into);
+        }
+
+        public String getDescriptor() {
+            return "Synchronized";
+        }
+
     }
 }

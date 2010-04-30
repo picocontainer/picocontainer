@@ -16,6 +16,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.references.ThreadLocalReference;
 
 import java.util.Properties;
 
@@ -29,8 +30,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters)
-        throws PicoCompositionException
-    {
+        throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
                                                 lifecycleStrategy,
@@ -61,5 +61,24 @@ public class ThreadCaching extends AbstractBehavior {
                                                              lifecycleStrategy,
                                                              componentProperties,
                                                              adapter)));
+    }
+
+    /**
+     * <p>
+     * This behavior supports caches values per thread.
+     * </p>
+     *
+     * @author Paul Hammant
+     */
+    @SuppressWarnings("serial")
+    public static final class ThreadCached<T> extends Storing.Stored<T> {
+
+        public ThreadCached(ComponentAdapter<T> delegate) {
+            super(delegate, new ThreadLocalReference<Instance<T>>());
+        }
+
+        public String getDescriptor() {
+            return "ThreadCached" + getLifecycleDescriptor();
+        }
     }
 }

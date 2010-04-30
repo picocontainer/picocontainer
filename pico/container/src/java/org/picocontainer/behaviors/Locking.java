@@ -14,9 +14,13 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This behavior factory provides java.util.concurrent locks.  It is recommended to be used instead
@@ -72,5 +76,38 @@ public class Locking extends AbstractBehavior {
                                                           lifecycleStrategy,
                                                           componentProperties,
                                                           adapter)));
+    }
+
+    /**
+     * @author Paul Hammant
+     */
+    @SuppressWarnings("serial")
+    public static class Locked<T> extends AbstractChangedBehavior<T> {
+
+        /**
+         * Reentrant lock.
+         */
+        private Lock lock = new ReentrantLock();
+
+        public Locked(ComponentAdapter<T> delegate) {
+            super(delegate);
+        }
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            T retVal = null;
+            lock.lock();
+            try {
+              retVal = super.getComponentInstance(container, into);
+            }
+            finally {
+              lock.unlock();
+            }
+            return retVal;
+        }
+
+        public String getDescriptor() {
+            return "Locked";
+        }
+
     }
 }

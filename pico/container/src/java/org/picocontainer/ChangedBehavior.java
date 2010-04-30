@@ -5,28 +5,19 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
+ * Original code by Paul Hammant                                             *
  *****************************************************************************/
-package org.picocontainer.behaviors;
 
-import org.picocontainer.Behaved;
-import org.picocontainer.ComponentAdapter;
+package org.picocontainer;
 
-import java.io.Serializable;
+/**
+ * Behaviors modify the components created by a Injector with additional behaviors
+ *
+ * @author Paul Hammant
+ * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
+ * @see LifecycleStrategy
+ */
+public interface ChangedBehavior<T> extends ComponentAdapter<T>, ComponentLifecycle<T> {
 
-@SuppressWarnings("serial")
-public class Automated<T> extends AbstractBehaved<T> implements Behaved<T>, Serializable {
-
-
-	public Automated(ComponentAdapter<T> delegate) {
-        super(delegate);
-    }
-
-    public boolean hasLifecycle(Class<?> type) {
-        return true;
-    }
-
-    public String getDescriptor() {
-        return "Automated";
-    }
 }

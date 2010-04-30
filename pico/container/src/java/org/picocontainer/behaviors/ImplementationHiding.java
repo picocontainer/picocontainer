@@ -15,8 +15,13 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -26,32 +31,111 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
 
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return componentMonitor.newBehavior(new HiddenImplementation(componentAdapter));
+        return componentMonitor.newBehavior(new HiddenImplementation<T>(componentAdapter));
 
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return adapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return componentMonitor.newBehavior(new HiddenImplementation(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new HiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,
                                                                           adapter)));
+
+    }
+
+    /**
+     * This component adapter makes it possible to hide the implementation
+     * of a real subject (behind a proxy) provided the key is an interface.
+     * <p/>
+     * This class exists here, because a) it has no deps on external jars, b) dynamic proxy is quite easy.
+     * The user is prompted to look at picocontainer-gems for alternate and bigger implementations.
+     *
+     * @author Aslak Helles&oslash;y
+     * @author Paul Hammant
+     * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
+     */
+    @SuppressWarnings("serial")
+    public static class HiddenImplementation<T> extends AbstractChangedBehavior<T> {
+
+        /**
+         * Creates an ImplementationHidingComponentAdapter with a delegate
+         * @param delegate the component adapter to which this adapter delegates
+         */
+        public HiddenImplementation(ComponentAdapter<T> delegate) {
+            super(delegate);
+        }
+
+        public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+
+            ComponentAdapter<T> delegate = getDelegate();
+            Object componentKey = delegate.getComponentKey();
+            Class<?>[] classes;
+            if (componentKey instanceof Class && ((Class<?>) delegate.getComponentKey()).isInterface()) {
+                classes = new Class[]{(Class<?>) delegate.getComponentKey()};
+            } else if (componentKey instanceof Class[]) {
+                classes = (Class[]) componentKey;
+            } else {
+                return delegate.getComponentInstance(container, into);
+            }
+
+            verifyInterfacesOnly(classes);
+            return createProxy(classes, container, delegate.getComponentImplementation().getClassLoader());
+        }
+
+        public String getDescriptor() {
+            return "Hidden";
+        }
+
+
+        @SuppressWarnings("unchecked")
+        protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+            return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
+                public synchronized Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                    return invokeMethod(getDelegate().getComponentInstance(container, NOTHING.class), method, args, container);
+                }
+            });
+        }
+
+        protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
+            ComponentMonitor componentMonitor = currentMonitor();
+            try {
+                componentMonitor.invoking(container, this, method, componentInstance, args);
+                long startTime = System.currentTimeMillis();
+                Object rv = method.invoke(componentInstance, args);
+                componentMonitor.invoked(container, this,
+                                         method, componentInstance, System.currentTimeMillis() - startTime, args, rv);
+                return rv;
+            } catch (final InvocationTargetException ite) {
+                componentMonitor.invocationFailed(method, componentInstance, ite);
+                throw ite.getTargetException();
+            }
+        }
+
+        private void verifyInterfacesOnly(Class<?>[] classes) {
+            for (Class<?> clazz : classes) {
+                if (!clazz.isInterface()) {
+                    throw new PicoCompositionException(
+                        "Class keys must be interfaces. " + clazz + " is not an interface.");
+                }
+            }
+        }
 
     }
 }

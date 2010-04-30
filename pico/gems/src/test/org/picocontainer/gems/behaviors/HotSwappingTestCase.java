@@ -30,7 +30,6 @@ import org.picocontainer.gems.PicoGemsBuilder;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
@@ -84,7 +83,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = pico.getComponent(Map.class);
         firstMap.put("foo", "bar");
-        HotSwappable hsca = (HotSwappable) pico.getComponentAdapter(Map.class);
+        HotSwapping.HotSwappable hsca = (HotSwapping.HotSwappable) pico.getComponentAdapter(Map.class);
         hsca.getSwappable().swap(new HashMap());
         Map secondMap = pico.getComponent(Map.class);
         secondMap.put("apple", "orange");
@@ -98,7 +97,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), false);
-        HotSwappable hsca = (HotSwappable) pico.addAdapter(new HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
+        HotSwapping.HotSwappable hsca = (HotSwapping.HotSwappable) pico.addAdapter(new HotSwapping.HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
@@ -116,8 +115,8 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     	pico.as(GemsCharacteristics.NO_HOT_SWAP).addComponent("firstMap", HashMap.class);
     	pico.as(GemsCharacteristics.HOT_SWAP).addComponent("hotswapMap", HashMap.class);
     	
-    	assertNull(pico.getComponentAdapter("firstMap").findAdapterOfType(HotSwappable.class));
-    	assertNotNull(pico.getComponentAdapter("hotswapMap").findAdapterOfType(HotSwappable.class));
+    	assertNull(pico.getComponentAdapter("firstMap").findAdapterOfType(HotSwapping.HotSwappable.class));
+    	assertNotNull(pico.getComponentAdapter("hotswapMap").findAdapterOfType(HotSwapping.HotSwappable.class));
     }
 
 

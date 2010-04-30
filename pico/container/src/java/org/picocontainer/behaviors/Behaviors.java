@@ -9,9 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.Behaved;
+import org.picocontainer.ChangedBehavior;
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Decorator;
 import org.picocontainer.ObjectReference;
 
 /**
@@ -53,15 +54,15 @@ public class Behaviors {
         return new Automating();
     }
 
-    public static <T> Behaved<T> cached(ComponentAdapter<T> delegate) {
+    public static <T> ChangedBehavior<T> cached(ComponentAdapter<T> delegate) {
         return new Caching.Cached<T>(delegate);
     }
 
-    public static <T> Behaved<T> cached(ComponentAdapter<T> delegate, ObjectReference instanceReference) {
+    public static <T> ChangedBehavior<T> cached(ComponentAdapter<T> delegate, ObjectReference instanceReference) {
         return new Caching.Cached<T>(delegate, instanceReference);
     }
 
-    public static <T> Behaved<T> decorated(ComponentAdapter<T> delegate, Decorated.Decorator decorator) {
-        return new Decorated<T>(delegate, decorator);
+    public static <T> ChangedBehavior<T> decorated(ComponentAdapter<T> delegate, Decorator decorator) {
+        return new Decorating.Decorated<T>(delegate, decorator);
     }
 }

@@ -21,8 +21,8 @@ public class PoolingTestCase extends AbstractComponentFactoryTest {
     	mpc.as(GemsCharacteristics.NO_POOL).addComponent("NoPool","a")
     		.as(GemsCharacteristics.POOL).addComponent("Pooled", "b");
     	
-    	assertNull(mpc.getComponentAdapter("NoPool").findAdapterOfType(Pooled.class));
-    	assertNotNull(mpc.getComponentAdapter("Pooled").findAdapterOfType(Pooled.class));
+    	assertNull(mpc.getComponentAdapter("NoPool").findAdapterOfType(Pooling.Pooled.class));
+    	assertNotNull(mpc.getComponentAdapter("Pooled").findAdapterOfType(Pooling.Pooled.class));
     }
 
 

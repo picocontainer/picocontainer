@@ -9,11 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -26,6 +21,11 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 @SuppressWarnings("serial")
 public class AdaptingBehavior implements Behavior, Serializable {
@@ -131,28 +131,24 @@ public class AdaptingBehavior implements Behavior, Serializable {
         }
     }
 
-    protected void processImplementationHiding(Properties componentProperties,
-                                             List<Behavior> list) {
+    protected void processImplementationHiding(Properties componentProperties, List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHiding());
         }
         AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);
     }
 
-    protected void processPropertyApplying(Properties componentProperties,
-                                             List<Behavior> list) {
+    protected void processPropertyApplying(Properties componentProperties, List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {
             list.add(new PropertyApplying());
         }
     }
 
-    protected void processAutomatic(Properties componentProperties,
-                                             List<Behavior> list) {
+    protected void processAutomatic(Properties componentProperties, List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
             list.add(new Automating());
         }
     }
-
 
     public ComponentFactory wrap(ComponentFactory delegate) {
         throw new UnsupportedOperationException();
