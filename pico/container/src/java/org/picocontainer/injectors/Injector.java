@@ -86,7 +86,7 @@ public class Injector {
                                                   Parameter[] parameters,
                                                   ComponentMonitor componentMonitor,
                                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, injectionAnnotation, useNames));
+        return componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, useNames, injectionAnnotation));
     }
 
     /**
@@ -105,7 +105,7 @@ public class Injector {
                                                    Parameter[] parameters,
                                                    ComponentMonitor monitor,
                                                    Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, injectionAnnotation, useNames));
+        return monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, useNames, injectionAnnotation));
 
     }
 

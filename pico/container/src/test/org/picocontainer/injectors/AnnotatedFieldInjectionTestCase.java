@@ -9,25 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import org.junit.Test;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
 
 public class AnnotatedFieldInjectionTestCase {
 
@@ -49,13 +47,11 @@ public class AnnotatedFieldInjectionTestCase {
 
             public void marshal(Object object,
                                 HierarchicalStreamWriter hierarchicalStreamWriter,
-                                MarshallingContext marshallingContext)
-            {
+                                MarshallingContext marshallingContext) {
             }
 
             public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
-                                    UnmarshallingContext unmarshallingContext)
-            {
+                                    UnmarshallingContext unmarshallingContext) {
                 return null;
             }
         });
@@ -67,7 +63,10 @@ public class AnnotatedFieldInjectionTestCase {
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
                      "  <useNames>false</useNames>\n" +
-                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
+                     "  <injectionAnnotations>\n" +
+                     "    <java-class>org.picocontainer.annotations.Inject</java-class>\n" +
+                     "    <java-class>javax.inject.Inject</java-class>\n" +
+                     "  </injectionAnnotations>\n" +
                      "</org.picocontainer.injectors.AnnotatedFieldInjector>", foo);
 
 

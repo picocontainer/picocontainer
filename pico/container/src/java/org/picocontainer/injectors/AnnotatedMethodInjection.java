@@ -20,7 +20,6 @@ import org.picocontainer.annotations.Inject;
 import java.lang.annotation.Annotation;
 import java.util.Properties;
 
-
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated methods.
  * The factory creates {@link AnnotatedMethodInjector}.
@@ -30,17 +29,20 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class AnnotatedMethodInjection extends AbstractInjectionType {
 
-
-	private final Class<? extends Annotation> injectionAnnotation;
+	private final Class<? extends Annotation>[] injectionAnnotations;
     private final boolean useNames;
 
     public AnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        this.injectionAnnotation = injectionAnnotation;
+        this(useNames, injectionAnnotation);
+    }
+
+    public AnnotatedMethodInjection(boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
+        this.injectionAnnotations = injectionAnnotations;
         this.useNames = useNames;
     }
 
     public AnnotatedMethodInjection() {
-        this(Inject.class, false);
+        this(false, Inject.class, getInjectionAnnotation("javax.inject.Inject"));
     }
 
     /**
@@ -62,6 +64,16 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
                                                    Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, monitor, injectionAnnotation, useNames)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, monitor, useNames, injectionAnnotations)), lifecycleStrategy);
     }
+
+     static Class<? extends Annotation> getInjectionAnnotation(String className) {
+        try {
+            return (Class<? extends Annotation>) AnnotatedMethodInjection.class.getClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            // JSR330 not in classpath.  No matter carry on without it with a kludge:
+            return Inject.class;
+        }
+    }
+
 }

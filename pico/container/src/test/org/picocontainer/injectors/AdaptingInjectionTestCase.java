@@ -50,8 +50,8 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         xs = new XStream();
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
         xs.alias("CCM", ConsoleComponentMonitor.class);
-        xs.alias("Method-Injection", AnnotatedMethodInjector.class);
-        xs.alias("Field-Injection", AnnotatedFieldInjector.class);
+        xs.alias("Annotated-Method-Injection", AnnotatedMethodInjector.class);
+        xs.alias("Annotated-Field-Injection", AnnotatedFieldInjector.class);
         xs.alias("Constructor-Injection", ConstructorInjector.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
@@ -63,13 +63,11 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
             public void marshal(Object object,
                                 HierarchicalStreamWriter hierarchicalStreamWriter,
-                                MarshallingContext marshallingContext)
-            {
+                                MarshallingContext marshallingContext) {
             }
 
             public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
-                                    UnmarshallingContext unmarshallingContext)
-            {
+                                    UnmarshallingContext unmarshallingContext) {
                 return null;
             }
         });
@@ -91,7 +89,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(comp);
-        assertTrue(comp instanceof SimpleTouchable);
+        assertTrue(comp instanceof SimpleTouchable);                               
     }
 
     @Test public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
@@ -143,14 +141,19 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         String foo = xs.toXML(ca).replace("\"", "");
 
-        assertEquals("<Field-Injection>\n" +
+        assertEquals("<Annotated-Field-Injection>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
-                "  <useNames>false</useNames>\n" +
-                "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
-                     "</Field-Injection>", foo);
+                     "  <useNames>false</useNames>\n" +
+                     "  <injectionAnnotations>\n" +
+                     "    <java-class>org.picocontainer.annotations.Inject</java-class>\n" +
+                     "    <java-class>javax.inject.Inject</java-class>\n" +
+                     "  </injectionAnnotations>\n" +
+                     "</Annotated-Field-Injection>", foo);
 
+        assertEquals("AnnotatedFieldInjector[org.picocontainer.annotations.@Inject,javax.inject.@Inject]-class org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter",
+                ca.toString());
 
     }
 
@@ -168,15 +171,20 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         String foo = xs.toXML(ca).replace("\"", "");
 
-        assertEquals("<Method-Injection>\n" +
+        assertEquals("<Annotated-Method-Injection>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <methodNamePrefix></methodNamePrefix>\n" +
-                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
-                     "</Method-Injection>", foo);
+                     "  <injectionAnnotations>\n" +
+                     "    <java-class>org.picocontainer.annotations.Inject</java-class>\n" +
+                     "    <java-class>javax.inject.Inject</java-class>\n" +
+                     "  </injectionAnnotations>\n" +
+                     "</Annotated-Method-Injection>", foo);
 
+        assertEquals("AnnotatedMethodInjector[org.picocontainer.annotations.@Inject,javax.inject.@Inject]-class org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp",
+                ca.toString());
 
     }
 

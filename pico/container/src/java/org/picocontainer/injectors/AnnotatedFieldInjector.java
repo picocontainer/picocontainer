@@ -24,6 +24,8 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.picocontainer.injectors.AnnotatedMethodInjector.makeAnnotationNames;
+
 /**
  * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
  * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
@@ -31,16 +33,17 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class AnnotatedFieldInjector extends IterativeInjector {
 
-    private final Class<? extends Annotation> injectionAnnotation;
+    private final Class<? extends Annotation>[] injectionAnnotations;
+    private String injectionAnnotationNames;
 
     public AnnotatedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+                                  boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
 
         super(key, impl, parameters, componentMonitor, useNames);
-        this.injectionAnnotation = injectionAnnotation;
+        this.injectionAnnotations = injectionAnnotations;
     }
 
     @Override    
@@ -74,9 +77,15 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         return null;
     }
 
-    protected boolean isAnnotatedForInjection(Field field) {
-        return field.getAnnotation(injectionAnnotation) != null;
+    protected final boolean isAnnotatedForInjection(Field field) {
+        for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
+            if (field.getAnnotation(injectionAnnotation) != null) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     private Field[] getFields(final Class clazz) {
         return AccessController.doPrivileged(new PrivilegedAction<Field[]>() {
@@ -96,7 +105,10 @@ public class AnnotatedFieldInjector extends IterativeInjector {
 
     @Override
     public String getDescriptor() {
-        return "AnnotatedFieldInjector-";
+        if (injectionAnnotationNames == null) {
+            injectionAnnotationNames = makeAnnotationNames(injectionAnnotations);
+        }
+        return "AnnotatedFieldInjector["+injectionAnnotationNames+"]-";
     }
 
     @Override

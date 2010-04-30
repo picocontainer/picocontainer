@@ -18,32 +18,45 @@ import java.lang.reflect.Method;
 @SuppressWarnings("serial")
 public class AnnotatedMethodInjector extends MethodInjector {
 
- 	private final Class<? extends Annotation> injectionAnnotation;
+ 	private final Class<? extends Annotation>[] injectionAnnotations;
+    private String injectionAnnotationNames;
 
     public AnnotatedMethodInjector(Object key,
                                    Class<?> impl,
                                    Parameter[] parameters,
                                    ComponentMonitor monitor,
-                                   Class<? extends Annotation> injectionAnnotation,
-                                   boolean useNames) {
+                                   boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
         super(key, impl, parameters, monitor, "", useNames);
-        this.injectionAnnotation = injectionAnnotation;
+        this.injectionAnnotations = injectionAnnotations;
     }
 
-//    @Override
-//    protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
-//        throws IllegalAccessException, InvocationTargetException {
-//        return ((Method)member).invoke(componentInstance, toInject);
-//    }
-//
     @Override
     protected final boolean isInjectorMethod(Method method) {
-        return method.getAnnotation(injectionAnnotation) != null;
+        for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
+            if (method.getAnnotation(injectionAnnotation) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String getDescriptor() {
-        return "MethodInjection";
+        if (injectionAnnotationNames == null) {
+            injectionAnnotationNames = makeAnnotationNames(injectionAnnotations);
+        }
+        return "AnnotatedMethodInjector[" + injectionAnnotationNames + "]-";
     }
 
+    static String makeAnnotationNames(Class<? extends Annotation>[] injectionAnnotations) {
+        StringBuilder sb = new StringBuilder();
+        for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            String name = injectionAnnotation.getName();
+            sb.append(name.substring(0, name.lastIndexOf(".")+1)).append("@").append(name.substring(name.lastIndexOf(".")+1));
+        }
+        return sb.toString();
+    }
 }

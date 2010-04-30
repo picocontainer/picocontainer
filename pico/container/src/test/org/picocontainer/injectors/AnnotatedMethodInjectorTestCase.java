@@ -79,7 +79,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void tesMethodInjectionWithInjectionAnnontation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
-                                               new NullComponentMonitor(), Inject.class, false));
+                                               new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp burp = pico.getComponent(AnnotatedBurp.class);
         assertNotNull(burp);
@@ -89,7 +89,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethod() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp2.class, AnnotatedBurp2.class, null,
-                                               new NullComponentMonitor(), Inject.class, false));
+                                               new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp2 burp = pico.getComponent(AnnotatedBurp2.class);
         assertNotNull(burp);
@@ -116,7 +116,7 @@ public class AnnotatedMethodInjectorTestCase  {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(),
-                                               AlternativeInject.class, false));
+                false, AlternativeInject.class));
         pico.addComponent(Wind.class, new Wind());
         AnotherAnnotatedBurp burp = pico.getComponent(AnotherAnnotatedBurp.class);
         assertNotNull(burp);

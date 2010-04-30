@@ -21,6 +21,8 @@ import org.picocontainer.annotations.Inject;
 import java.util.Properties;
 import java.lang.annotation.Annotation;
 
+import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
+
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated fields.
  * The factory creates {@link AnnotatedFieldInjector}.
@@ -30,14 +32,14 @@ import java.lang.annotation.Annotation;
 @SuppressWarnings("serial")
 public class AnnotatedFieldInjection extends AbstractInjectionType {
 
-	private final Class<? extends Annotation> injectionAnnotation;
+	private final Class<? extends Annotation>[] injectionAnnotations;
 
-    public AnnotatedFieldInjection(Class<? extends Annotation> injectionAnnotation) {
-        this.injectionAnnotation = injectionAnnotation;
+    public AnnotatedFieldInjection(Class<? extends Annotation>... injectionAnnotations) {
+        this.injectionAnnotations = injectionAnnotations;
     }
 
     public AnnotatedFieldInjection() {
-        this(Inject.class);
+        this(Inject.class, getInjectionAnnotation("javax.inject.Inject"));
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
@@ -48,6 +50,6 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
                                                    Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
         return wrapLifeCycle(monitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, monitor,
-                                          injectionAnnotation, useNames)), lifecycleStrategy);
+                useNames, injectionAnnotations)), lifecycleStrategy);
     }
 }

@@ -45,7 +45,6 @@ import org.picocontainer.behaviors.AbstractBehavior;
 @SuppressWarnings("serial")
 public class AdaptingInjection extends AbstractInjectionType {
 
-
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
@@ -65,7 +64,6 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (componentAdapter != null) {
             return componentAdapter;
         }
-
 
         componentAdapter = methodAnnotatedInjectionAdapter(componentImplementation,
                                                            componentMonitor,
