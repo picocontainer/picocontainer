@@ -12,7 +12,6 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.PropertyApplicator;
-import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
@@ -25,7 +24,7 @@ import java.lang.reflect.InvocationTargetException;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link Cached} around this one.
+ * use a {@link org.picocontainer.behaviors.Caching.Cached} around this one.
  * </em>
  * </p>
  *

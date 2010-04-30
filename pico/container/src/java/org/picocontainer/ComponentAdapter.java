@@ -51,7 +51,7 @@ public interface ComponentAdapter<T> {
 
     /**
      * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
-     * is not required. For example, {@link org.picocontainer.behaviors.Cached} will always return the
+     * is not required. For example, {@link org.picocontainer.behaviors.Caching.Cached} will always return the
      * same instance.
      *
      * @param container the {@link org.picocontainer.PicoContainer}, that is used to resolve any possible dependencies of the instance.

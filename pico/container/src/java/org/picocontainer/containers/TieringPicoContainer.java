@@ -21,7 +21,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * and a parent container.
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link org.picocontainer.behaviors.Cached} instances, such as for example
+     * in a factory that creates {@link org.picocontainer.behaviors.Caching.Cached} instances, such as for example
      * {@link org.picocontainer.behaviors.Caching}. Caching can delegate to other ComponentAdapterFactories.
      * </em>
      *

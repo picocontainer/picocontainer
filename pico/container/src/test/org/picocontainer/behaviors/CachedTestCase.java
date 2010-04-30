@@ -20,14 +20,8 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.lang.reflect.Field;
 
 
 /**
@@ -39,7 +33,7 @@ public class CachedTestCase {
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
@@ -47,7 +41,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCanBeStartedAgainAfterBeingStopped() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -59,7 +53,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeStartedIfDisposed() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
@@ -73,7 +67,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentDisposedEffectivelyIgnoredIfNotInstantiated() throws NoSuchFieldException, IllegalAccessException {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
@@ -81,7 +75,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeStartedIfAlreadyStarted() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -94,7 +88,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeStoppedIfDisposed() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);        
@@ -108,7 +102,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeStoppedIfNotInstantiated() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, false, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         try {
@@ -120,7 +114,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeStoppedIfNotStarted() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -134,7 +128,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentCannotBeDisposedIfAlreadyDisposed() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -149,7 +143,7 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentIsStoppedAndDisposedIfStartedWhenFlushed() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -157,19 +151,19 @@ public class CachedTestCase {
     }
 
     @Test public void testComponentIsNotStoppedAndDisposedWhenFlushedIfNotStarted() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false, false));
         adapter.flush();
     }
 
     @Test public void testComponentIsNotStoppedAndDisposedWhenFlushedIfDelegateDoesNotSupportLifecycle() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterNotSupportingLifecycleStrategy());
         adapter.flush();
     }
 
     @Test public void testLifecycleIsIgnoredIfDelegateDoesNotSupportIt() {
-        Cached adapter = new Cached(
+        Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterNotSupportingLifecycleStrategy());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);

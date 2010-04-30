@@ -42,7 +42,7 @@ import java.util.Set;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link Cached} around this one.
+ * use a {@link org.picocontainer.behaviors.Caching.Cached} around this one.
  * </em>
  *
  * @author Aslak Helles&oslash;y

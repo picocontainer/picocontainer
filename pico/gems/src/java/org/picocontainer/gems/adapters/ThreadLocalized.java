@@ -17,8 +17,8 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.references.ThreadLocalReference;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.AbstractBehaving;
 import org.picocontainer.behaviors.Stored;
 
@@ -59,7 +59,7 @@ public final class ThreadLocalized<T> extends AbstractBehaving<T> {
      */
     public ThreadLocalized(final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException {
-        super(new Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()));
+        super(new Caching.Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
     }
@@ -71,7 +71,7 @@ public final class ThreadLocalized<T> extends AbstractBehaving<T> {
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalized(final ComponentAdapter<T> delegate) throws PicoCompositionException {
-        this(new Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()), new StandardProxyFactory());
+        this(new Caching.Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()), new StandardProxyFactory());
     }
 
     @Override

@@ -18,9 +18,9 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.references.ThreadLocalReference;
 
 import java.util.Properties;
@@ -33,7 +33,7 @@ import java.util.Properties;
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalized}. If the
  * application architecture ensures, that the thread that creates the component is always also the thread that is th
  * only user, you can set the mode {@link #THREAD_ENSURES_LOCALITY}. In this mode the factory uses a simple
- * {@link Cached} that uses a {@link ThreadLocalReference} to cache the component.
+ * {@link org.picocontainer.behaviors.Caching.Cached} that uses a {@link ThreadLocalReference} to cache the component.
  * </p>
  * <p>
  * See the use cases for the subtile difference:
@@ -118,7 +118,7 @@ public final class ThreadLocalizing extends AbstractBehavior {
             componentAdapter = new ThreadLocalized(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), proxyFactory);
         } else {
-            componentAdapter = new Cached(super.createComponentAdapter(
+            componentAdapter = new Caching.Cached(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;
@@ -136,7 +136,7 @@ public final class ThreadLocalizing extends AbstractBehavior {
                                                                      componentProperties,
                                                                      adapter), proxyFactory));
         } else {
-            return componentMonitor.newBehavior(new Cached(super.addComponentAdapter(componentMonitor,
+            return componentMonitor.newBehavior(new Caching.Cached(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter), new ThreadLocalReference()));

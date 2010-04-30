@@ -12,7 +12,6 @@ package org.picocontainer;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Locking;
@@ -339,11 +338,11 @@ public class PicoBuilderTestCase {
         MutablePicoContainer pico = picoBuilder.build();
         
         pico.addComponent(Map.class, HashMap.class);
-        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Caching.Cached.class));
         
         pico = picoBuilder.build();
         pico.addComponent(Map.class, HashMap.class);
-        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Caching.Cached.class));
         
         
     }    

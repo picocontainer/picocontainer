@@ -13,7 +13,6 @@ import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
@@ -174,7 +173,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link Cached} instances, such as for example
+     * in a factory that creates {@link org.picocontainer.behaviors.Caching.Cached} instances, such as for example
      * {@link Caching}. Caching can delegate to
      * other ComponentAdapterFactories.
      * </em>
@@ -192,7 +191,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link Cached} instances, such as for example
+     * in a factory that creates {@link org.picocontainer.behaviors.Caching.Cached} instances, such as for example
      * {@link Caching}. Caching can delegate to
      * other ComponentAdapterFactories.
      * </em>

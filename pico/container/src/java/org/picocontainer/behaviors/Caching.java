@@ -11,11 +11,11 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.LifecycleStrategy;
 
@@ -64,4 +64,35 @@ public class Caching extends AbstractBehavior {
         return componentMonitor.newBehavior(componentMonitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Stored.Instance<T>>())));
 	}
 
+    /**
+     * <p>
+     * {@link org.picocontainer.ComponentAdapter} implementation that caches the component instance.
+     * </p>
+     * <p>
+     * This adapter supports components with a lifecycle, as it is a
+     * {@link org.picocontainer.Behaving lifecycle manager} which will apply the delegate's
+     * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached
+     * component instance. The lifecycle state is maintained so that the component
+     * instance behaves in the expected way: it can't be started if already started,
+     * it can't be started or stopped if disposed, it can't be stopped if not
+     * started, it can't be disposed if already disposed.
+     * </p>
+     *
+     * @author Mauro Talevi
+     */
+    @SuppressWarnings("serial")
+    public static class Cached<T> extends Stored<T> {
+
+        public Cached(ComponentAdapter delegate) {
+            this(delegate, new SimpleReference<Instance<T>>());
+        }
+
+        public Cached(ComponentAdapter delegate, ObjectReference<Instance<T>> instanceReference) {
+            super(delegate, instanceReference);
+        }
+
+        public String getDescriptor() {
+            return "Cached" + getLifecycleDescriptor();
+        }
+    }
 }

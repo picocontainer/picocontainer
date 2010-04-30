@@ -19,17 +19,16 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.picocontainer.behaviors.AbstractBehaving;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.testmodel.DefaultWebServerConfig;
 import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
 import org.picocontainer.script.testmodel.WebServerImpl;
-import org.picocontainer.script.xml.XStreamContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Locked;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
@@ -97,7 +96,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-        Cached<TestAdapter> ca = (Cached<TestAdapter>) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
+        Caching.Cached<TestAdapter> ca = (Caching.Cached<TestAdapter>) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
 
         assertNotNull((TestAdapter)ca.getDelegate());
     }

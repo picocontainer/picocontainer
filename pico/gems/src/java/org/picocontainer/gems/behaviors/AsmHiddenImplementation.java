@@ -23,14 +23,13 @@ import org.objectweb.asm.Type;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaving;
-import org.picocontainer.behaviors.Cached;
 
 
 /**
  * This component adapter makes it possible to hide the implementation of a real subject (behind a proxy).
  * The proxy will implement all the interfaces of the
  * underlying subject. If you want caching,
- * use a {@link Cached} around this one.
+ * use a {@link org.picocontainer.behaviors.Caching.Cached} around this one.
  *
  * @author Paul Hammant
  */

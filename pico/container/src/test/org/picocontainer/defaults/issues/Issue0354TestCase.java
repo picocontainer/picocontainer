@@ -1,12 +1,9 @@
 package org.picocontainer.defaults.issues;
 
 import org.junit.Test;import static org.junit.Assert.assertFalse;import static org.junit.Assert.assertEquals;
-import org.picocontainer.Startable;
+
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.behaviors.Cached;
 
 import java.util.List;
 

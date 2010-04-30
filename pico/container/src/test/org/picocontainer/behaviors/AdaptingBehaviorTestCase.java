@@ -9,17 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -30,17 +20,26 @@ import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("serial")
 public class AdaptingBehaviorTestCase {
 
     @Test public void testCachingBehaviorCanBeAddedByCharacteristics() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof Cached);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
+        assertTrue(ca instanceof Caching.Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
@@ -50,10 +49,10 @@ public class AdaptingBehaviorTestCase {
     }
 
     @Test public void testCachingBehaviorCanBeAddedByAnnotation() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
-        assertTrue(ca instanceof Cached);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
+        assertTrue(ca instanceof Caching.Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
@@ -79,10 +78,10 @@ public class AdaptingBehaviorTestCase {
     }
 
     @Test public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.HIDE_IMPL,cc);
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof HiddenImplementation);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
@@ -94,10 +93,10 @@ public class AdaptingBehaviorTestCase {
     }
 
     @Test public void testPropertyApplyingBehaviorCanBeAddedByCharacteristics() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.PROPERTY_APPLYING,cc);
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap2.class);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap2.class);
         assertTrue(ca instanceof PropertyApplicator);
         PropertyApplicator pa = (PropertyApplicator)ca;
         pa.setProperty("foo", "bar");
@@ -113,10 +112,10 @@ public class AdaptingBehaviorTestCase {
     }
 
     @Test public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.SDI,cc);
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof SetterInjector);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
@@ -126,13 +125,13 @@ public class AdaptingBehaviorTestCase {
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
-        AdaptingBehavior abf = new AdaptingBehavior();
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.SYNCHRONIZE,cc);
-        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof Cached);
+        ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
+        assertTrue(ca instanceof Caching.Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), null);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -150,59 +149,52 @@ public class AdaptingBehaviorTestCase {
 
         assertEquals(0, cc.size());
         assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
-
-        
-
-
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
         Caching cbf = new Caching();
-        AdaptingBehavior abf = new AdaptingBehavior();
-        cbf.wrap(abf);
+        AdaptingBehavior adaptingBehavior = new AdaptingBehavior();
+        cbf.wrap(adaptingBehavior);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof Cached);
+        assertTrue(ca instanceof Caching.Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
         XStream xs = new XStream();
-        String foo = xs.toXML(ca);
+        String foo = xs.toXML(ca).replace("_-", "$"); // xstream inner classes are represented like Outter_-Inner
 
-        assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
-        assertFalse(foo.indexOf("<" + Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
+        String str = "<" + Caching.Cached.class.getName() + ">";
+        assertTrue(foo.indexOf(str, 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + Caching.Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
         assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
-
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
-        Caching cbf = new Caching();
+        Caching caching = new Caching();
         AdaptingBehavior abf = new AdaptingBehavior();
-        cbf.wrap(abf);
+        caching.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.SYNCHRONIZE,cc);
-        ComponentAdapter ca = cbf.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
-        assertTrue(ca instanceof Cached);
+        ComponentAdapter ca = caching.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
+        assertTrue(ca instanceof Caching.Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
         XStream xs = new XStream();
-        String foo = xs.toXML(ca);
+        String foo = xs.toXML(ca).replace("_-", "$"); // xstream inner classes are represented like Outter_-Inner
 
-        assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
-        assertFalse(foo.indexOf("<" + Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
+        assertTrue(foo.indexOf("<" + Caching.Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + Caching.Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
         assertEquals("Cached:Hidden:Synchronized:Instance-interface java.util.Map",ca.toString());
-
     }
-
-
 
     public void mergeInto(Properties p, Properties into) {
         Enumeration e = p.propertyNames();
@@ -210,8 +202,6 @@ public class AdaptingBehaviorTestCase {
             String s = (String)e.nextElement();
             into.setProperty(s, p.getProperty(s));
         }
-
     }
-
 
 }

@@ -48,7 +48,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehaving) foo).getDelegate().getClass());
     }
 
@@ -73,7 +73,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehaving) foo).getDelegate().getClass());
     }
 

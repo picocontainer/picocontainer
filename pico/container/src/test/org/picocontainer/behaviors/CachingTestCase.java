@@ -40,7 +40,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
@@ -49,7 +49,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
@@ -66,7 +66,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(InstanceAdapter.class, foo.getDelegate().getClass());
     }
 
@@ -75,7 +75,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
+        assertEquals(Caching.Cached.class, foo.getClass());
         assertEquals(InstanceAdapter.class, foo.getDelegate().getClass());
     }
 

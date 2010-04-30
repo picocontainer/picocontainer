@@ -54,11 +54,11 @@ public class Behaviors {
     }
 
     public static <T> Behaving<T> cached(ComponentAdapter<T> delegate) {
-        return new Cached<T>(delegate);
+        return new Caching.Cached<T>(delegate);
     }
 
     public static <T> Behaving<T> cached(ComponentAdapter<T> delegate, ObjectReference instanceReference) {
-        return new Cached<T>(delegate, instanceReference);
+        return new Caching.Cached<T>(delegate, instanceReference);
     }
 
     public static <T> Behaving<T> decorated(ComponentAdapter<T> delegate, Decorated.Decorator decorator) {

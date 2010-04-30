@@ -15,8 +15,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
 
 import java.util.Properties;
@@ -42,7 +40,7 @@ public class OptInCaching extends AbstractBehavior {
     			Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
+            return componentMonitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
                                                                                         componentKey,
@@ -60,7 +58,7 @@ public class OptInCaching extends AbstractBehavior {
                                                 Properties componentProperties,
                                                 ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return componentMonitor.newBehavior(new Cached<T>(super.addComponentAdapter(componentMonitor,
+            return componentMonitor.newBehavior(new Caching.Cached<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter)));

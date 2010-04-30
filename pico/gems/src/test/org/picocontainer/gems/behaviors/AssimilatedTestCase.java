@@ -25,7 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -47,7 +47,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testInstanceIsBorgedAndCompatibleWithGenerics() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
+        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilated<Touchable>(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
@@ -63,7 +63,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
+        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);

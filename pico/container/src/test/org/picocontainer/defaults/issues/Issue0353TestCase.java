@@ -5,7 +5,7 @@ import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.behaviors.Caching;
 
 public class Issue0353TestCase {
 
@@ -24,7 +24,7 @@ public class Issue0353TestCase {
 		DefaultPicoContainer cont = new DefaultPicoContainer();
 		cont.as(Characteristics.CACHE).addComponent(FooStartable.class);
 		ComponentAdapter<?> adapter = cont.getComponentAdapter(FooStartable.class);
-		Cached cached = adapter.findAdapterOfType(Cached.class);
+		Caching.Cached cached = adapter.findAdapterOfType(Caching.Cached.class);
 
                // this line throws - instead of returning false
 		assertFalse(cached.isStarted());
