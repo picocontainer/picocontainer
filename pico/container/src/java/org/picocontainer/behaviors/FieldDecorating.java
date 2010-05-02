@@ -24,7 +24,7 @@ import java.util.Properties;
 
 
 /**
- * BehaviorFactory for Field Decorating. This factory will create {@link org.picocontainer.behaviors.FieldDecorating.FieldDecorated} that will
+ * Behavior for Field Decorating. This factory will create {@link org.picocontainer.behaviors.FieldDecorating.FieldDecorated} that will
  * allow you to decorate fields on the component instance that has been created
  *
  * @author Paul Hammant

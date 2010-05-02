@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
- * BehaviorFactory for Decorating. This factory will create {@link org.picocontainer.behaviors.Decorating.Decorated} that will
+ * Behavior for Decorating. This factory will create {@link org.picocontainer.behaviors.Decorating.Decorated} that will
  * allow you to decorate what you like on the component instance that has been created
  *
  * @author Paul Hammant

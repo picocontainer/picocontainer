@@ -108,7 +108,6 @@ public class AdaptingBehaviorTestCase {
 
         assertEquals(0, cc.size());
         assertEquals("PropertyApplied:ConstructorInjector-interface java.util.Map",ca.toString());
-
     }
 
     @Test public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
@@ -120,8 +119,7 @@ public class AdaptingBehaviorTestCase {
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertEquals(0, cc.size());
-        assertEquals("SetterInjector-interface java.util.Map",ca.toString());
-
+        assertEquals("SetterInjector-interface java.util.Map", ca.toString());
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
