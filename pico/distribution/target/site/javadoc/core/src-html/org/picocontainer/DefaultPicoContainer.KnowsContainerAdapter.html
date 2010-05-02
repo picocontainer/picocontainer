@@ -122,7 +122,7 @@
 <FONT color="green">119</FONT>        /**<a name="line.119"></a>
 <FONT color="green">120</FONT>         * Component monitor instance.  Receives event callbacks.<a name="line.120"></a>
 <FONT color="green">121</FONT>         */<a name="line.121"></a>
-<FONT color="green">122</FONT>        protected ComponentMonitor componentMonitor;<a name="line.122"></a>
+<FONT color="green">122</FONT>        protected ComponentMonitor monitor;<a name="line.122"></a>
 <FONT color="green">123</FONT>    <a name="line.123"></a>
 <FONT color="green">124</FONT>        /**<a name="line.124"></a>
 <FONT color="green">125</FONT>         * Map used for looking up component adapters by their key.<a name="line.125"></a>
@@ -182,7 +182,7 @@
 <FONT color="green">179</FONT>    <a name="line.179"></a>
 <FONT color="green">180</FONT>        public DefaultPicoContainer(final ComponentFactory componentFactory,<a name="line.180"></a>
 <FONT color="green">181</FONT>                                    final LifecycleStrategy lifecycleStrategy,<a name="line.181"></a>
-<FONT color="green">182</FONT>                                    final PicoContainer parent, final ComponentMonitor componentMonitor) {<a name="line.182"></a>
+<FONT color="green">182</FONT>                                    final PicoContainer parent, final ComponentMonitor monitor) {<a name="line.182"></a>
 <FONT color="green">183</FONT>            if (componentFactory == null) {<a name="line.183"></a>
 <FONT color="green">184</FONT>                            throw new NullPointerException("componentFactory");<a name="line.184"></a>
 <FONT color="green">185</FONT>                    }<a name="line.185"></a>
@@ -195,7 +195,7 @@
 <FONT color="green">192</FONT>            if (parent != null &amp;&amp; !(parent instanceof EmptyPicoContainer)) {<a name="line.192"></a>
 <FONT color="green">193</FONT>                this.parent = new ImmutablePicoContainer(parent);<a name="line.193"></a>
 <FONT color="green">194</FONT>            }<a name="line.194"></a>
-<FONT color="green">195</FONT>            this.componentMonitor = componentMonitor;<a name="line.195"></a>
+<FONT color="green">195</FONT>            this.monitor = monitor;<a name="line.195"></a>
 <FONT color="green">196</FONT>        }<a name="line.196"></a>
 <FONT color="green">197</FONT>    <a name="line.197"></a>
 <FONT color="green">198</FONT>        /**<a name="line.198"></a>
@@ -283,7 +283,7 @@
 <FONT color="green">280</FONT>                }<a name="line.280"></a>
 <FONT color="green">281</FONT>            }<a name="line.281"></a>
 <FONT color="green">282</FONT>            if (adapter == null) {<a name="line.282"></a>
-<FONT color="green">283</FONT>                Object inst = componentMonitor.noComponentFound(this, key);<a name="line.283"></a>
+<FONT color="green">283</FONT>                Object inst = monitor.noComponentFound(this, key);<a name="line.283"></a>
 <FONT color="green">284</FONT>                if (inst != null) {<a name="line.284"></a>
 <FONT color="green">285</FONT>                    adapter = new LateInstance(key, inst);<a name="line.285"></a>
 <FONT color="green">286</FONT>                }<a name="line.286"></a>
@@ -459,7 +459,7 @@
 <FONT color="green">456</FONT>            Properties tmpProperties = (Properties)properties.clone();<a name="line.456"></a>
 <FONT color="green">457</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false &amp;&amp; componentFactory instanceof BehaviorFactory) {<a name="line.457"></a>
 <FONT color="green">458</FONT>                MutablePicoContainer container = addAdapterInternal(((BehaviorFactory)componentFactory).addComponentAdapter(<a name="line.458"></a>
-<FONT color="green">459</FONT>                    componentMonitor,<a name="line.459"></a>
+<FONT color="green">459</FONT>                    monitor,<a name="line.459"></a>
 <FONT color="green">460</FONT>                    lifecycleStrategy,<a name="line.460"></a>
 <FONT color="green">461</FONT>                    tmpProperties,<a name="line.461"></a>
 <FONT color="green">462</FONT>                    componentAdapter));<a name="line.462"></a>
@@ -505,7 +505,7 @@
 <FONT color="green">502</FONT>    <a name="line.502"></a>
 <FONT color="green">503</FONT>    <a name="line.503"></a>
 <FONT color="green">504</FONT>        public MutablePicoContainer addConfig(final String name, final Object val) {<a name="line.504"></a>
-<FONT color="green">505</FONT>            return addAdapterInternal(new InstanceAdapter&lt;Object&gt;(name, val, lifecycleStrategy, componentMonitor));<a name="line.505"></a>
+<FONT color="green">505</FONT>            return addAdapterInternal(new InstanceAdapter&lt;Object&gt;(name, val, lifecycleStrategy, monitor));<a name="line.505"></a>
 <FONT color="green">506</FONT>        }<a name="line.506"></a>
 <FONT color="green">507</FONT>    <a name="line.507"></a>
 <FONT color="green">508</FONT>    <a name="line.508"></a>
@@ -535,7 +535,7 @@
 <FONT color="green">532</FONT>            <a name="line.532"></a>
 <FONT color="green">533</FONT>            if (implOrInstance instanceof Class) {<a name="line.533"></a>
 <FONT color="green">534</FONT>                Properties tmpProperties = (Properties) properties.clone();<a name="line.534"></a>
-<FONT color="green">535</FONT>                ComponentAdapter&lt;?&gt; adapter = componentFactory.createComponentAdapter(componentMonitor,<a name="line.535"></a>
+<FONT color="green">535</FONT>                ComponentAdapter&lt;?&gt; adapter = componentFactory.createComponentAdapter(monitor,<a name="line.535"></a>
 <FONT color="green">536</FONT>                                                                                                   lifecycleStrategy,<a name="line.536"></a>
 <FONT color="green">537</FONT>                                                                                                   tmpProperties,<a name="line.537"></a>
 <FONT color="green">538</FONT>                                                                                                   key,<a name="line.538"></a>
@@ -550,7 +550,7 @@
 <FONT color="green">547</FONT>                return addAdapterInternal(adapter);<a name="line.547"></a>
 <FONT color="green">548</FONT>            } else {<a name="line.548"></a>
 <FONT color="green">549</FONT>                ComponentAdapter&lt;?&gt; adapter =<a name="line.549"></a>
-<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(key, implOrInstance, lifecycleStrategy, componentMonitor);<a name="line.550"></a>
+<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(key, implOrInstance, lifecycleStrategy, monitor);<a name="line.550"></a>
 <FONT color="green">551</FONT>                if (lifecycleState.isStarted()) {<a name="line.551"></a>
 <FONT color="green">552</FONT>                    addAdapterIfStartable(adapter);<a name="line.552"></a>
 <FONT color="green">553</FONT>                    potentiallyStartAdapter(adapter);<a name="line.553"></a>
@@ -843,7 +843,7 @@
 <FONT color="green">840</FONT>        }<a name="line.840"></a>
 <FONT color="green">841</FONT>    <a name="line.841"></a>
 <FONT color="green">842</FONT>        public MutablePicoContainer makeChildContainer() {<a name="line.842"></a>
-<FONT color="green">843</FONT>            DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this, componentMonitor);<a name="line.843"></a>
+<FONT color="green">843</FONT>            DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this, monitor);<a name="line.843"></a>
 <FONT color="green">844</FONT>            addChildContainer(pc);<a name="line.844"></a>
 <FONT color="green">845</FONT>            return pc;<a name="line.845"></a>
 <FONT color="green">846</FONT>        }<a name="line.846"></a>
@@ -948,7 +948,7 @@
 <FONT color="green">945</FONT>         * {@inheritDoc}<a name="line.945"></a>
 <FONT color="green">946</FONT>         */<a name="line.946"></a>
 <FONT color="green">947</FONT>        public void changeMonitor(final ComponentMonitor monitor) {<a name="line.947"></a>
-<FONT color="green">948</FONT>            this.componentMonitor = monitor;<a name="line.948"></a>
+<FONT color="green">948</FONT>            this.monitor = monitor;<a name="line.948"></a>
 <FONT color="green">949</FONT>            if (lifecycleStrategy instanceof ComponentMonitorStrategy) {<a name="line.949"></a>
 <FONT color="green">950</FONT>                ((ComponentMonitorStrategy)lifecycleStrategy).changeMonitor(monitor);<a name="line.950"></a>
 <FONT color="green">951</FONT>            }<a name="line.951"></a>
@@ -972,7 +972,7 @@
 <FONT color="green">969</FONT>         * @throws PicoCompositionException if no component monitor is found in container or its children<a name="line.969"></a>
 <FONT color="green">970</FONT>         */<a name="line.970"></a>
 <FONT color="green">971</FONT>        public ComponentMonitor currentMonitor() {<a name="line.971"></a>
-<FONT color="green">972</FONT>            return componentMonitor;<a name="line.972"></a>
+<FONT color="green">972</FONT>            return monitor;<a name="line.972"></a>
 <FONT color="green">973</FONT>        }<a name="line.973"></a>
 <FONT color="green">974</FONT>    <a name="line.974"></a>
 <FONT color="green">975</FONT>        /**<a name="line.975"></a>

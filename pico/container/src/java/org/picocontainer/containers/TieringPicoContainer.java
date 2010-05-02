@@ -37,8 +37,8 @@ public class TieringPicoContainer extends DefaultPicoContainer {
     }
 
     public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
-                                final PicoContainer parent, final ComponentMonitor componentMonitor) {
-        super(parent, lifecycleStrategy, componentMonitor, componentFactory);
+                                final PicoContainer parent, final ComponentMonitor monitor) {
+        super(parent, lifecycleStrategy, monitor, componentFactory);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
     }
 
     public MutablePicoContainer makeChildContainer() {
-        return new TieringPicoContainer(super.componentFactory, super.lifecycleStrategy, this, super.componentMonitor);
+        return new TieringPicoContainer(super.componentFactory, super.lifecycleStrategy, this, super.monitor);
     }
 
     private static class TieringGuard extends AbstractDelegatingPicoContainer {

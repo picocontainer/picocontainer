@@ -57,13 +57,13 @@
 <FONT color="green">054</FONT>    <a name="line.54"></a>
 <FONT color="green">055</FONT>        private PicoContainer parentContainer;<a name="line.55"></a>
 <FONT color="green">056</FONT>        private Class&lt;? extends MutablePicoContainer&gt; mpcClass = DefaultPicoContainer.class;<a name="line.56"></a>
-<FONT color="green">057</FONT>        private ComponentMonitor componentMonitor;<a name="line.57"></a>
+<FONT color="green">057</FONT>        private ComponentMonitor monitor;<a name="line.57"></a>
 <FONT color="green">058</FONT>        private List&lt;Object&gt; containerComps = new ArrayList&lt;Object&gt;();<a name="line.58"></a>
 <FONT color="green">059</FONT>        private boolean addChildToParent;<a name="line.59"></a>
 <FONT color="green">060</FONT>        private LifecycleStrategy lifecycleStrategy;<a name="line.60"></a>
 <FONT color="green">061</FONT>        private final Stack&lt;Object&gt; behaviors = new Stack&lt;Object&gt;();<a name="line.61"></a>
 <FONT color="green">062</FONT>        private final List&lt;InjectionFactory&gt; injectors = new ArrayList&lt;InjectionFactory&gt;();<a name="line.62"></a>
-<FONT color="green">063</FONT>        private Class&lt;? extends ComponentMonitor&gt; componentMonitorClass = NullComponentMonitor.class;<a name="line.63"></a>
+<FONT color="green">063</FONT>        private Class&lt;? extends ComponentMonitor&gt; monitorClass = NullComponentMonitor.class;<a name="line.63"></a>
 <FONT color="green">064</FONT>        private Class&lt;? extends LifecycleStrategy&gt; lifecycleStrategyClass = NullLifecycleStrategy.class;<a name="line.64"></a>
 <FONT color="green">065</FONT>    <a name="line.65"></a>
 <FONT color="green">066</FONT>    <a name="line.66"></a>
@@ -120,7 +120,7 @@
 <FONT color="green">117</FONT>    <a name="line.117"></a>
 <FONT color="green">118</FONT>    <a name="line.118"></a>
 <FONT color="green">119</FONT>        public PicoBuilder withConsoleMonitor() {<a name="line.119"></a>
-<FONT color="green">120</FONT>            componentMonitorClass =  ConsoleComponentMonitor.class;<a name="line.120"></a>
+<FONT color="green">120</FONT>            monitorClass =  ConsoleComponentMonitor.class;<a name="line.120"></a>
 <FONT color="green">121</FONT>            return this;<a name="line.121"></a>
 <FONT color="green">122</FONT>        }<a name="line.122"></a>
 <FONT color="green">123</FONT>    <a name="line.123"></a>
@@ -132,8 +132,8 @@
 <FONT color="green">129</FONT>                throw new ClassCastException(cmClass.getName() + " is not a " + ComponentMonitor.class.getName());<a name="line.129"></a>
 <FONT color="green">130</FONT>    <a name="line.130"></a>
 <FONT color="green">131</FONT>            }<a name="line.131"></a>
-<FONT color="green">132</FONT>            componentMonitorClass = cmClass;<a name="line.132"></a>
-<FONT color="green">133</FONT>            componentMonitor = null;<a name="line.133"></a>
+<FONT color="green">132</FONT>            monitorClass = cmClass;<a name="line.132"></a>
+<FONT color="green">133</FONT>            monitor = null;<a name="line.133"></a>
 <FONT color="green">134</FONT>            return this;<a name="line.134"></a>
 <FONT color="green">135</FONT>        }<a name="line.135"></a>
 <FONT color="green">136</FONT>    <a name="line.136"></a>
@@ -175,10 +175,10 @@
 <FONT color="green">172</FONT>        }<a name="line.172"></a>
 <FONT color="green">173</FONT>    <a name="line.173"></a>
 <FONT color="green">174</FONT>        private void buildComponentMonitor(DefaultPicoContainer tempContainer) {<a name="line.174"></a>
-<FONT color="green">175</FONT>            if (componentMonitorClass == null) {<a name="line.175"></a>
-<FONT color="green">176</FONT>                tempContainer.addComponent(ComponentMonitor.class, componentMonitor);<a name="line.176"></a>
+<FONT color="green">175</FONT>            if (monitorClass == null) {<a name="line.175"></a>
+<FONT color="green">176</FONT>                tempContainer.addComponent(ComponentMonitor.class, monitor);<a name="line.176"></a>
 <FONT color="green">177</FONT>            } else {<a name="line.177"></a>
-<FONT color="green">178</FONT>                tempContainer.addComponent(ComponentMonitor.class, componentMonitorClass);<a name="line.178"></a>
+<FONT color="green">178</FONT>                tempContainer.addComponent(ComponentMonitor.class, monitorClass);<a name="line.178"></a>
 <FONT color="green">179</FONT>            }<a name="line.179"></a>
 <FONT color="green">180</FONT>        }<a name="line.180"></a>
 <FONT color="green">181</FONT>    <a name="line.181"></a>
@@ -289,9 +289,9 @@
 <FONT color="green">286</FONT>            return this;<a name="line.286"></a>
 <FONT color="green">287</FONT>        }<a name="line.287"></a>
 <FONT color="green">288</FONT>    <a name="line.288"></a>
-<FONT color="green">289</FONT>        public PicoBuilder withMonitor(ComponentMonitor componentMonitor) {<a name="line.289"></a>
-<FONT color="green">290</FONT>            this.componentMonitor = componentMonitor;<a name="line.290"></a>
-<FONT color="green">291</FONT>            componentMonitorClass = null;<a name="line.291"></a>
+<FONT color="green">289</FONT>        public PicoBuilder withMonitor(ComponentMonitor monitor) {<a name="line.289"></a>
+<FONT color="green">290</FONT>            this.monitor = monitor;<a name="line.290"></a>
+<FONT color="green">291</FONT>            monitorClass = null;<a name="line.291"></a>
 <FONT color="green">292</FONT>            return this;<a name="line.292"></a>
 <FONT color="green">293</FONT>        }<a name="line.293"></a>
 <FONT color="green">294</FONT>    <a name="line.294"></a>

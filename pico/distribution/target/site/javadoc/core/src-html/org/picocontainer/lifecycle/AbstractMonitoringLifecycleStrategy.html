@@ -27,12 +27,12 @@
 <FONT color="green">024</FONT>            /**<a name="line.24"></a>
 <FONT color="green">025</FONT>             * Component monitor that receives lifecycle state.<a name="line.25"></a>
 <FONT color="green">026</FONT>             */<a name="line.26"></a>
-<FONT color="green">027</FONT>        private ComponentMonitor componentMonitor;<a name="line.27"></a>
+<FONT color="green">027</FONT>        private ComponentMonitor monitor;<a name="line.27"></a>
 <FONT color="green">028</FONT>    <a name="line.28"></a>
 <FONT color="green">029</FONT>        /**<a name="line.29"></a>
 <FONT color="green">030</FONT>         * Construct a AbstractMonitoringLifecycleStrategy.<a name="line.30"></a>
 <FONT color="green">031</FONT>         *<a name="line.31"></a>
-<FONT color="green">032</FONT>         * @param monitor the componentMonitor to use<a name="line.32"></a>
+<FONT color="green">032</FONT>         * @param monitor the monitor to use<a name="line.32"></a>
 <FONT color="green">033</FONT>         * @throws NullPointerException if the monitor is &lt;code&gt;null&lt;/code&gt;<a name="line.33"></a>
 <FONT color="green">034</FONT>         */<a name="line.34"></a>
 <FONT color="green">035</FONT>        public AbstractMonitoringLifecycleStrategy(final ComponentMonitor monitor) {<a name="line.35"></a>
@@ -48,11 +48,11 @@
 <FONT color="green">045</FONT>            if (monitor == null) {<a name="line.45"></a>
 <FONT color="green">046</FONT>                throw new NullPointerException("Monitor is null");<a name="line.46"></a>
 <FONT color="green">047</FONT>            }<a name="line.47"></a>
-<FONT color="green">048</FONT>            this.componentMonitor = monitor;<a name="line.48"></a>
+<FONT color="green">048</FONT>            this.monitor = monitor;<a name="line.48"></a>
 <FONT color="green">049</FONT>        }<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>
 <FONT color="green">051</FONT>        public ComponentMonitor currentMonitor() {<a name="line.51"></a>
-<FONT color="green">052</FONT>            return componentMonitor;<a name="line.52"></a>
+<FONT color="green">052</FONT>            return monitor;<a name="line.52"></a>
 <FONT color="green">053</FONT>        }<a name="line.53"></a>
 <FONT color="green">054</FONT>    <a name="line.54"></a>
 <FONT color="green">055</FONT>        public boolean isLazy(ComponentAdapter&lt;?&gt; adapter) {<a name="line.55"></a>

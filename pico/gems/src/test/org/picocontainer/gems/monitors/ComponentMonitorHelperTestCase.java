@@ -38,7 +38,7 @@ import org.picocontainer.monitors.ComponentMonitorHelper;
  * @author Juze Peleteiro
  */
 public abstract class ComponentMonitorHelperTestCase {
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
     private Constructor constructor;
     private Method method;
     
@@ -46,7 +46,7 @@ public abstract class ComponentMonitorHelperTestCase {
     public void setUp() throws Exception {
         constructor = getConstructor();
         method = getMethod();
-        componentMonitor = makeComponentMonitor();
+        monitor = makeComponentMonitor();
     }
 
     protected abstract ComponentMonitor makeComponentMonitor();
@@ -62,56 +62,56 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
     @Test public void testShouldTraceInstantiating() throws IOException {
-        componentMonitor.instantiating(null, null, constructor);
+        monitor.instantiating(null, null, constructor);
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
     }
 
     @Test public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
-        componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
+        monitor.instantiated(null, null, constructor, instantiated, injected, 543);
         String s = ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), (long) 543, instantiated.getClass().getName(), parmsToString(injected));
         assertFileContent(getLogPrefix() + s);
     }
 
 
     @Test public void testShouldTraceInstantiationFailed() throws IOException {
-        componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
+        monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), "doh"));
     }
 
     @Test public void testShouldTraceInvoking() throws IOException {
-        componentMonitor.invoking(null, null, method, this, new Object[] {"1","2"});
+        monitor.invoking(null, null, method, this, new Object[] {"1","2"});
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, methodToString(method), this));
     }
 
     @Test public void testShouldTraceInvoked() throws IOException {
-        componentMonitor.invoked(null, null, method, this, 543, new Object[] {"1","2"}, "3");
+        monitor.invoked(null, null, method, this, 543, new Object[] {"1","2"}, "3");
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), this, (long) 543));
     }
 
     @Test public void testShouldTraceInvocatiationFailed() throws IOException {
-        componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
+        monitor.invocationFailed(method, this, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, methodToString(method), this, "doh"));
     }
 
     @Test public void testShouldTraceNoComponent() throws IOException {
-        componentMonitor.noComponentFound(null, "doh");
+        monitor.noComponentFound(null, "doh");
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, "doh"));
     }
 
     @Test public void shouldSerialize() throws IOException, ClassNotFoundException{
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	ObjectOutputStream oos = new ObjectOutputStream(bos);
-    	oos.writeObject(componentMonitor);
+    	oos.writeObject(monitor);
     	oos.close();
     	
     	byte[] savedBytes = bos.toByteArray();
     	assertNotNull(savedBytes);
     	ByteArrayInputStream bis = new ByteArrayInputStream(savedBytes);
     	ObjectInputStream ois = new ObjectInputStream(bis);
-    	this.componentMonitor = (ComponentMonitor) ois.readObject();
-    	assertNotNull(componentMonitor);
+    	this.monitor = (ComponentMonitor) ois.readObject();
+    	assertNotNull(monitor);
     	//Run through a couple of other tests so we know that the delegate logger internally 
     	//appears to be working.    
     	testShouldTraceInstantiatedWithInjected();

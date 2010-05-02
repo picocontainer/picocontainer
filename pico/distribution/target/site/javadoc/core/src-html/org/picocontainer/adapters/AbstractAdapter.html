@@ -39,7 +39,7 @@
 <FONT color="green">036</FONT>    public abstract class AbstractAdapter&lt;T&gt; implements ComponentAdapter&lt;T&gt;, ComponentMonitorStrategy, Serializable {<a name="line.36"></a>
 <FONT color="green">037</FONT>        private Object key;<a name="line.37"></a>
 <FONT color="green">038</FONT>        private Class&lt;T&gt; impl;<a name="line.38"></a>
-<FONT color="green">039</FONT>        private ComponentMonitor componentMonitor;<a name="line.39"></a>
+<FONT color="green">039</FONT>        private ComponentMonitor monitor;<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        /**<a name="line.41"></a>
 <FONT color="green">042</FONT>         * Constructs a new ComponentAdapter for the given key and implementation.<a name="line.42"></a>
@@ -48,7 +48,7 @@
 <FONT color="green">045</FONT>         */<a name="line.45"></a>
 <FONT color="green">046</FONT>        public AbstractAdapter(Object key, Class impl) {<a name="line.46"></a>
 <FONT color="green">047</FONT>            this(key, impl, new AbstractComponentMonitor());<a name="line.47"></a>
-<FONT color="green">048</FONT>            this.componentMonitor = new NullComponentMonitor();<a name="line.48"></a>
+<FONT color="green">048</FONT>            this.monitor = new NullComponentMonitor();<a name="line.48"></a>
 <FONT color="green">049</FONT>        }<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>
 <FONT color="green">051</FONT>        /**<a name="line.51"></a>
@@ -61,7 +61,7 @@
 <FONT color="green">058</FONT>            if (monitor == null) {<a name="line.58"></a>
 <FONT color="green">059</FONT>                throw new NullPointerException("ComponentMonitor==null");<a name="line.59"></a>
 <FONT color="green">060</FONT>            }<a name="line.60"></a>
-<FONT color="green">061</FONT>            this.componentMonitor = monitor;<a name="line.61"></a>
+<FONT color="green">061</FONT>            this.monitor = monitor;<a name="line.61"></a>
 <FONT color="green">062</FONT>            if (impl == null) {<a name="line.62"></a>
 <FONT color="green">063</FONT>                throw new NullPointerException("impl");<a name="line.63"></a>
 <FONT color="green">064</FONT>            }<a name="line.64"></a>
@@ -125,7 +125,7 @@
 <FONT color="green">122</FONT>        }<a name="line.122"></a>
 <FONT color="green">123</FONT>    <a name="line.123"></a>
 <FONT color="green">124</FONT>        public void changeMonitor(ComponentMonitor monitor) {<a name="line.124"></a>
-<FONT color="green">125</FONT>            this.componentMonitor = monitor;<a name="line.125"></a>
+<FONT color="green">125</FONT>            this.monitor = monitor;<a name="line.125"></a>
 <FONT color="green">126</FONT>        }<a name="line.126"></a>
 <FONT color="green">127</FONT>    <a name="line.127"></a>
 <FONT color="green">128</FONT>        /**<a name="line.128"></a>
@@ -133,7 +133,7 @@
 <FONT color="green">130</FONT>         * @return The ComponentMonitor currently used<a name="line.130"></a>
 <FONT color="green">131</FONT>         */<a name="line.131"></a>
 <FONT color="green">132</FONT>        public ComponentMonitor currentMonitor(){<a name="line.132"></a>
-<FONT color="green">133</FONT>            return componentMonitor;<a name="line.133"></a>
+<FONT color="green">133</FONT>            return monitor;<a name="line.133"></a>
 <FONT color="green">134</FONT>        }<a name="line.134"></a>
 <FONT color="green">135</FONT>    <a name="line.135"></a>
 <FONT color="green">136</FONT>        public final ComponentAdapter&lt;T&gt; getDelegate() {<a name="line.136"></a>

@@ -31,19 +31,19 @@ import java.util.Properties;
 public class Caching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(
-			ComponentMonitor componentMonitor,
+			ComponentMonitor monitor,
 			LifecycleStrategy lifecycleStrategy,
 			Properties componentProps, Object key,
 			Class<T> impl, Parameter... parameters)
 			throws PicoCompositionException {
 		if (removePropertiesIfPresent(componentProps,
 				Characteristics.NO_CACHE)) {
-			return super.createComponentAdapter(componentMonitor,
+			return super.createComponentAdapter(monitor,
 					lifecycleStrategy, componentProps, key,
 					impl, parameters);
 		}
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new Cached<T>(super.createComponentAdapter(monitor,
 				lifecycleStrategy, componentProps, key,
 				impl, parameters),
                 new SimpleReference<Storing.Stored.Instance<T>>()));
@@ -51,17 +51,17 @@ public class Caching extends AbstractBehavior {
 	}
 
 	public <T> ComponentAdapter<T> addComponentAdapter(
-			ComponentMonitor componentMonitor,
+			ComponentMonitor monitor,
 			LifecycleStrategy lifecycleStrategy,
 			Properties componentProps, ComponentAdapter<T> adapter) {
 		if (removePropertiesIfPresent(componentProps,
 				Characteristics.NO_CACHE)) {
-			return super.addComponentAdapter(componentMonitor,
+			return super.addComponentAdapter(monitor,
 					lifecycleStrategy, componentProps, adapter);
 		}
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        ComponentAdapter<T> delegate = super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
-        return componentMonitor.newBehavior(componentMonitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Storing.Stored.Instance<T>>())));
+        ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);
+        return monitor.newBehavior(monitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Storing.Stored.Instance<T>>())));
 	}
 
     /**

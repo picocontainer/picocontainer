@@ -24,14 +24,14 @@ import java.util.Properties;
 public class Automating extends AbstractBehavior implements Serializable {
 
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
-        return componentMonitor.newBehavior(new Automated<T>(super.createComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new Automated<T>(super.createComponentAdapter(monitor,
                                             lifecycleStrategy,
                                             componentProps,
                                             key,
@@ -39,12 +39,12 @@ public class Automating extends AbstractBehavior implements Serializable {
                                             parameters)));
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
-        return componentMonitor.newBehavior(new Automated<T>(super.addComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new Automated<T>(super.addComponentAdapter(monitor,
                                          lifecycleStrategy,
                                          componentProps,
                                          adapter)));

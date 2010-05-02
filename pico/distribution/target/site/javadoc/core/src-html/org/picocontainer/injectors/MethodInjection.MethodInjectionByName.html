@@ -46,9 +46,9 @@
 <FONT color="green">043</FONT>            delegate = new MethodInjectionByReflectionMethod(injectionMethod);<a name="line.43"></a>
 <FONT color="green">044</FONT>        }<a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
-<FONT color="green">046</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,<a name="line.46"></a>
+<FONT color="green">046</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                                       Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.47"></a>
-<FONT color="green">048</FONT>            return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters);<a name="line.48"></a>
+<FONT color="green">048</FONT>            return delegate.createComponentAdapter(monitor, lifecycleStrategy, componentProps, key, impl, parameters);<a name="line.48"></a>
 <FONT color="green">049</FONT>        }<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>
 <FONT color="green">051</FONT>        public class MethodInjectionByName extends AbstractInjectionFactory {<a name="line.51"></a>

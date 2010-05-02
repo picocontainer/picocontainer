@@ -76,7 +76,7 @@ public class Injector {
      * @param key
      * @param impl
      * @param parameters
-     * @param componentMonitor
+     * @param monitor
      * @param injectionAnnotation
      * @param useNames
      * @return annotated field injector instance.
@@ -84,9 +84,9 @@ public class Injector {
     public static ComponentAdapter annotatedField(Object key,
                                                   Class<?> impl,
                                                   Parameter[] parameters,
-                                                  ComponentMonitor componentMonitor,
+                                                  ComponentMonitor monitor,
                                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, useNames, injectionAnnotation));
+        return monitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, monitor, useNames, injectionAnnotation));
     }
 
     /**
@@ -151,7 +151,7 @@ public class Injector {
      * @param key
      * @param impl
      * @param parameters
-     * @param componentMonitor
+     * @param monitor
      * @param setterPrefix
      * @param useNames
      * @return MultiInjector component adapter instance.
@@ -160,8 +160,8 @@ public class Injector {
     public static ComponentAdapter multi(Object key,
                                          Class impl,
                                          Parameter[] parameters,
-                                         ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
-        return componentMonitor.newInjector(new MultiInjector(key, impl, parameters, componentMonitor, setterPrefix, useNames));
+                                         ComponentMonitor monitor, String setterPrefix, boolean useNames) {
+        return monitor.newInjector(new MultiInjector(key, impl, parameters, monitor, setterPrefix, useNames));
     }
 
     /**
@@ -170,16 +170,16 @@ public class Injector {
      * @param key
      * @param impl
      * @param parameters
-     * @param componentMonitor
+     * @param monitor
      * @param fieldNames
      * @return named field component injector instance.
      */
     public static ComponentAdapter namedField(Object key,
                                               Class<?> impl,
                                               Parameter[] parameters,
-                                              ComponentMonitor componentMonitor,
+                                              ComponentMonitor monitor,
                                               String fieldNames) {
-        return componentMonitor.newInjector(new NamedFieldInjector(key, impl, parameters, componentMonitor, fieldNames));
+        return monitor.newInjector(new NamedFieldInjector(key, impl, parameters, monitor, fieldNames));
     }
 
     /**
@@ -209,15 +209,15 @@ public class Injector {
      * @param key
      * @param impl
      * @param parameters
-     * @param componentMonitor
+     * @param monitor
      * @param classNames
      * @return typed field injector instance.
      */
     public static ComponentAdapter typedField(Object key,
                                               Class<?> impl,
                                               Parameter[] parameters,
-                                              ComponentMonitor componentMonitor,
+                                              ComponentMonitor monitor,
                                               String classNames) {
-        return componentMonitor.newInjector(new TypedFieldInjector(key, impl, parameters, componentMonitor, classNames));
+        return monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor, classNames));
     }
 }

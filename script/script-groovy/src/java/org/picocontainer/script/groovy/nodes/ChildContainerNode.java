@@ -60,10 +60,10 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private static final String COMPONENT_ADAPTER_FACTORY = "componentFactory";
 
     /**
-     * Attribute: 'componentMonitor' a reference to an instance of a component
+     * Attribute: 'monitor' a reference to an instance of a component
      * monitor.
      */
-    private static final String COMPONENT_MONITOR = "componentMonitor";
+    private static final String COMPONENT_MONITOR = "monitor";
 
     /**
      * Attribute that exists in test cases, but not necessarily used?
@@ -122,7 +122,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * <ul>
      * <li><tt>componentFactory</tt>: The ComponentFactory used for new
      * container</li>
-     * <li><tt>componentMonitor</tt>: The ComponentMonitor used for new
+     * <li><tt>monitor</tt>: The ComponentMonitor used for new
      * container</li>
      * </ul>
      * 

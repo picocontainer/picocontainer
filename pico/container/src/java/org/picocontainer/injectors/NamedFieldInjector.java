@@ -38,10 +38,10 @@ public class NamedFieldInjector extends IterativeInjector {
     public NamedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
-                                  ComponentMonitor componentMonitor,
+                                  ComponentMonitor monitor,
                                   String fieldNames) {
 
-        super(key, impl, parameters, componentMonitor, true);
+        super(key, impl, parameters, monitor, true);
         this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
     }
 

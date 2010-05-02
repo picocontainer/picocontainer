@@ -45,7 +45,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 	 * 
 	 */
 	public <T> ComponentAdapter<T> createComponentAdapter(
-			final ComponentMonitor componentMonitor,
+			final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycleStrategy,
 			final Properties componentProps, final Object key,
 			final Class<T> impl, final Parameter... parameters)
@@ -66,7 +66,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 
 		
 
-		return new DelegateMethodAdapter<T>(key, componentMonitor, instance, method);
+		return new DelegateMethodAdapter<T>(key, monitor, instance, method);
 	}
 
 

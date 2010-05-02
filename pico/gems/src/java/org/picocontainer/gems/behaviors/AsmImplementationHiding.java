@@ -41,39 +41,39 @@ public class AsmImplementationHiding extends AbstractBehavior {
 
 
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor,
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
                                                    final LifecycleStrategy lifecycleStrategy,
                                                    final Properties componentProps,
                                                    final Object key,
                                                    final Class<T> impl,
                                                    final Parameter... parameters) throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
-            return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+            return super.createComponentAdapter(monitor, lifecycleStrategy,
                                                 componentProps, key, impl, parameters);
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
-        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor,
+        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor,
                                                                          lifecycleStrategy,
                                                                          componentProps,
                                                                          key,
                                                                          impl,
                                                                          parameters);
-        return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(componentAdapter));
+        return monitor.newBehavior(new AsmHiddenImplementation<T>(componentAdapter));
     }
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor componentMonitor,
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
                                                 final LifecycleStrategy lifecycleStrategy,
                                                 final Properties componentProps,
                                                 final ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
-            return super.addComponentAdapter(componentMonitor,
+            return super.addComponentAdapter(monitor,
                                              lifecycleStrategy,
                                              componentProps,
                                              adapter);
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
-        return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new AsmHiddenImplementation<T>(super.addComponentAdapter(monitor,
                                                                           lifecycleStrategy,
                                                                           componentProps,
                                                                           adapter)));

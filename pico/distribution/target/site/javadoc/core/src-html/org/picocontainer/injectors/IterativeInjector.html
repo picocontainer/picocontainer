@@ -153,7 +153,7 @@
 <FONT color="green">150</FONT>            return (T) instantiationGuard.observe(getComponentImplementation());<a name="line.150"></a>
 <FONT color="green">151</FONT>        }<a name="line.151"></a>
 <FONT color="green">152</FONT>    <a name="line.152"></a>
-<FONT color="green">153</FONT>        private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer) {<a name="line.153"></a>
+<FONT color="green">153</FONT>        private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer) {<a name="line.153"></a>
 <FONT color="green">154</FONT>            AccessibleObject member = null;<a name="line.154"></a>
 <FONT color="green">155</FONT>            Object injected[] = new Object[injectionMembers.size()];<a name="line.155"></a>
 <FONT color="green">156</FONT>            Object lastReturn = null;<a name="line.156"></a>
@@ -164,11 +164,11 @@
 <FONT color="green">161</FONT>                        Object toInject = matchingParameters[i].resolve(guardedContainer, this, null, injectionTypes[i],<a name="line.161"></a>
 <FONT color="green">162</FONT>                                                                                makeParameterNameImpl(injectionMembers.get(i)),<a name="line.162"></a>
 <FONT color="green">163</FONT>                                                                                useNames(), bindings[i]).resolveInstance();<a name="line.163"></a>
-<FONT color="green">164</FONT>                        Object rv = componentMonitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});<a name="line.164"></a>
+<FONT color="green">164</FONT>                        Object rv = monitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});<a name="line.164"></a>
 <FONT color="green">165</FONT>                        if (rv == ComponentMonitor.KEEP) {<a name="line.165"></a>
 <FONT color="green">166</FONT>                            long str = System.currentTimeMillis();<a name="line.166"></a>
 <FONT color="green">167</FONT>                            lastReturn = injectIntoMember(member, componentInstance, toInject);<a name="line.167"></a>
-<FONT color="green">168</FONT>                            componentMonitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);<a name="line.168"></a>
+<FONT color="green">168</FONT>                            monitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);<a name="line.168"></a>
 <FONT color="green">169</FONT>                        } else {<a name="line.169"></a>
 <FONT color="green">170</FONT>                            lastReturn = rv;<a name="line.170"></a>
 <FONT color="green">171</FONT>                        }<a name="line.171"></a>
@@ -177,23 +177,23 @@
 <FONT color="green">174</FONT>                }<a name="line.174"></a>
 <FONT color="green">175</FONT>                return memberInvocationReturn(lastReturn, member, componentInstance);<a name="line.175"></a>
 <FONT color="green">176</FONT>            } catch (InvocationTargetException e) {<a name="line.176"></a>
-<FONT color="green">177</FONT>                return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);<a name="line.177"></a>
+<FONT color="green">177</FONT>                return caughtInvocationTargetException(monitor, (Member) member, componentInstance, e);<a name="line.177"></a>
 <FONT color="green">178</FONT>            } catch (IllegalAccessException e) {<a name="line.178"></a>
-<FONT color="green">179</FONT>                return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);<a name="line.179"></a>
+<FONT color="green">179</FONT>                return caughtIllegalAccessException(monitor, (Member) member, componentInstance, e);<a name="line.179"></a>
 <FONT color="green">180</FONT>            }<a name="line.180"></a>
 <FONT color="green">181</FONT>        }<a name="line.181"></a>
 <FONT color="green">182</FONT>    <a name="line.182"></a>
 <FONT color="green">183</FONT>        protected abstract Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance);<a name="line.183"></a>
 <FONT color="green">184</FONT>    <a name="line.184"></a>
-<FONT color="green">185</FONT>        private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor componentMonitor) {<a name="line.185"></a>
+<FONT color="green">185</FONT>        private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor monitor) {<a name="line.185"></a>
 <FONT color="green">186</FONT>            long startTime = System.currentTimeMillis();<a name="line.186"></a>
-<FONT color="green">187</FONT>            Constructor constructorToUse = componentMonitor.instantiating(container,<a name="line.187"></a>
+<FONT color="green">187</FONT>            Constructor constructorToUse = monitor.instantiating(container,<a name="line.187"></a>
 <FONT color="green">188</FONT>                                                                          IterativeInjector.this, constructor);<a name="line.188"></a>
 <FONT color="green">189</FONT>            Object componentInstance;<a name="line.189"></a>
 <FONT color="green">190</FONT>            try {<a name="line.190"></a>
 <FONT color="green">191</FONT>                componentInstance = newInstance(constructorToUse, null);<a name="line.191"></a>
 <FONT color="green">192</FONT>            } catch (InvocationTargetException e) {<a name="line.192"></a>
-<FONT color="green">193</FONT>                componentMonitor.instantiationFailed(container, IterativeInjector.this, constructorToUse, e);<a name="line.193"></a>
+<FONT color="green">193</FONT>                monitor.instantiationFailed(container, IterativeInjector.this, constructorToUse, e);<a name="line.193"></a>
 <FONT color="green">194</FONT>                if (e.getTargetException() instanceof RuntimeException) {<a name="line.194"></a>
 <FONT color="green">195</FONT>                    throw (RuntimeException)e.getTargetException();<a name="line.195"></a>
 <FONT color="green">196</FONT>                } else if (e.getTargetException() instanceof Error) {<a name="line.196"></a>
@@ -201,11 +201,11 @@
 <FONT color="green">198</FONT>                }<a name="line.198"></a>
 <FONT color="green">199</FONT>                throw new PicoCompositionException(e.getTargetException());<a name="line.199"></a>
 <FONT color="green">200</FONT>            } catch (InstantiationException e) {<a name="line.200"></a>
-<FONT color="green">201</FONT>                return caughtInstantiationException(componentMonitor, constructor, e, container);<a name="line.201"></a>
+<FONT color="green">201</FONT>                return caughtInstantiationException(monitor, constructor, e, container);<a name="line.201"></a>
 <FONT color="green">202</FONT>            } catch (IllegalAccessException e) {<a name="line.202"></a>
-<FONT color="green">203</FONT>                return caughtIllegalAccessException(componentMonitor, constructor, e, container);<a name="line.203"></a>
+<FONT color="green">203</FONT>                return caughtIllegalAccessException(monitor, constructor, e, container);<a name="line.203"></a>
 <FONT color="green">204</FONT>            }<a name="line.204"></a>
-<FONT color="green">205</FONT>            componentMonitor.instantiated(container,<a name="line.205"></a>
+<FONT color="green">205</FONT>            monitor.instantiated(container,<a name="line.205"></a>
 <FONT color="green">206</FONT>                                          IterativeInjector.this,<a name="line.206"></a>
 <FONT color="green">207</FONT>                                          constructorToUse,<a name="line.207"></a>
 <FONT color="green">208</FONT>                                          componentInstance,<a name="line.208"></a>

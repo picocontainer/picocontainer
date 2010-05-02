@@ -39,8 +39,8 @@
 <FONT color="green">036</FONT>        @SuppressWarnings("serial")<a name="line.36"></a>
 <FONT color="green">037</FONT>            private static class TestAdapter&lt;T&gt; extends AbstractAdapter&lt;T&gt; {<a name="line.37"></a>
 <FONT color="green">038</FONT>            <a name="line.38"></a>
-<FONT color="green">039</FONT>            TestAdapter(Object key, Class&lt;T&gt; impl, ComponentMonitor componentMonitor) {<a name="line.39"></a>
-<FONT color="green">040</FONT>                super(key, impl, componentMonitor);<a name="line.40"></a>
+<FONT color="green">039</FONT>            TestAdapter(Object key, Class&lt;T&gt; impl, ComponentMonitor monitor) {<a name="line.39"></a>
+<FONT color="green">040</FONT>                super(key, impl, monitor);<a name="line.40"></a>
 <FONT color="green">041</FONT>            }<a name="line.41"></a>
 <FONT color="green">042</FONT>            TestAdapter(Object key, Class&lt;T&gt; impl) {<a name="line.42"></a>
 <FONT color="green">043</FONT>                super(key, impl);<a name="line.43"></a>
@@ -64,8 +64,8 @@
 <FONT color="green">061</FONT>    <a name="line.61"></a>
 <FONT color="green">062</FONT>        @SuppressWarnings("serial")<a name="line.62"></a>
 <FONT color="green">063</FONT>            private static class TestMonitoringComponentAdapter&lt;T&gt; extends AbstractAdapter&lt;T&gt; {<a name="line.63"></a>
-<FONT color="green">064</FONT>            TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {<a name="line.64"></a>
-<FONT color="green">065</FONT>                super(null, null, componentMonitor);<a name="line.65"></a>
+<FONT color="green">064</FONT>            TestMonitoringComponentAdapter(ComponentMonitor monitor) {<a name="line.64"></a>
+<FONT color="green">065</FONT>                super(null, null, monitor);<a name="line.65"></a>
 <FONT color="green">066</FONT>            }<a name="line.66"></a>
 <FONT color="green">067</FONT>    <a name="line.67"></a>
 <FONT color="green">068</FONT>            public T getComponentInstance(PicoContainer container) throws PicoCompositionException {<a name="line.68"></a>

@@ -309,22 +309,22 @@
 <FONT color="green">306</FONT>                    @SuppressWarnings("synthetic-access")<a name="line.306"></a>
 <FONT color="green">307</FONT>                    public T run() {<a name="line.307"></a>
 <FONT color="green">308</FONT>                        CtorAndAdapters&lt;T&gt; ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());<a name="line.308"></a>
-<FONT color="green">309</FONT>                        ComponentMonitor componentMonitor = currentMonitor();<a name="line.309"></a>
+<FONT color="green">309</FONT>                        ComponentMonitor monitor = currentMonitor();<a name="line.309"></a>
 <FONT color="green">310</FONT>                        Constructor&lt;T&gt; ctor = ctorAndAdapters.getConstructor();<a name="line.310"></a>
 <FONT color="green">311</FONT>                        try {<a name="line.311"></a>
 <FONT color="green">312</FONT>                            Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer);<a name="line.312"></a>
-<FONT color="green">313</FONT>                            ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);<a name="line.313"></a>
+<FONT color="green">313</FONT>                            ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);<a name="line.313"></a>
 <FONT color="green">314</FONT>                            if(ctorAndAdapters == null) {<a name="line.314"></a>
-<FONT color="green">315</FONT>                                throw new NullPointerException("Component Monitor " + componentMonitor <a name="line.315"></a>
+<FONT color="green">315</FONT>                                throw new NullPointerException("Component Monitor " + monitor <a name="line.315"></a>
 <FONT color="green">316</FONT>                                                + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);<a name="line.316"></a>
 <FONT color="green">317</FONT>                            }<a name="line.317"></a>
 <FONT color="green">318</FONT>                            long startTime = System.currentTimeMillis();<a name="line.318"></a>
 <FONT color="green">319</FONT>                            T inst = newInstance(ctor, ctorParameters);<a name="line.319"></a>
-<FONT color="green">320</FONT>                            componentMonitor.instantiated(container, ConstructorInjector.this,<a name="line.320"></a>
+<FONT color="green">320</FONT>                            monitor.instantiated(container, ConstructorInjector.this,<a name="line.320"></a>
 <FONT color="green">321</FONT>                                    ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);<a name="line.321"></a>
 <FONT color="green">322</FONT>                            return inst;<a name="line.322"></a>
 <FONT color="green">323</FONT>                        } catch (InvocationTargetException e) {<a name="line.323"></a>
-<FONT color="green">324</FONT>                            componentMonitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);<a name="line.324"></a>
+<FONT color="green">324</FONT>                            monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);<a name="line.324"></a>
 <FONT color="green">325</FONT>                            if (e.getTargetException() instanceof RuntimeException) {<a name="line.325"></a>
 <FONT color="green">326</FONT>                                throw (RuntimeException) e.getTargetException();<a name="line.326"></a>
 <FONT color="green">327</FONT>                            } else if (e.getTargetException() instanceof Error) {<a name="line.327"></a>
@@ -332,9 +332,9 @@
 <FONT color="green">329</FONT>                            }<a name="line.329"></a>
 <FONT color="green">330</FONT>                            throw new PicoCompositionException(e.getTargetException());<a name="line.330"></a>
 <FONT color="green">331</FONT>                        } catch (InstantiationException e) {<a name="line.331"></a>
-<FONT color="green">332</FONT>                            return caughtInstantiationException(componentMonitor, ctor, e, container);<a name="line.332"></a>
+<FONT color="green">332</FONT>                            return caughtInstantiationException(monitor, ctor, e, container);<a name="line.332"></a>
 <FONT color="green">333</FONT>                        } catch (IllegalAccessException e) {<a name="line.333"></a>
-<FONT color="green">334</FONT>                            return caughtIllegalAccessException(componentMonitor, ctor, e, container);<a name="line.334"></a>
+<FONT color="green">334</FONT>                            return caughtIllegalAccessException(monitor, ctor, e, container);<a name="line.334"></a>
 <FONT color="green">335</FONT>    <a name="line.335"></a>
 <FONT color="green">336</FONT>                        }<a name="line.336"></a>
 <FONT color="green">337</FONT>                    }<a name="line.337"></a>

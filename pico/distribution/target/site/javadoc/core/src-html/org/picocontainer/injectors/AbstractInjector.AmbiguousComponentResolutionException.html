@@ -151,48 +151,48 @@
 <FONT color="green">148</FONT>        }<a name="line.148"></a>
 <FONT color="green">149</FONT>        /**<a name="line.149"></a>
 <FONT color="green">150</FONT>         * inform monitor about component instantiation failure<a name="line.150"></a>
-<FONT color="green">151</FONT>         * @param componentMonitor<a name="line.151"></a>
+<FONT color="green">151</FONT>         * @param monitor<a name="line.151"></a>
 <FONT color="green">152</FONT>         * @param constructor<a name="line.152"></a>
 <FONT color="green">153</FONT>         * @param e<a name="line.153"></a>
 <FONT color="green">154</FONT>         * @param container<a name="line.154"></a>
 <FONT color="green">155</FONT>         * @return<a name="line.155"></a>
 <FONT color="green">156</FONT>         */<a name="line.156"></a>
-<FONT color="green">157</FONT>        protected T caughtInstantiationException(final ComponentMonitor componentMonitor,<a name="line.157"></a>
+<FONT color="green">157</FONT>        protected T caughtInstantiationException(final ComponentMonitor monitor,<a name="line.157"></a>
 <FONT color="green">158</FONT>                                                    final Constructor&lt;T&gt; constructor,<a name="line.158"></a>
 <FONT color="green">159</FONT>                                                    final InstantiationException e, final PicoContainer container) {<a name="line.159"></a>
 <FONT color="green">160</FONT>            // can't get here because checkConcrete() will catch it earlier, but see PICO-191<a name="line.160"></a>
-<FONT color="green">161</FONT>            componentMonitor.instantiationFailed(container, this, constructor, e);<a name="line.161"></a>
+<FONT color="green">161</FONT>            monitor.instantiationFailed(container, this, constructor, e);<a name="line.161"></a>
 <FONT color="green">162</FONT>            throw new PicoCompositionException("Should never get here");<a name="line.162"></a>
 <FONT color="green">163</FONT>        }<a name="line.163"></a>
 <FONT color="green">164</FONT>    <a name="line.164"></a>
 <FONT color="green">165</FONT>        /**<a name="line.165"></a>
 <FONT color="green">166</FONT>         * inform monitor about access exception.<a name="line.166"></a>
-<FONT color="green">167</FONT>         * @param componentMonitor<a name="line.167"></a>
+<FONT color="green">167</FONT>         * @param monitor<a name="line.167"></a>
 <FONT color="green">168</FONT>         * @param constructor<a name="line.168"></a>
 <FONT color="green">169</FONT>         * @param e<a name="line.169"></a>
 <FONT color="green">170</FONT>         * @param container<a name="line.170"></a>
 <FONT color="green">171</FONT>         * @return<a name="line.171"></a>
 <FONT color="green">172</FONT>         */<a name="line.172"></a>
-<FONT color="green">173</FONT>        protected T caughtIllegalAccessException(final ComponentMonitor componentMonitor,<a name="line.173"></a>
+<FONT color="green">173</FONT>        protected T caughtIllegalAccessException(final ComponentMonitor monitor,<a name="line.173"></a>
 <FONT color="green">174</FONT>                                                    final Constructor&lt;T&gt; constructor,<a name="line.174"></a>
 <FONT color="green">175</FONT>                                                    final IllegalAccessException e, final PicoContainer container) {<a name="line.175"></a>
 <FONT color="green">176</FONT>            // can't get here because either filtered or access mode set<a name="line.176"></a>
-<FONT color="green">177</FONT>            componentMonitor.instantiationFailed(container, this, constructor, e);<a name="line.177"></a>
+<FONT color="green">177</FONT>            monitor.instantiationFailed(container, this, constructor, e);<a name="line.177"></a>
 <FONT color="green">178</FONT>            throw new PicoCompositionException(e);<a name="line.178"></a>
 <FONT color="green">179</FONT>        }<a name="line.179"></a>
 <FONT color="green">180</FONT>    <a name="line.180"></a>
 <FONT color="green">181</FONT>        /**<a name="line.181"></a>
 <FONT color="green">182</FONT>         * inform monitor about exception while instantiating component<a name="line.182"></a>
-<FONT color="green">183</FONT>         * @param componentMonitor<a name="line.183"></a>
+<FONT color="green">183</FONT>         * @param monitor<a name="line.183"></a>
 <FONT color="green">184</FONT>         * @param member<a name="line.184"></a>
 <FONT color="green">185</FONT>         * @param componentInstance<a name="line.185"></a>
 <FONT color="green">186</FONT>         * @param e<a name="line.186"></a>
 <FONT color="green">187</FONT>         * @return <a name="line.187"></a>
 <FONT color="green">188</FONT>         */<a name="line.188"></a>
-<FONT color="green">189</FONT>        protected T caughtInvocationTargetException(final ComponentMonitor componentMonitor,<a name="line.189"></a>
+<FONT color="green">189</FONT>        protected T caughtInvocationTargetException(final ComponentMonitor monitor,<a name="line.189"></a>
 <FONT color="green">190</FONT>                                                       final Member member,<a name="line.190"></a>
 <FONT color="green">191</FONT>                                                       final Object componentInstance, final InvocationTargetException e) {<a name="line.191"></a>
-<FONT color="green">192</FONT>            componentMonitor.invocationFailed(member, componentInstance, e);<a name="line.192"></a>
+<FONT color="green">192</FONT>            monitor.invocationFailed(member, componentInstance, e);<a name="line.192"></a>
 <FONT color="green">193</FONT>            if (e.getTargetException() instanceof RuntimeException) {<a name="line.193"></a>
 <FONT color="green">194</FONT>                throw (RuntimeException) e.getTargetException();<a name="line.194"></a>
 <FONT color="green">195</FONT>            } else if (e.getTargetException() instanceof Error) {<a name="line.195"></a>
@@ -201,10 +201,10 @@
 <FONT color="green">198</FONT>            throw new PicoCompositionException(e.getTargetException());<a name="line.198"></a>
 <FONT color="green">199</FONT>        }<a name="line.199"></a>
 <FONT color="green">200</FONT>    <a name="line.200"></a>
-<FONT color="green">201</FONT>        protected Object caughtIllegalAccessException(final ComponentMonitor componentMonitor,<a name="line.201"></a>
+<FONT color="green">201</FONT>        protected Object caughtIllegalAccessException(final ComponentMonitor monitor,<a name="line.201"></a>
 <FONT color="green">202</FONT>                                                    final Member member,<a name="line.202"></a>
 <FONT color="green">203</FONT>                                                    final Object componentInstance, final IllegalAccessException e) {<a name="line.203"></a>
-<FONT color="green">204</FONT>            componentMonitor.invocationFailed(member, componentInstance, e);<a name="line.204"></a>
+<FONT color="green">204</FONT>            monitor.invocationFailed(member, componentInstance, e);<a name="line.204"></a>
 <FONT color="green">205</FONT>            throw new PicoCompositionException(e);<a name="line.205"></a>
 <FONT color="green">206</FONT>        }<a name="line.206"></a>
 <FONT color="green">207</FONT>    <a name="line.207"></a>

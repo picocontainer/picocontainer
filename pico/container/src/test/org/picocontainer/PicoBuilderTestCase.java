@@ -307,7 +307,7 @@ public class PicoBuilderTestCase {
         public CustomComponentFactory(SomeContainerDependency someDependency) {
         }
 
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+        public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
                                                        LifecycleStrategy lifecycleStrategy,
                                                        Properties componentProps,
                                                        Object key,

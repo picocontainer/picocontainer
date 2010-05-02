@@ -33,19 +33,19 @@
 <FONT color="green">030</FONT>    @SuppressWarnings("serial")<a name="line.30"></a>
 <FONT color="green">031</FONT>    public final class PropertyApplying extends AbstractBehaviorFactory {<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
-<FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.33"></a>
+<FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.33"></a>
 <FONT color="green">034</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,<a name="line.34"></a>
 <FONT color="green">035</FONT>                Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.35"></a>
-<FONT color="green">036</FONT>            ComponentAdapter&lt;?&gt; decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.36"></a>
+<FONT color="green">036</FONT>            ComponentAdapter&lt;?&gt; decoratedAdapter = super.createComponentAdapter(monitor, lifecycleStrategy,<a name="line.36"></a>
 <FONT color="green">037</FONT>                    componentProps, key, impl, parameters);<a name="line.37"></a>
 <FONT color="green">038</FONT>            removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);<a name="line.38"></a>
-<FONT color="green">039</FONT>            return componentMonitor.newBehavior(new PropertyApplicator(decoratedAdapter));<a name="line.39"></a>
+<FONT color="green">039</FONT>            return monitor.newBehavior(new PropertyApplicator(decoratedAdapter));<a name="line.39"></a>
 <FONT color="green">040</FONT>        }<a name="line.40"></a>
 <FONT color="green">041</FONT>    <a name="line.41"></a>
-<FONT color="green">042</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.42"></a>
+<FONT color="green">042</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor monitor,<a name="line.42"></a>
 <FONT color="green">043</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProps, ComponentAdapter&lt;T&gt; adapter) {<a name="line.43"></a>
 <FONT color="green">044</FONT>            removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);<a name="line.44"></a>
-<FONT color="green">045</FONT>            return componentMonitor.newBehavior(new PropertyApplicator(super.addComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.45"></a>
+<FONT color="green">045</FONT>            return monitor.newBehavior(new PropertyApplicator(super.addComponentAdapter(monitor, lifecycleStrategy,<a name="line.45"></a>
 <FONT color="green">046</FONT>                    componentProps, adapter)));<a name="line.46"></a>
 <FONT color="green">047</FONT>        }<a name="line.47"></a>
 <FONT color="green">048</FONT>    }<a name="line.48"></a>

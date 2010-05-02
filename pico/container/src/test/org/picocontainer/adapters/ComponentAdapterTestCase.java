@@ -36,8 +36,8 @@ public class ComponentAdapterTestCase {
     @SuppressWarnings("serial")
 	private static class TestAdapter<T> extends AbstractAdapter<T> {
     	
-        TestAdapter(Object key, Class<T> impl, ComponentMonitor componentMonitor) {
-            super(key, impl, componentMonitor);
+        TestAdapter(Object key, Class<T> impl, ComponentMonitor monitor) {
+            super(key, impl, monitor);
         }
         TestAdapter(Object key, Class<T> impl) {
             super(key, impl);
@@ -56,8 +56,8 @@ public class ComponentAdapterTestCase {
 
     @SuppressWarnings("serial")
 	private static class TestMonitoringComponentAdapter<T> extends AbstractAdapter<T> {
-        TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
-            super(null, null, componentMonitor);
+        TestMonitoringComponentAdapter(ComponentMonitor monitor) {
+            super(null, null, monitor);
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {

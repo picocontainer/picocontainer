@@ -29,21 +29,21 @@
 <FONT color="green">026</FONT>    @SuppressWarnings("serial")<a name="line.26"></a>
 <FONT color="green">027</FONT>    public class ImplementationHiding extends AbstractBehaviorFactory {<a name="line.27"></a>
 <FONT color="green">028</FONT>    <a name="line.28"></a>
-<FONT color="green">029</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class impl, Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
+<FONT color="green">029</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class impl, Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
 <FONT color="green">030</FONT>    <a name="line.30"></a>
 <FONT color="green">031</FONT>            removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
-<FONT color="green">033</FONT>            ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.33"></a>
+<FONT color="green">033</FONT>            ComponentAdapter componentAdapter = super.createComponentAdapter(monitor, lifecycleStrategy,<a name="line.33"></a>
 <FONT color="green">034</FONT>                                                                             componentProps, key, impl, parameters);<a name="line.34"></a>
 <FONT color="green">035</FONT>            if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {<a name="line.35"></a>
 <FONT color="green">036</FONT>                return componentAdapter;<a name="line.36"></a>
 <FONT color="green">037</FONT>            }<a name="line.37"></a>
 <FONT color="green">038</FONT>            removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);<a name="line.38"></a>
-<FONT color="green">039</FONT>            return componentMonitor.newBehavior(new HiddenImplementation(componentAdapter));<a name="line.39"></a>
+<FONT color="green">039</FONT>            return monitor.newBehavior(new HiddenImplementation(componentAdapter));<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        }<a name="line.41"></a>
 <FONT color="green">042</FONT>    <a name="line.42"></a>
-<FONT color="green">043</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.43"></a>
+<FONT color="green">043</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor monitor,<a name="line.43"></a>
 <FONT color="green">044</FONT>                                                    LifecycleStrategy lifecycleStrategy,<a name="line.44"></a>
 <FONT color="green">045</FONT>                                                    Properties componentProps,<a name="line.45"></a>
 <FONT color="green">046</FONT>                                                    ComponentAdapter adapter) {<a name="line.46"></a>
@@ -51,7 +51,7 @@
 <FONT color="green">048</FONT>                return adapter;<a name="line.48"></a>
 <FONT color="green">049</FONT>            }<a name="line.49"></a>
 <FONT color="green">050</FONT>            removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);<a name="line.50"></a>
-<FONT color="green">051</FONT>            return componentMonitor.newBehavior(new HiddenImplementation(super.addComponentAdapter(componentMonitor,<a name="line.51"></a>
+<FONT color="green">051</FONT>            return monitor.newBehavior(new HiddenImplementation(super.addComponentAdapter(monitor,<a name="line.51"></a>
 <FONT color="green">052</FONT>                                                                              lifecycleStrategy,<a name="line.52"></a>
 <FONT color="green">053</FONT>                                                                              componentProps,<a name="line.53"></a>
 <FONT color="green">054</FONT>                                                                              adapter)));<a name="line.54"></a>

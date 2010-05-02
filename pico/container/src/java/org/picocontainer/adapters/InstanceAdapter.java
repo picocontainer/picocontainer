@@ -45,8 +45,8 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     private boolean started;
 
 
-    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
-        super(key, getInstanceClass(componentInstance), componentMonitor);
+    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor monitor) throws PicoCompositionException {
+        super(key, getInstanceClass(componentInstance), monitor);
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;
     }
@@ -59,8 +59,8 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
         this(key, componentInstance, lifecycleStrategy, new NullComponentMonitor());
     }
 
-    public InstanceAdapter(Object key, T componentInstance, ComponentMonitor componentMonitor) {
-        this(key, componentInstance, new NullLifecycleStrategy(), componentMonitor);
+    public InstanceAdapter(Object key, T componentInstance, ComponentMonitor monitor) {
+        this(key, componentInstance, new NullLifecycleStrategy(), monitor);
     }
 
     private static Class getInstanceClass(Object componentInstance) {

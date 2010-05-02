@@ -76,8 +76,8 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
 			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent,
-			final ComponentMonitor componentMonitor) {
-		super(parent, lifecycleStrategy, componentMonitor, componentFactory);
+			final ComponentMonitor monitor) {
+		super(parent, lifecycleStrategy, monitor, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,

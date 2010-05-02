@@ -44,7 +44,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
             instance = PropertyApplying.PropertyApplicator.convert(className, element.getFirstChild().getNodeValue(), classLoader);
         } else {
 
-            //TODO componentMonitor.newBehavior( .. ) stuff
+            //TODO monitor.newBehavior( .. ) stuff
 
             PropertyApplying.PropertyApplicator propertyAdapter =
                     new PropertyApplying.PropertyApplicator(createComponentAdapter(className, classLoader));

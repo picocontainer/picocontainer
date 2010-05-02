@@ -90,10 +90,10 @@ public class MethodInjector<T> extends MultiArgMemberInjector<T> {
                 public Object run() {
                     List<Method> methods = getInjectorMethods();
                     T inst = null;
-                    ComponentMonitor componentMonitor = currentMonitor();
+                    ComponentMonitor monitor = currentMonitor();
                     Method lastMethod = null;
                     try {
-                        componentMonitor.instantiating(container, MethodInjector.this, null);
+                        monitor.instantiating(container, MethodInjector.this, null);
                         long startTime = System.currentTimeMillis();
                         Object[] methodParameters = null;
                         inst = getComponentImplementation().newInstance();
@@ -102,13 +102,13 @@ public class MethodInjector<T> extends MultiArgMemberInjector<T> {
                             methodParameters = getMemberArguments(guardedContainer, method, into);
                             invokeMethod(method, methodParameters, inst, container);
                         }
-                        componentMonitor.instantiated(container, MethodInjector.this,
+                        monitor.instantiated(container, MethodInjector.this,
                                                       null, inst, methodParameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, null, e, container);
+                        return caughtInstantiationException(monitor, null, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, lastMethod, inst, e);
+                        return caughtIllegalAccessException(monitor, lastMethod, inst, e);
 
                     }
                 }

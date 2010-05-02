@@ -19,12 +19,12 @@ public class MultiInjector extends CompositeInjector {
     public MultiInjector(Object key,
                          Class impl,
                          Parameter[] parameters,
-                         ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
-        super(key, impl, parameters, componentMonitor, useNames,
-                componentMonitor.newInjector(new ConstructorInjector(key, impl, parameters, componentMonitor, useNames)),
-                componentMonitor.newInjector(new SetterInjector(key, impl, parameters, componentMonitor, setterPrefix, useNames)),
-                componentMonitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, componentMonitor, useNames, Inject.class)),
-                componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, useNames, Inject.class)));
+                         ComponentMonitor monitor, String setterPrefix, boolean useNames) {
+        super(key, impl, parameters, monitor, useNames,
+                monitor.newInjector(new ConstructorInjector(key, impl, parameters, monitor, useNames)),
+                monitor.newInjector(new SetterInjector(key, impl, parameters, monitor, setterPrefix, useNames)),
+                monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, useNames, Inject.class)),
+                monitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, monitor, useNames, Inject.class)));
 
     }
 

@@ -41,7 +41,7 @@ import org.picocontainer.containers.TransientPicoContainer;
 public class WriterComponentMonitorTestCase  {
 	
     private Writer out;
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
     private static final String NL = System.getProperty("line.separator");
     private Constructor constructor;
     private Method method;
@@ -51,12 +51,12 @@ public class WriterComponentMonitorTestCase  {
         out = new StringWriter();
         constructor = getClass().getConstructor((Class[])null);
         method = getClass().getDeclaredMethod("setUp", (Class[])null);
-        componentMonitor = new WriterComponentMonitor(out);
+        monitor = new WriterComponentMonitor(out);
     }
 
     @SuppressWarnings("unchecked")
     @Test public void testShouldTraceInstantiating() {
-        componentMonitor.instantiating(null, null, constructor);
+        monitor.instantiating(null, null, constructor);
         assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)) +NL,  out.toString());
     }
 
@@ -64,7 +64,7 @@ public class WriterComponentMonitorTestCase  {
     @Test public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
-        componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
+        monitor.instantiated(null, null, constructor, instantiated, injected, 543);
         Assert.assertEquals(format(ComponentMonitorHelper.INSTANTIATED,
                                                    ctorToString(constructor),
                                                    (long)543,
@@ -73,26 +73,26 @@ public class WriterComponentMonitorTestCase  {
 
     @SuppressWarnings("unchecked")
     @Test public void testShouldTraceInstantiationFailed() {
-        componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
+        monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INSTANTIATION_FAILED,
                                                    ctorToString(constructor), "doh") +NL,  out.toString());
     }
 
     @Test public void testShouldTraceInvoking() {
-        componentMonitor.invoking(null, null, method, this, new Object[0]);
+        monitor.invoking(null, null, method, this, new Object[0]);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKING,
                                                    methodToString(method), this) +NL,  out.toString());
     }
 
     @Test public void testShouldTraceInvoked() {
-        componentMonitor.invoked(null, null, method, this, 543, new Object[0], null);
+        monitor.invoked(null, null, method, this, 543, new Object[0], null);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKED,
                                                    methodToString(method), this,
                                                    (long)543) +NL,  out.toString());
     }
 
     @Test public void testShouldTraceInvocatiationFailed() {
-        componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
+        monitor.invocationFailed(method, this, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INVOCATION_FAILED,
                                                    methodToString(method), this, "doh") +NL,  out.toString());
     }
@@ -100,7 +100,7 @@ public class WriterComponentMonitorTestCase  {
     @SuppressWarnings("unchecked")
     @Test public void testShouldTraceLifecycleInvocationFailed() {
         try {
-            componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
+            monitor.lifecycleInvocationFailed(new TransientPicoContainer(),
                                                        new AbstractAdapter(Map.class, HashMap.class) {
 
                                                            public Object getComponentInstance(PicoContainer container, Type into)
@@ -130,7 +130,7 @@ public class WriterComponentMonitorTestCase  {
 
     @Test public void testNoComponent() {
         
-        componentMonitor.noComponentFound(new TransientPicoContainer(), "foo");
+        monitor.noComponentFound(new TransientPicoContainer(), "foo");
         Assert.assertEquals(format(ComponentMonitorHelper.NO_COMPONENT,
                                                    "foo") +NL,  out.toString());
     }

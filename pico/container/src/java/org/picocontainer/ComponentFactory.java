@@ -29,7 +29,7 @@ public interface ComponentFactory {
     /**
      * Create a new component adapter based on the specified arguments.
      * 
-     * @param componentMonitor the component monitor
+     * @param monitor the component monitor
      * @param lifecycleStrategy te lifecycle strategy
      * @param componentProps the component properties
      * @param key the key to be associated with this adapter. This
@@ -52,7 +52,7 @@ public interface ComponentFactory {
      *             results in a {@link PicoCompositionException}.
      * @return The component adapter
      */
-    <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                             LifecycleStrategy lifecycleStrategy,
                                             Properties componentProps,
                                             Object key,

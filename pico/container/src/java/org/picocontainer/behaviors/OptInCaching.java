@@ -36,11 +36,11 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class OptInCaching extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
     			Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return componentMonitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(componentMonitor,
+            return monitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(monitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProps,
                                                                                         key,
@@ -48,23 +48,23 @@ public class OptInCaching extends AbstractBehavior {
                                                                                         parameters)));
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
-        return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return super.createComponentAdapter(monitor, lifecycleStrategy,
                                             componentProps, key, impl, parameters);
     }
 
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return componentMonitor.newBehavior(new Caching.Cached<T>(super.addComponentAdapter(componentMonitor,
+            return monitor.newBehavior(new Caching.Cached<T>(super.addComponentAdapter(monitor,
                                                                  lifecycleStrategy,
                                                                  componentProps,
                                                                  adapter)));
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
-        return super.addComponentAdapter(componentMonitor,
+        return super.addComponentAdapter(monitor,
                                          lifecycleStrategy,
                                          componentProps,
                                          adapter);

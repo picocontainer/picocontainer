@@ -85,7 +85,7 @@
 <FONT color="green">082</FONT>            }<a name="line.82"></a>
 <FONT color="green">083</FONT>    <a name="line.83"></a>
 <FONT color="green">084</FONT>            if (properties != null) {<a name="line.84"></a>
-<FONT color="green">085</FONT>                ComponentMonitor componentMonitor = currentMonitor();<a name="line.85"></a>
+<FONT color="green">085</FONT>                ComponentMonitor monitor = currentMonitor();<a name="line.85"></a>
 <FONT color="green">086</FONT>                Set&lt;String&gt; propertyNames = properties.keySet();<a name="line.86"></a>
 <FONT color="green">087</FONT>                for (String propertyName : propertyNames) {<a name="line.87"></a>
 <FONT color="green">088</FONT>                    final Object propertyValue = properties.get(propertyName);<a name="line.88"></a>
@@ -94,14 +94,14 @@
 <FONT color="green">091</FONT>                    Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);<a name="line.91"></a>
 <FONT color="green">092</FONT>    <a name="line.92"></a>
 <FONT color="green">093</FONT>                    try {<a name="line.93"></a>
-<FONT color="green">094</FONT>                        componentMonitor.invoking(container, PropertyApplicator.this, setter, componentInstance, new Object[] {valueToInvoke});<a name="line.94"></a>
+<FONT color="green">094</FONT>                        monitor.invoking(container, PropertyApplicator.this, setter, componentInstance, new Object[] {valueToInvoke});<a name="line.94"></a>
 <FONT color="green">095</FONT>                        long startTime = System.currentTimeMillis();<a name="line.95"></a>
 <FONT color="green">096</FONT>                        setter.invoke(componentInstance, valueToInvoke);<a name="line.96"></a>
-<FONT color="green">097</FONT>                        componentMonitor.invoked(container,<a name="line.97"></a>
+<FONT color="green">097</FONT>                        monitor.invoked(container,<a name="line.97"></a>
 <FONT color="green">098</FONT>                                                 PropertyApplicator.this,<a name="line.98"></a>
 <FONT color="green">099</FONT>                                                 setter, componentInstance, System.currentTimeMillis() - startTime, new Object[] {valueToInvoke}, null);<a name="line.99"></a>
 <FONT color="green">100</FONT>                    } catch (final Exception e) {<a name="line.100"></a>
-<FONT color="green">101</FONT>                        componentMonitor.invocationFailed(setter, componentInstance, e);<a name="line.101"></a>
+<FONT color="green">101</FONT>                        monitor.invocationFailed(setter, componentInstance, e);<a name="line.101"></a>
 <FONT color="green">102</FONT>                        throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);<a name="line.102"></a>
 <FONT color="green">103</FONT>                    }<a name="line.103"></a>
 <FONT color="green">104</FONT>                }<a name="line.104"></a>

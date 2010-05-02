@@ -276,9 +276,9 @@ public class ProviderTestCase {
 
     @Test
     public void providersCanHaveLifecyclesToo() {
-        ComponentMonitor componentMonitor = new LifecycleComponentMonitor();
+        ComponentMonitor monitor = new LifecycleComponentMonitor();
         LifecycleStrategy lifecycleStrategy = new
-                ReflectionLifecycleStrategy(componentMonitor);
+                ReflectionLifecycleStrategy(monitor);
 
         MutablePicoContainer pico = new DefaultPicoContainer(null, lifecycleStrategy, new
                 ThreadCaching());

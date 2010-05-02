@@ -54,13 +54,13 @@ public class PicoBuilder {
 
     private PicoContainer parentContainer;
     private Class<? extends MutablePicoContainer> mpcClass = DefaultPicoContainer.class;
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
     private List<Object> containerComps = new ArrayList<Object>();
     private boolean addChildToParent;
     private LifecycleStrategy lifecycleStrategy;
     private final Stack<Object> behaviors = new Stack<Object>();
     private final List<InjectionType> injectors = new ArrayList<InjectionType>();
-    private Class<? extends ComponentMonitor> componentMonitorClass = NullComponentMonitor.class;
+    private Class<? extends ComponentMonitor> monitorClass = NullComponentMonitor.class;
     private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
 
 
@@ -117,7 +117,7 @@ public class PicoBuilder {
 
 
     public PicoBuilder withConsoleMonitor() {
-        componentMonitorClass =  ConsoleComponentMonitor.class;
+        monitorClass =  ConsoleComponentMonitor.class;
         return this;
     }
 
@@ -129,8 +129,8 @@ public class PicoBuilder {
             throw new ClassCastException(cmClass.getName() + " is not a " + ComponentMonitor.class.getName());
 
         }
-        componentMonitorClass = cmClass;
-        componentMonitor = null;
+        monitorClass = cmClass;
+        monitor = null;
         return this;
     }
 
@@ -174,10 +174,10 @@ public class PicoBuilder {
     }
 
     private void buildComponentMonitor(DefaultPicoContainer tempContainer) {
-        if (componentMonitorClass == null) {
-            tempContainer.addComponent(ComponentMonitor.class, componentMonitor);
+        if (monitorClass == null) {
+            tempContainer.addComponent(ComponentMonitor.class, monitor);
         } else {
-            tempContainer.addComponent(ComponentMonitor.class, componentMonitorClass);
+            tempContainer.addComponent(ComponentMonitor.class, monitorClass);
         }
     }
 
@@ -288,9 +288,9 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withMonitor(ComponentMonitor componentMonitor) {
-        this.componentMonitor = componentMonitor;
-        componentMonitorClass = null;
+    public PicoBuilder withMonitor(ComponentMonitor monitor) {
+        this.monitor = monitor;
+        monitorClass = null;
         return this;
     }
 

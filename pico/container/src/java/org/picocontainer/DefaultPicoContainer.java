@@ -117,7 +117,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Component monitor instance.  Receives event callbacks.
      */
-    protected ComponentMonitor componentMonitor;
+    protected ComponentMonitor monitor;
 
     /**
      * Map used for looking up component adapters by their key.
@@ -204,7 +204,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         this(parent, lifecycleStrategy, new NullComponentMonitor(), componentFactories);
     }
 
-    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor componentMonitor, final ComponentFactory... componentFactories) {
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor monitor, final ComponentFactory... componentFactories) {
         if (componentFactories.length == 0) {
             throw new NullPointerException("at least one componentFactory");
         }
@@ -232,7 +232,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
             this.parent = new ImmutablePicoContainer(parent);
         }
-        this.componentMonitor = componentMonitor;
+        this.monitor = monitor;
     }
 
     /**
@@ -297,7 +297,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             }
         }
         if (adapter == null) {
-            Object inst = componentMonitor.noComponentFound(this, key);
+            Object inst = monitor.noComponentFound(this, key);
             if (inst != null) {
                 adapter = new LateInstance(key, inst);
             }
@@ -481,7 +481,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         Properties tmpProperties = (Properties) properties.clone();
         if (AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof Behavior) {
             MutablePicoContainer container = addAdapterInternal(((Behavior) componentFactory).addComponentAdapter(
-                    componentMonitor,
+                    monitor,
                     lifecycleStrategy,
                     tmpProperties,
                     componentAdapter));
@@ -529,7 +529,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     public MutablePicoContainer addConfig(final String name, final Object val) {
-        return addAdapterInternal(new InstanceAdapter<Object>(name, val, lifecycleStrategy, componentMonitor));
+        return addAdapterInternal(new InstanceAdapter<Object>(name, val, lifecycleStrategy, monitor));
     }
 
 
@@ -559,7 +559,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
         if (implOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
-            ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(componentMonitor,
+            ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(monitor,
                     lifecycleStrategy,
                     tmpProperties,
                     key,
@@ -574,7 +574,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapterInternal(adapter);
         } else {
             ComponentAdapter<?> adapter =
-                    new InstanceAdapter<Object>(key, implOrInstance, lifecycleStrategy, componentMonitor);
+                    new InstanceAdapter<Object>(key, implOrInstance, lifecycleStrategy, monitor);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);
                 potentiallyStartAdapter(adapter);
@@ -868,7 +868,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(this, lifecycleStrategy, componentMonitor, componentFactory);
+        DefaultPicoContainer pc = new DefaultPicoContainer(this, lifecycleStrategy, monitor, componentFactory);
         addChildContainer(pc);
         return pc;
     }
@@ -974,7 +974,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * {@inheritDoc}
      */
     public void changeMonitor(final ComponentMonitor monitor) {
-        this.componentMonitor = monitor;
+        this.monitor = monitor;
         if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
         }
@@ -998,7 +998,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @throws PicoCompositionException if no component monitor is found in container or its children
      */
     public ComponentMonitor currentMonitor() {
-        return componentMonitor;
+        return monitor;
     }
 
     /**

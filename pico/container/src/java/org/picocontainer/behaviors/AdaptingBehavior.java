@@ -31,7 +31,7 @@ import java.util.Properties;
 public class AdaptingBehavior implements Behavior, Serializable {
 
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProps,
                                                    Object key,
@@ -55,7 +55,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
             lastFactory = componentFactory;
         }
 
-        return lastFactory.createComponentAdapter(componentMonitor,
+        return lastFactory.createComponentAdapter(monitor,
                                                   lifecycleStrategy,
                                                   componentProps,
                                                   key,
@@ -64,7 +64,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public ComponentAdapter addComponentAdapter(ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProps,
                                                 ComponentAdapter adapter) {
@@ -88,7 +88,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
         }
 
 
-        return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
+        return lastFactory.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);
     }
 
     public void verify(PicoContainer container) {

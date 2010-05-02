@@ -383,7 +383,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		}
 
 		public ComponentAdapter createComponentAdapter(
-				ComponentMonitor componentMonitor,
+				ComponentMonitor monitor,
 				LifecycleStrategy lifecycleStrategy,
 				Properties componentProps, Object key,
 				Class impl, Parameter... parameters)

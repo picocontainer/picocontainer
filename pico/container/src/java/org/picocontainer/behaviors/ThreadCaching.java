@@ -24,7 +24,7 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ThreadCaching extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProps,
                                                           Object key,
@@ -32,7 +32,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                           Parameter... parameters)
         throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
-            return super.createComponentAdapter(componentMonitor,
+            return super.createComponentAdapter(monitor,
                                                 lifecycleStrategy,
                                                 componentProps,
                                                 key,
@@ -40,7 +40,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                 parameters);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return componentMonitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(monitor,
                                                                 lifecycleStrategy,
                                                                 componentProps,
                                                                 key,
@@ -49,15 +49,15 @@ public class ThreadCaching extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
                                                        LifecycleStrategy lifecycleStrategy,
                                                        Properties componentProps,
                                                        ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
-            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
+            return super.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return componentMonitor.newBehavior(new ThreadCached<T>(super.addComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new ThreadCached<T>(super.addComponentAdapter(monitor,
                                                              lifecycleStrategy,
                                                              componentProps,
                                                              adapter)));

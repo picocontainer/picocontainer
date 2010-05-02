@@ -362,7 +362,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "scripted = builder.container(componentMonitor: monitor) {\n" +
+                "scripted = builder.container(monitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -384,7 +384,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "scripted = builder.container(componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
+                "scripted = builder.container(componentFactory: new Caching().wrap(new ConstructorInjection()), monitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -404,7 +404,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "scripted = builder.container(parent:parent, componentMonitor: monitor) {\n" +
+                "scripted = builder.container(parent:parent, monitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -426,7 +426,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "scripted = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
+                "scripted = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjection()), monitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");

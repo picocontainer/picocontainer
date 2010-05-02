@@ -28,13 +28,13 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class Intercepting extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
                                                           Parameter... parameters) throws PicoCompositionException {
-        return componentMonitor.newBehavior(new Intercepted<T>(super.createComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new Intercepted<T>(super.createComponentAdapter(monitor,
                 lifecycleStrategy, componentProps, key,
                 impl, parameters)));
     }

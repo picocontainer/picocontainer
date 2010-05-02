@@ -26,7 +26,7 @@
 <FONT color="green">023</FONT>    @SuppressWarnings("serial")<a name="line.23"></a>
 <FONT color="green">024</FONT>    public class ThreadCaching extends AbstractBehaviorFactory {<a name="line.24"></a>
 <FONT color="green">025</FONT>    <a name="line.25"></a>
-<FONT color="green">026</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.26"></a>
+<FONT color="green">026</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.26"></a>
 <FONT color="green">027</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.27"></a>
 <FONT color="green">028</FONT>                                                              Properties componentProps,<a name="line.28"></a>
 <FONT color="green">029</FONT>                                                              Object key,<a name="line.29"></a>
@@ -35,7 +35,7 @@
 <FONT color="green">032</FONT>            throws PicoCompositionException<a name="line.32"></a>
 <FONT color="green">033</FONT>        {<a name="line.33"></a>
 <FONT color="green">034</FONT>            if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {<a name="line.34"></a>
-<FONT color="green">035</FONT>                return super.createComponentAdapter(componentMonitor,<a name="line.35"></a>
+<FONT color="green">035</FONT>                return super.createComponentAdapter(monitor,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                    lifecycleStrategy,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                    componentProps,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                    key,<a name="line.38"></a>
@@ -43,7 +43,7 @@
 <FONT color="green">040</FONT>                                                    parameters);<a name="line.40"></a>
 <FONT color="green">041</FONT>            }<a name="line.41"></a>
 <FONT color="green">042</FONT>            removePropertiesIfPresent(componentProps, Characteristics.CACHE);<a name="line.42"></a>
-<FONT color="green">043</FONT>            return componentMonitor.newBehavior(new ThreadCached&lt;T&gt;(super.createComponentAdapter(componentMonitor,<a name="line.43"></a>
+<FONT color="green">043</FONT>            return monitor.newBehavior(new ThreadCached&lt;T&gt;(super.createComponentAdapter(monitor,<a name="line.43"></a>
 <FONT color="green">044</FONT>                                                                    lifecycleStrategy,<a name="line.44"></a>
 <FONT color="green">045</FONT>                                                                    componentProps,<a name="line.45"></a>
 <FONT color="green">046</FONT>                                                                    key,<a name="line.46"></a>
@@ -52,15 +52,15 @@
 <FONT color="green">049</FONT>    <a name="line.49"></a>
 <FONT color="green">050</FONT>        }<a name="line.50"></a>
 <FONT color="green">051</FONT>    <a name="line.51"></a>
-<FONT color="green">052</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.52"></a>
+<FONT color="green">052</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor monitor,<a name="line.52"></a>
 <FONT color="green">053</FONT>                                                           LifecycleStrategy lifecycleStrategy,<a name="line.53"></a>
 <FONT color="green">054</FONT>                                                           Properties componentProps,<a name="line.54"></a>
 <FONT color="green">055</FONT>                                                           ComponentAdapter&lt;T&gt; adapter) {<a name="line.55"></a>
 <FONT color="green">056</FONT>            if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {<a name="line.56"></a>
-<FONT color="green">057</FONT>                return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);<a name="line.57"></a>
+<FONT color="green">057</FONT>                return super.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);<a name="line.57"></a>
 <FONT color="green">058</FONT>            }<a name="line.58"></a>
 <FONT color="green">059</FONT>            removePropertiesIfPresent(componentProps, Characteristics.CACHE);<a name="line.59"></a>
-<FONT color="green">060</FONT>            return componentMonitor.newBehavior(new ThreadCached&lt;T&gt;(super.addComponentAdapter(componentMonitor,<a name="line.60"></a>
+<FONT color="green">060</FONT>            return monitor.newBehavior(new ThreadCached&lt;T&gt;(super.addComponentAdapter(monitor,<a name="line.60"></a>
 <FONT color="green">061</FONT>                                                                 lifecycleStrategy,<a name="line.61"></a>
 <FONT color="green">062</FONT>                                                                 componentProps,<a name="line.62"></a>
 <FONT color="green">063</FONT>                                                                 adapter)));<a name="line.63"></a>

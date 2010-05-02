@@ -35,12 +35,12 @@
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>            @Override<a name="line.33"></a>
 <FONT color="green">034</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(<a name="line.34"></a>
-<FONT color="green">035</FONT>                            final ComponentMonitor componentMonitor,<a name="line.35"></a>
+<FONT color="green">035</FONT>                            final ComponentMonitor monitor,<a name="line.35"></a>
 <FONT color="green">036</FONT>                            final LifecycleStrategy lifecycleStrategy,<a name="line.36"></a>
 <FONT color="green">037</FONT>                            final Properties componentProps, final ComponentAdapter&lt;T&gt; adapter) {<a name="line.37"></a>
 <FONT color="green">038</FONT>                    try {<a name="line.38"></a>
 <FONT color="green">039</FONT>                            return new JNDIExposed&lt;T&gt;(super.addComponentAdapter(<a name="line.39"></a>
-<FONT color="green">040</FONT>                                            componentMonitor, lifecycleStrategy, componentProps,<a name="line.40"></a>
+<FONT color="green">040</FONT>                                            monitor, lifecycleStrategy, componentProps,<a name="line.40"></a>
 <FONT color="green">041</FONT>                                            adapter));<a name="line.41"></a>
 <FONT color="green">042</FONT>                    } catch (NamingException e) {<a name="line.42"></a>
 <FONT color="green">043</FONT>                            throw new PicoCompositionException(<a name="line.43"></a>
@@ -50,14 +50,14 @@
 <FONT color="green">047</FONT>    <a name="line.47"></a>
 <FONT color="green">048</FONT>            @Override<a name="line.48"></a>
 <FONT color="green">049</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.49"></a>
-<FONT color="green">050</FONT>                            final ComponentMonitor componentMonitor,<a name="line.50"></a>
+<FONT color="green">050</FONT>                            final ComponentMonitor monitor,<a name="line.50"></a>
 <FONT color="green">051</FONT>                            final LifecycleStrategy lifecycleStrategy,<a name="line.51"></a>
 <FONT color="green">052</FONT>                            final Properties componentProps, final Object key,<a name="line.52"></a>
 <FONT color="green">053</FONT>                            final Class&lt;T&gt; impl, final Parameter... parameters)<a name="line.53"></a>
 <FONT color="green">054</FONT>                            throws PicoCompositionException {<a name="line.54"></a>
 <FONT color="green">055</FONT>                    // TODO Auto-generated method stub<a name="line.55"></a>
 <FONT color="green">056</FONT>                    ComponentAdapter&lt;T&gt; componentAdapter = super.createComponentAdapter(<a name="line.56"></a>
-<FONT color="green">057</FONT>                                    componentMonitor, lifecycleStrategy, componentProps,<a name="line.57"></a>
+<FONT color="green">057</FONT>                                    monitor, lifecycleStrategy, componentProps,<a name="line.57"></a>
 <FONT color="green">058</FONT>                                    key, impl, parameters);<a name="line.58"></a>
 <FONT color="green">059</FONT>    <a name="line.59"></a>
 <FONT color="green">060</FONT>                    try {<a name="line.60"></a>

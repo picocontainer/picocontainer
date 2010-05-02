@@ -279,9 +279,9 @@
 <FONT color="green">276</FONT>    <a name="line.276"></a>
 <FONT color="green">277</FONT>        @Test<a name="line.277"></a>
 <FONT color="green">278</FONT>        public void providersCanHaveLifecyclesToo() {<a name="line.278"></a>
-<FONT color="green">279</FONT>            ComponentMonitor componentMonitor = new LifecycleComponentMonitor();<a name="line.279"></a>
+<FONT color="green">279</FONT>            ComponentMonitor monitor = new LifecycleComponentMonitor();<a name="line.279"></a>
 <FONT color="green">280</FONT>            LifecycleStrategy lifecycleStrategy = new<a name="line.280"></a>
-<FONT color="green">281</FONT>                    ReflectionLifecycleStrategy(componentMonitor);<a name="line.281"></a>
+<FONT color="green">281</FONT>                    ReflectionLifecycleStrategy(monitor);<a name="line.281"></a>
 <FONT color="green">282</FONT>    <a name="line.282"></a>
 <FONT color="green">283</FONT>            MutablePicoContainer pico = new DefaultPicoContainer(new<a name="line.283"></a>
 <FONT color="green">284</FONT>                    ThreadCaching(), lifecycleStrategy, null);<a name="line.284"></a>

@@ -31,21 +31,21 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
 
-        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycleStrategy,
                                                                          componentProps, key, impl, parameters);
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return componentAdapter;
         }
         removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
-        return componentMonitor.newBehavior(new HiddenImplementation<T>(componentAdapter));
+        return monitor.newBehavior(new HiddenImplementation<T>(componentAdapter));
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
@@ -53,7 +53,7 @@ public class ImplementationHiding extends AbstractBehavior {
             return adapter;
         }
         removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
-        return componentMonitor.newBehavior(new HiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
+        return monitor.newBehavior(new HiddenImplementation<T>(super.addComponentAdapter(monitor,
                                                                           lifecycleStrategy,
                                                                           componentProps,
                                                                           adapter)));
@@ -114,16 +114,16 @@ public class ImplementationHiding extends AbstractBehavior {
         }
 
         protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
-            ComponentMonitor componentMonitor = currentMonitor();
+            ComponentMonitor monitor = currentMonitor();
             try {
-                componentMonitor.invoking(container, this, method, componentInstance, args);
+                monitor.invoking(container, this, method, componentInstance, args);
                 long startTime = System.currentTimeMillis();
                 Object rv = method.invoke(componentInstance, args);
-                componentMonitor.invoked(container, this,
+                monitor.invoked(container, this,
                                          method, componentInstance, System.currentTimeMillis() - startTime, args, rv);
                 return rv;
             } catch (final InvocationTargetException ite) {
-                componentMonitor.invocationFailed(method, componentInstance, ite);
+                monitor.invocationFailed(method, componentInstance, ite);
                 throw ite.getTargetException();
             }
         }

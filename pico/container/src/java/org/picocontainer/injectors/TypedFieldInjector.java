@@ -38,9 +38,9 @@ public class TypedFieldInjector extends IterativeInjector {
     public TypedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
-                                  ComponentMonitor componentMonitor,
+                                  ComponentMonitor monitor,
                                   String classNames) {
-        super(key, impl, parameters, componentMonitor, true);
+        super(key, impl, parameters, monitor, true);
         this.classes = Arrays.asList(classNames.trim().split(" "));
     }
 

@@ -61,7 +61,7 @@ public class AnnotatedFieldInjectionTestCase {
         assertEquals("<org.picocontainer.injectors.AnnotatedFieldInjector>\n" +
                      "  <key class=\"java-class\">java.util.Map</key>\n" +
                      "  <impl>java.util.HashMap</impl>\n" +
-                     "  <componentMonitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
+                     "  <monitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <injectionAnnotations>\n" +
                      "    <java-class>org.picocontainer.annotations.Inject</java-class>\n" +

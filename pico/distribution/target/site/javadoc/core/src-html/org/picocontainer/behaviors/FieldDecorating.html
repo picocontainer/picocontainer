@@ -37,20 +37,20 @@
 <FONT color="green">034</FONT>        }<a name="line.34"></a>
 <FONT color="green">035</FONT>    <a name="line.35"></a>
 <FONT color="green">036</FONT>        public ComponentAdapter createComponentAdapter(<a name="line.36"></a>
-<FONT color="green">037</FONT>                ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, final Object key, final Class impl, final Parameter... parameters)<a name="line.37"></a>
+<FONT color="green">037</FONT>                ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, final Object key, final Class impl, final Parameter... parameters)<a name="line.37"></a>
 <FONT color="green">038</FONT>                throws PicoCompositionException {<a name="line.38"></a>
-<FONT color="green">039</FONT>            return componentMonitor.newBehavior(new FieldDecorated(<a name="line.39"></a>
+<FONT color="green">039</FONT>            return monitor.newBehavior(new FieldDecorated(<a name="line.39"></a>
 <FONT color="green">040</FONT>                    super.createComponentAdapter(<a name="line.40"></a>
-<FONT color="green">041</FONT>                            componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters),<a name="line.41"></a>
+<FONT color="green">041</FONT>                            monitor, lifecycleStrategy, componentProps, key, impl, parameters),<a name="line.41"></a>
 <FONT color="green">042</FONT>                    fieldClass, this));<a name="line.42"></a>
 <FONT color="green">043</FONT>        }<a name="line.43"></a>
 <FONT color="green">044</FONT>    <a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
-<FONT color="green">046</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.46"></a>
+<FONT color="green">046</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor monitor,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                                    LifecycleStrategy lifecycleStrategy,<a name="line.47"></a>
 <FONT color="green">048</FONT>                                                    Properties componentProps,<a name="line.48"></a>
 <FONT color="green">049</FONT>                                                    ComponentAdapter adapter) {<a name="line.49"></a>
-<FONT color="green">050</FONT>            return super.addComponentAdapter(componentMonitor,<a name="line.50"></a>
+<FONT color="green">050</FONT>            return super.addComponentAdapter(monitor,<a name="line.50"></a>
 <FONT color="green">051</FONT>                    lifecycleStrategy,<a name="line.51"></a>
 <FONT color="green">052</FONT>                    componentProps,<a name="line.52"></a>
 <FONT color="green">053</FONT>                    adapter);<a name="line.53"></a>

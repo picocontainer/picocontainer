@@ -145,7 +145,7 @@ convenience class providing static methods to conveniently create injectors
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/Injector.html#annotatedField(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.Class, boolean)">annotatedField</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                             <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                             <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</A>&gt;&nbsp;injectionAnnotation,
                              boolean&nbsp;useNames)</CODE>
 
@@ -232,7 +232,7 @@ convenience class providing static methods to conveniently create injectors
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/Injector.html#multi(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">multi</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
            <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-           <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+           <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;setterPrefix,
            boolean&nbsp;useNames)</CODE>
 
@@ -245,7 +245,7 @@ convenience class providing static methods to conveniently create injectors
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/Injector.html#namedField(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String)">namedField</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                      <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;fieldNames)</CODE>
 
 <BR>
@@ -270,7 +270,7 @@ convenience class providing static methods to conveniently create injectors
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/Injector.html#typedField(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String)">typedField</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                      <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;classNames)</CODE>
 
 <BR>
@@ -381,14 +381,14 @@ annotatedField</H3>
 public static <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/injectors/Injector.html#line.84"><B>annotatedField</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                                               <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                                              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                                              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</A>&gt;&nbsp;injectionAnnotation,
                                               boolean&nbsp;useNames)</PRE>
 <DL>
 <DD>Convenience method to create annotated field injector
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>componentMonitor</CODE> - <DD><CODE>injectionAnnotation</CODE> - <DD><CODE>useNames</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>monitor</CODE> - <DD><CODE>injectionAnnotation</CODE> - <DD><CODE>useNames</CODE> -
 <DT><B>Returns:</B><DD>annotated field injector instance.</DL>
 </DD>
 </DL>
@@ -460,14 +460,14 @@ multi</H3>
 public static <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/injectors/Injector.html#line.160"><B>multi</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                      <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                                     <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;setterPrefix,
                                      boolean&nbsp;useNames)</PRE>
 <DL>
 <DD>convenience method to create multi component adapter
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>componentMonitor</CODE> - <DD><CODE>setterPrefix</CODE> - <DD><CODE>useNames</CODE> -
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>monitor</CODE> - <DD><CODE>setterPrefix</CODE> - <DD><CODE>useNames</CODE> -
 <DT><B>Returns:</B><DD>MultiInjector component adapter instance.</DL>
 </DD>
 </DL>
@@ -479,13 +479,13 @@ namedField</H3>
 public static <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/injectors/Injector.html#line.177"><B>namedField</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                           <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                                           <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                           <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;fieldNames)</PRE>
 <DL>
 <DD>convenience method to create named field injector
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>componentMonitor</CODE> - <DD><CODE>fieldNames</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>monitor</CODE> - <DD><CODE>fieldNames</CODE> -
 <DT><B>Returns:</B><DD>named field component injector instance.</DL>
 </DD>
 </DL>
@@ -519,13 +519,13 @@ typedField</H3>
 public static <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/injectors/Injector.html#line.216"><B>typedField</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                           <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;impl,
                                           <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
-                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                           <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;classNames)</PRE>
 <DL>
 <DD>conveniently create typed field injector
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>componentMonitor</CODE> - <DD><CODE>classNames</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>impl</CODE> - <DD><CODE>parameters</CODE> - <DD><CODE>monitor</CODE> - <DD><CODE>classNames</CODE> -
 <DT><B>Returns:</B><DD>typed field injector instance.</DL>
 </DD>
 </DL>

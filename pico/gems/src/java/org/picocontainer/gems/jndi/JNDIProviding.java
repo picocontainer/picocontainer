@@ -29,7 +29,7 @@ import org.picocontainer.PicoVisitor;
 public class JNDIProviding implements ComponentFactory {
 
 	public <T> ComponentAdapter<T> createComponentAdapter(
-			final ComponentMonitor componentMonitor,
+			final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycleStrategy,
 			final Properties componentProps, final Object key,
 			final Class<T> impl, final Parameter... parameters)

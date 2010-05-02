@@ -306,22 +306,22 @@ public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
                 @SuppressWarnings("synthetic-access")
                 public T run() {
                     CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
-                    ComponentMonitor componentMonitor = currentMonitor();
+                    ComponentMonitor monitor = currentMonitor();
                     Constructor<T> ctor = ctorAndAdapters.getConstructor();
                     try {
                         Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
-                        ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
+                        ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);
                         if(ctorAndAdapters == null) {
-                            throw new NullPointerException("Component Monitor " + componentMonitor 
+                            throw new NullPointerException("Component Monitor " + monitor
                                             + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
                         }
                         long startTime = System.currentTimeMillis();
                         T inst = newInstance(ctor, ctorParameters);
-                        componentMonitor.instantiated(container, ConstructorInjector.this,
+                        monitor.instantiated(container, ConstructorInjector.this,
                                 ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
+                        monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -329,9 +329,9 @@ public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, ctor, e, container);
+                        return caughtInstantiationException(monitor, ctor, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, ctor, e, container);
+                        return caughtIllegalAccessException(monitor, ctor, e, container);
 
                     }
                 }

@@ -22,7 +22,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  */
 public class ConsoleComponentMonitorTestCase {
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
     private Constructor constructor;
     private Method method;
 
@@ -31,31 +31,31 @@ public class ConsoleComponentMonitorTestCase {
         PrintStream out = System.out;
         constructor = getClass().getConstructor((Class[])null);
         method = getClass().getDeclaredMethod("setUp", (Class[])null);
-        componentMonitor = new ConsoleComponentMonitor(out);
+        monitor = new ConsoleComponentMonitor(out);
     }
 
     @Test public void testShouldTraceInstantiating() {
-        componentMonitor.instantiating(null, null, constructor);
+        monitor.instantiating(null, null, constructor);
     }
 
     @Test public void testShouldTraceInstantiatedWithInjected() {
-        componentMonitor.instantiated(null, null, constructor, new Object(), new Object[0], 543);
+        monitor.instantiated(null, null, constructor, new Object(), new Object[0], 543);
     }
 
     @Test public void testShouldTraceInstantiationFailed() {
-        componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
+        monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
     }
 
     @Test public void testShouldTraceInvoking() {
-        componentMonitor.invoking(null, null, method, this, new Object[0]);
+        monitor.invoking(null, null, method, this, new Object[0]);
     }
 
     @Test public void testShouldTraceInvoked() {
-        componentMonitor.invoked(null, null, method, this, 543, new Object[0], null);
+        monitor.invoked(null, null, method, this, 543, new Object[0], null);
     }
 
     @Test public void testShouldTraceInvocatiationFailed() {
-        componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
+        monitor.invocationFailed(method, this, new RuntimeException("doh"));
     }
 
 }

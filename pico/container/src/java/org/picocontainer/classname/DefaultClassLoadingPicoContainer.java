@@ -85,10 +85,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     }
 
-    public DefaultClassLoadingPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
+    public DefaultClassLoadingPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor monitor) {
         super(new DefaultPicoContainer(parent, new Caching()));
         parentClassLoader = classLoader;
-        ((ComponentMonitorStrategy) getDelegate()).changeMonitor(componentMonitor);
+        ((ComponentMonitorStrategy) getDelegate()).changeMonitor(monitor);
     }
 
     public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory) {
@@ -118,9 +118,9 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
     public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy,
-            PicoContainer parent, ClassLoader cl, ComponentMonitor componentMonitor) {
+            PicoContainer parent, ClassLoader cl, ComponentMonitor monitor) {
 
-        super(new DefaultPicoContainer(parent, lifecycleStrategy, componentMonitor, componentFactory));
+        super(new DefaultPicoContainer(parent, lifecycleStrategy, monitor, componentFactory));
         parentClassLoader = (cl != null) ? cl : DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 

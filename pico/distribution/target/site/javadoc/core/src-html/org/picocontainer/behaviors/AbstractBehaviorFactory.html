@@ -38,18 +38,18 @@
 <FONT color="green">035</FONT>            return this;<a name="line.35"></a>
 <FONT color="green">036</FONT>        }<a name="line.36"></a>
 <FONT color="green">037</FONT>    <a name="line.37"></a>
-<FONT color="green">038</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.38"></a>
+<FONT color="green">038</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.38"></a>
 <FONT color="green">039</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,<a name="line.39"></a>
 <FONT color="green">040</FONT>                Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.40"></a>
 <FONT color="green">041</FONT>            if (delegate == null) {<a name="line.41"></a>
 <FONT color="green">042</FONT>                delegate = new AdaptingInjection();<a name="line.42"></a>
 <FONT color="green">043</FONT>            }<a name="line.43"></a>
-<FONT color="green">044</FONT>            ComponentAdapter&lt;T&gt; compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key,<a name="line.44"></a>
+<FONT color="green">044</FONT>            ComponentAdapter&lt;T&gt; compAdapter = delegate.createComponentAdapter(monitor, lifecycleStrategy, componentProps, key,<a name="line.44"></a>
 <FONT color="green">045</FONT>                    impl, parameters);<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
 <FONT color="green">047</FONT>            boolean enableCircular = removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);<a name="line.47"></a>
 <FONT color="green">048</FONT>            if (enableCircular &amp;&amp; delegate instanceof InjectionFactory) {<a name="line.48"></a>
-<FONT color="green">049</FONT>                return componentMonitor.newBehavior(new HiddenImplementation(compAdapter));<a name="line.49"></a>
+<FONT color="green">049</FONT>                return monitor.newBehavior(new HiddenImplementation(compAdapter));<a name="line.49"></a>
 <FONT color="green">050</FONT>            } else {<a name="line.50"></a>
 <FONT color="green">051</FONT>                return compAdapter;<a name="line.51"></a>
 <FONT color="green">052</FONT>            }<a name="line.52"></a>
@@ -67,10 +67,10 @@
 <FONT color="green">064</FONT>        }<a name="line.64"></a>
 <FONT color="green">065</FONT>    <a name="line.65"></a>
 <FONT color="green">066</FONT>    <a name="line.66"></a>
-<FONT color="green">067</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.67"></a>
+<FONT color="green">067</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; addComponentAdapter(ComponentMonitor monitor,<a name="line.67"></a>
 <FONT color="green">068</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProps, ComponentAdapter&lt;T&gt; adapter) {<a name="line.68"></a>
 <FONT color="green">069</FONT>            if (delegate != null &amp;&amp; delegate instanceof BehaviorFactory) {<a name="line.69"></a>
-<FONT color="green">070</FONT>                return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.70"></a>
+<FONT color="green">070</FONT>                return ((BehaviorFactory) delegate).addComponentAdapter(monitor, lifecycleStrategy,<a name="line.70"></a>
 <FONT color="green">071</FONT>                        componentProps, adapter);<a name="line.71"></a>
 <FONT color="green">072</FONT>            }<a name="line.72"></a>
 <FONT color="green">073</FONT>            return adapter;<a name="line.73"></a>

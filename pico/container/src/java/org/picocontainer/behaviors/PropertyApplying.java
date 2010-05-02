@@ -42,19 +42,19 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public final class PropertyApplying extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
             Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        ComponentAdapter<T> decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter<T> decoratedAdapter = super.createComponentAdapter(monitor, lifecycleStrategy,
                 componentProps, key, impl, parameters);
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
-        return componentMonitor.newBehavior(new PropertyApplicator<T>(decoratedAdapter));
+        return monitor.newBehavior(new PropertyApplicator<T>(decoratedAdapter));
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProps, ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
-        return componentMonitor.newBehavior(new PropertyApplicator<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy,
+        return monitor.newBehavior(new PropertyApplicator<T>(super.addComponentAdapter(monitor, lifecycleStrategy,
                 componentProps, adapter)));
     }
 
@@ -109,7 +109,7 @@ public final class PropertyApplying extends AbstractBehavior {
             }
 
             if (properties != null) {
-                ComponentMonitor componentMonitor = currentMonitor();
+                ComponentMonitor monitor = currentMonitor();
                 Set<String> propertyNames = properties.keySet();
                 for (String propertyName : propertyNames) {
                     final Object propertyValue = properties.get(propertyName);
@@ -118,14 +118,14 @@ public final class PropertyApplying extends AbstractBehavior {
                     Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                     try {
-                        componentMonitor.invoking(container, PropertyApplicator.this, setter, componentInstance, new Object[] {valueToInvoke});
+                        monitor.invoking(container, PropertyApplicator.this, setter, componentInstance, new Object[] {valueToInvoke});
                         long startTime = System.currentTimeMillis();
                         setter.invoke(componentInstance, valueToInvoke);
-                        componentMonitor.invoked(container,
+                        monitor.invoked(container,
                                                  PropertyApplicator.this,
                                                  setter, componentInstance, System.currentTimeMillis() - startTime, new Object[] {valueToInvoke}, null);
                     } catch (final Exception e) {
-                        componentMonitor.invocationFailed(setter, componentInstance, e);
+                        monitor.invocationFailed(setter, componentInstance, e);
                         throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
                     }
                 }

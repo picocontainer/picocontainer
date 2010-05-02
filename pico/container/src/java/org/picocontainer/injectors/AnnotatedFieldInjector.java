@@ -39,10 +39,10 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     public AnnotatedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
-                                  ComponentMonitor componentMonitor,
+                                  ComponentMonitor monitor,
                                   boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
 
-        super(key, impl, parameters, componentMonitor, useNames);
+        super(key, impl, parameters, monitor, useNames);
         this.injectionAnnotations = injectionAnnotations;
     }
 

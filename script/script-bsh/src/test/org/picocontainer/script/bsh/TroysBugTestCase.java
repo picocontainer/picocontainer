@@ -34,10 +34,10 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
         ScriptedContainerBuilder builder = new BeanShellContainerBuilder(script, AbstractScriptedContainerBuilderTestCase.class.getClassLoader(), LifecycleMode.AUTO_LIFECYCLE);
 
         ComponentFactory componentFactory = new Caching().wrap(new ConstructorInjection());
-        ComponentMonitor componentMonitor = new ConsoleComponentMonitor();
-        LifecycleStrategy lifecycleStrategy = new CustomLifecycleStrategy(componentMonitor); // starts/stops CustomStartable
+        ComponentMonitor monitor = new ConsoleComponentMonitor();
+        LifecycleStrategy lifecycleStrategy = new CustomLifecycleStrategy(monitor); // starts/stops CustomStartable
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(null, lifecycleStrategy, componentMonitor, componentFactory);
+        DefaultPicoContainer parent = new DefaultPicoContainer(null, lifecycleStrategy, monitor, componentFactory);
         parent.setName("parent");
         PicoContainer container = builder.buildContainer(parent, "defaultScope", true);
 
@@ -53,8 +53,8 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
     }
 
     public static class CustomLifecycleStrategy extends StartableLifecycleStrategy {
-        public CustomLifecycleStrategy(ComponentMonitor componentMonitor) {
-            super(componentMonitor);
+        public CustomLifecycleStrategy(ComponentMonitor monitor) {
+            super(monitor);
         }
 
         protected Class getStartableInterface() {

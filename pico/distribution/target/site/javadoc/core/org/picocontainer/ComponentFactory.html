@@ -148,7 +148,7 @@ Interface ComponentFactory</H2>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/ComponentFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+<TD><CODE><B><A HREF="../../org/picocontainer/ComponentFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
@@ -183,7 +183,7 @@ Interface ComponentFactory</H2>
 <A NAME="createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)"><!-- --></A><H3>
 createComponentAdapter</H3>
 <PRE>
-&lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/ComponentFactory.html#line.61"><B>createComponentAdapter</B></A>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
+&lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/ComponentFactory.html#line.61"><B>createComponentAdapter</B></A>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                                <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
@@ -194,7 +194,7 @@ createComponentAdapter</H3>
 <DD>Create a new component adapter based on the specified arguments.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentMonitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProps</CODE> - the component properties<DD><CODE>key</CODE> - the key to be associated with this adapter. This
+<DT><B>Parameters:</B><DD><CODE>monitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProps</CODE> - the component properties<DD><CODE>key</CODE> - the key to be associated with this adapter. This
             value should be returned from a call to
             <A HREF="../../org/picocontainer/ComponentAdapter.html#getComponentKey()"><CODE>ComponentAdapter.getComponentKey()</CODE></A> on the created
             adapter.<DD><CODE>impl</CODE> - the implementation class to be associated

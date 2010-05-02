@@ -148,7 +148,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return (T) instantiationGuard.observe(getComponentImplementation());
     }
 
-    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
+    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
         Object lastReturn = null;
@@ -159,11 +159,11 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                     Object toInject = matchingParameters[i].resolve(guardedContainer, this, null, injectionTypes[i],
                                                                             makeParameterNameImpl(injectionMembers.get(i)),
                                                                             useNames(), bindings[i]).resolveInstance(into);
-                    Object rv = componentMonitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
+                    Object rv = monitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
                     if (rv == ComponentMonitor.KEEP) {
                         long str = System.currentTimeMillis();
                         lastReturn = injectIntoMember(member, componentInstance, toInject);
-                        componentMonitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);
+                        monitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);
                     } else {
                         lastReturn = rv;
                     }
@@ -172,23 +172,23 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             }
             return memberInvocationReturn(lastReturn, member, componentInstance);
         } catch (InvocationTargetException e) {
-            return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);
+            return caughtInvocationTargetException(monitor, (Member) member, componentInstance, e);
         } catch (IllegalAccessException e) {
-            return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);
+            return caughtIllegalAccessException(monitor, (Member) member, componentInstance, e);
         }
     }
 
     protected abstract Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance);
 
-    private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor componentMonitor) {
+    private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor monitor) {
         long startTime = System.currentTimeMillis();
-        Constructor constructorToUse = componentMonitor.instantiating(container,
+        Constructor constructorToUse = monitor.instantiating(container,
                                                                       IterativeInjector.this, constructor);
         Object componentInstance;
         try {
             componentInstance = newInstance(constructorToUse, null);
         } catch (InvocationTargetException e) {
-            componentMonitor.instantiationFailed(container, IterativeInjector.this, constructorToUse, e);
+            monitor.instantiationFailed(container, IterativeInjector.this, constructorToUse, e);
             if (e.getTargetException() instanceof RuntimeException) {
                 throw (RuntimeException)e.getTargetException();
             } else if (e.getTargetException() instanceof Error) {
@@ -196,11 +196,11 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             }
             throw new PicoCompositionException(e.getTargetException());
         } catch (InstantiationException e) {
-            return caughtInstantiationException(componentMonitor, constructor, e, container);
+            return caughtInstantiationException(monitor, constructor, e, container);
         } catch (IllegalAccessException e) {
-            return caughtIllegalAccessException(componentMonitor, constructor, e, container);
+            return caughtIllegalAccessException(monitor, constructor, e, container);
         }
-        componentMonitor.instantiated(container,
+        monitor.instantiated(container,
                                       IterativeInjector.this,
                                       constructorToUse,
                                       componentInstance,

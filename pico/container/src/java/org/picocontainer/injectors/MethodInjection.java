@@ -43,9 +43,9 @@ public class MethodInjection extends AbstractInjectionType {
         delegate = new MethodInjectionByReflectionMethod(injectionMethod);
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
                                                    Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters);
+        return delegate.createComponentAdapter(monitor, lifecycleStrategy, componentProps, key, impl, parameters);
     }
 
     public class MethodInjectionByName extends AbstractInjectionType {

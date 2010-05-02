@@ -49,9 +49,9 @@ public class Pooling extends AbstractBehavior {
     }
 
     @Override
-	public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
+	public ComponentAdapter createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException {
-        ComponentAdapter delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter delegate = super.createComponentAdapter(monitor, lifecycleStrategy,
                                                                          componentProps, key, impl, parameters);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
@@ -62,24 +62,24 @@ public class Pooling extends AbstractBehavior {
         Pooled behavior = new Pooled(delegate, poolContext);
         //TODO
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
-        return componentMonitor.newBehavior(behavior);
+        return monitor.newBehavior(behavior);
     }
 
     @Override
-	public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,
+	public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,
                                                 final LifecycleStrategy lifecycleStrategy,
                                                 final Properties componentProps,
                                                 final ComponentAdapter adapter) {
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
-        	return super.addComponentAdapter(componentMonitor,
+        	return super.addComponentAdapter(monitor,
                     lifecycleStrategy,
                     componentProps,
                     adapter);
 		} 
     	
         AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.POOL);
-    	return componentMonitor.newBehavior(new Pooled(super.addComponentAdapter(componentMonitor,
+    	return monitor.newBehavior(new Pooled(super.addComponentAdapter(monitor,
                                          lifecycleStrategy,
                                          componentProps,
                                          adapter), poolContext));

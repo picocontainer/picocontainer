@@ -70,19 +70,19 @@
 <FONT color="green">067</FONT>         */<a name="line.67"></a>
 <FONT color="green">068</FONT>            @Override<a name="line.68"></a>
 <FONT color="green">069</FONT>            public ComponentAdapter createComponentAdapter(<a name="line.69"></a>
-<FONT color="green">070</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)<a name="line.70"></a>
+<FONT color="green">070</FONT>                final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)<a name="line.70"></a>
 <FONT color="green">071</FONT>                throws PicoCompositionException {<a name="line.71"></a>
-<FONT color="green">072</FONT>            return componentMonitor.newBehavior(new Assimilated(assimilationType, super.createComponentAdapter(<a name="line.72"></a>
-<FONT color="green">073</FONT>                    componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters), proxyFactory));<a name="line.73"></a>
+<FONT color="green">072</FONT>            return monitor.newBehavior(new Assimilated(assimilationType, super.createComponentAdapter(<a name="line.72"></a>
+<FONT color="green">073</FONT>                    monitor, lifecycleStrategy, componentProps, key, impl, parameters), proxyFactory));<a name="line.73"></a>
 <FONT color="green">074</FONT>        }<a name="line.74"></a>
 <FONT color="green">075</FONT>    <a name="line.75"></a>
 <FONT color="green">076</FONT>    <a name="line.76"></a>
 <FONT color="green">077</FONT>        @Override<a name="line.77"></a>
-<FONT color="green">078</FONT>            public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,<a name="line.78"></a>
+<FONT color="green">078</FONT>            public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,<a name="line.78"></a>
 <FONT color="green">079</FONT>                                                    final LifecycleStrategy lifecycleStrategy,<a name="line.79"></a>
 <FONT color="green">080</FONT>                                                    final Properties componentProps,<a name="line.80"></a>
 <FONT color="green">081</FONT>                                                    final ComponentAdapter adapter) {<a name="line.81"></a>
-<FONT color="green">082</FONT>            return componentMonitor.newBehavior(new Assimilated(assimilationType, super.addComponentAdapter(componentMonitor,<a name="line.82"></a>
+<FONT color="green">082</FONT>            return monitor.newBehavior(new Assimilated(assimilationType, super.addComponentAdapter(monitor,<a name="line.82"></a>
 <FONT color="green">083</FONT>                                             lifecycleStrategy,<a name="line.83"></a>
 <FONT color="green">084</FONT>                                             componentProps,<a name="line.84"></a>
 <FONT color="green">085</FONT>                                             adapter)));<a name="line.85"></a>

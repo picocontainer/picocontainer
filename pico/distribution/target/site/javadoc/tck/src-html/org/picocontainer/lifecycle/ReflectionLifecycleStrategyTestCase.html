@@ -45,12 +45,12 @@
 <FONT color="green">042</FONT>            private Mockery mockery = mockeryWithCountingNamingScheme();<a name="line.42"></a>
 <FONT color="green">043</FONT>    <a name="line.43"></a>
 <FONT color="green">044</FONT>            private ReflectionLifecycleStrategy strategy;<a name="line.44"></a>
-<FONT color="green">045</FONT>            private ComponentMonitor componentMonitor;<a name="line.45"></a>
+<FONT color="green">045</FONT>            private ComponentMonitor monitor;<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
 <FONT color="green">047</FONT>            @Before<a name="line.47"></a>
 <FONT color="green">048</FONT>            public void setUp() {<a name="line.48"></a>
-<FONT color="green">049</FONT>                    componentMonitor = mockery.mock(ComponentMonitor.class);<a name="line.49"></a>
-<FONT color="green">050</FONT>                    strategy = new ReflectionLifecycleStrategy(componentMonitor);<a name="line.50"></a>
+<FONT color="green">049</FONT>                    monitor = mockery.mock(ComponentMonitor.class);<a name="line.49"></a>
+<FONT color="green">050</FONT>                    strategy = new ReflectionLifecycleStrategy(monitor);<a name="line.50"></a>
 <FONT color="green">051</FONT>            }<a name="line.51"></a>
 <FONT color="green">052</FONT>    <a name="line.52"></a>
 <FONT color="green">053</FONT>            @Test<a name="line.53"></a>
@@ -93,7 +93,7 @@
 <FONT color="green">090</FONT>    <a name="line.90"></a>
 <FONT color="green">091</FONT>            @Test<a name="line.91"></a>
 <FONT color="green">092</FONT>            public void testMonitorChanges() {<a name="line.92"></a>
-<FONT color="green">093</FONT>                    final ComponentMonitor componentMonitor2 = mockery<a name="line.93"></a>
+<FONT color="green">093</FONT>                    final ComponentMonitor monitor2 = mockery<a name="line.93"></a>
 <FONT color="green">094</FONT>                                    .mock(ComponentMonitor.class);<a name="line.94"></a>
 <FONT color="green">095</FONT>                    final Disposable disposable = mockery.mock(Disposable.class);<a name="line.95"></a>
 <FONT color="green">096</FONT>                    final Matcher&lt;Member&gt; isDisposeMember = new IsMember("dispose");<a name="line.96"></a>
@@ -101,19 +101,19 @@
 <FONT color="green">098</FONT>                    mockery.checking(new Expectations() {<a name="line.98"></a>
 <FONT color="green">099</FONT>                            {<a name="line.99"></a>
 <FONT color="green">100</FONT>                                    atLeast(1).of(disposable).dispose();<a name="line.100"></a>
-<FONT color="green">101</FONT>                                    one(componentMonitor).invoking(<a name="line.101"></a>
+<FONT color="green">101</FONT>                                    one(monitor).invoking(<a name="line.101"></a>
 <FONT color="green">102</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.102"></a>
 <FONT color="green">103</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.103"></a>
 <FONT color="green">104</FONT>                                                    with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));<a name="line.104"></a>
-<FONT color="green">105</FONT>                                    one(componentMonitor).invoked(with(aNull(PicoContainer.class)),<a name="line.105"></a>
+<FONT color="green">105</FONT>                                    one(monitor).invoked(with(aNull(PicoContainer.class)),<a name="line.105"></a>
 <FONT color="green">106</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.106"></a>
 <FONT color="green">107</FONT>                                                    with(isDisposeMethod), with(same(disposable)),<a name="line.107"></a>
 <FONT color="green">108</FONT>                            with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.108"></a>
-<FONT color="green">109</FONT>                                    one(componentMonitor2).invoking(<a name="line.109"></a>
+<FONT color="green">109</FONT>                                    one(monitor2).invoking(<a name="line.109"></a>
 <FONT color="green">110</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.110"></a>
 <FONT color="green">111</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.111"></a>
 <FONT color="green">112</FONT>                                                    with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));<a name="line.112"></a>
-<FONT color="green">113</FONT>                                    one(componentMonitor2).invoked(<a name="line.113"></a>
+<FONT color="green">113</FONT>                                    one(monitor2).invoked(<a name="line.113"></a>
 <FONT color="green">114</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.114"></a>
 <FONT color="green">115</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.115"></a>
 <FONT color="green">116</FONT>                                                    with(isDisposeMethod), with(same(disposable)),<a name="line.116"></a>
@@ -121,7 +121,7 @@
 <FONT color="green">118</FONT>                            }<a name="line.118"></a>
 <FONT color="green">119</FONT>                    });<a name="line.119"></a>
 <FONT color="green">120</FONT>                    strategy.dispose(disposable);<a name="line.120"></a>
-<FONT color="green">121</FONT>                    strategy.changeMonitor(componentMonitor2);<a name="line.121"></a>
+<FONT color="green">121</FONT>                    strategy.changeMonitor(monitor2);<a name="line.121"></a>
 <FONT color="green">122</FONT>                    strategy.dispose(disposable);<a name="line.122"></a>
 <FONT color="green">123</FONT>            }<a name="line.123"></a>
 <FONT color="green">124</FONT>    <a name="line.124"></a>
@@ -139,27 +139,27 @@
 <FONT color="green">136</FONT>                                    one(lifecycle).start();<a name="line.136"></a>
 <FONT color="green">137</FONT>                                    one(lifecycle).stop();<a name="line.137"></a>
 <FONT color="green">138</FONT>                                    one(lifecycle).dispose();<a name="line.138"></a>
-<FONT color="green">139</FONT>                                    one(componentMonitor).invoking(<a name="line.139"></a>
+<FONT color="green">139</FONT>                                    one(monitor).invoking(<a name="line.139"></a>
 <FONT color="green">140</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.140"></a>
 <FONT color="green">141</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.141"></a>
 <FONT color="green">142</FONT>                                                    with(isStartMember), with(same(lifecycle)), with(any(Object[].class)));<a name="line.142"></a>
-<FONT color="green">143</FONT>                                    one(componentMonitor).invoked(with(aNull(PicoContainer.class)),<a name="line.143"></a>
+<FONT color="green">143</FONT>                                    one(monitor).invoked(with(aNull(PicoContainer.class)),<a name="line.143"></a>
 <FONT color="green">144</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.144"></a>
 <FONT color="green">145</FONT>                                                    with(isStartMethod), with(same(lifecycle)),<a name="line.145"></a>
 <FONT color="green">146</FONT>                            with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.146"></a>
-<FONT color="green">147</FONT>                                    one(componentMonitor).invoking(<a name="line.147"></a>
+<FONT color="green">147</FONT>                                    one(monitor).invoking(<a name="line.147"></a>
 <FONT color="green">148</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.148"></a>
 <FONT color="green">149</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.149"></a>
 <FONT color="green">150</FONT>                                                    with(isStopMember), with(same(lifecycle)), with(any(Object[].class)));<a name="line.150"></a>
-<FONT color="green">151</FONT>                                    one(componentMonitor).invoked(with(aNull(PicoContainer.class)),<a name="line.151"></a>
+<FONT color="green">151</FONT>                                    one(monitor).invoked(with(aNull(PicoContainer.class)),<a name="line.151"></a>
 <FONT color="green">152</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.152"></a>
 <FONT color="green">153</FONT>                                                    with(isStopMethod), with(same(lifecycle)),<a name="line.153"></a>
 <FONT color="green">154</FONT>                            with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.154"></a>
-<FONT color="green">155</FONT>                                    one(componentMonitor).invoking(<a name="line.155"></a>
+<FONT color="green">155</FONT>                                    one(monitor).invoking(<a name="line.155"></a>
 <FONT color="green">156</FONT>                                                    with(aNull(PicoContainer.class)),<a name="line.156"></a>
 <FONT color="green">157</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.157"></a>
 <FONT color="green">158</FONT>                                                    with(isDisposeMember), with(same(lifecycle)), with(any(Object[].class)));<a name="line.158"></a>
-<FONT color="green">159</FONT>                                    one(componentMonitor).invoked(with(aNull(PicoContainer.class)),<a name="line.159"></a>
+<FONT color="green">159</FONT>                                    one(monitor).invoked(with(aNull(PicoContainer.class)),<a name="line.159"></a>
 <FONT color="green">160</FONT>                                                    with(aNull(ComponentAdapter.class)),<a name="line.160"></a>
 <FONT color="green">161</FONT>                                                    with(isDisposeMethod), with(same(lifecycle)),<a name="line.161"></a>
 <FONT color="green">162</FONT>                            with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.162"></a>
@@ -189,20 +189,20 @@
 <FONT color="green">186</FONT>                                    {<a name="line.186"></a>
 <FONT color="green">187</FONT>                                            atLeast(1).of(mock).start();<a name="line.187"></a>
 <FONT color="green">188</FONT>                                            atLeast(1).of(mock).stop();<a name="line.188"></a>
-<FONT color="green">189</FONT>                                            one(componentMonitor).invoking(<a name="line.189"></a>
+<FONT color="green">189</FONT>                                            one(monitor).invoking(<a name="line.189"></a>
 <FONT color="green">190</FONT>                                                            with(aNull(PicoContainer.class)),<a name="line.190"></a>
 <FONT color="green">191</FONT>                                                            with(aNull(ComponentAdapter.class)),<a name="line.191"></a>
 <FONT color="green">192</FONT>                                                            with(isStartMember), with(same(mock)), with(any(Object[].class)));<a name="line.192"></a>
-<FONT color="green">193</FONT>                                            one(componentMonitor)<a name="line.193"></a>
+<FONT color="green">193</FONT>                                            one(monitor)<a name="line.193"></a>
 <FONT color="green">194</FONT>                                                            .invoked(with(aNull(PicoContainer.class)),<a name="line.194"></a>
 <FONT color="green">195</FONT>                                                                            with(aNull(ComponentAdapter.class)),<a name="line.195"></a>
 <FONT color="green">196</FONT>                                                                            with(isStartMethod), with(same(mock)),<a name="line.196"></a>
 <FONT color="green">197</FONT>                                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.197"></a>
-<FONT color="green">198</FONT>                                            one(componentMonitor).invoking(<a name="line.198"></a>
+<FONT color="green">198</FONT>                                            one(monitor).invoking(<a name="line.198"></a>
 <FONT color="green">199</FONT>                                                            with(aNull(PicoContainer.class)),<a name="line.199"></a>
 <FONT color="green">200</FONT>                                                            with(aNull(ComponentAdapter.class)),<a name="line.200"></a>
 <FONT color="green">201</FONT>                                                            with(isStopMember), with(same(mock)), with(any(Object[].class)));<a name="line.201"></a>
-<FONT color="green">202</FONT>                                            one(componentMonitor).invoked(<a name="line.202"></a>
+<FONT color="green">202</FONT>                                            one(monitor).invoked(<a name="line.202"></a>
 <FONT color="green">203</FONT>                                                            with(aNull(PicoContainer.class)),<a name="line.203"></a>
 <FONT color="green">204</FONT>                                                            with(aNull(ComponentAdapter.class)),<a name="line.204"></a>
 <FONT color="green">205</FONT>                                                            with(isStopMethod), with(same(mock)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));<a name="line.205"></a>
@@ -215,11 +215,11 @@
 <FONT color="green">212</FONT>                            mockery.checking(new Expectations() {<a name="line.212"></a>
 <FONT color="green">213</FONT>                                    {<a name="line.213"></a>
 <FONT color="green">214</FONT>                                            atLeast(1).of(mock).dispose();<a name="line.214"></a>
-<FONT color="green">215</FONT>                                            one(componentMonitor).invoking(<a name="line.215"></a>
+<FONT color="green">215</FONT>                                            one(monitor).invoking(<a name="line.215"></a>
 <FONT color="green">216</FONT>                                                            with(aNull(PicoContainer.class)),<a name="line.216"></a>
 <FONT color="green">217</FONT>                                                            with(aNull(ComponentAdapter.class)),<a name="line.217"></a>
 <FONT color="green">218</FONT>                                                            with(isDisposeMember), with(same(mock)), with(any(Object[].class)));<a name="line.218"></a>
-<FONT color="green">219</FONT>                                            one(componentMonitor)<a name="line.219"></a>
+<FONT color="green">219</FONT>                                            one(monitor)<a name="line.219"></a>
 <FONT color="green">220</FONT>                                                            .invoked(with(aNull(PicoContainer.class)),<a name="line.220"></a>
 <FONT color="green">221</FONT>                                                                            with(aNull(ComponentAdapter.class)),<a name="line.221"></a>
 <FONT color="green">222</FONT>                                                                            with(isDisposeMethod), with(same(mock)),<a name="line.222"></a>

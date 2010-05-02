@@ -30,32 +30,32 @@ import java.util.Properties;
 public class Guarding extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor componentMonitor,
+            ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy,
             Properties componentProps, Object key,
             Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
-        ComponentAdapter<T> delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycleStrategy,
                 componentProps, key, impl, parameters);
         if (guard == null) {
             return delegate;
         } else {
-            return componentMonitor.newBehavior(new Guarded<T>(delegate, guard));
+            return monitor.newBehavior(new Guarded<T>(delegate, guard));
         }
 
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(
-            ComponentMonitor componentMonitor,
+            ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy,
             Properties componentProps, ComponentAdapter<T> adapter) {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
-        ComponentAdapter<T> delegate = super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
+        ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);
         if (guard == null) {
             return delegate;
         } else {
-            return componentMonitor.newBehavior(componentMonitor.newBehavior(new Guarded<T>(delegate, guard)));
+            return monitor.newBehavior(monitor.newBehavior(new Guarded<T>(delegate, guard)));
         }
     }
 

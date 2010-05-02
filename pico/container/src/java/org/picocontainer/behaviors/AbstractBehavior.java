@@ -37,18 +37,18 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
         return this;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
             Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         if (delegate == null) {
             delegate = new AdaptingInjection();
         }
-        ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key,
+        ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(monitor, lifecycleStrategy, componentProps, key,
                 impl, parameters);
 
         boolean enableCircular = removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
         if (enableCircular && delegate instanceof InjectionType) {
-            return componentMonitor.newBehavior(new ImplementationHiding.HiddenImplementation(compAdapter));
+            return monitor.newBehavior(new ImplementationHiding.HiddenImplementation<T>(compAdapter));
         } else {
             return compAdapter;
         }
@@ -66,10 +66,10 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProps, ComponentAdapter<T> adapter) {
         if (delegate != null && delegate instanceof Behavior) {
-            return ((Behavior) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy,
+            return ((Behavior) delegate).addComponentAdapter(monitor, lifecycleStrategy,
                     componentProps, adapter);
         }
         return adapter;

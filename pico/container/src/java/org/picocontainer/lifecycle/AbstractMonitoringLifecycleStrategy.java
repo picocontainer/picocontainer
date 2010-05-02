@@ -24,12 +24,12 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
 	/**
 	 * Component monitor that receives lifecycle state.
 	 */
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
 
     /**
      * Construct a AbstractMonitoringLifecycleStrategy.
      *
-     * @param monitor the componentMonitor to use
+     * @param monitor the monitor to use
      * @throws NullPointerException if the monitor is <code>null</code>
      */
     public AbstractMonitoringLifecycleStrategy(final ComponentMonitor monitor) {
@@ -45,11 +45,11 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
         if (monitor == null) {
             throw new NullPointerException("Monitor is null");
         }
-        this.componentMonitor = monitor;
+        this.monitor = monitor;
     }
 
     public ComponentMonitor currentMonitor() {
-        return componentMonitor;
+        return monitor;
     }
 
     public boolean isLazy(ComponentAdapter<?> adapter) {

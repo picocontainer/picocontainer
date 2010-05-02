@@ -34,7 +34,7 @@ import java.io.Serializable;
 public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
     private Object key;
     private Class<T> impl;
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitor monitor;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
@@ -43,7 +43,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      */
     public AbstractAdapter(Object key, Class impl) {
         this(key, impl, new AbstractComponentMonitor());
-        this.componentMonitor = new NullComponentMonitor();
+        this.monitor = new NullComponentMonitor();
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         if (monitor == null) {
             throw new NullPointerException("ComponentMonitor==null");
         }
-        this.componentMonitor = monitor;
+        this.monitor = monitor;
         if (impl == null) {
             throw new NullPointerException("impl");
         }
@@ -116,7 +116,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     }
 
     public void changeMonitor(ComponentMonitor monitor) {
-        this.componentMonitor = monitor;
+        this.monitor = monitor;
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @return The ComponentMonitor currently used
      */
     public ComponentMonitor currentMonitor(){
-        return componentMonitor;
+        return monitor;
     }
 
     public final ComponentAdapter<T> getDelegate() {

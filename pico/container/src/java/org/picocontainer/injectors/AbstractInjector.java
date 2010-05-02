@@ -142,48 +142,48 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     }
     /**
      * inform monitor about component instantiation failure
-     * @param componentMonitor
+     * @param monitor
      * @param constructor
      * @param e
      * @param container
      * @return
      */
-    protected T caughtInstantiationException(final ComponentMonitor componentMonitor,
+    protected T caughtInstantiationException(final ComponentMonitor monitor,
                                                 final Constructor<T> constructor,
                                                 final InstantiationException e, final PicoContainer container) {
         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
-        componentMonitor.instantiationFailed(container, this, constructor, e);
+        monitor.instantiationFailed(container, this, constructor, e);
         throw new PicoCompositionException("Should never get here");
     }
 
     /**
      * inform monitor about access exception.
-     * @param componentMonitor
+     * @param monitor
      * @param constructor
      * @param e
      * @param container
      * @return
      */
-    protected T caughtIllegalAccessException(final ComponentMonitor componentMonitor,
+    protected T caughtIllegalAccessException(final ComponentMonitor monitor,
                                                 final Constructor<T> constructor,
                                                 final IllegalAccessException e, final PicoContainer container) {
         // can't get here because either filtered or access mode set
-        componentMonitor.instantiationFailed(container, this, constructor, e);
+        monitor.instantiationFailed(container, this, constructor, e);
         throw new PicoCompositionException(e);
     }
 
     /**
      * inform monitor about exception while instantiating component
-     * @param componentMonitor
+     * @param monitor
      * @param member
      * @param componentInstance
      * @param e
      * @return 
      */
-    protected T caughtInvocationTargetException(final ComponentMonitor componentMonitor,
+    protected T caughtInvocationTargetException(final ComponentMonitor monitor,
                                                    final Member member,
                                                    final Object componentInstance, final InvocationTargetException e) {
-        componentMonitor.invocationFailed(member, componentInstance, e);
+        monitor.invocationFailed(member, componentInstance, e);
         if (e.getTargetException() instanceof RuntimeException) {
             throw (RuntimeException) e.getTargetException();
         } else if (e.getTargetException() instanceof Error) {
@@ -192,10 +192,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         throw new PicoCompositionException(e.getTargetException());
     }
 
-    protected Object caughtIllegalAccessException(final ComponentMonitor componentMonitor,
+    protected Object caughtIllegalAccessException(final ComponentMonitor monitor,
                                                 final Member member,
                                                 final Object componentInstance, final IllegalAccessException e) {
-        componentMonitor.invocationFailed(member, componentInstance, e);
+        monitor.invocationFailed(member, componentInstance, e);
         throw new PicoCompositionException(e);
     }
 
