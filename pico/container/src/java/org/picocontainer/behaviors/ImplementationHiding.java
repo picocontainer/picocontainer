@@ -31,7 +31,8 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
+                                    Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
 
@@ -45,10 +46,8 @@ public class ImplementationHiding extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
-                                                ComponentAdapter<T> adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                                Properties componentProps, ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return adapter;
         }

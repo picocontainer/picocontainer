@@ -30,44 +30,25 @@ import java.util.Properties;
 public class Synchronizing extends AbstractBehavior {
 	
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) {
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
+                                                 Object key, Class<T> impl, Parameter... parameters) {
        if (removePropertiesIfPresent(componentProps, Characteristics.NO_SYNCHRONIZE)) {
-    	   return super.createComponentAdapter(
-    	            monitor,
-    	            lifecycle,
-    	            componentProps,
-    	            key,
-    	            impl,
-    	            parameters);
+    	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
        }
     	
     	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
-        return monitor.changedBehavior(new Synchronized<T>(super.createComponentAdapter(
-            monitor,
-            lifecycle,
-            componentProps,
-            key,
-            impl,
-            parameters)));
+        return monitor.changedBehavior(new Synchronized<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters)));
     }
 
     /** {@inheritDoc} **/
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_SYNCHRONIZE)) {
-        	return super.addComponentAdapter(monitor,
-                    lifecycle,
-                    componentProps,
-                    adapter);
+        	return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }
     	
     	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
-        return monitor.changedBehavior(new Synchronized<T>(super.addComponentAdapter(monitor,
-                                         lifecycle,
-                                         componentProps,
-                                         adapter)));
+        return monitor.changedBehavior(new Synchronized<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
     }
 
     /**

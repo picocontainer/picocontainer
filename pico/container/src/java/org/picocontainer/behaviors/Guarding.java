@@ -29,12 +29,8 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class Guarding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor monitor,
-            LifecycleStrategy lifecycle,
-            Properties componentProps, Object key,
-            Class<T> impl, Parameter... parameters)
-            throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+            Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, parameters);
@@ -46,9 +42,7 @@ public class Guarding extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(
-            ComponentMonitor monitor,
-            LifecycleStrategy lifecycle,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
             Properties componentProps, ComponentAdapter<T> adapter) {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);

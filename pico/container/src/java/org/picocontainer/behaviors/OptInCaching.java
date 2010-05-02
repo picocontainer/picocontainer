@@ -10,12 +10,12 @@
 
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
 
 import java.util.Properties;
 
@@ -37,36 +37,22 @@ import java.util.Properties;
 public class OptInCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key,
-    			Class<T> impl, Parameter... parameters)
-            throws PicoCompositionException {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return monitor.changedBehavior(new Caching.Cached<T>(super.createComponentAdapter(monitor,
-                                                                                        lifecycle,
-                                                                                        componentProps,
-                                                                                        key,
-                                                                                        impl,
-                                                                                        parameters)));
+    			Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+        if (removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
+            return monitor.changedBehavior(new Caching.Cached<T>(
+                    super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters)));
         }
-        AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
-        return super.createComponentAdapter(monitor, lifecycle,
-                                            componentProps, key, impl, parameters);
+        removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
+        return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
     }
 
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
-                                                ComponentAdapter<T> adapter) {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return monitor.changedBehavior(new Caching.Cached<T>(super.addComponentAdapter(monitor,
-                                                                 lifecycle,
-                                                                 componentProps,
-                                                                 adapter)));
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                                       Properties componentProps, ComponentAdapter<T> adapter) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
+            return monitor.changedBehavior(new Caching.Cached<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
         }
-        AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
-        return super.addComponentAdapter(monitor,
-                                         lifecycle,
-                                         componentProps,
-                                         adapter);
+        removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
+        return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
     }
 }

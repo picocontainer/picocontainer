@@ -45,8 +45,8 @@ public final class PropertyApplying extends AbstractBehavior {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycle, Properties componentProps, Object key,
             Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        ComponentAdapter<T> decoratedAdapter = super.createComponentAdapter(monitor, lifecycle,
-                componentProps, key, impl, parameters);
+        ComponentAdapter<T> decoratedAdapter =
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return monitor.changedBehavior(new PropertyApplicator<T>(decoratedAdapter));
     }
@@ -54,8 +54,8 @@ public final class PropertyApplying extends AbstractBehavior {
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycle, Properties componentProps, ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
-        return monitor.changedBehavior(new PropertyApplicator<T>(super.addComponentAdapter(monitor, lifecycle,
-                componentProps, adapter)));
+        return monitor.changedBehavior(new PropertyApplicator<T>(
+                super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
     }
 
     /**

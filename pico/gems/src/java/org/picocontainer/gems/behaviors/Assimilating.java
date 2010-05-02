@@ -40,7 +40,7 @@ import java.util.Properties;
 public class Assimilating extends AbstractBehavior {
 
 	private final ProxyFactory proxyFactory;
-    private final Class<?> assimilationType;
+    private final Class assimilationType;
 
     /**
      * Construct an Assimilating. The instance will use the {@link StandardProxyFactory} using the JDK
@@ -48,7 +48,7 @@ public class Assimilating extends AbstractBehavior {
      * 
      * @param type The assimilated type.
      */
-    public Assimilating(final Class<?> type) {
+    public Assimilating(final Class type) {
         this(type, new StandardProxyFactory());
     }
 
@@ -58,7 +58,7 @@ public class Assimilating extends AbstractBehavior {
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
-    public Assimilating(final Class<?> type, final ProxyFactory proxyFactory) {
+    public Assimilating(final Class type, final ProxyFactory proxyFactory) {
         this.assimilationType = type;
         this.proxyFactory = proxyFactory;
     }
@@ -70,23 +70,17 @@ public class Assimilating extends AbstractBehavior {
      * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
 	@Override
-	public ComponentAdapter createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
-            throws PicoCompositionException {
-        return monitor.changedBehavior(new Assimilated(assimilationType, super.createComponentAdapter(
-                monitor, lifecycle, componentProps, key, impl, parameters), proxyFactory));
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                       final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
+        ComponentAdapter<T> delegate1 = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        return monitor.changedBehavior(new Assimilated<T>(assimilationType, delegate1, proxyFactory));
     }
 
-
     @Override
-	public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter adapter) {
-        return monitor.changedBehavior(new Assimilated(assimilationType, super.addComponentAdapter(monitor,
-                                         lifecycle,
-                                         componentProps,
-                                         adapter)));
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
+        ComponentAdapter<T> delegate1 = super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
+        return monitor.changedBehavior(new Assimilated<T>(assimilationType, delegate1));
     }
 
     /**
@@ -135,12 +129,12 @@ public class Assimilating extends AbstractBehavior {
          * @throws org.picocontainer.PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
          */
         @SuppressWarnings("unchecked")
-        public Assimilated(final Class<T> type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+        public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
                 throws PicoCompositionException {
             super(delegate);
             this.type = type;
             this.proxyFactory = proxyFactory;
-            final Class<T> delegationType = delegate.getComponentImplementation();
+            final Class<? extends T> delegationType = delegate.getComponentImplementation();
             this.isCompatible = type.isAssignableFrom(delegationType);
             if (!isCompatible) {
                 if (!proxyFactory.canProxy(type)) {
@@ -170,7 +164,7 @@ public class Assimilating extends AbstractBehavior {
          *
          */
         @SuppressWarnings("unchecked")
-        public Assimilated(final Class<T> type, final ComponentAdapter delegate) {
+        public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate) {
             this(type, delegate, new StandardProxyFactory());
         }
 

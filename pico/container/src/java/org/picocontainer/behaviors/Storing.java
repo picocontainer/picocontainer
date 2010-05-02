@@ -37,30 +37,21 @@ public class Storing extends AbstractBehavior {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, final Object key, Class<T> impl, Parameter... parameters)
-
-            throws PicoCompositionException {
+    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
+                                       final Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
-            return super.createComponentAdapter(monitor,
-                                                                             lifecycle,
-                                                                             componentProps,
-                                                                             key,
-                                                                             impl,
-                                                                             parameters);
+            return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
 
-        return monitor.changedBehavior(new Stored<T>(super.createComponentAdapter(monitor, lifecycle,
-                                                                componentProps, key, impl, parameters),
-                threadLocalMapObjectReference));
+        return monitor.changedBehavior(new Stored<T>(
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters), threadLocalMapObjectReference));
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                    LifecycleStrategy lifecycle,
-                                    Properties componentProps,
-                                    final ComponentAdapter<T> adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                    Properties componentProps, final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }

@@ -33,10 +33,9 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class HotSwapping extends AbstractBehavior {
 
-
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
-            throws PicoCompositionException {
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                 final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, parameters);
 
@@ -49,10 +48,8 @@ public class HotSwapping extends AbstractBehavior {
     }
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter<T> adapter) {
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return super.addComponentAdapter(monitor,
                     lifecycle,

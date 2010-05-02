@@ -32,50 +32,26 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Locking extends AbstractBehavior {
 
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycle,
-                                                   Properties componentProps,
-                                                   Object key,
-                                                   Class<T> impl,
-                                                   Parameter... parameters) {
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                                   Properties componentProps, Object key, Class<T> impl, Parameter... parameters) {
     	
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
-     	   return super.createComponentAdapter(
-     	            monitor,
-     	            lifecycle,
-     	            componentProps,
-     	            key,
-     	            impl,
-     	            parameters);
+     	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
         }
         
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
-        return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(
-            monitor,
-            lifecycle,
-            componentProps,
-            key,
-            impl,
-            parameters)));
+        return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters)));
     }
 
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
-                                                ComponentAdapter<T> adapter) {
+	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                                Properties componentProps, ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
-        	return super.addComponentAdapter(monitor,
-                    lifecycle,
-                    componentProps,
-                    adapter);
+        	return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }    	
     	
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
-        return monitor.changedBehavior(new Locked<T>(super.addComponentAdapter(monitor,
-                                                          lifecycle,
-                                                          componentProps,
-                                                          adapter)));
+        return monitor.changedBehavior(new Locked<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
     }
 
     /**

@@ -10,15 +10,7 @@
 
 package org.picocontainer.gems.behaviors;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -34,7 +26,14 @@ import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -47,10 +46,10 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testInstanceIsBorgedAndCompatibleWithGenerics() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
+        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjector<Touchable>(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilating.Assimilated<Touchable>(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = mpc.getComponent(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
@@ -63,10 +62,10 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(new ConstructorInjector(
+        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjector<Touchable>(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), false));
-        mpc.addAdapter(new Assimilating.Assimilated(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
+        mpc.addAdapter(new Assimilating.Assimilated<Touchable>(Touchable.class, componentAdapter));
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();

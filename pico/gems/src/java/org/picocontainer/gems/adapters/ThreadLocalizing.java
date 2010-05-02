@@ -13,16 +13,15 @@ package org.picocontainer.gems.adapters;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-
 import com.thoughtworks.proxy.kit.ReflectionUtils;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.references.ThreadLocalReference;
@@ -110,44 +109,33 @@ public final class ThreadLocalizing extends AbstractBehavior {
      * @param ensure {@link #ENSURE_THREAD_LOCALITY} or {@link #THREAD_ENSURES_LOCALITY}.
      * @param factory The {@link ProxyFactory} to use.
      */
-    protected ThreadLocalizing(
-            final boolean ensure, final ProxyFactory factory) {
+    protected ThreadLocalizing(final boolean ensure, final ProxyFactory factory) {
         ensureThreadLocal = ensure;
         proxyFactory = factory;
     }
 
     @Override
-	public ComponentAdapter createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
-            throws PicoCompositionException
-    {
-        final ComponentAdapter componentAdapter;
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+            final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
         if (ensureThreadLocal) {
-            componentAdapter = new ThreadLocalized(super.createComponentAdapter(
+            return new ThreadLocalized<T>(super.createComponentAdapter(
                     monitor, lifecycle, componentProps, key, impl, parameters), proxyFactory);
         } else {
-            componentAdapter = new Caching.Cached(super.createComponentAdapter(
-                    monitor, lifecycle, componentProps, key, impl, parameters), new ThreadLocalReference());
+            return new Caching.Cached<T>(super.createComponentAdapter(
+                    monitor, lifecycle, componentProps, key, impl, parameters), new ThreadLocalReference<Storing.Stored.Instance<T>>());
         }
-        return componentAdapter;
     }
 
 
     @Override
-	public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter adapter) {
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (ensureThreadLocal) {
-            return monitor.changedBehavior(new ThreadLocalized(super.addComponentAdapter(monitor,
-                                                                     lifecycle,
-                                                                     componentProps,
-                                                                     adapter), proxyFactory));
+            return monitor.changedBehavior(new ThreadLocalized<T>(
+                    super.addComponentAdapter(monitor, lifecycle, componentProps, adapter), proxyFactory));
         } else {
-            return monitor.changedBehavior(new Caching.Cached(super.addComponentAdapter(monitor,
-                                                                 lifecycle,
-                                                                 componentProps,
-                                                                 adapter), new ThreadLocalReference()));
+            return monitor.changedBehavior(new Caching.Cached<T>(
+                    super.addComponentAdapter(monitor, lifecycle, componentProps, adapter), new ThreadLocalReference<Storing.Stored.Instance<T>>()));
         }
 
     }
@@ -168,7 +156,6 @@ public final class ThreadLocalizing extends AbstractBehavior {
      */
     @SuppressWarnings("serial")
     public static final class ThreadLocalized<T> extends AbstractChangedBehavior<T> {
-
 
         private transient Class[] interfaces;
         private final ProxyFactory proxyFactory;

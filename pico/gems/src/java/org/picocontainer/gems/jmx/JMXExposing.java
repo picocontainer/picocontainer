@@ -92,9 +92,8 @@ public class JMXExposing extends AbstractBehavior {
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
-            throws PicoCompositionException {
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+            final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 monitor, lifecycle,
                 componentProps, key, impl, parameters);
@@ -108,20 +107,13 @@ public class JMXExposing extends AbstractBehavior {
 
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter<T> adapter) {
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
-            return super.addComponentAdapter(monitor,
-                                             lifecycle,
-                                             componentProps,
-                                             adapter);
+            return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         } else {
-            return monitor.changedBehavior(new JMXExposed<T>(super.addComponentAdapter(monitor,
-                                                                     lifecycle,
-                                                                     componentProps,
-                                                                     adapter), mBeanServer, providers));
+            return monitor.changedBehavior(new JMXExposed<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter),
+                    mBeanServer, providers));
         }
 
     }

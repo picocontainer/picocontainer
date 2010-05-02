@@ -33,9 +33,7 @@ import org.picocontainer.behaviors.Storing;
 public class JNDIExposing extends AbstractBehavior {
 
 	@Override
-	public <T> ComponentAdapter<T> addComponentAdapter(
-			final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycle,
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
 			final Properties componentProps, final ComponentAdapter<T> adapter) {
 		try {
 			return new JNDIExposed<T>(super.addComponentAdapter(
@@ -48,17 +46,10 @@ public class JNDIExposing extends AbstractBehavior {
 	}
 
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(
-			final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycle,
-			final Properties componentProps, final Object key,
-			final Class<T> impl, final Parameter... parameters)
-			throws PicoCompositionException {
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+			final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
 		// TODO Auto-generated method stub
-		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(
-				monitor, lifecycle, componentProps,
-				key, impl, parameters);
-
+		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
 		try {
 			return new JNDIExposed<T>(componentAdapter);
 		} catch (NamingException e) {

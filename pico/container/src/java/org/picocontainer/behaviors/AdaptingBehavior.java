@@ -64,10 +64,10 @@ public class AdaptingBehavior implements Behavior, Serializable {
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor monitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycle,
                                                 Properties componentProps,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {
         List<Behavior> list = new ArrayList<Behavior>();
         processSynchronizing(componentProps, list);
         processImplementationHiding(componentProps, list);
