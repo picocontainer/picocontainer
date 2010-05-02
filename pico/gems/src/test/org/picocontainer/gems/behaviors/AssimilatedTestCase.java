@@ -78,7 +78,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilating.Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
+        mpc.addAdapter(new Assimilating.Assimilated<AbstractComponentAdapterTest>(AbstractComponentAdapterTest.class, new InstanceAdapter<AbstractComponentAdapterTest>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
         final AbstractComponentAdapterTest self = mpc.getComponent(AbstractComponentAdapterTest.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
@@ -90,8 +90,8 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilating.Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor())));
+        mpc.addAdapter(new Assimilating.Assimilated<AssimilatedTestCase>(AssimilatedTestCase.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
+                new NullComponentMonitor())));
         final AbstractComponentAdapterTest self = mpc.getComponent(getClass());
         assertNotNull(self);
         assertSame(this, self);
