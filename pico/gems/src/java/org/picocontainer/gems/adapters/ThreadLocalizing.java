@@ -139,12 +139,12 @@ public final class ThreadLocalizing extends AbstractBehavior {
                                                 final Properties componentProps,
                                                 final ComponentAdapter adapter) {
         if (ensureThreadLocal) {
-            return monitor.newBehavior(new ThreadLocalized(super.addComponentAdapter(monitor,
+            return monitor.changedBehavior(new ThreadLocalized(super.addComponentAdapter(monitor,
                                                                      lifecycle,
                                                                      componentProps,
                                                                      adapter), proxyFactory));
         } else {
-            return monitor.newBehavior(new Caching.Cached(super.addComponentAdapter(monitor,
+            return monitor.changedBehavior(new Caching.Cached(super.addComponentAdapter(monitor,
                                                                  lifecycle,
                                                                  componentProps,
                                                                  adapter), new ThreadLocalReference()));

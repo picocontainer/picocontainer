@@ -116,7 +116,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         return injector;
     }
 
-    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
         return changedBehavior;
     }
 

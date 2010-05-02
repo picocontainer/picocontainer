@@ -40,7 +40,7 @@ public class OptInCaching extends AbstractBehavior {
     			Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return monitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(monitor,
+            return monitor.changedBehavior(new Caching.Cached<T>(super.createComponentAdapter(monitor,
                                                                                         lifecycle,
                                                                                         componentProps,
                                                                                         key,
@@ -58,7 +58,7 @@ public class OptInCaching extends AbstractBehavior {
                                                 Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
-            return monitor.newBehavior(new Caching.Cached<T>(super.addComponentAdapter(monitor,
+            return monitor.changedBehavior(new Caching.Cached<T>(super.addComponentAdapter(monitor,
                                                                  lifecycle,
                                                                  componentProps,
                                                                  adapter)));

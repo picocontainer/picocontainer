@@ -40,7 +40,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                 parameters);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return monitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(monitor,
+        return monitor.changedBehavior(new ThreadCached<T>(super.createComponentAdapter(monitor,
                                                                 lifecycle,
                                                                 componentProps,
                                                                 key,
@@ -57,7 +57,7 @@ public class ThreadCaching extends AbstractBehavior {
             return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return monitor.newBehavior(new ThreadCached<T>(super.addComponentAdapter(monitor,
+        return monitor.changedBehavior(new ThreadCached<T>(super.addComponentAdapter(monitor,
                                                              lifecycle,
                                                              componentProps,
                                                              adapter)));

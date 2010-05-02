@@ -50,7 +50,7 @@ public class Locking extends AbstractBehavior {
         }
         
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
-        return monitor.newBehavior(new Locked<T>(super.createComponentAdapter(
+        return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(
             monitor,
             lifecycle,
             componentProps,
@@ -72,7 +72,7 @@ public class Locking extends AbstractBehavior {
         }    	
     	
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
-        return monitor.newBehavior(new Locked<T>(super.addComponentAdapter(monitor,
+        return monitor.changedBehavior(new Locked<T>(super.addComponentAdapter(monitor,
                                                           lifecycle,
                                                           componentProps,
                                                           adapter)));

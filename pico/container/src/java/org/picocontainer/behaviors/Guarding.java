@@ -41,7 +41,7 @@ public class Guarding extends AbstractBehavior {
         if (guard == null) {
             return delegate;
         } else {
-            return monitor.newBehavior(new Guarded<T>(delegate, guard));
+            return monitor.changedBehavior(new Guarded<T>(delegate, guard));
         }
 
     }
@@ -55,7 +55,7 @@ public class Guarding extends AbstractBehavior {
         if (guard == null) {
             return delegate;
         } else {
-            return monitor.newBehavior(monitor.newBehavior(new Guarded<T>(delegate, guard)));
+            return monitor.changedBehavior(monitor.changedBehavior(new Guarded<T>(delegate, guard)));
         }
     }
 

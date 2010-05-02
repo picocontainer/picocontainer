@@ -30,38 +30,25 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class Caching extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(
-			ComponentMonitor monitor,
-			LifecycleStrategy lifecycle,
-			Properties componentProps, Object key,
-			Class<T> impl, Parameter... parameters)
-			throws PicoCompositionException {
-		if (removePropertiesIfPresent(componentProps,
-				Characteristics.NO_CACHE)) {
-			return super.createComponentAdapter(monitor,
-					lifecycle, componentProps, key,
-					impl, parameters);
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+			Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+		if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
+			return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
 		}
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        return monitor.newBehavior(new Cached<T>(super.createComponentAdapter(monitor,
-				lifecycle, componentProps, key,
-				impl, parameters),
-                new SimpleReference<Storing.Stored.Instance<T>>()));
-
+        return monitor.changedBehavior(new Cached<T>(
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters), new SimpleReference<Storing.Stored.Instance<T>>())
+        );
 	}
 
-	public <T> ComponentAdapter<T> addComponentAdapter(
-			ComponentMonitor monitor,
-			LifecycleStrategy lifecycle,
+	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
 			Properties componentProps, ComponentAdapter<T> adapter) {
-		if (removePropertiesIfPresent(componentProps,
-				Characteristics.NO_CACHE)) {
-			return super.addComponentAdapter(monitor,
-					lifecycle, componentProps, adapter);
+		if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
+			return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
 		}
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
-        return monitor.newBehavior(monitor.newBehavior(new Cached<T>(delegate, new SimpleReference<Storing.Stored.Instance<T>>())));
+        return monitor.changedBehavior(new Cached<T>(delegate, new SimpleReference<Storing.Stored.Instance<T>>()));
 	}
 
     /**

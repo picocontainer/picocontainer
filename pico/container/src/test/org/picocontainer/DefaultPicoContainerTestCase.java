@@ -855,7 +855,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             }
         }
 
-        public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+        public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
             return changedBehavior;
         }
     }

@@ -48,7 +48,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
 
         boolean enableCircular = removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
         if (enableCircular && delegate instanceof InjectionType) {
-            return monitor.newBehavior(new ImplementationHiding.HiddenImplementation<T>(compAdapter));
+            return monitor.changedBehavior(new ImplementationHiding.HiddenImplementation<T>(compAdapter));
         } else {
             return compAdapter;
         }

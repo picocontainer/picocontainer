@@ -42,7 +42,7 @@ public class Synchronizing extends AbstractBehavior {
        }
     	
     	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
-        return monitor.newBehavior(new Synchronized<T>(super.createComponentAdapter(
+        return monitor.changedBehavior(new Synchronized<T>(super.createComponentAdapter(
             monitor,
             lifecycle,
             componentProps,
@@ -64,7 +64,7 @@ public class Synchronizing extends AbstractBehavior {
         }
     	
     	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
-        return monitor.newBehavior(new Synchronized<T>(super.addComponentAdapter(monitor,
+        return monitor.changedBehavior(new Synchronized<T>(super.addComponentAdapter(monitor,
                                          lifecycle,
                                          componentProps,
                                          adapter)));

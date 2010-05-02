@@ -73,7 +73,7 @@ public class Assimilating extends AbstractBehavior {
 	public ComponentAdapter createComponentAdapter(
             final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException {
-        return monitor.newBehavior(new Assimilated(assimilationType, super.createComponentAdapter(
+        return monitor.changedBehavior(new Assimilated(assimilationType, super.createComponentAdapter(
                 monitor, lifecycle, componentProps, key, impl, parameters), proxyFactory));
     }
 
@@ -83,7 +83,7 @@ public class Assimilating extends AbstractBehavior {
                                                 final LifecycleStrategy lifecycle,
                                                 final Properties componentProps,
                                                 final ComponentAdapter adapter) {
-        return monitor.newBehavior(new Assimilated(assimilationType, super.addComponentAdapter(monitor,
+        return monitor.changedBehavior(new Assimilated(assimilationType, super.addComponentAdapter(monitor,
                                          lifecycle,
                                          componentProps,
                                          adapter)));

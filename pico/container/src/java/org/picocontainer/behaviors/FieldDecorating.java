@@ -39,7 +39,7 @@ public abstract class FieldDecorating extends AbstractBehavior implements Decora
     public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
             throws PicoCompositionException {
-        return monitor.newBehavior(new FieldDecorated<T>(
+        return monitor.changedBehavior(new FieldDecorated<T>(
                 super.createComponentAdapter(monitor, lifecycle, componentProps,
                         key, impl, parameters),
                 fieldClass, this));

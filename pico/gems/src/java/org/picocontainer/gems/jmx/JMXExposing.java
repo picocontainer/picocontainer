@@ -102,7 +102,7 @@ public class JMXExposing extends AbstractBehavior {
             return delegateAdapter;            
         } else {        	
         	AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.JMX);
-            return monitor.newBehavior(new JMXExposed<T>(delegateAdapter, mBeanServer, providers));
+            return monitor.changedBehavior(new JMXExposed<T>(delegateAdapter, mBeanServer, providers));
         }
     }
 
@@ -118,7 +118,7 @@ public class JMXExposing extends AbstractBehavior {
                                              componentProps,
                                              adapter);
         } else {
-            return monitor.newBehavior(new JMXExposed<T>(super.addComponentAdapter(monitor,
+            return monitor.changedBehavior(new JMXExposed<T>(super.addComponentAdapter(monitor,
                                                                      lifecycle,
                                                                      componentProps,
                                                                      adapter), mBeanServer, providers));

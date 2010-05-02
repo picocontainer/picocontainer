@@ -51,7 +51,7 @@ public class Storing extends AbstractBehavior {
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
 
-        return monitor.newBehavior(new Stored<T>(super.createComponentAdapter(monitor, lifecycle,
+        return monitor.changedBehavior(new Stored<T>(super.createComponentAdapter(monitor, lifecycle,
                                                                 componentProps, key, impl, parameters),
                 threadLocalMapObjectReference));
 
@@ -66,7 +66,7 @@ public class Storing extends AbstractBehavior {
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
 
-        return monitor.newBehavior(new Stored<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter),
+        return monitor.changedBehavior(new Stored<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter),
                           new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey())));
     }
 

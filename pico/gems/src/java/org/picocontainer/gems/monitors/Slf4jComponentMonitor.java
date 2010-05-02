@@ -266,8 +266,8 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
     /** {@inheritDoc} **/
-    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
-        return delegate.newBehavior(changedBehavior);
+    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+        return delegate.changedBehavior(changedBehavior);
     }
 
 

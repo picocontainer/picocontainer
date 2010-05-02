@@ -145,5 +145,5 @@ public interface ComponentMonitor {
      * @param changedBehavior
      * @return an Behavior. For most implementations, the same one as was passed in.
      */
-    <T> ChangedBehavior<T> newBehavior(ChangedBehavior<T> changedBehavior);
+    <T> ChangedBehavior<T> changedBehavior(ChangedBehavior<T> changedBehavior);
 }

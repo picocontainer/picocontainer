@@ -86,7 +86,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior newBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
         return changedBehavior;
     }
     

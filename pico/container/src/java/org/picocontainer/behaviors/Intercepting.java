@@ -34,7 +34,7 @@ public class Intercepting extends AbstractBehavior {
                                                           Object key,
                                                           Class<T> impl,
                                                           Parameter... parameters) throws PicoCompositionException {
-        return monitor.newBehavior(new Intercepted<T>(super.createComponentAdapter(monitor,
+        return monitor.changedBehavior(new Intercepted<T>(super.createComponentAdapter(monitor,
                 lifecycle, componentProps, key,
                 impl, parameters)));
     }

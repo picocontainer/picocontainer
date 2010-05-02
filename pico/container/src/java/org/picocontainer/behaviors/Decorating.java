@@ -32,7 +32,7 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Properties componentProps, final Object key,
                                                    final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
-        return monitor.newBehavior(new Decorated<T>(super.createComponentAdapter(monitor, lifecycle,
+        return monitor.changedBehavior(new Decorated<T>(super.createComponentAdapter(monitor, lifecycle,
                 componentProps,key, impl, parameters), this));
     }
 
