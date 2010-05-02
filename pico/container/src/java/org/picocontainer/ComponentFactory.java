@@ -31,7 +31,7 @@ public interface ComponentFactory {
      * 
      * @param componentMonitor the component monitor
      * @param lifecycleStrategy te lifecycle strategy
-     * @param componentProperties the component properties
+     * @param componentProps the component properties
      * @param key the key to be associated with this adapter. This
      *            value should be returned from a call to
      *            {@link ComponentAdapter#getComponentKey()} on the created
@@ -54,7 +54,7 @@ public interface ComponentFactory {
      */
     <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                             LifecycleStrategy lifecycleStrategy,
-                                            Properties componentProperties,
+                                            Properties componentProps,
                                             Object key,
                                             Class<T> impl,
                                             Parameter... parameters) throws PicoCompositionException;

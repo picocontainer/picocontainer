@@ -109,11 +109,11 @@
 <FONT color="green">106</FONT>    <a name="line.106"></a>
 <FONT color="green">107</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.107"></a>
 <FONT color="green">108</FONT>                ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,<a name="line.108"></a>
-<FONT color="green">109</FONT>                Properties componentProperties, Object key,<a name="line.109"></a>
+<FONT color="green">109</FONT>                Properties componentProps, Object key,<a name="line.109"></a>
 <FONT color="green">110</FONT>                Class&lt;T&gt; impl, Parameter ... parameters)<a name="line.110"></a>
 <FONT color="green">111</FONT>                throws PicoCompositionException {<a name="line.111"></a>
 <FONT color="green">112</FONT>                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(<a name="line.112"></a>
-<FONT color="green">113</FONT>                    componentProperties, Characteristics.USE_NAMES, true);<a name="line.113"></a>
+<FONT color="green">113</FONT>                    componentProps, Characteristics.USE_NAMES, true);<a name="line.113"></a>
 <FONT color="green">114</FONT>                return new FieldInjector(key, impl, parameters, componentMonitor, useNames);<a name="line.114"></a>
 <FONT color="green">115</FONT>            }<a name="line.115"></a>
 <FONT color="green">116</FONT>        }<a name="line.116"></a>

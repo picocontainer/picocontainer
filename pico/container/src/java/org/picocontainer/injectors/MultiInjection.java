@@ -33,11 +33,11 @@ public class MultiInjection extends AbstractInjectionType {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                           LifecycleStrategy lifecycleStrategy,
-                                                          Properties componentProperties,
+                                                          Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
                                                           Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+        boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         return wrapLifeCycle(new MultiInjector(key, impl, parameters, monitor, setterPrefix, useNames), lifecycleStrategy);
     }
 }

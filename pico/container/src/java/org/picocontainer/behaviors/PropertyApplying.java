@@ -43,19 +43,19 @@ import java.util.Set;
 public final class PropertyApplying extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
-            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,
+            LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
             Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter<T> decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, key, impl, parameters);
-        removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
+                componentProps, key, impl, parameters);
+        removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return componentMonitor.newBehavior(new PropertyApplicator<T>(decoratedAdapter));
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
-            LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
+            LifecycleStrategy lifecycleStrategy, Properties componentProps, ComponentAdapter<T> adapter) {
+        removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return componentMonitor.newBehavior(new PropertyApplicator<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, adapter)));
+                componentProps, adapter)));
     }
 
     /**

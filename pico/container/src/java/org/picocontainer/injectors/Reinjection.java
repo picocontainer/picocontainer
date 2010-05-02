@@ -27,9 +27,9 @@ public class Reinjection extends CompositeInjection {
         super(new AbstractInjectionType() {
             public <T> ComponentAdapter<T> createComponentAdapter(
                     ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
-                    Properties componentProperties, final Object key, Class<T> impl,
+                    Properties componentProps, final Object key, Class<T> impl,
                     Parameter... parameters) throws PicoCompositionException {
-                boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+                boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
                 return new ReinjectionInjector(key, impl, parameters, componentMonitor, parent, useNames);
             }
         }, reinjectionType);

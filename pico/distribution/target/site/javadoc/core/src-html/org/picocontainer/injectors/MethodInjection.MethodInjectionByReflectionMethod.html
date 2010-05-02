@@ -46,9 +46,9 @@
 <FONT color="green">043</FONT>            delegate = new MethodInjectionByReflectionMethod(injectionMethod);<a name="line.43"></a>
 <FONT color="green">044</FONT>        }<a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
-<FONT color="green">046</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,<a name="line.46"></a>
+<FONT color="green">046</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                                       Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.47"></a>
-<FONT color="green">048</FONT>            return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, key, impl, parameters);<a name="line.48"></a>
+<FONT color="green">048</FONT>            return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters);<a name="line.48"></a>
 <FONT color="green">049</FONT>        }<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>
 <FONT color="green">051</FONT>        public class MethodInjectionByName extends AbstractInjectionFactory {<a name="line.51"></a>
@@ -58,8 +58,8 @@
 <FONT color="green">055</FONT>                this.injectionMethodName = injectionMethodName;<a name="line.55"></a>
 <FONT color="green">056</FONT>            }<a name="line.56"></a>
 <FONT color="green">057</FONT>    <a name="line.57"></a>
-<FONT color="green">058</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.58"></a>
-<FONT color="green">059</FONT>                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.59"></a>
+<FONT color="green">058</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.58"></a>
+<FONT color="green">059</FONT>                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);<a name="line.59"></a>
 <FONT color="green">060</FONT>                return wrapLifeCycle(new MethodInjector(key, impl, parameters, monitor, injectionMethodName, useNames), lifecycleStrategy);<a name="line.60"></a>
 <FONT color="green">061</FONT>            }<a name="line.61"></a>
 <FONT color="green">062</FONT>        }<a name="line.62"></a>
@@ -71,8 +71,8 @@
 <FONT color="green">068</FONT>                this.injectionMethod = injectionMethod;<a name="line.68"></a>
 <FONT color="green">069</FONT>            }<a name="line.69"></a>
 <FONT color="green">070</FONT>    <a name="line.70"></a>
-<FONT color="green">071</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.71"></a>
-<FONT color="green">072</FONT>                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.72"></a>
+<FONT color="green">071</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.71"></a>
+<FONT color="green">072</FONT>                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);<a name="line.72"></a>
 <FONT color="green">073</FONT>                if (injectionMethod.getDeclaringClass().isAssignableFrom(impl)) {<a name="line.73"></a>
 <FONT color="green">074</FONT>                    return wrapLifeCycle(monitor.newInjector(new MethodInjector.ByReflectionMethod(key, impl, parameters, monitor, injectionMethod, useNames)), lifecycleStrategy);<a name="line.74"></a>
 <FONT color="green">075</FONT>                } else {<a name="line.75"></a>

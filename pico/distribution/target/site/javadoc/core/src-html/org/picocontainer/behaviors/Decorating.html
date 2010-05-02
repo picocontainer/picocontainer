@@ -34,16 +34,16 @@
 <FONT color="green">031</FONT>    <a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,<a name="line.33"></a>
-<FONT color="green">034</FONT>                                                       Properties componentProperties, final Object key,<a name="line.34"></a>
+<FONT color="green">034</FONT>                                                       Properties componentProps, final Object key,<a name="line.34"></a>
 <FONT color="green">035</FONT>                                                       final Class impl, final Parameter... parameters) throws PicoCompositionException {<a name="line.35"></a>
 <FONT color="green">036</FONT>            return componentMonitor.newBehavior(new Decorated(super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.36"></a>
-<FONT color="green">037</FONT>                    componentProperties,key, impl, parameters), this));<a name="line.37"></a>
+<FONT color="green">037</FONT>                    componentProps,key, impl, parameters), this));<a name="line.37"></a>
 <FONT color="green">038</FONT>        }<a name="line.38"></a>
 <FONT color="green">039</FONT>    <a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,<a name="line.41"></a>
-<FONT color="green">042</FONT>                                                    Properties componentProperties, ComponentAdapter adapter) {<a name="line.42"></a>
-<FONT color="green">043</FONT>            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);<a name="line.43"></a>
+<FONT color="green">042</FONT>                                                    Properties componentProps, ComponentAdapter adapter) {<a name="line.42"></a>
+<FONT color="green">043</FONT>            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);<a name="line.43"></a>
 <FONT color="green">044</FONT>        }<a name="line.44"></a>
 <FONT color="green">045</FONT>    }<a name="line.45"></a>
 

@@ -93,15 +93,15 @@ public class JMXExposing extends AbstractBehavior {
      */
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(
-            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class<T> impl, final Parameter... parameters)
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
             throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
-                componentProperties, key, impl, parameters);
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
+                componentProps, key, impl, parameters);
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
             return delegateAdapter;            
         } else {        	
-        	AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.JMX);
+        	AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.JMX);
             return componentMonitor.newBehavior(new JMXExposed<T>(delegateAdapter, mBeanServer, providers));
         }
     }
@@ -110,17 +110,17 @@ public class JMXExposing extends AbstractBehavior {
     @Override
 	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor componentMonitor,
                                                 final LifecycleStrategy lifecycleStrategy,
-                                                final Properties componentProperties,
+                                                final Properties componentProps,
                                                 final ComponentAdapter<T> adapter) {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
             return super.addComponentAdapter(componentMonitor,
                                              lifecycleStrategy,
-                                             componentProperties,
+                                             componentProps,
                                              adapter);
         } else {
             return componentMonitor.newBehavior(new JMXExposed<T>(super.addComponentAdapter(componentMonitor,
                                                                      lifecycleStrategy,
-                                                                     componentProperties,
+                                                                     componentProps,
                                                                      adapter), mBeanServer, providers));
         }
 

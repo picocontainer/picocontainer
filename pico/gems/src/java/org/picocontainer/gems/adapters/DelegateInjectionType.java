@@ -47,11 +47,11 @@ public class DelegateInjectionType extends AbstractInjectionType {
 	public <T> ComponentAdapter<T> createComponentAdapter(
 			final ComponentMonitor componentMonitor,
 			final LifecycleStrategy lifecycleStrategy,
-			final Properties componentProperties, final Object key,
+			final Properties componentProps, final Object key,
 			final Class<T> impl, final Parameter... parameters)
 			throws PicoCompositionException {
 		
-		DelegateMethod<?, T> method =  cast(componentProperties.remove(DELEGATE));
+		DelegateMethod<?, T> method =  cast(componentProps.remove(DELEGATE));
 		
 		//TODO: what to do since if there is no method, the delegate adapter won't work.
 		if (method == null) {
@@ -59,7 +59,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 					+"org.picocontainer.gems.util.DelegateMethod object stored as delegateInstance");
 		}
 
-		Object instance = componentProperties.remove(INSTANCE);
+		Object instance = componentProps.remove(INSTANCE);
 		if (instance == null) {
 			throw new IllegalArgumentException("Property 'instance' must exist.");
 		}

@@ -148,7 +148,7 @@ Class AdaptingBehavior</H2>
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                        <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
-                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
 <BR>
@@ -159,7 +159,7 @@ Class AdaptingBehavior</H2>
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
@@ -178,7 +178,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processAutomatic(java.util.Properties, java.util.List)">processAutomatic</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processAutomatic(java.util.Properties, java.util.List)">processAutomatic</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                  <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
 <BR>
@@ -187,7 +187,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processCaching(java.util.Properties, java.lang.Class, java.util.List)">processCaching</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processCaching(java.util.Properties, java.lang.Class, java.util.List)">processCaching</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
@@ -197,7 +197,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processGuarding(java.util.Properties, java.lang.Class, java.util.List)">processGuarding</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processGuarding(java.util.Properties, java.lang.Class, java.util.List)">processGuarding</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
@@ -207,7 +207,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processImplementationHiding(java.util.Properties, java.util.List)">processImplementationHiding</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processImplementationHiding(java.util.Properties, java.util.List)">processImplementationHiding</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
 <BR>
@@ -216,7 +216,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processLocking(java.util.Properties, java.util.List)">processLocking</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processLocking(java.util.Properties, java.util.List)">processLocking</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
 <BR>
@@ -225,7 +225,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processPropertyApplying(java.util.Properties, java.util.List)">processPropertyApplying</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processPropertyApplying(java.util.Properties, java.util.List)">processPropertyApplying</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
 <BR>
@@ -234,7 +234,7 @@ Class AdaptingBehavior</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processSynchronizing(java.util.Properties, java.util.List)">processSynchronizing</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+<TD><CODE><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#processSynchronizing(java.util.Properties, java.util.List)">processSynchronizing</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</CODE>
 
 <BR>
@@ -301,7 +301,7 @@ createComponentAdapter</H3>
 <PRE>
 public <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.34"><B>createComponentAdapter</B></A>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                                <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
-                                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+                                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                                <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)
@@ -314,7 +314,7 @@ public <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interfa
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../org/picocontainer/ComponentFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></CODE> in interface <CODE><A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentMonitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProperties</CODE> - the component properties<DD><CODE>key</CODE> - the key to be associated with this adapter. This
+<DT><B>Parameters:</B><DD><CODE>componentMonitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProps</CODE> - the component properties<DD><CODE>key</CODE> - the key to be associated with this adapter. This
             value should be returned from a call to
             <A HREF="../../../org/picocontainer/ComponentAdapter.html#getComponentKey()"><CODE>ComponentAdapter.getComponentKey()</CODE></A> on the created
             adapter.<DD><CODE>impl</CODE> - the implementation class to be associated
@@ -340,7 +340,7 @@ addComponentAdapter</H3>
 <PRE>
 public <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A> <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.67"><B>addComponentAdapter</B></A>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
-                                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+                                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                             <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</PRE>
 <DL>
 <DD><DL>
@@ -404,7 +404,7 @@ protected <A HREF="../../../org/picocontainer/injectors/AdaptingInjection.html" 
 <A NAME="processSynchronizing(java.util.Properties, java.util.List)"><!-- --></A><H3>
 processSynchronizing</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.106"><B>processSynchronizing</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.106"><B>processSynchronizing</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                     <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
 <DD><DL>
@@ -419,7 +419,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processLocking(java.util.Properties, java.util.List)"><!-- --></A><H3>
 processLocking</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.112"><B>processLocking</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.112"><B>processLocking</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
 <DD><DL>
@@ -434,7 +434,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processCaching(java.util.Properties, java.lang.Class, java.util.List)"><!-- --></A><H3>
 processCaching</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.118"><B>processCaching</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.118"><B>processCaching</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
@@ -450,7 +450,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processGuarding(java.util.Properties, java.lang.Class, java.util.List)"><!-- --></A><H3>
 processGuarding</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.128"><B>processGuarding</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.128"><B>processGuarding</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
@@ -466,7 +466,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processImplementationHiding(java.util.Properties, java.util.List)"><!-- --></A><H3>
 processImplementationHiding</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.134"><B>processImplementationHiding</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.134"><B>processImplementationHiding</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
 <DD><DL>
@@ -481,7 +481,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processPropertyApplying(java.util.Properties, java.util.List)"><!-- --></A><H3>
 processPropertyApplying</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.142"><B>processPropertyApplying</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.142"><B>processPropertyApplying</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
 <DD><DL>
@@ -496,7 +496,7 @@ protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBe
 <A NAME="processAutomatic(java.util.Properties, java.util.List)"><!-- --></A><H3>
 processAutomatic</H3>
 <PRE>
-protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.149"><B>processAutomatic</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
+protected void <A HREF="../../../src-html/org/picocontainer/behaviors/AdaptingBehavior.html#line.149"><B>processAutomatic</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                 <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../org/picocontainer/BehaviorFactory.html" title="interface in org.picocontainer">BehaviorFactory</A>&gt;&nbsp;list)</PRE>
 <DL>
 <DD><DL>

@@ -47,7 +47,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   Properties componentProperties,
+                                                   Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
@@ -56,7 +56,7 @@ public class AdaptingInjection extends AbstractInjectionType {
         componentAdapter = fieldAnnotatedInjectionAdapter(impl,
                                componentMonitor,
                                lifecycleStrategy,
-                               componentProperties,
+                               componentProps,
                                key,
                                componentAdapter,
                                parameters);
@@ -68,7 +68,7 @@ public class AdaptingInjection extends AbstractInjectionType {
         componentAdapter = methodAnnotatedInjectionAdapter(impl,
                                                            componentMonitor,
                                                            lifecycleStrategy,
-                                                           componentProperties,
+                                                           componentProps,
                                                            key,
                                                            componentAdapter,
                                                            parameters);
@@ -77,7 +77,7 @@ public class AdaptingInjection extends AbstractInjectionType {
             return componentAdapter;
         }
 
-        componentAdapter = setterInjectionAdapter(componentProperties,
+        componentAdapter = setterInjectionAdapter(componentProps,
                                                  componentMonitor,
                                                  lifecycleStrategy,
                                                  key,
@@ -89,7 +89,7 @@ public class AdaptingInjection extends AbstractInjectionType {
             return componentAdapter;
         }
 
-        componentAdapter = methodInjectionAdapter(componentProperties,
+        componentAdapter = methodInjectionAdapter(componentProps,
                                                  componentMonitor,
                                                  lifecycleStrategy,
                                                  key,
@@ -102,7 +102,7 @@ public class AdaptingInjection extends AbstractInjectionType {
         }
 
 
-        return defaultInjectionAdapter(componentProperties,
+        return defaultInjectionAdapter(componentProps,
                                     componentMonitor,
                                     lifecycleStrategy,
                                     key,
@@ -110,30 +110,30 @@ public class AdaptingInjection extends AbstractInjectionType {
                                     parameters);
     }
 
-    private <T> ComponentAdapter<T> defaultInjectionAdapter(Properties componentProperties,
+    private <T> ComponentAdapter<T> defaultInjectionAdapter(Properties componentProps,
                                                   ComponentMonitor componentMonitor,
                                                   LifecycleStrategy lifecycleStrategy,
                                                   Object key,
                                                   Class<T> impl, Parameter... parameters) {
-        AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
+        AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CDI);
         return new ConstructorInjection().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
-                                                                        componentProperties,
+                                                                        componentProps,
                                                                         key,
                                                                         impl,
                                                                         parameters);
     }
 
-    private <T> ComponentAdapter<T> setterInjectionAdapter(Properties componentProperties,
+    private <T> ComponentAdapter<T> setterInjectionAdapter(Properties componentProps,
                                                    ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Object key,
                                                    Class<T> impl,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.SDI)) {
             componentAdapter = new SetterInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                                                    componentProperties,
+                                                                                                    componentProps,
                                                                                                     key,
                                                                                                     impl,
                                                                                                     parameters);
@@ -141,16 +141,16 @@ public class AdaptingInjection extends AbstractInjectionType {
         return componentAdapter;
     }
 
-    private <T> ComponentAdapter<T> methodInjectionAdapter(Properties componentProperties,
+    private <T> ComponentAdapter<T> methodInjectionAdapter(Properties componentProps,
                                                    ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Object key,
                                                    Class<T> impl,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.METHOD_INJECTION)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.METHOD_INJECTION)) {
             componentAdapter = new MethodInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                                                    componentProperties,
+                                                                                                    componentProps,
                                                                                                     key,
                                                                                                     impl,
                                                                                                     parameters);
@@ -162,7 +162,7 @@ public class AdaptingInjection extends AbstractInjectionType {
     private <T> ComponentAdapter<T> methodAnnotatedInjectionAdapter(Class<T> impl,
                                                              ComponentMonitor componentMonitor,
                                                              LifecycleStrategy lifecycleStrategy,
-                                                             Properties componentProperties,
+                                                             Properties componentProps,
                                                              Object key,
                                                              ComponentAdapter<T> componentAdapter,
                                                              Parameter... parameters) {
@@ -170,7 +170,7 @@ public class AdaptingInjection extends AbstractInjectionType {
             componentAdapter =
                 new AnnotatedMethodInjection().createComponentAdapter(componentMonitor,
                                                                               lifecycleStrategy,
-                                                                              componentProperties,
+                                                                              componentProps,
                                                                               key,
                                                                               impl,
                                                                               parameters);
@@ -181,12 +181,12 @@ public class AdaptingInjection extends AbstractInjectionType {
     private <T> ComponentAdapter<T> fieldAnnotatedInjectionAdapter(Class<T> impl,
                                  ComponentMonitor componentMonitor,
                                  LifecycleStrategy lifecycleStrategy,
-                                 Properties componentProperties,
+                                 Properties componentProps,
                                  Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (injectionFieldAnnotated(impl)) {
              componentAdapter = new AnnotatedFieldInjection().createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
-                                                                             componentProperties,
+                                                                             componentProps,
                                                                              key,
                                                                              impl,
                                                                              parameters);

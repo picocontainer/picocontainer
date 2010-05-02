@@ -35,36 +35,36 @@ public class HotSwapping extends AbstractBehavior {
 
 
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class<T> impl, final Parameter... parameters)
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, key, impl, parameters);
+                componentProps, key, impl, parameters);
 
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_HOT_SWAP)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return delegateAdapter;
 		} 
 
-		AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.HOT_SWAP);
+		AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.HOT_SWAP);
         return componentMonitor.newBehavior(new HotSwappable<T>(delegateAdapter));
     }
 
     @Override
 	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor componentMonitor,
                                                 final LifecycleStrategy lifecycleStrategy,
-                                                final Properties componentProperties,
+                                                final Properties componentProps,
                                                 final ComponentAdapter<T> adapter) {
-        if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_HOT_SWAP)) {
+        if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return super.addComponentAdapter(componentMonitor,
                     lifecycleStrategy,
-                    componentProperties,
+                    componentProps,
                     adapter);
 		} 
 
     	
-		AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.HOT_SWAP);
+		AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.HOT_SWAP);
     	return componentMonitor.newBehavior(new HotSwappable<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
-                                                                 componentProperties,
+                                                                 componentProps,
                                                                  adapter)));
     }
 

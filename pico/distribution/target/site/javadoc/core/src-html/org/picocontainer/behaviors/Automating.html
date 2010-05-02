@@ -28,14 +28,14 @@
 <FONT color="green">025</FONT>    <a name="line.25"></a>
 <FONT color="green">026</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.26"></a>
 <FONT color="green">027</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.27"></a>
-<FONT color="green">028</FONT>                                                       Properties componentProperties,<a name="line.28"></a>
+<FONT color="green">028</FONT>                                                       Properties componentProps,<a name="line.28"></a>
 <FONT color="green">029</FONT>                                                       Object key,<a name="line.29"></a>
 <FONT color="green">030</FONT>                                                       Class impl,<a name="line.30"></a>
 <FONT color="green">031</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.31"></a>
-<FONT color="green">032</FONT>            removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);<a name="line.32"></a>
+<FONT color="green">032</FONT>            removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);<a name="line.32"></a>
 <FONT color="green">033</FONT>            return componentMonitor.newBehavior(new Automated(super.createComponentAdapter(componentMonitor,<a name="line.33"></a>
 <FONT color="green">034</FONT>                                                lifecycleStrategy,<a name="line.34"></a>
-<FONT color="green">035</FONT>                                                componentProperties,<a name="line.35"></a>
+<FONT color="green">035</FONT>                                                componentProps,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                key,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                impl,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                parameters)));<a name="line.38"></a>
@@ -43,12 +43,12 @@
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.41"></a>
 <FONT color="green">042</FONT>                                                    LifecycleStrategy lifecycleStrategy,<a name="line.42"></a>
-<FONT color="green">043</FONT>                                                    Properties componentProperties,<a name="line.43"></a>
+<FONT color="green">043</FONT>                                                    Properties componentProps,<a name="line.43"></a>
 <FONT color="green">044</FONT>                                                    ComponentAdapter adapter) {<a name="line.44"></a>
-<FONT color="green">045</FONT>            removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);<a name="line.45"></a>
+<FONT color="green">045</FONT>            removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);<a name="line.45"></a>
 <FONT color="green">046</FONT>            return componentMonitor.newBehavior(new Automated(super.addComponentAdapter(componentMonitor,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                             lifecycleStrategy,<a name="line.47"></a>
-<FONT color="green">048</FONT>                                             componentProperties,<a name="line.48"></a>
+<FONT color="green">048</FONT>                                             componentProps,<a name="line.48"></a>
 <FONT color="green">049</FONT>                                             adapter)));<a name="line.49"></a>
 <FONT color="green">050</FONT>        }<a name="line.50"></a>
 <FONT color="green">051</FONT>    }<a name="line.51"></a>

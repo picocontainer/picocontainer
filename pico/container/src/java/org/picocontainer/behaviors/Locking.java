@@ -34,26 +34,26 @@ public class Locking extends AbstractBehavior {
     /** {@inheritDoc} **/
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   Properties componentProperties,
+                                                   Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
                                                    Parameter... parameters) {
     	
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_LOCK)) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
      	   return super.createComponentAdapter(
      	            componentMonitor,
      	            lifecycleStrategy,
-     	            componentProperties,
+     	            componentProps,
      	            key,
      	            impl,
      	            parameters);
         }
         
-        removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
+        removePropertiesIfPresent(componentProps, Characteristics.LOCK);
         return componentMonitor.newBehavior(new Locked<T>(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
-            componentProperties,
+            componentProps,
             key,
             impl,
             parameters)));
@@ -62,19 +62,19 @@ public class Locking extends AbstractBehavior {
     /** {@inheritDoc} **/
 	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
+                                                Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_LOCK)) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
         	return super.addComponentAdapter(componentMonitor,
                     lifecycleStrategy,
-                    componentProperties,
+                    componentProps,
                     adapter);
         }    	
     	
-        removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
+        removePropertiesIfPresent(componentProps, Characteristics.LOCK);
         return componentMonitor.newBehavior(new Locked<T>(super.addComponentAdapter(componentMonitor,
                                                           lifecycleStrategy,
-                                                          componentProperties,
+                                                          componentProps,
                                                           adapter)));
     }
 

@@ -26,23 +26,23 @@ public class ThreadCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,
-                                                          Properties componentProperties,
+                                                          Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
                                                           Parameter... parameters)
         throws PicoCompositionException {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
                                                 lifecycleStrategy,
-                                                componentProperties,
+                                                componentProps,
                                                 key,
                                                 impl,
                                                 parameters);
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+        removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         return componentMonitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(componentMonitor,
                                                                 lifecycleStrategy,
-                                                                componentProperties,
+                                                                componentProps,
                                                                 key,
                                                                 impl,
                                                                 parameters)));
@@ -51,15 +51,15 @@ public class ThreadCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                        LifecycleStrategy lifecycleStrategy,
-                                                       Properties componentProperties,
+                                                       Properties componentProps,
                                                        ComponentAdapter<T> adapter) {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
-            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
+            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+        removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         return componentMonitor.newBehavior(new ThreadCached<T>(super.addComponentAdapter(componentMonitor,
                                                              lifecycleStrategy,
-                                                             componentProperties,
+                                                             componentProps,
                                                              adapter)));
     }
 

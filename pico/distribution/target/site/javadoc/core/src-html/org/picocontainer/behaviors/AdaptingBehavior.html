@@ -36,19 +36,19 @@
 <FONT color="green">033</FONT>    <a name="line.33"></a>
 <FONT color="green">034</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.34"></a>
 <FONT color="green">035</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
-<FONT color="green">036</FONT>                                                       Properties componentProperties,<a name="line.36"></a>
+<FONT color="green">036</FONT>                                                       Properties componentProps,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       Object key,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                       Class impl,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.39"></a>
 <FONT color="green">040</FONT>            List&lt;BehaviorFactory&gt; list = new ArrayList&lt;BehaviorFactory&gt;();<a name="line.40"></a>
 <FONT color="green">041</FONT>            ComponentFactory lastFactory = makeInjectionFactory();<a name="line.41"></a>
-<FONT color="green">042</FONT>            processSynchronizing(componentProperties, list);<a name="line.42"></a>
-<FONT color="green">043</FONT>            processLocking(componentProperties, list);<a name="line.43"></a>
-<FONT color="green">044</FONT>            processPropertyApplying(componentProperties, list);<a name="line.44"></a>
-<FONT color="green">045</FONT>            processAutomatic(componentProperties, list);<a name="line.45"></a>
-<FONT color="green">046</FONT>            processImplementationHiding(componentProperties, list);<a name="line.46"></a>
-<FONT color="green">047</FONT>            processCaching(componentProperties, impl, list);<a name="line.47"></a>
-<FONT color="green">048</FONT>            processGuarding(componentProperties, impl, list);<a name="line.48"></a>
+<FONT color="green">042</FONT>            processSynchronizing(componentProps, list);<a name="line.42"></a>
+<FONT color="green">043</FONT>            processLocking(componentProps, list);<a name="line.43"></a>
+<FONT color="green">044</FONT>            processPropertyApplying(componentProps, list);<a name="line.44"></a>
+<FONT color="green">045</FONT>            processAutomatic(componentProps, list);<a name="line.45"></a>
+<FONT color="green">046</FONT>            processImplementationHiding(componentProps, list);<a name="line.46"></a>
+<FONT color="green">047</FONT>            processCaching(componentProps, impl, list);<a name="line.47"></a>
+<FONT color="green">048</FONT>            processGuarding(componentProps, impl, list);<a name="line.48"></a>
 <FONT color="green">049</FONT>    <a name="line.49"></a>
 <FONT color="green">050</FONT>            //Instantiate Chain of ComponentFactories<a name="line.50"></a>
 <FONT color="green">051</FONT>            for (ComponentFactory componentFactory : list) {<a name="line.51"></a>
@@ -60,7 +60,7 @@
 <FONT color="green">057</FONT>    <a name="line.57"></a>
 <FONT color="green">058</FONT>            return lastFactory.createComponentAdapter(componentMonitor,<a name="line.58"></a>
 <FONT color="green">059</FONT>                                                      lifecycleStrategy,<a name="line.59"></a>
-<FONT color="green">060</FONT>                                                      componentProperties,<a name="line.60"></a>
+<FONT color="green">060</FONT>                                                      componentProps,<a name="line.60"></a>
 <FONT color="green">061</FONT>                                                      key,<a name="line.61"></a>
 <FONT color="green">062</FONT>                                                      impl,<a name="line.62"></a>
 <FONT color="green">063</FONT>                                                      parameters);<a name="line.63"></a>
@@ -69,13 +69,13 @@
 <FONT color="green">066</FONT>    <a name="line.66"></a>
 <FONT color="green">067</FONT>        public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,<a name="line.67"></a>
 <FONT color="green">068</FONT>                                                    LifecycleStrategy lifecycleStrategy,<a name="line.68"></a>
-<FONT color="green">069</FONT>                                                    Properties componentProperties,<a name="line.69"></a>
+<FONT color="green">069</FONT>                                                    Properties componentProps,<a name="line.69"></a>
 <FONT color="green">070</FONT>                                                    ComponentAdapter adapter) {<a name="line.70"></a>
 <FONT color="green">071</FONT>            List&lt;BehaviorFactory&gt; list = new ArrayList&lt;BehaviorFactory&gt;();<a name="line.71"></a>
-<FONT color="green">072</FONT>            processSynchronizing(componentProperties, list);<a name="line.72"></a>
-<FONT color="green">073</FONT>            processImplementationHiding(componentProperties, list);<a name="line.73"></a>
-<FONT color="green">074</FONT>            processCaching(componentProperties, adapter.getComponentImplementation(), list);<a name="line.74"></a>
-<FONT color="green">075</FONT>            processGuarding(componentProperties, adapter.getComponentImplementation(), list);<a name="line.75"></a>
+<FONT color="green">072</FONT>            processSynchronizing(componentProps, list);<a name="line.72"></a>
+<FONT color="green">073</FONT>            processImplementationHiding(componentProps, list);<a name="line.73"></a>
+<FONT color="green">074</FONT>            processCaching(componentProps, adapter.getComponentImplementation(), list);<a name="line.74"></a>
+<FONT color="green">075</FONT>            processGuarding(componentProps, adapter.getComponentImplementation(), list);<a name="line.75"></a>
 <FONT color="green">076</FONT>    <a name="line.76"></a>
 <FONT color="green">077</FONT>            //Instantiate Chain of ComponentFactories<a name="line.77"></a>
 <FONT color="green">078</FONT>            BehaviorFactory lastFactory = null;<a name="line.78"></a>
@@ -91,7 +91,7 @@
 <FONT color="green">088</FONT>            }<a name="line.88"></a>
 <FONT color="green">089</FONT>    <a name="line.89"></a>
 <FONT color="green">090</FONT>    <a name="line.90"></a>
-<FONT color="green">091</FONT>            return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);<a name="line.91"></a>
+<FONT color="green">091</FONT>            return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);<a name="line.91"></a>
 <FONT color="green">092</FONT>        }<a name="line.92"></a>
 <FONT color="green">093</FONT>    <a name="line.93"></a>
 <FONT color="green">094</FONT>        public void verify(PicoContainer container) {<a name="line.94"></a>
@@ -106,52 +106,52 @@
 <FONT color="green">103</FONT>            return new AdaptingInjection();<a name="line.103"></a>
 <FONT color="green">104</FONT>        }<a name="line.104"></a>
 <FONT color="green">105</FONT>    <a name="line.105"></a>
-<FONT color="green">106</FONT>        protected void processSynchronizing(Properties componentProperties, List&lt;BehaviorFactory&gt; list) {<a name="line.106"></a>
-<FONT color="green">107</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE)) {<a name="line.107"></a>
+<FONT color="green">106</FONT>        protected void processSynchronizing(Properties componentProps, List&lt;BehaviorFactory&gt; list) {<a name="line.106"></a>
+<FONT color="green">107</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE)) {<a name="line.107"></a>
 <FONT color="green">108</FONT>                list.add(new Synchronizing());<a name="line.108"></a>
 <FONT color="green">109</FONT>            }<a name="line.109"></a>
 <FONT color="green">110</FONT>        }<a name="line.110"></a>
 <FONT color="green">111</FONT>    <a name="line.111"></a>
-<FONT color="green">112</FONT>        protected void processLocking(Properties componentProperties, List&lt;BehaviorFactory&gt; list) {<a name="line.112"></a>
-<FONT color="green">113</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.LOCK)) {<a name="line.113"></a>
+<FONT color="green">112</FONT>        protected void processLocking(Properties componentProps, List&lt;BehaviorFactory&gt; list) {<a name="line.112"></a>
+<FONT color="green">113</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.LOCK)) {<a name="line.113"></a>
 <FONT color="green">114</FONT>                list.add(new Locking());<a name="line.114"></a>
 <FONT color="green">115</FONT>            }<a name="line.115"></a>
 <FONT color="green">116</FONT>        }<a name="line.116"></a>
 <FONT color="green">117</FONT>    <a name="line.117"></a>
-<FONT color="green">118</FONT>        protected void processCaching(Properties componentProperties,<a name="line.118"></a>
+<FONT color="green">118</FONT>        protected void processCaching(Properties componentProps,<a name="line.118"></a>
 <FONT color="green">119</FONT>                                           Class impl,<a name="line.119"></a>
 <FONT color="green">120</FONT>                                           List&lt;BehaviorFactory&gt; list) {<a name="line.120"></a>
-<FONT color="green">121</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||<a name="line.121"></a>
+<FONT color="green">121</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.CACHE) ||<a name="line.121"></a>
 <FONT color="green">122</FONT>                impl.getAnnotation(Cache.class) != null) {<a name="line.122"></a>
 <FONT color="green">123</FONT>                list.add(new Caching());<a name="line.123"></a>
 <FONT color="green">124</FONT>            }<a name="line.124"></a>
-<FONT color="green">125</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);<a name="line.125"></a>
+<FONT color="green">125</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);<a name="line.125"></a>
 <FONT color="green">126</FONT>        }<a name="line.126"></a>
 <FONT color="green">127</FONT>    <a name="line.127"></a>
-<FONT color="green">128</FONT>        protected void processGuarding(Properties componentProperties, Class impl, List&lt;BehaviorFactory&gt; list) {<a name="line.128"></a>
-<FONT color="green">129</FONT>            if (AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {<a name="line.129"></a>
+<FONT color="green">128</FONT>        protected void processGuarding(Properties componentProps, Class impl, List&lt;BehaviorFactory&gt; list) {<a name="line.128"></a>
+<FONT color="green">129</FONT>            if (AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.GUARD, false)) {<a name="line.129"></a>
 <FONT color="green">130</FONT>                list.add(new Guarding());<a name="line.130"></a>
 <FONT color="green">131</FONT>            }<a name="line.131"></a>
 <FONT color="green">132</FONT>        }<a name="line.132"></a>
 <FONT color="green">133</FONT>    <a name="line.133"></a>
-<FONT color="green">134</FONT>        protected void processImplementationHiding(Properties componentProperties,<a name="line.134"></a>
+<FONT color="green">134</FONT>        protected void processImplementationHiding(Properties componentProps,<a name="line.134"></a>
 <FONT color="green">135</FONT>                                                 List&lt;BehaviorFactory&gt; list) {<a name="line.135"></a>
-<FONT color="green">136</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {<a name="line.136"></a>
+<FONT color="green">136</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL)) {<a name="line.136"></a>
 <FONT color="green">137</FONT>                list.add(new ImplementationHiding());<a name="line.137"></a>
 <FONT color="green">138</FONT>            }<a name="line.138"></a>
-<FONT color="green">139</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);<a name="line.139"></a>
+<FONT color="green">139</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL);<a name="line.139"></a>
 <FONT color="green">140</FONT>        }<a name="line.140"></a>
 <FONT color="green">141</FONT>    <a name="line.141"></a>
-<FONT color="green">142</FONT>        protected void processPropertyApplying(Properties componentProperties,<a name="line.142"></a>
+<FONT color="green">142</FONT>        protected void processPropertyApplying(Properties componentProps,<a name="line.142"></a>
 <FONT color="green">143</FONT>                                                 List&lt;BehaviorFactory&gt; list) {<a name="line.143"></a>
-<FONT color="green">144</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {<a name="line.144"></a>
+<FONT color="green">144</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING)) {<a name="line.144"></a>
 <FONT color="green">145</FONT>                list.add(new PropertyApplying());<a name="line.145"></a>
 <FONT color="green">146</FONT>            }<a name="line.146"></a>
 <FONT color="green">147</FONT>        }<a name="line.147"></a>
 <FONT color="green">148</FONT>    <a name="line.148"></a>
-<FONT color="green">149</FONT>        protected void processAutomatic(Properties componentProperties,<a name="line.149"></a>
+<FONT color="green">149</FONT>        protected void processAutomatic(Properties componentProps,<a name="line.149"></a>
 <FONT color="green">150</FONT>                                                 List&lt;BehaviorFactory&gt; list) {<a name="line.150"></a>
-<FONT color="green">151</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {<a name="line.151"></a>
+<FONT color="green">151</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC)) {<a name="line.151"></a>
 <FONT color="green">152</FONT>                list.add(new Automating());<a name="line.152"></a>
 <FONT color="green">153</FONT>            }<a name="line.153"></a>
 <FONT color="green">154</FONT>        }<a name="line.154"></a>

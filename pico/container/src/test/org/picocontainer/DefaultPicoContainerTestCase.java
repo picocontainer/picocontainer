@@ -385,7 +385,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		public ComponentAdapter createComponentAdapter(
 				ComponentMonitor componentMonitor,
 				LifecycleStrategy lifecycleStrategy,
-				Properties componentProperties, Object key,
+				Properties componentProps, Object key,
 				Class impl, Parameter... parameters)
 				throws PicoCompositionException {
 			return adapter;

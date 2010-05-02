@@ -30,9 +30,9 @@
 <FONT color="green">027</FONT>            super(new AbstractInjectionFactory() {<a name="line.27"></a>
 <FONT color="green">028</FONT>                public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.28"></a>
 <FONT color="green">029</FONT>                        ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,<a name="line.29"></a>
-<FONT color="green">030</FONT>                        Properties componentProperties, final Object key, Class&lt;T&gt; impl,<a name="line.30"></a>
+<FONT color="green">030</FONT>                        Properties componentProps, final Object key, Class&lt;T&gt; impl,<a name="line.30"></a>
 <FONT color="green">031</FONT>                        Parameter... parameters) throws PicoCompositionException {<a name="line.31"></a>
-<FONT color="green">032</FONT>                    boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.32"></a>
+<FONT color="green">032</FONT>                    boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);<a name="line.32"></a>
 <FONT color="green">033</FONT>                    return new ReinjectionInjector(key, impl, parameters, componentMonitor, parent, useNames);<a name="line.33"></a>
 <FONT color="green">034</FONT>                }<a name="line.34"></a>
 <FONT color="green">035</FONT>            }, reinjectionFactory);<a name="line.35"></a>

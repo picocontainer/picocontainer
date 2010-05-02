@@ -309,7 +309,7 @@ public class PicoBuilderTestCase {
 
         public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                        LifecycleStrategy lifecycleStrategy,
-                                                       Properties componentProperties,
+                                                       Properties componentProps,
                                                        Object key,
                                                        Class impl,
                                                        Parameter... parameters) throws PicoCompositionException {

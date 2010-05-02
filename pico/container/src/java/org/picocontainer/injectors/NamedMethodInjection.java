@@ -30,7 +30,7 @@ public class NamedMethodInjection extends AbstractInjectionType {
         this.optional = optional;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, parameters, monitor, prefix, optional)), lifecycleStrategy);
     }
 }

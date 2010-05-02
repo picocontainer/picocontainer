@@ -26,14 +26,14 @@ public class Automating extends AbstractBehavior implements Serializable {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   Properties componentProperties,
+                                                   Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
-        removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
+        removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return componentMonitor.newBehavior(new Automated<T>(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
-                                            componentProperties,
+                                            componentProps,
                                             key,
                                             impl,
                                             parameters)));
@@ -41,12 +41,12 @@ public class Automating extends AbstractBehavior implements Serializable {
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
+                                                Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
+        removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return componentMonitor.newBehavior(new Automated<T>(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
-                                         componentProperties,
+                                         componentProps,
                                          adapter)));
     }
 

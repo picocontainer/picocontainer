@@ -30,10 +30,10 @@ import java.util.Properties;
 public abstract class Decorating extends AbstractBehavior implements Decorator {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
-                                                   Properties componentProperties, final Object key,
+                                                   Properties componentProps, final Object key,
                                                    final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
         return componentMonitor.newBehavior(new Decorated<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties,key, impl, parameters), this));
+                componentProps,key, impl, parameters), this));
     }
 
     @SuppressWarnings("serial")

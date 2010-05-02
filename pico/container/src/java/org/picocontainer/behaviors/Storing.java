@@ -37,36 +37,36 @@ public class Storing extends AbstractBehavior {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object key, Class<T> impl, Parameter... parameters)
+    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, final Object key, Class<T> impl, Parameter... parameters)
 
             throws PicoCompositionException {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
-                                                                             componentProperties,
+                                                                             componentProps,
                                                                              key,
                                                                              impl,
                                                                              parameters);
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+        removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
 
         return componentMonitor.newBehavior(new Stored<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                componentProperties, key, impl, parameters),
+                                                                componentProps, key, impl, parameters),
                 threadLocalMapObjectReference));
 
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                     LifecycleStrategy lifecycleStrategy,
-                                    Properties componentProperties,
+                                    Properties componentProps,
                                     final ComponentAdapter<T> adapter) {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
-            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
+            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter);
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+        removePropertiesIfPresent(componentProps, Characteristics.CACHE);
 
-        return componentMonitor.newBehavior(new Stored<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+        return componentMonitor.newBehavior(new Stored<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, adapter),
                           new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey())));
     }
 

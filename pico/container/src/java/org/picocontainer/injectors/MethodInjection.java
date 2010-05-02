@@ -43,9 +43,9 @@ public class MethodInjection extends AbstractInjectionType {
         delegate = new MethodInjectionByReflectionMethod(injectionMethod);
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key,
                                                    Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, key, impl, parameters);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProps, key, impl, parameters);
     }
 
     public class MethodInjectionByName extends AbstractInjectionType {
@@ -55,8 +55,8 @@ public class MethodInjection extends AbstractInjectionType {
             this.injectionMethodName = injectionMethodName;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
             return wrapLifeCycle(new MethodInjector(key, impl, parameters, monitor, injectionMethodName, useNames), lifecycleStrategy);
         }
     }
@@ -68,8 +68,8 @@ public class MethodInjection extends AbstractInjectionType {
             this.injectionMethod = injectionMethod;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
             if (injectionMethod.getDeclaringClass().isAssignableFrom(impl)) {
                 return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, parameters, monitor, injectionMethod, useNames)), lifecycleStrategy);
             } else {

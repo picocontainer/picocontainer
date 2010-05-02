@@ -31,31 +31,31 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
 
-        removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
+        removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
 
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentProperties, key, impl, parameters);
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+                                                                         componentProps, key, impl, parameters);
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return componentAdapter;
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
+        removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
         return componentMonitor.newBehavior(new HiddenImplementation<T>(componentAdapter));
 
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
+                                                Properties componentProps,
                                                 ComponentAdapter<T> adapter) {
-        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return adapter;
         }
-        removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
+        removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
         return componentMonitor.newBehavior(new HiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
-                                                                          componentProperties,
+                                                                          componentProps,
                                                                           adapter)));
 
     }

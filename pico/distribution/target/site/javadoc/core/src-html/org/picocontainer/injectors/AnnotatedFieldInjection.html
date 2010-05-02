@@ -45,11 +45,11 @@
 <FONT color="green">042</FONT>    <a name="line.42"></a>
 <FONT color="green">043</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.43"></a>
 <FONT color="green">044</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.44"></a>
-<FONT color="green">045</FONT>                                                       Properties componentProperties,<a name="line.45"></a>
+<FONT color="green">045</FONT>                                                       Properties componentProps,<a name="line.45"></a>
 <FONT color="green">046</FONT>                                                       Object key,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                                       Class&lt;T&gt; impl,<a name="line.47"></a>
 <FONT color="green">048</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.48"></a>
-<FONT color="green">049</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.49"></a>
+<FONT color="green">049</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);<a name="line.49"></a>
 <FONT color="green">050</FONT>            return wrapLifeCycle(monitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, monitor,<a name="line.50"></a>
 <FONT color="green">051</FONT>                                              injectionAnnotation, useNames)), lifecycleStrategy);<a name="line.51"></a>
 <FONT color="green">052</FONT>        }<a name="line.52"></a>
