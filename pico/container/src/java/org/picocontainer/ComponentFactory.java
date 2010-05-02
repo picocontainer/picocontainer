@@ -36,7 +36,7 @@ public interface ComponentFactory {
      *            value should be returned from a call to
      *            {@link ComponentAdapter#getComponentKey()} on the created
      *            adapter.
-     * @param componentImplementation the implementation class to be associated
+     * @param impl the implementation class to be associated
      *            with this adapter. This value should be returned from a call
      *            to {@link ComponentAdapter#getComponentImplementation()} on
      *            the created adapter. Should not be null.
@@ -56,7 +56,7 @@ public interface ComponentFactory {
                                             LifecycleStrategy lifecycleStrategy,
                                             Properties componentProperties,
                                             Object key,
-                                            Class<T> componentImplementation,
+                                            Class<T> impl,
                                             Parameter... parameters) throws PicoCompositionException;
 
     /**

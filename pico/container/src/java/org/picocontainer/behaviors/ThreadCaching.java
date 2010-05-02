@@ -28,7 +28,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
                                                           Object key,
-                                                          Class<T> componentImplementation,
+                                                          Class<T> impl,
                                                           Parameter... parameters)
         throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
@@ -36,7 +36,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                 lifecycleStrategy,
                                                 componentProperties,
                                                 key,
-                                                componentImplementation,
+                                                impl,
                                                 parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
@@ -44,7 +44,7 @@ public class ThreadCaching extends AbstractBehavior {
                                                                 lifecycleStrategy,
                                                                 componentProperties,
                                                                 key,
-                                                                componentImplementation,
+                                                                impl,
                                                                 parameters)));
 
     }

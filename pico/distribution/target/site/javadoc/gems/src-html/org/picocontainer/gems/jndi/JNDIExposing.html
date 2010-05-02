@@ -53,12 +53,12 @@
 <FONT color="green">050</FONT>                            final ComponentMonitor componentMonitor,<a name="line.50"></a>
 <FONT color="green">051</FONT>                            final LifecycleStrategy lifecycleStrategy,<a name="line.51"></a>
 <FONT color="green">052</FONT>                            final Properties componentProperties, final Object key,<a name="line.52"></a>
-<FONT color="green">053</FONT>                            final Class&lt;T&gt; componentImplementation, final Parameter... parameters)<a name="line.53"></a>
+<FONT color="green">053</FONT>                            final Class&lt;T&gt; impl, final Parameter... parameters)<a name="line.53"></a>
 <FONT color="green">054</FONT>                            throws PicoCompositionException {<a name="line.54"></a>
 <FONT color="green">055</FONT>                    // TODO Auto-generated method stub<a name="line.55"></a>
 <FONT color="green">056</FONT>                    ComponentAdapter&lt;T&gt; componentAdapter = super.createComponentAdapter(<a name="line.56"></a>
 <FONT color="green">057</FONT>                                    componentMonitor, lifecycleStrategy, componentProperties,<a name="line.57"></a>
-<FONT color="green">058</FONT>                                    key, componentImplementation, parameters);<a name="line.58"></a>
+<FONT color="green">058</FONT>                                    key, impl, parameters);<a name="line.58"></a>
 <FONT color="green">059</FONT>    <a name="line.59"></a>
 <FONT color="green">060</FONT>                    try {<a name="line.60"></a>
 <FONT color="green">061</FONT>                            return new JNDIExposed&lt;T&gt;(componentAdapter);<a name="line.61"></a>

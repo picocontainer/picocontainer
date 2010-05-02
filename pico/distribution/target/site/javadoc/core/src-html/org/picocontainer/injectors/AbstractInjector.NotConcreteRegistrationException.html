@@ -57,15 +57,15 @@
 <FONT color="green">054</FONT>        /**<a name="line.54"></a>
 <FONT color="green">055</FONT>         * Constructs a new ComponentAdapter for the given key and implementation.<a name="line.55"></a>
 <FONT color="green">056</FONT>         * @param key the search key for this implementation<a name="line.56"></a>
-<FONT color="green">057</FONT>         * @param componentImplementation the concrete implementation<a name="line.57"></a>
+<FONT color="green">057</FONT>         * @param impl the concrete implementation<a name="line.57"></a>
 <FONT color="green">058</FONT>         * @param parameters the parameters to use for the initialization<a name="line.58"></a>
 <FONT color="green">059</FONT>         * @param monitor the component monitor used by this ComponentAdapter<a name="line.59"></a>
 <FONT color="green">060</FONT>         * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class<a name="line.60"></a>
 <FONT color="green">061</FONT>         * @throws NullPointerException if one of the parameters is &lt;code&gt;null&lt;/code&gt;<a name="line.61"></a>
 <FONT color="green">062</FONT>         */<a name="line.62"></a>
-<FONT color="green">063</FONT>        protected AbstractInjector(final Object key, final Class&lt;?&gt; componentImplementation, final Parameter[] parameters,<a name="line.63"></a>
+<FONT color="green">063</FONT>        protected AbstractInjector(final Object key, final Class&lt;?&gt; impl, final Parameter[] parameters,<a name="line.63"></a>
 <FONT color="green">064</FONT>                                                final ComponentMonitor monitor, final boolean useNames) {<a name="line.64"></a>
-<FONT color="green">065</FONT>            super(key, componentImplementation, monitor);<a name="line.65"></a>
+<FONT color="green">065</FONT>            super(key, impl, monitor);<a name="line.65"></a>
 <FONT color="green">066</FONT>            this.useNames = useNames;<a name="line.66"></a>
 <FONT color="green">067</FONT>            checkConcrete();<a name="line.67"></a>
 <FONT color="green">068</FONT>            if (parameters != null) {<a name="line.68"></a>
@@ -429,15 +429,15 @@
 <FONT color="green">426</FONT>         */<a name="line.426"></a>
 <FONT color="green">427</FONT>        public static class NotConcreteRegistrationException extends PicoCompositionException {<a name="line.427"></a>
 <FONT color="green">428</FONT>                    <a name="line.428"></a>
-<FONT color="green">429</FONT>                    private final Class&lt;?&gt; componentImplementation;<a name="line.429"></a>
+<FONT color="green">429</FONT>                    private final Class&lt;?&gt; impl;<a name="line.429"></a>
 <FONT color="green">430</FONT>    <a name="line.430"></a>
-<FONT color="green">431</FONT>            public NotConcreteRegistrationException(final Class&lt;?&gt; componentImplementation) {<a name="line.431"></a>
-<FONT color="green">432</FONT>                super("Bad Access: '" + componentImplementation.getName() + "' is not instantiable");<a name="line.432"></a>
-<FONT color="green">433</FONT>                this.componentImplementation = componentImplementation;<a name="line.433"></a>
+<FONT color="green">431</FONT>            public NotConcreteRegistrationException(final Class&lt;?&gt; impl) {<a name="line.431"></a>
+<FONT color="green">432</FONT>                super("Bad Access: '" + impl.getName() + "' is not instantiable");<a name="line.432"></a>
+<FONT color="green">433</FONT>                this.impl = impl;<a name="line.433"></a>
 <FONT color="green">434</FONT>            }<a name="line.434"></a>
 <FONT color="green">435</FONT>    <a name="line.435"></a>
 <FONT color="green">436</FONT>            public Class&lt;?&gt; getComponentImplementation() {<a name="line.436"></a>
-<FONT color="green">437</FONT>                return componentImplementation;<a name="line.437"></a>
+<FONT color="green">437</FONT>                return impl;<a name="line.437"></a>
 <FONT color="green">438</FONT>            }<a name="line.438"></a>
 <FONT color="green">439</FONT>        }<a name="line.439"></a>
 <FONT color="green">440</FONT>    }<a name="line.440"></a>

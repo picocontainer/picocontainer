@@ -117,7 +117,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         assertEquals("<Constructor-Injection>\n" +
                      "  <key class=java-class>java.util.Map</key>\n" +
-                     "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
+                     "  <impl>java.util.HashMap</impl>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
@@ -143,7 +143,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         assertEquals("<Annotated-Field-Injection>\n" +
                      "  <key class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</key>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
+                     "  <impl>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</impl>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <injectionAnnotations>\n" +
@@ -173,7 +173,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         assertEquals("<Annotated-Method-Injection>\n" +
                      "  <key class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</key>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
+                     "  <impl>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</impl>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <methodNamePrefix></methodNamePrefix>\n" +

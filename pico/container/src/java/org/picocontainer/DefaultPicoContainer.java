@@ -539,13 +539,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * passed to the container's constructor.
      */
     public MutablePicoContainer addComponent(final Object key,
-                                             final Object componentImplementationOrInstance,
+                                             final Object implOrInstance,
                                              final Parameter... parameters) {
-        return this.addComponent(key, componentImplementationOrInstance, this.containerProperties, parameters);
+        return this.addComponent(key, implOrInstance, this.containerProperties, parameters);
     }
 
     private MutablePicoContainer addComponent(final Object key,
-                                              final Object componentImplementationOrInstance,
+                                              final Object implOrInstance,
                                               final Properties properties,
                                               Parameter... parameters) {
         if (parameters != null && parameters.length == 0) {
@@ -557,13 +557,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             parameters = new Parameter[0];
         }
 
-        if (componentImplementationOrInstance instanceof Class) {
+        if (implOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(componentMonitor,
                     lifecycleStrategy,
                     tmpProperties,
                     key,
-                    (Class<?>) componentImplementationOrInstance,
+                    (Class<?>) implOrInstance,
                     parameters);
             AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
             throwIfPropertiesLeft(tmpProperties);
@@ -574,7 +574,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapterInternal(adapter);
         } else {
             ComponentAdapter<?> adapter =
-                    new InstanceAdapter<Object>(key, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
+                    new InstanceAdapter<Object>(key, implOrInstance, lifecycleStrategy, componentMonitor);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);
                 potentiallyStartAdapter(adapter);
@@ -1158,10 +1158,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
         @Override
         public MutablePicoContainer addComponent(final Object key,
-                                                 final Object componentImplementationOrInstance,
+                                                 final Object implOrInstance,
                                                  final Parameter... parameters) throws PicoCompositionException {
             return DefaultPicoContainer.this.addComponent(key,
-                    componentImplementationOrInstance,
+                    implOrInstance,
                     properties,
                     parameters);
         }

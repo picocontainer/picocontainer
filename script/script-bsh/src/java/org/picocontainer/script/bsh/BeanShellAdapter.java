@@ -41,7 +41,7 @@ import java.lang.reflect.Type;
  * <li>addAdapter - the adapter calling the script</li>
  * <li>picoContainer - the MutablePicoContainer calling the addAdapter</li>
  * <li>key - the component key</li>
- * <li>componentImplementation - the component implementation</li>
+ * <li>impl - the component implementation</li>
  * <li>parameters - the ComponentParameters (as a List)</li>
  * </ul>
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
@@ -58,14 +58,14 @@ public class BeanShellAdapter extends AbstractAdapter {
      */
     private final ClassLoader classLoader;
 
-    public BeanShellAdapter(final Object key, final Class<?> componentImplementation, final Parameter[] parameters, final ClassLoader classLoader) {
-        super(key, componentImplementation);
+    public BeanShellAdapter(final Object key, final Class<?> impl, final Parameter[] parameters, final ClassLoader classLoader) {
+        super(key, impl);
         this.parameters = parameters;
         this.classLoader = classLoader;
     }
 
-    public BeanShellAdapter(final Object key, final Class<?> componentImplementation, final Parameter... parameters) {
-        this(key, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
+    public BeanShellAdapter(final Object key, final Class<?> impl, final Parameter... parameters) {
+        this(key, impl, parameters, BeanShellAdapter.class.getClassLoader());
     }
 
     public Object getComponentInstance(PicoContainer pico, Type into)
@@ -79,7 +79,7 @@ public class BeanShellAdapter extends AbstractAdapter {
                 i.set("addAdapter", this);
                 i.set("picoContainer", pico);
                 i.set("key", getComponentKey());
-                i.set("componentImplementation", getComponentImplementation());
+                i.set("impl", getComponentImplementation());
                 i.set("parameters", parameters != null ? Arrays.asList(parameters) : Collections.EMPTY_LIST);
                 i.eval("import " + getComponentImplementation().getName() + ";");
 

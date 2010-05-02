@@ -17,8 +17,8 @@ public class Issue0369TestCase {
     @Test
     public void simpleProofOfChangeInGetComponent() {
         MyAdapter mya = new MyAdapter();
-        Class<? extends List> componentImplementation = mya.getComponentImplementation();
-        assertSame(ArrayList.class, componentImplementation);
+        Class<? extends List> impl = mya.getComponentImplementation();
+        assertSame(ArrayList.class, impl);
     }
 
     public class MyAdapter implements ComponentAdapter<List> {

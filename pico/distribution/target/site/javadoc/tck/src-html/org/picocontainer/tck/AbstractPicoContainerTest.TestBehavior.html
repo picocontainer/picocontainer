@@ -868,9 +868,9 @@
 <FONT color="green">865</FONT>                pico.getComponent(DependsOnTouchable.class);<a name="line.865"></a>
 <FONT color="green">866</FONT>                fail("DependsOnTouchable should have been confused about the two Touchables");<a name="line.866"></a>
 <FONT color="green">867</FONT>            } catch (AbstractInjector.AmbiguousComponentResolutionException e) {<a name="line.867"></a>
-<FONT color="green">868</FONT>                List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());<a name="line.868"></a>
-<FONT color="green">869</FONT>                assertTrue(componentImplementations.contains(DerivedTouchable.class));<a name="line.869"></a>
-<FONT color="green">870</FONT>                assertTrue(componentImplementations.contains(SimpleTouchable.class));<a name="line.870"></a>
+<FONT color="green">868</FONT>                List impls = Arrays.asList(e.getAmbiguousComponentKeys());<a name="line.868"></a>
+<FONT color="green">869</FONT>                assertTrue(impls.contains(DerivedTouchable.class));<a name="line.869"></a>
+<FONT color="green">870</FONT>                assertTrue(impls.contains(SimpleTouchable.class));<a name="line.870"></a>
 <FONT color="green">871</FONT>    <a name="line.871"></a>
 <FONT color="green">872</FONT>                assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);<a name="line.872"></a>
 <FONT color="green">873</FONT>            }<a name="line.873"></a>

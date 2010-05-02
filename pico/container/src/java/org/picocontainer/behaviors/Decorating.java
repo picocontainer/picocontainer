@@ -31,9 +31,9 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties, final Object key,
-                                                   final Class<T> componentImplementation, final Parameter... parameters) throws PicoCompositionException {
+                                                   final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
         return componentMonitor.newBehavior(new Decorated<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties,key, componentImplementation, parameters), this));
+                componentProperties,key, impl, parameters), this));
     }
 
     @SuppressWarnings("serial")

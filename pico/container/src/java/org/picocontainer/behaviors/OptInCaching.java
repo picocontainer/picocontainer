@@ -37,19 +37,19 @@ import java.util.Properties;
 public class OptInCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,
-    			Class<T> componentImplementation, Parameter... parameters)
+    			Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
             return componentMonitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
                                                                                         key,
-                                                                                        componentImplementation,
+                                                                                        impl,
                                                                                         parameters)));
         }
         AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                            componentProperties, key, componentImplementation, parameters);
+                                            componentProperties, key, impl, parameters);
     }
 
 

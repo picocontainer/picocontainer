@@ -432,26 +432,26 @@
 <FONT color="green">429</FONT>         * {@inheritDoc}<a name="line.429"></a>
 <FONT color="green">430</FONT>         *<a name="line.430"></a>
 <FONT color="green">431</FONT>         * @param key<a name="line.431"></a>
-<FONT color="green">432</FONT>         * @param componentImplementationOrInstance<a name="line.432"></a>
+<FONT color="green">432</FONT>         * @param implOrInstance<a name="line.432"></a>
 <FONT color="green">433</FONT>         *<a name="line.433"></a>
 <FONT color="green">434</FONT>         * @param parameters<a name="line.434"></a>
 <FONT color="green">435</FONT>         *<a name="line.435"></a>
 <FONT color="green">436</FONT>         * @return<a name="line.436"></a>
 <FONT color="green">437</FONT>         */<a name="line.437"></a>
 <FONT color="green">438</FONT>        public MutablePicoContainer addComponent(final Object key,<a name="line.438"></a>
-<FONT color="green">439</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.439"></a>
+<FONT color="green">439</FONT>                                                 final Object implOrInstance,<a name="line.439"></a>
 <FONT color="green">440</FONT>                                                 final Parameter... parameters) {<a name="line.440"></a>
 <FONT color="green">441</FONT>    <a name="line.441"></a>
 <FONT color="green">442</FONT>            if (logger.isDebugEnabled()) {<a name="line.442"></a>
 <FONT color="green">443</FONT>                logger.debug("Registering component "<a name="line.443"></a>
-<FONT color="green">444</FONT>                             + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance")<a name="line.444"></a>
+<FONT color="green">444</FONT>                             + (implOrInstance instanceof Class ? "implementation" : "instance")<a name="line.444"></a>
 <FONT color="green">445</FONT>                             + " with key " + key + " and implementation "<a name="line.445"></a>
-<FONT color="green">446</FONT>                             + (componentImplementationOrInstance instanceof Class<a name="line.446"></a>
-<FONT color="green">447</FONT>                                ? ((Class)componentImplementationOrInstance).getCanonicalName()<a name="line.447"></a>
+<FONT color="green">446</FONT>                             + (implOrInstance instanceof Class<a name="line.446"></a>
+<FONT color="green">447</FONT>                                ? ((Class)implOrInstance).getCanonicalName()<a name="line.447"></a>
 <FONT color="green">448</FONT>                                : key.getClass()) + " using parameters " + parameters);<a name="line.448"></a>
 <FONT color="green">449</FONT>            }<a name="line.449"></a>
 <FONT color="green">450</FONT>    <a name="line.450"></a>
-<FONT color="green">451</FONT>            return delegate.addComponent(key, componentImplementationOrInstance, parameters);<a name="line.451"></a>
+<FONT color="green">451</FONT>            return delegate.addComponent(key, implOrInstance, parameters);<a name="line.451"></a>
 <FONT color="green">452</FONT>        }<a name="line.452"></a>
 <FONT color="green">453</FONT>    <a name="line.453"></a>
 <FONT color="green">454</FONT>        /**<a name="line.454"></a>

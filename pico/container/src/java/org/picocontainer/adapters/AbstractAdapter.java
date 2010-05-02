@@ -33,35 +33,35 @@ import java.io.Serializable;
  */
 public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
     private Object key;
-    private Class<T> componentImplementation;
+    private Class<T> impl;
     private ComponentMonitor componentMonitor;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param key the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      */
-    public AbstractAdapter(Object key, Class componentImplementation) {
-        this(key, componentImplementation, new AbstractComponentMonitor());
+    public AbstractAdapter(Object key, Class impl) {
+        this(key, impl, new AbstractComponentMonitor());
         this.componentMonitor = new NullComponentMonitor();
     }
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param key the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param monitor the component monitor used by this ComponentAdapter
      */
-    public AbstractAdapter(Object key, Class componentImplementation, ComponentMonitor monitor) {
+    public AbstractAdapter(Object key, Class impl, ComponentMonitor monitor) {
         if (monitor == null) {
             throw new NullPointerException("ComponentMonitor==null");
         }
         this.componentMonitor = monitor;
-        if (componentImplementation == null) {
-            throw new NullPointerException("componentImplementation");
+        if (impl == null) {
+            throw new NullPointerException("impl");
         }
         this.key = key;
-        this.componentImplementation = componentImplementation;
+        this.impl = impl;
         checkTypeCompatibility();
     }
 
@@ -81,18 +81,18 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @see org.picocontainer.ComponentAdapter#getComponentImplementation()
      */
     public Class<? extends T> getComponentImplementation() {
-        return componentImplementation;
+        return impl;
     }
 
     protected void checkTypeCompatibility() {
         if (key instanceof Class) {
             Class<?> componentType = (Class) key;
-            if (Provider.class.isAssignableFrom(componentImplementation)) {
-                if (!componentType.isAssignableFrom(ProviderAdapter.getProvideMethod(componentImplementation).getReturnType())) {
+            if (Provider.class.isAssignableFrom(impl)) {
+                if (!componentType.isAssignableFrom(ProviderAdapter.getProvideMethod(impl).getReturnType())) {
                     throw newCCE(componentType);
                 }
             } else {
-                if (!componentType.isAssignableFrom(componentImplementation)) {
+                if (!componentType.isAssignableFrom(impl)) {
                     throw newCCE(componentType);
                 }
             }
@@ -100,7 +100,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     }
 
     private ClassCastException newCCE(Class<?> componentType) {
-        return new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
+        return new ClassCastException(impl.getName() + " is not a " + componentType.getName());
     }
 
     /**

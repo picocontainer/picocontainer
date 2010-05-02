@@ -34,18 +34,18 @@ public class Caching extends AbstractBehavior {
 			ComponentMonitor componentMonitor,
 			LifecycleStrategy lifecycleStrategy,
 			Properties componentProperties, Object key,
-			Class<T> componentImplementation, Parameter... parameters)
+			Class<T> impl, Parameter... parameters)
 			throws PicoCompositionException {
 		if (removePropertiesIfPresent(componentProperties,
 				Characteristics.NO_CACHE)) {
 			return super.createComponentAdapter(componentMonitor,
 					lifecycleStrategy, componentProperties, key,
-					componentImplementation, parameters);
+					impl, parameters);
 		}
 		removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, key,
-				componentImplementation, parameters),
+				impl, parameters),
                 new SimpleReference<Storing.Stored.Instance<T>>()));
 
 	}

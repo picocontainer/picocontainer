@@ -153,14 +153,14 @@ Base class for a ComponentAdapter with general functionality.
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/adapters/AbstractAdapter.html#AbstractAdapter(java.lang.Object, java.lang.Class)">AbstractAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation)</CODE>
+                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructs a new ComponentAdapter for the given key and implementation.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/adapters/AbstractAdapter.html#AbstractAdapter(java.lang.Object, java.lang.Class, org.picocontainer.ComponentMonitor)">AbstractAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
+                               <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                                <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
 
 <BR>
@@ -301,12 +301,12 @@ U</CODE></FONT></TD>
 AbstractAdapter</H3>
 <PRE>
 public <A HREF="../../../src-html/org/picocontainer/adapters/AbstractAdapter.html#line.46"><B>AbstractAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation)</PRE>
+                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl)</PRE>
 <DL>
 <DD>Constructs a new ComponentAdapter for the given key and implementation.
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation</DL>
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>impl</CODE> - the concrete implementation</DL>
 </DL>
 <HR>
 
@@ -314,13 +314,13 @@ public <A HREF="../../../src-html/org/picocontainer/adapters/AbstractAdapter.htm
 AbstractAdapter</H3>
 <PRE>
 public <A HREF="../../../src-html/org/picocontainer/adapters/AbstractAdapter.html#line.57"><B>AbstractAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
+                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                        <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</PRE>
 <DL>
 <DD>Constructs a new ComponentAdapter for the given key and implementation.
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>monitor</CODE> - the component monitor used by this ComponentAdapter</DL>
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>impl</CODE> - the concrete implementation<DD><CODE>monitor</CODE> - the component monitor used by this ComponentAdapter</DL>
 </DL>
 
 <!-- ============ METHOD DETAIL ========== -->

@@ -38,7 +38,7 @@
 <FONT color="green">035</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                       Properties componentProperties,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       Object key,<a name="line.37"></a>
-<FONT color="green">038</FONT>                                                       Class componentImplementation,<a name="line.38"></a>
+<FONT color="green">038</FONT>                                                       Class impl,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.39"></a>
 <FONT color="green">040</FONT>            List&lt;BehaviorFactory&gt; list = new ArrayList&lt;BehaviorFactory&gt;();<a name="line.40"></a>
 <FONT color="green">041</FONT>            ComponentFactory lastFactory = makeInjectionFactory();<a name="line.41"></a>
@@ -47,8 +47,8 @@
 <FONT color="green">044</FONT>            processPropertyApplying(componentProperties, list);<a name="line.44"></a>
 <FONT color="green">045</FONT>            processAutomatic(componentProperties, list);<a name="line.45"></a>
 <FONT color="green">046</FONT>            processImplementationHiding(componentProperties, list);<a name="line.46"></a>
-<FONT color="green">047</FONT>            processCaching(componentProperties, componentImplementation, list);<a name="line.47"></a>
-<FONT color="green">048</FONT>            processGuarding(componentProperties, componentImplementation, list);<a name="line.48"></a>
+<FONT color="green">047</FONT>            processCaching(componentProperties, impl, list);<a name="line.47"></a>
+<FONT color="green">048</FONT>            processGuarding(componentProperties, impl, list);<a name="line.48"></a>
 <FONT color="green">049</FONT>    <a name="line.49"></a>
 <FONT color="green">050</FONT>            //Instantiate Chain of ComponentFactories<a name="line.50"></a>
 <FONT color="green">051</FONT>            for (ComponentFactory componentFactory : list) {<a name="line.51"></a>
@@ -62,7 +62,7 @@
 <FONT color="green">059</FONT>                                                      lifecycleStrategy,<a name="line.59"></a>
 <FONT color="green">060</FONT>                                                      componentProperties,<a name="line.60"></a>
 <FONT color="green">061</FONT>                                                      key,<a name="line.61"></a>
-<FONT color="green">062</FONT>                                                      componentImplementation,<a name="line.62"></a>
+<FONT color="green">062</FONT>                                                      impl,<a name="line.62"></a>
 <FONT color="green">063</FONT>                                                      parameters);<a name="line.63"></a>
 <FONT color="green">064</FONT>        }<a name="line.64"></a>
 <FONT color="green">065</FONT>    <a name="line.65"></a>
@@ -119,16 +119,16 @@
 <FONT color="green">116</FONT>        }<a name="line.116"></a>
 <FONT color="green">117</FONT>    <a name="line.117"></a>
 <FONT color="green">118</FONT>        protected void processCaching(Properties componentProperties,<a name="line.118"></a>
-<FONT color="green">119</FONT>                                           Class componentImplementation,<a name="line.119"></a>
+<FONT color="green">119</FONT>                                           Class impl,<a name="line.119"></a>
 <FONT color="green">120</FONT>                                           List&lt;BehaviorFactory&gt; list) {<a name="line.120"></a>
 <FONT color="green">121</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||<a name="line.121"></a>
-<FONT color="green">122</FONT>                componentImplementation.getAnnotation(Cache.class) != null) {<a name="line.122"></a>
+<FONT color="green">122</FONT>                impl.getAnnotation(Cache.class) != null) {<a name="line.122"></a>
 <FONT color="green">123</FONT>                list.add(new Caching());<a name="line.123"></a>
 <FONT color="green">124</FONT>            }<a name="line.124"></a>
 <FONT color="green">125</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);<a name="line.125"></a>
 <FONT color="green">126</FONT>        }<a name="line.126"></a>
 <FONT color="green">127</FONT>    <a name="line.127"></a>
-<FONT color="green">128</FONT>        protected void processGuarding(Properties componentProperties, Class componentImplementation, List&lt;BehaviorFactory&gt; list) {<a name="line.128"></a>
+<FONT color="green">128</FONT>        protected void processGuarding(Properties componentProperties, Class impl, List&lt;BehaviorFactory&gt; list) {<a name="line.128"></a>
 <FONT color="green">129</FONT>            if (AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {<a name="line.129"></a>
 <FONT color="green">130</FONT>                list.add(new Guarding());<a name="line.130"></a>
 <FONT color="green">131</FONT>            }<a name="line.131"></a>

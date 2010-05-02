@@ -41,7 +41,7 @@
 <FONT color="green">038</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                              Properties componentProperties,<a name="line.39"></a>
 <FONT color="green">040</FONT>                                                              Object key,<a name="line.40"></a>
-<FONT color="green">041</FONT>                                                              Class&lt;T&gt; componentImplementation,<a name="line.41"></a>
+<FONT color="green">041</FONT>                                                              Class&lt;T&gt; impl,<a name="line.41"></a>
 <FONT color="green">042</FONT>                                                              Parameter... parameters) throws PicoCompositionException {<a name="line.42"></a>
 <FONT color="green">043</FONT>    <a name="line.43"></a>
 <FONT color="green">044</FONT>            Injector[] injectors = new Injector[injectionFactories.length];<a name="line.44"></a>
@@ -49,11 +49,11 @@
 <FONT color="green">046</FONT>            for (int i = 0; i &lt; injectionFactories.length; i++) {<a name="line.46"></a>
 <FONT color="green">047</FONT>                InjectionFactory injectionFactory = injectionFactories[i];<a name="line.47"></a>
 <FONT color="green">048</FONT>                injectors[i] = (Injector) injectionFactory.createComponentAdapter(monitor,<a name="line.48"></a>
-<FONT color="green">049</FONT>                        lifecycleStrategy, componentProperties, key, componentImplementation, parameters);<a name="line.49"></a>
+<FONT color="green">049</FONT>                        lifecycleStrategy, componentProperties, key, impl, parameters);<a name="line.49"></a>
 <FONT color="green">050</FONT>            }<a name="line.50"></a>
 <FONT color="green">051</FONT>    <a name="line.51"></a>
 <FONT color="green">052</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.52"></a>
-<FONT color="green">053</FONT>            return wrapLifeCycle(monitor.newInjector(new CompositeInjector(key, componentImplementation, parameters,<a name="line.53"></a>
+<FONT color="green">053</FONT>            return wrapLifeCycle(monitor.newInjector(new CompositeInjector(key, impl, parameters,<a name="line.53"></a>
 <FONT color="green">054</FONT>                    monitor, useNames, injectors)), lifecycleStrategy);<a name="line.54"></a>
 <FONT color="green">055</FONT>        }<a name="line.55"></a>
 <FONT color="green">056</FONT>    }<a name="line.56"></a>

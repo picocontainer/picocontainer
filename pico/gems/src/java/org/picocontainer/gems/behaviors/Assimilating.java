@@ -71,10 +71,10 @@ public class Assimilating extends AbstractBehavior {
      */
 	@Override
 	public ComponentAdapter createComponentAdapter(
-            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException {
         return componentMonitor.newBehavior(new Assimilated(assimilationType, super.createComponentAdapter(
-                componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), proxyFactory));
+                componentMonitor, lifecycleStrategy, componentProperties, key, impl, parameters), proxyFactory));
     }
 
 

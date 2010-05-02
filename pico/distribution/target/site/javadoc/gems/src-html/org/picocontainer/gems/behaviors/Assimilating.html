@@ -70,10 +70,10 @@
 <FONT color="green">067</FONT>         */<a name="line.67"></a>
 <FONT color="green">068</FONT>            @Override<a name="line.68"></a>
 <FONT color="green">069</FONT>            public ComponentAdapter createComponentAdapter(<a name="line.69"></a>
-<FONT color="green">070</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)<a name="line.70"></a>
+<FONT color="green">070</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class impl, final Parameter... parameters)<a name="line.70"></a>
 <FONT color="green">071</FONT>                throws PicoCompositionException {<a name="line.71"></a>
 <FONT color="green">072</FONT>            return componentMonitor.newBehavior(new Assimilated(assimilationType, super.createComponentAdapter(<a name="line.72"></a>
-<FONT color="green">073</FONT>                    componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), proxyFactory));<a name="line.73"></a>
+<FONT color="green">073</FONT>                    componentMonitor, lifecycleStrategy, componentProperties, key, impl, parameters), proxyFactory));<a name="line.73"></a>
 <FONT color="green">074</FONT>        }<a name="line.74"></a>
 <FONT color="green">075</FONT>    <a name="line.75"></a>
 <FONT color="green">076</FONT>    <a name="line.76"></a>

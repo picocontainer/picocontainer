@@ -42,7 +42,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      * Constructs a IterativeInjector
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
@@ -50,9 +50,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public IterativeInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public IterativeInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
                              boolean useNames) throws  NotConcreteRegistrationException {
-        super(key, componentImplementation, parameters, monitor, useNames);
+        super(key, impl, parameters, monitor, useNames);
     }
 
     protected Constructor getConstructor()  {

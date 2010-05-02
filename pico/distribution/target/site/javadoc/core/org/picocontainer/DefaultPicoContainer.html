@@ -354,7 +354,7 @@ Class DefaultPicoContainer</H2>
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                         <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
+                         <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;implOrInstance,
                          <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
 <BR>
@@ -1148,7 +1148,7 @@ addComponent</H3>
 public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.486"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;implOrInstance)</PRE>
 <DL>
 <DD>Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
- calling  <code>addComponent(componentImplementation, componentImplementation)</code>.
+ calling  <code>addComponent(impl, impl)</code>.
  The returned ComponentAdapter will be an <A HREF="../../org/picocontainer/adapters/InstanceAdapter.html" title="class in org.picocontainer.adapters"><CODE>InstanceAdapter</CODE></A>.
 <P>
 <DD><DL>
@@ -1184,7 +1184,7 @@ public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interf
 addComponent</H3>
 <PRE>
 public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.514"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                                         <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
+                                         <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;implOrInstance,
                                          <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</PRE>
 <DL>
 <DD>Register a component and creates specific instructions on which constructor to use, along with
@@ -1211,7 +1211,7 @@ public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interf
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>key</CODE> - a key that identifies the component. Must be unique within the container. The type
                      of the key object has no semantic significance unless explicitly specified in the
-                     documentation of the implementing container.<DD><CODE>componentImplementationOrInstance</CODE> - the component's implementation class. This must be a concrete class (ie, a
+                     documentation of the implementing container.<DD><CODE>implOrInstance</CODE> - the component's implementation class. This must be a concrete class (ie, a
                      class that can be instantiated). Or an intance of the compoent.<DD><CODE>parameters</CODE> - the parameters that gives the container hints about what arguments to pass
                      to the constructor when it is instantiated. Container implementations may ignore
                      one or more of these hints.

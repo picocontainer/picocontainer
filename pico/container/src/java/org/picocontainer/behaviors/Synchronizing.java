@@ -30,14 +30,14 @@ import java.util.Properties;
 public class Synchronizing extends AbstractBehavior {
 	
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> componentImplementation, Parameter... parameters) {
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> impl, Parameter... parameters) {
        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_SYNCHRONIZE)) {
     	   return super.createComponentAdapter(
     	            componentMonitor,
     	            lifecycleStrategy,
     	            componentProperties,
     	            key,
-    	            componentImplementation,
+    	            impl,
     	            parameters);
        }
     	
@@ -47,7 +47,7 @@ public class Synchronizing extends AbstractBehavior {
             lifecycleStrategy,
             componentProperties,
             key,
-            componentImplementation,
+            impl,
             parameters)));
     }
 

@@ -22,9 +22,9 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
 
     private final Injector<T>[] injectors;
 
-    public CompositeInjector(Object key, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public CompositeInjector(Object key, Class<?> impl, Parameter[] parameters, ComponentMonitor monitor,
                              boolean useNames, Injector... injectors) {
-        super(key, componentImplementation, parameters, monitor, useNames);
+        super(key, impl, parameters, monitor, useNames);
         this.injectors = injectors;
     }
 

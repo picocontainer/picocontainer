@@ -515,13 +515,13 @@
 <FONT color="green">512</FONT>         * passed to the container's constructor.<a name="line.512"></a>
 <FONT color="green">513</FONT>         */<a name="line.513"></a>
 <FONT color="green">514</FONT>        public MutablePicoContainer addComponent(final Object key,<a name="line.514"></a>
-<FONT color="green">515</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.515"></a>
+<FONT color="green">515</FONT>                                                 final Object implOrInstance,<a name="line.515"></a>
 <FONT color="green">516</FONT>                                                 final Parameter... parameters) {<a name="line.516"></a>
-<FONT color="green">517</FONT>            return this.addComponent(key, componentImplementationOrInstance, this.containerProperties, parameters);<a name="line.517"></a>
+<FONT color="green">517</FONT>            return this.addComponent(key, implOrInstance, this.containerProperties, parameters);<a name="line.517"></a>
 <FONT color="green">518</FONT>        }<a name="line.518"></a>
 <FONT color="green">519</FONT>    <a name="line.519"></a>
 <FONT color="green">520</FONT>        private MutablePicoContainer addComponent(final Object key,<a name="line.520"></a>
-<FONT color="green">521</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.521"></a>
+<FONT color="green">521</FONT>                                                 final Object implOrInstance,<a name="line.521"></a>
 <FONT color="green">522</FONT>                                                 final Properties properties,<a name="line.522"></a>
 <FONT color="green">523</FONT>                                                 Parameter... parameters) {<a name="line.523"></a>
 <FONT color="green">524</FONT>            if (parameters != null &amp;&amp; parameters.length == 0) {<a name="line.524"></a>
@@ -533,13 +533,13 @@
 <FONT color="green">530</FONT>                    parameters = new Parameter[0];<a name="line.530"></a>
 <FONT color="green">531</FONT>            }<a name="line.531"></a>
 <FONT color="green">532</FONT>            <a name="line.532"></a>
-<FONT color="green">533</FONT>            if (componentImplementationOrInstance instanceof Class) {<a name="line.533"></a>
+<FONT color="green">533</FONT>            if (implOrInstance instanceof Class) {<a name="line.533"></a>
 <FONT color="green">534</FONT>                Properties tmpProperties = (Properties) properties.clone();<a name="line.534"></a>
 <FONT color="green">535</FONT>                ComponentAdapter&lt;?&gt; adapter = componentFactory.createComponentAdapter(componentMonitor,<a name="line.535"></a>
 <FONT color="green">536</FONT>                                                                                                   lifecycleStrategy,<a name="line.536"></a>
 <FONT color="green">537</FONT>                                                                                                   tmpProperties,<a name="line.537"></a>
 <FONT color="green">538</FONT>                                                                                                   key,<a name="line.538"></a>
-<FONT color="green">539</FONT>                                                                                                   (Class&lt;?&gt;)componentImplementationOrInstance,<a name="line.539"></a>
+<FONT color="green">539</FONT>                                                                                                   (Class&lt;?&gt;)implOrInstance,<a name="line.539"></a>
 <FONT color="green">540</FONT>                                                                                                   parameters);<a name="line.540"></a>
 <FONT color="green">541</FONT>                AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);<a name="line.541"></a>
 <FONT color="green">542</FONT>                throwIfPropertiesLeft(tmpProperties);<a name="line.542"></a>
@@ -550,7 +550,7 @@
 <FONT color="green">547</FONT>                return addAdapterInternal(adapter);<a name="line.547"></a>
 <FONT color="green">548</FONT>            } else {<a name="line.548"></a>
 <FONT color="green">549</FONT>                ComponentAdapter&lt;?&gt; adapter =<a name="line.549"></a>
-<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(key, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);<a name="line.550"></a>
+<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(key, implOrInstance, lifecycleStrategy, componentMonitor);<a name="line.550"></a>
 <FONT color="green">551</FONT>                if (lifecycleState.isStarted()) {<a name="line.551"></a>
 <FONT color="green">552</FONT>                    addAdapterIfStartable(adapter);<a name="line.552"></a>
 <FONT color="green">553</FONT>                    potentiallyStartAdapter(adapter);<a name="line.553"></a>
@@ -1128,10 +1128,10 @@
 <FONT color="green">1125</FONT>    <a name="line.1125"></a>
 <FONT color="green">1126</FONT>            @Override<a name="line.1126"></a>
 <FONT color="green">1127</FONT>                    public MutablePicoContainer addComponent(final Object key,<a name="line.1127"></a>
-<FONT color="green">1128</FONT>                                                     final Object componentImplementationOrInstance,<a name="line.1128"></a>
+<FONT color="green">1128</FONT>                                                     final Object implOrInstance,<a name="line.1128"></a>
 <FONT color="green">1129</FONT>                                                     final Parameter... parameters) throws PicoCompositionException {<a name="line.1129"></a>
 <FONT color="green">1130</FONT>                return DefaultPicoContainer.this.addComponent(key,<a name="line.1130"></a>
-<FONT color="green">1131</FONT>                                          componentImplementationOrInstance,<a name="line.1131"></a>
+<FONT color="green">1131</FONT>                                          implOrInstance,<a name="line.1131"></a>
 <FONT color="green">1132</FONT>                                          properties,<a name="line.1132"></a>
 <FONT color="green">1133</FONT>                                          parameters);<a name="line.1133"></a>
 <FONT color="green">1134</FONT>            }<a name="line.1134"></a>

@@ -47,7 +47,7 @@
 <FONT color="green">044</FONT>         * @param key a key that identifies the component. Must be unique within the container. The type<a name="line.44"></a>
 <FONT color="green">045</FONT>         *                     of the key object has no semantic significance unless explicitly specified in the<a name="line.45"></a>
 <FONT color="green">046</FONT>         *                     documentation of the implementing container.<a name="line.46"></a>
-<FONT color="green">047</FONT>         * @param componentImplementationOrInstance<a name="line.47"></a>
+<FONT color="green">047</FONT>         * @param implOrInstance<a name="line.47"></a>
 <FONT color="green">048</FONT>         *                     the component's implementation class. This must be a concrete class (ie, a<a name="line.48"></a>
 <FONT color="green">049</FONT>         *                     class that can be instantiated). Or an intance of the compoent.<a name="line.49"></a>
 <FONT color="green">050</FONT>         * @param parameters   the parameters that gives the container hints about what arguments to pass<a name="line.50"></a>
@@ -62,12 +62,12 @@
 <FONT color="green">059</FONT>         * @see org.picocontainer.parameters.ComponentParameter<a name="line.59"></a>
 <FONT color="green">060</FONT>         */<a name="line.60"></a>
 <FONT color="green">061</FONT>        MutablePicoContainer addComponent(Object key,<a name="line.61"></a>
-<FONT color="green">062</FONT>                                          Object componentImplementationOrInstance,<a name="line.62"></a>
+<FONT color="green">062</FONT>                                          Object implOrInstance,<a name="line.62"></a>
 <FONT color="green">063</FONT>                                          Parameter... parameters);<a name="line.63"></a>
 <FONT color="green">064</FONT>    <a name="line.64"></a>
 <FONT color="green">065</FONT>        /**<a name="line.65"></a>
 <FONT color="green">066</FONT>         * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to<a name="line.66"></a>
-<FONT color="green">067</FONT>         * calling  &lt;code&gt;addComponent(componentImplementation, componentImplementation)&lt;/code&gt;.<a name="line.67"></a>
+<FONT color="green">067</FONT>         * calling  &lt;code&gt;addComponent(impl, impl)&lt;/code&gt;.<a name="line.67"></a>
 <FONT color="green">068</FONT>         *<a name="line.68"></a>
 <FONT color="green">069</FONT>         * @param implOrInstance Component implementation or instance<a name="line.69"></a>
 <FONT color="green">070</FONT>         *<a name="line.70"></a>

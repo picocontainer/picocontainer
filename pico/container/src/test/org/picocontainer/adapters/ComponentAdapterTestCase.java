@@ -36,11 +36,11 @@ public class ComponentAdapterTestCase {
     @SuppressWarnings("serial")
 	private static class TestAdapter<T> extends AbstractAdapter<T> {
     	
-        TestAdapter(Object key, Class<T> componentImplementation, ComponentMonitor componentMonitor) {
-            super(key, componentImplementation, componentMonitor);
+        TestAdapter(Object key, Class<T> impl, ComponentMonitor componentMonitor) {
+            super(key, impl, componentMonitor);
         }
-        TestAdapter(Object key, Class<T> componentImplementation) {
-            super(key, componentImplementation);
+        TestAdapter(Object key, Class<T> impl) {
+            super(key, impl);
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
@@ -81,8 +81,8 @@ public class ComponentAdapterTestCase {
     
     @SuppressWarnings("serial")
 	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
-        TestInstantiatingAdapter(Object key, Class<T> componentImplementation, Parameter... parameters) {
-            super(key, componentImplementation, parameters, new NullComponentMonitor(), false);
+        TestInstantiatingAdapter(Object key, Class<T> impl, Parameter... parameters) {
+            super(key, impl, parameters, new NullComponentMonitor(), false);
         }
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
@@ -102,7 +102,7 @@ public class ComponentAdapterTestCase {
             new TestAdapter<Object>("Key", null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assertEquals("componentImplementation", e.getMessage());
+            assertEquals("impl", e.getMessage());
         }
     }
 

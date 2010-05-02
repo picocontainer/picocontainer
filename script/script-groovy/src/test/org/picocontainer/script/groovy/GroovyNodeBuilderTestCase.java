@@ -1,13 +1,38 @@
 package org.picocontainer.script.groovy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+import org.picocontainer.script.TestHelper;
+import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.B;
+import org.picocontainer.script.testmodel.HasParams;
+import org.picocontainer.script.testmodel.ParentAssemblyScope;
+import org.picocontainer.script.testmodel.SomeAssemblyScope;
+import org.picocontainer.script.testmodel.WebServerConfig;
+import org.picocontainer.script.testmodel.X;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,41 +43,14 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.groovy.GroovyCompilationException;
-import org.picocontainer.script.groovy.GroovyContainerBuilder;
-import org.picocontainer.script.testmodel.A;
-import org.picocontainer.script.testmodel.B;
-import org.picocontainer.script.testmodel.HasParams;
-import org.picocontainer.script.testmodel.ParentAssemblyScope;
-import org.picocontainer.script.testmodel.SomeAssemblyScope;
-import org.picocontainer.script.testmodel.WebServerConfig;
-import org.picocontainer.script.testmodel.X;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 /**
  *
@@ -789,9 +787,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         } catch (ScriptedPicoContainerMarkupException ex) {
             fail("GroovyNodeBuilder with validation turned off should never have thrown ScriptedPicoContainerMarkupException: " + ex.getMessage());
         }
-
     }
-
 
     @Test public void testComponentAdapterIsPotentiallyScriptable() throws PicoCompositionException {
         Reader script = new StringReader("" +
@@ -805,21 +801,11 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.behaviors.Cached", one.toString());
+        assertEquals("org.picocontainer.behaviors.Caching$Cached", one);
     }
-
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
         return buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
     }
-
-
-
-
-
-
-
-
-
 
 }

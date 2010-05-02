@@ -32,7 +32,7 @@ public class JNDIProviding implements ComponentFactory {
 			final ComponentMonitor componentMonitor,
 			final LifecycleStrategy lifecycleStrategy,
 			final Properties componentProperties, final Object key,
-			final Class<T> componentImplementation, final Parameter... parameters)
+			final Class<T> impl, final Parameter... parameters)
 			throws PicoCompositionException {
 		return null;
 	}

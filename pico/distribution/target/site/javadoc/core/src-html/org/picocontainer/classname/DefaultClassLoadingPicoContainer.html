@@ -271,10 +271,10 @@
 <FONT color="green">268</FONT>            return this;<a name="line.268"></a>
 <FONT color="green">269</FONT>        }<a name="line.269"></a>
 <FONT color="green">270</FONT>    <a name="line.270"></a>
-<FONT color="green">271</FONT>        public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,<a name="line.271"></a>
+<FONT color="green">271</FONT>        public MutablePicoContainer addComponent(Object key, Object implOrInstance,<a name="line.271"></a>
 <FONT color="green">272</FONT>                Parameter... parameters) {<a name="line.272"></a>
 <FONT color="green">273</FONT>            super.addComponent(classNameToClassIfApplicable(key),<a name="line.273"></a>
-<FONT color="green">274</FONT>                    classNameToClassIfApplicable(componentImplementationOrInstance), parameters);<a name="line.274"></a>
+<FONT color="green">274</FONT>                    classNameToClassIfApplicable(implOrInstance), parameters);<a name="line.274"></a>
 <FONT color="green">275</FONT>            return this;<a name="line.275"></a>
 <FONT color="green">276</FONT>        }<a name="line.276"></a>
 <FONT color="green">277</FONT>    <a name="line.277"></a>
@@ -390,10 +390,10 @@
 <FONT color="green">387</FONT>                return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);<a name="line.387"></a>
 <FONT color="green">388</FONT>            }<a name="line.388"></a>
 <FONT color="green">389</FONT>    <a name="line.389"></a>
-<FONT color="green">390</FONT>            public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,<a name="line.390"></a>
+<FONT color="green">390</FONT>            public MutablePicoContainer addComponent(Object key, Object implOrInstance,<a name="line.390"></a>
 <FONT color="green">391</FONT>                    Parameter... parameters) {<a name="line.391"></a>
 <FONT color="green">392</FONT>                delegate.addComponent(classNameToClassIfApplicable(key),<a name="line.392"></a>
-<FONT color="green">393</FONT>                        classNameToClassIfApplicable(componentImplementationOrInstance), parameters);<a name="line.393"></a>
+<FONT color="green">393</FONT>                        classNameToClassIfApplicable(implOrInstance), parameters);<a name="line.393"></a>
 <FONT color="green">394</FONT>                return DefaultClassLoadingPicoContainer.this;<a name="line.394"></a>
 <FONT color="green">395</FONT>            }<a name="line.395"></a>
 <FONT color="green">396</FONT>    <a name="line.396"></a>

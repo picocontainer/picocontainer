@@ -37,13 +37,13 @@ public class NamedFieldInjection extends AbstractInjectionType {
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object key,
-                                                   Class<T> componentImplementation,
+                                                   Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
         String fieldNames = (String) componentProperties.remove(INJECTION_FIELD_NAMES);
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, componentImplementation, parameters, monitor,
+        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, parameters, monitor,
                 fieldNames)), lifecycleStrategy);
     }
 

@@ -107,22 +107,22 @@
 <FONT color="green">104</FONT>    <a name="line.104"></a>
 <FONT color="green">105</FONT>            @Override<a name="line.105"></a>
 <FONT color="green">106</FONT>            public MutablePicoContainer addComponent(final Object key,<a name="line.106"></a>
-<FONT color="green">107</FONT>                            final Object componentImplementationOrInstance,<a name="line.107"></a>
+<FONT color="green">107</FONT>                            final Object implOrInstance,<a name="line.107"></a>
 <FONT color="green">108</FONT>                            final Parameter... parameters) throws PicoCompositionException {<a name="line.108"></a>
 <FONT color="green">109</FONT>                    <a name="line.109"></a>
 <FONT color="green">110</FONT>                    if (key == null) {<a name="line.110"></a>
 <FONT color="green">111</FONT>                            throw new NullPointerException("key");<a name="line.111"></a>
 <FONT color="green">112</FONT>                    }<a name="line.112"></a>
 <FONT color="green">113</FONT>                    <a name="line.113"></a>
-<FONT color="green">114</FONT>                    if (componentImplementationOrInstance == null) {<a name="line.114"></a>
-<FONT color="green">115</FONT>                            throw new NullPointerException("componentImplementationOrInstance");                    <a name="line.115"></a>
+<FONT color="green">114</FONT>                    if (implOrInstance == null) {<a name="line.114"></a>
+<FONT color="green">115</FONT>                            throw new NullPointerException("implOrInstance");                    <a name="line.115"></a>
 <FONT color="green">116</FONT>                    }<a name="line.116"></a>
 <FONT color="green">117</FONT>                    <a name="line.117"></a>
 <FONT color="green">118</FONT>                    super.addComponent(key, <a name="line.118"></a>
-<FONT color="green">119</FONT>                                    componentImplementationOrInstance, <a name="line.119"></a>
+<FONT color="green">119</FONT>                                    implOrInstance, <a name="line.119"></a>
 <FONT color="green">120</FONT>                                    parameters);<a name="line.120"></a>
 <FONT color="green">121</FONT>                    <a name="line.121"></a>
-<FONT color="green">122</FONT>                    if (! (componentImplementationOrInstance instanceof Class)) {<a name="line.122"></a>
+<FONT color="green">122</FONT>                    if (! (implOrInstance instanceof Class)) {<a name="line.122"></a>
 <FONT color="green">123</FONT>                            instanceRegistrations.add(super.getComponentAdapter(key));<a name="line.123"></a>
 <FONT color="green">124</FONT>                    } else {<a name="line.124"></a>
 <FONT color="green">125</FONT>                            addStoredReference(key);                       <a name="line.125"></a>

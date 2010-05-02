@@ -40,12 +40,12 @@
 <FONT color="green">037</FONT>    <a name="line.37"></a>
 <FONT color="green">038</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.38"></a>
 <FONT color="green">039</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,<a name="line.39"></a>
-<FONT color="green">040</FONT>                Class&lt;T&gt; componentImplementation, Parameter... parameters) throws PicoCompositionException {<a name="line.40"></a>
+<FONT color="green">040</FONT>                Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.40"></a>
 <FONT color="green">041</FONT>            if (delegate == null) {<a name="line.41"></a>
 <FONT color="green">042</FONT>                delegate = new AdaptingInjection();<a name="line.42"></a>
 <FONT color="green">043</FONT>            }<a name="line.43"></a>
 <FONT color="green">044</FONT>            ComponentAdapter&lt;T&gt; compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, key,<a name="line.44"></a>
-<FONT color="green">045</FONT>                    componentImplementation, parameters);<a name="line.45"></a>
+<FONT color="green">045</FONT>                    impl, parameters);<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
 <FONT color="green">047</FONT>            boolean enableCircular = removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);<a name="line.47"></a>
 <FONT color="green">048</FONT>            if (enableCircular &amp;&amp; delegate instanceof InjectionFactory) {<a name="line.48"></a>

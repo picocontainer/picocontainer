@@ -63,18 +63,18 @@
 <FONT color="green">060</FONT>         * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more<a name="line.60"></a>
 <FONT color="green">061</FONT>         * convenient constructor for use when instantiating a constructor injector directly.<a name="line.61"></a>
 <FONT color="green">062</FONT>         * @param key the search key for this implementation<a name="line.62"></a>
-<FONT color="green">063</FONT>         * @param componentImplementation the concrete implementation<a name="line.63"></a>
+<FONT color="green">063</FONT>         * @param impl the concrete implementation<a name="line.63"></a>
 <FONT color="green">064</FONT>         * @param parameters the parameters used for initialization<a name="line.64"></a>
 <FONT color="green">065</FONT>         */<a name="line.65"></a>
-<FONT color="green">066</FONT>        public ConstructorInjector(final Object key, final Class&lt;?&gt; componentImplementation, Parameter... parameters) {<a name="line.66"></a>
-<FONT color="green">067</FONT>            this(key, componentImplementation, parameters, new NullComponentMonitor(), false);<a name="line.67"></a>
+<FONT color="green">066</FONT>        public ConstructorInjector(final Object key, final Class&lt;?&gt; impl, Parameter... parameters) {<a name="line.66"></a>
+<FONT color="green">067</FONT>            this(key, impl, parameters, new NullComponentMonitor(), false);<a name="line.67"></a>
 <FONT color="green">068</FONT>        }<a name="line.68"></a>
 <FONT color="green">069</FONT>    <a name="line.69"></a>
 <FONT color="green">070</FONT>        /**<a name="line.70"></a>
 <FONT color="green">071</FONT>         * Creates a ConstructorInjector<a name="line.71"></a>
 <FONT color="green">072</FONT>         *<a name="line.72"></a>
 <FONT color="green">073</FONT>         * @param key            the search key for this implementation<a name="line.73"></a>
-<FONT color="green">074</FONT>         * @param componentImplementation the concrete implementation<a name="line.74"></a>
+<FONT color="green">074</FONT>         * @param impl the concrete implementation<a name="line.74"></a>
 <FONT color="green">075</FONT>         * @param parameters              the parameters to use for the initialization<a name="line.75"></a>
 <FONT color="green">076</FONT>         * @param monitor                 the component monitor used by this addAdapter<a name="line.76"></a>
 <FONT color="green">077</FONT>         * @param useNames                use argument names when looking up dependencies<a name="line.77"></a>
@@ -82,16 +82,16 @@
 <FONT color="green">079</FONT>         *                              if the implementation is not a concrete class.<a name="line.79"></a>
 <FONT color="green">080</FONT>         * @throws NullPointerException if one of the parameters is &lt;code&gt;null&lt;/code&gt;<a name="line.80"></a>
 <FONT color="green">081</FONT>         */<a name="line.81"></a>
-<FONT color="green">082</FONT>        public ConstructorInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,<a name="line.82"></a>
+<FONT color="green">082</FONT>        public ConstructorInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,<a name="line.82"></a>
 <FONT color="green">083</FONT>                                   boolean useNames) throws  NotConcreteRegistrationException {<a name="line.83"></a>
-<FONT color="green">084</FONT>            super(key, componentImplementation, parameters, monitor, useNames);<a name="line.84"></a>
+<FONT color="green">084</FONT>            super(key, impl, parameters, monitor, useNames);<a name="line.84"></a>
 <FONT color="green">085</FONT>        }<a name="line.85"></a>
 <FONT color="green">086</FONT>    <a name="line.86"></a>
 <FONT color="green">087</FONT>        /**<a name="line.87"></a>
 <FONT color="green">088</FONT>         * Creates a ConstructorInjector<a name="line.88"></a>
 <FONT color="green">089</FONT>         *<a name="line.89"></a>
 <FONT color="green">090</FONT>         * @param key            the search key for this implementation<a name="line.90"></a>
-<FONT color="green">091</FONT>         * @param componentImplementation the concrete implementation<a name="line.91"></a>
+<FONT color="green">091</FONT>         * @param impl the concrete implementation<a name="line.91"></a>
 <FONT color="green">092</FONT>         * @param parameters              the parameters to use for the initialization<a name="line.92"></a>
 <FONT color="green">093</FONT>         * @param monitor                 the component monitor used by this addAdapter<a name="line.93"></a>
 <FONT color="green">094</FONT>         * @param useNames                use argument names when looking up dependencies<a name="line.94"></a>
@@ -100,13 +100,13 @@
 <FONT color="green">097</FONT>         *                              if the implementation is not a concrete class.<a name="line.97"></a>
 <FONT color="green">098</FONT>         * @throws NullPointerException if one of the parameters is &lt;code&gt;null&lt;/code&gt;<a name="line.98"></a>
 <FONT color="green">099</FONT>         */<a name="line.99"></a>
-<FONT color="green">100</FONT>        public ConstructorInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,<a name="line.100"></a>
+<FONT color="green">100</FONT>        public ConstructorInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,<a name="line.100"></a>
 <FONT color="green">101</FONT>                                   boolean useNames, boolean rememberChosenCtor) throws  NotConcreteRegistrationException {<a name="line.101"></a>
-<FONT color="green">102</FONT>            super(key, componentImplementation, parameters, monitor, useNames);<a name="line.102"></a>
+<FONT color="green">102</FONT>            super(key, impl, parameters, monitor, useNames);<a name="line.102"></a>
 <FONT color="green">103</FONT>            this.rememberChosenConstructor = rememberChosenCtor;<a name="line.103"></a>
 <FONT color="green">104</FONT>        }<a name="line.104"></a>
 <FONT color="green">105</FONT>    <a name="line.105"></a>
-<FONT color="green">106</FONT>        private CtorAndAdapters&lt;T&gt; getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class&lt;? extends T&gt; componentImplementation) {<a name="line.106"></a>
+<FONT color="green">106</FONT>        private CtorAndAdapters&lt;T&gt; getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class&lt;? extends T&gt; impl) {<a name="line.106"></a>
 <FONT color="green">107</FONT>            CtorAndAdapters&lt;T&gt; ctor = null;<a name="line.107"></a>
 <FONT color="green">108</FONT>            try {<a name="line.108"></a>
 <FONT color="green">109</FONT>                if (chosenConstructor == null) {<a name="line.109"></a>

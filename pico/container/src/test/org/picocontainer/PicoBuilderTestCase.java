@@ -311,7 +311,7 @@ public class PicoBuilderTestCase {
                                                        LifecycleStrategy lifecycleStrategy,
                                                        Properties componentProperties,
                                                        Object key,
-                                                       Class componentImplementation,
+                                                       Class impl,
                                                        Parameter... parameters) throws PicoCompositionException {
             return null;
         }

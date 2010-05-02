@@ -49,10 +49,10 @@ public class Pooling extends AbstractBehavior {
     }
 
     @Override
-	public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)
+	public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentProperties, key, componentImplementation, parameters);
+                                                                         componentProperties, key, impl, parameters);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
         	return delegate;

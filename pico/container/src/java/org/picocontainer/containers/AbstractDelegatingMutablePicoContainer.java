@@ -28,9 +28,9 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 	}
 
 	public MutablePicoContainer addComponent(Object key,
-                                             Object componentImplementationOrInstance,
+                                             Object implOrInstance,
                                              Parameter... parameters) throws PicoCompositionException {
-        return getDelegate().addComponent(key, componentImplementationOrInstance, parameters);
+        return getDelegate().addComponent(key, implOrInstance, parameters);
     }
 
     public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {

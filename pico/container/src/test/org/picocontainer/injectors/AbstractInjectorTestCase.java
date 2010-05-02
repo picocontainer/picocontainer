@@ -137,11 +137,11 @@ public class AbstractInjectorTestCase {
     private static class MyAbstractInjector extends AbstractInjector {
 
         public MyAbstractInjector(Object key,
-                                  Class componentImplementation,
+                                  Class impl,
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
                                   boolean useNames) {
-            super(key, componentImplementation, parameters, monitor, useNames);
+            super(key, impl, parameters, monitor, useNames);
         }
 
         @Override

@@ -20,8 +20,8 @@
 <FONT color="green">017</FONT>        @Test<a name="line.17"></a>
 <FONT color="green">018</FONT>        public void simpleProofOfChangeInGetComponent() {<a name="line.18"></a>
 <FONT color="green">019</FONT>            MyAdapter mya = new MyAdapter();<a name="line.19"></a>
-<FONT color="green">020</FONT>            Class&lt;? extends List&gt; componentImplementation = mya.getComponentImplementation();<a name="line.20"></a>
-<FONT color="green">021</FONT>            assertSame(ArrayList.class, componentImplementation);<a name="line.21"></a>
+<FONT color="green">020</FONT>            Class&lt;? extends List&gt; impl = mya.getComponentImplementation();<a name="line.20"></a>
+<FONT color="green">021</FONT>            assertSame(ArrayList.class, impl);<a name="line.21"></a>
 <FONT color="green">022</FONT>        }<a name="line.22"></a>
 <FONT color="green">023</FONT>    <a name="line.23"></a>
 <FONT color="green">024</FONT>        public class MyAdapter implements ComponentAdapter&lt;List&gt; {<a name="line.24"></a>

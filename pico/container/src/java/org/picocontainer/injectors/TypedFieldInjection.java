@@ -35,13 +35,13 @@ public class TypedFieldInjection extends AbstractInjectionType {
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object key,
-                                                   Class<T> componentImplementation,
+                                                   Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
         String fieldTypes = (String) componentProperties.remove(INJECTION_FIELD_TYPES);
         if (fieldTypes == null) {
             fieldTypes = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, componentImplementation, parameters, monitor,
+        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor,
                 fieldTypes)), lifecycleStrategy);
     }
 

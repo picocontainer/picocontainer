@@ -53,15 +53,15 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param key the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param monitor the component monitor used by this ComponentAdapter
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected AbstractInjector(final Object key, final Class<?> componentImplementation, final Parameter[] parameters,
+    protected AbstractInjector(final Object key, final Class<?> impl, final Parameter[] parameters,
                                             final ComponentMonitor monitor, final boolean useNames) {
-        super(key, componentImplementation, monitor);
+        super(key, impl, monitor);
         this.useNames = useNames;
         checkConcrete();
         if (parameters != null) {
@@ -420,15 +420,15 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     public static class NotConcreteRegistrationException extends PicoCompositionException {
 		
-		private final Class<?> componentImplementation;
+		private final Class<?> impl;
 
-        public NotConcreteRegistrationException(final Class<?> componentImplementation) {
-            super("Bad Access: '" + componentImplementation.getName() + "' is not instantiable");
-            this.componentImplementation = componentImplementation;
+        public NotConcreteRegistrationException(final Class<?> impl) {
+            super("Bad Access: '" + impl.getName() + "' is not instantiable");
+            this.impl = impl;
         }
 
         public Class<?> getComponentImplementation() {
-            return componentImplementation;
+            return impl;
         }
     }
 }

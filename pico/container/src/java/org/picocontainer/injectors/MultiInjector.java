@@ -17,14 +17,14 @@ import org.picocontainer.annotations.Inject;
 public class MultiInjector extends CompositeInjector {
 
     public MultiInjector(Object key,
-                         Class componentImplementation,
+                         Class impl,
                          Parameter[] parameters,
                          ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
-        super(key, componentImplementation, parameters, componentMonitor, useNames,
-                componentMonitor.newInjector(new ConstructorInjector(key, componentImplementation, parameters, componentMonitor, useNames)),
-                componentMonitor.newInjector(new SetterInjector(key, componentImplementation, parameters, componentMonitor, setterPrefix, useNames)),
-                componentMonitor.newInjector(new AnnotatedMethodInjector(key, componentImplementation, parameters, componentMonitor, useNames, Inject.class)),
-                componentMonitor.newInjector(new AnnotatedFieldInjector(key, componentImplementation, parameters, componentMonitor, useNames, Inject.class)));
+        super(key, impl, parameters, componentMonitor, useNames,
+                componentMonitor.newInjector(new ConstructorInjector(key, impl, parameters, componentMonitor, useNames)),
+                componentMonitor.newInjector(new SetterInjector(key, impl, parameters, componentMonitor, setterPrefix, useNames)),
+                componentMonitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, componentMonitor, useNames, Inject.class)),
+                componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, useNames, Inject.class)));
 
     }
 

@@ -205,7 +205,7 @@ Instantiates components using empty constructors and
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/SetterInjector.html#SetterInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">SetterInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
+                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;prefix,
@@ -350,7 +350,7 @@ protected final <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Strin
 SetterInjector</H3>
 <PRE>
 public <A HREF="../../../src-html/org/picocontainer/injectors/SetterInjector.html#line.54"><B>SetterInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
-                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
+                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
                       <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                       <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;prefix,
@@ -360,7 +360,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/SetterInjector.htm
 <DD>Constructs a SetterInjector
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>prefix</CODE> - the prefix to use (e.g. 'set')
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>impl</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>prefix</CODE> - the prefix to use (e.g. 'set')
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../org/picocontainer/injectors/AbstractInjector.NotConcreteRegistrationException.html" title="class in org.picocontainer.injectors">AbstractInjector.NotConcreteRegistrationException</A></CODE> - if the implementation is not a concrete class.
 <DD><CODE><A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</A></CODE> - if one of the parameters is <code>null</code></DL>

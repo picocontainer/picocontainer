@@ -29,12 +29,12 @@
 <FONT color="green">026</FONT>    @SuppressWarnings("serial")<a name="line.26"></a>
 <FONT color="green">027</FONT>    public class ImplementationHiding extends AbstractBehaviorFactory {<a name="line.27"></a>
 <FONT color="green">028</FONT>    <a name="line.28"></a>
-<FONT color="green">029</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
+<FONT color="green">029</FONT>        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class impl, Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
 <FONT color="green">030</FONT>    <a name="line.30"></a>
 <FONT color="green">031</FONT>            removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>            ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.33"></a>
-<FONT color="green">034</FONT>                                                                             componentProperties, key, componentImplementation, parameters);<a name="line.34"></a>
+<FONT color="green">034</FONT>                                                                             componentProperties, key, impl, parameters);<a name="line.34"></a>
 <FONT color="green">035</FONT>            if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {<a name="line.35"></a>
 <FONT color="green">036</FONT>                return componentAdapter;<a name="line.36"></a>
 <FONT color="green">037</FONT>            }<a name="line.37"></a>

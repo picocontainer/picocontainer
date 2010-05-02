@@ -107,18 +107,18 @@ public class SimpleNamedBindingAnnotationTestCase {
         public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
             Properties componentProperties, Object key,
-            Class<T> componentImplementation, Parameter ... parameters)
+            Class<T> impl, Parameter ... parameters)
             throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(
                 componentProperties, Characteristics.USE_NAMES, true);
-            return new FieldInjector(key, componentImplementation, parameters, componentMonitor, useNames);
+            return new FieldInjector(key, impl, parameters, componentMonitor, useNames);
         }
     }
 
     public static class FieldInjector<T> extends AbstractInjector<T> {
 
-        protected FieldInjector(Object key, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, boolean useNames) {
-            super(key, componentImplementation, parameters, monitor, useNames);
+        protected FieldInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, boolean useNames) {
+            super(key, impl, parameters, monitor, useNames);
         }
 
         @Override

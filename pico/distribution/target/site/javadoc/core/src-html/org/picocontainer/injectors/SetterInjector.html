@@ -46,7 +46,7 @@
 <FONT color="green">043</FONT>         * Constructs a SetterInjector<a name="line.43"></a>
 <FONT color="green">044</FONT>         *<a name="line.44"></a>
 <FONT color="green">045</FONT>         * @param key            the search key for this implementation<a name="line.45"></a>
-<FONT color="green">046</FONT>         * @param componentImplementation the concrete implementation<a name="line.46"></a>
+<FONT color="green">046</FONT>         * @param impl the concrete implementation<a name="line.46"></a>
 <FONT color="green">047</FONT>         * @param parameters              the parameters to use for the initialization<a name="line.47"></a>
 <FONT color="green">048</FONT>         * @param monitor                 the component monitor used by this addAdapter<a name="line.48"></a>
 <FONT color="green">049</FONT>         * @param prefix                  the prefix to use (e.g. 'set')<a name="line.49"></a>
@@ -55,11 +55,11 @@
 <FONT color="green">052</FONT>         * @throws NullPointerException if one of the parameters is &lt;code&gt;null&lt;/code&gt;<a name="line.52"></a>
 <FONT color="green">053</FONT>         */<a name="line.53"></a>
 <FONT color="green">054</FONT>        public SetterInjector(final Object key,<a name="line.54"></a>
-<FONT color="green">055</FONT>                              final Class componentImplementation,<a name="line.55"></a>
+<FONT color="green">055</FONT>                              final Class impl,<a name="line.55"></a>
 <FONT color="green">056</FONT>                              Parameter[] parameters,<a name="line.56"></a>
 <FONT color="green">057</FONT>                              ComponentMonitor monitor,<a name="line.57"></a>
 <FONT color="green">058</FONT>                              String prefix, boolean useNames) throws  NotConcreteRegistrationException {<a name="line.58"></a>
-<FONT color="green">059</FONT>            super(key, componentImplementation, parameters, monitor, useNames);<a name="line.59"></a>
+<FONT color="green">059</FONT>            super(key, impl, parameters, monitor, useNames);<a name="line.59"></a>
 <FONT color="green">060</FONT>            this.prefix = prefix;<a name="line.60"></a>
 <FONT color="green">061</FONT>        }<a name="line.61"></a>
 <FONT color="green">062</FONT>    <a name="line.62"></a>

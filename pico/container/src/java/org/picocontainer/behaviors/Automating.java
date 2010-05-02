@@ -28,14 +28,14 @@ public class Automating extends AbstractBehavior implements Serializable {
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object key,
-                                                   Class<T> componentImplementation,
+                                                   Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
         removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
         return componentMonitor.newBehavior(new Automated<T>(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
                                             componentProperties,
                                             key,
-                                            componentImplementation,
+                                            impl,
                                             parameters)));
     }
 

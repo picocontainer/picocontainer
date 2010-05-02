@@ -339,10 +339,10 @@ public class PicoWebRemoting {
 	}
 
 	protected void directorize(String path, Class<?> key,
-			Class<?> componentImplementation) {
-		WebMethods webMethods = new WebMethods(key, componentImplementation);
+			Class<?> impl) {
+		WebMethods webMethods = new WebMethods(key, impl);
 		paths.put(path, webMethods);
-		determineEligibleMethods(componentImplementation, webMethods);
+		determineEligibleMethods(impl, webMethods);
 	}
 
 	private String errorResult(Object errorResult) {

@@ -36,7 +36,7 @@ public class Locking extends AbstractBehavior {
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object key,
-                                                   Class<T> componentImplementation,
+                                                   Class<T> impl,
                                                    Parameter... parameters) {
     	
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_LOCK)) {
@@ -45,7 +45,7 @@ public class Locking extends AbstractBehavior {
      	            lifecycleStrategy,
      	            componentProperties,
      	            key,
-     	            componentImplementation,
+     	            impl,
      	            parameters);
         }
         
@@ -55,7 +55,7 @@ public class Locking extends AbstractBehavior {
             lifecycleStrategy,
             componentProperties,
             key,
-            componentImplementation,
+            impl,
             parameters)));
     }
 

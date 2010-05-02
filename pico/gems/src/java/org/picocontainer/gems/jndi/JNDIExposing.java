@@ -52,12 +52,12 @@ public class JNDIExposing extends AbstractBehavior {
 			final ComponentMonitor componentMonitor,
 			final LifecycleStrategy lifecycleStrategy,
 			final Properties componentProperties, final Object key,
-			final Class<T> componentImplementation, final Parameter... parameters)
+			final Class<T> impl, final Parameter... parameters)
 			throws PicoCompositionException {
 		// TODO Auto-generated method stub
 		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(
 				componentMonitor, lifecycleStrategy, componentProperties,
-				key, componentImplementation, parameters);
+				key, impl, parameters);
 
 		try {
 			return new JNDIExposed<T>(componentAdapter);

@@ -32,14 +32,14 @@
 <FONT color="green">029</FONT>    <a name="line.29"></a>
 <FONT color="green">030</FONT>            <a name="line.30"></a>
 <FONT color="green">031</FONT>        /** {@inheritDoc} **/<a name="line.31"></a>
-<FONT color="green">032</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; componentImplementation, Parameter... parameters) {<a name="line.32"></a>
+<FONT color="green">032</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; impl, Parameter... parameters) {<a name="line.32"></a>
 <FONT color="green">033</FONT>           if (removePropertiesIfPresent(componentProperties, Characteristics.NO_SYNCHRONIZE)) {<a name="line.33"></a>
 <FONT color="green">034</FONT>               return super.createComponentAdapter(<a name="line.34"></a>
 <FONT color="green">035</FONT>                        componentMonitor,<a name="line.35"></a>
 <FONT color="green">036</FONT>                        lifecycleStrategy,<a name="line.36"></a>
 <FONT color="green">037</FONT>                        componentProperties,<a name="line.37"></a>
 <FONT color="green">038</FONT>                        key,<a name="line.38"></a>
-<FONT color="green">039</FONT>                        componentImplementation,<a name="line.39"></a>
+<FONT color="green">039</FONT>                        impl,<a name="line.39"></a>
 <FONT color="green">040</FONT>                        parameters);<a name="line.40"></a>
 <FONT color="green">041</FONT>           }<a name="line.41"></a>
 <FONT color="green">042</FONT>            <a name="line.42"></a>
@@ -49,7 +49,7 @@
 <FONT color="green">046</FONT>                lifecycleStrategy,<a name="line.46"></a>
 <FONT color="green">047</FONT>                componentProperties,<a name="line.47"></a>
 <FONT color="green">048</FONT>                key,<a name="line.48"></a>
-<FONT color="green">049</FONT>                componentImplementation,<a name="line.49"></a>
+<FONT color="green">049</FONT>                impl,<a name="line.49"></a>
 <FONT color="green">050</FONT>                parameters)));<a name="line.50"></a>
 <FONT color="green">051</FONT>        }<a name="line.51"></a>
 <FONT color="green">052</FONT>    <a name="line.52"></a>

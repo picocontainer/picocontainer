@@ -33,11 +33,11 @@ public class Guarding extends AbstractBehavior {
             ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy,
             Properties componentProperties, Object key,
-            Class<T> componentImplementation, Parameter... parameters)
+            Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProperties, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, key, componentImplementation, parameters);
+                componentProperties, key, impl, parameters);
         if (guard == null) {
             return delegate;
         } else {

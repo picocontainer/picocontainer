@@ -9,20 +9,44 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import org.junit.Test;
 import org.picocontainer.ChangedBehavior;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.parameters.ComponentParameter;
-
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.Converting;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Disposable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.MultiArgMemberInjector.ParameterCannotBeNullException;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.BasicComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.NullParameter;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.Washable;
+import org.picocontainer.testmodel.WashableTouchable;
+import org.picocontainer.visitors.AbstractPicoVisitor;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
+import org.picocontainer.visitors.VerifyingVisitor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,40 +65,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.junit.Test;
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Disposable;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
-import org.picocontainer.injectors.MultiArgMemberInjector.ParameterCannotBeNullException;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.BasicComponentParameter;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.parameters.NullParameter;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.Washable;
-import org.picocontainer.testmodel.WashableTouchable;
-import org.picocontainer.visitors.AbstractPicoVisitor;
-import org.picocontainer.visitors.TraversalCheckingVisitor;
-import org.picocontainer.visitors.VerifyingVisitor;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
 @SuppressWarnings("serial")
@@ -865,9 +864,9 @@ public abstract class AbstractPicoContainerTest {
             pico.getComponent(DependsOnTouchable.class);
             fail("DependsOnTouchable should have been confused about the two Touchables");
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
-            List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());
-            assertTrue(componentImplementations.contains(DerivedTouchable.class));
-            assertTrue(componentImplementations.contains(SimpleTouchable.class));
+            List impls = Arrays.asList(e.getAmbiguousComponentKeys());
+            assertTrue(impls.contains(DerivedTouchable.class));
+            assertTrue(impls.contains(SimpleTouchable.class));
 
             assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);
         }

@@ -118,22 +118,22 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	@Override
 	public MutablePicoContainer addComponent(final Object key,
-			final Object componentImplementationOrInstance,
+			final Object implOrInstance,
 			final Parameter... parameters) throws PicoCompositionException {
 		
 		if (key == null) {
 			throw new NullPointerException("key");
 		}
 		
-		if (componentImplementationOrInstance == null) {
-			throw new NullPointerException("componentImplementationOrInstance");			
+		if (implOrInstance == null) {
+			throw new NullPointerException("implOrInstance");
 		}
 		
 		super.addComponent(key,
-				componentImplementationOrInstance, 
+				implOrInstance,
 				parameters);
 		
-		if (! (componentImplementationOrInstance instanceof Class)) {
+		if (! (implOrInstance instanceof Class)) {
 			instanceRegistrations.add(super.getComponentAdapter(key));
 		} else {
 			addStoredReference(key);

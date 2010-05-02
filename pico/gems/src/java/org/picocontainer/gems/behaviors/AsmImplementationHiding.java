@@ -45,18 +45,18 @@ public class AsmImplementationHiding extends AbstractBehavior {
                                                    final LifecycleStrategy lifecycleStrategy,
                                                    final Properties componentProperties,
                                                    final Object key,
-                                                   final Class<T> componentImplementation,
+                                                   final Class<T> impl,
                                                    final Parameter... parameters) throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                componentProperties, key, componentImplementation, parameters);
+                                                componentProperties, key, impl, parameters);
         }
         AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor,
                                                                          lifecycleStrategy,
                                                                          componentProperties,
                                                                          key,
-                                                                         componentImplementation,
+                                                                         impl,
                                                                          parameters);
         return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(componentAdapter));
     }

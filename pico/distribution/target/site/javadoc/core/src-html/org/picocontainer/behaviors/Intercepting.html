@@ -28,11 +28,11 @@
 <FONT color="green">025</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.25"></a>
 <FONT color="green">026</FONT>                                                              Properties componentProperties,<a name="line.26"></a>
 <FONT color="green">027</FONT>                                                              Object key,<a name="line.27"></a>
-<FONT color="green">028</FONT>                                                              Class&lt;T&gt; componentImplementation,<a name="line.28"></a>
+<FONT color="green">028</FONT>                                                              Class&lt;T&gt; impl,<a name="line.28"></a>
 <FONT color="green">029</FONT>                                                              Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
 <FONT color="green">030</FONT>            return componentMonitor.newBehavior(new Intercepted(super.createComponentAdapter(componentMonitor,<a name="line.30"></a>
 <FONT color="green">031</FONT>                                                                lifecycleStrategy, componentProperties, key,<a name="line.31"></a>
-<FONT color="green">032</FONT>                                                                componentImplementation, parameters)));<a name="line.32"></a>
+<FONT color="green">032</FONT>                                                                impl, parameters)));<a name="line.32"></a>
 <FONT color="green">033</FONT>        }<a name="line.33"></a>
 <FONT color="green">034</FONT>    }<a name="line.34"></a>
 

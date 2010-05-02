@@ -44,7 +44,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @param key a key that identifies the component. Must be unique within the container. The type
      *                     of the key object has no semantic significance unless explicitly specified in the
      *                     documentation of the implementing container.
-     * @param componentImplementationOrInstance
+     * @param implOrInstance
      *                     the component's implementation class. This must be a concrete class (ie, a
      *                     class that can be instantiated). Or an intance of the compoent.
      * @param parameters   the parameters that gives the container hints about what arguments to pass
@@ -59,12 +59,12 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @see org.picocontainer.parameters.ComponentParameter
      */
     MutablePicoContainer addComponent(Object key,
-                                      Object componentImplementationOrInstance,
+                                      Object implOrInstance,
                                       Parameter... parameters);
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
-     * calling  <code>addComponent(componentImplementation, componentImplementation)</code>.
+     * calling  <code>addComponent(impl, impl)</code>.
      *
      * @param implOrInstance Component implementation or instance
      *

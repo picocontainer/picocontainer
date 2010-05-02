@@ -45,7 +45,7 @@ public class MethodInjector<T> extends MultiArgMemberInjector<T> {
      * Creates a MethodInjector
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param methodName              the method name
@@ -54,9 +54,9 @@ public class MethodInjector<T> extends MultiArgMemberInjector<T> {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public MethodInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public MethodInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
                           String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        super(key, componentImplementation, parameters, monitor, useNames);
+        super(key, impl, parameters, monitor, useNames);
         this.methodNamePrefix = methodName;
     }
 

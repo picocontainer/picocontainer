@@ -50,17 +50,17 @@
 <FONT color="green">047</FONT>         * @param lifecycleStrategy<a name="line.47"></a>
 <FONT color="green">048</FONT>         * @param componentProperties<a name="line.48"></a>
 <FONT color="green">049</FONT>         * @param key The component's key<a name="line.49"></a>
-<FONT color="green">050</FONT>         * @param componentImplementation The class of the bean.<a name="line.50"></a>
+<FONT color="green">050</FONT>         * @param impl The class of the bean.<a name="line.50"></a>
 <FONT color="green">051</FONT>         * @param parameters Any parameters for the setters. If null the adapter<a name="line.51"></a>
 <FONT color="green">052</FONT>         *            solves the dependencies for all setters internally. Otherwise<a name="line.52"></a>
 <FONT color="green">053</FONT>         *            the number parameters must match the number of the setter.<a name="line.53"></a>
 <FONT color="green">054</FONT>         * @return Returns a new {@link SetterInjector}.<a name="line.54"></a>
 <FONT color="green">055</FONT>         * @throws PicoCompositionException if dependencies cannot be solved<a name="line.55"></a>
 <FONT color="green">056</FONT>         */<a name="line.56"></a>
-<FONT color="green">057</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; componentImplementation, Parameter... parameters)<a name="line.57"></a>
+<FONT color="green">057</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; impl, Parameter... parameters)<a name="line.57"></a>
 <FONT color="green">058</FONT>                throws PicoCompositionException {<a name="line.58"></a>
 <FONT color="green">059</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.59"></a>
-<FONT color="green">060</FONT>            return wrapLifeCycle(monitor.newInjector(new SetterInjector(key, componentImplementation, parameters, monitor, prefix, useNames)), lifecycleStrategy);<a name="line.60"></a>
+<FONT color="green">060</FONT>            return wrapLifeCycle(monitor.newInjector(new SetterInjector(key, impl, parameters, monitor, prefix, useNames)), lifecycleStrategy);<a name="line.60"></a>
 <FONT color="green">061</FONT>        }<a name="line.61"></a>
 <FONT color="green">062</FONT>    <a name="line.62"></a>
 <FONT color="green">063</FONT>    }<a name="line.63"></a>

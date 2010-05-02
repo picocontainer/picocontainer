@@ -35,7 +35,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object key,
-                                                   Class componentImplementation,
+                                                   Class impl,
                                                    Parameter... parameters) throws PicoCompositionException {
         List<Behavior> list = new ArrayList<Behavior>();
         ComponentFactory lastFactory = makeInjectionFactory();
@@ -44,8 +44,8 @@ public class AdaptingBehavior implements Behavior, Serializable {
         processPropertyApplying(componentProperties, list);
         processAutomatic(componentProperties, list);
         processImplementationHiding(componentProperties, list);
-        processCaching(componentProperties, componentImplementation, list);
-        processGuarding(componentProperties, componentImplementation, list);
+        processCaching(componentProperties, impl, list);
+        processGuarding(componentProperties, impl, list);
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
@@ -59,7 +59,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
                                                   lifecycleStrategy,
                                                   componentProperties,
                                                   key,
-                                                  componentImplementation,
+                                                  impl,
                                                   parameters);
     }
 
@@ -116,16 +116,16 @@ public class AdaptingBehavior implements Behavior, Serializable {
     }
 
     protected void processCaching(Properties componentProperties,
-                                       Class componentImplementation,
+                                       Class impl,
                                        List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
-            componentImplementation.getAnnotation(Cache.class) != null) {
+            impl.getAnnotation(Cache.class) != null) {
             list.add(new Caching());
         }
         AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
     }
 
-    protected void processGuarding(Properties componentProperties, Class componentImplementation, List<Behavior> list) {
+    protected void processGuarding(Properties componentProperties, Class impl, List<Behavior> list) {
         if (AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {
             list.add(new Guarding());
         }

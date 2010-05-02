@@ -38,13 +38,13 @@
 <FONT color="green">035</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                       Properties componentProperties,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       Object key,<a name="line.37"></a>
-<FONT color="green">038</FONT>                                                       Class&lt;T&gt; componentImplementation,<a name="line.38"></a>
+<FONT color="green">038</FONT>                                                       Class&lt;T&gt; impl,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.39"></a>
 <FONT color="green">040</FONT>            String fieldTypes = (String) componentProperties.remove(INJECTION_FIELD_TYPES);<a name="line.40"></a>
 <FONT color="green">041</FONT>            if (fieldTypes == null) {<a name="line.41"></a>
 <FONT color="green">042</FONT>                fieldTypes = "";<a name="line.42"></a>
 <FONT color="green">043</FONT>            }<a name="line.43"></a>
-<FONT color="green">044</FONT>            return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, componentImplementation, parameters, monitor,<a name="line.44"></a>
+<FONT color="green">044</FONT>            return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor,<a name="line.44"></a>
 <FONT color="green">045</FONT>                    fieldTypes)), lifecycleStrategy);<a name="line.45"></a>
 <FONT color="green">046</FONT>        }<a name="line.46"></a>
 <FONT color="green">047</FONT>    <a name="line.47"></a>

@@ -26,19 +26,19 @@ public class Injector {
      * convenient constructor for use when instantiating a constructor injector directly.
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters used for initialization
      */
 
-    public static ComponentAdapter constructor(final Object key, final Class<?> componentImplementation, Parameter... parameters) {
-        return new ConstructorInjector(key, componentImplementation, parameters);
+    public static ComponentAdapter constructor(final Object key, final Class<?> impl, Parameter... parameters) {
+        return new ConstructorInjector(key, impl, parameters);
     }
 
     /**
      * Creates a ConstructorInjector
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
@@ -46,16 +46,16 @@ public class Injector {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public static ComponentAdapter constructor(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public static ComponentAdapter constructor(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
                                                boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjector(key, componentImplementation, parameters, monitor, useNames);
+        return new ConstructorInjector(key, impl, parameters, monitor, useNames);
     }
 
     /**
      * Creates a ConstructorInjector
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
@@ -64,9 +64,9 @@ public class Injector {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public static ComponentAdapter constructor(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public static ComponentAdapter constructor(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
                                               boolean useNames, boolean rememberChosenCtor) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjector(key, componentImplementation, parameters, monitor,
+        return new ConstructorInjector(key, impl, parameters, monitor,
                 useNames, rememberChosenCtor);
     }
 
@@ -114,16 +114,16 @@ public class Injector {
      * creates composite injector
      *
      * @param key
-     * @param componentImplementation
+     * @param impl
      * @param parameters
      * @param monitor
      * @param useNames
      * @param injectors
      * @return composite injector instance.
      */
-    public static ComponentAdapter composite(Object key, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public static ComponentAdapter composite(Object key, Class<?> impl, Parameter[] parameters, ComponentMonitor monitor,
                                              boolean useNames, org.picocontainer.Injector... injectors) {
-        return monitor.newInjector(new CompositeInjector(key, componentImplementation, parameters, monitor, useNames, injectors));
+        return monitor.newInjector(new CompositeInjector(key, impl, parameters, monitor, useNames, injectors));
     }
 
 
@@ -131,7 +131,7 @@ public class Injector {
      * convenience method to create method injector
      *
      * @param key
-     * @param componentImplementation
+     * @param impl
      * @param parameters
      * @param monitor
      * @param methodName
@@ -140,16 +140,16 @@ public class Injector {
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
-    public static ComponentAdapter method(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public static ComponentAdapter method(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
                                           String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new MethodInjector(key, componentImplementation, parameters, monitor, methodName, useNames));
+        return monitor.newInjector(new MethodInjector(key, impl, parameters, monitor, methodName, useNames));
     }
 
     /**
      * convenience method to create multi component adapter
      *
      * @param key
-     * @param componentImplementation
+     * @param impl
      * @param parameters
      * @param componentMonitor
      * @param setterPrefix
@@ -158,10 +158,10 @@ public class Injector {
      */
 
     public static ComponentAdapter multi(Object key,
-                                         Class componentImplementation,
+                                         Class impl,
                                          Parameter[] parameters,
                                          ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
-        return componentMonitor.newInjector(new MultiInjector(key, componentImplementation, parameters, componentMonitor, setterPrefix, useNames));
+        return componentMonitor.newInjector(new MultiInjector(key, impl, parameters, componentMonitor, setterPrefix, useNames));
     }
 
     /**
@@ -186,7 +186,7 @@ public class Injector {
      * convenience method to create setter injector
      *
      * @param key
-     * @param componentImplementation
+     * @param impl
      * @param parameters
      * @param monitor
      * @param prefix
@@ -196,11 +196,11 @@ public class Injector {
      *
      */
     public static ComponentAdapter setter(final Object key,
-                                          final Class componentImplementation,
+                                          final Class impl,
                                           Parameter[] parameters,
                                           ComponentMonitor monitor,
                                           String prefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new SetterInjector(key, componentImplementation, parameters, monitor, prefix, useNames));
+        return monitor.newInjector(new SetterInjector(key, impl, parameters, monitor, prefix, useNames));
     }
 
     /**

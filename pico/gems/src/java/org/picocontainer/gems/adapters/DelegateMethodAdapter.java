@@ -111,7 +111,7 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 
 	/**
 	 * @param key
-	 * @param componentImplementation
+	 * @param impl
 	 * @param monitor
 	 */
 	public DelegateMethodAdapter(final Object key,

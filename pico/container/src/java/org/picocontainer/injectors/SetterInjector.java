@@ -41,7 +41,7 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * Constructs a SetterInjector
      *
      * @param key            the search key for this implementation
-     * @param componentImplementation the concrete implementation
+     * @param impl the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param prefix                  the prefix to use (e.g. 'set')
@@ -50,11 +50,11 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public SetterInjector(final Object key,
-                          final Class componentImplementation,
+                          final Class impl,
                           Parameter[] parameters,
                           ComponentMonitor monitor,
                           String prefix, boolean useNames) throws  NotConcreteRegistrationException {
-        super(key, componentImplementation, parameters, monitor, useNames);
+        super(key, impl, parameters, monitor, useNames);
         this.prefix = prefix;
     }
 

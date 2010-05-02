@@ -39,11 +39,11 @@
 <FONT color="green">036</FONT>        @SuppressWarnings("serial")<a name="line.36"></a>
 <FONT color="green">037</FONT>            private static class TestAdapter&lt;T&gt; extends AbstractAdapter&lt;T&gt; {<a name="line.37"></a>
 <FONT color="green">038</FONT>            <a name="line.38"></a>
-<FONT color="green">039</FONT>            TestAdapter(Object key, Class&lt;T&gt; componentImplementation, ComponentMonitor componentMonitor) {<a name="line.39"></a>
-<FONT color="green">040</FONT>                super(key, componentImplementation, componentMonitor);<a name="line.40"></a>
+<FONT color="green">039</FONT>            TestAdapter(Object key, Class&lt;T&gt; impl, ComponentMonitor componentMonitor) {<a name="line.39"></a>
+<FONT color="green">040</FONT>                super(key, impl, componentMonitor);<a name="line.40"></a>
 <FONT color="green">041</FONT>            }<a name="line.41"></a>
-<FONT color="green">042</FONT>            TestAdapter(Object key, Class&lt;T&gt; componentImplementation) {<a name="line.42"></a>
-<FONT color="green">043</FONT>                super(key, componentImplementation);<a name="line.43"></a>
+<FONT color="green">042</FONT>            TestAdapter(Object key, Class&lt;T&gt; impl) {<a name="line.42"></a>
+<FONT color="green">043</FONT>                super(key, impl);<a name="line.43"></a>
 <FONT color="green">044</FONT>            }<a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
 <FONT color="green">046</FONT>            public T getComponentInstance(PicoContainer container) throws PicoCompositionException {<a name="line.46"></a>
@@ -93,8 +93,8 @@
 <FONT color="green">090</FONT>        <a name="line.90"></a>
 <FONT color="green">091</FONT>        @SuppressWarnings("serial")<a name="line.91"></a>
 <FONT color="green">092</FONT>            private static class TestInstantiatingAdapter&lt;T&gt; extends AbstractInjector&lt;T&gt; {<a name="line.92"></a>
-<FONT color="green">093</FONT>            TestInstantiatingAdapter(Object key, Class&lt;T&gt; componentImplementation, Parameter... parameters) {<a name="line.93"></a>
-<FONT color="green">094</FONT>                super(key, componentImplementation, parameters, new NullComponentMonitor(), false);<a name="line.94"></a>
+<FONT color="green">093</FONT>            TestInstantiatingAdapter(Object key, Class&lt;T&gt; impl, Parameter... parameters) {<a name="line.93"></a>
+<FONT color="green">094</FONT>                super(key, impl, parameters, new NullComponentMonitor(), false);<a name="line.94"></a>
 <FONT color="green">095</FONT>            }<a name="line.95"></a>
 <FONT color="green">096</FONT>            @Override<a name="line.96"></a>
 <FONT color="green">097</FONT>            public void verify(PicoContainer container) throws PicoCompositionException {<a name="line.97"></a>
@@ -118,7 +118,7 @@
 <FONT color="green">115</FONT>                new TestAdapter&lt;Object&gt;("Key", null);<a name="line.115"></a>
 <FONT color="green">116</FONT>                fail("NullPointerException expected");<a name="line.116"></a>
 <FONT color="green">117</FONT>            } catch (NullPointerException e) {<a name="line.117"></a>
-<FONT color="green">118</FONT>                assertEquals("componentImplementation", e.getMessage());<a name="line.118"></a>
+<FONT color="green">118</FONT>                assertEquals("impl", e.getMessage());<a name="line.118"></a>
 <FONT color="green">119</FONT>            }<a name="line.119"></a>
 <FONT color="green">120</FONT>        }<a name="line.120"></a>
 <FONT color="green">121</FONT>    <a name="line.121"></a>

@@ -32,11 +32,11 @@ public class Intercepting extends AbstractBehavior {
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
                                                           Object key,
-                                                          Class<T> componentImplementation,
+                                                          Class<T> impl,
                                                           Parameter... parameters) throws PicoCompositionException {
         return componentMonitor.newBehavior(new Intercepted<T>(super.createComponentAdapter(componentMonitor,
                 lifecycleStrategy, componentProperties, key,
-                componentImplementation, parameters)));
+                impl, parameters)));
     }
 
     /**

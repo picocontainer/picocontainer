@@ -284,10 +284,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return this;
     }
 
-    public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,
+    public MutablePicoContainer addComponent(Object key, Object implOrInstance,
             Parameter... parameters) {
         super.addComponent(classNameToClassIfApplicable(key),
-                classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+                classNameToClassIfApplicable(implOrInstance), parameters);
         return this;
     }
 
@@ -403,10 +403,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);
         }
 
-        public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,
+        public MutablePicoContainer addComponent(Object key, Object implOrInstance,
                 Parameter... parameters) {
             delegate.addComponent(classNameToClassIfApplicable(key),
-                    classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+                    classNameToClassIfApplicable(implOrInstance), parameters);
             return DefaultClassLoadingPicoContainer.this;
         }
 

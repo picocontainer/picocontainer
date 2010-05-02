@@ -33,8 +33,8 @@
 <FONT color="green">030</FONT>            this.optional = optional;<a name="line.30"></a>
 <FONT color="green">031</FONT>        }<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
-<FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; componentImplementation, Parameter... parameters) throws PicoCompositionException {<a name="line.33"></a>
-<FONT color="green">034</FONT>            return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, componentImplementation, parameters, monitor, prefix, optional)), lifecycleStrategy);<a name="line.34"></a>
+<FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class&lt;T&gt; impl, Parameter... parameters) throws PicoCompositionException {<a name="line.33"></a>
+<FONT color="green">034</FONT>            return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, parameters, monitor, prefix, optional)), lifecycleStrategy);<a name="line.34"></a>
 <FONT color="green">035</FONT>        }<a name="line.35"></a>
 <FONT color="green">036</FONT>    }<a name="line.36"></a>
 
