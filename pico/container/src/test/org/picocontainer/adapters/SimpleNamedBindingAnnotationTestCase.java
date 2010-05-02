@@ -105,7 +105,7 @@ public class SimpleNamedBindingAnnotationTestCase {
     public class FieldInjection extends AbstractInjectionType {
 
         public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
+            ComponentMonitor monitor, LifecycleStrategy lifecycle,
             Properties componentProps, Object key,
             Class<T> impl, Parameter ... parameters)
             throws PicoCompositionException {

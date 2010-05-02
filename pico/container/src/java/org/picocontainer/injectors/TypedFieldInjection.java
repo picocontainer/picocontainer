@@ -32,7 +32,7 @@ public class TypedFieldInjection extends AbstractInjectionType {
     private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
@@ -42,7 +42,7 @@ public class TypedFieldInjection extends AbstractInjectionType {
             fieldTypes = "";
         }
         return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor,
-                fieldTypes)), lifecycleStrategy);
+                fieldTypes)), lifecycle);
     }
 
     public static Properties injectionFieldTypes(String... fieldTypes) {

@@ -277,15 +277,15 @@ public class ProviderTestCase {
     @Test
     public void providersCanHaveLifecyclesToo() {
         ComponentMonitor monitor = new LifecycleComponentMonitor();
-        LifecycleStrategy lifecycleStrategy = new
+        LifecycleStrategy lifecycle = new
                 ReflectionLifecycleStrategy(monitor);
 
-        MutablePicoContainer pico = new DefaultPicoContainer(null, lifecycleStrategy, new
+        MutablePicoContainer pico = new DefaultPicoContainer(null, lifecycle, new
                 ThreadCaching());
 
         StringBuilder sb = new StringBuilder();
         pico.addComponent(Configuration.class);
-        pico.addAdapter(new ProviderAdapter(lifecycleStrategy, new ComponentProvider(sb)));
+        pico.addAdapter(new ProviderAdapter(lifecycle, new ComponentProvider(sb)));
         Object foo = pico.getComponent(Component.class);
         pico.start();
         pico.stop();

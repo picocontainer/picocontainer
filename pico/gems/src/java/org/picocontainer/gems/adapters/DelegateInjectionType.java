@@ -46,7 +46,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 	 */
 	public <T> ComponentAdapter<T> createComponentAdapter(
 			final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycleStrategy,
+			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final Object key,
 			final Class<T> impl, final Parameter... parameters)
 			throws PicoCompositionException {

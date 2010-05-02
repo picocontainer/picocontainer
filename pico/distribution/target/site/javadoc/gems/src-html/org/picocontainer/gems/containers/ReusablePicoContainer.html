@@ -64,14 +64,14 @@
 <FONT color="green">061</FONT>            }<a name="line.61"></a>
 <FONT color="green">062</FONT>    <a name="line.62"></a>
 <FONT color="green">063</FONT>            public ReusablePicoContainer(final ComponentFactory componentFactory,<a name="line.63"></a>
-<FONT color="green">064</FONT>                            final LifecycleStrategy lifecycleStrategy, final PicoContainer parent,<a name="line.64"></a>
+<FONT color="green">064</FONT>                            final LifecycleStrategy lifecycle, final PicoContainer parent,<a name="line.64"></a>
 <FONT color="green">065</FONT>                            final ComponentMonitor monitor) {<a name="line.65"></a>
-<FONT color="green">066</FONT>                    super(componentFactory, lifecycleStrategy, parent, monitor);<a name="line.66"></a>
+<FONT color="green">066</FONT>                    super(componentFactory, lifecycle, parent, monitor);<a name="line.66"></a>
 <FONT color="green">067</FONT>            }<a name="line.67"></a>
 <FONT color="green">068</FONT>    <a name="line.68"></a>
 <FONT color="green">069</FONT>            public ReusablePicoContainer(final ComponentFactory componentFactory,<a name="line.69"></a>
-<FONT color="green">070</FONT>                            final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {<a name="line.70"></a>
-<FONT color="green">071</FONT>                    super(componentFactory, lifecycleStrategy, parent);<a name="line.71"></a>
+<FONT color="green">070</FONT>                            final LifecycleStrategy lifecycle, final PicoContainer parent) {<a name="line.70"></a>
+<FONT color="green">071</FONT>                    super(componentFactory, lifecycle, parent);<a name="line.71"></a>
 <FONT color="green">072</FONT>            }<a name="line.72"></a>
 <FONT color="green">073</FONT>    <a name="line.73"></a>
 <FONT color="green">074</FONT>            public ReusablePicoContainer(final ComponentFactory componentFactory,<a name="line.74"></a>
@@ -84,8 +84,8 @@
 <FONT color="green">081</FONT>            }<a name="line.81"></a>
 <FONT color="green">082</FONT>    <a name="line.82"></a>
 <FONT color="green">083</FONT>            public ReusablePicoContainer(final ComponentMonitor monitor,<a name="line.83"></a>
-<FONT color="green">084</FONT>                            final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {<a name="line.84"></a>
-<FONT color="green">085</FONT>                    super(monitor, lifecycleStrategy, parent);<a name="line.85"></a>
+<FONT color="green">084</FONT>                            final LifecycleStrategy lifecycle, final PicoContainer parent) {<a name="line.84"></a>
+<FONT color="green">085</FONT>                    super(monitor, lifecycle, parent);<a name="line.85"></a>
 <FONT color="green">086</FONT>            }<a name="line.86"></a>
 <FONT color="green">087</FONT>    <a name="line.87"></a>
 <FONT color="green">088</FONT>            public ReusablePicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {<a name="line.88"></a>
@@ -96,9 +96,9 @@
 <FONT color="green">093</FONT>                    super(monitor);<a name="line.93"></a>
 <FONT color="green">094</FONT>            }<a name="line.94"></a>
 <FONT color="green">095</FONT>    <a name="line.95"></a>
-<FONT color="green">096</FONT>            public ReusablePicoContainer(final LifecycleStrategy lifecycleStrategy,<a name="line.96"></a>
+<FONT color="green">096</FONT>            public ReusablePicoContainer(final LifecycleStrategy lifecycle,<a name="line.96"></a>
 <FONT color="green">097</FONT>                            final PicoContainer parent) {<a name="line.97"></a>
-<FONT color="green">098</FONT>                    super(lifecycleStrategy, parent);<a name="line.98"></a>
+<FONT color="green">098</FONT>                    super(lifecycle, parent);<a name="line.98"></a>
 <FONT color="green">099</FONT>            }<a name="line.99"></a>
 <FONT color="green">100</FONT>    <a name="line.100"></a>
 <FONT color="green">101</FONT>            public ReusablePicoContainer(final PicoContainer parent) {<a name="line.101"></a>
@@ -222,7 +222,7 @@
 <FONT color="green">219</FONT>    <a name="line.219"></a>
 <FONT color="green">220</FONT>        @Override<a name="line.220"></a>
 <FONT color="green">221</FONT>            public MutablePicoContainer makeChildContainer() {<a name="line.221"></a>
-<FONT color="green">222</FONT>            ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycleStrategy, this);<a name="line.222"></a>
+<FONT color="green">222</FONT>            ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycle, this);<a name="line.222"></a>
 <FONT color="green">223</FONT>            addChildContainer(pc);<a name="line.223"></a>
 <FONT color="green">224</FONT>            return pc;<a name="line.224"></a>
 <FONT color="green">225</FONT>        }<a name="line.225"></a>

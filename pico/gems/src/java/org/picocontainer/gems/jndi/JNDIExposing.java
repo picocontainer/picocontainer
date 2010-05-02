@@ -35,11 +35,11 @@ public class JNDIExposing extends AbstractBehavior {
 	@Override
 	public <T> ComponentAdapter<T> addComponentAdapter(
 			final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycleStrategy,
+			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final ComponentAdapter<T> adapter) {
 		try {
 			return new JNDIExposed<T>(super.addComponentAdapter(
-					monitor, lifecycleStrategy, componentProps,
+					monitor, lifecycle, componentProps,
 					adapter));
 		} catch (NamingException e) {
 			throw new PicoCompositionException(
@@ -50,13 +50,13 @@ public class JNDIExposing extends AbstractBehavior {
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(
 			final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycleStrategy,
+			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final Object key,
 			final Class<T> impl, final Parameter... parameters)
 			throws PicoCompositionException {
 		// TODO Auto-generated method stub
 		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(
-				monitor, lifecycleStrategy, componentProps,
+				monitor, lifecycle, componentProps,
 				key, impl, parameters);
 
 		try {

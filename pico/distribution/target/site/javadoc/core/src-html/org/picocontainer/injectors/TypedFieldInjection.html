@@ -35,7 +35,7 @@
 <FONT color="green">032</FONT>        private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";<a name="line.32"></a>
 <FONT color="green">033</FONT>    <a name="line.33"></a>
 <FONT color="green">034</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.34"></a>
-<FONT color="green">035</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
+<FONT color="green">035</FONT>                                                       LifecycleStrategy lifecycle,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                       Properties componentProps,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       Object key,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                       Class&lt;T&gt; impl,<a name="line.38"></a>
@@ -45,7 +45,7 @@
 <FONT color="green">042</FONT>                fieldTypes = "";<a name="line.42"></a>
 <FONT color="green">043</FONT>            }<a name="line.43"></a>
 <FONT color="green">044</FONT>            return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor,<a name="line.44"></a>
-<FONT color="green">045</FONT>                    fieldTypes)), lifecycleStrategy);<a name="line.45"></a>
+<FONT color="green">045</FONT>                    fieldTypes)), lifecycle);<a name="line.45"></a>
 <FONT color="green">046</FONT>        }<a name="line.46"></a>
 <FONT color="green">047</FONT>    <a name="line.47"></a>
 <FONT color="green">048</FONT>        public static Properties injectionFieldTypes(String... fieldTypes) {<a name="line.48"></a>

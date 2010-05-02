@@ -21,7 +21,7 @@ public interface Behavior extends ComponentFactory {
 
     ComponentFactory wrap(ComponentFactory delegate);
 
-    <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
+    <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
             Properties componentProps, ComponentAdapter<T> adapter);
 
 }

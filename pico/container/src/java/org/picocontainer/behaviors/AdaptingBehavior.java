@@ -32,7 +32,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class impl,
@@ -56,7 +56,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
         }
 
         return lastFactory.createComponentAdapter(monitor,
-                                                  lifecycleStrategy,
+                                                  lifecycle,
                                                   componentProps,
                                                   key,
                                                   impl,
@@ -65,7 +65,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
 
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycleStrategy,
+                                                LifecycleStrategy lifecycle,
                                                 Properties componentProps,
                                                 ComponentAdapter adapter) {
         List<Behavior> list = new ArrayList<Behavior>();
@@ -88,7 +88,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
         }
 
 
-        return lastFactory.addComponentAdapter(monitor, lifecycleStrategy, componentProps, adapter);
+        return lastFactory.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
     }
 
     public void verify(PicoContainer container) {

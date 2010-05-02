@@ -33,18 +33,18 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     private final Method provideMethod;
     private final Class key;
     private Properties properties;
-    private LifecycleStrategy lifecycleStrategy;
+    private LifecycleStrategy lifecycle;
 
     protected ProviderAdapter() {
         provider = this;
         provideMethod = getProvideMethod(this.getClass());
         key = provideMethod.getReturnType();
         setUseNames(useNames());
-        this.lifecycleStrategy = new NullLifecycleStrategy();
+        this.lifecycle = new NullLifecycleStrategy();
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider) {
-        this(lifecycleStrategy, provider, false);
+    public ProviderAdapter(LifecycleStrategy lifecycle, Object provider) {
+        this(lifecycle, provider, false);
     }
 
     public ProviderAdapter(Object provider) {
@@ -55,8 +55,8 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         this(new NullLifecycleStrategy(), provider, useNames);
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider, boolean useNames) {
-        this.lifecycleStrategy = lifecycleStrategy;
+    public ProviderAdapter(LifecycleStrategy lifecycle, Object provider, boolean useNames) {
+        this.lifecycle = lifecycle;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
         key = provideMethod.getReturnType();
@@ -134,22 +134,22 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     }
 
     public void start(Object component) {
-        lifecycleStrategy.start(component);
+        lifecycle.start(component);
     }
 
     public void stop(Object component) {
-        lifecycleStrategy.stop(component);
+        lifecycle.stop(component);
     }
 
     public void dispose(Object component) {
-        lifecycleStrategy.dispose(component);
+        lifecycle.dispose(component);
     }
 
     public boolean hasLifecycle(Class<?> type) {
-        return lifecycleStrategy.hasLifecycle(type);
+        return lifecycle.hasLifecycle(type);
     }
 
     public boolean isLazy(ComponentAdapter<?> adapter) {
-        return lifecycleStrategy.isLazy(adapter);
+        return lifecycle.isLazy(adapter);
     }
 }

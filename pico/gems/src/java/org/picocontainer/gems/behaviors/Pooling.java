@@ -49,9 +49,9 @@ public class Pooling extends AbstractBehavior {
     }
 
     @Override
-	public ComponentAdapter createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
+	public ComponentAdapter createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException {
-        ComponentAdapter delegate = super.createComponentAdapter(monitor, lifecycleStrategy,
+        ComponentAdapter delegate = super.createComponentAdapter(monitor, lifecycle,
                                                                          componentProps, key, impl, parameters);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
@@ -67,20 +67,20 @@ public class Pooling extends AbstractBehavior {
 
     @Override
 	public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycleStrategy,
+                                                final LifecycleStrategy lifecycle,
                                                 final Properties componentProps,
                                                 final ComponentAdapter adapter) {
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
         	return super.addComponentAdapter(monitor,
-                    lifecycleStrategy,
+                    lifecycle,
                     componentProps,
                     adapter);
 		} 
     	
         AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.POOL);
     	return monitor.newBehavior(new Pooled(super.addComponentAdapter(monitor,
-                                         lifecycleStrategy,
+                                         lifecycle,
                                          componentProps,
                                          adapter), poolContext));
     }

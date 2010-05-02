@@ -30,7 +30,7 @@ public interface ComponentFactory {
      * Create a new component adapter based on the specified arguments.
      * 
      * @param monitor the component monitor
-     * @param lifecycleStrategy te lifecycle strategy
+     * @param lifecycle te lifecycle strategy
      * @param componentProps the component properties
      * @param key the key to be associated with this adapter. This
      *            value should be returned from a call to
@@ -53,7 +53,7 @@ public interface ComponentFactory {
      * @return The component adapter
      */
     <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                            LifecycleStrategy lifecycleStrategy,
+                                            LifecycleStrategy lifecycle,
                                             Properties componentProps,
                                             Object key,
                                             Class<T> impl,

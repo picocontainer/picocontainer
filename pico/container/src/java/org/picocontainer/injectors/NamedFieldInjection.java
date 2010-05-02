@@ -34,7 +34,7 @@ public class NamedFieldInjection extends AbstractInjectionType {
     private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
@@ -44,7 +44,7 @@ public class NamedFieldInjection extends AbstractInjectionType {
             fieldNames = "";
         }
         return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, parameters, monitor,
-                fieldNames)), lifecycleStrategy);
+                fieldNames)), lifecycle);
     }
 
     public static Properties injectionFieldNames(String... fieldNames) {

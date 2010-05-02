@@ -36,18 +36,18 @@
 <FONT color="green">033</FONT>        private final Method provideMethod;<a name="line.33"></a>
 <FONT color="green">034</FONT>        private final Class key;<a name="line.34"></a>
 <FONT color="green">035</FONT>        private Properties properties;<a name="line.35"></a>
-<FONT color="green">036</FONT>        private LifecycleStrategy lifecycleStrategy;<a name="line.36"></a>
+<FONT color="green">036</FONT>        private LifecycleStrategy lifecycle;<a name="line.36"></a>
 <FONT color="green">037</FONT>    <a name="line.37"></a>
 <FONT color="green">038</FONT>        protected ProviderAdapter() {<a name="line.38"></a>
 <FONT color="green">039</FONT>            provider = this;<a name="line.39"></a>
 <FONT color="green">040</FONT>            provideMethod = getProvideMethod(this.getClass());<a name="line.40"></a>
 <FONT color="green">041</FONT>            key = provideMethod.getReturnType();<a name="line.41"></a>
 <FONT color="green">042</FONT>            setUseNames(useNames());<a name="line.42"></a>
-<FONT color="green">043</FONT>            this.lifecycleStrategy = new NullLifecycleStrategy();<a name="line.43"></a>
+<FONT color="green">043</FONT>            this.lifecycle = new NullLifecycleStrategy();<a name="line.43"></a>
 <FONT color="green">044</FONT>        }<a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
-<FONT color="green">046</FONT>        public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider) {<a name="line.46"></a>
-<FONT color="green">047</FONT>            this(lifecycleStrategy, provider, false);<a name="line.47"></a>
+<FONT color="green">046</FONT>        public ProviderAdapter(LifecycleStrategy lifecycle, Object provider) {<a name="line.46"></a>
+<FONT color="green">047</FONT>            this(lifecycle, provider, false);<a name="line.47"></a>
 <FONT color="green">048</FONT>        }<a name="line.48"></a>
 <FONT color="green">049</FONT>    <a name="line.49"></a>
 <FONT color="green">050</FONT>        public ProviderAdapter(Object provider) {<a name="line.50"></a>
@@ -58,8 +58,8 @@
 <FONT color="green">055</FONT>            this(new NullLifecycleStrategy(), provider, useNames);<a name="line.55"></a>
 <FONT color="green">056</FONT>        }<a name="line.56"></a>
 <FONT color="green">057</FONT>    <a name="line.57"></a>
-<FONT color="green">058</FONT>        public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider, boolean useNames) {<a name="line.58"></a>
-<FONT color="green">059</FONT>            this.lifecycleStrategy = lifecycleStrategy;<a name="line.59"></a>
+<FONT color="green">058</FONT>        public ProviderAdapter(LifecycleStrategy lifecycle, Object provider, boolean useNames) {<a name="line.58"></a>
+<FONT color="green">059</FONT>            this.lifecycle = lifecycle;<a name="line.59"></a>
 <FONT color="green">060</FONT>            this.provider = provider;<a name="line.60"></a>
 <FONT color="green">061</FONT>            provideMethod = getProvideMethod(provider.getClass());<a name="line.61"></a>
 <FONT color="green">062</FONT>            key = provideMethod.getReturnType();<a name="line.62"></a>
@@ -142,23 +142,23 @@
 <FONT color="green">139</FONT>        }<a name="line.139"></a>
 <FONT color="green">140</FONT>    <a name="line.140"></a>
 <FONT color="green">141</FONT>        public void start(Object component) {<a name="line.141"></a>
-<FONT color="green">142</FONT>            lifecycleStrategy.start(component);<a name="line.142"></a>
+<FONT color="green">142</FONT>            lifecycle.start(component);<a name="line.142"></a>
 <FONT color="green">143</FONT>        }<a name="line.143"></a>
 <FONT color="green">144</FONT>    <a name="line.144"></a>
 <FONT color="green">145</FONT>        public void stop(Object component) {<a name="line.145"></a>
-<FONT color="green">146</FONT>            lifecycleStrategy.stop(component);<a name="line.146"></a>
+<FONT color="green">146</FONT>            lifecycle.stop(component);<a name="line.146"></a>
 <FONT color="green">147</FONT>        }<a name="line.147"></a>
 <FONT color="green">148</FONT>    <a name="line.148"></a>
 <FONT color="green">149</FONT>        public void dispose(Object component) {<a name="line.149"></a>
-<FONT color="green">150</FONT>            lifecycleStrategy.dispose(component);<a name="line.150"></a>
+<FONT color="green">150</FONT>            lifecycle.dispose(component);<a name="line.150"></a>
 <FONT color="green">151</FONT>        }<a name="line.151"></a>
 <FONT color="green">152</FONT>    <a name="line.152"></a>
 <FONT color="green">153</FONT>        public boolean hasLifecycle(Class&lt;?&gt; type) {<a name="line.153"></a>
-<FONT color="green">154</FONT>            return lifecycleStrategy.hasLifecycle(type);<a name="line.154"></a>
+<FONT color="green">154</FONT>            return lifecycle.hasLifecycle(type);<a name="line.154"></a>
 <FONT color="green">155</FONT>        }<a name="line.155"></a>
 <FONT color="green">156</FONT>    <a name="line.156"></a>
 <FONT color="green">157</FONT>        public boolean isLazy(ComponentAdapter&lt;?&gt; adapter) {<a name="line.157"></a>
-<FONT color="green">158</FONT>            return lifecycleStrategy.isLazy(adapter);<a name="line.158"></a>
+<FONT color="green">158</FONT>            return lifecycle.isLazy(adapter);<a name="line.158"></a>
 <FONT color="green">159</FONT>        }<a name="line.159"></a>
 <FONT color="green">160</FONT>    }<a name="line.160"></a>
 

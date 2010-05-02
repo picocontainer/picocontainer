@@ -29,7 +29,7 @@
 <FONT color="green">026</FONT>        public Reinjection(InjectionFactory reinjectionFactory, final PicoContainer parent) {<a name="line.26"></a>
 <FONT color="green">027</FONT>            super(new AbstractInjectionFactory() {<a name="line.27"></a>
 <FONT color="green">028</FONT>                public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.28"></a>
-<FONT color="green">029</FONT>                        ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,<a name="line.29"></a>
+<FONT color="green">029</FONT>                        ComponentMonitor monitor, LifecycleStrategy lifecycle,<a name="line.29"></a>
 <FONT color="green">030</FONT>                        Properties componentProps, final Object key, Class&lt;T&gt; impl,<a name="line.30"></a>
 <FONT color="green">031</FONT>                        Parameter... parameters) throws PicoCompositionException {<a name="line.31"></a>
 <FONT color="green">032</FONT>                    boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);<a name="line.32"></a>

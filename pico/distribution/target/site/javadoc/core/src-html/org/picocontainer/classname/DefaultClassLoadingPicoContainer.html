@@ -109,10 +109,10 @@
 <FONT color="green">106</FONT>            parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();<a name="line.106"></a>
 <FONT color="green">107</FONT>        }<a name="line.107"></a>
 <FONT color="green">108</FONT>    <a name="line.108"></a>
-<FONT color="green">109</FONT>        public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy,<a name="line.109"></a>
+<FONT color="green">109</FONT>        public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycle,<a name="line.109"></a>
 <FONT color="green">110</FONT>                PicoContainer parent, ClassLoader cl, ComponentMonitor monitor) {<a name="line.110"></a>
 <FONT color="green">111</FONT>    <a name="line.111"></a>
-<FONT color="green">112</FONT>            super(new DefaultPicoContainer(componentFactory, lifecycleStrategy, parent, monitor));<a name="line.112"></a>
+<FONT color="green">112</FONT>            super(new DefaultPicoContainer(componentFactory, lifecycle, parent, monitor));<a name="line.112"></a>
 <FONT color="green">113</FONT>            parentClassLoader = (cl != null) ? cl : DefaultClassLoadingPicoContainer.class.getClassLoader();<a name="line.113"></a>
 <FONT color="green">114</FONT>        }<a name="line.114"></a>
 <FONT color="green">115</FONT>    <a name="line.115"></a>

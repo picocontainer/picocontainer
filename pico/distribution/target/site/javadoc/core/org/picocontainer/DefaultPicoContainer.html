@@ -192,7 +192,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;<A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#lifecycleStrategy">lifecycleStrategy</A></B></CODE>
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#lifecycle">lifecycle</A></B></CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lifecycle strategy instance.</TD>
@@ -229,7 +229,7 @@ Class DefaultPicoContainer</H2>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -238,7 +238,7 @@ Class DefaultPicoContainer</H2>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer, org.picocontainer.ComponentMonitor)">DefaultPicoContainer</A></B>(<A HREF="../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent,
                                          <A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
 
@@ -261,7 +261,7 @@ Class DefaultPicoContainer</H2>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -277,7 +277,7 @@ Class DefaultPicoContainer</H2>
  custom ComponentMonitor</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -757,10 +757,10 @@ protected final <A HREF="../../org/picocontainer/ComponentFactory.html" title="i
 </DL>
 <HR>
 
-<A NAME="lifecycleStrategy"><!-- --></A><H3>
-lifecycleStrategy</H3>
+<A NAME="lifecycle"><!-- --></A><H3>
+lifecycle</H3>
 <PRE>
-protected final <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.112"><B>lifecycleStrategy</B></A></PRE>
+protected final <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.112"><B>lifecycle</B></A></PRE>
 <DL>
 <DD>Lifecycle strategy instance.
 <P>
@@ -824,7 +824,7 @@ public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.
 DefaultPicoContainer</H3>
 <PRE>
 public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.174"><B>DefaultPicoContainer</B></A>(<A HREF="../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                             <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</PRE>
 <DL>
 <DD>Creates a new container with a custom ComponentFactory, LifecycleStrategy for instance registration,
@@ -838,7 +838,7 @@ public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.
  </em>
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentFactory</CODE> - the factory to use for creation of ComponentAdapters.<DD><CODE>lifecycleStrategy</CODE> - the lifecycle strategy chosen for registered
+<DT><B>Parameters:</B><DD><CODE>componentFactory</CODE> - the factory to use for creation of ComponentAdapters.<DD><CODE>lifecycle</CODE> - the lifecycle strategy chosen for registered
                                 instance (not implementations!)<DD><CODE>parent</CODE> - the parent container (used for component dependency lookups).</DL>
 </DL>
 <HR>
@@ -847,7 +847,7 @@ public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.
 DefaultPicoContainer</H3>
 <PRE>
 public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.180"><B>DefaultPicoContainer</B></A>(<A HREF="../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                             <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent,
                             <A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</PRE>
 <DL>
@@ -872,28 +872,28 @@ public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.
 DefaultPicoContainer</H3>
 <PRE>
 public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.217"><B>DefaultPicoContainer</B></A>(<A HREF="../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                            <A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                             <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</PRE>
 <DL>
 <DD>Creates a new container with the AdaptingInjection using a
  custom ComponentMonitor and lifecycle strategy
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>monitor</CODE> - the ComponentMonitor to use<DD><CODE>lifecycleStrategy</CODE> - the lifecycle strategy to use.<DD><CODE>parent</CODE> - the parent container (used for component dependency lookups).</DL>
+<DT><B>Parameters:</B><DD><CODE>monitor</CODE> - the ComponentMonitor to use<DD><CODE>lifecycle</CODE> - the lifecycle strategy to use.<DD><CODE>parent</CODE> - the parent container (used for component dependency lookups).</DL>
 </DL>
 <HR>
 
 <A NAME="DefaultPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)"><!-- --></A><H3>
 DefaultPicoContainer</H3>
 <PRE>
-public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.228"><B>DefaultPicoContainer</B></A>(<A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+public <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.228"><B>DefaultPicoContainer</B></A>(<A HREF="../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                             <A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</PRE>
 <DL>
 <DD>Creates a new container with the AdaptingInjection using a
  custom lifecycle strategy
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>lifecycleStrategy</CODE> - the lifecycle strategy to use.<DD><CODE>parent</CODE> - the parent container (used for component dependency lookups).</DL>
+<DT><B>Parameters:</B><DD><CODE>lifecycle</CODE> - the lifecycle strategy to use.<DD><CODE>parent</CODE> - the parent container (used for component dependency lookups).</DL>
 </DL>
 <HR>
 

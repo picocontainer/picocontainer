@@ -25,13 +25,13 @@
 <FONT color="green">022</FONT>    public class Intercepting extends AbstractBehaviorFactory {<a name="line.22"></a>
 <FONT color="green">023</FONT>    <a name="line.23"></a>
 <FONT color="green">024</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.24"></a>
-<FONT color="green">025</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.25"></a>
+<FONT color="green">025</FONT>                                                              LifecycleStrategy lifecycle,<a name="line.25"></a>
 <FONT color="green">026</FONT>                                                              Properties componentProps,<a name="line.26"></a>
 <FONT color="green">027</FONT>                                                              Object key,<a name="line.27"></a>
 <FONT color="green">028</FONT>                                                              Class&lt;T&gt; impl,<a name="line.28"></a>
 <FONT color="green">029</FONT>                                                              Parameter... parameters) throws PicoCompositionException {<a name="line.29"></a>
 <FONT color="green">030</FONT>            return monitor.newBehavior(new Intercepted(super.createComponentAdapter(monitor,<a name="line.30"></a>
-<FONT color="green">031</FONT>                                                                lifecycleStrategy, componentProps, key,<a name="line.31"></a>
+<FONT color="green">031</FONT>                                                                lifecycle, componentProps, key,<a name="line.31"></a>
 <FONT color="green">032</FONT>                                                                impl, parameters)));<a name="line.32"></a>
 <FONT color="green">033</FONT>        }<a name="line.33"></a>
 <FONT color="green">034</FONT>    }<a name="line.34"></a>

@@ -53,11 +53,11 @@ public class ConstructorInjection extends AbstractInjectionType {
         this(true);
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object key,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties properties, Object key,
                                                    Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
         ConstructorInjector injector = new ConstructorInjector(key, impl, parameters, monitor, useNames, rememberChosenConstructor);
         injector.enableEmjection(AbstractBehavior.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
-        return wrapLifeCycle(monitor.newInjector(injector), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(injector), lifecycle);
     }
 }

@@ -118,16 +118,16 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
     @Override
 	public ComponentAdapter createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
+            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class impl, final Parameter... parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {
             componentAdapter = new ThreadLocalized(super.createComponentAdapter(
-                    monitor, lifecycleStrategy, componentProps, key, impl, parameters), proxyFactory);
+                    monitor, lifecycle, componentProps, key, impl, parameters), proxyFactory);
         } else {
             componentAdapter = new Caching.Cached(super.createComponentAdapter(
-                    monitor, lifecycleStrategy, componentProps, key, impl, parameters), new ThreadLocalReference());
+                    monitor, lifecycle, componentProps, key, impl, parameters), new ThreadLocalReference());
         }
         return componentAdapter;
     }
@@ -135,17 +135,17 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
     @Override
 	public ComponentAdapter addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycleStrategy,
+                                                final LifecycleStrategy lifecycle,
                                                 final Properties componentProps,
                                                 final ComponentAdapter adapter) {
         if (ensureThreadLocal) {
             return monitor.newBehavior(new ThreadLocalized(super.addComponentAdapter(monitor,
-                                                                     lifecycleStrategy,
+                                                                     lifecycle,
                                                                      componentProps,
                                                                      adapter), proxyFactory));
         } else {
             return monitor.newBehavior(new Caching.Cached(super.addComponentAdapter(monitor,
-                                                                 lifecycleStrategy,
+                                                                 lifecycle,
                                                                  componentProps,
                                                                  adapter), new ThreadLocalReference()));
         }

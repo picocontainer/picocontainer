@@ -23,21 +23,21 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         visitor.visitComponentFactory(this);
     }
 
-    protected ComponentAdapter wrapLifeCycle(final Injector injector, LifecycleStrategy lifecycleStrategy) {
-        if (lifecycleStrategy instanceof NullLifecycleStrategy) {
+    protected ComponentAdapter wrapLifeCycle(final Injector injector, LifecycleStrategy lifecycle) {
+        if (lifecycle instanceof NullLifecycleStrategy) {
             return injector;
         } else {
-            return new LifecycleAdapter(injector, lifecycleStrategy);
+            return new LifecycleAdapter(injector, lifecycle);
         }
     }
 
     private static class LifecycleAdapter implements ComponentAdapter, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
         private final Injector injector;
-        private final LifecycleStrategy lifecycleStrategy;
+        private final LifecycleStrategy lifecycle;
 
-        public LifecycleAdapter(Injector injector, LifecycleStrategy lifecycleStrategy) {
+        public LifecycleAdapter(Injector injector, LifecycleStrategy lifecycle) {
             this.injector = injector;
-            this.lifecycleStrategy = lifecycleStrategy;
+            this.lifecycle = lifecycle;
         }
 
         public Object getComponentKey() {
@@ -77,23 +77,23 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         public void start(Object component) {
-            lifecycleStrategy.start(component);
+            lifecycle.start(component);
         }
 
         public void stop(Object component) {
-            lifecycleStrategy.stop(component);
+            lifecycle.stop(component);
         }
 
         public void dispose(Object component) {
-            lifecycleStrategy.dispose(component);
+            lifecycle.dispose(component);
         }
 
         public boolean hasLifecycle(Class<?> type) {
-            return lifecycleStrategy.hasLifecycle(type);
+            return lifecycle.hasLifecycle(type);
         }
 
         public boolean isLazy(ComponentAdapter<?> adapter) {
-            return lifecycleStrategy.isLazy(adapter);
+            return lifecycle.isLazy(adapter);
         }
 
         public void changeMonitor(ComponentMonitor monitor) {

@@ -26,19 +26,19 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * </em>
      *
      * @param componentFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycleStrategy
+     * @param lifecycle
      *                                the lifecycle strategy chosen for registered
      *                                instance (not implementations!)
      * @param parent                  the parent container (used for component dependency lookups).
      */
-    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
+    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycle,
                                 final PicoContainer parent) {
-        super(parent, lifecycleStrategy, componentFactory);
+        super(parent, lifecycle, componentFactory);
     }
 
-    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
+    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycle,
                                 final PicoContainer parent, final ComponentMonitor monitor) {
-        super(parent, lifecycleStrategy, monitor, componentFactory);
+        super(parent, lifecycle, monitor, componentFactory);
     }
 
     /**
@@ -57,23 +57,23 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * custom ComponentMonitor and lifecycle strategy
      *
      * @param monitor           the ComponentMonitor to use
-     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param lifecycle the lifecycle strategy to use.
      * @param parent            the parent container (used for component dependency lookups).
      */
-    public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy,
+    public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
                                 final PicoContainer parent) {
-        super(parent, lifecycleStrategy, monitor);
+        super(parent, lifecycle, monitor);
     }
 
     /**
      * Creates a new container with the AdaptingInjection using a
      * custom lifecycle strategy
      *
-     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param lifecycle the lifecycle strategy to use.
      * @param parent            the parent container (used for component dependency lookups).
      */
-    public TieringPicoContainer(final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-        super(parent, lifecycleStrategy);
+    public TieringPicoContainer(final LifecycleStrategy lifecycle, final PicoContainer parent) {
+        super(parent, lifecycle);
     }
 
 
@@ -116,7 +116,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
     }
 
     public MutablePicoContainer makeChildContainer() {
-        return new TieringPicoContainer(super.componentFactory, super.lifecycleStrategy, this, super.monitor);
+        return new TieringPicoContainer(super.componentFactory, super.lifecycle, this, super.monitor);
     }
 
     private static class TieringGuard extends AbstractDelegatingPicoContainer {

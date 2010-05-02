@@ -161,7 +161,7 @@ A <A HREF="../../../org/picocontainer/InjectionFactory.html" title="interface in
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/AnnotatedMethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -232,7 +232,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/AnnotatedMethodInj
 createComponentAdapter</H3>
 <PRE>
 public &lt;T&gt; <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../../src-html/org/picocontainer/injectors/AnnotatedMethodInjection.html#line.62"><B>createComponentAdapter</B></A>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                                      <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                                      <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -242,7 +242,7 @@ public &lt;T&gt; <A HREF="../../../org/picocontainer/ComponentAdapter.html" titl
 <DD>Create a <A HREF="../../../org/picocontainer/injectors/SetterInjector.html" title="class in org.picocontainer.injectors"><CODE>SetterInjector</CODE></A>.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>monitor</CODE> - <DD><CODE>lifecycleStrategy</CODE> - <DD><CODE>componentProps</CODE> - <DD><CODE>key</CODE> - The component's key<DD><CODE>impl</CODE> - The class of the bean.<DD><CODE>parameters</CODE> - Any parameters for the setters. If null the adapter
+<DT><B>Parameters:</B><DD><CODE>monitor</CODE> - <DD><CODE>lifecycle</CODE> - <DD><CODE>componentProps</CODE> - <DD><CODE>key</CODE> - The component's key<DD><CODE>impl</CODE> - The class of the bean.<DD><CODE>parameters</CODE> - Any parameters for the setters. If null the adapter
             solves the dependencies for all setters internally. Otherwise
             the number parameters must match the number of the setter.
 <DT><B>Returns:</B><DD>Returns a new <A HREF="../../../org/picocontainer/injectors/SetterInjector.html" title="class in org.picocontainer.injectors"><CODE>SetterInjector</CODE></A>.

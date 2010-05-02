@@ -770,14 +770,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    <started>true</started>\n" +
                 "    <disposed>false</disposed>\n" +
                 "    <childrenStarted/>\n" +
-                "    <lifecycleStrategy class='org.picocontainer.lifecycle.StartableLifecycleStrategy'>\n" +
+                "    <lifecycle class='org.picocontainer.lifecycle.StartableLifecycleStrategy'>\n" +
                 "      <monitor class='org.picocontainer.monitors.NullComponentMonitor'/>\n" +
-                "    </lifecycleStrategy>\n" +
+                "    </lifecycle>\n" +
                 "    <componentCharacteristic class='org.picocontainer.DefaultPicoContainer$1'>\n" +
                 "      <outer-class reference='../..'/>\n" +
                 "      <props/>\n" +
                 "    </componentCharacteristic>\n" +
-                "    <monitor class='org.picocontainer.monitors.NullComponentMonitor' reference='../lifecycleStrategy/monitor'/>\n" +
+                "    <monitor class='org.picocontainer.monitors.NullComponentMonitor' reference='../lifecycle/monitor'/>\n" +
                 "  </delegate>\n" +
                 "</org.picocontainer.classname.DefaultClassLoadingPicoContainer>", xml);
 

@@ -35,9 +35,9 @@ public class HotSwapping extends AbstractBehavior {
 
 
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
             throws PicoCompositionException {
-        ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(monitor, lifecycleStrategy,
+        ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, parameters);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
@@ -50,12 +50,12 @@ public class HotSwapping extends AbstractBehavior {
 
     @Override
 	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycleStrategy,
+                                                final LifecycleStrategy lifecycle,
                                                 final Properties componentProps,
                                                 final ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return super.addComponentAdapter(monitor,
-                    lifecycleStrategy,
+                    lifecycle,
                     componentProps,
                     adapter);
 		} 
@@ -63,7 +63,7 @@ public class HotSwapping extends AbstractBehavior {
     	
 		AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.HOT_SWAP);
     	return monitor.newBehavior(new HotSwappable<T>(super.addComponentAdapter(monitor,
-                                                                 lifecycleStrategy,
+                                                                 lifecycle,
                                                                  componentProps,
                                                                  adapter)));
     }

@@ -107,7 +107,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Lifecycle strategy instance.
      */
-    protected final LifecycleStrategy lifecycleStrategy;
+    protected final LifecycleStrategy lifecycle;
 
     /**
      * Properties set at the container level, that will affect subsequent components added.
@@ -196,15 +196,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * </em>
      *
      * @param parent            the parent container (used for component dependency lookups).
-     * @param lifecycleStrategy the lifecycle strategy chosen for registered
+     * @param lifecycle the lifecycle strategy chosen for registered
      *                          instance (not implementations!)
      * @param componentFactories  the factory to use for creation of ComponentAdapters.
      */
-    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentFactory... componentFactories) {
-        this(parent, lifecycleStrategy, new NullComponentMonitor(), componentFactories);
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycle, final ComponentFactory... componentFactories) {
+        this(parent, lifecycle, new NullComponentMonitor(), componentFactories);
     }
 
-    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor monitor, final ComponentFactory... componentFactories) {
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycle, final ComponentMonitor monitor, final ComponentFactory... componentFactories) {
         if (componentFactories.length == 0) {
             throw new NullPointerException("at least one componentFactory");
         }
@@ -223,11 +223,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         if (componentFactory == null) {
             throw new NullPointerException("one of the componentFactories");
         }
-        if (lifecycleStrategy == null) {
-            throw new NullPointerException("lifecycleStrategy");
+        if (lifecycle == null) {
+            throw new NullPointerException("lifecycle");
         }
         this.componentFactory = componentFactory;
-        this.lifecycleStrategy = lifecycleStrategy;
+        this.lifecycle = lifecycle;
         this.parent = parent;
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
             this.parent = new ImmutablePicoContainer(parent);
@@ -251,11 +251,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * custom ComponentMonitor and lifecycle strategy
      *
      * @param parent            the parent container (used for component dependency lookups).
-     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param lifecycle the lifecycle strategy to use.
      * @param monitor           the ComponentMonitor to use
      */
-    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy, final ComponentMonitor monitor) {
-        this(parent, lifecycleStrategy, monitor, new AdaptingBehavior());
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycle, final ComponentMonitor monitor) {
+        this(parent, lifecycle, monitor, new AdaptingBehavior());
     }
 
     /**
@@ -263,10 +263,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * custom lifecycle strategy
      *
      * @param parent            the parent container (used for component dependency lookups).
-     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param lifecycle the lifecycle strategy to use.
      */
-    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycleStrategy) {
-        this(parent, lifecycleStrategy, new NullComponentMonitor());
+    public DefaultPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycle) {
+        this(parent, lifecycle, new NullComponentMonitor());
     }
 
     /**
@@ -482,7 +482,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         if (AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof Behavior) {
             MutablePicoContainer container = addAdapterInternal(((Behavior) componentFactory).addComponentAdapter(
                     monitor,
-                    lifecycleStrategy,
+                    lifecycle,
                     tmpProperties,
                     componentAdapter));
             throwIfPropertiesLeft(tmpProperties);
@@ -529,7 +529,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     public MutablePicoContainer addConfig(final String name, final Object val) {
-        return addAdapterInternal(new InstanceAdapter<Object>(name, val, lifecycleStrategy, monitor));
+        return addAdapterInternal(new InstanceAdapter<Object>(name, val, lifecycle, monitor));
     }
 
 
@@ -560,7 +560,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         if (implOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(monitor,
-                    lifecycleStrategy,
+                    lifecycle,
                     tmpProperties,
                     key,
                     (Class<?>) implOrInstance,
@@ -574,7 +574,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapterInternal(adapter);
         } else {
             ComponentAdapter<?> adapter =
-                    new InstanceAdapter<Object>(key, implOrInstance, lifecycleStrategy, monitor);
+                    new InstanceAdapter<Object>(key, implOrInstance, lifecycle, monitor);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);
                 potentiallyStartAdapter(adapter);
@@ -673,7 +673,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
         if (componentAdapter instanceof ComponentLifecycle<?>
-                && lifecycleStrategy.isLazy(componentAdapter) // is Lazy
+                && lifecycle.isLazy(componentAdapter) // is Lazy
                 && !((ComponentLifecycle<?>) componentAdapter).isStarted()) {
             ((ComponentLifecycle<?>) componentAdapter).start(this);
         }
@@ -868,7 +868,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(this, lifecycleStrategy, monitor, componentFactory);
+        DefaultPicoContainer pc = new DefaultPicoContainer(this, lifecycle, monitor, componentFactory);
         addChildContainer(pc);
         return pc;
     }
@@ -975,8 +975,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public void changeMonitor(final ComponentMonitor monitor) {
         this.monitor = monitor;
-        if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
+        if (lifecycle instanceof ComponentMonitorStrategy) {
+            ((ComponentMonitorStrategy) lifecycle).changeMonitor(monitor);
         }
         for (ComponentAdapter<?> adapter : getModifiableComponentAdapterList()) {
             if (adapter instanceof ComponentMonitorStrategy) {
@@ -1020,7 +1020,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
     protected void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
         if (adapter instanceof ComponentLifecycle) {
-            if (!lifecycleStrategy.isLazy(adapter)) {
+            if (!lifecycle.isLazy(adapter)) {
                 ((ComponentLifecycle<?>) adapter).start(this);
             }
         }
@@ -1038,7 +1038,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     protected void instantiateComponentAsIsStartable(ComponentAdapter<?> adapter) {
-        if (!lifecycleStrategy.isLazy(adapter)) {
+        if (!lifecycle.isLazy(adapter)) {
             adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
         }
     }

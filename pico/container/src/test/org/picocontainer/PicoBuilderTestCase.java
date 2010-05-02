@@ -308,7 +308,7 @@ public class PicoBuilderTestCase {
         }
 
         public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
-                                                       LifecycleStrategy lifecycleStrategy,
+                                                       LifecycleStrategy lifecycle,
                                                        Properties componentProps,
                                                        Object key,
                                                        Class impl,
@@ -349,8 +349,8 @@ public class PicoBuilderTestCase {
 
 
     public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(parent, lifecycleStrategy, monitor, componentFactory);
+        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycle, PicoContainer parent) {
+            super(parent, lifecycle, monitor, componentFactory);
         }
     }
 

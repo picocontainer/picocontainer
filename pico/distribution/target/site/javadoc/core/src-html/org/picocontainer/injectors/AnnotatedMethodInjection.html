@@ -50,7 +50,7 @@
 <FONT color="green">047</FONT>         * Create a {@link SetterInjector}.<a name="line.47"></a>
 <FONT color="green">048</FONT>         * <a name="line.48"></a>
 <FONT color="green">049</FONT>         * @param monitor<a name="line.49"></a>
-<FONT color="green">050</FONT>         * @param lifecycleStrategy<a name="line.50"></a>
+<FONT color="green">050</FONT>         * @param lifecycle<a name="line.50"></a>
 <FONT color="green">051</FONT>         * @param componentProps<a name="line.51"></a>
 <FONT color="green">052</FONT>         * @param key The component's key<a name="line.52"></a>
 <FONT color="green">053</FONT>         * @param impl The class of the bean.<a name="line.53"></a>
@@ -62,10 +62,10 @@
 <FONT color="green">059</FONT>         *             be solved or if the implementation is an interface or an<a name="line.59"></a>
 <FONT color="green">060</FONT>         *             abstract class.<a name="line.60"></a>
 <FONT color="green">061</FONT>         */<a name="line.61"></a>
-<FONT color="green">062</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps,<a name="line.62"></a>
+<FONT color="green">062</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,<a name="line.62"></a>
 <FONT color="green">063</FONT>                                                       Object key, Class&lt;T&gt; impl, Parameter... parameters)<a name="line.63"></a>
 <FONT color="green">064</FONT>                throws PicoCompositionException {<a name="line.64"></a>
-<FONT color="green">065</FONT>            return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, injectionAnnotation, useNames)), lifecycleStrategy);<a name="line.65"></a>
+<FONT color="green">065</FONT>            return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, injectionAnnotation, useNames)), lifecycle);<a name="line.65"></a>
 <FONT color="green">066</FONT>        }<a name="line.66"></a>
 <FONT color="green">067</FONT>    }<a name="line.67"></a>
 

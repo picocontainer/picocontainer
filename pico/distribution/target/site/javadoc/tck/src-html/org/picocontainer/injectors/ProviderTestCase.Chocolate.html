@@ -280,15 +280,15 @@
 <FONT color="green">277</FONT>        @Test<a name="line.277"></a>
 <FONT color="green">278</FONT>        public void providersCanHaveLifecyclesToo() {<a name="line.278"></a>
 <FONT color="green">279</FONT>            ComponentMonitor monitor = new LifecycleComponentMonitor();<a name="line.279"></a>
-<FONT color="green">280</FONT>            LifecycleStrategy lifecycleStrategy = new<a name="line.280"></a>
+<FONT color="green">280</FONT>            LifecycleStrategy lifecycle = new<a name="line.280"></a>
 <FONT color="green">281</FONT>                    ReflectionLifecycleStrategy(monitor);<a name="line.281"></a>
 <FONT color="green">282</FONT>    <a name="line.282"></a>
 <FONT color="green">283</FONT>            MutablePicoContainer pico = new DefaultPicoContainer(new<a name="line.283"></a>
-<FONT color="green">284</FONT>                    ThreadCaching(), lifecycleStrategy, null);<a name="line.284"></a>
+<FONT color="green">284</FONT>                    ThreadCaching(), lifecycle, null);<a name="line.284"></a>
 <FONT color="green">285</FONT>    <a name="line.285"></a>
 <FONT color="green">286</FONT>            StringBuilder sb = new StringBuilder();<a name="line.286"></a>
 <FONT color="green">287</FONT>            pico.addComponent(Configuration.class);<a name="line.287"></a>
-<FONT color="green">288</FONT>            pico.addAdapter(new ProviderAdapter(lifecycleStrategy, new ComponentProvider(sb)));<a name="line.288"></a>
+<FONT color="green">288</FONT>            pico.addAdapter(new ProviderAdapter(lifecycle, new ComponentProvider(sb)));<a name="line.288"></a>
 <FONT color="green">289</FONT>            Object foo = pico.getComponent(Component.class);<a name="line.289"></a>
 <FONT color="green">290</FONT>            pico.start();<a name="line.290"></a>
 <FONT color="green">291</FONT>            pico.stop();<a name="line.291"></a>

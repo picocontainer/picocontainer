@@ -44,7 +44,7 @@ public class SetterInjection extends AbstractInjectionType {
      * Create a {@link SetterInjector}.
      * 
      * @param monitor
-     * @param lifecycleStrategy
+     * @param lifecycle
      * @param componentProps
      * @param key The component's key
      * @param impl The class of the bean.
@@ -54,10 +54,10 @@ public class SetterInjection extends AbstractInjectionType {
      * @return Returns a new {@link SetterInjector}.
      * @throws PicoCompositionException if dependencies cannot be solved
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProps, Object key, Class<T> impl, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new SetterInjector(key, impl, parameters, monitor, prefix, useNames)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new SetterInjector(key, impl, parameters, monitor, prefix, useNames)), lifecycle);
     }
 
 }

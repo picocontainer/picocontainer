@@ -46,7 +46,7 @@ import org.picocontainer.behaviors.AbstractBehavior;
 public class AdaptingInjection extends AbstractInjectionType {
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
@@ -55,7 +55,7 @@ public class AdaptingInjection extends AbstractInjectionType {
         
         componentAdapter = fieldAnnotatedInjectionAdapter(impl,
                                monitor,
-                               lifecycleStrategy,
+                               lifecycle,
                                componentProps,
                                key,
                                componentAdapter,
@@ -67,7 +67,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
         componentAdapter = methodAnnotatedInjectionAdapter(impl,
                                                            monitor,
-                                                           lifecycleStrategy,
+                                                           lifecycle,
                                                            componentProps,
                                                            key,
                                                            componentAdapter,
@@ -79,7 +79,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
         componentAdapter = setterInjectionAdapter(componentProps,
                                                  monitor,
-                                                 lifecycleStrategy,
+                                                 lifecycle,
                                                  key,
                                                  impl,
                                                  componentAdapter,
@@ -91,7 +91,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
         componentAdapter = methodInjectionAdapter(componentProps,
                                                  monitor,
-                                                 lifecycleStrategy,
+                                                 lifecycle,
                                                  key,
                                                  impl,
                                                  componentAdapter,
@@ -104,7 +104,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
         return defaultInjectionAdapter(componentProps,
                                     monitor,
-                                    lifecycleStrategy,
+                                    lifecycle,
                                     key,
                                     impl,
                                     parameters);
@@ -112,12 +112,12 @@ public class AdaptingInjection extends AbstractInjectionType {
 
     private <T> ComponentAdapter<T> defaultInjectionAdapter(Properties componentProps,
                                                   ComponentMonitor monitor,
-                                                  LifecycleStrategy lifecycleStrategy,
+                                                  LifecycleStrategy lifecycle,
                                                   Object key,
                                                   Class<T> impl, Parameter... parameters) {
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CDI);
         return new ConstructorInjection().createComponentAdapter(monitor,
-                                                                        lifecycleStrategy,
+                                                                        lifecycle,
                                                                         componentProps,
                                                                         key,
                                                                         impl,
@@ -126,13 +126,13 @@ public class AdaptingInjection extends AbstractInjectionType {
 
     private <T> ComponentAdapter<T> setterInjectionAdapter(Properties componentProps,
                                                    ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Object key,
                                                    Class<T> impl,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.SDI)) {
-            componentAdapter = new SetterInjection().createComponentAdapter(monitor, lifecycleStrategy,
+            componentAdapter = new SetterInjection().createComponentAdapter(monitor, lifecycle,
                                                                                                     componentProps,
                                                                                                     key,
                                                                                                     impl,
@@ -143,13 +143,13 @@ public class AdaptingInjection extends AbstractInjectionType {
 
     private <T> ComponentAdapter<T> methodInjectionAdapter(Properties componentProps,
                                                    ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy,
+                                                   LifecycleStrategy lifecycle,
                                                    Object key,
                                                    Class<T> impl,
                                                    ComponentAdapter<T> componentAdapter,
                                                    Parameter... parameters) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.METHOD_INJECTION)) {
-            componentAdapter = new MethodInjection().createComponentAdapter(monitor, lifecycleStrategy,
+            componentAdapter = new MethodInjection().createComponentAdapter(monitor, lifecycle,
                                                                                                     componentProps,
                                                                                                     key,
                                                                                                     impl,
@@ -161,7 +161,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
     private <T> ComponentAdapter<T> methodAnnotatedInjectionAdapter(Class<T> impl,
                                                              ComponentMonitor monitor,
-                                                             LifecycleStrategy lifecycleStrategy,
+                                                             LifecycleStrategy lifecycle,
                                                              Properties componentProps,
                                                              Object key,
                                                              ComponentAdapter<T> componentAdapter,
@@ -169,7 +169,7 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (injectionMethodAnnotated(impl)) {
             componentAdapter =
                 new AnnotatedMethodInjection().createComponentAdapter(monitor,
-                                                                              lifecycleStrategy,
+                                                                              lifecycle,
                                                                               componentProps,
                                                                               key,
                                                                               impl,
@@ -180,12 +180,12 @@ public class AdaptingInjection extends AbstractInjectionType {
 
     private <T> ComponentAdapter<T> fieldAnnotatedInjectionAdapter(Class<T> impl,
                                  ComponentMonitor monitor,
-                                 LifecycleStrategy lifecycleStrategy,
+                                 LifecycleStrategy lifecycle,
                                  Properties componentProps,
                                  Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (injectionFieldAnnotated(impl)) {
              componentAdapter = new AnnotatedFieldInjection().createComponentAdapter(monitor,
-                                                                             lifecycleStrategy,
+                                                                             lifecycle,
                                                                              componentProps,
                                                                              key,
                                                                              impl,

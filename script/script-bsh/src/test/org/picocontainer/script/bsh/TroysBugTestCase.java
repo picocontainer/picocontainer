@@ -35,9 +35,9 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
 
         ComponentFactory componentFactory = new Caching().wrap(new ConstructorInjection());
         ComponentMonitor monitor = new ConsoleComponentMonitor();
-        LifecycleStrategy lifecycleStrategy = new CustomLifecycleStrategy(monitor); // starts/stops CustomStartable
+        LifecycleStrategy lifecycle = new CustomLifecycleStrategy(monitor); // starts/stops CustomStartable
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(null, lifecycleStrategy, monitor, componentFactory);
+        DefaultPicoContainer parent = new DefaultPicoContainer(null, lifecycle, monitor, componentFactory);
         parent.setName("parent");
         PicoContainer container = builder.buildContainer(parent, "defaultScope", true);
 

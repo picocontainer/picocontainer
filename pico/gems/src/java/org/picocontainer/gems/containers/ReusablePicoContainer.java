@@ -75,14 +75,14 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
-			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent,
+			final LifecycleStrategy lifecycle, final PicoContainer parent,
 			final ComponentMonitor monitor) {
-		super(parent, lifecycleStrategy, monitor, componentFactory);
+		super(parent, lifecycle, monitor, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
-			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-		super(parent, lifecycleStrategy, componentFactory);
+			final LifecycleStrategy lifecycle, final PicoContainer parent) {
+		super(parent, lifecycle, componentFactory);
 	}
 
 	public ReusablePicoContainer(final ComponentFactory componentFactory,
@@ -95,8 +95,8 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	}
 
 	public ReusablePicoContainer(final ComponentMonitor monitor,
-			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
-		super(parent, lifecycleStrategy, monitor);
+			final LifecycleStrategy lifecycle, final PicoContainer parent) {
+		super(parent, lifecycle, monitor);
 	}
 
 	public ReusablePicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {
@@ -107,9 +107,9 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		super(monitor);
 	}
 
-	public ReusablePicoContainer(final LifecycleStrategy lifecycleStrategy,
+	public ReusablePicoContainer(final LifecycleStrategy lifecycle,
 			final PicoContainer parent) {
-		super(parent, lifecycleStrategy);
+		super(parent, lifecycle);
 	}
 
 	public ReusablePicoContainer(final PicoContainer parent) {
@@ -264,7 +264,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
     @Override
 	public MutablePicoContainer makeChildContainer() {
-        ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycleStrategy, this);
+        ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycle, this);
         addChildContainer(pc);
         return pc;
     }

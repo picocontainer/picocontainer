@@ -41,22 +41,22 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     /**
      * Lifecycle Strategy for the component adpater.
      */
-    private final LifecycleStrategy lifecycleStrategy;
+    private final LifecycleStrategy lifecycle;
     private boolean started;
 
 
-    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor monitor) throws PicoCompositionException {
+    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycle, ComponentMonitor monitor) throws PicoCompositionException {
         super(key, getInstanceClass(componentInstance), monitor);
         this.componentInstance = componentInstance;
-        this.lifecycleStrategy = lifecycleStrategy;
+        this.lifecycle = lifecycle;
     }
 
     public InstanceAdapter(Object key, T componentInstance) {
         this(key, componentInstance, new NullLifecycleStrategy(), new NullComponentMonitor());
     }
 
-    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycleStrategy) {
-        this(key, componentInstance, lifecycleStrategy, new NullComponentMonitor());
+    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycle) {
+        this(key, componentInstance, lifecycle, new NullComponentMonitor());
     }
 
     public InstanceAdapter(Object key, T componentInstance, ComponentMonitor monitor) {
@@ -104,24 +104,24 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
     public void start(Object component) {
-        lifecycleStrategy.start(componentInstance);
+        lifecycle.start(componentInstance);
         started = true;
     }
 
     public void stop(Object component) {
-        lifecycleStrategy.stop(componentInstance);
+        lifecycle.stop(componentInstance);
         started = false;
     }
 
     public void dispose(Object component) {
-        lifecycleStrategy.dispose(componentInstance);
+        lifecycle.dispose(componentInstance);
     }
 
     public boolean hasLifecycle(Class<?> type) {
-        return lifecycleStrategy.hasLifecycle(type);
+        return lifecycle.hasLifecycle(type);
     }
 
     public boolean isLazy(ComponentAdapter<?> adapter) {
-        return lifecycleStrategy.isLazy(adapter);
+        return lifecycle.isLazy(adapter);
     }
 }

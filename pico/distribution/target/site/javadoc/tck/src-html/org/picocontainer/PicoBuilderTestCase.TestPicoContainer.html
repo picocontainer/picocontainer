@@ -309,7 +309,7 @@
 <FONT color="green">306</FONT>            }<a name="line.306"></a>
 <FONT color="green">307</FONT>    <a name="line.307"></a>
 <FONT color="green">308</FONT>            public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,<a name="line.308"></a>
-<FONT color="green">309</FONT>                                                           LifecycleStrategy lifecycleStrategy,<a name="line.309"></a>
+<FONT color="green">309</FONT>                                                           LifecycleStrategy lifecycle,<a name="line.309"></a>
 <FONT color="green">310</FONT>                                                           Properties componentProps,<a name="line.310"></a>
 <FONT color="green">311</FONT>                                                           Object key,<a name="line.311"></a>
 <FONT color="green">312</FONT>                                                           Class impl,<a name="line.312"></a>
@@ -334,8 +334,8 @@
 <FONT color="green">331</FONT>    <a name="line.331"></a>
 <FONT color="green">332</FONT>    <a name="line.332"></a>
 <FONT color="green">333</FONT>        public static class TestPicoContainer extends DefaultPicoContainer {<a name="line.333"></a>
-<FONT color="green">334</FONT>            public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {<a name="line.334"></a>
-<FONT color="green">335</FONT>                super(componentFactory, lifecycleStrategy, parent, monitor);<a name="line.335"></a>
+<FONT color="green">334</FONT>            public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycle, PicoContainer parent) {<a name="line.334"></a>
+<FONT color="green">335</FONT>                super(componentFactory, lifecycle, parent, monitor);<a name="line.335"></a>
 <FONT color="green">336</FONT>            }<a name="line.336"></a>
 <FONT color="green">337</FONT>        }<a name="line.337"></a>
 <FONT color="green">338</FONT>    <a name="line.338"></a>

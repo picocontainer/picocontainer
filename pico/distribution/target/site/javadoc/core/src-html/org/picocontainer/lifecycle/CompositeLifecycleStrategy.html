@@ -29,26 +29,26 @@
 <FONT color="green">026</FONT>        }<a name="line.26"></a>
 <FONT color="green">027</FONT>    <a name="line.27"></a>
 <FONT color="green">028</FONT>        public void start(Object component) {<a name="line.28"></a>
-<FONT color="green">029</FONT>            for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {<a name="line.29"></a>
-<FONT color="green">030</FONT>                lifecycleStrategy.start(component);<a name="line.30"></a>
+<FONT color="green">029</FONT>            for (StartableLifecycleStrategy lifecycle : alternateStrategies) {<a name="line.29"></a>
+<FONT color="green">030</FONT>                lifecycle.start(component);<a name="line.30"></a>
 <FONT color="green">031</FONT>            }<a name="line.31"></a>
 <FONT color="green">032</FONT>        }<a name="line.32"></a>
 <FONT color="green">033</FONT>    <a name="line.33"></a>
 <FONT color="green">034</FONT>        public void stop(Object component) {<a name="line.34"></a>
-<FONT color="green">035</FONT>            for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {<a name="line.35"></a>
-<FONT color="green">036</FONT>                lifecycleStrategy.stop(component);<a name="line.36"></a>
+<FONT color="green">035</FONT>            for (StartableLifecycleStrategy lifecycle : alternateStrategies) {<a name="line.35"></a>
+<FONT color="green">036</FONT>                lifecycle.stop(component);<a name="line.36"></a>
 <FONT color="green">037</FONT>            }<a name="line.37"></a>
 <FONT color="green">038</FONT>        }<a name="line.38"></a>
 <FONT color="green">039</FONT>    <a name="line.39"></a>
 <FONT color="green">040</FONT>        public void dispose(Object component) {<a name="line.40"></a>
-<FONT color="green">041</FONT>            for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {<a name="line.41"></a>
-<FONT color="green">042</FONT>                lifecycleStrategy.dispose(component);<a name="line.42"></a>
+<FONT color="green">041</FONT>            for (StartableLifecycleStrategy lifecycle : alternateStrategies) {<a name="line.41"></a>
+<FONT color="green">042</FONT>                lifecycle.dispose(component);<a name="line.42"></a>
 <FONT color="green">043</FONT>            }<a name="line.43"></a>
 <FONT color="green">044</FONT>        }<a name="line.44"></a>
 <FONT color="green">045</FONT>    <a name="line.45"></a>
 <FONT color="green">046</FONT>        public boolean hasLifecycle(Class&lt;?&gt; type) {<a name="line.46"></a>
-<FONT color="green">047</FONT>            for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {<a name="line.47"></a>
-<FONT color="green">048</FONT>                if (lifecycleStrategy.hasLifecycle(type)) {<a name="line.48"></a>
+<FONT color="green">047</FONT>            for (StartableLifecycleStrategy lifecycle : alternateStrategies) {<a name="line.47"></a>
+<FONT color="green">048</FONT>                if (lifecycle.hasLifecycle(type)) {<a name="line.48"></a>
 <FONT color="green">049</FONT>                    return true;<a name="line.49"></a>
 <FONT color="green">050</FONT>                }<a name="line.50"></a>
 <FONT color="green">051</FONT>            }<a name="line.51"></a>
@@ -56,8 +56,8 @@
 <FONT color="green">053</FONT>        }<a name="line.53"></a>
 <FONT color="green">054</FONT>    <a name="line.54"></a>
 <FONT color="green">055</FONT>        public boolean isLazy(ComponentAdapter&lt;?&gt; adapter) {<a name="line.55"></a>
-<FONT color="green">056</FONT>            for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {<a name="line.56"></a>
-<FONT color="green">057</FONT>                if (lifecycleStrategy.isLazy(adapter)) {<a name="line.57"></a>
+<FONT color="green">056</FONT>            for (StartableLifecycleStrategy lifecycle : alternateStrategies) {<a name="line.56"></a>
+<FONT color="green">057</FONT>                if (lifecycle.isLazy(adapter)) {<a name="line.57"></a>
 <FONT color="green">058</FONT>                    return true;<a name="line.58"></a>
 <FONT color="green">059</FONT>                }<a name="line.59"></a>
 <FONT color="green">060</FONT>            }<a name="line.60"></a>

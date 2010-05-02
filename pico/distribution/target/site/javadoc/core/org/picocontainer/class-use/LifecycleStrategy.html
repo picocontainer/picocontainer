@@ -140,7 +140,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A></CODE></FONT></TD>
-<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#lifecycleStrategy">lifecycleStrategy</A></B></CODE>
+<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#lifecycle">lifecycle</A></B></CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lifecycle strategy instance.</TD>
@@ -164,7 +164,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>BehaviorFactory.</B><B><A HREF="../../../org/picocontainer/BehaviorFactory.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -182,7 +182,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ComponentFactory.</B><B><A HREF="../../../org/picocontainer/ComponentFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -194,7 +194,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/PicoBuilder.html" title="class in org.picocontainer">PicoBuilder</A></CODE></FONT></TD>
-<TD><CODE><B>PicoBuilder.</B><B><A HREF="../../../org/picocontainer/PicoBuilder.html#withLifecycle(org.picocontainer.LifecycleStrategy)">withLifecycle</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy)</CODE>
+<TD><CODE><B>PicoBuilder.</B><B><A HREF="../../../org/picocontainer/PicoBuilder.html#withLifecycle(org.picocontainer.LifecycleStrategy)">withLifecycle</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -210,7 +210,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/PicoBuilder.html" title="class in org.picocontainer">PicoBuilder</A></CODE></FONT></TD>
-<TD><CODE><B>PicoBuilder.</B><B><A HREF="../../../org/picocontainer/PicoBuilder.html#withLifecycle(java.lang.Class)">withLifecycle</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&gt;&nbsp;lifecycleStrategyClass)</CODE>
+<TD><CODE><B>PicoBuilder.</B><B><A HREF="../../../org/picocontainer/PicoBuilder.html#withLifecycle(java.lang.Class)">withLifecycle</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&gt;&nbsp;lifecycleClass)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -225,7 +225,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -234,7 +234,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer, org.picocontainer.ComponentMonitor)">DefaultPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent,
                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
 
@@ -243,7 +243,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -251,7 +251,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
  custom ComponentMonitor and lifecycle strategy</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+<TD><CODE><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#DefaultPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">DefaultPicoContainer</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -295,7 +295,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/adapters/InstanceAdapter.html#InstanceAdapter(java.lang.Object, T, org.picocontainer.LifecycleStrategy)">InstanceAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                <A HREF="../../../org/picocontainer/adapters/InstanceAdapter.html" title="type parameter in InstanceAdapter">T</A>&nbsp;componentInstance,
-                               <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy)</CODE>
+                               <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -303,7 +303,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/adapters/InstanceAdapter.html#InstanceAdapter(java.lang.Object, T, org.picocontainer.LifecycleStrategy, org.picocontainer.ComponentMonitor)">InstanceAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                <A HREF="../../../org/picocontainer/adapters/InstanceAdapter.html" title="type parameter in InstanceAdapter">T</A>&nbsp;componentInstance,
-                               <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                               <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
 
 <BR>
@@ -447,7 +447,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>ImplementationHiding.</B><B><A HREF="../../../org/picocontainer/behaviors/ImplementationHiding.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
@@ -458,7 +458,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>FieldDecorating.</B><B><A HREF="../../../org/picocontainer/behaviors/FieldDecorating.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
@@ -469,7 +469,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>Decorating.</B><B><A HREF="../../../org/picocontainer/behaviors/Decorating.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
@@ -480,7 +480,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>Automating.</B><B><A HREF="../../../org/picocontainer/behaviors/Automating.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
@@ -491,7 +491,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>AdaptingBehavior.</B><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&nbsp;adapter)</CODE>
 
@@ -509,7 +509,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ThreadCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/ThreadCaching.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -527,7 +527,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Synchronizing.</B><B><A HREF="../../../org/picocontainer/behaviors/Synchronizing.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -545,7 +545,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Storing.</B><B><A HREF="../../../org/picocontainer/behaviors/Storing.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -563,7 +563,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>PropertyApplying.</B><B><A HREF="../../../org/picocontainer/behaviors/PropertyApplying.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -581,7 +581,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>OptInCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/OptInCaching.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -599,7 +599,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Locking.</B><B><A HREF="../../../org/picocontainer/behaviors/Locking.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -617,7 +617,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Guarding.</B><B><A HREF="../../../org/picocontainer/behaviors/Guarding.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -635,7 +635,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Caching.</B><B><A HREF="../../../org/picocontainer/behaviors/Caching.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -653,7 +653,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>AbstractBehaviorFactory.</B><B><A HREF="../../../org/picocontainer/behaviors/AbstractBehaviorFactory.html#addComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, org.picocontainer.ComponentAdapter)">addComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                        <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt;&nbsp;adapter)</CODE>
 
@@ -671,7 +671,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ThreadCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/ThreadCaching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -691,7 +691,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Synchronizing.</B><B><A HREF="../../../org/picocontainer/behaviors/Synchronizing.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -711,7 +711,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Storing.</B><B><A HREF="../../../org/picocontainer/behaviors/Storing.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -731,7 +731,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>PropertyApplying.</B><B><A HREF="../../../org/picocontainer/behaviors/PropertyApplying.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -751,7 +751,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>OptInCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/OptInCaching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -771,7 +771,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Locking.</B><B><A HREF="../../../org/picocontainer/behaviors/Locking.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -791,7 +791,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Intercepting.</B><B><A HREF="../../../org/picocontainer/behaviors/Intercepting.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -811,7 +811,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Guarding.</B><B><A HREF="../../../org/picocontainer/behaviors/Guarding.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -831,7 +831,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>Caching.</B><B><A HREF="../../../org/picocontainer/behaviors/Caching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -851,7 +851,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>AbstractBehaviorFactory.</B><B><A HREF="../../../org/picocontainer/behaviors/AbstractBehaviorFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -864,7 +864,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>ImplementationHiding.</B><B><A HREF="../../../org/picocontainer/behaviors/ImplementationHiding.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
@@ -877,7 +877,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>FieldDecorating.</B><B><A HREF="../../../org/picocontainer/behaviors/FieldDecorating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
@@ -890,7 +890,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>Decorating.</B><B><A HREF="../../../org/picocontainer/behaviors/Decorating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
@@ -903,7 +903,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>Automating.</B><B><A HREF="../../../org/picocontainer/behaviors/Automating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
@@ -916,7 +916,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>AdaptingBehavior.</B><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;impl,
@@ -944,7 +944,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/classname/DefaultClassLoadingPicoContainer.html#DefaultClassLoadingPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer, java.lang.ClassLoader, org.picocontainer.ComponentMonitor)">DefaultClassLoadingPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                                                 <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                                                 <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                                                  <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent,
                                                                  <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang">ClassLoader</A>&nbsp;cl,
                                                                  <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
@@ -971,7 +971,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/containers/TieringPicoContainer.html#TieringPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">TieringPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -980,7 +980,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/containers/TieringPicoContainer.html#TieringPicoContainer(org.picocontainer.ComponentFactory, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer, org.picocontainer.ComponentMonitor)">TieringPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentFactory.html" title="interface in org.picocontainer">ComponentFactory</A>&nbsp;componentFactory,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent,
                                          <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor)</CODE>
 
@@ -989,7 +989,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../org/picocontainer/containers/TieringPicoContainer.html#TieringPicoContainer(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">TieringPicoContainer</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                         <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -997,7 +997,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
  custom ComponentMonitor and lifecycle strategy</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/containers/TieringPicoContainer.html#TieringPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">TieringPicoContainer</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+<TD><CODE><B><A HREF="../../../org/picocontainer/containers/TieringPicoContainer.html#TieringPicoContainer(org.picocontainer.LifecycleStrategy, org.picocontainer.PicoContainer)">TieringPicoContainer</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                          <A HREF="../../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A>&nbsp;parent)</CODE>
 
 <BR>
@@ -1048,7 +1048,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>TypedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/TypedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1068,7 +1068,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>SetterInjection.</B><B><A HREF="../../../org/picocontainer/injectors/SetterInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1088,7 +1088,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>NamedMethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/NamedMethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1108,7 +1108,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>NamedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/NamedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1128,7 +1128,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>MultiInjection.</B><B><A HREF="../../../org/picocontainer/injectors/MultiInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1148,7 +1148,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1168,7 +1168,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.MethodInjectionByName.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.MethodInjectionByName.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1188,7 +1188,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.MethodInjectionByReflectionMethod.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.MethodInjectionByReflectionMethod.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1208,7 +1208,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ConstructorInjection.</B><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;properties,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1228,7 +1228,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>CompositeInjection.</B><B><A HREF="../../../org/picocontainer/injectors/CompositeInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1248,7 +1248,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>AnnotatedMethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AnnotatedMethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1268,7 +1268,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>AnnotatedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AnnotatedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1288,7 +1288,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>AdaptingInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AdaptingInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
-                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+                                             <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProps,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;impl,
@@ -1301,7 +1301,7 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
 <TD><CODE><B>AbstractInjectionFactory.</B><B><A HREF="../../../org/picocontainer/injectors/AbstractInjectionFactory.html#wrapLifeCycle(org.picocontainer.Injector, org.picocontainer.LifecycleStrategy)">wrapLifeCycle</A></B>(<A HREF="../../../org/picocontainer/Injector.html" title="interface in org.picocontainer">Injector</A>&nbsp;injector,
-                           <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy)</CODE>
+                           <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -1315,14 +1315,14 @@ Uses of <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="inter
 <TH ALIGN="left" COLSPAN="2">Constructors in <A HREF="../../../org/picocontainer/injectors/package-summary.html">org.picocontainer.injectors</A> with parameters of type <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ProviderAdapter.html#ProviderAdapter(org.picocontainer.LifecycleStrategy, java.lang.Object)">ProviderAdapter</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ProviderAdapter.html#ProviderAdapter(org.picocontainer.LifecycleStrategy, java.lang.Object)">ProviderAdapter</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;provider)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ProviderAdapter.html#ProviderAdapter(org.picocontainer.LifecycleStrategy, java.lang.Object, boolean)">ProviderAdapter</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ProviderAdapter.html#ProviderAdapter(org.picocontainer.LifecycleStrategy, java.lang.Object, boolean)">ProviderAdapter</A></B>(<A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycle,
                                <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;provider,
                                boolean&nbsp;useNames)</CODE>
 

@@ -93,10 +93,10 @@ public class JMXExposing extends AbstractBehavior {
      */
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
+            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
             throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
-                monitor, lifecycleStrategy,
+                monitor, lifecycle,
                 componentProps, key, impl, parameters);
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
             return delegateAdapter;            
@@ -109,17 +109,17 @@ public class JMXExposing extends AbstractBehavior {
 
     @Override
 	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycleStrategy,
+                                                final LifecycleStrategy lifecycle,
                                                 final Properties componentProps,
                                                 final ComponentAdapter<T> adapter) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
             return super.addComponentAdapter(monitor,
-                                             lifecycleStrategy,
+                                             lifecycle,
                                              componentProps,
                                              adapter);
         } else {
             return monitor.newBehavior(new JMXExposed<T>(super.addComponentAdapter(monitor,
-                                                                     lifecycleStrategy,
+                                                                     lifecycle,
                                                                      componentProps,
                                                                      adapter), mBeanServer, providers));
         }

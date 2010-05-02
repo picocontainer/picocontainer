@@ -188,8 +188,8 @@ public class ScriptedBuilderTestCase {
 
     @SuppressWarnings("serial")
 	public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(PicoContainer parent, LifecycleStrategy lifecycleStrategy, ComponentMonitor monitor, ComponentFactory componentFactory) {
-            super(parent, lifecycleStrategy, monitor, componentFactory);
+        public TestPicoContainer(PicoContainer parent, LifecycleStrategy lifecycle, ComponentMonitor monitor, ComponentFactory componentFactory) {
+            super(parent, lifecycle, monitor, componentFactory);
         }
     }
 
