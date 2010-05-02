@@ -36,12 +36,6 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
                 componentProperties,componentKey, componentImplementation, parameters), this));
     }
 
-
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties, ComponentAdapter<T> adapter) {
-        return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
-    }
-
     @SuppressWarnings("serial")
     public static class Decorated<T> extends AbstractChangedBehavior<T> {
         private final Decorator decorator;
