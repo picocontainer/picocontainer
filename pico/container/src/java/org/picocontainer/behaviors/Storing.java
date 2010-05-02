@@ -37,22 +37,22 @@ public class Storing extends AbstractBehavior {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object key, Class<T> componentImplementation, Parameter... parameters)
 
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
-                                                                             componentKey,
+                                                                             key,
                                                                              componentImplementation,
                                                                              parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, componentKey);
+        ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
 
         return componentMonitor.newBehavior(new Stored<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                componentProperties, componentKey, componentImplementation, parameters),
+                                                                componentProperties, key, componentImplementation, parameters),
                 threadLocalMapObjectReference));
 
     }

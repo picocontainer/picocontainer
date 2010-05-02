@@ -38,12 +38,12 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
-            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,
             Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         if (delegate == null) {
             delegate = new AdaptingInjection();
         }
-        ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
+        ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, key,
                 componentImplementation, parameters);
 
         boolean enableCircular = removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);

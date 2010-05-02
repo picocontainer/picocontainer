@@ -32,27 +32,27 @@ import java.io.Serializable;
  * @author Jon Tirs&eacute;n
  */
 public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
-    private Object componentKey;
+    private Object key;
     private Class<T> componentImplementation;
     private ComponentMonitor componentMonitor;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
-     * @param componentKey the search key for this implementation
+     * @param key the search key for this implementation
      * @param componentImplementation the concrete implementation
      */
-    public AbstractAdapter(Object componentKey, Class componentImplementation) {
-        this(componentKey, componentImplementation, new AbstractComponentMonitor());
+    public AbstractAdapter(Object key, Class componentImplementation) {
+        this(key, componentImplementation, new AbstractComponentMonitor());
         this.componentMonitor = new NullComponentMonitor();
     }
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
-     * @param componentKey the search key for this implementation
+     * @param key the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param monitor the component monitor used by this ComponentAdapter
      */
-    public AbstractAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {
+    public AbstractAdapter(Object key, Class componentImplementation, ComponentMonitor monitor) {
         if (monitor == null) {
             throw new NullPointerException("ComponentMonitor==null");
         }
@@ -60,7 +60,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }
-        this.componentKey = componentKey;
+        this.key = key;
         this.componentImplementation = componentImplementation;
         checkTypeCompatibility();
     }
@@ -70,10 +70,10 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @see org.picocontainer.ComponentAdapter#getComponentKey()
      */
     public Object getComponentKey() {
-        if (componentKey == null) {
-            throw new NullPointerException("componentKey");
+        if (key == null) {
+            throw new NullPointerException("key");
         }
-        return componentKey;
+        return key;
     }
 
     /**
@@ -85,8 +85,8 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     }
 
     protected void checkTypeCompatibility() {
-        if (componentKey instanceof Class) {
-            Class<?> componentType = (Class) componentKey;
+        if (key instanceof Class) {
+            Class<?> componentType = (Class) key;
             if (Provider.class.isAssignableFrom(componentImplementation)) {
                 if (!componentType.isAssignableFrom(ProviderAdapter.getProvideMethod(componentImplementation).getReturnType())) {
                     throw newCCE(componentType);

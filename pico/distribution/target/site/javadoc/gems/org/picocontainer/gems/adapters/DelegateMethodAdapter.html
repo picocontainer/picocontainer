@@ -200,7 +200,7 @@ Object construction is sometimes expensive, especially when it is seldom used
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../org/picocontainer/gems/adapters/DelegateMethodAdapter.html#DelegateMethodAdapter(java.lang.Object, org.picocontainer.ComponentMonitor, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)">DelegateMethodAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../../org/picocontainer/gems/adapters/DelegateMethodAdapter.html#DelegateMethodAdapter(java.lang.Object, org.picocontainer.ComponentMonitor, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)">DelegateMethodAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                            <A HREF="http://www.picocontainer.org/picocontainer/apidocs/org/picocontainer/ComponentMonitor.html?is-external=true" title="class or interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;targetInstance,
                                            <A HREF="../../../../org/picocontainer/gems/util/DelegateMethod.html" title="class in org.picocontainer.gems.util">DelegateMethod</A>&nbsp;factoryMethod)</CODE>
@@ -209,7 +209,7 @@ Object construction is sometimes expensive, especially when it is seldom used
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../org/picocontainer/gems/adapters/DelegateMethodAdapter.html#DelegateMethodAdapter(java.lang.Object, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)">DelegateMethodAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../../org/picocontainer/gems/adapters/DelegateMethodAdapter.html#DelegateMethodAdapter(java.lang.Object, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)">DelegateMethodAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;targetInstance,
                                            <A HREF="../../../../org/picocontainer/gems/util/DelegateMethod.html" title="class in org.picocontainer.gems.util">DelegateMethod</A>&nbsp;factoryMethod)</CODE>
 
@@ -325,12 +325,12 @@ Object construction is sometimes expensive, especially when it is seldom used
 <A NAME="DelegateMethodAdapter(java.lang.Object, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)"><!-- --></A><H3>
 DelegateMethodAdapter</H3>
 <PRE>
-public <A HREF="../../../../src-html/org/picocontainer/gems/adapters/DelegateMethodAdapter.html#line.105"><B>DelegateMethodAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../../src-html/org/picocontainer/gems/adapters/DelegateMethodAdapter.html#line.105"><B>DelegateMethodAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;targetInstance,
                              <A HREF="../../../../org/picocontainer/gems/util/DelegateMethod.html" title="class in org.picocontainer.gems.util">DelegateMethod</A>&nbsp;factoryMethod)</PRE>
 <DL>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - <DD><CODE>Component</CODE> - Implementation will be the expected return type of the factory
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>Component</CODE> - Implementation will be the expected return type of the factory
             method.</DL>
 </DL>
 <HR>
@@ -338,13 +338,13 @@ public <A HREF="../../../../src-html/org/picocontainer/gems/adapters/DelegateMet
 <A NAME="DelegateMethodAdapter(java.lang.Object, org.picocontainer.ComponentMonitor, java.lang.Object, org.picocontainer.gems.util.DelegateMethod)"><!-- --></A><H3>
 DelegateMethodAdapter</H3>
 <PRE>
-public <A HREF="../../../../src-html/org/picocontainer/gems/adapters/DelegateMethodAdapter.html#line.117"><B>DelegateMethodAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../../src-html/org/picocontainer/gems/adapters/DelegateMethodAdapter.html#line.117"><B>DelegateMethodAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                              <A HREF="http://www.picocontainer.org/picocontainer/apidocs/org/picocontainer/ComponentMonitor.html?is-external=true" title="class or interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;targetInstance,
                              <A HREF="../../../../org/picocontainer/gems/util/DelegateMethod.html" title="class in org.picocontainer.gems.util">DelegateMethod</A>&nbsp;factoryMethod)</PRE>
 <DL>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - <DD><CODE>componentImplementation</CODE> - <DD><CODE>monitor</CODE> - </DL>
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - <DD><CODE>componentImplementation</CODE> - <DD><CODE>monitor</CODE> - </DL>
 </DL>
 
 <!-- ============ METHOD DETAIL ========== -->

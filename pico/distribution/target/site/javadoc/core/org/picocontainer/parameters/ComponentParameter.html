@@ -225,7 +225,7 @@ A ComponentParameter should be used to pass in a particular component as argumen
  <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/reflect/Array.html?is-external=true" title="class or interface in java.lang.reflect"><CODE>Array</CODE></A>,<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util"><CODE>Collection</CODE></A>or <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util"><CODE>Map</CODE></A>.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/parameters/ComponentParameter.html#ComponentParameter(java.lang.Class, java.lang.Class, boolean)">ComponentParameter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentKeyType,
+<TD><CODE><B><A HREF="../../../org/picocontainer/parameters/ComponentParameter.html#ComponentParameter(java.lang.Class, java.lang.Class, boolean)">ComponentParameter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;keyType,
                                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentValueType,
                                      boolean&nbsp;emptyCollection)</CODE>
 
@@ -234,7 +234,7 @@ A ComponentParameter should be used to pass in a particular component as argumen
  <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/reflect/Array.html?is-external=true" title="class or interface in java.lang.reflect"><CODE>Array</CODE></A>,<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util"><CODE>Collection</CODE></A>or <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util"><CODE>Map</CODE></A>.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/parameters/ComponentParameter.html#ComponentParameter(java.lang.Object)">ComponentParameter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B><A HREF="../../../org/picocontainer/parameters/ComponentParameter.html#ComponentParameter(java.lang.Object)">ComponentParameter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expect a parameter matching a component of a specific key.</TD>
@@ -383,12 +383,12 @@ public static final <A HREF="../../../org/picocontainer/parameters/ComponentPara
 <A NAME="ComponentParameter(java.lang.Object)"><!-- --></A><H3>
 ComponentParameter</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParameter.html#line.63"><B>ComponentParameter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</PRE>
+public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParameter.html#line.63"><B>ComponentParameter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</PRE>
 <DL>
 <DD>Expect a parameter matching a component of a specific key.
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the key of the desired addComponent</DL>
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the key of the desired addComponent</DL>
 </DL>
 <HR>
 
@@ -433,7 +433,7 @@ public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParamete
 <A NAME="ComponentParameter(java.lang.Class, java.lang.Class, boolean)"><!-- --></A><H3>
 ComponentParameter</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParameter.html#line.106"><B>ComponentParameter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentKeyType,
+public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParameter.html#line.106"><B>ComponentParameter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;keyType,
                           <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentValueType,
                           boolean&nbsp;emptyCollection)</PRE>
 <DL>
@@ -443,7 +443,7 @@ public <A HREF="../../../src-html/org/picocontainer/parameters/ComponentParamete
  must have a particular type.
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKeyType</CODE> - the component adapter's key type<DD><CODE>componentValueType</CODE> - the component's type (ignored for an Array)<DD><CODE>emptyCollection</CODE> - <code>true</code> allows the collection to be empty</DL>
+<DT><B>Parameters:</B><DD><CODE>keyType</CODE> - the component adapter's key type<DD><CODE>componentValueType</CODE> - the component's type (ignored for an Array)<DD><CODE>emptyCollection</CODE> - <code>true</code> allows the collection to be empty</DL>
 </DL>
 
 <!-- ============ METHOD DETAIL ========== -->

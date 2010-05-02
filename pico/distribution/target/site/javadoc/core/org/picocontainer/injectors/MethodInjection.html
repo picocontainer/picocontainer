@@ -193,7 +193,7 @@ A <A HREF="../../../org/picocontainer/InjectionFactory.html" title="interface in
 <TD><CODE><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -271,7 +271,7 @@ createComponentAdapter</H3>
 public &lt;T&gt; <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../../src-html/org/picocontainer/injectors/MethodInjection.html#line.46"><B>createComponentAdapter</B></A>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                                       <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                                      <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                                       <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)
                                            throws <A HREF="../../../org/picocontainer/PicoCompositionException.html" title="class in org.picocontainer">PicoCompositionException</A></PRE>
@@ -280,7 +280,7 @@ public &lt;T&gt; <A HREF="../../../org/picocontainer/ComponentAdapter.html" titl
 <DD>Create a new component adapter based on the specified arguments.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentMonitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProperties</CODE> - the component properties<DD><CODE>componentKey</CODE> - the key to be associated with this adapter. This
+<DT><B>Parameters:</B><DD><CODE>componentMonitor</CODE> - the component monitor<DD><CODE>lifecycleStrategy</CODE> - te lifecycle strategy<DD><CODE>componentProperties</CODE> - the component properties<DD><CODE>key</CODE> - the key to be associated with this adapter. This
             value should be returned from a call to
             <A HREF="../../../org/picocontainer/ComponentAdapter.html#getComponentKey()"><CODE>ComponentAdapter.getComponentKey()</CODE></A> on the created
             adapter.<DD><CODE>componentImplementation</CODE> - the implementation class to be associated

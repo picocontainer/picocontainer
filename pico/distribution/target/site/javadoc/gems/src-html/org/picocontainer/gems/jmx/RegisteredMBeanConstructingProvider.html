@@ -76,24 +76,24 @@
 <FONT color="green">073</FONT>    <a name="line.73"></a>
 <FONT color="green">074</FONT>        /**<a name="line.74"></a>
 <FONT color="green">075</FONT>         * Register a specific Pico component by key with an MBeanInfo and an ObjectName.<a name="line.75"></a>
-<FONT color="green">076</FONT>         * @param componentKey The key of the Pico component.<a name="line.76"></a>
+<FONT color="green">076</FONT>         * @param key The key of the Pico component.<a name="line.76"></a>
 <FONT color="green">077</FONT>         * @param objectName The {@link ObjectName} of the MBean.<a name="line.77"></a>
 <FONT color="green">078</FONT>         * @param management The management interface.<a name="line.78"></a>
 <FONT color="green">079</FONT>         * @param mBeanInfo The {@link MBeanInfo} of the MBean.<a name="line.79"></a>
 <FONT color="green">080</FONT>         */<a name="line.80"></a>
 <FONT color="green">081</FONT>        public void register(<a name="line.81"></a>
-<FONT color="green">082</FONT>                final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {<a name="line.82"></a>
-<FONT color="green">083</FONT>            registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management));<a name="line.83"></a>
+<FONT color="green">082</FONT>                final Object key, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {<a name="line.82"></a>
+<FONT color="green">083</FONT>            registry.put(key, new MBeanInfoWrapper(mBeanInfo, objectName, management));<a name="line.83"></a>
 <FONT color="green">084</FONT>        }<a name="line.84"></a>
 <FONT color="green">085</FONT>    <a name="line.85"></a>
 <FONT color="green">086</FONT>        /**<a name="line.86"></a>
 <FONT color="green">087</FONT>         * Register a specific Pico component by key with an MBeanInfo and an ObjectName.<a name="line.87"></a>
-<FONT color="green">088</FONT>         * @param componentKey The key of the Pico component.<a name="line.88"></a>
+<FONT color="green">088</FONT>         * @param key The key of the Pico component.<a name="line.88"></a>
 <FONT color="green">089</FONT>         * @param objectName The {@link ObjectName} of the MBean.<a name="line.89"></a>
 <FONT color="green">090</FONT>         * @param mBeanInfo The {@link MBeanInfo} of the MBean.<a name="line.90"></a>
 <FONT color="green">091</FONT>         */<a name="line.91"></a>
-<FONT color="green">092</FONT>        public void register(final Object componentKey, final ObjectName objectName, final MBeanInfo mBeanInfo) {<a name="line.92"></a>
-<FONT color="green">093</FONT>            register(componentKey, objectName, null, mBeanInfo);<a name="line.93"></a>
+<FONT color="green">092</FONT>        public void register(final Object key, final ObjectName objectName, final MBeanInfo mBeanInfo) {<a name="line.92"></a>
+<FONT color="green">093</FONT>            register(key, objectName, null, mBeanInfo);<a name="line.93"></a>
 <FONT color="green">094</FONT>        }<a name="line.94"></a>
 <FONT color="green">095</FONT>    <a name="line.95"></a>
 <FONT color="green">096</FONT>        /**<a name="line.96"></a>
@@ -112,11 +112,11 @@
 <FONT color="green">109</FONT>    <a name="line.109"></a>
 <FONT color="green">110</FONT>        /**<a name="line.110"></a>
 <FONT color="green">111</FONT>         * Register a specific Pico component by key with an ObjectName.<a name="line.111"></a>
-<FONT color="green">112</FONT>         * @param componentKey The key of the Pico component.<a name="line.112"></a>
+<FONT color="green">112</FONT>         * @param key The key of the Pico component.<a name="line.112"></a>
 <FONT color="green">113</FONT>         * @param objectName The {@link ObjectName} of the MBean.<a name="line.113"></a>
 <FONT color="green">114</FONT>         */<a name="line.114"></a>
-<FONT color="green">115</FONT>        public void register(final Object componentKey, final ObjectName objectName) {<a name="line.115"></a>
-<FONT color="green">116</FONT>            registry.put(componentKey, new MBeanInfoWrapper(null, objectName, null));<a name="line.116"></a>
+<FONT color="green">115</FONT>        public void register(final Object key, final ObjectName objectName) {<a name="line.115"></a>
+<FONT color="green">116</FONT>            registry.put(key, new MBeanInfoWrapper(null, objectName, null));<a name="line.116"></a>
 <FONT color="green">117</FONT>        }<a name="line.117"></a>
 <FONT color="green">118</FONT>    <a name="line.118"></a>
 <FONT color="green">119</FONT>        /**<a name="line.119"></a>

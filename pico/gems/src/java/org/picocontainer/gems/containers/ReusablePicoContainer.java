@@ -117,26 +117,26 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	}
 
 	@Override
-	public MutablePicoContainer addComponent(final Object componentKey,
+	public MutablePicoContainer addComponent(final Object key,
 			final Object componentImplementationOrInstance,
 			final Parameter... parameters) throws PicoCompositionException {
 		
-		if (componentKey == null) {
-			throw new NullPointerException("componentKey");
+		if (key == null) {
+			throw new NullPointerException("key");
 		}
 		
 		if (componentImplementationOrInstance == null) {
 			throw new NullPointerException("componentImplementationOrInstance");			
 		}
 		
-		super.addComponent(componentKey, 
+		super.addComponent(key,
 				componentImplementationOrInstance, 
 				parameters);
 		
 		if (! (componentImplementationOrInstance instanceof Class)) {
-			instanceRegistrations.add(super.getComponentAdapter(componentKey));
+			instanceRegistrations.add(super.getComponentAdapter(key));
 		} else {
-			addStoredReference(componentKey);			
+			addStoredReference(key);
 		}
 		
 		return this;
@@ -236,13 +236,13 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	}
 
 	@Override
-    public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
+    public <T> ComponentAdapter<T> removeComponent(final Object key) {
 		ComponentAdapter< T > result= null;
         try {
-            result = super.removeComponent(componentKey);
+            result = super.removeComponent(key);
         } catch (PicoCompositionException e) {
             //Help with debugging any lifecycle errors.
-            throw new PicoCompositionException("There was an error removing component by key: '" + componentKey + "'",e);
+            throw new PicoCompositionException("There was an error removing component by key: '" + key + "'",e);
         }
 
         if (result != null) {

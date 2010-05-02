@@ -34,13 +34,13 @@
 <FONT color="green">031</FONT>         * Retrieve a component instance registered with a specific key or type. If a component cannot be found in this container,<a name="line.31"></a>
 <FONT color="green">032</FONT>         * the parent container (if one exists) will be searched.<a name="line.32"></a>
 <FONT color="green">033</FONT>         *<a name="line.33"></a>
-<FONT color="green">034</FONT>         * @param componentKeyOrType the key or Type that the component was registered with.<a name="line.34"></a>
+<FONT color="green">034</FONT>         * @param keyOrType the key or Type that the component was registered with.<a name="line.34"></a>
 <FONT color="green">035</FONT>         * @return an instantiated component, or &lt;code&gt;null&lt;/code&gt; if no component has been registered for the specified<a name="line.35"></a>
 <FONT color="green">036</FONT>         *         key.<a name="line.36"></a>
 <FONT color="green">037</FONT>         */<a name="line.37"></a>
-<FONT color="green">038</FONT>        Object getComponent(Object componentKeyOrType);<a name="line.38"></a>
+<FONT color="green">038</FONT>        Object getComponent(Object keyOrType);<a name="line.38"></a>
 <FONT color="green">039</FONT>    <a name="line.39"></a>
-<FONT color="green">040</FONT>        Object getComponent(Object componentKeyOrType, Type into);<a name="line.40"></a>
+<FONT color="green">040</FONT>        Object getComponent(Object keyOrType, Type into);<a name="line.40"></a>
 <FONT color="green">041</FONT>    <a name="line.41"></a>
 <FONT color="green">042</FONT>        /**<a name="line.42"></a>
 <FONT color="green">043</FONT>         * Retrieve a component keyed by the component type.<a name="line.43"></a>
@@ -77,11 +77,11 @@
 <FONT color="green">074</FONT>         * Find a component adapter associated with the specified key. If a component adapter cannot be found in this<a name="line.74"></a>
 <FONT color="green">075</FONT>         * container, the parent container (if one exists) will be searched.<a name="line.75"></a>
 <FONT color="green">076</FONT>         *<a name="line.76"></a>
-<FONT color="green">077</FONT>         * @param componentKey the key that the component was registered with.<a name="line.77"></a>
+<FONT color="green">077</FONT>         * @param key the key that the component was registered with.<a name="line.77"></a>
 <FONT color="green">078</FONT>         * @return the component adapter associated with this key, or &lt;code&gt;null&lt;/code&gt; if no component has been<a name="line.78"></a>
 <FONT color="green">079</FONT>         *         registered for the specified key.<a name="line.79"></a>
 <FONT color="green">080</FONT>         */<a name="line.80"></a>
-<FONT color="green">081</FONT>        ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey);<a name="line.81"></a>
+<FONT color="green">081</FONT>        ComponentAdapter&lt;?&gt; getComponentAdapter(Object key);<a name="line.81"></a>
 <FONT color="green">082</FONT>    <a name="line.82"></a>
 <FONT color="green">083</FONT>        /**<a name="line.83"></a>
 <FONT color="green">084</FONT>         * Find a component adapter associated with the specified type and binding name. If a component adapter cannot be found in this<a name="line.84"></a>

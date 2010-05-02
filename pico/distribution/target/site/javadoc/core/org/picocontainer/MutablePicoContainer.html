@@ -155,7 +155,7 @@ This is the core interface used for registration of components with a container.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/MutablePicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../org/picocontainer/MutablePicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
                          <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -214,7 +214,7 @@ This is the core interface used for registration of components with a container.
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/MutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B><A HREF="../../org/picocontainer/MutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unregister a component by key.</TD>
@@ -294,7 +294,7 @@ This is the core interface used for registration of components with a container.
 <A NAME="addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)"><!-- --></A><H3>
 addComponent</H3>
 <PRE>
-<A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/MutablePicoContainer.html#line.61"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/MutablePicoContainer.html#line.61"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                   <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
                                   <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</PRE>
 <DL>
@@ -318,7 +318,7 @@ addComponent</H3>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - a key that identifies the component. Must be unique within the container. The type
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - a key that identifies the component. Must be unique within the container. The type
                      of the key object has no semantic significance unless explicitly specified in the
                      documentation of the implementing container.<DD><CODE>componentImplementationOrInstance</CODE> - the component's implementation class. This must be a concrete class (ie, a
                      class that can be instantiated). Or an intance of the compoent.<DD><CODE>parameters</CODE> - the parameters that gives the container hints about what arguments to pass
@@ -398,7 +398,7 @@ addAdapter</H3>
 <A NAME="removeComponent(java.lang.Object)"><!-- --></A><H3>
 removeComponent</H3>
 <PRE>
-&lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/MutablePicoContainer.html#line.110"><B>removeComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</PRE>
+&lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/MutablePicoContainer.html#line.110"><B>removeComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</PRE>
 <DL>
 <DD>Unregister a component by key.
 <P>
@@ -406,7 +406,7 @@ removeComponent</H3>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - key of the component to unregister.
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - key of the component to unregister.
 <DT><B>Returns:</B><DD>the ComponentAdapter that was associated with this component.</DL>
 </DD>
 </DL>

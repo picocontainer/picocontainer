@@ -90,10 +90,10 @@
 <FONT color="green">087</FONT>    <a name="line.87"></a>
 <FONT color="green">088</FONT>    <a name="line.88"></a>
 <FONT color="green">089</FONT>        private Class[] getInterfaces() {<a name="line.89"></a>
-<FONT color="green">090</FONT>            final Object componentKey = getComponentKey();<a name="line.90"></a>
+<FONT color="green">090</FONT>            final Object key = getComponentKey();<a name="line.90"></a>
 <FONT color="green">091</FONT>            final Class[] interfaces;<a name="line.91"></a>
-<FONT color="green">092</FONT>            if (componentKey instanceof Class &amp;&amp; ((Class&lt;?&gt;)componentKey).isInterface()) {<a name="line.92"></a>
-<FONT color="green">093</FONT>                interfaces = new Class[]{(Class&lt;?&gt;)componentKey};<a name="line.93"></a>
+<FONT color="green">092</FONT>            if (key instanceof Class &amp;&amp; ((Class&lt;?&gt;)key).isInterface()) {<a name="line.92"></a>
+<FONT color="green">093</FONT>                interfaces = new Class[]{(Class&lt;?&gt;)key};<a name="line.93"></a>
 <FONT color="green">094</FONT>            } else {<a name="line.94"></a>
 <FONT color="green">095</FONT>                final Set allInterfaces = ReflectionUtils.getAllInterfaces(getComponentImplementation());<a name="line.95"></a>
 <FONT color="green">096</FONT>                interfaces = (Class[])allInterfaces.toArray(new Class[allInterfaces.size()]);<a name="line.96"></a>

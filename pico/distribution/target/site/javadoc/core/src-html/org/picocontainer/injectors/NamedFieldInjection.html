@@ -39,14 +39,14 @@
 <FONT color="green">036</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       LifecycleStrategy lifecycleStrategy,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                       Properties componentProperties,<a name="line.38"></a>
-<FONT color="green">039</FONT>                                                       Object componentKey,<a name="line.39"></a>
+<FONT color="green">039</FONT>                                                       Object key,<a name="line.39"></a>
 <FONT color="green">040</FONT>                                                       Class&lt;T&gt; componentImplementation,<a name="line.40"></a>
 <FONT color="green">041</FONT>                                                       Parameter... parameters) throws PicoCompositionException {<a name="line.41"></a>
 <FONT color="green">042</FONT>            String fieldNames = (String) componentProperties.remove(INJECTION_FIELD_NAMES);<a name="line.42"></a>
 <FONT color="green">043</FONT>            if (fieldNames == null) {<a name="line.43"></a>
 <FONT color="green">044</FONT>                fieldNames = "";<a name="line.44"></a>
 <FONT color="green">045</FONT>            }<a name="line.45"></a>
-<FONT color="green">046</FONT>            return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(componentKey, componentImplementation, parameters, monitor,<a name="line.46"></a>
+<FONT color="green">046</FONT>            return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, componentImplementation, parameters, monitor,<a name="line.46"></a>
 <FONT color="green">047</FONT>                    fieldNames)), lifecycleStrategy);<a name="line.47"></a>
 <FONT color="green">048</FONT>        }<a name="line.48"></a>
 <FONT color="green">049</FONT>    <a name="line.49"></a>

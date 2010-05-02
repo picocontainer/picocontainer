@@ -27,7 +27,7 @@ public class ThreadCaching extends AbstractBehavior {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
-                                                          Object componentKey,
+                                                          Object key,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters)
         throws PicoCompositionException {
@@ -35,7 +35,7 @@ public class ThreadCaching extends AbstractBehavior {
             return super.createComponentAdapter(componentMonitor,
                                                 lifecycleStrategy,
                                                 componentProperties,
-                                                componentKey,
+                                                key,
                                                 componentImplementation,
                                                 parameters);
         }
@@ -43,7 +43,7 @@ public class ThreadCaching extends AbstractBehavior {
         return componentMonitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(componentMonitor,
                                                                 lifecycleStrategy,
                                                                 componentProperties,
-                                                                componentKey,
+                                                                key,
                                                                 componentImplementation,
                                                                 parameters)));
 

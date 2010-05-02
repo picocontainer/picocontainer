@@ -37,7 +37,7 @@ public class CompositeInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
-                                                          Object componentKey,
+                                                          Object key,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
 
@@ -46,11 +46,11 @@ public class CompositeInjection extends AbstractInjectionType {
         for (int i = 0; i < injectionTypes.length; i++) {
             InjectionType injectionType = injectionTypes[i];
             injectors[i] = (Injector) injectionType.createComponentAdapter(monitor,
-                    lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
+                    lifecycleStrategy, componentProperties, key, componentImplementation, parameters);
         }
 
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters,
+        return wrapLifeCycle(monitor.newInjector(new CompositeInjector(key, componentImplementation, parameters,
                 monitor, useNames, injectors)), lifecycleStrategy);
     }
 }

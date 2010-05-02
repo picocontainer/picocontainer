@@ -30,12 +30,12 @@ import java.lang.reflect.Type;
 public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
     @SuppressWarnings("unused")
-    public Object getComponent(Object componentKeyOrType) {
+    public Object getComponent(Object keyOrType) {
         return null;
     }
 
     @SuppressWarnings("unused")
-    public Object getComponentInto(Object componentKeyOrType, Type into) {
+    public Object getComponentInto(Object keyOrType, Type into) {
         return null;
     }
 
@@ -67,7 +67,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused") 
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+    public ComponentAdapter<?> getComponentAdapter(Object key) {
         return null;
     }
 

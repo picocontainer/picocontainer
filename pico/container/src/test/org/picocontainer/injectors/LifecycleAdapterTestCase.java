@@ -23,7 +23,7 @@ public class LifecycleAdapterTestCase {
     private AbstractComponentAdapterTest.RecordingLifecycleStrategy strategy = new AbstractComponentAdapterTest.RecordingLifecycleStrategy(new StringBuffer());
 
     AbstractInjectionType ais = new AbstractInjectionType() {
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
             return wrapLifeCycle(INJECTOR, lifecycleStrategy);
         }
     };

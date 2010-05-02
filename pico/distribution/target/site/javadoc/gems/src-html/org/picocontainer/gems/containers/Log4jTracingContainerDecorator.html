@@ -108,12 +108,12 @@
 <FONT color="green">105</FONT>         * Standard message handling for cases when a null object is returned for a<a name="line.105"></a>
 <FONT color="green">106</FONT>         * given key.<a name="line.106"></a>
 <FONT color="green">107</FONT>         *<a name="line.107"></a>
-<FONT color="green">108</FONT>         * @param componentKeyOrType Component key that does not exist<a name="line.108"></a>
+<FONT color="green">108</FONT>         * @param keyOrType Component key that does not exist<a name="line.108"></a>
 <FONT color="green">109</FONT>         * @param target       Logger to log into<a name="line.109"></a>
 <FONT color="green">110</FONT>         */<a name="line.110"></a>
-<FONT color="green">111</FONT>        protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKeyOrType, final Logger target) {<a name="line.111"></a>
+<FONT color="green">111</FONT>        protected void onKeyOrTypeDoesNotExistInContainer(final Object keyOrType, final Logger target) {<a name="line.111"></a>
 <FONT color="green">112</FONT>            String s =<a name="line.112"></a>
-<FONT color="green">113</FONT>                componentKeyOrType instanceof Class ? ((Class)componentKeyOrType).getName() : (String)componentKeyOrType;<a name="line.113"></a>
+<FONT color="green">113</FONT>                keyOrType instanceof Class ? ((Class)keyOrType).getName() : (String)keyOrType;<a name="line.113"></a>
 <FONT color="green">114</FONT>            logger.info("Could not find component " + s<a name="line.114"></a>
 <FONT color="green">115</FONT>                        + " in container or parent container.");<a name="line.115"></a>
 <FONT color="green">116</FONT>        }<a name="line.116"></a>
@@ -163,20 +163,20 @@
 <FONT color="green">160</FONT>        /**<a name="line.160"></a>
 <FONT color="green">161</FONT>         * {@inheritDoc}<a name="line.161"></a>
 <FONT color="green">162</FONT>         *<a name="line.162"></a>
-<FONT color="green">163</FONT>         * @param componentKey<a name="line.163"></a>
+<FONT color="green">163</FONT>         * @param key<a name="line.163"></a>
 <FONT color="green">164</FONT>         *<a name="line.164"></a>
 <FONT color="green">165</FONT>         * @return<a name="line.165"></a>
 <FONT color="green">166</FONT>         *<a name="line.166"></a>
 <FONT color="green">167</FONT>         * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Object)<a name="line.167"></a>
 <FONT color="green">168</FONT>         */<a name="line.168"></a>
-<FONT color="green">169</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(final Object componentKey) {<a name="line.169"></a>
+<FONT color="green">169</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(final Object key) {<a name="line.169"></a>
 <FONT color="green">170</FONT>            if (logger.isDebugEnabled()) {<a name="line.170"></a>
-<FONT color="green">171</FONT>                logger.debug("Locating component adapter with key " + componentKey);<a name="line.171"></a>
+<FONT color="green">171</FONT>                logger.debug("Locating component adapter with key " + key);<a name="line.171"></a>
 <FONT color="green">172</FONT>            }<a name="line.172"></a>
 <FONT color="green">173</FONT>    <a name="line.173"></a>
-<FONT color="green">174</FONT>            ComponentAdapter adapter = delegate.getComponentAdapter(componentKey);<a name="line.174"></a>
+<FONT color="green">174</FONT>            ComponentAdapter adapter = delegate.getComponentAdapter(key);<a name="line.174"></a>
 <FONT color="green">175</FONT>            if (adapter == null) {<a name="line.175"></a>
-<FONT color="green">176</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKey, logger);<a name="line.176"></a>
+<FONT color="green">176</FONT>                onKeyOrTypeDoesNotExistInContainer(key, logger);<a name="line.176"></a>
 <FONT color="green">177</FONT>            }<a name="line.177"></a>
 <FONT color="green">178</FONT>            return adapter;<a name="line.178"></a>
 <FONT color="green">179</FONT>        }<a name="line.179"></a>
@@ -254,49 +254,49 @@
 <FONT color="green">251</FONT>        /**<a name="line.251"></a>
 <FONT color="green">252</FONT>         * {@inheritDoc}<a name="line.252"></a>
 <FONT color="green">253</FONT>         *<a name="line.253"></a>
-<FONT color="green">254</FONT>         * @param componentKeyOrType<a name="line.254"></a>
+<FONT color="green">254</FONT>         * @param keyOrType<a name="line.254"></a>
 <FONT color="green">255</FONT>         *<a name="line.255"></a>
 <FONT color="green">256</FONT>         * @return<a name="line.256"></a>
 <FONT color="green">257</FONT>         *<a name="line.257"></a>
 <FONT color="green">258</FONT>         * @see org.picocontainer.PicoContainer#getComponent(java.lang.Object)<a name="line.258"></a>
 <FONT color="green">259</FONT>         */<a name="line.259"></a>
-<FONT color="green">260</FONT>        public Object getComponent(final Object componentKeyOrType) {<a name="line.260"></a>
+<FONT color="green">260</FONT>        public Object getComponent(final Object keyOrType) {<a name="line.260"></a>
 <FONT color="green">261</FONT>    <a name="line.261"></a>
 <FONT color="green">262</FONT>            if (logger.isDebugEnabled()) {<a name="line.262"></a>
 <FONT color="green">263</FONT>                logger.debug("Attempting to load component instance with "<a name="line.263"></a>
-<FONT color="green">264</FONT>                             + (componentKeyOrType instanceof Class ? "type" : "key")<a name="line.264"></a>
+<FONT color="green">264</FONT>                             + (keyOrType instanceof Class ? "type" : "key")<a name="line.264"></a>
 <FONT color="green">265</FONT>                             + ": "<a name="line.265"></a>
-<FONT color="green">266</FONT>                             + (componentKeyOrType instanceof Class<a name="line.266"></a>
-<FONT color="green">267</FONT>                                ? ((Class)componentKeyOrType).getName()<a name="line.267"></a>
-<FONT color="green">268</FONT>                                : componentKeyOrType)<a name="line.268"></a>
+<FONT color="green">266</FONT>                             + (keyOrType instanceof Class<a name="line.266"></a>
+<FONT color="green">267</FONT>                                ? ((Class)keyOrType).getName()<a name="line.267"></a>
+<FONT color="green">268</FONT>                                : keyOrType)<a name="line.268"></a>
 <FONT color="green">269</FONT>                             + " for container "<a name="line.269"></a>
 <FONT color="green">270</FONT>                             + delegate);<a name="line.270"></a>
 <FONT color="green">271</FONT>    <a name="line.271"></a>
 <FONT color="green">272</FONT>            }<a name="line.272"></a>
 <FONT color="green">273</FONT>    <a name="line.273"></a>
-<FONT color="green">274</FONT>            Object result = delegate.getComponent(componentKeyOrType);<a name="line.274"></a>
+<FONT color="green">274</FONT>            Object result = delegate.getComponent(keyOrType);<a name="line.274"></a>
 <FONT color="green">275</FONT>            if (result == null) {<a name="line.275"></a>
-<FONT color="green">276</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, logger);<a name="line.276"></a>
+<FONT color="green">276</FONT>                onKeyOrTypeDoesNotExistInContainer(keyOrType, logger);<a name="line.276"></a>
 <FONT color="green">277</FONT>            }<a name="line.277"></a>
 <FONT color="green">278</FONT>    <a name="line.278"></a>
 <FONT color="green">279</FONT>            return result;<a name="line.279"></a>
 <FONT color="green">280</FONT>        }<a name="line.280"></a>
 <FONT color="green">281</FONT>    <a name="line.281"></a>
-<FONT color="green">282</FONT>        public Object getComponent(final Object componentKeyOrType, final Type into) {<a name="line.282"></a>
+<FONT color="green">282</FONT>        public Object getComponent(final Object keyOrType, final Type into) {<a name="line.282"></a>
 <FONT color="green">283</FONT>            if (logger.isDebugEnabled()) {<a name="line.283"></a>
 <FONT color="green">284</FONT>                logger.debug("Attempting to load component instance with "<a name="line.284"></a>
-<FONT color="green">285</FONT>                             + (componentKeyOrType instanceof Class ? "type" : "key")<a name="line.285"></a>
+<FONT color="green">285</FONT>                             + (keyOrType instanceof Class ? "type" : "key")<a name="line.285"></a>
 <FONT color="green">286</FONT>                             + ": "<a name="line.286"></a>
-<FONT color="green">287</FONT>                             + (componentKeyOrType instanceof Class<a name="line.287"></a>
-<FONT color="green">288</FONT>                                ? ((Class)componentKeyOrType).getName()<a name="line.288"></a>
-<FONT color="green">289</FONT>                                : componentKeyOrType)<a name="line.289"></a>
+<FONT color="green">287</FONT>                             + (keyOrType instanceof Class<a name="line.287"></a>
+<FONT color="green">288</FONT>                                ? ((Class)keyOrType).getName()<a name="line.288"></a>
+<FONT color="green">289</FONT>                                : keyOrType)<a name="line.289"></a>
 <FONT color="green">290</FONT>                             + " for container "<a name="line.290"></a>
 <FONT color="green">291</FONT>                             + delegate);<a name="line.291"></a>
 <FONT color="green">292</FONT>    <a name="line.292"></a>
 <FONT color="green">293</FONT>            }<a name="line.293"></a>
-<FONT color="green">294</FONT>            Object result = delegate.getComponent(componentKeyOrType, into);<a name="line.294"></a>
+<FONT color="green">294</FONT>            Object result = delegate.getComponent(keyOrType, into);<a name="line.294"></a>
 <FONT color="green">295</FONT>            if (result == null) {<a name="line.295"></a>
-<FONT color="green">296</FONT>                onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, logger);<a name="line.296"></a>
+<FONT color="green">296</FONT>                onKeyOrTypeDoesNotExistInContainer(keyOrType, logger);<a name="line.296"></a>
 <FONT color="green">297</FONT>            }<a name="line.297"></a>
 <FONT color="green">298</FONT>    <a name="line.298"></a>
 <FONT color="green">299</FONT>            return result;<a name="line.299"></a>
@@ -431,27 +431,27 @@
 <FONT color="green">428</FONT>        /**<a name="line.428"></a>
 <FONT color="green">429</FONT>         * {@inheritDoc}<a name="line.429"></a>
 <FONT color="green">430</FONT>         *<a name="line.430"></a>
-<FONT color="green">431</FONT>         * @param componentKey<a name="line.431"></a>
+<FONT color="green">431</FONT>         * @param key<a name="line.431"></a>
 <FONT color="green">432</FONT>         * @param componentImplementationOrInstance<a name="line.432"></a>
 <FONT color="green">433</FONT>         *<a name="line.433"></a>
 <FONT color="green">434</FONT>         * @param parameters<a name="line.434"></a>
 <FONT color="green">435</FONT>         *<a name="line.435"></a>
 <FONT color="green">436</FONT>         * @return<a name="line.436"></a>
 <FONT color="green">437</FONT>         */<a name="line.437"></a>
-<FONT color="green">438</FONT>        public MutablePicoContainer addComponent(final Object componentKey,<a name="line.438"></a>
+<FONT color="green">438</FONT>        public MutablePicoContainer addComponent(final Object key,<a name="line.438"></a>
 <FONT color="green">439</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.439"></a>
 <FONT color="green">440</FONT>                                                 final Parameter... parameters) {<a name="line.440"></a>
 <FONT color="green">441</FONT>    <a name="line.441"></a>
 <FONT color="green">442</FONT>            if (logger.isDebugEnabled()) {<a name="line.442"></a>
 <FONT color="green">443</FONT>                logger.debug("Registering component "<a name="line.443"></a>
 <FONT color="green">444</FONT>                             + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance")<a name="line.444"></a>
-<FONT color="green">445</FONT>                             + " with key " + componentKey + " and implementation "<a name="line.445"></a>
+<FONT color="green">445</FONT>                             + " with key " + key + " and implementation "<a name="line.445"></a>
 <FONT color="green">446</FONT>                             + (componentImplementationOrInstance instanceof Class<a name="line.446"></a>
 <FONT color="green">447</FONT>                                ? ((Class)componentImplementationOrInstance).getCanonicalName()<a name="line.447"></a>
-<FONT color="green">448</FONT>                                : componentKey.getClass()) + " using parameters " + parameters);<a name="line.448"></a>
+<FONT color="green">448</FONT>                                : key.getClass()) + " using parameters " + parameters);<a name="line.448"></a>
 <FONT color="green">449</FONT>            }<a name="line.449"></a>
 <FONT color="green">450</FONT>    <a name="line.450"></a>
-<FONT color="green">451</FONT>            return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);<a name="line.451"></a>
+<FONT color="green">451</FONT>            return delegate.addComponent(key, componentImplementationOrInstance, parameters);<a name="line.451"></a>
 <FONT color="green">452</FONT>        }<a name="line.452"></a>
 <FONT color="green">453</FONT>    <a name="line.453"></a>
 <FONT color="green">454</FONT>        /**<a name="line.454"></a>
@@ -525,18 +525,18 @@
 <FONT color="green">522</FONT>        /**<a name="line.522"></a>
 <FONT color="green">523</FONT>         * {@inheritDoc}<a name="line.523"></a>
 <FONT color="green">524</FONT>         *<a name="line.524"></a>
-<FONT color="green">525</FONT>         * @param componentKey<a name="line.525"></a>
+<FONT color="green">525</FONT>         * @param key<a name="line.525"></a>
 <FONT color="green">526</FONT>         *<a name="line.526"></a>
 <FONT color="green">527</FONT>         * @return<a name="line.527"></a>
 <FONT color="green">528</FONT>         *<a name="line.528"></a>
 <FONT color="green">529</FONT>         * @see org.picocontainer.MutablePicoContainer#removeComponent(java.lang.Object)<a name="line.529"></a>
 <FONT color="green">530</FONT>         */<a name="line.530"></a>
-<FONT color="green">531</FONT>        public ComponentAdapter removeComponent(final Object componentKey) {<a name="line.531"></a>
+<FONT color="green">531</FONT>        public ComponentAdapter removeComponent(final Object key) {<a name="line.531"></a>
 <FONT color="green">532</FONT>            if (logger.isDebugEnabled()) {<a name="line.532"></a>
-<FONT color="green">533</FONT>                logger.debug("Unregistering component " + componentKey + " from container " + delegate);<a name="line.533"></a>
+<FONT color="green">533</FONT>                logger.debug("Unregistering component " + key + " from container " + delegate);<a name="line.533"></a>
 <FONT color="green">534</FONT>            }<a name="line.534"></a>
 <FONT color="green">535</FONT>    <a name="line.535"></a>
-<FONT color="green">536</FONT>            return delegate.removeComponent(componentKey);<a name="line.536"></a>
+<FONT color="green">536</FONT>            return delegate.removeComponent(key);<a name="line.536"></a>
 <FONT color="green">537</FONT>        }<a name="line.537"></a>
 <FONT color="green">538</FONT>    <a name="line.538"></a>
 <FONT color="green">539</FONT>        /**<a name="line.539"></a>

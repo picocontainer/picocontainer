@@ -35,7 +35,7 @@ public class Locking extends AbstractBehavior {
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
-                                                   Object componentKey,
+                                                   Object key,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) {
     	
@@ -44,7 +44,7 @@ public class Locking extends AbstractBehavior {
      	            componentMonitor,
      	            lifecycleStrategy,
      	            componentProperties,
-     	            componentKey,
+     	            key,
      	            componentImplementation,
      	            parameters);
         }
@@ -54,7 +54,7 @@ public class Locking extends AbstractBehavior {
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
-            componentKey,
+            key,
             componentImplementation,
             parameters)));
     }

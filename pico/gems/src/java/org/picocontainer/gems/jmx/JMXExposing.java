@@ -93,11 +93,11 @@ public class JMXExposing extends AbstractBehavior {
      */
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(
-            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class<T> componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
-                componentProperties, componentKey, componentImplementation, parameters);
+                componentProperties, key, componentImplementation, parameters);
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
             return delegateAdapter;            
         } else {        	

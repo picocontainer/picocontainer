@@ -43,15 +43,15 @@
 <FONT color="green">040</FONT>        /** &lt;code&gt;BASIC_DEFAULT&lt;/code&gt; is an instance of BasicComponentParameter using the default constructor. */<a name="line.40"></a>
 <FONT color="green">041</FONT>        public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();<a name="line.41"></a>
 <FONT color="green">042</FONT>    <a name="line.42"></a>
-<FONT color="green">043</FONT>        private Object componentKey;<a name="line.43"></a>
+<FONT color="green">043</FONT>        private Object key;<a name="line.43"></a>
 <FONT color="green">044</FONT>    <a name="line.44"></a>
 <FONT color="green">045</FONT>        /**<a name="line.45"></a>
 <FONT color="green">046</FONT>         * Expect a parameter matching a component of a specific key.<a name="line.46"></a>
 <FONT color="green">047</FONT>         *<a name="line.47"></a>
-<FONT color="green">048</FONT>         * @param componentKey the key of the desired addComponent<a name="line.48"></a>
+<FONT color="green">048</FONT>         * @param key the key of the desired addComponent<a name="line.48"></a>
 <FONT color="green">049</FONT>         */<a name="line.49"></a>
-<FONT color="green">050</FONT>        public BasicComponentParameter(Object componentKey) {<a name="line.50"></a>
-<FONT color="green">051</FONT>            this.componentKey = componentKey;<a name="line.51"></a>
+<FONT color="green">050</FONT>        public BasicComponentParameter(Object key) {<a name="line.50"></a>
+<FONT color="green">051</FONT>            this.key = key;<a name="line.51"></a>
 <FONT color="green">052</FONT>        }<a name="line.52"></a>
 <FONT color="green">053</FONT>    <a name="line.53"></a>
 <FONT color="green">054</FONT>        /** Expect any parameter of the appropriate type. */<a name="line.54"></a>
@@ -180,9 +180,9 @@
 <FONT color="green">177</FONT>            }<a name="line.177"></a>
 <FONT color="green">178</FONT>    <a name="line.178"></a>
 <FONT color="green">179</FONT>            ComponentAdapter&lt;T&gt; result = null;<a name="line.179"></a>
-<FONT color="green">180</FONT>            if (componentKey != null) {<a name="line.180"></a>
+<FONT color="green">180</FONT>            if (key != null) {<a name="line.180"></a>
 <FONT color="green">181</FONT>                // key tells us where to look so we follow<a name="line.181"></a>
-<FONT color="green">182</FONT>                result = typeComponentAdapter(container.getComponentAdapter(componentKey));<a name="line.182"></a>
+<FONT color="green">182</FONT>                result = typeComponentAdapter(container.getComponentAdapter(key));<a name="line.182"></a>
 <FONT color="green">183</FONT>            } else if (adapter == null) {<a name="line.183"></a>
 <FONT color="green">184</FONT>                result = container.getComponentAdapter(type, (NameBinding) null);<a name="line.184"></a>
 <FONT color="green">185</FONT>            } else {<a name="line.185"></a>

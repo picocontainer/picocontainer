@@ -97,29 +97,29 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 	private final Object key;
 
 	/**
-	 * @param componentKey
+	 * @param key
 	 * @param Component
 	 *            Implementation will be the expected return type of the factory
 	 *            method.
 	 */
-	public DelegateMethodAdapter(final Object componentKey,
+	public DelegateMethodAdapter(final Object key,
 			final Object targetInstance, final DelegateMethod factoryMethod) {
 		this.factoryMethod = factoryMethod;
 		this.targetInstance = targetInstance;
-		this.key = componentKey;
+		this.key = key;
 	}
 
 	/**
-	 * @param componentKey
+	 * @param key
 	 * @param componentImplementation
 	 * @param monitor
 	 */
-	public DelegateMethodAdapter(final Object componentKey,
+	public DelegateMethodAdapter(final Object key,
 			final ComponentMonitor monitor, final Object targetInstance,
 			final DelegateMethod factoryMethod) {
 		this.factoryMethod = factoryMethod;
 		this.targetInstance = targetInstance;
-		this.key = componentKey;
+		this.key = key;
 	}
 
 	/**

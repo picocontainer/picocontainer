@@ -36,20 +36,20 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class OptInCaching extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, 
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,
     			Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
             return componentMonitor.newBehavior(new Caching.Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
-                                                                                        componentKey,
+                                                                                        key,
                                                                                         componentImplementation,
                                                                                         parameters)));
         }
         AbstractBehavior.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                            componentProperties, componentKey, componentImplementation, parameters);
+                                            componentProperties, key, componentImplementation, parameters);
     }
 
 

@@ -32,15 +32,15 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 
 	JNDIObjectReference<T> jndiReference;
 	
-	 Object componentKey;
+	 Object key;
 	
 	/**
 	 * create adapter with specified key and reference
-	 * @param componentKey component key
+	 * @param key component key
 	 * @param reference JNDI reference storing component
 	 */
-	public JNDIProvided(final Object componentKey,final JNDIObjectReference<T> reference) {
-		this.componentKey = componentKey;
+	public JNDIProvided(final Object key,final JNDIObjectReference<T> reference) {
+		this.key = key;
 		this.jndiReference = reference;
 	}
 	
@@ -66,7 +66,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	}
 	
 	public Object getComponentKey() {	
-		return componentKey;
+		return key;
 	}
 
 	@SuppressWarnings("unchecked")

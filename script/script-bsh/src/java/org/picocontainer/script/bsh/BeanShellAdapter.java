@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
  * <ul>
  * <li>addAdapter - the adapter calling the script</li>
  * <li>picoContainer - the MutablePicoContainer calling the addAdapter</li>
- * <li>componentKey - the component key</li>
+ * <li>key - the component key</li>
  * <li>componentImplementation - the component implementation</li>
  * <li>parameters - the ComponentParameters (as a List)</li>
  * </ul>
@@ -58,14 +58,14 @@ public class BeanShellAdapter extends AbstractAdapter {
      */
     private final ClassLoader classLoader;
 
-    public BeanShellAdapter(final Object componentKey, final Class<?> componentImplementation, final Parameter[] parameters, final ClassLoader classLoader) {
-        super(componentKey, componentImplementation);
+    public BeanShellAdapter(final Object key, final Class<?> componentImplementation, final Parameter[] parameters, final ClassLoader classLoader) {
+        super(key, componentImplementation);
         this.parameters = parameters;
         this.classLoader = classLoader;
     }
 
-    public BeanShellAdapter(final Object componentKey, final Class<?> componentImplementation, final Parameter... parameters) {
-        this(componentKey, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
+    public BeanShellAdapter(final Object key, final Class<?> componentImplementation, final Parameter... parameters) {
+        this(key, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
     }
 
     public Object getComponentInstance(PicoContainer pico, Type into)
@@ -78,7 +78,7 @@ public class BeanShellAdapter extends AbstractAdapter {
                 i.setClassLoader(classLoader);
                 i.set("addAdapter", this);
                 i.set("picoContainer", pico);
-                i.set("componentKey", getComponentKey());
+                i.set("key", getComponentKey());
                 i.set("componentImplementation", getComponentImplementation());
                 i.set("parameters", parameters != null ? Arrays.asList(parameters) : Collections.EMPTY_LIST);
                 i.eval("import " + getComponentImplementation().getName() + ";");

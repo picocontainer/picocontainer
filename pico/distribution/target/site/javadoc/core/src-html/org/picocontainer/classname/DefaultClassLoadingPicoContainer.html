@@ -168,21 +168,21 @@
 <FONT color="green">165</FONT>            throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");<a name="line.165"></a>
 <FONT color="green">166</FONT>        }<a name="line.166"></a>
 <FONT color="green">167</FONT>    <a name="line.167"></a>
-<FONT color="green">168</FONT>        public final Object getComponent(Object componentKeyOrType) throws PicoException {<a name="line.168"></a>
+<FONT color="green">168</FONT>        public final Object getComponent(Object keyOrType) throws PicoException {<a name="line.168"></a>
 <FONT color="green">169</FONT>    <a name="line.169"></a>
-<FONT color="green">170</FONT>            if (componentKeyOrType instanceof ClassName) {<a name="line.170"></a>
-<FONT color="green">171</FONT>                componentKeyOrType = loadClass(componentKeyOrType.toString());<a name="line.171"></a>
+<FONT color="green">170</FONT>            if (keyOrType instanceof ClassName) {<a name="line.170"></a>
+<FONT color="green">171</FONT>                keyOrType = loadClass(keyOrType.toString());<a name="line.171"></a>
 <FONT color="green">172</FONT>            }<a name="line.172"></a>
 <FONT color="green">173</FONT>    <a name="line.173"></a>
-<FONT color="green">174</FONT>            Object instance = getDelegate().getComponent(componentKeyOrType);<a name="line.174"></a>
+<FONT color="green">174</FONT>            Object instance = getDelegate().getComponent(keyOrType);<a name="line.174"></a>
 <FONT color="green">175</FONT>    <a name="line.175"></a>
 <FONT color="green">176</FONT>            if (instance != null) {<a name="line.176"></a>
 <FONT color="green">177</FONT>                return instance;<a name="line.177"></a>
 <FONT color="green">178</FONT>            }<a name="line.178"></a>
 <FONT color="green">179</FONT>    <a name="line.179"></a>
 <FONT color="green">180</FONT>            ComponentAdapter&lt;?&gt; componentAdapter = null;<a name="line.180"></a>
-<FONT color="green">181</FONT>            if (componentKeyOrType.toString().startsWith("*")) {<a name="line.181"></a>
-<FONT color="green">182</FONT>                String candidateClassName = componentKeyOrType.toString().substring(1);<a name="line.182"></a>
+<FONT color="green">181</FONT>            if (keyOrType.toString().startsWith("*")) {<a name="line.181"></a>
+<FONT color="green">182</FONT>                String candidateClassName = keyOrType.toString().substring(1);<a name="line.182"></a>
 <FONT color="green">183</FONT>                Collection&lt;ComponentAdapter&lt;?&gt;&gt; cas = getComponentAdapters();<a name="line.183"></a>
 <FONT color="green">184</FONT>                for (ComponentAdapter&lt;?&gt; ca : cas) {<a name="line.184"></a>
 <FONT color="green">185</FONT>                    Object key = ca.getComponentKey();<a name="line.185"></a>
@@ -195,16 +195,16 @@
 <FONT color="green">192</FONT>            if (componentAdapter != null) {<a name="line.192"></a>
 <FONT color="green">193</FONT>                return componentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);<a name="line.193"></a>
 <FONT color="green">194</FONT>            } else {<a name="line.194"></a>
-<FONT color="green">195</FONT>                return getComponentInstanceFromChildren(componentKeyOrType);<a name="line.195"></a>
+<FONT color="green">195</FONT>                return getComponentInstanceFromChildren(keyOrType);<a name="line.195"></a>
 <FONT color="green">196</FONT>            }<a name="line.196"></a>
 <FONT color="green">197</FONT>        }<a name="line.197"></a>
 <FONT color="green">198</FONT>    <a name="line.198"></a>
-<FONT color="green">199</FONT>        private Object getComponentInstanceFromChildren(Object componentKey) {<a name="line.199"></a>
-<FONT color="green">200</FONT>            String componentKeyPath = componentKey.toString();<a name="line.200"></a>
-<FONT color="green">201</FONT>            int ix = componentKeyPath.indexOf('/');<a name="line.201"></a>
+<FONT color="green">199</FONT>        private Object getComponentInstanceFromChildren(Object key) {<a name="line.199"></a>
+<FONT color="green">200</FONT>            String keyPath = key.toString();<a name="line.200"></a>
+<FONT color="green">201</FONT>            int ix = keyPath.indexOf('/');<a name="line.201"></a>
 <FONT color="green">202</FONT>            if (ix != -1) {<a name="line.202"></a>
-<FONT color="green">203</FONT>                String firstElement = componentKeyPath.substring(0, ix);<a name="line.203"></a>
-<FONT color="green">204</FONT>                String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());<a name="line.204"></a>
+<FONT color="green">203</FONT>                String firstElement = keyPath.substring(0, ix);<a name="line.203"></a>
+<FONT color="green">204</FONT>                String remainder = keyPath.substring(ix + 1, keyPath.length());<a name="line.204"></a>
 <FONT color="green">205</FONT>                Object o = getNamedContainers().get(firstElement);<a name="line.205"></a>
 <FONT color="green">206</FONT>                if (o != null) {<a name="line.206"></a>
 <FONT color="green">207</FONT>                    MutablePicoContainer child = (MutablePicoContainer) o;<a name="line.207"></a>
@@ -350,12 +350,12 @@
 <FONT color="green">347</FONT>            return fromMap != null ? fromMap : primitiveOrClass;<a name="line.347"></a>
 <FONT color="green">348</FONT>        }<a name="line.348"></a>
 <FONT color="green">349</FONT>    <a name="line.349"></a>
-<FONT color="green">350</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey) {<a name="line.350"></a>
-<FONT color="green">351</FONT>            Object componentKey2 = componentKey;<a name="line.351"></a>
-<FONT color="green">352</FONT>            if (componentKey instanceof ClassName) {<a name="line.352"></a>
-<FONT color="green">353</FONT>                componentKey2 = loadClass(componentKey.toString());<a name="line.353"></a>
+<FONT color="green">350</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(Object key) {<a name="line.350"></a>
+<FONT color="green">351</FONT>            Object key2 = key;<a name="line.351"></a>
+<FONT color="green">352</FONT>            if (key instanceof ClassName) {<a name="line.352"></a>
+<FONT color="green">353</FONT>                key2 = loadClass(key.toString());<a name="line.353"></a>
 <FONT color="green">354</FONT>            }<a name="line.354"></a>
-<FONT color="green">355</FONT>            return super.getComponentAdapter(componentKey2);<a name="line.355"></a>
+<FONT color="green">355</FONT>            return super.getComponentAdapter(key2);<a name="line.355"></a>
 <FONT color="green">356</FONT>        }<a name="line.356"></a>
 <FONT color="green">357</FONT>    <a name="line.357"></a>
 <FONT color="green">358</FONT>        public MutablePicoContainer change(Properties... properties) {<a name="line.358"></a>
@@ -390,9 +390,9 @@
 <FONT color="green">387</FONT>                return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);<a name="line.387"></a>
 <FONT color="green">388</FONT>            }<a name="line.388"></a>
 <FONT color="green">389</FONT>    <a name="line.389"></a>
-<FONT color="green">390</FONT>            public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance,<a name="line.390"></a>
+<FONT color="green">390</FONT>            public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,<a name="line.390"></a>
 <FONT color="green">391</FONT>                    Parameter... parameters) {<a name="line.391"></a>
-<FONT color="green">392</FONT>                delegate.addComponent(classNameToClassIfApplicable(componentKey),<a name="line.392"></a>
+<FONT color="green">392</FONT>                delegate.addComponent(classNameToClassIfApplicable(key),<a name="line.392"></a>
 <FONT color="green">393</FONT>                        classNameToClassIfApplicable(componentImplementationOrInstance), parameters);<a name="line.393"></a>
 <FONT color="green">394</FONT>                return DefaultClassLoadingPicoContainer.this;<a name="line.394"></a>
 <FONT color="green">395</FONT>            }<a name="line.395"></a>
@@ -412,8 +412,8 @@
 <FONT color="green">409</FONT>                return DefaultClassLoadingPicoContainer.this;<a name="line.409"></a>
 <FONT color="green">410</FONT>            }<a name="line.410"></a>
 <FONT color="green">411</FONT>    <a name="line.411"></a>
-<FONT color="green">412</FONT>            public ComponentAdapter removeComponent(Object componentKey) {<a name="line.412"></a>
-<FONT color="green">413</FONT>                return delegate.removeComponent(componentKey);<a name="line.413"></a>
+<FONT color="green">412</FONT>            public ComponentAdapter removeComponent(Object key) {<a name="line.412"></a>
+<FONT color="green">413</FONT>                return delegate.removeComponent(key);<a name="line.413"></a>
 <FONT color="green">414</FONT>            }<a name="line.414"></a>
 <FONT color="green">415</FONT>    <a name="line.415"></a>
 <FONT color="green">416</FONT>            public ComponentAdapter removeComponentByInstance(Object componentInstance) {<a name="line.416"></a>
@@ -440,12 +440,12 @@
 <FONT color="green">437</FONT>                return new AsPropertiesPicoContainer(properties);<a name="line.437"></a>
 <FONT color="green">438</FONT>            }<a name="line.438"></a>
 <FONT color="green">439</FONT>    <a name="line.439"></a>
-<FONT color="green">440</FONT>            public Object getComponent(Object componentKeyOrType) {<a name="line.440"></a>
-<FONT color="green">441</FONT>                return DefaultClassLoadingPicoContainer.this.getComponent(componentKeyOrType);<a name="line.441"></a>
+<FONT color="green">440</FONT>            public Object getComponent(Object keyOrType) {<a name="line.440"></a>
+<FONT color="green">441</FONT>                return DefaultClassLoadingPicoContainer.this.getComponent(keyOrType);<a name="line.441"></a>
 <FONT color="green">442</FONT>            }<a name="line.442"></a>
 <FONT color="green">443</FONT>    <a name="line.443"></a>
-<FONT color="green">444</FONT>            public Object getComponent(Object componentKeyOrType, Type into) {<a name="line.444"></a>
-<FONT color="green">445</FONT>                return DefaultClassLoadingPicoContainer.this.getComponent(componentKeyOrType, into);<a name="line.445"></a>
+<FONT color="green">444</FONT>            public Object getComponent(Object keyOrType, Type into) {<a name="line.444"></a>
+<FONT color="green">445</FONT>                return DefaultClassLoadingPicoContainer.this.getComponent(keyOrType, into);<a name="line.445"></a>
 <FONT color="green">446</FONT>            }<a name="line.446"></a>
 <FONT color="green">447</FONT>    <a name="line.447"></a>
 <FONT color="green">448</FONT>            public &lt;T&gt; T getComponent(Class&lt;T&gt; componentType) {<a name="line.448"></a>
@@ -464,8 +464,8 @@
 <FONT color="green">461</FONT>                return DefaultClassLoadingPicoContainer.this.getParent();<a name="line.461"></a>
 <FONT color="green">462</FONT>            }<a name="line.462"></a>
 <FONT color="green">463</FONT>    <a name="line.463"></a>
-<FONT color="green">464</FONT>            public ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey) {<a name="line.464"></a>
-<FONT color="green">465</FONT>                return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentKey);<a name="line.465"></a>
+<FONT color="green">464</FONT>            public ComponentAdapter&lt;?&gt; getComponentAdapter(Object key) {<a name="line.464"></a>
+<FONT color="green">465</FONT>                return DefaultClassLoadingPicoContainer.this.getComponentAdapter(key);<a name="line.465"></a>
 <FONT color="green">466</FONT>            }<a name="line.466"></a>
 <FONT color="green">467</FONT>    <a name="line.467"></a>
 <FONT color="green">468</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(Class&lt;T&gt; componentType, NameBinding componentNameBinding) {<a name="line.468"></a>

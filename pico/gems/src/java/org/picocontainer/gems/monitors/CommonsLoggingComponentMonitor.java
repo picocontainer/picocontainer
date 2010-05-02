@@ -216,12 +216,12 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public Object noComponentFound(final MutablePicoContainer container, final Object componentKey) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, key));
         }
-        return delegate.noComponentFound(container, componentKey);
+        return delegate.noComponentFound(container, key);
     }
 
     /** {@inheritDoc} **/

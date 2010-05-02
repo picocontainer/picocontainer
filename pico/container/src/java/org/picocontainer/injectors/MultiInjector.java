@@ -16,15 +16,15 @@ import org.picocontainer.annotations.Inject;
 @SuppressWarnings("serial")
 public class MultiInjector extends CompositeInjector {
 
-    public MultiInjector(Object componentKey,
+    public MultiInjector(Object key,
                          Class componentImplementation,
                          Parameter[] parameters,
                          ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
-        super(componentKey, componentImplementation, parameters, componentMonitor, useNames,
-                componentMonitor.newInjector(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames)),
-                componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, setterPrefix, useNames)),
-                componentMonitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames, Inject.class)),
-                componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames, Inject.class)));
+        super(key, componentImplementation, parameters, componentMonitor, useNames,
+                componentMonitor.newInjector(new ConstructorInjector(key, componentImplementation, parameters, componentMonitor, useNames)),
+                componentMonitor.newInjector(new SetterInjector(key, componentImplementation, parameters, componentMonitor, setterPrefix, useNames)),
+                componentMonitor.newInjector(new AnnotatedMethodInjector(key, componentImplementation, parameters, componentMonitor, useNames, Inject.class)),
+                componentMonitor.newInjector(new AnnotatedFieldInjector(key, componentImplementation, parameters, componentMonitor, useNames, Inject.class)));
 
     }
 

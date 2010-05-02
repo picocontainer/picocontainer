@@ -27,10 +27,10 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		super(delegate);
 	}
 
-	public MutablePicoContainer addComponent(Object componentKey,
+	public MutablePicoContainer addComponent(Object key,
                                              Object componentImplementationOrInstance,
                                              Parameter... parameters) throws PicoCompositionException {
-        return getDelegate().addComponent(componentKey, componentImplementationOrInstance, parameters);
+        return getDelegate().addComponent(key, componentImplementationOrInstance, parameters);
     }
 
     public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {
@@ -45,8 +45,8 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         return getDelegate().addAdapter(componentAdapter);
     }
 
-    public <T> ComponentAdapter<T> removeComponent(Object componentKey) {
-        return getDelegate().removeComponent(componentKey);
+    public <T> ComponentAdapter<T> removeComponent(Object key) {
+        return getDelegate().removeComponent(key);
     }
 
     public <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance) {

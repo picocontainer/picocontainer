@@ -248,14 +248,14 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/** {@inheritDoc} * */
 	public Object noComponentFound(final MutablePicoContainer container,
-			final Object componentKey) {
+			final Object key) {
 		Logger logger = this.logger != null ? this.logger : LoggerFactory
 				.getLogger(ComponentMonitor.class);
 		if (logger.isWarnEnabled()) {
 			logger.warn(format(ComponentMonitorHelper.NO_COMPONENT,
-					componentKey));
+					key));
 		}
-		return delegate.noComponentFound(container, componentKey);
+		return delegate.noComponentFound(container, key);
 
 	}
 

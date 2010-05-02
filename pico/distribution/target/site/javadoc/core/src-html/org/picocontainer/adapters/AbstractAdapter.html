@@ -37,27 +37,27 @@
 <FONT color="green">034</FONT>     * @author Jon Tirs&amp;eacute;n<a name="line.34"></a>
 <FONT color="green">035</FONT>     */<a name="line.35"></a>
 <FONT color="green">036</FONT>    public abstract class AbstractAdapter&lt;T&gt; implements ComponentAdapter&lt;T&gt;, ComponentMonitorStrategy, Serializable {<a name="line.36"></a>
-<FONT color="green">037</FONT>        private Object componentKey;<a name="line.37"></a>
+<FONT color="green">037</FONT>        private Object key;<a name="line.37"></a>
 <FONT color="green">038</FONT>        private Class&lt;T&gt; componentImplementation;<a name="line.38"></a>
 <FONT color="green">039</FONT>        private ComponentMonitor componentMonitor;<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        /**<a name="line.41"></a>
 <FONT color="green">042</FONT>         * Constructs a new ComponentAdapter for the given key and implementation.<a name="line.42"></a>
-<FONT color="green">043</FONT>         * @param componentKey the search key for this implementation<a name="line.43"></a>
+<FONT color="green">043</FONT>         * @param key the search key for this implementation<a name="line.43"></a>
 <FONT color="green">044</FONT>         * @param componentImplementation the concrete implementation<a name="line.44"></a>
 <FONT color="green">045</FONT>         */<a name="line.45"></a>
-<FONT color="green">046</FONT>        public AbstractAdapter(Object componentKey, Class componentImplementation) {<a name="line.46"></a>
-<FONT color="green">047</FONT>            this(componentKey, componentImplementation, new AbstractComponentMonitor());<a name="line.47"></a>
+<FONT color="green">046</FONT>        public AbstractAdapter(Object key, Class componentImplementation) {<a name="line.46"></a>
+<FONT color="green">047</FONT>            this(key, componentImplementation, new AbstractComponentMonitor());<a name="line.47"></a>
 <FONT color="green">048</FONT>            this.componentMonitor = new NullComponentMonitor();<a name="line.48"></a>
 <FONT color="green">049</FONT>        }<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>
 <FONT color="green">051</FONT>        /**<a name="line.51"></a>
 <FONT color="green">052</FONT>         * Constructs a new ComponentAdapter for the given key and implementation.<a name="line.52"></a>
-<FONT color="green">053</FONT>         * @param componentKey the search key for this implementation<a name="line.53"></a>
+<FONT color="green">053</FONT>         * @param key the search key for this implementation<a name="line.53"></a>
 <FONT color="green">054</FONT>         * @param componentImplementation the concrete implementation<a name="line.54"></a>
 <FONT color="green">055</FONT>         * @param monitor the component monitor used by this ComponentAdapter<a name="line.55"></a>
 <FONT color="green">056</FONT>         */<a name="line.56"></a>
-<FONT color="green">057</FONT>        public AbstractAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {<a name="line.57"></a>
+<FONT color="green">057</FONT>        public AbstractAdapter(Object key, Class componentImplementation, ComponentMonitor monitor) {<a name="line.57"></a>
 <FONT color="green">058</FONT>            if (monitor == null) {<a name="line.58"></a>
 <FONT color="green">059</FONT>                throw new NullPointerException("ComponentMonitor==null");<a name="line.59"></a>
 <FONT color="green">060</FONT>            }<a name="line.60"></a>
@@ -65,7 +65,7 @@
 <FONT color="green">062</FONT>            if (componentImplementation == null) {<a name="line.62"></a>
 <FONT color="green">063</FONT>                throw new NullPointerException("componentImplementation");<a name="line.63"></a>
 <FONT color="green">064</FONT>            }<a name="line.64"></a>
-<FONT color="green">065</FONT>            this.componentKey = componentKey;<a name="line.65"></a>
+<FONT color="green">065</FONT>            this.key = key;<a name="line.65"></a>
 <FONT color="green">066</FONT>            this.componentImplementation = componentImplementation;<a name="line.66"></a>
 <FONT color="green">067</FONT>            checkTypeCompatibility();<a name="line.67"></a>
 <FONT color="green">068</FONT>        }<a name="line.68"></a>
@@ -75,10 +75,10 @@
 <FONT color="green">072</FONT>         * @see org.picocontainer.ComponentAdapter#getComponentKey()<a name="line.72"></a>
 <FONT color="green">073</FONT>         */<a name="line.73"></a>
 <FONT color="green">074</FONT>        public Object getComponentKey() {<a name="line.74"></a>
-<FONT color="green">075</FONT>            if (componentKey == null) {<a name="line.75"></a>
-<FONT color="green">076</FONT>                throw new NullPointerException("componentKey");<a name="line.76"></a>
+<FONT color="green">075</FONT>            if (key == null) {<a name="line.75"></a>
+<FONT color="green">076</FONT>                throw new NullPointerException("key");<a name="line.76"></a>
 <FONT color="green">077</FONT>            }<a name="line.77"></a>
-<FONT color="green">078</FONT>            return componentKey;<a name="line.78"></a>
+<FONT color="green">078</FONT>            return key;<a name="line.78"></a>
 <FONT color="green">079</FONT>        }<a name="line.79"></a>
 <FONT color="green">080</FONT>    <a name="line.80"></a>
 <FONT color="green">081</FONT>        /**<a name="line.81"></a>
@@ -90,8 +90,8 @@
 <FONT color="green">087</FONT>        }<a name="line.87"></a>
 <FONT color="green">088</FONT>    <a name="line.88"></a>
 <FONT color="green">089</FONT>        protected void checkTypeCompatibility() {<a name="line.89"></a>
-<FONT color="green">090</FONT>            if (componentKey instanceof Class) {<a name="line.90"></a>
-<FONT color="green">091</FONT>                Class&lt;?&gt; componentType = (Class) componentKey;<a name="line.91"></a>
+<FONT color="green">090</FONT>            if (key instanceof Class) {<a name="line.90"></a>
+<FONT color="green">091</FONT>                Class&lt;?&gt; componentType = (Class) key;<a name="line.91"></a>
 <FONT color="green">092</FONT>                if (Provider.class.isAssignableFrom(componentImplementation)) {<a name="line.92"></a>
 <FONT color="green">093</FONT>                    if (!componentType.isAssignableFrom(ProviderAdapter.getProvideMethod(componentImplementation).getReturnType())) {<a name="line.93"></a>
 <FONT color="green">094</FONT>                        throw newCCE(componentType);<a name="line.94"></a>

@@ -100,29 +100,29 @@
 <FONT color="green">097</FONT>            private final Object key;<a name="line.97"></a>
 <FONT color="green">098</FONT>    <a name="line.98"></a>
 <FONT color="green">099</FONT>            /**<a name="line.99"></a>
-<FONT color="green">100</FONT>             * @param componentKey<a name="line.100"></a>
+<FONT color="green">100</FONT>             * @param key<a name="line.100"></a>
 <FONT color="green">101</FONT>             * @param Component<a name="line.101"></a>
 <FONT color="green">102</FONT>             *            Implementation will be the expected return type of the factory<a name="line.102"></a>
 <FONT color="green">103</FONT>             *            method.<a name="line.103"></a>
 <FONT color="green">104</FONT>             */<a name="line.104"></a>
-<FONT color="green">105</FONT>            public DelegateMethodAdapter(final Object componentKey,<a name="line.105"></a>
+<FONT color="green">105</FONT>            public DelegateMethodAdapter(final Object key,<a name="line.105"></a>
 <FONT color="green">106</FONT>                            final Object targetInstance, final DelegateMethod factoryMethod) {<a name="line.106"></a>
 <FONT color="green">107</FONT>                    this.factoryMethod = factoryMethod;<a name="line.107"></a>
 <FONT color="green">108</FONT>                    this.targetInstance = targetInstance;<a name="line.108"></a>
-<FONT color="green">109</FONT>                    this.key = componentKey;<a name="line.109"></a>
+<FONT color="green">109</FONT>                    this.key = key;<a name="line.109"></a>
 <FONT color="green">110</FONT>            }<a name="line.110"></a>
 <FONT color="green">111</FONT>    <a name="line.111"></a>
 <FONT color="green">112</FONT>            /**<a name="line.112"></a>
-<FONT color="green">113</FONT>             * @param componentKey<a name="line.113"></a>
+<FONT color="green">113</FONT>             * @param key<a name="line.113"></a>
 <FONT color="green">114</FONT>             * @param componentImplementation<a name="line.114"></a>
 <FONT color="green">115</FONT>             * @param monitor<a name="line.115"></a>
 <FONT color="green">116</FONT>             */<a name="line.116"></a>
-<FONT color="green">117</FONT>            public DelegateMethodAdapter(final Object componentKey,<a name="line.117"></a>
+<FONT color="green">117</FONT>            public DelegateMethodAdapter(final Object key,<a name="line.117"></a>
 <FONT color="green">118</FONT>                            final ComponentMonitor monitor, final Object targetInstance,<a name="line.118"></a>
 <FONT color="green">119</FONT>                            final DelegateMethod factoryMethod) {<a name="line.119"></a>
 <FONT color="green">120</FONT>                    this.factoryMethod = factoryMethod;<a name="line.120"></a>
 <FONT color="green">121</FONT>                    this.targetInstance = targetInstance;<a name="line.121"></a>
-<FONT color="green">122</FONT>                    this.key = componentKey;<a name="line.122"></a>
+<FONT color="green">122</FONT>                    this.key = key;<a name="line.122"></a>
 <FONT color="green">123</FONT>            }<a name="line.123"></a>
 <FONT color="green">124</FONT>    <a name="line.124"></a>
 <FONT color="green">125</FONT>            /**<a name="line.125"></a>

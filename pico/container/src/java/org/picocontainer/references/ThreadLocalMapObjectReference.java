@@ -18,21 +18,21 @@ import java.util.Map;
  */
 public class ThreadLocalMapObjectReference<T> implements ObjectReference<T> {
     private final ThreadLocal<Map<Object, T>> threadLocal;
-    private final Object componentKey;
+    private final Object key;
 
-    public ThreadLocalMapObjectReference(ThreadLocal<Map<Object, T>> threadLocal, Object componentKey) {
+    public ThreadLocalMapObjectReference(ThreadLocal<Map<Object, T>> threadLocal, Object key) {
         this.threadLocal = threadLocal;
-        this.componentKey = componentKey;
+        this.key = key;
     }
 
     @SuppressWarnings("unchecked")
     public T get() {
-        return threadLocal.get().get(componentKey) ;
+        return threadLocal.get().get(key) ;
     }
 
     @SuppressWarnings("unchecked")
     public void set(T item) {
-        threadLocal.get().put(componentKey, item) ;
+        threadLocal.get().put(key, item) ;
 
     }
 }

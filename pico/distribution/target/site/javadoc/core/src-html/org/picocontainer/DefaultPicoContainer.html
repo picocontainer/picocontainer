@@ -127,7 +127,7 @@
 <FONT color="green">124</FONT>        /**<a name="line.124"></a>
 <FONT color="green">125</FONT>         * Map used for looking up component adapters by their key.<a name="line.125"></a>
 <FONT color="green">126</FONT>         */<a name="line.126"></a>
-<FONT color="green">127</FONT>            private final Map&lt;Object, ComponentAdapter&lt;?&gt;&gt; componentKeyToAdapterCache = new HashMap&lt;Object, ComponentAdapter&lt;?&gt; &gt;();<a name="line.127"></a>
+<FONT color="green">127</FONT>            private final Map&lt;Object, ComponentAdapter&lt;?&gt;&gt; keyToAdapterCache = new HashMap&lt;Object, ComponentAdapter&lt;?&gt; &gt;();<a name="line.127"></a>
 <FONT color="green">128</FONT>    <a name="line.128"></a>
 <FONT color="green">129</FONT>    <a name="line.129"></a>
 <FONT color="green">130</FONT>            private final List&lt;ComponentAdapter&lt;?&gt;&gt; componentAdapters = new ArrayList&lt;ComponentAdapter&lt;?&gt;&gt;();<a name="line.130"></a>
@@ -274,18 +274,18 @@
 <FONT color="green">271</FONT>    <a name="line.271"></a>
 <FONT color="green">272</FONT>    <a name="line.272"></a>
 <FONT color="green">273</FONT>        /** {@inheritDoc} **/<a name="line.273"></a>
-<FONT color="green">274</FONT>        public final ComponentAdapter&lt;?&gt; getComponentAdapter(final Object componentKey) {<a name="line.274"></a>
-<FONT color="green">275</FONT>            ComponentAdapter&lt;?&gt; adapter = getComponentKeyToAdapterCache().get(componentKey);<a name="line.275"></a>
+<FONT color="green">274</FONT>        public final ComponentAdapter&lt;?&gt; getComponentAdapter(final Object key) {<a name="line.274"></a>
+<FONT color="green">275</FONT>            ComponentAdapter&lt;?&gt; adapter = getComponentKeyToAdapterCache().get(key);<a name="line.275"></a>
 <FONT color="green">276</FONT>            if (adapter == null &amp;&amp; parent != null) {<a name="line.276"></a>
-<FONT color="green">277</FONT>                adapter = getParent().getComponentAdapter(componentKey);<a name="line.277"></a>
+<FONT color="green">277</FONT>                adapter = getParent().getComponentAdapter(key);<a name="line.277"></a>
 <FONT color="green">278</FONT>                if (adapter != null) {<a name="line.278"></a>
 <FONT color="green">279</FONT>                    adapter = new KnowsContainerAdapter(adapter, getParent());<a name="line.279"></a>
 <FONT color="green">280</FONT>                }<a name="line.280"></a>
 <FONT color="green">281</FONT>            }<a name="line.281"></a>
 <FONT color="green">282</FONT>            if (adapter == null) {<a name="line.282"></a>
-<FONT color="green">283</FONT>                Object inst = componentMonitor.noComponentFound(this, componentKey);<a name="line.283"></a>
+<FONT color="green">283</FONT>                Object inst = componentMonitor.noComponentFound(this, key);<a name="line.283"></a>
 <FONT color="green">284</FONT>                if (inst != null) {<a name="line.284"></a>
-<FONT color="green">285</FONT>                    adapter = new LateInstance(componentKey, inst);<a name="line.285"></a>
+<FONT color="green">285</FONT>                    adapter = new LateInstance(key, inst);<a name="line.285"></a>
 <FONT color="green">286</FONT>                }<a name="line.286"></a>
 <FONT color="green">287</FONT>            }<a name="line.287"></a>
 <FONT color="green">288</FONT>            return adapter;<a name="line.288"></a>
@@ -293,8 +293,8 @@
 <FONT color="green">290</FONT>    <a name="line.290"></a>
 <FONT color="green">291</FONT>        public static class LateInstance extends AbstractAdapter {<a name="line.291"></a>
 <FONT color="green">292</FONT>            private final Object instance;<a name="line.292"></a>
-<FONT color="green">293</FONT>            private LateInstance(Object componentKey, Object instance) {<a name="line.293"></a>
-<FONT color="green">294</FONT>                super(componentKey, instance.getClass());<a name="line.294"></a>
+<FONT color="green">293</FONT>            private LateInstance(Object key, Object instance) {<a name="line.293"></a>
+<FONT color="green">294</FONT>                super(key, instance.getClass());<a name="line.294"></a>
 <FONT color="green">295</FONT>                this.instance = instance;<a name="line.295"></a>
 <FONT color="green">296</FONT>            }<a name="line.296"></a>
 <FONT color="green">297</FONT>    <a name="line.297"></a>
@@ -436,12 +436,12 @@
 <FONT color="green">433</FONT>        }<a name="line.433"></a>
 <FONT color="green">434</FONT>    <a name="line.434"></a>
 <FONT color="green">435</FONT>        protected MutablePicoContainer addAdapterInternal(ComponentAdapter&lt;?&gt; componentAdapter) {<a name="line.435"></a>
-<FONT color="green">436</FONT>            Object componentKey = componentAdapter.getComponentKey();<a name="line.436"></a>
-<FONT color="green">437</FONT>            if (getComponentKeyToAdapterCache().containsKey(componentKey)) {<a name="line.437"></a>
-<FONT color="green">438</FONT>                throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");<a name="line.438"></a>
+<FONT color="green">436</FONT>            Object key = componentAdapter.getComponentKey();<a name="line.436"></a>
+<FONT color="green">437</FONT>            if (getComponentKeyToAdapterCache().containsKey(key)) {<a name="line.437"></a>
+<FONT color="green">438</FONT>                throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + key + "'");<a name="line.438"></a>
 <FONT color="green">439</FONT>            }<a name="line.439"></a>
 <FONT color="green">440</FONT>            getModifiableComponentAdapterList().add(componentAdapter);<a name="line.440"></a>
-<FONT color="green">441</FONT>            getComponentKeyToAdapterCache().put(componentKey, componentAdapter);<a name="line.441"></a>
+<FONT color="green">441</FONT>            getComponentKeyToAdapterCache().put(key, componentAdapter);<a name="line.441"></a>
 <FONT color="green">442</FONT>            return this;<a name="line.442"></a>
 <FONT color="green">443</FONT>        }<a name="line.443"></a>
 <FONT color="green">444</FONT>    <a name="line.444"></a>
@@ -473,10 +473,10 @@
 <FONT color="green">470</FONT>    <a name="line.470"></a>
 <FONT color="green">471</FONT>    <a name="line.471"></a>
 <FONT color="green">472</FONT>        /** {@inheritDoc} **/<a name="line.472"></a>
-<FONT color="green">473</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponent(final Object componentKey) {<a name="line.473"></a>
+<FONT color="green">473</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponent(final Object key) {<a name="line.473"></a>
 <FONT color="green">474</FONT>            lifecycleState.removingComponent();<a name="line.474"></a>
 <FONT color="green">475</FONT>    <a name="line.475"></a>
-<FONT color="green">476</FONT>            ComponentAdapter&lt;T&gt; adapter = (ComponentAdapter&lt;T&gt;) getComponentKeyToAdapterCache().remove(componentKey);<a name="line.476"></a>
+<FONT color="green">476</FONT>            ComponentAdapter&lt;T&gt; adapter = (ComponentAdapter&lt;T&gt;) getComponentKeyToAdapterCache().remove(key);<a name="line.476"></a>
 <FONT color="green">477</FONT>            getModifiableComponentAdapterList().remove(adapter);<a name="line.477"></a>
 <FONT color="green">478</FONT>            getOrderedComponentAdapters().remove(adapter);          <a name="line.478"></a>
 <FONT color="green">479</FONT>            return adapter;<a name="line.479"></a>
@@ -514,13 +514,13 @@
 <FONT color="green">511</FONT>         * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}<a name="line.511"></a>
 <FONT color="green">512</FONT>         * passed to the container's constructor.<a name="line.512"></a>
 <FONT color="green">513</FONT>         */<a name="line.513"></a>
-<FONT color="green">514</FONT>        public MutablePicoContainer addComponent(final Object componentKey,<a name="line.514"></a>
+<FONT color="green">514</FONT>        public MutablePicoContainer addComponent(final Object key,<a name="line.514"></a>
 <FONT color="green">515</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.515"></a>
 <FONT color="green">516</FONT>                                                 final Parameter... parameters) {<a name="line.516"></a>
-<FONT color="green">517</FONT>            return this.addComponent(componentKey, componentImplementationOrInstance, this.containerProperties, parameters);<a name="line.517"></a>
+<FONT color="green">517</FONT>            return this.addComponent(key, componentImplementationOrInstance, this.containerProperties, parameters);<a name="line.517"></a>
 <FONT color="green">518</FONT>        }<a name="line.518"></a>
 <FONT color="green">519</FONT>    <a name="line.519"></a>
-<FONT color="green">520</FONT>        private MutablePicoContainer addComponent(final Object componentKey,<a name="line.520"></a>
+<FONT color="green">520</FONT>        private MutablePicoContainer addComponent(final Object key,<a name="line.520"></a>
 <FONT color="green">521</FONT>                                                 final Object componentImplementationOrInstance,<a name="line.521"></a>
 <FONT color="green">522</FONT>                                                 final Properties properties,<a name="line.522"></a>
 <FONT color="green">523</FONT>                                                 Parameter... parameters) {<a name="line.523"></a>
@@ -538,7 +538,7 @@
 <FONT color="green">535</FONT>                ComponentAdapter&lt;?&gt; adapter = componentFactory.createComponentAdapter(componentMonitor,<a name="line.535"></a>
 <FONT color="green">536</FONT>                                                                                                   lifecycleStrategy,<a name="line.536"></a>
 <FONT color="green">537</FONT>                                                                                                   tmpProperties,<a name="line.537"></a>
-<FONT color="green">538</FONT>                                                                                                   componentKey,<a name="line.538"></a>
+<FONT color="green">538</FONT>                                                                                                   key,<a name="line.538"></a>
 <FONT color="green">539</FONT>                                                                                                   (Class&lt;?&gt;)componentImplementationOrInstance,<a name="line.539"></a>
 <FONT color="green">540</FONT>                                                                                                   parameters);<a name="line.540"></a>
 <FONT color="green">541</FONT>                AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);<a name="line.541"></a>
@@ -550,7 +550,7 @@
 <FONT color="green">547</FONT>                return addAdapterInternal(adapter);<a name="line.547"></a>
 <FONT color="green">548</FONT>            } else {<a name="line.548"></a>
 <FONT color="green">549</FONT>                ComponentAdapter&lt;?&gt; adapter =<a name="line.549"></a>
-<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);<a name="line.550"></a>
+<FONT color="green">550</FONT>                    new InstanceAdapter&lt;Object&gt;(key, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);<a name="line.550"></a>
 <FONT color="green">551</FONT>                if (lifecycleState.isStarted()) {<a name="line.551"></a>
 <FONT color="green">552</FONT>                    addAdapterIfStartable(adapter);<a name="line.552"></a>
 <FONT color="green">553</FONT>                    potentiallyStartAdapter(adapter);<a name="line.553"></a>
@@ -616,31 +616,31 @@
 <FONT color="green">613</FONT>            return (ComponentAdapter&lt;T&gt;)componentAdapter;<a name="line.613"></a>
 <FONT color="green">614</FONT>        }<a name="line.614"></a>
 <FONT color="green">615</FONT>    <a name="line.615"></a>
-<FONT color="green">616</FONT>        public Object getComponent(final Object componentKeyOrType) {<a name="line.616"></a>
-<FONT color="green">617</FONT>            return getComponent(componentKeyOrType, null);<a name="line.617"></a>
+<FONT color="green">616</FONT>        public Object getComponent(final Object keyOrType) {<a name="line.616"></a>
+<FONT color="green">617</FONT>            return getComponent(keyOrType, null);<a name="line.617"></a>
 <FONT color="green">618</FONT>        }<a name="line.618"></a>
 <FONT color="green">619</FONT>    <a name="line.619"></a>
-<FONT color="green">620</FONT>        public Object getComponent(final Object componentKeyOrType, Type into) {<a name="line.620"></a>
+<FONT color="green">620</FONT>        public Object getComponent(final Object keyOrType, Type into) {<a name="line.620"></a>
 <FONT color="green">621</FONT>            synchronized (this) {<a name="line.621"></a>
 <FONT color="green">622</FONT>                if (intoThreadLocal == null) {<a name="line.622"></a>
 <FONT color="green">623</FONT>                    intoThreadLocal = new IntoThreadLocal();<a name="line.623"></a>
 <FONT color="green">624</FONT>                }<a name="line.624"></a>
 <FONT color="green">625</FONT>            }<a name="line.625"></a>
 <FONT color="green">626</FONT>            intoThreadLocal.set(into);<a name="line.626"></a>
-<FONT color="green">627</FONT>            return getComponent(componentKeyOrType, (Class&lt;? extends Annotation&gt;) null);<a name="line.627"></a>
+<FONT color="green">627</FONT>            return getComponent(keyOrType, (Class&lt;? extends Annotation&gt;) null);<a name="line.627"></a>
 <FONT color="green">628</FONT>        }<a name="line.628"></a>
 <FONT color="green">629</FONT>    <a name="line.629"></a>
-<FONT color="green">630</FONT>        public Object getComponent(final Object componentKeyOrType, final Class&lt;? extends Annotation&gt; annotation) {<a name="line.630"></a>
+<FONT color="green">630</FONT>        public Object getComponent(final Object keyOrType, final Class&lt;? extends Annotation&gt; annotation) {<a name="line.630"></a>
 <FONT color="green">631</FONT>            ComponentAdapter&lt;?&gt; componentAdapter;<a name="line.631"></a>
 <FONT color="green">632</FONT>            Object component;<a name="line.632"></a>
 <FONT color="green">633</FONT>            if (annotation != null) {<a name="line.633"></a>
-<FONT color="green">634</FONT>                componentAdapter = getComponentAdapter((Class&lt;?&gt;)componentKeyOrType, annotation);<a name="line.634"></a>
+<FONT color="green">634</FONT>                componentAdapter = getComponentAdapter((Class&lt;?&gt;)keyOrType, annotation);<a name="line.634"></a>
 <FONT color="green">635</FONT>                component = componentAdapter == null ? null : getInstance(componentAdapter, null);<a name="line.635"></a>
-<FONT color="green">636</FONT>            } else if (componentKeyOrType instanceof Class) {<a name="line.636"></a>
-<FONT color="green">637</FONT>                componentAdapter = getComponentAdapter((Class&lt;?&gt;)componentKeyOrType, (NameBinding) null);<a name="line.637"></a>
-<FONT color="green">638</FONT>                component = componentAdapter == null ? null : getInstance(componentAdapter, (Class&lt;?&gt;)componentKeyOrType);<a name="line.638"></a>
+<FONT color="green">636</FONT>            } else if (keyOrType instanceof Class) {<a name="line.636"></a>
+<FONT color="green">637</FONT>                componentAdapter = getComponentAdapter((Class&lt;?&gt;)keyOrType, (NameBinding) null);<a name="line.637"></a>
+<FONT color="green">638</FONT>                component = componentAdapter == null ? null : getInstance(componentAdapter, (Class&lt;?&gt;)keyOrType);<a name="line.638"></a>
 <FONT color="green">639</FONT>            } else {<a name="line.639"></a>
-<FONT color="green">640</FONT>                componentAdapter = getComponentAdapter(componentKeyOrType);<a name="line.640"></a>
+<FONT color="green">640</FONT>                componentAdapter = getComponentAdapter(keyOrType);<a name="line.640"></a>
 <FONT color="green">641</FONT>                component = componentAdapter == null ? null : getInstance(componentAdapter, null);<a name="line.641"></a>
 <FONT color="green">642</FONT>            }<a name="line.642"></a>
 <FONT color="green">643</FONT>            return decorateComponent(component, componentAdapter);<a name="line.643"></a>
@@ -673,7 +673,7 @@
 <FONT color="green">670</FONT>        }<a name="line.670"></a>
 <FONT color="green">671</FONT>    <a name="line.671"></a>
 <FONT color="green">672</FONT>    <a name="line.672"></a>
-<FONT color="green">673</FONT>        private Object getInstance(final ComponentAdapter&lt;?&gt; componentAdapter, Class componentKey) {<a name="line.673"></a>
+<FONT color="green">673</FONT>        private Object getInstance(final ComponentAdapter&lt;?&gt; componentAdapter, Class key) {<a name="line.673"></a>
 <FONT color="green">674</FONT>            // check whether this is our adapter<a name="line.674"></a>
 <FONT color="green">675</FONT>            // we need to check this to ensure up-down dependencies cannot be followed<a name="line.675"></a>
 <FONT color="green">676</FONT>            final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);<a name="line.676"></a>
@@ -1060,10 +1060,10 @@
 <FONT color="green">1057</FONT>            }<a name="line.1057"></a>
 <FONT color="green">1058</FONT>    <a name="line.1058"></a>
 <FONT color="green">1059</FONT>            /**<a name="line.1059"></a>
-<FONT color="green">1060</FONT>             * @return the componentKeyToAdapterCache<a name="line.1060"></a>
+<FONT color="green">1060</FONT>             * @return the keyToAdapterCache<a name="line.1060"></a>
 <FONT color="green">1061</FONT>             */<a name="line.1061"></a>
 <FONT color="green">1062</FONT>            protected Map&lt;Object, ComponentAdapter&lt;?&gt;&gt; getComponentKeyToAdapterCache() {<a name="line.1062"></a>
-<FONT color="green">1063</FONT>                    return componentKeyToAdapterCache;<a name="line.1063"></a>
+<FONT color="green">1063</FONT>                    return keyToAdapterCache;<a name="line.1063"></a>
 <FONT color="green">1064</FONT>            }<a name="line.1064"></a>
 <FONT color="green">1065</FONT>    <a name="line.1065"></a>
 <FONT color="green">1066</FONT>            /**<a name="line.1066"></a>
@@ -1127,10 +1127,10 @@
 <FONT color="green">1124</FONT>            }<a name="line.1124"></a>
 <FONT color="green">1125</FONT>    <a name="line.1125"></a>
 <FONT color="green">1126</FONT>            @Override<a name="line.1126"></a>
-<FONT color="green">1127</FONT>                    public MutablePicoContainer addComponent(final Object componentKey,<a name="line.1127"></a>
+<FONT color="green">1127</FONT>                    public MutablePicoContainer addComponent(final Object key,<a name="line.1127"></a>
 <FONT color="green">1128</FONT>                                                     final Object componentImplementationOrInstance,<a name="line.1128"></a>
 <FONT color="green">1129</FONT>                                                     final Parameter... parameters) throws PicoCompositionException {<a name="line.1129"></a>
-<FONT color="green">1130</FONT>                return DefaultPicoContainer.this.addComponent(componentKey,<a name="line.1130"></a>
+<FONT color="green">1130</FONT>                return DefaultPicoContainer.this.addComponent(key,<a name="line.1130"></a>
 <FONT color="green">1131</FONT>                                          componentImplementationOrInstance,<a name="line.1131"></a>
 <FONT color="green">1132</FONT>                                          properties,<a name="line.1132"></a>
 <FONT color="green">1133</FONT>                                          parameters);<a name="line.1133"></a>

@@ -29,9 +29,9 @@ public class PWRServletContainerListener extends PicoServletContainerListener {
 
     private static class LateInstantiatingComponentMonitor extends NullComponentMonitor implements Serializable {
 
-        public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object componentKey) {
-            if (componentKey instanceof Class) {
-                Class<?> clazz = (Class<?>) componentKey;
+        public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object key) {
+            if (key instanceof Class) {
+                Class<?> clazz = (Class<?>) key;
                 if (clazz.getName().startsWith("java.lang")) {
                     return null;
                 }
@@ -42,8 +42,8 @@ public class PWRServletContainerListener extends PicoServletContainerListener {
                         return instance;
                     }
                 }
-            } else if (componentKey instanceof String) {
-                Object instance = new StringFromRequest((String) componentKey).provide(
+            } else if (key instanceof String) {
+                Object instance = new StringFromRequest((String) key).provide(
                         mutablePicoContainer.getComponent(HttpServletRequest.class));
                 if (instance != null) {
                     return instance;

@@ -30,10 +30,10 @@
 <FONT color="green">027</FONT>                    super(delegate);<a name="line.27"></a>
 <FONT color="green">028</FONT>            }<a name="line.28"></a>
 <FONT color="green">029</FONT>    <a name="line.29"></a>
-<FONT color="green">030</FONT>            public MutablePicoContainer addComponent(Object componentKey,<a name="line.30"></a>
+<FONT color="green">030</FONT>            public MutablePicoContainer addComponent(Object key,<a name="line.30"></a>
 <FONT color="green">031</FONT>                                                 Object componentImplementationOrInstance,<a name="line.31"></a>
 <FONT color="green">032</FONT>                                                 Parameter... parameters) throws PicoCompositionException {<a name="line.32"></a>
-<FONT color="green">033</FONT>            return getDelegate().addComponent(componentKey, componentImplementationOrInstance, parameters);<a name="line.33"></a>
+<FONT color="green">033</FONT>            return getDelegate().addComponent(key, componentImplementationOrInstance, parameters);<a name="line.33"></a>
 <FONT color="green">034</FONT>        }<a name="line.34"></a>
 <FONT color="green">035</FONT>    <a name="line.35"></a>
 <FONT color="green">036</FONT>        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {<a name="line.36"></a>
@@ -48,8 +48,8 @@
 <FONT color="green">045</FONT>            return getDelegate().addAdapter(componentAdapter);<a name="line.45"></a>
 <FONT color="green">046</FONT>        }<a name="line.46"></a>
 <FONT color="green">047</FONT>    <a name="line.47"></a>
-<FONT color="green">048</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponent(Object componentKey) {<a name="line.48"></a>
-<FONT color="green">049</FONT>            return getDelegate().removeComponent(componentKey);<a name="line.49"></a>
+<FONT color="green">048</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponent(Object key) {<a name="line.48"></a>
+<FONT color="green">049</FONT>            return getDelegate().removeComponent(key);<a name="line.49"></a>
 <FONT color="green">050</FONT>        }<a name="line.50"></a>
 <FONT color="green">051</FONT>    <a name="line.51"></a>
 <FONT color="green">052</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; removeComponentByInstance(T componentInstance) {<a name="line.52"></a>

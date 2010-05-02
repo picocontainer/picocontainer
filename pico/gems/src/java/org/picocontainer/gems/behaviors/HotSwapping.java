@@ -35,10 +35,10 @@ public class HotSwapping extends AbstractBehavior {
 
 
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class<T> componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, componentKey, componentImplementation, parameters);
+                componentProperties, key, componentImplementation, parameters);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_HOT_SWAP)) {
         	return delegateAdapter;

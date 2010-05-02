@@ -58,10 +58,10 @@ public class ComponentParameter
     /**
      * Expect a parameter matching a component of a specific key.
      * 
-     * @param componentKey the key of the desired addComponent
+     * @param key the key of the desired addComponent
      */
-    public ComponentParameter(Object componentKey) {
-        this(componentKey, null);
+    public ComponentParameter(Object key) {
+        this(key, null);
     }
 
     /**
@@ -99,16 +99,16 @@ public class ComponentParameter
      * The components in the collection will be of the specified type and their adapter's key
      * must have a particular type.
      * 
-     * @param componentKeyType the component adapter's key type
+     * @param keyType the component adapter's key type
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
-    public ComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {
-        this(null, new CollectionComponentParameter(componentKeyType, componentValueType, emptyCollection));
+    public ComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) {
+        this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
     }
 
-    private ComponentParameter(Object componentKey, Parameter collectionParameter) {
-        super(componentKey);
+    private ComponentParameter(Object key, Parameter collectionParameter) {
+        super(key);
         this.collectionParameter = collectionParameter;
     }
 

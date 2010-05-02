@@ -34,12 +34,12 @@
 <FONT color="green">031</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.31"></a>
 <FONT color="green">032</FONT>                ComponentMonitor componentMonitor,<a name="line.32"></a>
 <FONT color="green">033</FONT>                LifecycleStrategy lifecycleStrategy,<a name="line.33"></a>
-<FONT color="green">034</FONT>                Properties componentProperties, Object componentKey,<a name="line.34"></a>
+<FONT color="green">034</FONT>                Properties componentProperties, Object key,<a name="line.34"></a>
 <FONT color="green">035</FONT>                Class&lt;T&gt; componentImplementation, Parameter... parameters)<a name="line.35"></a>
 <FONT color="green">036</FONT>                throws PicoCompositionException {<a name="line.36"></a>
 <FONT color="green">037</FONT>            String guard = getAndRemovePropertiesIfPresentByKey(componentProperties, Characteristics.GUARD);<a name="line.37"></a>
 <FONT color="green">038</FONT>            ComponentAdapter&lt;T&gt; delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.38"></a>
-<FONT color="green">039</FONT>                    componentProperties, componentKey, componentImplementation, parameters);<a name="line.39"></a>
+<FONT color="green">039</FONT>                    componentProperties, key, componentImplementation, parameters);<a name="line.39"></a>
 <FONT color="green">040</FONT>            if (guard == null) {<a name="line.40"></a>
 <FONT color="green">041</FONT>                return delegate;<a name="line.41"></a>
 <FONT color="green">042</FONT>            } else {<a name="line.42"></a>

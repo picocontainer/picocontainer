@@ -34,12 +34,12 @@
 <FONT color="green">031</FONT>    <a name="line.31"></a>
 <FONT color="green">032</FONT>            Collection&lt;ComponentAdapter&lt;?&gt;&gt; componentAdapters = pico.getComponentAdapters();<a name="line.32"></a>
 <FONT color="green">033</FONT>            for (ComponentAdapter&lt;?&gt; componentAdapter : componentAdapters) {<a name="line.33"></a>
-<FONT color="green">034</FONT>                Object componentKey = componentAdapter.getComponentKey();<a name="line.34"></a>
+<FONT color="green">034</FONT>                Object key = componentAdapter.getComponentKey();<a name="line.34"></a>
 <FONT color="green">035</FONT>                String groovyKey = null;<a name="line.35"></a>
-<FONT color="green">036</FONT>                if (componentKey instanceof Class) {<a name="line.36"></a>
-<FONT color="green">037</FONT>                    groovyKey = ((Class&lt;?&gt;) componentKey).getName();<a name="line.37"></a>
-<FONT color="green">038</FONT>                } else if (componentKey instanceof String) {<a name="line.38"></a>
-<FONT color="green">039</FONT>                    groovyKey = "\"" + componentKey + "\"";<a name="line.39"></a>
+<FONT color="green">036</FONT>                if (key instanceof Class) {<a name="line.36"></a>
+<FONT color="green">037</FONT>                    groovyKey = ((Class&lt;?&gt;) key).getName();<a name="line.37"></a>
+<FONT color="green">038</FONT>                } else if (key instanceof String) {<a name="line.38"></a>
+<FONT color="green">039</FONT>                    groovyKey = "\"" + key + "\"";<a name="line.39"></a>
 <FONT color="green">040</FONT>                }<a name="line.40"></a>
 <FONT color="green">041</FONT>    <a name="line.41"></a>
 <FONT color="green">042</FONT>                Object componentInstance = componentAdapter.getComponentInstance(pico, null);<a name="line.42"></a>

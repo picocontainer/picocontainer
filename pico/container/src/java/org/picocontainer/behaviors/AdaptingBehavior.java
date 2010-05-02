@@ -34,7 +34,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
-                                                   Object componentKey,
+                                                   Object key,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         List<Behavior> list = new ArrayList<Behavior>();
@@ -58,7 +58,7 @@ public class AdaptingBehavior implements Behavior, Serializable {
         return lastFactory.createComponentAdapter(componentMonitor,
                                                   lifecycleStrategy,
                                                   componentProperties,
-                                                  componentKey,
+                                                  key,
                                                   componentImplementation,
                                                   parameters);
     }

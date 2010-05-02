@@ -177,25 +177,25 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
     @Override
-    public final Object getComponent(Object componentKeyOrType) {
-        return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
+    public final Object getComponent(Object keyOrType) {
+        return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
     }
 
-    public final Object getComponentInto(Object componentKeyOrType, Type into) {
+    public final Object getComponentInto(Object keyOrType, Type into) {
 
-        if (componentKeyOrType instanceof ClassName) {
-            componentKeyOrType = loadClass(componentKeyOrType.toString());
+        if (keyOrType instanceof ClassName) {
+            keyOrType = loadClass(keyOrType.toString());
         }
 
-        Object instance = getDelegate().getComponentInto(componentKeyOrType, into);
+        Object instance = getDelegate().getComponentInto(keyOrType, into);
 
         if (instance != null) {
             return instance;
         }
 
         ComponentAdapter<?> componentAdapter = null;
-        if (componentKeyOrType.toString().startsWith("*")) {
-            String candidateClassName = componentKeyOrType.toString().substring(1);
+        if (keyOrType.toString().startsWith("*")) {
+            String candidateClassName = keyOrType.toString().substring(1);
             Collection<ComponentAdapter<?>> cas = getComponentAdapters();
             for (ComponentAdapter<?> ca : cas) {
                 Object key = ca.getComponentKey();
@@ -208,16 +208,16 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         if (componentAdapter != null) {
             return componentAdapter.getComponentInstance(this, into);
         } else {
-            return getComponentInstanceFromChildren(componentKeyOrType, into);
+            return getComponentInstanceFromChildren(keyOrType, into);
         }
     }
 
-    private Object getComponentInstanceFromChildren(Object componentKey, Type into) {
-        String componentKeyPath = componentKey.toString();
-        int ix = componentKeyPath.indexOf('/');
+    private Object getComponentInstanceFromChildren(Object key, Type into) {
+        String keyPath = key.toString();
+        int ix = keyPath.indexOf('/');
         if (ix != -1) {
-            String firstElement = componentKeyPath.substring(0, ix);
-            String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());
+            String firstElement = keyPath.substring(0, ix);
+            String remainder = keyPath.substring(ix + 1, keyPath.length());
             Object o = getNamedContainers().get(firstElement);
             if (o != null) {
                 MutablePicoContainer child = (MutablePicoContainer) o;
@@ -363,12 +363,12 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return fromMap != null ? fromMap : primitiveOrClass;
     }
 
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        Object componentKey2 = componentKey;
-        if (componentKey instanceof ClassName) {
-            componentKey2 = loadClass(componentKey.toString());
+    public ComponentAdapter<?> getComponentAdapter(Object key) {
+        Object key2 = key;
+        if (key instanceof ClassName) {
+            key2 = loadClass(key.toString());
         }
-        return super.getComponentAdapter(componentKey2);
+        return super.getComponentAdapter(key2);
     }
 
     public MutablePicoContainer change(Properties... properties) {
@@ -403,9 +403,9 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);
         }
 
-        public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance,
+        public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,
                 Parameter... parameters) {
-            delegate.addComponent(classNameToClassIfApplicable(componentKey),
+            delegate.addComponent(classNameToClassIfApplicable(key),
                     classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
             return DefaultClassLoadingPicoContainer.this;
         }
@@ -425,8 +425,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public ComponentAdapter removeComponent(Object componentKey) {
-            return delegate.removeComponent(componentKey);
+        public ComponentAdapter removeComponent(Object key) {
+            return delegate.removeComponent(key);
         }
 
         public ComponentAdapter removeComponentByInstance(Object componentInstance) {
@@ -453,12 +453,12 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return new AsPropertiesPicoContainer(properties);
         }
 
-        public Object getComponent(Object componentKeyOrType) {
-            return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
+        public Object getComponent(Object keyOrType) {
+            return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
         }
 
-        public Object getComponentInto(Object componentKeyOrType, Type into) {
-            return DefaultClassLoadingPicoContainer.this.getComponentInto(componentKeyOrType, into);
+        public Object getComponentInto(Object keyOrType, Type into) {
+            return DefaultClassLoadingPicoContainer.this.getComponentInto(keyOrType, into);
         }
 
         public <T> T getComponent(Class<T> componentType) {
@@ -485,8 +485,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getParent();
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentKey);
+        public ComponentAdapter<?> getComponentAdapter(Object key) {
+            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(key);
         }
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {

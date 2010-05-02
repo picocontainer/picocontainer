@@ -199,7 +199,7 @@ Injection will happen through a single method for the component.
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/MethodInjector.html#MethodInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">MethodInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/MethodInjector.html#MethodInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">MethodInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -343,7 +343,7 @@ Injection will happen through a single method for the component.
 <A NAME="MethodInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)"><!-- --></A><H3>
 MethodInjector</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/injectors/MethodInjector.html#line.55"><B>MethodInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../src-html/org/picocontainer/injectors/MethodInjector.html#line.55"><B>MethodInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                       <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                       <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                       <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -354,7 +354,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/MethodInjector.htm
 <DD>Creates a MethodInjector
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>methodName</CODE> - the method name<DD><CODE>useNames</CODE> - use argument names when looking up dependencies
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>methodName</CODE> - the method name<DD><CODE>useNames</CODE> - use argument names when looking up dependencies
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../org/picocontainer/injectors/AbstractInjector.NotConcreteRegistrationException.html" title="class in org.picocontainer.injectors">AbstractInjector.NotConcreteRegistrationException</A></CODE> - if the implementation is not a concrete class.
 <DD><CODE><A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</A></CODE> - if one of the parameters is <code>null</code></DL>

@@ -353,7 +353,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
                          <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -455,7 +455,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType)</CODE>
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieve a component instance registered with a specific key or type.</TD>
@@ -463,7 +463,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object, java.lang.Class)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType,
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object, java.lang.Class)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType,
                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</A>&gt;&nbsp;annotation)</CODE>
 
 <BR>
@@ -472,7 +472,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object, java.lang.reflect.Type)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType,
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponent(java.lang.Object, java.lang.reflect.Type)">getComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType,
                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;into)</CODE>
 
 <BR>
@@ -513,7 +513,7 @@ Class DefaultPicoContainer</H2>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find a component adapter associated with the specified key.</TD>
@@ -662,7 +662,7 @@ Class DefaultPicoContainer</H2>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B><A HREF="../../org/picocontainer/DefaultPicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unregister a component by key.</TD>
@@ -977,7 +977,7 @@ public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Collection.htm
 <A NAME="getComponentAdapter(java.lang.Object)"><!-- --></A><H3>
 getComponentAdapter</H3>
 <PRE>
-public final <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt; <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.274"><B>getComponentAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</PRE>
+public final <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt; <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.274"><B>getComponentAdapter</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</PRE>
 <DL>
 <DD>Find a component adapter associated with the specified key. If a component adapter cannot be found in this
  container, the parent container (if one exists) will be searched.
@@ -986,7 +986,7 @@ public final <A HREF="../../org/picocontainer/ComponentAdapter.html" title="inte
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../org/picocontainer/PicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></CODE> in interface <CODE><A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the key that the component was registered with.
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the key that the component was registered with.
 <DT><B>Returns:</B><DD>the component adapter associated with this key, or <code>null</code> if no component has been
          registered for the specified key.</DL>
 </DD>
@@ -1128,7 +1128,7 @@ public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interf
 <A NAME="removeComponent(java.lang.Object)"><!-- --></A><H3>
 removeComponent</H3>
 <PRE>
-public &lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.473"><B>removeComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</PRE>
+public &lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;T&gt; <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.473"><B>removeComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</PRE>
 <DL>
 <DD>Unregister a component by key.
 <P>
@@ -1136,7 +1136,7 @@ public &lt;T&gt; <A HREF="../../org/picocontainer/ComponentAdapter.html" title="
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../org/picocontainer/MutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></CODE> in interface <CODE><A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - key of the component to unregister.
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - key of the component to unregister.
 <DT><B>Returns:</B><DD>the ComponentAdapter that was associated with this component.</DL>
 </DD>
 </DL>
@@ -1183,7 +1183,7 @@ public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interf
 <A NAME="addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)"><!-- --></A><H3>
 addComponent</H3>
 <PRE>
-public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.514"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.514"><B>addComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                          <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentImplementationOrInstance,
                                          <A HREF="../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</PRE>
 <DL>
@@ -1209,7 +1209,7 @@ public <A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interf
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../org/picocontainer/MutablePicoContainer.html#addComponent(java.lang.Object, java.lang.Object, org.picocontainer.Parameter...)">addComponent</A></CODE> in interface <CODE><A HREF="../../org/picocontainer/MutablePicoContainer.html" title="interface in org.picocontainer">MutablePicoContainer</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - a key that identifies the component. Must be unique within the container. The type
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - a key that identifies the component. Must be unique within the container. The type
                      of the key object has no semantic significance unless explicitly specified in the
                      documentation of the implementing container.<DD><CODE>componentImplementationOrInstance</CODE> - the component's implementation class. This must be a concrete class (ie, a
                      class that can be instantiated). Or an intance of the compoent.<DD><CODE>parameters</CODE> - the parameters that gives the container hints about what arguments to pass
@@ -1266,7 +1266,7 @@ public &lt;T&gt; <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/List
 <A NAME="getComponent(java.lang.Object)"><!-- --></A><H3>
 getComponent</H3>
 <PRE>
-public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.616"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType)</PRE>
+public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.616"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType)</PRE>
 <DL>
 <DD><B>Description copied from interface: <CODE><A HREF="../../org/picocontainer/PicoContainer.html#getComponent(java.lang.Object)">PicoContainer</A></CODE></B></DD>
 <DD>Retrieve a component instance registered with a specific key or type. If a component cannot be found in this container,
@@ -1276,7 +1276,7 @@ public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../org/picocontainer/PicoContainer.html#getComponent(java.lang.Object)">getComponent</A></CODE> in interface <CODE><A HREF="../../org/picocontainer/PicoContainer.html" title="interface in org.picocontainer">PicoContainer</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>componentKeyOrType</CODE> - the key or Type that the component was registered with.
+<DT><B>Parameters:</B><DD><CODE>keyOrType</CODE> - the key or Type that the component was registered with.
 <DT><B>Returns:</B><DD>an instantiated component, or <code>null</code> if no component has been registered for the specified
          key.</DL>
 </DD>
@@ -1286,7 +1286,7 @@ public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is
 <A NAME="getComponent(java.lang.Object, java.lang.reflect.Type)"><!-- --></A><H3>
 getComponent</H3>
 <PRE>
-public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.620"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType,
+public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.620"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType,
                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;into)</PRE>
 <DL>
 <DD><DL>
@@ -1301,7 +1301,7 @@ public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is
 <A NAME="getComponent(java.lang.Object, java.lang.Class)"><!-- --></A><H3>
 getComponent</H3>
 <PRE>
-public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.630"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKeyOrType,
+public <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A> <A HREF="../../src-html/org/picocontainer/DefaultPicoContainer.html#line.630"><B>getComponent</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;keyOrType,
                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;? extends <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</A>&gt;&nbsp;annotation)</PRE>
 <DL>
 <DD><DL>
@@ -1703,7 +1703,7 @@ protected <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Map.html?is
 </DD>
 <DD><DL>
 
-<DT><B>Returns:</B><DD>the componentKeyToAdapterCache</DL>
+<DT><B>Returns:</B><DD>the keyToAdapterCache</DL>
 </DD>
 </DL>
 <HR>

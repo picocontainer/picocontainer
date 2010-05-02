@@ -31,13 +31,13 @@ public interface PicoContainer {
      * Retrieve a component instance registered with a specific key or type. If a component cannot be found in this container,
      * the parent container (if one exists) will be searched.
      *
-     * @param componentKeyOrType the key or Type that the component was registered with.
+     * @param keyOrType the key or Type that the component was registered with.
      * @return an instantiated component, or <code>null</code> if no component has been registered for the specified
      *         key.
      */
-    Object getComponent(Object componentKeyOrType);
+    Object getComponent(Object keyOrType);
 
-    Object getComponentInto(Object componentKeyOrType, Type into);
+    Object getComponentInto(Object keyOrType, Type into);
 
     /**
      * Retrieve a component keyed by the component type.
@@ -85,11 +85,11 @@ public interface PicoContainer {
      * Find a component adapter associated with the specified key. If a component adapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
      *
-     * @param componentKey the key that the component was registered with.
+     * @param key the key that the component was registered with.
      * @return the component adapter associated with this key, or <code>null</code> if no component has been
      *         registered for the specified key.
      */
-    ComponentAdapter<?> getComponentAdapter(Object componentKey);
+    ComponentAdapter<?> getComponentAdapter(Object key);
 
     /**
      * Find a component adapter associated with the specified type and binding name. If a component adapter cannot be found in this

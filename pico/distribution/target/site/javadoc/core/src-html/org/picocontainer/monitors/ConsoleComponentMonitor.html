@@ -138,9 +138,9 @@
 <FONT color="green">135</FONT>            delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);<a name="line.135"></a>
 <FONT color="green">136</FONT>        }<a name="line.136"></a>
 <FONT color="green">137</FONT>    <a name="line.137"></a>
-<FONT color="green">138</FONT>        public Object noComponentFound(MutablePicoContainer container, Object componentKey) {<a name="line.138"></a>
-<FONT color="green">139</FONT>            out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));<a name="line.139"></a>
-<FONT color="green">140</FONT>            return delegate.noComponentFound(container, componentKey);<a name="line.140"></a>
+<FONT color="green">138</FONT>        public Object noComponentFound(MutablePicoContainer container, Object key) {<a name="line.138"></a>
+<FONT color="green">139</FONT>            out.println(format(ComponentMonitorHelper.NO_COMPONENT, key));<a name="line.139"></a>
+<FONT color="green">140</FONT>            return delegate.noComponentFound(container, key);<a name="line.140"></a>
 <FONT color="green">141</FONT>        }<a name="line.141"></a>
 <FONT color="green">142</FONT>    <a name="line.142"></a>
 <FONT color="green">143</FONT>        public Injector newInjector(Injector injector) {<a name="line.143"></a>

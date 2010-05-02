@@ -61,7 +61,7 @@
 <FONT color="green">058</FONT>        public static final CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);<a name="line.58"></a>
 <FONT color="green">059</FONT>    <a name="line.59"></a>
 <FONT color="green">060</FONT>        private final boolean emptyCollection;<a name="line.60"></a>
-<FONT color="green">061</FONT>        private final Class componentKeyType;<a name="line.61"></a>
+<FONT color="green">061</FONT>        private final Class keyType;<a name="line.61"></a>
 <FONT color="green">062</FONT>        private final Class componentValueType;<a name="line.62"></a>
 <FONT color="green">063</FONT>    <a name="line.63"></a>
 <FONT color="green">064</FONT>        /**<a name="line.64"></a>
@@ -98,14 +98,14 @@
 <FONT color="green">095</FONT>         * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as<a name="line.95"></a>
 <FONT color="green">096</FONT>         * parameter.<a name="line.96"></a>
 <FONT color="green">097</FONT>         *<a name="line.97"></a>
-<FONT color="green">098</FONT>         * @param componentKeyType   the type of the component's key<a name="line.98"></a>
+<FONT color="green">098</FONT>         * @param keyType   the type of the component's key<a name="line.98"></a>
 <FONT color="green">099</FONT>         * @param componentValueType the type of the components (ignored in case of an Array)<a name="line.99"></a>
 <FONT color="green">100</FONT>         * @param emptyCollection    &lt;code&gt;true&lt;/code&gt; if an empty collection resolves the<a name="line.100"></a>
 <FONT color="green">101</FONT>         *                           dependency.<a name="line.101"></a>
 <FONT color="green">102</FONT>         */<a name="line.102"></a>
-<FONT color="green">103</FONT>        public CollectionComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {<a name="line.103"></a>
+<FONT color="green">103</FONT>        public CollectionComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) {<a name="line.103"></a>
 <FONT color="green">104</FONT>            this.emptyCollection = emptyCollection;<a name="line.104"></a>
-<FONT color="green">105</FONT>            this.componentKeyType = componentKeyType;<a name="line.105"></a>
+<FONT color="green">105</FONT>            this.keyType = keyType;<a name="line.105"></a>
 <FONT color="green">106</FONT>            this.componentValueType = componentValueType;<a name="line.106"></a>
 <FONT color="green">107</FONT>        }<a name="line.107"></a>
 <FONT color="green">108</FONT>    <a name="line.108"></a>
@@ -129,7 +129,7 @@
 <FONT color="green">126</FONT>            final Class collectionType = getCollectionType(expectedType);<a name="line.126"></a>
 <FONT color="green">127</FONT>            if (collectionType != null) {<a name="line.127"></a>
 <FONT color="green">128</FONT>                final Map&lt;Object, ComponentAdapter&lt;?&gt;&gt; componentAdapters = getMatchingComponentAdapters(container, forAdapter,<a name="line.128"></a>
-<FONT color="green">129</FONT>                        componentKeyType, getValueType(expectedType));<a name="line.129"></a>
+<FONT color="green">129</FONT>                        keyType, getValueType(expectedType));<a name="line.129"></a>
 <FONT color="green">130</FONT>                return new Resolver() {<a name="line.130"></a>
 <FONT color="green">131</FONT>                    public boolean isResolved() {<a name="line.131"></a>
 <FONT color="green">132</FONT>                        return emptyCollection || componentAdapters.size() &gt; 0;<a name="line.132"></a>
@@ -192,7 +192,7 @@
 <FONT color="green">189</FONT>            if (collectionType != null) {<a name="line.189"></a>
 <FONT color="green">190</FONT>                final Class valueType = getValueType(expectedType);<a name="line.190"></a>
 <FONT color="green">191</FONT>                final Collection componentAdapters =<a name="line.191"></a>
-<FONT color="green">192</FONT>                        getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();<a name="line.192"></a>
+<FONT color="green">192</FONT>                        getMatchingComponentAdapters(container, adapter, keyType, valueType).values();<a name="line.192"></a>
 <FONT color="green">193</FONT>                if (componentAdapters.isEmpty()) {<a name="line.193"></a>
 <FONT color="green">194</FONT>                    if (!emptyCollection) {<a name="line.194"></a>
 <FONT color="green">195</FONT>                        throw new PicoCompositionException(expectedType<a name="line.195"></a>

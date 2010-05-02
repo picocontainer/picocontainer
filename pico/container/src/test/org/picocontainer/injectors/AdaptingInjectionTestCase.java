@@ -116,7 +116,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Constructor-Injection>\n" +
-                     "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
+                     "  <key class=java-class>java.util.Map</key>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
@@ -142,7 +142,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Annotated-Field-Injection>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
+                     "  <key class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</key>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
@@ -172,7 +172,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Annotated-Method-Injection>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
+                     "  <key class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</key>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +

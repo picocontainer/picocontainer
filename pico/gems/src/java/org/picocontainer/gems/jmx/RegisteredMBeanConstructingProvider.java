@@ -73,24 +73,24 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
 
     /**
      * Register a specific Pico component by key with an MBeanInfo and an ObjectName.
-     * @param componentKey The key of the Pico component.
+     * @param key The key of the Pico component.
      * @param objectName The {@link ObjectName} of the MBean.
      * @param management The management interface.
      * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
     public void register(
-            final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
-        registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management));
+            final Object key, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
+        registry.put(key, new MBeanInfoWrapper(mBeanInfo, objectName, management));
     }
 
     /**
      * Register a specific Pico component by key with an MBeanInfo and an ObjectName.
-     * @param componentKey The key of the Pico component.
+     * @param key The key of the Pico component.
      * @param objectName The {@link ObjectName} of the MBean.
      * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
-    public void register(final Object componentKey, final ObjectName objectName, final MBeanInfo mBeanInfo) {
-        register(componentKey, objectName, null, mBeanInfo);
+    public void register(final Object key, final ObjectName objectName, final MBeanInfo mBeanInfo) {
+        register(key, objectName, null, mBeanInfo);
     }
 
     /**
@@ -109,11 +109,11 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
 
     /**
      * Register a specific Pico component by key with an ObjectName.
-     * @param componentKey The key of the Pico component.
+     * @param key The key of the Pico component.
      * @param objectName The {@link ObjectName} of the MBean.
      */
-    public void register(final Object componentKey, final ObjectName objectName) {
-        registry.put(componentKey, new MBeanInfoWrapper(null, objectName, null));
+    public void register(final Object key, final ObjectName objectName) {
+        registry.put(key, new MBeanInfoWrapper(null, objectName, null));
     }
 
     /**

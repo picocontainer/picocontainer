@@ -31,12 +31,12 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
 
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentProperties, componentKey, componentImplementation, parameters);
+                                                                         componentProperties, key, componentImplementation, parameters);
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return componentAdapter;
         }
@@ -85,12 +85,12 @@ public class ImplementationHiding extends AbstractBehavior {
         public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
 
             ComponentAdapter<T> delegate = getDelegate();
-            Object componentKey = delegate.getComponentKey();
+            Object key = delegate.getComponentKey();
             Class<?>[] classes;
-            if (componentKey instanceof Class && ((Class<?>) delegate.getComponentKey()).isInterface()) {
+            if (key instanceof Class && ((Class<?>) delegate.getComponentKey()).isInterface()) {
                 classes = new Class[]{(Class<?>) delegate.getComponentKey()};
-            } else if (componentKey instanceof Class[]) {
-                classes = (Class[]) componentKey;
+            } else if (key instanceof Class[]) {
+                classes = (Class[]) key;
             } else {
                 return delegate.getComponentInstance(container, into);
             }

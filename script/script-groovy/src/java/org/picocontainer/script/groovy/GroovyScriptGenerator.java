@@ -31,12 +31,12 @@ public class GroovyScriptGenerator {
 
         Collection<ComponentAdapter<?>> componentAdapters = pico.getComponentAdapters();
         for (ComponentAdapter<?> componentAdapter : componentAdapters) {
-            Object componentKey = componentAdapter.getComponentKey();
+            Object key = componentAdapter.getComponentKey();
             String groovyKey = null;
-            if (componentKey instanceof Class) {
-                groovyKey = ((Class<?>) componentKey).getName();
-            } else if (componentKey instanceof String) {
-                groovyKey = "\"" + componentKey + "\"";
+            if (key instanceof Class) {
+                groovyKey = ((Class<?>) key).getName();
+            } else if (key instanceof String) {
+                groovyKey = "\"" + key + "\"";
             }
 
             Object componentInstance = componentAdapter.getComponentInstance(pico, null);

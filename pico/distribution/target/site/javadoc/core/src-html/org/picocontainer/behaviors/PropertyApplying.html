@@ -34,10 +34,10 @@
 <FONT color="green">031</FONT>    public final class PropertyApplying extends AbstractBehaviorFactory {<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.33"></a>
-<FONT color="green">034</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,<a name="line.34"></a>
+<FONT color="green">034</FONT>                LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object key,<a name="line.34"></a>
 <FONT color="green">035</FONT>                Class&lt;T&gt; componentImplementation, Parameter... parameters) throws PicoCompositionException {<a name="line.35"></a>
 <FONT color="green">036</FONT>            ComponentAdapter&lt;?&gt; decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.36"></a>
-<FONT color="green">037</FONT>                    componentProperties, componentKey, componentImplementation, parameters);<a name="line.37"></a>
+<FONT color="green">037</FONT>                    componentProperties, key, componentImplementation, parameters);<a name="line.37"></a>
 <FONT color="green">038</FONT>            removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);<a name="line.38"></a>
 <FONT color="green">039</FONT>            return componentMonitor.newBehavior(new PropertyApplicator(decoratedAdapter));<a name="line.39"></a>
 <FONT color="green">040</FONT>        }<a name="line.40"></a>

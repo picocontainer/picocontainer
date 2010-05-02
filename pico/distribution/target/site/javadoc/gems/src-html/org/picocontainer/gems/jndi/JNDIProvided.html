@@ -35,15 +35,15 @@
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>            JNDIObjectReference&lt;T&gt; jndiReference;<a name="line.33"></a>
 <FONT color="green">034</FONT>            <a name="line.34"></a>
-<FONT color="green">035</FONT>             Object componentKey;<a name="line.35"></a>
+<FONT color="green">035</FONT>             Object key;<a name="line.35"></a>
 <FONT color="green">036</FONT>            <a name="line.36"></a>
 <FONT color="green">037</FONT>            /**<a name="line.37"></a>
 <FONT color="green">038</FONT>             * create adapter with specified key and reference<a name="line.38"></a>
-<FONT color="green">039</FONT>             * @param componentKey component key<a name="line.39"></a>
+<FONT color="green">039</FONT>             * @param key component key<a name="line.39"></a>
 <FONT color="green">040</FONT>             * @param reference JNDI reference storing component<a name="line.40"></a>
 <FONT color="green">041</FONT>             */<a name="line.41"></a>
-<FONT color="green">042</FONT>            public JNDIProvided(final Object componentKey,final JNDIObjectReference&lt;T&gt; reference) {<a name="line.42"></a>
-<FONT color="green">043</FONT>                    this.componentKey = componentKey;<a name="line.43"></a>
+<FONT color="green">042</FONT>            public JNDIProvided(final Object key,final JNDIObjectReference&lt;T&gt; reference) {<a name="line.42"></a>
+<FONT color="green">043</FONT>                    this.key = key;<a name="line.43"></a>
 <FONT color="green">044</FONT>                    this.jndiReference = reference;<a name="line.44"></a>
 <FONT color="green">045</FONT>            }<a name="line.45"></a>
 <FONT color="green">046</FONT>            <a name="line.46"></a>
@@ -69,7 +69,7 @@
 <FONT color="green">066</FONT>            }<a name="line.66"></a>
 <FONT color="green">067</FONT>            <a name="line.67"></a>
 <FONT color="green">068</FONT>            public Object getComponentKey() {       <a name="line.68"></a>
-<FONT color="green">069</FONT>                    return componentKey;<a name="line.69"></a>
+<FONT color="green">069</FONT>                    return key;<a name="line.69"></a>
 <FONT color="green">070</FONT>            }<a name="line.70"></a>
 <FONT color="green">071</FONT>    <a name="line.71"></a>
 <FONT color="green">072</FONT>            @SuppressWarnings("unchecked")<a name="line.72"></a>

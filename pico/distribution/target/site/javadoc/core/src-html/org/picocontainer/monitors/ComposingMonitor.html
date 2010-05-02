@@ -31,21 +31,21 @@
 <FONT color="green">028</FONT>        }<a name="line.28"></a>
 <FONT color="green">029</FONT>    <a name="line.29"></a>
 <FONT color="green">030</FONT>        @Override<a name="line.30"></a>
-<FONT color="green">031</FONT>        public Object noComponentFound(MutablePicoContainer container, Object componentKey) {<a name="line.31"></a>
+<FONT color="green">031</FONT>        public Object noComponentFound(MutablePicoContainer container, Object key) {<a name="line.31"></a>
 <FONT color="green">032</FONT>            for (Composer composer : composers) {<a name="line.32"></a>
-<FONT color="green">033</FONT>                Object retVal = composer.compose(container, componentKey);<a name="line.33"></a>
+<FONT color="green">033</FONT>                Object retVal = composer.compose(container, key);<a name="line.33"></a>
 <FONT color="green">034</FONT>                if (retVal != null) {<a name="line.34"></a>
 <FONT color="green">035</FONT>                    return retVal;<a name="line.35"></a>
 <FONT color="green">036</FONT>                }<a name="line.36"></a>
 <FONT color="green">037</FONT>            }<a name="line.37"></a>
-<FONT color="green">038</FONT>            return super.noComponentFound(container, componentKey);<a name="line.38"></a>
+<FONT color="green">038</FONT>            return super.noComponentFound(container, key);<a name="line.38"></a>
 <FONT color="green">039</FONT>        }<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>        /**<a name="line.41"></a>
 <FONT color="green">042</FONT>         * A Composer can be used to make components that are otherwise missing.<a name="line.42"></a>
 <FONT color="green">043</FONT>         */<a name="line.43"></a>
 <FONT color="green">044</FONT>        public static interface Composer {<a name="line.44"></a>
-<FONT color="green">045</FONT>            public Object compose(PicoContainer container, Object componentKey);<a name="line.45"></a>
+<FONT color="green">045</FONT>            public Object compose(PicoContainer container, Object key);<a name="line.45"></a>
 <FONT color="green">046</FONT>        }<a name="line.46"></a>
 <FONT color="green">047</FONT>    <a name="line.47"></a>
 <FONT color="green">048</FONT>    <a name="line.48"></a>

@@ -39,12 +39,12 @@
 <FONT color="green">036</FONT>            this.delegate = delegate;<a name="line.36"></a>
 <FONT color="green">037</FONT>        }<a name="line.37"></a>
 <FONT color="green">038</FONT>    <a name="line.38"></a>
-<FONT color="green">039</FONT>        public Object getComponent(Object componentKeyOrType) {<a name="line.39"></a>
-<FONT color="green">040</FONT>            return delegate.getComponent(componentKeyOrType);<a name="line.40"></a>
+<FONT color="green">039</FONT>        public Object getComponent(Object keyOrType) {<a name="line.39"></a>
+<FONT color="green">040</FONT>            return delegate.getComponent(keyOrType);<a name="line.40"></a>
 <FONT color="green">041</FONT>        }<a name="line.41"></a>
 <FONT color="green">042</FONT>    <a name="line.42"></a>
-<FONT color="green">043</FONT>        public Object getComponent(Object componentKeyOrType, Type into) {<a name="line.43"></a>
-<FONT color="green">044</FONT>            return delegate.getComponent(componentKeyOrType, into);<a name="line.44"></a>
+<FONT color="green">043</FONT>        public Object getComponent(Object keyOrType, Type into) {<a name="line.43"></a>
+<FONT color="green">044</FONT>            return delegate.getComponent(keyOrType, into);<a name="line.44"></a>
 <FONT color="green">045</FONT>        }<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
 <FONT color="green">047</FONT>        public &lt;T&gt; T getComponent(Class&lt;T&gt; componentType) {<a name="line.47"></a>
@@ -63,8 +63,8 @@
 <FONT color="green">060</FONT>            return delegate.getParent();<a name="line.60"></a>
 <FONT color="green">061</FONT>        }<a name="line.61"></a>
 <FONT color="green">062</FONT>    <a name="line.62"></a>
-<FONT color="green">063</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey) {<a name="line.63"></a>
-<FONT color="green">064</FONT>            return delegate.getComponentAdapter(componentKey);<a name="line.64"></a>
+<FONT color="green">063</FONT>        public ComponentAdapter&lt;?&gt; getComponentAdapter(Object key) {<a name="line.63"></a>
+<FONT color="green">064</FONT>            return delegate.getComponentAdapter(key);<a name="line.64"></a>
 <FONT color="green">065</FONT>        }<a name="line.65"></a>
 <FONT color="green">066</FONT>    <a name="line.66"></a>
 <FONT color="green">067</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; getComponentAdapter(Class&lt;T&gt; componentType, NameBinding componentNameBinding) {<a name="line.67"></a>

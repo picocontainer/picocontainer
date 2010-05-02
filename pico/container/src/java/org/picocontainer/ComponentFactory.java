@@ -9,12 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-
 import java.util.Properties;
 
 /**
@@ -38,7 +32,7 @@ public interface ComponentFactory {
      * @param componentMonitor the component monitor
      * @param lifecycleStrategy te lifecycle strategy
      * @param componentProperties the component properties
-     * @param componentKey the key to be associated with this adapter. This
+     * @param key the key to be associated with this adapter. This
      *            value should be returned from a call to
      *            {@link ComponentAdapter#getComponentKey()} on the created
      *            adapter.
@@ -61,7 +55,7 @@ public interface ComponentFactory {
     <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                             LifecycleStrategy lifecycleStrategy,
                                             Properties componentProperties,
-                                            Object componentKey,
+                                            Object key,
                                             Class<T> componentImplementation,
                                             Parameter... parameters) throws PicoCompositionException;
 

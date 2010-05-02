@@ -36,14 +36,14 @@ public class NamedFieldInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
-                                                   Object componentKey,
+                                                   Object key,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         String fieldNames = (String) componentProperties.remove(INJECTION_FIELD_NAMES);
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(componentKey, componentImplementation, parameters, monitor,
+        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, componentImplementation, parameters, monitor,
                 fieldNames)), lifecycleStrategy);
     }
 

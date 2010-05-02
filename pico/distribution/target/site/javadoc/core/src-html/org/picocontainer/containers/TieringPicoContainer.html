@@ -176,13 +176,13 @@
 <FONT color="green">173</FONT>                return askingParentForComponent.get() == Boolean.FALSE;<a name="line.173"></a>
 <FONT color="green">174</FONT>            }<a name="line.174"></a>
 <FONT color="green">175</FONT>    <a name="line.175"></a>
-<FONT color="green">176</FONT>            public ComponentAdapter&lt;?&gt; getComponentAdapter(Object componentKey) {<a name="line.176"></a>
+<FONT color="green">176</FONT>            public ComponentAdapter&lt;?&gt; getComponentAdapter(Object key) {<a name="line.176"></a>
 <FONT color="green">177</FONT>                boolean iDidIt = false;<a name="line.177"></a>
 <FONT color="green">178</FONT>                try {<a name="line.178"></a>
 <FONT color="green">179</FONT>                    if (notYetAskingParentForComponent()) {<a name="line.179"></a>
 <FONT color="green">180</FONT>                        nowAskingParentForComponent();<a name="line.180"></a>
 <FONT color="green">181</FONT>                        iDidIt = true;<a name="line.181"></a>
-<FONT color="green">182</FONT>                        return super.getComponentAdapter(componentKey);<a name="line.182"></a>
+<FONT color="green">182</FONT>                        return super.getComponentAdapter(key);<a name="line.182"></a>
 <FONT color="green">183</FONT>                    } else {<a name="line.183"></a>
 <FONT color="green">184</FONT>                        return null;<a name="line.184"></a>
 <FONT color="green">185</FONT>                    }<a name="line.185"></a>

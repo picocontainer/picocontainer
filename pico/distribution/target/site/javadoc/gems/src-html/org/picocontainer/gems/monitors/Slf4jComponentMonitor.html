@@ -251,14 +251,14 @@
 <FONT color="green">248</FONT>    <a name="line.248"></a>
 <FONT color="green">249</FONT>            /** {@inheritDoc} * */<a name="line.249"></a>
 <FONT color="green">250</FONT>            public Object noComponentFound(final MutablePicoContainer container,<a name="line.250"></a>
-<FONT color="green">251</FONT>                            final Object componentKey) {<a name="line.251"></a>
+<FONT color="green">251</FONT>                            final Object key) {<a name="line.251"></a>
 <FONT color="green">252</FONT>                    Logger logger = this.logger != null ? this.logger : LoggerFactory<a name="line.252"></a>
 <FONT color="green">253</FONT>                                    .getLogger(ComponentMonitor.class);<a name="line.253"></a>
 <FONT color="green">254</FONT>                    if (logger.isWarnEnabled()) {<a name="line.254"></a>
 <FONT color="green">255</FONT>                            logger.warn(format(ComponentMonitorHelper.NO_COMPONENT,<a name="line.255"></a>
-<FONT color="green">256</FONT>                                            componentKey));<a name="line.256"></a>
+<FONT color="green">256</FONT>                                            key));<a name="line.256"></a>
 <FONT color="green">257</FONT>                    }<a name="line.257"></a>
-<FONT color="green">258</FONT>                    return delegate.noComponentFound(container, componentKey);<a name="line.258"></a>
+<FONT color="green">258</FONT>                    return delegate.noComponentFound(container, key);<a name="line.258"></a>
 <FONT color="green">259</FONT>    <a name="line.259"></a>
 <FONT color="green">260</FONT>            }<a name="line.260"></a>
 <FONT color="green">261</FONT>    <a name="line.261"></a>

@@ -287,7 +287,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>ComponentFactory.</B><B><A HREF="../../../org/picocontainer/ComponentFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -393,7 +393,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>PicoContainer.</B><B><A HREF="../../../org/picocontainer/PicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>PicoContainer.</B><B><A HREF="../../../org/picocontainer/PicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find a component adapter associated with the specified key.</TD>
@@ -401,7 +401,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find a component adapter associated with the specified key.</TD>
@@ -432,7 +432,7 @@ U</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B>MutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/MutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>MutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/MutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unregister a component by key.</TD>
@@ -447,7 +447,7 @@ U</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>DefaultPicoContainer.</B><B><A HREF="../../../org/picocontainer/DefaultPicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unregister a component by key.</TD>
@@ -1373,7 +1373,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>ThreadCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/ThreadCaching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1393,7 +1393,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Synchronizing.</B><B><A HREF="../../../org/picocontainer/behaviors/Synchronizing.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1413,7 +1413,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Storing.</B><B><A HREF="../../../org/picocontainer/behaviors/Storing.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1433,7 +1433,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>PropertyApplying.</B><B><A HREF="../../../org/picocontainer/behaviors/PropertyApplying.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1453,7 +1453,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>OptInCaching.</B><B><A HREF="../../../org/picocontainer/behaviors/OptInCaching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1473,7 +1473,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Locking.</B><B><A HREF="../../../org/picocontainer/behaviors/Locking.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1493,7 +1493,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Intercepting.</B><B><A HREF="../../../org/picocontainer/behaviors/Intercepting.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1513,7 +1513,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Guarding.</B><B><A HREF="../../../org/picocontainer/behaviors/Guarding.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1533,7 +1533,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Caching.</B><B><A HREF="../../../org/picocontainer/behaviors/Caching.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1553,7 +1553,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>AbstractBehaviorFactory.</B><B><A HREF="../../../org/picocontainer/behaviors/AbstractBehaviorFactory.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1566,7 +1566,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>ImplementationHiding.</B><B><A HREF="../../../org/picocontainer/behaviors/ImplementationHiding.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1579,7 +1579,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>FieldDecorating.</B><B><A HREF="../../../org/picocontainer/behaviors/FieldDecorating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1592,7 +1592,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Decorating.</B><B><A HREF="../../../org/picocontainer/behaviors/Decorating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1605,7 +1605,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>Automating.</B><B><A HREF="../../../org/picocontainer/behaviors/Automating.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -1618,7 +1618,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>AdaptingBehavior.</B><B><A HREF="../../../org/picocontainer/behaviors/AdaptingBehavior.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2010,7 +2010,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>DefaultClassLoadingPicoContainer.</B><B><A HREF="../../../org/picocontainer/classname/DefaultClassLoadingPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>DefaultClassLoadingPicoContainer.</B><B><A HREF="../../../org/picocontainer/classname/DefaultClassLoadingPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2179,7 +2179,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>ImmutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/ImmutablePicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>ImmutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/ImmutablePicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2187,7 +2187,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>EmptyPicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/EmptyPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>EmptyPicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/EmptyPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2195,7 +2195,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>CompositePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/CompositePicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>CompositePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/CompositePicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2203,7 +2203,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A>&lt;?&gt;</CODE></FONT></TD>
-<TD><CODE><B>AbstractDelegatingPicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/AbstractDelegatingPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>AbstractDelegatingPicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/AbstractDelegatingPicoContainer.html#getComponentAdapter(java.lang.Object)">getComponentAdapter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2218,7 +2218,7 @@ Uses of <A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interf
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B>AbstractDelegatingMutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/AbstractDelegatingMutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey)</CODE>
+<TD><CODE><B>AbstractDelegatingMutablePicoContainer.</B><B><A HREF="../../../org/picocontainer/containers/AbstractDelegatingMutablePicoContainer.html#removeComponent(java.lang.Object)">removeComponent</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -2645,7 +2645,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#composite(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, org.picocontainer.Injector...)">composite</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#composite(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, org.picocontainer.Injector...)">composite</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                    <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;componentImplementation,
                    <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                    <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -2658,7 +2658,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;componentImplementation,
                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2668,7 +2668,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                        <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -2680,7 +2680,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, boolean)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#constructor(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, boolean)">constructor</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                        <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -2703,7 +2703,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>TypedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/TypedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2723,7 +2723,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>SetterInjection.</B><B><A HREF="../../../org/picocontainer/injectors/SetterInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2743,7 +2743,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>NamedMethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/NamedMethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2763,7 +2763,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>NamedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/NamedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2783,7 +2783,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>MultiInjection.</B><B><A HREF="../../../org/picocontainer/injectors/MultiInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2803,7 +2803,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2823,7 +2823,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.MethodInjectionByName.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.MethodInjectionByName.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2843,7 +2843,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>MethodInjection.MethodInjectionByReflectionMethod.</B><B><A HREF="../../../org/picocontainer/injectors/MethodInjection.MethodInjectionByReflectionMethod.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2863,7 +2863,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>ConstructorInjection.</B><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;properties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2883,7 +2883,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>CompositeInjection.</B><B><A HREF="../../../org/picocontainer/injectors/CompositeInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2903,7 +2903,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>AnnotatedMethodInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AnnotatedMethodInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2923,7 +2923,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>AnnotatedFieldInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AnnotatedFieldInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2943,7 +2943,7 @@ U</CODE></FONT></TD>
 <TD><CODE><B>AdaptingInjection.</B><B><A HREF="../../../org/picocontainer/injectors/AdaptingInjection.html#createComponentAdapter(org.picocontainer.ComponentMonitor, org.picocontainer.LifecycleStrategy, java.util.Properties, java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">createComponentAdapter</A></B>(<A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
                                              <A HREF="../../../org/picocontainer/LifecycleStrategy.html" title="interface in org.picocontainer">LifecycleStrategy</A>&nbsp;lifecycleStrategy,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</A>&nbsp;componentProperties,
-                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+                                             <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;T&gt;&nbsp;componentImplementation,
                                              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -2993,7 +2993,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#method(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">method</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#method(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">method</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -3006,7 +3006,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#multi(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">multi</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#multi(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">multi</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
            <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
            <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;componentMonitor,
@@ -3031,7 +3031,7 @@ U</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;<A HREF="../../../org/picocontainer/ComponentAdapter.html" title="interface in org.picocontainer">ComponentAdapter</A></CODE></FONT></TD>
-<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#setter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">setter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B>Injector.</B><B><A HREF="../../../org/picocontainer/injectors/Injector.html#setter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, java.lang.String, boolean)">setter</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
              <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
              <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
              <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,

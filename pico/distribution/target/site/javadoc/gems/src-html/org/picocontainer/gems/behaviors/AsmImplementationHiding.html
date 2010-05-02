@@ -36,18 +36,18 @@
 <FONT color="green">033</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(final ComponentMonitor componentMonitor,<a name="line.33"></a>
 <FONT color="green">034</FONT>                                                       final LifecycleStrategy lifecycleStrategy,<a name="line.34"></a>
 <FONT color="green">035</FONT>                                                       final Properties componentProperties,<a name="line.35"></a>
-<FONT color="green">036</FONT>                                                       final Object componentKey,<a name="line.36"></a>
+<FONT color="green">036</FONT>                                                       final Object key,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                       final Class&lt;T&gt; componentImplementation,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                       final Parameter... parameters) throws PicoCompositionException {<a name="line.38"></a>
 <FONT color="green">039</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {<a name="line.39"></a>
 <FONT color="green">040</FONT>                return super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.40"></a>
-<FONT color="green">041</FONT>                                                    componentProperties, componentKey, componentImplementation, parameters);<a name="line.41"></a>
+<FONT color="green">041</FONT>                                                    componentProperties, key, componentImplementation, parameters);<a name="line.41"></a>
 <FONT color="green">042</FONT>            }<a name="line.42"></a>
 <FONT color="green">043</FONT>            AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);<a name="line.43"></a>
 <FONT color="green">044</FONT>            ComponentAdapter&lt;T&gt; componentAdapter = super.createComponentAdapter(componentMonitor,<a name="line.44"></a>
 <FONT color="green">045</FONT>                                                                             lifecycleStrategy,<a name="line.45"></a>
 <FONT color="green">046</FONT>                                                                             componentProperties,<a name="line.46"></a>
-<FONT color="green">047</FONT>                                                                             componentKey,<a name="line.47"></a>
+<FONT color="green">047</FONT>                                                                             key,<a name="line.47"></a>
 <FONT color="green">048</FONT>                                                                             componentImplementation,<a name="line.48"></a>
 <FONT color="green">049</FONT>                                                                             parameters);<a name="line.49"></a>
 <FONT color="green">050</FONT>            return componentMonitor.newBehavior(new AsmHiddenImplementation&lt;T&gt;(componentAdapter));<a name="line.50"></a>

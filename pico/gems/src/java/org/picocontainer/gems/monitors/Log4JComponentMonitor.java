@@ -220,12 +220,12 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public Object noComponentFound(final MutablePicoContainer container, final Object componentKey) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
+            logger.warn(format(ComponentMonitorHelper.NO_COMPONENT, key));
         }
-        return delegate.noComponentFound(container, componentKey);
+        return delegate.noComponentFound(container, key);
 
     }
 

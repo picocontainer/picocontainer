@@ -58,7 +58,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
     public static final CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);
 
     private final boolean emptyCollection;
-    private final Class componentKeyType;
+    private final Class keyType;
     private final Class componentValueType;
 
     /**
@@ -95,14 +95,14 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
      * parameter.
      *
-     * @param componentKeyType   the type of the component's key
+     * @param keyType   the type of the component's key
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      *                           dependency.
      */
-    public CollectionComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) {
         this.emptyCollection = emptyCollection;
-        this.componentKeyType = componentKeyType;
+        this.keyType = keyType;
         this.componentValueType = componentValueType;
     }
 
@@ -126,7 +126,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Map<Object, ComponentAdapter<?>> componentAdapters = getMatchingComponentAdapters(container, forAdapter,
-                    componentKeyType, getValueType(expectedType));
+                    keyType, getValueType(expectedType));
             return new Resolver() {
                 public boolean isResolved() {
                     return emptyCollection || componentAdapters.size() > 0;
@@ -189,7 +189,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);
             final Collection componentAdapters =
-                    getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
+                    getMatchingComponentAdapters(container, adapter, keyType, valueType).values();
             if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
                     throw new PicoCompositionException(expectedType

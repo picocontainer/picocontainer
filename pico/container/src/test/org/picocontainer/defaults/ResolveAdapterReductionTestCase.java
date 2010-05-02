@@ -128,8 +128,8 @@ public class ResolveAdapterReductionTestCase {
 
     private class CountingConstructorInjector extends ConstructorInjector {
 
-        public CountingConstructorInjector(Class<?> componentKey, Class<?> componentImplementation) {
-            super(componentKey, componentImplementation, null);
+        public CountingConstructorInjector(Class<?> key, Class<?> componentImplementation) {
+            super(key, componentImplementation, null);
         }
 
         protected CtorAndAdapters getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {

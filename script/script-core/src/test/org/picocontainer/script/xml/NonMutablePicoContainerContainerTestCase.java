@@ -44,7 +44,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     @SuppressWarnings("unchecked")
     private class TestPicoContainer implements PicoContainer {
-        public Object getComponent(Object componentKey) {
+        public Object getComponent(Object key) {
             return null;
         }
 
@@ -72,7 +72,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 			return null;
 		}
 
-		public Object getComponentInto(Object componentKeyOrType, Type into) {
+		public Object getComponentInto(Object keyOrType, Type into) {
 			return null;
 		}
 
@@ -88,7 +88,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+        public ComponentAdapter<?> getComponentAdapter(Object key) {
             return null;
         }
 

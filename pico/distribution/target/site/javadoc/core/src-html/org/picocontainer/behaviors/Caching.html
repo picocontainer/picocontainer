@@ -36,18 +36,18 @@
 <FONT color="green">033</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.33"></a>
 <FONT color="green">034</FONT>                            ComponentMonitor componentMonitor,<a name="line.34"></a>
 <FONT color="green">035</FONT>                            LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
-<FONT color="green">036</FONT>                            Properties componentProperties, Object componentKey,<a name="line.36"></a>
+<FONT color="green">036</FONT>                            Properties componentProperties, Object key,<a name="line.36"></a>
 <FONT color="green">037</FONT>                            Class&lt;T&gt; componentImplementation, Parameter... parameters)<a name="line.37"></a>
 <FONT color="green">038</FONT>                            throws PicoCompositionException {<a name="line.38"></a>
 <FONT color="green">039</FONT>                    if (removePropertiesIfPresent(componentProperties,<a name="line.39"></a>
 <FONT color="green">040</FONT>                                    Characteristics.NO_CACHE)) {<a name="line.40"></a>
 <FONT color="green">041</FONT>                            return super.createComponentAdapter(componentMonitor,<a name="line.41"></a>
-<FONT color="green">042</FONT>                                            lifecycleStrategy, componentProperties, componentKey,<a name="line.42"></a>
+<FONT color="green">042</FONT>                                            lifecycleStrategy, componentProperties, key,<a name="line.42"></a>
 <FONT color="green">043</FONT>                                            componentImplementation, parameters);<a name="line.43"></a>
 <FONT color="green">044</FONT>                    }<a name="line.44"></a>
 <FONT color="green">045</FONT>                    removePropertiesIfPresent(componentProperties, Characteristics.CACHE);<a name="line.45"></a>
 <FONT color="green">046</FONT>            return componentMonitor.newBehavior(new Cached&lt;T&gt;(super.createComponentAdapter(componentMonitor,<a name="line.46"></a>
-<FONT color="green">047</FONT>                                    lifecycleStrategy, componentProperties, componentKey,<a name="line.47"></a>
+<FONT color="green">047</FONT>                                    lifecycleStrategy, componentProperties, key,<a name="line.47"></a>
 <FONT color="green">048</FONT>                                    componentImplementation, parameters),<a name="line.48"></a>
 <FONT color="green">049</FONT>                    new SimpleReference&lt;Stored.Instance&lt;T&gt;&gt;()));<a name="line.49"></a>
 <FONT color="green">050</FONT>    <a name="line.50"></a>

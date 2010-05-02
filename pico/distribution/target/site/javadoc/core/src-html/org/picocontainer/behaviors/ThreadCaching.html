@@ -29,7 +29,7 @@
 <FONT color="green">026</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor componentMonitor,<a name="line.26"></a>
 <FONT color="green">027</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.27"></a>
 <FONT color="green">028</FONT>                                                              Properties componentProperties,<a name="line.28"></a>
-<FONT color="green">029</FONT>                                                              Object componentKey,<a name="line.29"></a>
+<FONT color="green">029</FONT>                                                              Object key,<a name="line.29"></a>
 <FONT color="green">030</FONT>                                                              Class&lt;T&gt; componentImplementation,<a name="line.30"></a>
 <FONT color="green">031</FONT>                                                              Parameter... parameters)<a name="line.31"></a>
 <FONT color="green">032</FONT>            throws PicoCompositionException<a name="line.32"></a>
@@ -38,7 +38,7 @@
 <FONT color="green">035</FONT>                return super.createComponentAdapter(componentMonitor,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                    lifecycleStrategy,<a name="line.36"></a>
 <FONT color="green">037</FONT>                                                    componentProperties,<a name="line.37"></a>
-<FONT color="green">038</FONT>                                                    componentKey,<a name="line.38"></a>
+<FONT color="green">038</FONT>                                                    key,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                    componentImplementation,<a name="line.39"></a>
 <FONT color="green">040</FONT>                                                    parameters);<a name="line.40"></a>
 <FONT color="green">041</FONT>            }<a name="line.41"></a>
@@ -46,7 +46,7 @@
 <FONT color="green">043</FONT>            return componentMonitor.newBehavior(new ThreadCached&lt;T&gt;(super.createComponentAdapter(componentMonitor,<a name="line.43"></a>
 <FONT color="green">044</FONT>                                                                    lifecycleStrategy,<a name="line.44"></a>
 <FONT color="green">045</FONT>                                                                    componentProperties,<a name="line.45"></a>
-<FONT color="green">046</FONT>                                                                    componentKey,<a name="line.46"></a>
+<FONT color="green">046</FONT>                                                                    key,<a name="line.46"></a>
 <FONT color="green">047</FONT>                                                                    componentImplementation,<a name="line.47"></a>
 <FONT color="green">048</FONT>                                                                    parameters)));<a name="line.48"></a>
 <FONT color="green">049</FONT>    <a name="line.49"></a>

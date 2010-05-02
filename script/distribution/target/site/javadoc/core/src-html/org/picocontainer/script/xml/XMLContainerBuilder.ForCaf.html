@@ -395,8 +395,8 @@
 <FONT color="green">392</FONT>         * &lt;code&gt;ComponentParameter() - Expect any scalar paramter of the appropriate type or an Array.<a name="line.392"></a>
 <FONT color="green">393</FONT>         *       ComponentParameter(boolean emptyCollection) - Expect any scalar paramter of the appropriate type or an Array.<a name="line.393"></a>
 <FONT color="green">394</FONT>         *       ComponentParameter(Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.<a name="line.394"></a>
-<FONT color="green">395</FONT>         *       ComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.<a name="line.395"></a>
-<FONT color="green">396</FONT>         *       ComponentParameter(Object componentKey) - Expect a parameter matching a component of a specific key.&lt;/code&gt;<a name="line.396"></a>
+<FONT color="green">395</FONT>         *       ComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.<a name="line.395"></a>
+<FONT color="green">396</FONT>         *       ComponentParameter(Object key) - Expect a parameter matching a component of a specific key.&lt;/code&gt;<a name="line.396"></a>
 <FONT color="green">397</FONT>         * <a name="line.397"></a>
 <FONT color="green">398</FONT>         * and<a name="line.398"></a>
 <FONT color="green">399</FONT>         * <a name="line.399"></a>
@@ -407,7 +407,7 @@
 <FONT color="green">404</FONT>         * The rules for this are, in order:<a name="line.404"></a>
 <FONT color="green">405</FONT>         * <a name="line.405"></a>
 <FONT color="green">406</FONT>         * 1) If the &lt;code&gt;key&lt;/code&gt; attribute is not null/empty, the fifth constructor will be used.<a name="line.406"></a>
-<FONT color="green">407</FONT>         * 2) If the &lt;code&gt;componentKeyType&lt;/code&gt; attribute is not null/empty, the fourth constructor will be used.  <a name="line.407"></a>
+<FONT color="green">407</FONT>         * 2) If the &lt;code&gt;keyType&lt;/code&gt; attribute is not null/empty, the fourth constructor will be used.  <a name="line.407"></a>
 <FONT color="green">408</FONT>         *    In this case, both the &lt;code&gt;componentValueType&lt;/code&gt; and &lt;code&gt;emptyCollection&lt;/code&gt; attributes must be non-null/empty or an exception will be thrown.<a name="line.408"></a>
 <FONT color="green">409</FONT>         * 3) If the &lt;code&gt;componentValueType&lt;/code&gt; attribute is not null/empty, the third constructor will be used.<a name="line.409"></a>
 <FONT color="green">410</FONT>         *    In this case, the &lt;code&gt;emptyCollection&lt;/code&gt; attribute must be non-null/empty.<a name="line.410"></a>
@@ -425,27 +425,27 @@
 <FONT color="green">422</FONT>            String key = element.getAttribute(KEY);<a name="line.422"></a>
 <FONT color="green">423</FONT>            String emptyCollectionString = element.getAttribute(EMPTY_COLLECTION);<a name="line.423"></a>
 <FONT color="green">424</FONT>            String componentValueTypeString = element.getAttribute(COMPONENT_VALUE_TYPE);<a name="line.424"></a>
-<FONT color="green">425</FONT>            String componentKeyTypeString = element.getAttribute(COMPONENT_KEY_TYPE);<a name="line.425"></a>
+<FONT color="green">425</FONT>            String keyTypeString = element.getAttribute(COMPONENT_KEY_TYPE);<a name="line.425"></a>
 <FONT color="green">426</FONT>    <a name="line.426"></a>
 <FONT color="green">427</FONT>            // key not null/empty takes precidence <a name="line.427"></a>
 <FONT color="green">428</FONT>            if (key != null &amp;&amp; !EMPTY.equals(key)) {<a name="line.428"></a>
 <FONT color="green">429</FONT>                parameter = new ComponentParameter(key);<a name="line.429"></a>
-<FONT color="green">430</FONT>            } else if (componentKeyTypeString != null &amp;&amp; !EMPTY.equals(componentKeyTypeString)) {<a name="line.430"></a>
+<FONT color="green">430</FONT>            } else if (keyTypeString != null &amp;&amp; !EMPTY.equals(keyTypeString)) {<a name="line.430"></a>
 <FONT color="green">431</FONT>                if (emptyCollectionString == null || componentValueTypeString == null || <a name="line.431"></a>
 <FONT color="green">432</FONT>                        EMPTY.equals(emptyCollectionString) || EMPTY.equals(componentValueTypeString)) {<a name="line.432"></a>
 <FONT color="green">433</FONT>                    <a name="line.433"></a>
-<FONT color="green">434</FONT>                    throw new ScriptedPicoContainerMarkupException("The componentKeyType attribute was specified (" +<a name="line.434"></a>
-<FONT color="green">435</FONT>                            componentKeyTypeString + ") but one or both of the emptyCollection (" + <a name="line.435"></a>
+<FONT color="green">434</FONT>                    throw new ScriptedPicoContainerMarkupException("The keyType attribute was specified (" +<a name="line.434"></a>
+<FONT color="green">435</FONT>                            keyTypeString + ") but one or both of the emptyCollection (" + <a name="line.435"></a>
 <FONT color="green">436</FONT>                            emptyCollectionString + ") or componentValueType (" + componentValueTypeString + <a name="line.436"></a>
 <FONT color="green">437</FONT>                            ") was empty or null.");<a name="line.437"></a>
 <FONT color="green">438</FONT>                }<a name="line.438"></a>
 <FONT color="green">439</FONT>                <a name="line.439"></a>
-<FONT color="green">440</FONT>                Class&lt;?&gt; componentKeyType = getClassLoader().loadClass(componentKeyTypeString);<a name="line.440"></a>
+<FONT color="green">440</FONT>                Class&lt;?&gt; keyType = getClassLoader().loadClass(keyTypeString);<a name="line.440"></a>
 <FONT color="green">441</FONT>                Class&lt;?&gt; componentValueType = getClassLoader().loadClass(componentValueTypeString);<a name="line.441"></a>
 <FONT color="green">442</FONT>                <a name="line.442"></a>
 <FONT color="green">443</FONT>                boolean emptyCollection = Boolean.valueOf(emptyCollectionString);<a name="line.443"></a>
 <FONT color="green">444</FONT>                <a name="line.444"></a>
-<FONT color="green">445</FONT>                parameter = new ComponentParameter(componentKeyType, componentValueType, emptyCollection);<a name="line.445"></a>
+<FONT color="green">445</FONT>                parameter = new ComponentParameter(keyType, componentValueType, emptyCollection);<a name="line.445"></a>
 <FONT color="green">446</FONT>            } else if (componentValueTypeString != null &amp;&amp; !EMPTY.equals(componentValueTypeString)) {<a name="line.446"></a>
 <FONT color="green">447</FONT>                if (emptyCollectionString == null || EMPTY.equals(emptyCollectionString)) {<a name="line.447"></a>
 <FONT color="green">448</FONT>                    <a name="line.448"></a>

@@ -37,21 +37,21 @@
 <FONT color="green">034</FONT>    <a name="line.34"></a>
 <FONT color="green">035</FONT>        final class Runner extends Thread {<a name="line.35"></a>
 <FONT color="green">036</FONT>            private final PicoContainer container;<a name="line.36"></a>
-<FONT color="green">037</FONT>            private final Object componentKey;<a name="line.37"></a>
+<FONT color="green">037</FONT>            private final Object key;<a name="line.37"></a>
 <FONT color="green">038</FONT>            private Throwable throwable;<a name="line.38"></a>
 <FONT color="green">039</FONT>            private boolean finished;<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
-<FONT color="green">041</FONT>            Runner(String name, PicoContainer container, Object componentKey) {<a name="line.41"></a>
+<FONT color="green">041</FONT>            Runner(String name, PicoContainer container, Object key) {<a name="line.41"></a>
 <FONT color="green">042</FONT>                super(name);<a name="line.42"></a>
 <FONT color="green">043</FONT>                this.container = container;<a name="line.43"></a>
-<FONT color="green">044</FONT>                this.componentKey = componentKey;<a name="line.44"></a>
+<FONT color="green">044</FONT>                this.key = key;<a name="line.44"></a>
 <FONT color="green">045</FONT>            }<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
 <FONT color="green">047</FONT>            public void run() {<a name="line.47"></a>
 <FONT color="green">048</FONT>                try {<a name="line.48"></a>
-<FONT color="green">049</FONT>                    report("Started instantiating " + componentKey.toString());<a name="line.49"></a>
-<FONT color="green">050</FONT>                    container.getComponent(componentKey);<a name="line.50"></a>
-<FONT color="green">051</FONT>                    report("Finished instantiating " + componentKey.toString());<a name="line.51"></a>
+<FONT color="green">049</FONT>                    report("Started instantiating " + key.toString());<a name="line.49"></a>
+<FONT color="green">050</FONT>                    container.getComponent(key);<a name="line.50"></a>
+<FONT color="green">051</FONT>                    report("Finished instantiating " + key.toString());<a name="line.51"></a>
 <FONT color="green">052</FONT>                    finished = true;<a name="line.52"></a>
 <FONT color="green">053</FONT>                } catch (Throwable t) {<a name="line.53"></a>
 <FONT color="green">054</FONT>                    this.throwable = t;<a name="line.54"></a>

@@ -390,7 +390,7 @@
 <FONT color="green">387</FONT>                    public ComponentAdapter createComponentAdapter(<a name="line.387"></a>
 <FONT color="green">388</FONT>                                    ComponentMonitor componentMonitor,<a name="line.388"></a>
 <FONT color="green">389</FONT>                                    LifecycleStrategy lifecycleStrategy,<a name="line.389"></a>
-<FONT color="green">390</FONT>                                    Properties componentProperties, Object componentKey,<a name="line.390"></a>
+<FONT color="green">390</FONT>                                    Properties componentProperties, Object key,<a name="line.390"></a>
 <FONT color="green">391</FONT>                                    Class componentImplementation, Parameter... parameters)<a name="line.391"></a>
 <FONT color="green">392</FONT>                                    throws PicoCompositionException {<a name="line.392"></a>
 <FONT color="green">393</FONT>                            return adapter;<a name="line.393"></a>
@@ -791,8 +791,8 @@
 <FONT color="green">788</FONT>            DefaultPicoContainer container = new DefaultPicoContainer(<a name="line.788"></a>
 <FONT color="green">789</FONT>                    new NullComponentMonitor() {<a name="line.789"></a>
 <FONT color="green">790</FONT>                        public Object noComponentFound(<a name="line.790"></a>
-<FONT color="green">791</FONT>                                MutablePicoContainer container, Object componentKey) {<a name="line.791"></a>
-<FONT color="green">792</FONT>                            missingKey[0] = (Class) componentKey;<a name="line.792"></a>
+<FONT color="green">791</FONT>                                MutablePicoContainer container, Object key) {<a name="line.791"></a>
+<FONT color="green">792</FONT>                            missingKey[0] = (Class) key;<a name="line.792"></a>
 <FONT color="green">793</FONT>                            return "foo";<a name="line.793"></a>
 <FONT color="green">794</FONT>                        }<a name="line.794"></a>
 <FONT color="green">795</FONT>                    });<a name="line.795"></a>

@@ -194,7 +194,7 @@ Injection will happen through a constructor for the component.
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;componentImplementation,
                                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</CODE>
 
@@ -202,7 +202,7 @@ Injection will happen through a constructor for the component.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor injector that uses no monitor and no lifecycle adapter.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                                        <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -212,7 +212,7 @@ Injection will happen through a constructor for the component.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a ConstructorInjector</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, boolean)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+<TD><CODE><B><A HREF="../../../org/picocontainer/injectors/ConstructorInjector.html#ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, boolean)">ConstructorInjector</A></B>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                                        <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                                        <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                                        <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -335,7 +335,7 @@ Injection will happen through a constructor for the component.
 <A NAME="ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter...)"><!-- --></A><H3>
 ConstructorInjector</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.66"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.66"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;componentImplementation,
                            <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>...&nbsp;parameters)</PRE>
 <DL>
@@ -343,14 +343,14 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjecto
  convenient constructor for use when instantiating a constructor injector directly.
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters used for initialization</DL>
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters used for initialization</DL>
 </DL>
 <HR>
 
 <A NAME="ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean)"><!-- --></A><H3>
 ConstructorInjector</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.82"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.82"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                            <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                            <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -360,7 +360,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjecto
 <DD>Creates a ConstructorInjector
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>useNames</CODE> - use argument names when looking up dependencies
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>useNames</CODE> - use argument names when looking up dependencies
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../org/picocontainer/injectors/AbstractInjector.NotConcreteRegistrationException.html" title="class in org.picocontainer.injectors">AbstractInjector.NotConcreteRegistrationException</A></CODE> - if the implementation is not a concrete class.
 <DD><CODE><A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</A></CODE> - if one of the parameters is <code>null</code></DL>
@@ -370,7 +370,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjecto
 <A NAME="ConstructorInjector(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[], org.picocontainer.ComponentMonitor, boolean, boolean)"><!-- --></A><H3>
 ConstructorInjector</H3>
 <PRE>
-public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.100"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;componentKey,
+public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjector.html#line.100"><B>ConstructorInjector</B></A>(<A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;key,
                            <A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&nbsp;componentImplementation,
                            <A HREF="../../../org/picocontainer/Parameter.html" title="interface in org.picocontainer">Parameter</A>[]&nbsp;parameters,
                            <A HREF="../../../org/picocontainer/ComponentMonitor.html" title="interface in org.picocontainer">ComponentMonitor</A>&nbsp;monitor,
@@ -381,7 +381,7 @@ public <A HREF="../../../src-html/org/picocontainer/injectors/ConstructorInjecto
 <DD>Creates a ConstructorInjector
 <P>
 <DL>
-<DT><B>Parameters:</B><DD><CODE>componentKey</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>useNames</CODE> - use argument names when looking up dependencies<DD><CODE>rememberChosenCtor</CODE> - remember the chosen constructor (to speed up second/subsequent calls)
+<DT><B>Parameters:</B><DD><CODE>key</CODE> - the search key for this implementation<DD><CODE>componentImplementation</CODE> - the concrete implementation<DD><CODE>parameters</CODE> - the parameters to use for the initialization<DD><CODE>monitor</CODE> - the component monitor used by this addAdapter<DD><CODE>useNames</CODE> - use argument names when looking up dependencies<DD><CODE>rememberChosenCtor</CODE> - remember the chosen constructor (to speed up second/subsequent calls)
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../org/picocontainer/injectors/AbstractInjector.NotConcreteRegistrationException.html" title="class in org.picocontainer.injectors">AbstractInjector.NotConcreteRegistrationException</A></CODE> - if the implementation is not a concrete class.
 <DD><CODE><A HREF="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</A></CODE> - if one of the parameters is <code>null</code></DL>

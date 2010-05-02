@@ -385,7 +385,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		public ComponentAdapter createComponentAdapter(
 				ComponentMonitor componentMonitor,
 				LifecycleStrategy lifecycleStrategy,
-				Properties componentProperties, Object componentKey,
+				Properties componentProperties, Object key,
 				Class componentImplementation, Parameter... parameters)
 				throws PicoCompositionException {
 			return adapter;
@@ -782,8 +782,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         DefaultPicoContainer container = new DefaultPicoContainer(
                 new NullComponentMonitor() {
                     public Object noComponentFound(
-                            MutablePicoContainer container, Object componentKey) {
-                        missingKey[0] = (Class) componentKey;
+                            MutablePicoContainer container, Object key) {
+                        missingKey[0] = (Class) key;
                         return "foo";
                     }
                 });

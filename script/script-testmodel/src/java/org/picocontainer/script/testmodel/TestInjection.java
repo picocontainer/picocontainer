@@ -23,9 +23,9 @@ public final class TestInjection extends AdaptingInjection {
 
     @SuppressWarnings("unchecked")
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
-                    Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+                    Properties componentProperties, Object key, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         sb.append("called");
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                            componentProperties, componentKey, componentImplementation, parameters);
+                                            componentProperties, key, componentImplementation, parameters);
     }
 }

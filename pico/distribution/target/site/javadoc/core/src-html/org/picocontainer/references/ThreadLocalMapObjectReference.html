@@ -21,21 +21,21 @@
 <FONT color="green">018</FONT>     */<a name="line.18"></a>
 <FONT color="green">019</FONT>    public class ThreadLocalMapObjectReference&lt;T&gt; implements ObjectReference&lt;T&gt; {<a name="line.19"></a>
 <FONT color="green">020</FONT>        private final ThreadLocal&lt;Map&lt;Object, T&gt;&gt; threadLocal;<a name="line.20"></a>
-<FONT color="green">021</FONT>        private final Object componentKey;<a name="line.21"></a>
+<FONT color="green">021</FONT>        private final Object key;<a name="line.21"></a>
 <FONT color="green">022</FONT>    <a name="line.22"></a>
-<FONT color="green">023</FONT>        public ThreadLocalMapObjectReference(ThreadLocal&lt;Map&lt;Object, T&gt;&gt; threadLocal, Object componentKey) {<a name="line.23"></a>
+<FONT color="green">023</FONT>        public ThreadLocalMapObjectReference(ThreadLocal&lt;Map&lt;Object, T&gt;&gt; threadLocal, Object key) {<a name="line.23"></a>
 <FONT color="green">024</FONT>            this.threadLocal = threadLocal;<a name="line.24"></a>
-<FONT color="green">025</FONT>            this.componentKey = componentKey;<a name="line.25"></a>
+<FONT color="green">025</FONT>            this.key = key;<a name="line.25"></a>
 <FONT color="green">026</FONT>        }<a name="line.26"></a>
 <FONT color="green">027</FONT>    <a name="line.27"></a>
 <FONT color="green">028</FONT>        @SuppressWarnings("unchecked")<a name="line.28"></a>
 <FONT color="green">029</FONT>        public T get() {<a name="line.29"></a>
-<FONT color="green">030</FONT>            return threadLocal.get().get(componentKey) ;<a name="line.30"></a>
+<FONT color="green">030</FONT>            return threadLocal.get().get(key) ;<a name="line.30"></a>
 <FONT color="green">031</FONT>        }<a name="line.31"></a>
 <FONT color="green">032</FONT>    <a name="line.32"></a>
 <FONT color="green">033</FONT>        @SuppressWarnings("unchecked")<a name="line.33"></a>
 <FONT color="green">034</FONT>        public void set(T item) {<a name="line.34"></a>
-<FONT color="green">035</FONT>            threadLocal.get().put(componentKey, item) ;<a name="line.35"></a>
+<FONT color="green">035</FONT>            threadLocal.get().put(key, item) ;<a name="line.35"></a>
 <FONT color="green">036</FONT>    <a name="line.36"></a>
 <FONT color="green">037</FONT>        }<a name="line.37"></a>
 <FONT color="green">038</FONT>    }<a name="line.38"></a>

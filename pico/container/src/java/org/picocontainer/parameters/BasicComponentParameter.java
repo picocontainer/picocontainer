@@ -40,15 +40,15 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     /** <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor. */
     public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();
 
-    private Object componentKey;
+    private Object key;
 
     /**
      * Expect a parameter matching a component of a specific key.
      *
-     * @param componentKey the key of the desired addComponent
+     * @param key the key of the desired addComponent
      */
-    public BasicComponentParameter(Object componentKey) {
-        this.componentKey = componentKey;
+    public BasicComponentParameter(Object key) {
+        this.key = key;
     }
 
     /** Expect any parameter of the appropriate type. */
@@ -177,9 +177,9 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
 
         ComponentAdapter<T> result = null;
-        if (componentKey != null) {
+        if (key != null) {
             // key tells us where to look so we follow
-            result = typeComponentAdapter(container.getComponentAdapter(componentKey));
+            result = typeComponentAdapter(container.getComponentAdapter(key));
         } else if (adapter == null) {
             result = container.getComponentAdapter(type, (NameBinding) null);
         } else {

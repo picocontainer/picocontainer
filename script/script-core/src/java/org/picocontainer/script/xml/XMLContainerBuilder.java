@@ -415,8 +415,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
      * <code>ComponentParameter() - Expect any scalar paramter of the appropriate type or an Array.
      *       ComponentParameter(boolean emptyCollection) - Expect any scalar paramter of the appropriate type or an Array.
      *       ComponentParameter(Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.
-     *       ComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.
-     *       ComponentParameter(Object componentKey) - Expect a parameter matching a component of a specific key.</code>
+     *       ComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) - Expect any scalar paramter of the appropriate type or the collecting type Array,Collectionor Map.
+     *       ComponentParameter(Object key) - Expect a parameter matching a component of a specific key.</code>
      * 
      * and
      * 
@@ -427,7 +427,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
      * The rules for this are, in order:
      * 
      * 1) If the <code>key</code> attribute is not null/empty, the fifth constructor will be used.
-     * 2) If the <code>componentKeyType</code> attribute is not null/empty, the fourth constructor will be used.  
+     * 2) If the <code>keyType</code> attribute is not null/empty, the fourth constructor will be used.
      *    In this case, both the <code>componentValueType</code> and <code>emptyCollection</code> attributes must be non-null/empty or an exception will be thrown.
      * 3) If the <code>componentValueType</code> attribute is not null/empty, the third constructor will be used.
      *    In this case, the <code>emptyCollection</code> attribute must be non-null/empty.
@@ -445,27 +445,27 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         String key = element.getAttribute(KEY);
         String emptyCollectionString = element.getAttribute(EMPTY_COLLECTION);
         String componentValueTypeString = element.getAttribute(COMPONENT_VALUE_TYPE);
-        String componentKeyTypeString = element.getAttribute(COMPONENT_KEY_TYPE);
+        String keyTypeString = element.getAttribute(COMPONENT_KEY_TYPE);
 
         // key not null/empty takes precidence 
         if (key != null && !EMPTY.equals(key)) {
             parameter = new ComponentParameter(key);
-        } else if (componentKeyTypeString != null && !EMPTY.equals(componentKeyTypeString)) {
+        } else if (keyTypeString != null && !EMPTY.equals(keyTypeString)) {
             if (emptyCollectionString == null || componentValueTypeString == null || 
                     EMPTY.equals(emptyCollectionString) || EMPTY.equals(componentValueTypeString)) {
                 
-                throw new ScriptedPicoContainerMarkupException("The componentKeyType attribute was specified (" +
-                        componentKeyTypeString + ") but one or both of the emptyCollection (" + 
+                throw new ScriptedPicoContainerMarkupException("The keyType attribute was specified (" +
+                        keyTypeString + ") but one or both of the emptyCollection (" +
                         emptyCollectionString + ") or componentValueType (" + componentValueTypeString + 
                         ") was empty or null.");
             }
             
-            Class<?> componentKeyType = getClassLoader().loadClass(componentKeyTypeString);
+            Class<?> keyType = getClassLoader().loadClass(keyTypeString);
             Class<?> componentValueType = getClassLoader().loadClass(componentValueTypeString);
             
             boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
-            parameter = new ComponentParameter(componentKeyType, componentValueType, emptyCollection);
+            parameter = new ComponentParameter(keyType, componentValueType, emptyCollection);
         } else if (componentValueTypeString != null && !EMPTY.equals(componentValueTypeString)) {
             if (emptyCollectionString == null || EMPTY.equals(emptyCollectionString)) {
                 

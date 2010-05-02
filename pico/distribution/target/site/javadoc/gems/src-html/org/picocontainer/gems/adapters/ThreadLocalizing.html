@@ -113,16 +113,16 @@
 <FONT color="green">110</FONT>    <a name="line.110"></a>
 <FONT color="green">111</FONT>        @Override<a name="line.111"></a>
 <FONT color="green">112</FONT>            public ComponentAdapter createComponentAdapter(<a name="line.112"></a>
-<FONT color="green">113</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)<a name="line.113"></a>
+<FONT color="green">113</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)<a name="line.113"></a>
 <FONT color="green">114</FONT>                throws PicoCompositionException<a name="line.114"></a>
 <FONT color="green">115</FONT>        {<a name="line.115"></a>
 <FONT color="green">116</FONT>            final ComponentAdapter componentAdapter;<a name="line.116"></a>
 <FONT color="green">117</FONT>            if (ensureThreadLocal) {<a name="line.117"></a>
 <FONT color="green">118</FONT>                componentAdapter = new ThreadLocalized(super.createComponentAdapter(<a name="line.118"></a>
-<FONT color="green">119</FONT>                        componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), proxyFactory);<a name="line.119"></a>
+<FONT color="green">119</FONT>                        componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), proxyFactory);<a name="line.119"></a>
 <FONT color="green">120</FONT>            } else {<a name="line.120"></a>
 <FONT color="green">121</FONT>                componentAdapter = new Cached(super.createComponentAdapter(<a name="line.121"></a>
-<FONT color="green">122</FONT>                        componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), new ThreadLocalReference());<a name="line.122"></a>
+<FONT color="green">122</FONT>                        componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), new ThreadLocalReference());<a name="line.122"></a>
 <FONT color="green">123</FONT>            }<a name="line.123"></a>
 <FONT color="green">124</FONT>            return componentAdapter;<a name="line.124"></a>
 <FONT color="green">125</FONT>        }<a name="line.125"></a>

@@ -34,21 +34,21 @@ public final class Issue0199TestCase {
 
     final class Runner extends Thread {
         private final PicoContainer container;
-        private final Object componentKey;
+        private final Object key;
         private Throwable throwable;
         private boolean finished;
 
-        Runner(String name, PicoContainer container, Object componentKey) {
+        Runner(String name, PicoContainer container, Object key) {
             super(name);
             this.container = container;
-            this.componentKey = componentKey;
+            this.key = key;
         }
 
         public void run() {
             try {
-                report("Started instantiating " + componentKey.toString());
-                container.getComponent(componentKey);
-                report("Finished instantiating " + componentKey.toString());
+                report("Started instantiating " + key.toString());
+                container.getComponent(key);
+                report("Finished instantiating " + key.toString());
                 finished = true;
             } catch (Throwable t) {
                 this.throwable = t;

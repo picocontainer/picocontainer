@@ -108,8 +108,8 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         delegate.lifecycleInvocationFailed(container, componentAdapter, method,instance, cause);
     }
 
-    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
-        return delegate.noComponentFound(container, componentKey);
+    public Object noComponentFound(MutablePicoContainer container, Object key) {
+        return delegate.noComponentFound(container, key);
     }
 
     public Injector newInjector(Injector injector) {

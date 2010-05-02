@@ -19,7 +19,7 @@ public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoCon
         return null;
     }
 
-    public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoCompositionException {
+    public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) throws PicoCompositionException {
         Assert.assertEquals(HashMap.class, componentImplementationOrInstance);
         return super.addComponent(ArrayList.class, ArrayList.class, parameters);
     }

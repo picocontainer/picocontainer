@@ -36,10 +36,10 @@
 <FONT color="green">033</FONT>        }<a name="line.33"></a>
 <FONT color="green">034</FONT>    <a name="line.34"></a>
 <FONT color="green">035</FONT>        @Override<a name="line.35"></a>
-<FONT color="green">036</FONT>            public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)<a name="line.36"></a>
+<FONT color="green">036</FONT>            public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)<a name="line.36"></a>
 <FONT color="green">037</FONT>                throws PicoCompositionException {<a name="line.37"></a>
 <FONT color="green">038</FONT>            ComponentAdapter delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,<a name="line.38"></a>
-<FONT color="green">039</FONT>                                                                             componentProperties, componentKey, componentImplementation, parameters);<a name="line.39"></a>
+<FONT color="green">039</FONT>                                                                             componentProperties, key, componentImplementation, parameters);<a name="line.39"></a>
 <FONT color="green">040</FONT>    <a name="line.40"></a>
 <FONT color="green">041</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {<a name="line.41"></a>
 <FONT color="green">042</FONT>                    return delegate;<a name="line.42"></a>

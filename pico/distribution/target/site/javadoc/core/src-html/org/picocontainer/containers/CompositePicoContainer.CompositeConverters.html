@@ -68,9 +68,9 @@
 <FONT color="green">065</FONT>            return null;<a name="line.65"></a>
 <FONT color="green">066</FONT>        }<a name="line.66"></a>
 <FONT color="green">067</FONT>    <a name="line.67"></a>
-<FONT color="green">068</FONT>        public Object getComponent(Object componentKeyOrType, Type into) {<a name="line.68"></a>
+<FONT color="green">068</FONT>        public Object getComponent(Object keyOrType, Type into) {<a name="line.68"></a>
 <FONT color="green">069</FONT>            for (PicoContainer container : containers) {<a name="line.69"></a>
-<FONT color="green">070</FONT>                Object inst = container.getComponent(componentKeyOrType, into);<a name="line.70"></a>
+<FONT color="green">070</FONT>                Object inst = container.getComponent(keyOrType, into);<a name="line.70"></a>
 <FONT color="green">071</FONT>                if (inst != null) {<a name="line.71"></a>
 <FONT color="green">072</FONT>                    return inst;<a name="line.72"></a>
 <FONT color="green">073</FONT>                }<a name="line.73"></a>
@@ -78,9 +78,9 @@
 <FONT color="green">075</FONT>            return null;<a name="line.75"></a>
 <FONT color="green">076</FONT>        }<a name="line.76"></a>
 <FONT color="green">077</FONT>    <a name="line.77"></a>
-<FONT color="green">078</FONT>        public Object getComponent(Object componentKeyOrType) {<a name="line.78"></a>
+<FONT color="green">078</FONT>        public Object getComponent(Object keyOrType) {<a name="line.78"></a>
 <FONT color="green">079</FONT>            for (PicoContainer container : containers) {<a name="line.79"></a>
-<FONT color="green">080</FONT>                Object inst = container.getComponent(componentKeyOrType);<a name="line.80"></a>
+<FONT color="green">080</FONT>                Object inst = container.getComponent(keyOrType);<a name="line.80"></a>
 <FONT color="green">081</FONT>                if (inst != null) {<a name="line.81"></a>
 <FONT color="green">082</FONT>                    return inst;<a name="line.82"></a>
 <FONT color="green">083</FONT>                }<a name="line.83"></a>
@@ -88,9 +88,9 @@
 <FONT color="green">085</FONT>            return null;<a name="line.85"></a>
 <FONT color="green">086</FONT>        }<a name="line.86"></a>
 <FONT color="green">087</FONT>    <a name="line.87"></a>
-<FONT color="green">088</FONT>        public ComponentAdapter getComponentAdapter(Object componentKey) {<a name="line.88"></a>
+<FONT color="green">088</FONT>        public ComponentAdapter getComponentAdapter(Object key) {<a name="line.88"></a>
 <FONT color="green">089</FONT>            for (PicoContainer container : containers) {<a name="line.89"></a>
-<FONT color="green">090</FONT>                ComponentAdapter inst = container.getComponentAdapter(componentKey);<a name="line.90"></a>
+<FONT color="green">090</FONT>                ComponentAdapter inst = container.getComponentAdapter(key);<a name="line.90"></a>
 <FONT color="green">091</FONT>                if (inst != null) {<a name="line.91"></a>
 <FONT color="green">092</FONT>                    return inst;<a name="line.92"></a>
 <FONT color="green">093</FONT>                }<a name="line.93"></a>

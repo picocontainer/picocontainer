@@ -122,7 +122,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Map used for looking up component adapters by their key.
      */
-    private final Map<Object, ComponentAdapter<?>> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter<?>>();
+    private final Map<Object, ComponentAdapter<?>> keyToAdapterCache = new HashMap<Object, ComponentAdapter<?>>();
 
 
     private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
@@ -288,18 +288,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * {@inheritDoc} *
      */
-    public final ComponentAdapter<?> getComponentAdapter(final Object componentKey) {
-        ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(componentKey);
+    public final ComponentAdapter<?> getComponentAdapter(final Object key) {
+        ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(key);
         if (adapter == null && parent != null) {
-            adapter = getParent().getComponentAdapter(componentKey);
+            adapter = getParent().getComponentAdapter(key);
             if (adapter != null) {
                 adapter = new KnowsContainerAdapter(adapter, getParent());
             }
         }
         if (adapter == null) {
-            Object inst = componentMonitor.noComponentFound(this, componentKey);
+            Object inst = componentMonitor.noComponentFound(this, key);
             if (inst != null) {
-                adapter = new LateInstance(componentKey, inst);
+                adapter = new LateInstance(key, inst);
             }
         }
         return adapter;
@@ -308,8 +308,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     public static class LateInstance extends AbstractAdapter {
         private final Object instance;
 
-        private LateInstance(Object componentKey, Object instance) {
-            super(componentKey, instance.getClass());
+        private LateInstance(Object key, Object instance) {
+            super(key, instance.getClass());
             this.instance = instance;
         }
 
@@ -456,12 +456,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     protected MutablePicoContainer addAdapterInternal(ComponentAdapter<?> componentAdapter) {
-        Object componentKey = componentAdapter.getComponentKey();
-        if (getComponentKeyToAdapterCache().containsKey(componentKey)) {
-            throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
+        Object key = componentAdapter.getComponentKey();
+        if (getComponentKeyToAdapterCache().containsKey(key)) {
+            throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + key + "'");
         }
         getModifiableComponentAdapterList().add(componentAdapter);
-        getComponentKeyToAdapterCache().put(componentKey, componentAdapter);
+        getComponentKeyToAdapterCache().put(key, componentAdapter);
         return this;
     }
 
@@ -497,10 +497,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * {@inheritDoc} *
      */
-    public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
+    public <T> ComponentAdapter<T> removeComponent(final Object key) {
         lifecycleState.removingComponent();
 
-        ComponentAdapter<T> adapter = (ComponentAdapter<T>) getComponentKeyToAdapterCache().remove(componentKey);
+        ComponentAdapter<T> adapter = (ComponentAdapter<T>) getComponentKeyToAdapterCache().remove(key);
         getModifiableComponentAdapterList().remove(adapter);
         getOrderedComponentAdapters().remove(adapter);
         return adapter;
@@ -538,13 +538,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}
      * passed to the container's constructor.
      */
-    public MutablePicoContainer addComponent(final Object componentKey,
+    public MutablePicoContainer addComponent(final Object key,
                                              final Object componentImplementationOrInstance,
                                              final Parameter... parameters) {
-        return this.addComponent(componentKey, componentImplementationOrInstance, this.containerProperties, parameters);
+        return this.addComponent(key, componentImplementationOrInstance, this.containerProperties, parameters);
     }
 
-    private MutablePicoContainer addComponent(final Object componentKey,
+    private MutablePicoContainer addComponent(final Object key,
                                               final Object componentImplementationOrInstance,
                                               final Properties properties,
                                               Parameter... parameters) {
@@ -562,7 +562,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(componentMonitor,
                     lifecycleStrategy,
                     tmpProperties,
-                    componentKey,
+                    key,
                     (Class<?>) componentImplementationOrInstance,
                     parameters);
             AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
@@ -574,7 +574,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapterInternal(adapter);
         } else {
             ComponentAdapter<?> adapter =
-                    new InstanceAdapter<Object>(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
+                    new InstanceAdapter<Object>(key, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);
                 potentiallyStartAdapter(adapter);
@@ -634,12 +634,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return componentInstance;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return getComponent(componentKeyOrType, null, ComponentAdapter.NOTHING.class);
+    public Object getComponent(Object keyOrType) {
+        return getComponent(keyOrType, null, ComponentAdapter.NOTHING.class);
     }
 
-    public Object getComponentInto(final Object componentKeyOrType, Type into) {
-        return getComponent(componentKeyOrType, null, into);
+    public Object getComponentInto(final Object keyOrType, Type into) {
+        return getComponent(keyOrType, null, into);
     }
 
     public <T> T getComponent(Class<T> componentType) {
@@ -647,17 +647,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return componentType.cast(o);
     }
 
-    public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation, Type into) {
+    public Object getComponent(final Object keyOrType, final Class<? extends Annotation> annotation, Type into) {
         ComponentAdapter<?> componentAdapter;
         Object component;
         if (annotation != null) {
-            componentAdapter = getComponentAdapter((Class<?>) componentKeyOrType, annotation);
+            componentAdapter = getComponentAdapter((Class<?>) keyOrType, annotation);
             component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
-        } else if (componentKeyOrType instanceof Class) {
-            componentAdapter = getComponentAdapter((Class<?>) componentKeyOrType, (NameBinding) null);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>) componentKeyOrType, into);
+        } else if (keyOrType instanceof Class) {
+            componentAdapter = getComponentAdapter((Class<?>) keyOrType, (NameBinding) null);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>) keyOrType, into);
         } else {
-            componentAdapter = getComponentAdapter(componentKeyOrType);
+            componentAdapter = getComponentAdapter(keyOrType);
             component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
         }
         return decorateComponent(component, componentAdapter);
@@ -694,7 +694,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return componentType.cast(o);
     }
 
-    private Object getInstance(final ComponentAdapter<?> componentAdapter, Class componentKey, Type into) {
+    private Object getInstance(final ComponentAdapter<?> componentAdapter, Class key, Type into) {
         // check whether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);
@@ -1082,10 +1082,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     /**
-     * @return the componentKeyToAdapterCache
+     * @return the keyToAdapterCache
      */
     protected Map<Object, ComponentAdapter<?>> getComponentKeyToAdapterCache() {
-        return componentKeyToAdapterCache;
+        return keyToAdapterCache;
     }
 
     /**
@@ -1157,10 +1157,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         @Override
-        public MutablePicoContainer addComponent(final Object componentKey,
+        public MutablePicoContainer addComponent(final Object key,
                                                  final Object componentImplementationOrInstance,
                                                  final Parameter... parameters) throws PicoCompositionException {
-            return DefaultPicoContainer.this.addComponent(componentKey,
+            return DefaultPicoContainer.this.addComponent(key,
                     componentImplementationOrInstance,
                     properties,
                     parameters);

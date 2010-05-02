@@ -173,13 +173,13 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             return askingParentForComponent.get() == Boolean.FALSE;
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+        public ComponentAdapter<?> getComponentAdapter(Object key) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
                     nowAskingParentForComponent();
                     iDidIt = true;
-                    return super.getComponentAdapter(componentKey);
+                    return super.getComponentAdapter(key);
                 } else {
                     return null;
                 }

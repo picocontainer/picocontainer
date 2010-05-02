@@ -59,18 +59,18 @@ public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
     /**
      * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
      * convenient constructor for use when instantiating a constructor injector directly.
-     * @param componentKey the search key for this implementation
+     * @param key the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters used for initialization
      */
-    public ConstructorInjector(final Object componentKey, final Class<?> componentImplementation, Parameter... parameters) {
-        this(componentKey, componentImplementation, parameters, new NullComponentMonitor(), false);
+    public ConstructorInjector(final Object key, final Class<?> componentImplementation, Parameter... parameters) {
+        this(key, componentImplementation, parameters, new NullComponentMonitor(), false);
     }
 
     /**
      * Creates a ConstructorInjector
      *
-     * @param componentKey            the search key for this implementation
+     * @param key            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
@@ -79,15 +79,15 @@ public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public ConstructorInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                                boolean useNames) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, useNames);
+        super(key, componentImplementation, parameters, monitor, useNames);
     }
 
     /**
      * Creates a ConstructorInjector
      *
-     * @param componentKey            the search key for this implementation
+     * @param key            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
@@ -97,9 +97,9 @@ public class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+    public ConstructorInjector(final Object key, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                                boolean useNames, boolean rememberChosenCtor) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, useNames);
+        super(key, componentImplementation, parameters, monitor, useNames);
         this.rememberChosenConstructor = rememberChosenCtor;
     }
 

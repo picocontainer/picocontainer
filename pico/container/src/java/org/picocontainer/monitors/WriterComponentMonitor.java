@@ -103,9 +103,9 @@ public class WriterComponentMonitor implements ComponentMonitor {
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
-        out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
-        return delegate.noComponentFound(container, componentKey);
+    public Object noComponentFound(MutablePicoContainer container, Object key) {
+        out.println(format(ComponentMonitorHelper.NO_COMPONENT, key));
+        return delegate.noComponentFound(container, key);
     }
 
     public Injector newInjector(Injector injector) {

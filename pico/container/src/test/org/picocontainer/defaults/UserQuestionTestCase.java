@@ -39,8 +39,8 @@ public final class UserQuestionTestCase {
     public static final class CheeseAdapter<T extends Cheese> extends AbstractAdapter<T> {
         private final Map<String,?> bla;
 
-        public CheeseAdapter(Object componentKey, Class<T> componentImplementation, Map<String,?> cheeseMap) throws PicoCompositionException {
-            super(componentKey, componentImplementation);
+        public CheeseAdapter(Object key, Class<T> componentImplementation, Map<String,?> cheeseMap) throws PicoCompositionException {
+            super(key, componentImplementation);
             this.bla = cheeseMap;
         }
 

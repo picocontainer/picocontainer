@@ -35,21 +35,21 @@ public class RegexComposer implements ComposingMonitor.Composer {
         forNamedComponent = null;
     }
 
-    public Object compose(PicoContainer container, Object componentKey) {
-        if (componentKey instanceof String
-                && (forNamedComponent == null || forNamedComponent.equals(componentKey))) {
+    public Object compose(PicoContainer container, Object key) {
+        if (key instanceof String
+                && (forNamedComponent == null || forNamedComponent.equals(key))) {
             Pattern pat = null;
             if (pattern == null) {
-                pat = Pattern.compile((String) componentKey);
+                pat = Pattern.compile((String) key);
             } else {
                 pat = pattern;
             }
             Collection<ComponentAdapter<?>> cas = container.getComponentAdapters();
             List retVal = new ArrayList();
             for (ComponentAdapter<?> componentAdapter : cas) {
-                Object key = componentAdapter.getComponentKey();
-                if (key instanceof String) {
-                    Matcher matcher = pat.matcher((String) key);
+                Object key2 = componentAdapter.getComponentKey();
+                if (key2 instanceof String) {
+                    Matcher matcher = pat.matcher((String) key2);
                     if (matcher != null && matcher.find()) {
                         retVal.add(componentAdapter.getComponentInstance(container, ComponentAdapter.NOTHING.class));
                     }

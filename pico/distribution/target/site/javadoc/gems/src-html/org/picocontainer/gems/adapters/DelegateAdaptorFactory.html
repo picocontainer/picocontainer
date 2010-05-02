@@ -50,7 +50,7 @@
 <FONT color="green">047</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.47"></a>
 <FONT color="green">048</FONT>                            final ComponentMonitor componentMonitor,<a name="line.48"></a>
 <FONT color="green">049</FONT>                            final LifecycleStrategy lifecycleStrategy,<a name="line.49"></a>
-<FONT color="green">050</FONT>                            final Properties componentProperties, final Object componentKey,<a name="line.50"></a>
+<FONT color="green">050</FONT>                            final Properties componentProperties, final Object key,<a name="line.50"></a>
 <FONT color="green">051</FONT>                            final Class&lt;T&gt; componentImplementation, final Parameter... parameters)<a name="line.51"></a>
 <FONT color="green">052</FONT>                            throws PicoCompositionException {<a name="line.52"></a>
 <FONT color="green">053</FONT>                    <a name="line.53"></a>
@@ -69,7 +69,7 @@
 <FONT color="green">066</FONT>    <a name="line.66"></a>
 <FONT color="green">067</FONT>                    <a name="line.67"></a>
 <FONT color="green">068</FONT>    <a name="line.68"></a>
-<FONT color="green">069</FONT>                    return new DelegateMethodAdapter&lt;T&gt;(componentKey, componentMonitor, instance, method);<a name="line.69"></a>
+<FONT color="green">069</FONT>                    return new DelegateMethodAdapter&lt;T&gt;(key, componentMonitor, instance, method);<a name="line.69"></a>
 <FONT color="green">070</FONT>            }<a name="line.70"></a>
 <FONT color="green">071</FONT>    <a name="line.71"></a>
 <FONT color="green">072</FONT>    <a name="line.72"></a>

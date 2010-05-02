@@ -28,21 +28,21 @@ public class ComposingMonitor extends AbstractComponentMonitor {
     }
 
     @Override
-    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
+    public Object noComponentFound(MutablePicoContainer container, Object key) {
         for (Composer composer : composers) {
-            Object retVal = composer.compose(container, componentKey);
+            Object retVal = composer.compose(container, key);
             if (retVal != null) {
                 return retVal;
             }
         }
-        return super.noComponentFound(container, componentKey);
+        return super.noComponentFound(container, key);
     }
 
     /**
      * A Composer can be used to make components that are otherwise missing.
      */
     public static interface Composer {
-        public Object compose(PicoContainer container, Object componentKey);
+        public Object compose(PicoContainer container, Object key);
     }
 
 

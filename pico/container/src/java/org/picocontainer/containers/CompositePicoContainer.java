@@ -70,13 +70,13 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return null;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
+    public Object getComponent(Object keyOrType) {
+        return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
     }
 
-    public Object getComponentInto(Object componentKeyOrType, Type into) {
+    public Object getComponentInto(Object keyOrType, Type into) {
         for (PicoContainer container : containers) {
-            Object inst = container.getComponentInto(componentKeyOrType, into);
+            Object inst = container.getComponentInto(keyOrType, into);
             if (inst != null) {
                 return inst;
             }
@@ -88,9 +88,9 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return getComponentInto(componentType, ComponentAdapter.NOTHING.class);
     }
 
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
+    public ComponentAdapter getComponentAdapter(Object key) {
         for (PicoContainer container : containers) {
-            ComponentAdapter inst = container.getComponentAdapter(componentKey);
+            ComponentAdapter inst = container.getComponentAdapter(key);
             if (inst != null) {
                 return inst;
             }

@@ -47,12 +47,12 @@
 <FONT color="green">044</FONT>         * Construct a ComponentAdapter accessing a static factory creating the component using a special key for addComponent<a name="line.44"></a>
 <FONT color="green">045</FONT>         * registration.<a name="line.45"></a>
 <FONT color="green">046</FONT>         *<a name="line.46"></a>
-<FONT color="green">047</FONT>         * @param componentKey The key of the created component.<a name="line.47"></a>
+<FONT color="green">047</FONT>         * @param key The key of the created component.<a name="line.47"></a>
 <FONT color="green">048</FONT>         * @param type The type of the created component.<a name="line.48"></a>
 <FONT color="green">049</FONT>         * @param staticFactory Wrapper instance for the static factory.<a name="line.49"></a>
 <FONT color="green">050</FONT>         */<a name="line.50"></a>
-<FONT color="green">051</FONT>        public StaticFactoryAdapter(final Object componentKey, final Class&lt;T&gt; type, final StaticFactory&lt;T&gt; staticFactory) {<a name="line.51"></a>
-<FONT color="green">052</FONT>            super(componentKey, type);<a name="line.52"></a>
+<FONT color="green">051</FONT>        public StaticFactoryAdapter(final Object key, final Class&lt;T&gt; type, final StaticFactory&lt;T&gt; staticFactory) {<a name="line.51"></a>
+<FONT color="green">052</FONT>            super(key, type);<a name="line.52"></a>
 <FONT color="green">053</FONT>            this.staticFactory = staticFactory;<a name="line.53"></a>
 <FONT color="green">054</FONT>        }<a name="line.54"></a>
 <FONT color="green">055</FONT>    <a name="line.55"></a>

@@ -757,7 +757,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("<org.picocontainer.classname.DefaultClassLoadingPicoContainer>\n" +
                 "  <namedChildContainers/>\n" +
                 "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
-                "    <componentKeyToAdapterCache/>\n" +
+                "    <keyToAdapterCache/>\n" +
                 "    <componentFactory class='"+ MyComponentFactory3.class.getName()+"'>\n" +
                 "      <delegate class='"+ MyComponentFactory2.class.getName()+"'>\n" +
                 "        <delegate class='"+ MyInjectionType.class.getName()+"'>\n" +

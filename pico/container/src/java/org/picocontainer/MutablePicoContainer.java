@@ -41,7 +41,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code>
      * <ul>
      *
-     * @param componentKey a key that identifies the component. Must be unique within the container. The type
+     * @param key a key that identifies the component. Must be unique within the container. The type
      *                     of the key object has no semantic significance unless explicitly specified in the
      *                     documentation of the implementing container.
      * @param componentImplementationOrInstance
@@ -58,7 +58,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @see org.picocontainer.parameters.ConstantParameter
      * @see org.picocontainer.parameters.ComponentParameter
      */
-    MutablePicoContainer addComponent(Object componentKey,
+    MutablePicoContainer addComponent(Object key,
                                       Object componentImplementationOrInstance,
                                       Parameter... parameters);
 
@@ -103,11 +103,11 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     /**
      * Unregister a component by key.
      *
-     * @param componentKey key of the component to unregister.
+     * @param key key of the component to unregister.
      *
      * @return the ComponentAdapter that was associated with this component.
      */
-    <T> ComponentAdapter<T> removeComponent(Object componentKey);
+    <T> ComponentAdapter<T> removeComponent(Object key);
 
     /**
      * Unregister a component by instance.

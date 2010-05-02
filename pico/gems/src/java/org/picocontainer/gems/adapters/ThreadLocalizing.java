@@ -118,16 +118,16 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
     @Override
 	public ComponentAdapter createComponentAdapter(
-            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {
             componentAdapter = new ThreadLocalized(super.createComponentAdapter(
-                    componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), proxyFactory);
+                    componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), proxyFactory);
         } else {
             componentAdapter = new Caching.Cached(super.createComponentAdapter(
-                    componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), new ThreadLocalReference());
+                    componentMonitor, lifecycleStrategy, componentProperties, key, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;
     }
@@ -210,10 +210,10 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
 
         private Class[] getInterfaces() {
-            final Object componentKey = getComponentKey();
+            final Object key = getComponentKey();
             final Class[] interfaces;
-            if (componentKey instanceof Class && ((Class<?>)componentKey).isInterface()) {
-                interfaces = new Class[]{(Class<?>)componentKey};
+            if (key instanceof Class && ((Class<?>)key).isInterface()) {
+                interfaces = new Class[]{(Class<?>)key};
             } else {
                 final Set allInterfaces = ReflectionUtils.getAllInterfaces(getComponentImplementation());
                 interfaces = (Class[])allInterfaces.toArray(new Class[allInterfaces.size()]);

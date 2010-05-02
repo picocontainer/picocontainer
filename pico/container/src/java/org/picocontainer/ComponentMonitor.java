@@ -127,9 +127,9 @@ public interface ComponentMonitor {
      * container.getComponent(<key>) in your user code.
      *
      * @param container
-     * @param componentKey
+     * @param key
      */
-    Object noComponentFound(MutablePicoContainer container, Object componentKey);
+    Object noComponentFound(MutablePicoContainer container, Object key);
 
     /**
      * A mechanism to monitor or override the Injectors being made for components.

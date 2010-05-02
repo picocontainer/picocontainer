@@ -37,11 +37,11 @@
 <FONT color="green">034</FONT>        public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(ComponentMonitor monitor,<a name="line.34"></a>
 <FONT color="green">035</FONT>                                                              LifecycleStrategy lifecycleStrategy,<a name="line.35"></a>
 <FONT color="green">036</FONT>                                                              Properties componentProperties,<a name="line.36"></a>
-<FONT color="green">037</FONT>                                                              Object componentKey,<a name="line.37"></a>
+<FONT color="green">037</FONT>                                                              Object key,<a name="line.37"></a>
 <FONT color="green">038</FONT>                                                              Class&lt;T&gt; componentImplementation,<a name="line.38"></a>
 <FONT color="green">039</FONT>                                                              Parameter... parameters) throws PicoCompositionException {<a name="line.39"></a>
 <FONT color="green">040</FONT>            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);<a name="line.40"></a>
-<FONT color="green">041</FONT>            return wrapLifeCycle(new MultiInjector(componentKey, componentImplementation, parameters, monitor, setterPrefix, useNames), lifecycleStrategy);<a name="line.41"></a>
+<FONT color="green">041</FONT>            return wrapLifeCycle(new MultiInjector(key, componentImplementation, parameters, monitor, setterPrefix, useNames), lifecycleStrategy);<a name="line.41"></a>
 <FONT color="green">042</FONT>        }<a name="line.42"></a>
 <FONT color="green">043</FONT>    }<a name="line.43"></a>
 

@@ -38,12 +38,12 @@
 <FONT color="green">035</FONT>            forNamedComponent = null;<a name="line.35"></a>
 <FONT color="green">036</FONT>        }<a name="line.36"></a>
 <FONT color="green">037</FONT>    <a name="line.37"></a>
-<FONT color="green">038</FONT>        public Object compose(PicoContainer container, Object componentKey) {<a name="line.38"></a>
-<FONT color="green">039</FONT>            if (componentKey instanceof String<a name="line.39"></a>
-<FONT color="green">040</FONT>                    &amp;&amp; (forNamedComponent == null || forNamedComponent.equals(componentKey))) {<a name="line.40"></a>
+<FONT color="green">038</FONT>        public Object compose(PicoContainer container, Object key) {<a name="line.38"></a>
+<FONT color="green">039</FONT>            if (key instanceof String<a name="line.39"></a>
+<FONT color="green">040</FONT>                    &amp;&amp; (forNamedComponent == null || forNamedComponent.equals(key))) {<a name="line.40"></a>
 <FONT color="green">041</FONT>                Pattern pat = null;<a name="line.41"></a>
 <FONT color="green">042</FONT>                if (pattern == null) {<a name="line.42"></a>
-<FONT color="green">043</FONT>                    pat = Pattern.compile((String) componentKey);<a name="line.43"></a>
+<FONT color="green">043</FONT>                    pat = Pattern.compile((String) key);<a name="line.43"></a>
 <FONT color="green">044</FONT>                } else {<a name="line.44"></a>
 <FONT color="green">045</FONT>                    pat = pattern;<a name="line.45"></a>
 <FONT color="green">046</FONT>                }<a name="line.46"></a>

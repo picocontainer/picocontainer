@@ -49,12 +49,12 @@
 <FONT color="green">046</FONT>        public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {<a name="line.46"></a>
 <FONT color="green">047</FONT>    <a name="line.47"></a>
 <FONT color="green">048</FONT>            ComponentAdapter&lt;T&gt; delegate = getDelegate();<a name="line.48"></a>
-<FONT color="green">049</FONT>            Object componentKey = delegate.getComponentKey();<a name="line.49"></a>
+<FONT color="green">049</FONT>            Object key = delegate.getComponentKey();<a name="line.49"></a>
 <FONT color="green">050</FONT>            Class&lt;?&gt;[] classes;<a name="line.50"></a>
-<FONT color="green">051</FONT>            if (componentKey instanceof Class &amp;&amp; ((Class&lt;?&gt;) delegate.getComponentKey()).isInterface()) {<a name="line.51"></a>
+<FONT color="green">051</FONT>            if (key instanceof Class &amp;&amp; ((Class&lt;?&gt;) delegate.getComponentKey()).isInterface()) {<a name="line.51"></a>
 <FONT color="green">052</FONT>                classes = new Class[]{(Class&lt;?&gt;) delegate.getComponentKey()};<a name="line.52"></a>
-<FONT color="green">053</FONT>            } else if (componentKey instanceof Class[]) {<a name="line.53"></a>
-<FONT color="green">054</FONT>                classes = (Class[]) componentKey;<a name="line.54"></a>
+<FONT color="green">053</FONT>            } else if (key instanceof Class[]) {<a name="line.53"></a>
+<FONT color="green">054</FONT>                classes = (Class[]) key;<a name="line.54"></a>
 <FONT color="green">055</FONT>            } else {<a name="line.55"></a>
 <FONT color="green">056</FONT>                return delegate.getComponentInstance(container, into);<a name="line.56"></a>
 <FONT color="green">057</FONT>            }<a name="line.57"></a>

@@ -44,12 +44,12 @@ public final class StaticFactoryAdapter<T> extends AbstractAdapter<T> {
      * Construct a ComponentAdapter accessing a static factory creating the component using a special key for addComponent
      * registration.
      *
-     * @param componentKey The key of the created component.
+     * @param key The key of the created component.
      * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
-    public StaticFactoryAdapter(final Object componentKey, final Class<T> type, final StaticFactory<T> staticFactory) {
-        super(componentKey, type);
+    public StaticFactoryAdapter(final Object key, final Class<T> type, final StaticFactory<T> staticFactory) {
+        super(key, type);
         this.staticFactory = staticFactory;
     }
 

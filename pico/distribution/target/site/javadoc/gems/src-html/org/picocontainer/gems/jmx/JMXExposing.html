@@ -86,11 +86,11 @@
 <FONT color="green">083</FONT>         */<a name="line.83"></a>
 <FONT color="green">084</FONT>        @Override<a name="line.84"></a>
 <FONT color="green">085</FONT>            public &lt;T&gt; ComponentAdapter&lt;T&gt; createComponentAdapter(<a name="line.85"></a>
-<FONT color="green">086</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class&lt;T&gt; componentImplementation, final Parameter... parameters)<a name="line.86"></a>
+<FONT color="green">086</FONT>                final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object key, final Class&lt;T&gt; componentImplementation, final Parameter... parameters)<a name="line.86"></a>
 <FONT color="green">087</FONT>                throws PicoCompositionException {<a name="line.87"></a>
 <FONT color="green">088</FONT>            final ComponentAdapter&lt;T&gt; delegateAdapter = super.createComponentAdapter(<a name="line.88"></a>
 <FONT color="green">089</FONT>                    componentMonitor, lifecycleStrategy,<a name="line.89"></a>
-<FONT color="green">090</FONT>                    componentProperties, componentKey, componentImplementation, parameters);<a name="line.90"></a>
+<FONT color="green">090</FONT>                    componentProperties, key, componentImplementation, parameters);<a name="line.90"></a>
 <FONT color="green">091</FONT>            if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {<a name="line.91"></a>
 <FONT color="green">092</FONT>                return delegateAdapter;            <a name="line.92"></a>
 <FONT color="green">093</FONT>            } else {                <a name="line.93"></a>

@@ -36,12 +36,12 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
         this.delegate = delegate;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return getComponentInto(componentKeyOrType, ComponentAdapter.NOTHING.class);
+    public Object getComponent(Object keyOrType) {
+        return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
     }
 
-    public Object getComponentInto(Object componentKeyOrType, Type into) {
-        return delegate.getComponentInto(componentKeyOrType, into);
+    public Object getComponentInto(Object keyOrType, Type into) {
+        return delegate.getComponentInto(keyOrType, into);
     }
 
     public <T> T getComponent(Class<T> componentType) {
@@ -68,8 +68,8 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
         return delegate.getParent();
     }
 
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        return delegate.getComponentAdapter(componentKey);
+    public ComponentAdapter<?> getComponentAdapter(Object key) {
+        return delegate.getComponentAdapter(key);
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
