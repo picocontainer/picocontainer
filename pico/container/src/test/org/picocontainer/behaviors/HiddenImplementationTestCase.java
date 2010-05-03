@@ -21,13 +21,13 @@ import java.awt.event.MouseListener;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class HiddenImplementationTestCase {
 
     @Test public void testMultipleInterfacesCanBeHidden() {
-        ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), false);
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), false);
         ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
         Object comp = ihca.getComponentInstance(null, null);
         assertNotNull(comp);
@@ -36,7 +36,7 @@ public class HiddenImplementationTestCase {
     }    
 
     @Test public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjector(new Class[]{String.class}, Footle.class, null, new NullComponentMonitor(), false);
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{String.class}, Footle.class, null, new NullComponentMonitor(), false);
         ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
         try {
             ihca.getComponentInstance(null, null);

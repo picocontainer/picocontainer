@@ -14,7 +14,6 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
@@ -190,7 +189,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 		picoContainer.addComponent(Service.class);
 		picoContainer.as(Characteristics.NO_CACHE).addAdapter(
-				new ConstructorInjector(TransientComponent.class,
+				new ConstructorInjection.ConstructorInjector(TransientComponent.class,
 						TransientComponent.class, null,
 						new NullComponentMonitor(), false));
 		TransientComponent c1 = picoContainer

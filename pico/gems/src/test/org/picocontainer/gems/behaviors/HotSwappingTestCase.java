@@ -29,7 +29,6 @@ import org.picocontainer.gems.GemsCharacteristics;
 import org.picocontainer.gems.PicoGemsBuilder;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
@@ -96,7 +95,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     @Test
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), false);
+        ConstructorInjection.ConstructorInjector constructorInjector = new ConstructorInjection.ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), false);
         HotSwapping.HotSwappable hsca = (HotSwapping.HotSwappable) pico.addAdapter(new HotSwapping.HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");

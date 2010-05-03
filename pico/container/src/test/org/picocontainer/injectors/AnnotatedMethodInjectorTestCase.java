@@ -68,7 +68,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(),
+        pico.addAdapter(new SetterInjection.SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(),
                                            "set", false));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
@@ -78,7 +78,7 @@ public class AnnotatedMethodInjectorTestCase  {
 
     @Test public void tesMethodInjectionWithInjectionAnnontation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp burp = pico.getComponent(AnnotatedBurp.class);
@@ -88,7 +88,7 @@ public class AnnotatedMethodInjectorTestCase  {
 
     @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethod() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp2.class, AnnotatedBurp2.class, null,
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp2.class, AnnotatedBurp2.class, null,
                                                new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp2 burp = pico.getComponent(AnnotatedBurp2.class);
@@ -114,7 +114,7 @@ public class AnnotatedMethodInjectorTestCase  {
     
     @Test public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(),
                 false, AlternativeInject.class));
         pico.addComponent(Wind.class, new Wind());

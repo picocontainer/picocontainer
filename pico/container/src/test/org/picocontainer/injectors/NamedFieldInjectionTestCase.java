@@ -21,7 +21,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 public class NamedFieldInjectionTestCase {
@@ -36,9 +35,9 @@ public class NamedFieldInjectionTestCase {
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(),
                 props, Map.class, HashMap.class, Parameter.DEFAULT);
         
-        assertTrue(ca instanceof NamedFieldInjector);
+        assertTrue(ca instanceof NamedFieldInjection.NamedFieldInjector);
 
-        NamedFieldInjector nfi = (NamedFieldInjector) ca;
+        NamedFieldInjection.NamedFieldInjector nfi = (NamedFieldInjection.NamedFieldInjector) ca;
 
         assertEquals(3, nfi.getInjectionFieldNames().size());
         assertEquals("pogo", nfi.getInjectionFieldNames().get(1));

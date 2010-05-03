@@ -26,7 +26,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
@@ -53,7 +53,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     private ComponentAdapter createComponentAdapterWithSimpleTouchable() {
-        return new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        return new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false));
     }
 
@@ -74,7 +74,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
     @Override
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(final MutablePicoContainer picoContainer) {
-        return new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        return new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             List.class, ArrayList.class, new Parameter[] {new ConstantParameter(10)}, new NullComponentMonitor(), false));
     }
 
@@ -134,7 +134,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public final void testInstancesUsedFromMultipleThreads() throws InterruptedException {
         final Set<Touchable> set = Collections.synchronizedSet(new HashSet<Touchable>());
         final List<Touchable> list = Collections.synchronizedList(new ArrayList<Touchable>());
-        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false));
         final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
@@ -161,7 +161,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     public void testThreadLocalInstancesEqual() throws Exception {
-        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false));
         final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(touchable, touchable);
@@ -171,8 +171,8 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public final void testInstancesAreNotSharedBetweenContainers() {
         final MutablePicoContainer picoA = new DefaultPicoContainer();
         final MutablePicoContainer picoB = new DefaultPicoContainer();
-        picoA.addAdapter(new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), false)));
-        picoB.addAdapter(new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), false)));
+        picoA.addAdapter(new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), false)));
+        picoB.addAdapter(new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), false)));
         final List<String> hello1 = picoA.getComponent(List.class);
         final List hello2 = picoA.getComponent(List.class);
         hello1.add("foo");
@@ -184,7 +184,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     /** Test fail-fast for components without interface. */
     public void testComponentMustImplementInterface() {
         try {
-            new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(Object.class, Object.class, null, new NullComponentMonitor(), false));
+            new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(Object.class, Object.class, null, new NullComponentMonitor(), false));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
             assertTrue(e.getMessage().endsWith("It does not implement any interfaces."));
@@ -214,7 +214,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     public void testExceptionHandling() {
-        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             TargetInvocationExceptionTester.class, ThrowingComponent.class, null, new NullComponentMonitor(), false));
         final TargetInvocationExceptionTester tester =
             (TargetInvocationExceptionTester)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
@@ -240,7 +240,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
     /** Test ComponentAdapter using simple keys. */
     public final void testSimpleKeys() {
-        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new ThreadLocalizing.ThreadLocalized(new ConstructorInjection.ConstructorInjector(
             "List", ArrayList.class, null, new NullComponentMonitor(), false));
         final List hello = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertNotNull(hello);

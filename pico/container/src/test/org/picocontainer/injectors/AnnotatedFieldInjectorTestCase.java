@@ -47,7 +47,7 @@ public class AnnotatedFieldInjectorTestCase {
     @Test
     public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
+        pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
                 new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
@@ -58,7 +58,7 @@ public class AnnotatedFieldInjectorTestCase {
     @Test
     public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
+        pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
                 new NullComponentMonitor(), false, Inject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter2 chopper = pico.getComponent(Helicopter2.class);
@@ -69,7 +69,7 @@ public class AnnotatedFieldInjectorTestCase {
     @Test
     public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
+        pico.addAdapter(new SetterInjection.SetterInjector(Helicopter.class, Helicopter.class, null,
                 new NullComponentMonitor(),
                 "set", false));
         pico.addComponent(PogoStick.class, new PogoStick());
@@ -94,7 +94,7 @@ public class AnnotatedFieldInjectorTestCase {
     @Test
     public void testFieldInjectionWithAlternativeInjectionAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedFieldInjector(Helicopter3.class, Helicopter3.class, null,
+        pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter3.class, Helicopter3.class, null,
                 new NullComponentMonitor(), false, AlternativeInject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter3 chopper = pico.getComponent(Helicopter3.class);

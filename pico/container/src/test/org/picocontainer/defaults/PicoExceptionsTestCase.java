@@ -28,8 +28,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoException;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
@@ -43,7 +42,7 @@ public class PicoExceptionsTestCase {
 
     @SuppressWarnings({ "unchecked" })
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjector(clazz, clazz, null, new AbstractComponentMonitor(), false, false);
+        final ComponentAdapter componentAdapter = new ConstructorInjection.ConstructorInjector(clazz, clazz, null, new AbstractComponentMonitor(), false, false);
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(MESSAGE);
         try {

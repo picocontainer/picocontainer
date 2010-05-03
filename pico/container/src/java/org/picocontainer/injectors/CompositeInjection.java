@@ -8,8 +8,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import java.util.Properties;
-
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -18,7 +16,12 @@ import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.AbstractBehavior;
+
+import java.lang.reflect.Type;
+import java.util.Properties;
 
 /**
  * A Composite of other types on InjectionFactories - pass them into the varargs constructor.
@@ -52,5 +55,63 @@ public class CompositeInjection extends AbstractInjectionType {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         return wrapLifeCycle(monitor.newInjector(new CompositeInjector(key, impl, parameters,
                 monitor, useNames, injectors)), lifecycle);
+    }
+
+    @SuppressWarnings("serial")
+    public static class CompositeInjector<T> extends AbstractInjector<T> {
+
+        private final Injector<T>[] injectors;
+
+        public CompositeInjector(Object key, Class<?> impl, Parameter[] parameters, ComponentMonitor monitor,
+                                 boolean useNames, Injector... injectors) {
+            super(key, impl, parameters, monitor, useNames);
+            this.injectors = injectors;
+        }
+
+        @Override
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            T instance = null;
+            for (Injector<T> injector : injectors) {
+                if (instance == null) {
+                    instance = injector.getComponentInstance(container, NOTHING.class);
+                } else {
+                    injector.decorateComponentInstance(container, into, instance);
+                }
+            }
+            return (T) instance;
+        }
+
+
+        /**
+         * @return the object returned is the result of the last of the injectors delegated to
+         */
+        @Override
+        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+            Object result = null;
+            for (Injector<T> injector : injectors) {
+                result = injector.decorateComponentInstance(container, into, instance);
+            }
+            return result;
+        }
+
+        @Override
+        public void verify(PicoContainer container) throws PicoCompositionException {
+            for (Injector<T> injector : injectors) {
+                injector.verify(container);
+            }
+        }
+
+        @Override
+        public final void accept(PicoVisitor visitor) {
+            super.accept(visitor);
+            for (Injector<T> injector : injectors) {
+                injector.accept(visitor);
+            }
+        }
+
+        @Override
+        public String getDescriptor() {
+            return "CompositeInjector";
+        }
     }
 }

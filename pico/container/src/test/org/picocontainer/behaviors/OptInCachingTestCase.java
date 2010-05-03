@@ -20,7 +20,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
@@ -40,7 +39,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(ConstructorInjector.class, foo.getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getClass());
     }
 
     @Test public void testAddComponentUsesOptinBehaviorWithRedundantCacheProperty() {
@@ -49,7 +48,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Caching.Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test public void testAddComponentNoesNotUseOptinBehaviorWhenNoCachePropertyIsSpecified() {
@@ -57,7 +56,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(ConstructorInjector.class, foo.getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getClass());
     }
 
     @Test public void testAddAdapterUsesDoesNotUseCachingBehaviorByDefault() {

@@ -45,7 +45,6 @@ import org.picocontainer.behaviors.Locking;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -679,9 +678,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(1, foo.size());
         ComponentAdapter o = (ComponentAdapter) foo.toArray()[0];
         assertTrue(o instanceof Caching.Cached);
-        o = o.findAdapterOfType(SetterInjector.class);
+        o = o.findAdapterOfType(SetterInjection.SetterInjector.class);
         assertNotNull(o);
-        assertTrue(o instanceof SetterInjector);
+        assertTrue(o instanceof SetterInjection.SetterInjector);
 
     }
 

@@ -62,7 +62,7 @@ public final class PropertyApplying extends AbstractBehavior {
      * Decorating component adapter that can be used to set additional properties
      * on a component in a bean style. These properties must be managed manually
      * by the user of the API, and will not be managed by PicoContainer. This class
-     * is therefore <em>not</em> the same as {@link org.picocontainer.injectors.SetterInjector},
+     * is therefore <em>not</em> the same as {@link org.picocontainer.injectors.SetterInjection.SetterInjector},
      * which is a true Setter Injection adapter.
      * <p/>
      * This adapter is mostly handy for setting various primitive properties via setters;

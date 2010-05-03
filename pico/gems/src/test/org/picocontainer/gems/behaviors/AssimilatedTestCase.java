@@ -18,7 +18,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
@@ -46,7 +46,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testInstanceIsBorgedAndCompatibleWithGenerics() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjector<Touchable>(
+        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjection.ConstructorInjector<Touchable>(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilating.Assimilated<Touchable>(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter.getComponentInstance(mpc,null);
@@ -62,7 +62,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjector<Touchable>(
+        final ComponentAdapter<Touchable> componentAdapter = new Caching.Cached<Touchable>(new ConstructorInjection.ConstructorInjector<Touchable>(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilating.Assimilated<Touchable>(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter.getComponentInstance(mpc,null);
@@ -138,7 +138,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     }
 
     private ComponentAdapter createComponentAdapterWithTouchable() {
-        return new Assimilating.Assimilated(Touchable.class, new ConstructorInjector(
+        return new Assimilating.Assimilated(Touchable.class, new ConstructorInjection.ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
     }
 

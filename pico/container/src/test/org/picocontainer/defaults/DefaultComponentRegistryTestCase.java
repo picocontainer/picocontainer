@@ -20,8 +20,7 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -90,6 +89,6 @@ public class DefaultComponentRegistryTestCase {
     }
 
     private ComponentAdapter createComponentAdapter() throws PicoCompositionException {
-        return new ConstructorInjector(Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false);
+        return new ConstructorInjection.ConstructorInjector(Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false);
     }
 }

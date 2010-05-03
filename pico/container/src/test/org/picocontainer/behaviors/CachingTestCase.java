@@ -20,7 +20,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
@@ -41,7 +40,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Caching.Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
     @Test public void testAddComponentUsesCachingBehaviorWithRedundantCacheProperty() {
@@ -50,7 +49,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Caching.Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
     @Test public void testAddComponentNoesNotUseCachingBehaviorWhenNoCachePropertyIsSpecified() {
@@ -58,7 +57,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Caching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(ConstructorInjector.class, foo.getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getClass());
     }
 
     @Test public void testAddAdapterUsesCachingBehavior() {

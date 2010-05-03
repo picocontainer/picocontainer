@@ -21,12 +21,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.adapters.NullCA;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
@@ -126,7 +123,7 @@ public class ResolveAdapterReductionTestCase {
         }
     }
 
-    private class CountingConstructorInjector extends ConstructorInjector {
+    private class CountingConstructorInjector extends ConstructorInjection.ConstructorInjector {
 
         public CountingConstructorInjector(Class<?> key, Class<?> impl) {
             super(key, impl, null);

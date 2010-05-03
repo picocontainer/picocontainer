@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class NamedFieldInjectorTestCase {
@@ -35,7 +34,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByType() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjector(Helicopter.class, Helicopter.class, null,
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(), " aa bb cc pogo dd "));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
@@ -45,7 +44,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByName() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjector(Biplane.class, Biplane.class, null,
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector(Biplane.class, Biplane.class, null,
                                                     new NullComponentMonitor(), " aa wing1 cc wing2 dd "));
         pico.addConfig("wing1", "hello");
         pico.addConfig("wing2", "goodbye");

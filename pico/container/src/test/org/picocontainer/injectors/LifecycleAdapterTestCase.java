@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class LifecycleAdapterTestCase {
 
-    private final ConstructorInjector INJECTOR = new ConstructorInjector(
+    private final ConstructorInjection.ConstructorInjector INJECTOR = new ConstructorInjection.ConstructorInjector(
             Foo.class, Foo.class, new Parameter[0],
             new NullComponentMonitor(), false);
 

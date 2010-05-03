@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Paul Hammant
  */
-public class SpecificReflectionMethodInjector extends MethodInjector {
+public class SpecificReflectionMethodInjector extends MethodInjection.MethodInjector {
     private final List<Method> injectionMethods;
 
     public SpecificReflectionMethodInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {

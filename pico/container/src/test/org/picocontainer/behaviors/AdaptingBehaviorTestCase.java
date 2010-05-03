@@ -16,7 +16,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -115,7 +115,7 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.SDI,cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof SetterInjector);
+        assertTrue(ca instanceof SetterInjection.SetterInjector);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertEquals(0, cc.size());

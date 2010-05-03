@@ -47,12 +47,9 @@ public class PrimitiveMemberChecker {
             throw new ArrayIndexOutOfBoundsException("Index i > types array length "
                 + types.length + " for member " + member);
         }
-        
-        if (types[i].isPrimitive()) {
-            return true;
-        }
-        
-        return false;
+
+        return types[i].isPrimitive();
+
     }
 
 }

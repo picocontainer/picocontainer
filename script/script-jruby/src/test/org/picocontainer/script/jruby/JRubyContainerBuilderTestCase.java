@@ -25,7 +25,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jruby.exceptions.RaiseException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
@@ -42,7 +41,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
@@ -517,7 +515,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter<?> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
         assertNotNull("ComponentAdapter should be originally defined by parent",
-                   componentAdapter.findAdapterOfType(SetterInjector.class));
+                   componentAdapter.findAdapterOfType(SetterInjection.SetterInjector.class));
     }
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {

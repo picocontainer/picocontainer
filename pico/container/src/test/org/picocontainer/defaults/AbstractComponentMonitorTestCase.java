@@ -30,7 +30,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
@@ -134,9 +134,9 @@ public class AbstractComponentMonitorTestCase {
 			}
         };
         mockery.checking(new Expectations(){{
-        	one(monitor).instantiating(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)));
+        	one(monitor).instantiating(with(same(child)), with(any(ConstructorInjection.ConstructorInjector.class)), with(equal(needsACoupleOfThings)));
         	will(returnValue(needsACoupleOfThings));
-        	one(monitor).instantiated(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)), with(isANACOTThatWozCreated), with(collectionAndStringWereInjected), with(durationIsGreaterThanOrEqualToZero));
+        	one(monitor).instantiated(with(same(child)), with(any(ConstructorInjection.ConstructorInjector.class)), with(equal(needsACoupleOfThings)), with(isANACOTThatWozCreated), with(collectionAndStringWereInjected), with(durationIsGreaterThanOrEqualToZero));
             atLeast(2).of(monitor).noComponentFound(with(any(DefaultPicoContainer.class)), with(any(Object.class)));
             will(returnValue(null));
         }});

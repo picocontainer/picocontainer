@@ -36,7 +36,7 @@ public class NamedMethodInjectionTestCase {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new NamedMethodInjection());
         picoContainer.addComponent(Bean.class);
         picoContainer.addConfig("something", "hello there");
-        assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
+        assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjection.NamedMethodInjector);
         assertEquals("hello there", picoContainer.getComponent(Bean.class).something);
     }
 
@@ -44,7 +44,7 @@ public class NamedMethodInjectionTestCase {
     public void containerShouldMakeNamedMethodInjectorThatIsOptionalInUse() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new NamedMethodInjection(true));
         picoContainer.addComponent(Bean.class);
-        assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
+        assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjection.NamedMethodInjector);
         assertNull(picoContainer.getComponent(Bean.class).something);
     }
 

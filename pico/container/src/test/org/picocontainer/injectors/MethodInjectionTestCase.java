@@ -101,7 +101,7 @@ public class MethodInjectionTestCase {
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
+        pico.addAdapter(new MethodInjection.MethodInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);

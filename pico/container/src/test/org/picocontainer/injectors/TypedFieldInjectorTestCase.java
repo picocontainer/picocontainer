@@ -13,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class TypedFieldInjectorTestCase {
@@ -28,7 +27,7 @@ public class TypedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByType() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new TypedFieldInjector(Helicopter.class, Helicopter.class, null,
+        pico.addAdapter(new TypedFieldInjection.TypedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(),
                 Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName()));
         pico.addComponent(PogoStick.class, new PogoStick());

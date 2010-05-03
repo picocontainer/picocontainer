@@ -9,7 +9,7 @@
 package org.picocontainer.injectors;
 
 /**
- * Constructor Injection where 'which constructor?' is re-calculated each time an
+ * Constructor Injection where 'which constructor to use?' is re-calculated each time an
  * instance is asked to construct a component.
  */
 @SuppressWarnings("serial")

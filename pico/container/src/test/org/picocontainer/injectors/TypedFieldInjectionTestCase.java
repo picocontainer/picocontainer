@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 public class TypedFieldInjectionTestCase {
@@ -43,9 +42,9 @@ public class TypedFieldInjectionTestCase {
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(),
                 props, Map.class, HashMap.class, Parameter.DEFAULT);
 
-        assertTrue(ca instanceof TypedFieldInjector);
+        assertTrue(ca instanceof TypedFieldInjection.TypedFieldInjector);
 
-        TypedFieldInjector tfi = (TypedFieldInjector) ca;
+        TypedFieldInjection.TypedFieldInjector tfi = (TypedFieldInjection.TypedFieldInjector) ca;
 
         assertEquals(3, tfi.getInjectionFieldTypes().size());
         assertEquals(Integer.class.getName(), tfi.getInjectionFieldTypes().get(0));

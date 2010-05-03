@@ -85,7 +85,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
     public void allowClassTypesForComponentAdapter() {
         ConstructorInjection componentFactory = new ConstructorInjection();
         
-        ConstructorInjector cica =  (ConstructorInjector)
+        ConstructorInjection.ConstructorInjector cica =  (ConstructorInjection.ConstructorInjector)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, new ConstantParameter(String.class));
         
         ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);

@@ -23,19 +23,19 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         visitor.visitComponentFactory(this);
     }
 
-    protected ComponentAdapter wrapLifeCycle(final Injector injector, LifecycleStrategy lifecycle) {
+    protected <T> ComponentAdapter<T> wrapLifeCycle(final Injector<T> injector, LifecycleStrategy lifecycle) {
         if (lifecycle instanceof NullLifecycleStrategy) {
             return injector;
         } else {
-            return new LifecycleAdapter(injector, lifecycle);
+            return new LifecycleAdapter<T>(injector, lifecycle);
         }
     }
 
-    private static class LifecycleAdapter implements ComponentAdapter, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
-        private final Injector injector;
+    private static class LifecycleAdapter<T> implements ComponentAdapter<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+        private final Injector<T> injector;
         private final LifecycleStrategy lifecycle;
 
-        public LifecycleAdapter(Injector injector, LifecycleStrategy lifecycle) {
+        public LifecycleAdapter(Injector<T> injector, LifecycleStrategy lifecycle) {
             this.injector = injector;
             this.lifecycle = lifecycle;
         }
@@ -44,11 +44,11 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return injector.getComponentKey();
         }
 
-        public Class getComponentImplementation() {
+        public Class<? extends T> getComponentImplementation() {
             return injector.getComponentImplementation();
         }
 
-        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return injector.getComponentInstance(container, into);
         }
 
@@ -60,11 +60,11 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             injector.accept(visitor);
         }
 
-        public ComponentAdapter getDelegate() {
+        public ComponentAdapter<T> getDelegate() {
             return injector;
         }
 
-        public ComponentAdapter findAdapterOfType(Class adapterType) {
+        public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
             return injector.findAdapterOfType(adapterType);
         }
 

@@ -50,9 +50,9 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         xs = new XStream();
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
         xs.alias("CCM", ConsoleComponentMonitor.class);
-        xs.alias("Annotated-Method-Injection", AnnotatedMethodInjector.class);
-        xs.alias("Annotated-Field-Injection", AnnotatedFieldInjector.class);
-        xs.alias("Constructor-Injection", ConstructorInjector.class);
+        xs.alias("Annotated-Method-Injection", AnnotatedMethodInjection.AnnotatedMethodInjector.class);
+        xs.alias("Annotated-Field-Injection", AnnotatedFieldInjection.AnnotatedFieldInjector.class);
+        xs.alias("Constructor-Injection", ConstructorInjection.ConstructorInjector.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {

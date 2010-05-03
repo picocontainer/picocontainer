@@ -28,7 +28,6 @@ import org.picocontainer.gems.adapters.ElephantImpl;
 import org.picocontainer.gems.adapters.ElephantProxy;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
@@ -45,7 +44,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         pico.addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test
@@ -55,7 +54,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(AsmImplementationHiding.AsmHiddenImplementation.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, ((AbstractBehavior.AbstractChangedBehavior) foo).getDelegate().getClass());
     }
 
     @Test
@@ -64,7 +63,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
             new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
-        assertEquals(ConstructorInjector.class, foo.getClass());
+        assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getClass());
     }
     
     @Test

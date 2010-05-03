@@ -21,8 +21,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 
@@ -51,12 +50,12 @@ public class TraversalCheckingVisitorTest {
     public void setUp() throws Exception {
 
         pico = new DefaultPicoContainer();
-        SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
+        SetterInjection.SetterInjector componentAdapter = new SetterInjection.SetterInjector(StringBuffer.class, StringBuffer.class,
                                                              null, new NullComponentMonitor(),
                                                              "set", false);
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
-        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), false);
+        ConstructorInjection.ConstructorInjector adapter = new ConstructorInjection.ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), false);
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (NameBinding) null);
     }
 

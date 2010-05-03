@@ -20,7 +20,6 @@ import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
@@ -573,7 +572,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter<String> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);        
-        assertNotNull("ComponentAdapter should be originally defined by parent" , componentAdapter.findAdapterOfType(SetterInjector.class));
+        assertNotNull("ComponentAdapter should be originally defined by parent" , componentAdapter.findAdapterOfType(SetterInjection.SetterInjector.class));
     }
 
 

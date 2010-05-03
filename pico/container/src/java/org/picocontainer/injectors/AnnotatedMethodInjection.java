@@ -18,6 +18,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.annotations.Inject;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 /**
@@ -46,7 +47,7 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
     }
 
     /**
-     * Create a {@link SetterInjector}.
+     * Create a {@link org.picocontainer.injectors.SetterInjection.SetterInjector}.
      * 
      * @param monitor
      * @param lifecycle
@@ -56,7 +57,7 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
      * @param parameters Any parameters for the setters. If null the adapter
      *            solves the dependencies for all setters internally. Otherwise
      *            the number parameters must match the number of the setter.
-     * @return Returns a new {@link SetterInjector}.
+     * @return Returns a new {@link org.picocontainer.injectors.SetterInjection.SetterInjector}.
      * @throws org.picocontainer.PicoCompositionException if dependencies cannot
      *             be solved or if the implementation is an interface or an
      *             abstract class.
@@ -76,4 +77,46 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
         }
     }
 
+    @SuppressWarnings("serial")
+    public static class AnnotatedMethodInjector<T> extends MethodInjection.MethodInjector<T> {
+
+         private final Class<? extends Annotation>[] injectionAnnotations;
+        private String injectionAnnotationNames;
+
+        public AnnotatedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
+                                       boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
+            super(key, impl, parameters, monitor, "", useNames);
+            this.injectionAnnotations = injectionAnnotations;
+        }
+
+        @Override
+        protected final boolean isInjectorMethod(Method method) {
+            for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
+                if (method.getAnnotation(injectionAnnotation) != null) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String getDescriptor() {
+            if (injectionAnnotationNames == null) {
+                injectionAnnotationNames = makeAnnotationNames(injectionAnnotations);
+            }
+            return "AnnotatedMethodInjector[" + injectionAnnotationNames + "]-";
+        }
+
+        static String makeAnnotationNames(Class<? extends Annotation>[] injectionAnnotations) {
+            StringBuilder sb = new StringBuilder();
+            for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
+                if (sb.length() > 0) {
+                    sb.append(",");
+                }
+                String name = injectionAnnotation.getName();
+                sb.append(name.substring(0, name.lastIndexOf(".")+1)).append("@").append(name.substring(name.lastIndexOf(".")+1));
+            }
+            return sb.toString();
+        }
+    }
 }
