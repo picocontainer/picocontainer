@@ -38,7 +38,7 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
     private transient Paranamer paranamer;
 
     public MultiArgMemberInjector(Object key,
-                                Class impl,
+                                Class<T> impl,
                                 Parameter[] parameters,
                                 ComponentMonitor monitor,
                                 boolean useNames) {

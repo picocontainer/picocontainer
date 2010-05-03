@@ -23,6 +23,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.AbstractBehavior;
 
+import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
+
 /**
  * Creates injector instances, depending on the injection characteristics of the component class. 
  * It will attempt to create a component adapter with - in order of priority:
@@ -138,8 +140,7 @@ public class AdaptingInjection extends AbstractInjectionType {
                 }
                 Class impl2 = impl;
                 while (impl2 != Object.class) {
-                    boolean injAnnotated = injectionAnnotated(impl2.getDeclaredFields());
-                    if (injAnnotated) {
+                    if (injectionAnnotated(impl2.getDeclaredFields())) {
                         return true;
                     }
                     impl2 = impl2.getSuperclass();
@@ -151,7 +152,8 @@ public class AdaptingInjection extends AbstractInjectionType {
     
     private boolean injectionAnnotated(AccessibleObject[] objects) {
         for (AccessibleObject object : objects) {
-            if (object.getAnnotation(Inject.class) != null) {
+            if (object.getAnnotation(Inject.class) != null
+                    || object.getAnnotation(getInjectionAnnotation("javax.inject.Inject")) != null) {
                 return true;
             }
         }

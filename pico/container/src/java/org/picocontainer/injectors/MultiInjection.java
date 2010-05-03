@@ -19,6 +19,8 @@ import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.Properties;
 
+import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
+
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
 public class MultiInjection extends AbstractInjectionType {
@@ -51,8 +53,8 @@ public class MultiInjection extends AbstractInjectionType {
             super(key, impl, parameters, monitor, useNames,
                     monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(key, impl, parameters, monitor, useNames)),
                     monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, parameters, monitor, setterPrefix, useNames)),
-                    monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, Inject.class)),
-                    monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, Inject.class))
+                    monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject"))),
+                    monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject")))
             );
 
         }
