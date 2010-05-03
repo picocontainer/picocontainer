@@ -24,18 +24,10 @@ import java.util.Properties;
 public class Reinjection extends CompositeInjection {
 
     public Reinjection(InjectionType reinjectionType, final PicoContainer parent) {
-        super(new AbstractInjectionType() {
-            public <T> ComponentAdapter<T> createComponentAdapter(
-                    ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                    Properties componentProps, final Object key, Class<T> impl,
-                    Parameter... parameters) throws PicoCompositionException {
-                boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-                return new ReinjectionInjector(key, impl, parameters, monitor, parent, useNames);
-            }
-        }, reinjectionType);
+        super(new ReinjectionInjectionType(parent), reinjectionType);
     }
 
-    private static class ReinjectionInjector<T> extends AbstractInjector {
+    private static class ReinjectionInjector<T> extends AbstractInjector<T> {
         private final PicoContainer parent;
 
         public ReinjectionInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor, PicoContainer parent, boolean useNames) {
@@ -43,9 +35,22 @@ public class Reinjection extends CompositeInjection {
             this.parent = parent;
         }
 
-        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            return parent.getComponentInto(getComponentKey(), ComponentAdapter.NOTHING.class);
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return (T) parent.getComponentInto(getComponentKey(), into);
+        }
+    }
+
+    private static class ReinjectionInjectionType extends AbstractInjectionType {
+        private final PicoContainer parent;
+
+        public ReinjectionInjectionType(PicoContainer parent) {
+            this.parent = parent;
         }
 
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                Properties componentProps, final Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
+            return new ReinjectionInjector<T>(key, impl, parameters, monitor, parent, useNames);
+        }
     }
 }
