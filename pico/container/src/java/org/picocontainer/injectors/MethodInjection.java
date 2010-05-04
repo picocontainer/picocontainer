@@ -215,7 +215,7 @@ public class MethodInjection extends AbstractInjectionType {
                 if (rv == ComponentMonitor.KEEP) {
                     long str = System.currentTimeMillis();
                     rv = method.invoke(instance, methodParameters);
-                    currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, methodParameters, rv);
+                    currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, rv, methodParameters);
                 }
                 return rv;
             } catch (IllegalAccessException e) {

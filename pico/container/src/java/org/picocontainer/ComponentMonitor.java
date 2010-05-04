@@ -33,6 +33,7 @@ public interface ComponentMonitor {
      * @param container
      * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent @return the constructor to use in instantiation (nearly always the same one as passed in)
+     * @return
      */
     <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
                               Constructor<T> constructor
@@ -77,8 +78,9 @@ public interface ComponentMonitor {
      * @param member
      * @param instance the component instance
      * @param args
+     * @return
      */
-    Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args);
+    Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args);
 
     /**
      * Event thrown after the component method has been invoked on the given instance
@@ -88,14 +90,14 @@ public interface ComponentMonitor {
      * @param member
      * @param instance the component instance
      * @param duration
-     * @param args
      * @param retVal
+     * @param args
      */
     void invoked(PicoContainer container,
                  ComponentAdapter<?> componentAdapter,
                  Member member,
                  Object instance,
-                 long duration, Object[] args, Object retVal);
+                 long duration, Object retVal, Object... args);
 
     /**
      * Event thrown if the component method invocation failed on the given instance
@@ -128,6 +130,7 @@ public interface ComponentMonitor {
      *
      * @param container
      * @param key
+     * @return
      */
     Object noComponentFound(MutablePicoContainer container, Object key);
 

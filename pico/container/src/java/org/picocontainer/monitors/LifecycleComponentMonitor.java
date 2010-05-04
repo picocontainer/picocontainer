@@ -9,21 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.monitors;
 
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoLifecycleException;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoLifecycleException;
-import org.picocontainer.Injector;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -73,7 +73,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     public Object invoking(PicoContainer container,
                            ComponentAdapter<?> componentAdapter,
                            Member member,
-                           Object instance, Object[] args) {
+                           Object instance, Object... args) {
         return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
@@ -81,8 +81,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
                         ComponentAdapter<?> componentAdapter,
                         Member member,
                         Object instance,
-                        long duration, Object[] args, Object retVal) {
-        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
+                        long duration, Object retVal, Object[] args) {
+        delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
     public void invocationFailed(Member member, Object instance, Exception cause) {

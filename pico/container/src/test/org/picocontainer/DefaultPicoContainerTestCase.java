@@ -255,7 +255,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 				new NullComponentMonitor() {
 					public Object invoking(PicoContainer container,
                                            ComponentAdapter componentAdapter, Member member,
-                                           Object instance, Object[] args) {
+                                           Object instance, Object... args) {
 						sb.append(member.toString());
                         return null;
                     }

@@ -10,11 +10,17 @@
 
 package org.picocontainer.gems.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.ComponentMonitorHelper;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,17 +30,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Injector;
-import org.picocontainer.monitors.ComponentMonitorHelper;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 
 /**
@@ -176,7 +176,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     public Object invoking(final PicoContainer container,
                          final ComponentAdapter<?> componentAdapter,
                          final Member member,
-                         final Object instance, Object[] args) {
+                         final Object instance, Object... args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -190,12 +190,12 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                         Member member,
                         Object instance,
                         long duration,
-                        Object[] args, Object retVal) {
+                        Object retVal, Object[] args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
         }
-        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
+        delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
     /** {@inheritDoc} **/

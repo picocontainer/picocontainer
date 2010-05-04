@@ -105,7 +105,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                        with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 				one(monitor2).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -114,7 +114,7 @@ public class ReflectionLifecycleStrategyTestCase {
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                        with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 			}
 		});
 		strategy.dispose(disposable);
@@ -143,7 +143,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStartMethod), with(same(lifecycle)),
-                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                        with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 				one(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -151,7 +151,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStopMethod), with(same(lifecycle)),
-                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                        with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 				one(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -159,7 +159,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(lifecycle)),
-                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                        with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 			}
 		});
 
@@ -194,7 +194,7 @@ public class ReflectionLifecycleStrategyTestCase {
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isStartMethod), with(same(mock)),
-                                    with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                                    with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 					one(monitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
@@ -202,7 +202,7 @@ public class ReflectionLifecycleStrategyTestCase {
 					one(monitor).invoked(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isStopMethod), with(same(mock)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+							with(isStopMethod), with(same(mock)), with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 				}
 			});
 			return mock;
@@ -220,7 +220,7 @@ public class ReflectionLifecycleStrategyTestCase {
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isDisposeMethod), with(same(mock)),
-                                    with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                                    with(any(Long.class)), with(same(null)), with(any(Object[].class)));
 				}
 			});
 			return mock;

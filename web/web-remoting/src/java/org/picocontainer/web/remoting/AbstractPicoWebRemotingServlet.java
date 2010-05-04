@@ -7,8 +7,13 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import java.io.IOException;
-import java.lang.reflect.Member;
+import com.thoughtworks.xstream.XStream;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.web.PicoServletContainerFilter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,16 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.web.PicoServletContainerFilter;
-import org.picocontainer.web.Cache;
-
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+import java.lang.reflect.Member;
 
 /**
  * Abstract Servlet used for the calling of methods in a tree of components managed by PicoContainer.
@@ -181,7 +178,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         //final Cache cache = currentAppContainer.get().getComponent(Cache.class);
 
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
-                            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+                            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args) {
                                 if (httpMethod.equals(GET)) {
                                     StringBuilder sb = new StringBuilder().append(OPEN).append(request.getRequestURI())
                                             .append(SLASH).append(instance.toString()).append(CLOSE).append(member.getName());
@@ -197,7 +194,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
                                 return ComponentMonitor.KEEP;
                             }
 
-                            public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object[] args, Object retVal) {
+                            public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object retVal, Object[] args) {
                             }
                         });
 

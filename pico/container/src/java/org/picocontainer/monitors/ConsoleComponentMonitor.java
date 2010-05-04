@@ -10,11 +10,12 @@
 
 package org.picocontainer.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -23,12 +24,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Injector;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link OutputStream}. 
@@ -107,7 +107,7 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
     public Object invoking(PicoContainer container,
                            ComponentAdapter<?> componentAdapter,
                            Member member,
-                           Object instance, Object[] args) {
+                           Object instance, Object... args) {
         out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         return delegate.invoking(container, componentAdapter, member, instance, args);
     }
@@ -117,9 +117,9 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
                         Member member,
                         Object instance,
                         long duration,
-                        Object[] args, Object retVal) {
+                        Object retVal, Object[] args) {
         out.println(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
-        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
+        delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
     public void invocationFailed(Member member, Object instance, Exception cause) {

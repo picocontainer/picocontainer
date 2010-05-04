@@ -85,7 +85,7 @@ public class WriterComponentMonitorTestCase  {
     }
 
     @Test public void testShouldTraceInvoked() {
-        monitor.invoked(null, null, method, this, 543, new Object[0], null);
+        monitor.invoked(null, null, method, this, 543, null, new Object[0]);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKED,
                                                    methodToString(method), this,
                                                    (long)543) +NL,  out.toString());

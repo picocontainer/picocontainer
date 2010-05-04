@@ -123,7 +123,7 @@ public final class PropertyApplying extends AbstractBehavior {
                         setter.invoke(componentInstance, valueToInvoke);
                         monitor.invoked(container,
                                                  PropertyApplicator.this,
-                                                 setter, componentInstance, System.currentTimeMillis() - startTime, new Object[] {valueToInvoke}, null);
+                                                 setter, componentInstance, System.currentTimeMillis() - startTime, null, new Object[] {valueToInvoke});
                     } catch (final Exception e) {
                         monitor.invocationFailed(setter, componentInstance, e);
                         throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);

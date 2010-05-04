@@ -10,26 +10,26 @@
 
 package org.picocontainer.gems.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.ComponentMonitorHelper;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Injector;
-import org.picocontainer.monitors.ComponentMonitorHelper;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 
 /**
@@ -171,7 +171,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                          final ComponentAdapter<?> componentAdapter,
                          final Member member,
                          final Object instance,
-                         final Object[] args) {
+                         final Object... args) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -185,13 +185,13 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                         final Member member,
                         final Object instance,
                         final long duration,
-                        final Object[] args,
-                        final Object retVal) {
+                        final Object retVal, final Object[] args
+    ) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
         }
-        delegate.invoked(container, componentAdapter, member, instance,  duration, args, retVal);
+        delegate.invoked(container, componentAdapter, member, instance,  duration, retVal, args);
     }
 
     /** {@inheritDoc} **/

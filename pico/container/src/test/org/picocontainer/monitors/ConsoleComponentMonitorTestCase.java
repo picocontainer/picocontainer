@@ -51,7 +51,7 @@ public class ConsoleComponentMonitorTestCase {
     }
 
     @Test public void testShouldTraceInvoked() {
-        monitor.invoked(null, null, method, this, 543, new Object[0], null);
+        monitor.invoked(null, null, method, this, 543, null, new Object[0]);
     }
 
     @Test public void testShouldTraceInvocatiationFailed() {

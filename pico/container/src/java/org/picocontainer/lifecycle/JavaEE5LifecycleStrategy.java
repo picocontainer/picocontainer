@@ -58,7 +58,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
                     long str = System.currentTimeMillis();
                     currentMonitor().invoking(null, null, method, component, new Object[0]);
                     method.invoke(component);
-                    currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str, new Object[0], null);
+                    currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str, null, new Object[0]);
                 } catch (IllegalAccessException e) {
                     throw new PicoLifecycleException(method, component, e);
                 } catch (InvocationTargetException e) {

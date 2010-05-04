@@ -10,18 +10,18 @@
 
 package org.picocontainer.monitors;
 
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
 import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.Injector;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.Injector;
+
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 
 /**
  * <p>
@@ -85,7 +85,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
     public Object invoking(PicoContainer container,
                            ComponentAdapter<?> componentAdapter,
                            Member member,
-                           Object instance, Object[] args) {
+                           Object instance, Object... args) {
         return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
@@ -93,8 +93,8 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
                         ComponentAdapter<?> componentAdapter,
                         Member member,
                         Object instance,
-                        long duration, Object[] args, Object retVal) {
-        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
+                        long duration, Object retVal, Object[] args) {
+        delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
     public void invocationFailed(Member member, Object instance, Exception e) {

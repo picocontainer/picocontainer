@@ -9,17 +9,18 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Inject;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
 public class FactoryInjectorTestCase {
 
@@ -100,7 +101,7 @@ public class FactoryInjectorTestCase {
         MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
-        container.addAdapter(new FactoryInjector(Swede.class) {
+        container.addAdapter(new FactoryInjector<Swede>(Swede.class) {
             public Swede getComponentInstance(PicoContainer container, final Type into) {
                 return new Swede() {
                     public String toString() {
@@ -121,7 +122,7 @@ public class FactoryInjectorTestCase {
         MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
-        container.addAdapter(new FactoryInjector(Swede.class) {
+        container.addAdapter(new FactoryInjector<Swede>(Swede.class) {
             public Swede getComponentInstance(PicoContainer container, final Type into) {
                 return new Swede() {
                     public String toString() {
@@ -229,6 +230,7 @@ public class FactoryInjectorTestCase {
         ft.addAdapter(pico);
 
         Tree tree = pico.getComponent(Tree.class);
+        assertNotNull(tree);
     }
 
     private static class KeyAwareSwedeFactoryInjector extends FactoryInjector<Swede> {

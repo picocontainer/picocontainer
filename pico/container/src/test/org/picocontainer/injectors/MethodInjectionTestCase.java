@@ -10,11 +10,14 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
+import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Nullable;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -26,6 +29,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.picocontainer.Characteristics.USE_NAMES;
 
 public class MethodInjectionTestCase {
@@ -50,7 +59,8 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void testMethodInjection() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection());
+        ComponentMonitor cm  = mock(NullComponentMonitor.class, new CallsRealMethods());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), cm, new MethodInjection());
         pico.addComponent(123);
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -58,6 +68,8 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
         assertEquals("MethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        verify(cm).invoking(any(PicoContainer.class), any(MethodInjection.MethodInjector.class), any(Method.class), any(Foo.class), any(Bar.class), same(123));
+        verify(cm).invoked(any(PicoContainer.class), any(MethodInjection.MethodInjector.class), any(Method.class), any(Foo.class), eq(0L), isNull(), any(Bar.class));
     }
 
     @Test public void testMethodInjectionViaMethodDef() {
@@ -101,7 +113,7 @@ public class MethodInjectionTestCase {
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjection.MethodInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
+        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);

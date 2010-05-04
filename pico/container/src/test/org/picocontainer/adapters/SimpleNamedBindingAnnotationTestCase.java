@@ -1,16 +1,7 @@
 package org.picocontainer.adapters;
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.Properties;
-
 import org.junit.Test;
+import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -21,8 +12,27 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjectionType;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
 /**
@@ -33,7 +43,9 @@ import org.picocontainer.injectors.AbstractInjectionType;
 public class SimpleNamedBindingAnnotationTestCase {
 
     @Test public void testNamedBinding() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection());
+        ComponentMonitor cm  = mock(NullComponentMonitor.class, new CallsRealMethods());
+        MutablePicoContainer mpc = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(),
+                cm, new FieldInjection());
         mpc.addComponent(FruitBasket.class);
         mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);
         mpc.addComponent(bindKey(Apple.class, "two"), AppleImpl2.class);
@@ -46,6 +58,12 @@ public class SimpleNamedBindingAnnotationTestCase {
         assertEquals(fb.two.getX(), 2);
         assertEquals(fb.three.getX(), 3);
         assertEquals(fb.four.getX(), 4);
+        verify(cm, times(4)).invoking(any(PicoContainer.class), any(FieldInjector.class), any(Field.class),
+                any(FruitBasket.class), any(Apple.class));
+        verify(cm, times(4)).invoked(any(PicoContainer.class), any(FieldInjector.class), any(Field.class),
+                any(FruitBasket.class), eq(0L), isNull(), any(Apple.class));
+
+
     }
 
     public interface Apple {
@@ -111,7 +129,7 @@ public class SimpleNamedBindingAnnotationTestCase {
             throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(
                 componentProps, Characteristics.USE_NAMES, true);
-            return new FieldInjector(key, impl, parameters, monitor, useNames);
+            return new FieldInjector<T>(key, impl, parameters, monitor, useNames);
         }
     }
 
@@ -140,7 +158,10 @@ public class SimpleNamedBindingAnnotationTestCase {
                         value = container.getComponent(field.getType());
                     }
                     field.setAccessible(true);
+                    currentMonitor().invoking(container, this, field, inst, value);
+                    long start = System.currentTimeMillis();
                     field.set(inst, value);
+                    currentMonitor().invoked(container, this, field, inst, (System.currentTimeMillis() - start), null, value);
                 }
 
             } catch (InstantiationException e) {

@@ -10,18 +10,18 @@
 
 package org.picocontainer.monitors;
 
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoLifecycleException;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoLifecycleException;
-import org.picocontainer.Injector;
 
 /**
  * A {@link ComponentMonitor} which does nothing. 
@@ -53,7 +53,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public Object invoking(PicoContainer container,
                            ComponentAdapter<?> componentAdapter,
                            Member member,
-                           Object instance, Object[] args) {
+                           Object instance, Object... args) {
         return KEEP;
     }
 
@@ -61,7 +61,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
                         ComponentAdapter<?> componentAdapter,
                         Member member,
                         Object instance,
-                        long duration, Object[] args, Object retVal) {
+                        long duration, Object retVal, Object[] args) {
     }
 
     public void invocationFailed(Member member, Object instance, Exception e) {

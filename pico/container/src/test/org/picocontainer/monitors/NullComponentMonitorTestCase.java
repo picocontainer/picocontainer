@@ -36,7 +36,7 @@ public class NullComponentMonitorTestCase {
         assertEquals(makeConstructor(), ncm.instantiating(makePico(), makeCA(), makeConstructor()));
         ncm.instantiationFailed(makePico(), makeCA(), makeConstructor(), new Exception());
         ncm.invocationFailed(makeConstructor(), "foo", new Exception());
-        ncm.invoked(makePico(), makeCA(), makeMethod(), "foo", 10, new Object[0], null);
+        ncm.invoked(makePico(), makeCA(), makeMethod(), "foo", 10, null, new Object[0]);
         ncm.invoking(makePico(), makeCA(), makeMethod(), "foo", new Object[0]);
         try {
             ncm.lifecycleInvocationFailed(makePico(), makeCA(), makeMethod(), "foo", new RuntimeException());

@@ -119,7 +119,7 @@ public class ImplementationHiding extends AbstractBehavior {
                 long startTime = System.currentTimeMillis();
                 Object rv = method.invoke(componentInstance, args);
                 monitor.invoked(container, this,
-                                         method, componentInstance, System.currentTimeMillis() - startTime, args, rv);
+                                         method, componentInstance, System.currentTimeMillis() - startTime, rv, args);
                 return rv;
             } catch (final InvocationTargetException ite) {
                 monitor.invocationFailed(method, componentInstance, ite);

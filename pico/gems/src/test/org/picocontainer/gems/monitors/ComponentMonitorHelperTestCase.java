@@ -86,7 +86,7 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
     @Test public void testShouldTraceInvoked() throws IOException {
-        monitor.invoked(null, null, method, this, 543, new Object[] {"1","2"}, "3");
+        monitor.invoked(null, null, method, this, 543, "3", new Object[] {"1","2"});
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), this, (long) 543));
     }
 

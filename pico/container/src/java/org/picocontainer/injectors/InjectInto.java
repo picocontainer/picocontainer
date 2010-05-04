@@ -11,8 +11,8 @@ package org.picocontainer.injectors;
 import java.lang.reflect.Type;
 
 public class InjectInto implements Type {
-    private Type intoType;
-    private Object intoKey;
+    private final Type intoType;
+    private final Object intoKey;
 
     public InjectInto(Type intoType, Object intoKey) {
         this.intoType = intoType;

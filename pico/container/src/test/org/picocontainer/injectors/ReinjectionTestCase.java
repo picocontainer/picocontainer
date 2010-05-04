@@ -9,32 +9,40 @@
 
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.hamcrest.Description;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.api.Action;
+import org.jmock.api.Invocation;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.*;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-import org.jmock.integration.junit4.JMock;
-import org.jmock.Mockery;
-import org.jmock.Expectations;
-import org.jmock.api.Action;
-import org.jmock.api.Invocation;
-import org.hamcrest.Description;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Member;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 @RunWith(JMock.class)
 public class ReinjectionTestCase extends AbstractComponentFactoryTest {
@@ -252,7 +260,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
                     with(any(Method.class)), with(any(Object.class)), with(any(Object[].class)));
             will(returnValue(ComponentMonitor.KEEP));
             one(cm).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)),
-                    with(any(Method.class)), with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(any(Integer.class)));
+                    with(any(Method.class)), with(any(Object.class)), with(any(Long.class)), with(any(Integer.class)), with(any(Object[].class)));
         }});
 
         Object o = reinjector.reinject(NeedsShoe.class, methodInjection);
@@ -319,7 +327,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         parent.addComponent("12");
 
         final ComponentMonitor cm = new NullComponentMonitor() {
-            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args) {
                 return ComponentMonitor.KEEP;
             }
         };

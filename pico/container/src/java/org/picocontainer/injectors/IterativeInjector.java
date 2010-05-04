@@ -163,7 +163,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                     if (rv == ComponentMonitor.KEEP) {
                         long str = System.currentTimeMillis();
                         lastReturn = injectIntoMember(member, componentInstance, toInject);
-                        monitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);
+                        monitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, lastReturn, new Object[] {toInject});
                     } else {
                         lastReturn = rv;
                     }

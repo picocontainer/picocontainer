@@ -197,7 +197,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/** {@inheritDoc} * */
 	public Object invoking(final PicoContainer container,
 			final ComponentAdapter<?> componentAdapter, final Member member,
-			final Object instance, Object[] args) {
+			final Object instance, Object... args) {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKING,
@@ -208,15 +208,15 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/** {@inheritDoc} * */
 	public void invoked(final PicoContainer container,
-			final ComponentAdapter<?> componentAdapter, final Member member,
-			final Object instance, final long duration, Object[] args, Object retVal) {
+                        final ComponentAdapter<?> componentAdapter, final Member member,
+                        final Object instance, final long duration, Object retVal, Object[] args) {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKED,
 					methodToString(member), instance, duration));
 		}
 		delegate.invoked(container, componentAdapter, member, instance,
-				duration, args, retVal);
+				duration, retVal, args);
 	}
 
 	/** {@inheritDoc} * */
