@@ -199,5 +199,14 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @since 2.10.2
      */
     LifecycleState getLifecycleState();
+
+    /**
+     * Changes monitor in the ComponentFactory, the component adapters
+     * and the child containers, if these support a ComponentMonitorStrategy.
+     * {@inheritDoc}
+     * @since 3.0
+     */
+    void changeMonitor(final ComponentMonitor monitor);
+
     
 }

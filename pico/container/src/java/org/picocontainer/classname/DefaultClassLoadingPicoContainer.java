@@ -556,7 +556,12 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
          */
         public String getName() {
             return DefaultClassLoadingPicoContainer.this.getName();
-        }        
+        }
+
+        public void changeMonitor(ComponentMonitor monitor) {
+            DefaultClassLoadingPicoContainer.this.changeMonitor(monitor);
+        }
+
     }
 
 }

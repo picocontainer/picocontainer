@@ -1193,7 +1193,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         @Override
         public String getName() {
             return DefaultPicoContainer.this.getName();
-        }        
+        }
+
+        public void changeMonitor(ComponentMonitor monitor) {
+            DefaultPicoContainer.this.changeMonitor(monitor);
+        }
     }
 
 }

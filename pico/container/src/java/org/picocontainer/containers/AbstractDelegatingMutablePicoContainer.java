@@ -9,13 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import java.util.Properties;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.LifecycleState;
+
+import java.util.Properties;
 
 /**
  * abstract base class for delegating to mutable containers
@@ -106,6 +108,9 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     /** {@inheritDoc} **/
     public String getName() {
         return getDelegate().getName();
-    }    
+    }
 
+    public void changeMonitor(ComponentMonitor monitor) {
+        getDelegate().changeMonitor(monitor);
+    }
 }
