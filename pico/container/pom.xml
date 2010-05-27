@@ -60,6 +60,10 @@
                                 <excludes>
                                     <exclude>javax.annotation:jsr250-api</exclude>
                                     <exclude>javax.inject:javax.inject</exclude>
+						            <exclude>org.mockito:mockito-core</exclude>
+						            <exclude>org.springframework:spring-beans</exclude>
+						            <exclude>javax.inject:javax.inject</exclude>
+						            <exclude>com.google.code.guice:guice</exclude>
                                 </excludes>
                             </artifactSet>
                             <filters>
