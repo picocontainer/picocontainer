@@ -29,9 +29,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
-		<url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
+        <connection>scm:git:git@git.codehaus.org/picocontainer-git.git</connection>
+        <developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
+	    <url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>		
 	</scm>
 	<distributionManagement>
 		<repository>
