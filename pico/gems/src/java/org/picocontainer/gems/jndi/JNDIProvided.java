@@ -20,49 +20,55 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
 /**
- * represents dependency provided via JNDI. This dependency is not 
+ * Represents dependency provided via JNDI. This dependency is not 
  * to be managed by container at all, so there is no lifecycle, no 
  * monitoring etc. 
  * @author Konstantin Pribluda
  *
  */
 @SuppressWarnings("serial")
-public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
+public class JNDIProvided<T> implements ComponentAdapter<T>, Serializable {
 
 
-	JNDIObjectReference<T> jndiReference;
+    private JNDIObjectReference<T> jndiReference;
+    private Class<T> type;
+    private Object componentKey;
 	
-	 Object key;
+	Object key;
 	
 	/**
-	 * create adapter with specified key and reference
+	 * Create adapter with specified key and reference
 	 * @param key component key
 	 * @param reference JNDI reference storing component
+     * @param type the type that the JNDIObjectReference will return.
 	 */
-	public JNDIProvided(final Object key,final JNDIObjectReference<T> reference) {
+	public JNDIProvided(final Object key,final JNDIObjectReference<T> reference, final Class<T> type) {
 		this.key = key;
 		this.jndiReference = reference;
+        this.type = type;
 	}
 	
 	/**
 	 * create adapter with JNDI reference. referenced object class will be 
 	 * takes as key
 	 * @param reference JNDI reference storing component
+     * @param type the type that the JNDIObjectReference will return.
 	 */
-	public JNDIProvided(final JNDIObjectReference<T> reference) {
-		this(reference.get().getClass(),reference);
+	public JNDIProvided(final JNDIObjectReference<T> reference, Class<T> type) {
+		this(reference.get().getClass(),reference, type);
 	}
 	
 	/**
-	 * create adapter based on JNDI name. I leave this unchecked because
+	 * Create adapter based on JNDI name. I leave this unchecked because
 	 * type is really not known at this time
 	 * @param jndiName name to be used
+     * @param type the type that the JNDIObjectReference will return.
 	 * @throws NamingException will be thrown if something goes 
 	 * wrong in JNDI
 	 */
 	@SuppressWarnings("unchecked")
-	public JNDIProvided(final String jndiName) throws NamingException {
-		this(new JNDIObjectReference(jndiName));
+	public JNDIProvided(final String jndiName, Class<T> type) throws NamingException {
+		this(new JNDIObjectReference(jndiName), type);
 	}
 	
 	public Object getComponentKey() {	
@@ -71,25 +77,25 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 
 	@SuppressWarnings("unchecked")
 	public Class<? extends T> getComponentImplementation() {
-		return (Class<? extends T>) jndiReference.get().getClass();
+		return type;
 	}
 
     /**
-	 * retrieve instance out of JNDI
+	 * Retrieve instance out of JNDI
 	 */
 	public T getComponentInstance(final PicoContainer container, final Type into)
 			throws PicoCompositionException {
 		return  jndiReference.get();
 	}
 
-	/**
-	 * we have nothing to verify here
-	 */
+	/*
+	 * We have nothing to verify here
+     */
 	public void verify(final PicoContainer container) throws PicoCompositionException {
 	}
 
-	/**
-	 * as there is no puprose of proceeding further down, 
+	/*
+	 * As there is no puprose of proceeding further down,
 	 * we do nothing here
 	 */
 	public void accept(final PicoVisitor visitor) {

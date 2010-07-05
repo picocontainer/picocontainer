@@ -9,17 +9,16 @@
 
 package org.picocontainer.gems.jndi;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
-import java.util.Hashtable;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.Hashtable;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * test capabilities of object reference storing stuff in JNDI
@@ -42,7 +41,8 @@ public class JNDIObjectReferenceTestCase {
 	 * object shall be stored and returned back
 	 * @throws NamingException
 	 */
-	@Test public void testStorageAndRetrieval() throws NamingException {
+	@Test
+    public void testStorageAndRetrieval() throws NamingException {
 		reference = new JNDIObjectReference("glee:/glum/glarch/blurge", ctx);
 		String obj = new String("that's me");		
 		reference.set(obj);
