@@ -589,7 +589,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
     }
 
-    private void addOrderedComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+    private synchronized void addOrderedComponentAdapter(final ComponentAdapter<?> componentAdapter) {
         if (!getOrderedComponentAdapters().contains(componentAdapter)) {
             getOrderedComponentAdapters().add(componentAdapter);
         }
@@ -605,20 +605,22 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         Map<ComponentAdapter<T>, T> adapterToInstanceMap = new HashMap<ComponentAdapter<T>, T>();
-        for (ComponentAdapter<?> componentAdapter : getModifiableComponentAdapterList()) {
-            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                ComponentAdapter<T> typedComponentAdapter = (ComponentAdapter<T>) componentAdapter;
-                T componentInstance = getLocalInstance(typedComponentAdapter);
-                adapterToInstanceMap.put(typedComponentAdapter, componentInstance);
-            }
-        }
         List<T> result = new ArrayList<T>();
-        for (ComponentAdapter<?> componentAdapter : getOrderedComponentAdapters()) {
-            final T componentInstance = adapterToInstanceMap.get(componentAdapter);
-            if (componentInstance != null) {
-                // may be null in the case of the "implicit" addAdapter
-                // representing "this".
-                result.add(componentInstance);
+        synchronized (this) {
+            for (ComponentAdapter<?> componentAdapter : getModifiableComponentAdapterList()) {
+                if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                    ComponentAdapter<T> typedComponentAdapter = (ComponentAdapter<T>) componentAdapter;
+                    T componentInstance = getLocalInstance(typedComponentAdapter);
+                    adapterToInstanceMap.put(typedComponentAdapter, componentInstance);
+                }
+            }
+            for (ComponentAdapter<?> componentAdapter : getOrderedComponentAdapters()) {
+                final T componentInstance = adapterToInstanceMap.get(componentAdapter);
+                if (componentInstance != null) {
+                    // may be null in the case of the "implicit" addAdapter
+                    // representing "this".
+                    result.add(componentInstance);
+                }
             }
         }
         return result;
@@ -762,7 +764,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
      */
-    public void start() {
+    public synchronized void start() {
 
         lifecycleState.starting();
 
@@ -791,7 +793,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
      */
-    public void stop() {
+    public synchronized void stop() {
 
         lifecycleState.stopping();
 
@@ -840,7 +842,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
      */
-    public void dispose() {
+    public synchronized void dispose() {
         if (lifecycleState.isStarted()) {
             stop();
         }
