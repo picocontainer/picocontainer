@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2003-2010 PicoContainer Committers. All rights reserved.
+ * Copyright (c) PicoContainer Organization. All rights reserved.
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
@@ -7,7 +7,15 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.IOException;
+import java.lang.reflect.Member;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
@@ -15,14 +23,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerFilter;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.Member;
+import com.thoughtworks.xstream.XStream;
 
 /**
  * Abstract Servlet used for the calling of methods in a tree of components managed by PicoContainer.
@@ -60,90 +61,21 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private PicoWebRemoting pwr;
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
-
+    
     public static class ServletFilter extends PicoServletContainerFilter {
 
+        @Override
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
 
+        @Override
         protected void setRequestContainer(MutablePicoContainer container) {
             currentRequestContainer.set(container);
         }
 
+        @Override
         protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class Struts1ServletFilter
-            extends org.picocontainer.web.struts.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class Struts2ServletFilter
-            extends org.picocontainer.web.struts2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork1ServletFilter
-            extends org.picocontainer.web.webwork.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork2ServletFilter
-            extends org.picocontainer.web.webwork2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
             currentSessionContainer.set(container);
         }
     }
@@ -152,9 +84,8 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     protected abstract XStream createXStream();
     
-    protected void service(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        long b4 = System.currentTimeMillis();
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         if (!initialized) {
             publishAdapters();
@@ -169,48 +100,22 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         final String httpMethod = request.getMethod();
 
-        final String[] cacheKey = new String[1];
-        final String[] cached = new String[1];
-        final long[] time = new long[1];
-
-        long str = System.currentTimeMillis();
-
         //final Cache cache = currentAppContainer.get().getComponent(Cache.class);
 
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
+                            @Override
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args) {
-                                if (httpMethod.equals(GET)) {
-                                    StringBuilder sb = new StringBuilder().append(OPEN).append(request.getRequestURI())
-                                            .append(SLASH).append(instance.toString()).append(CLOSE).append(member.getName());
-                                    appendArgsAsString(sb, args);
-                                    cacheKey[0] = sb.toString();
-//                                    cached[0] = (String) cache.get((Object)cacheKey[0]);
-//                                    if (cached[0] != null) {
-//                                        time[0] = System.currentTimeMillis();
-//                                        return null;
-//                                    }
-                                }
-                                time[0] = System.currentTimeMillis();
                                 return ComponentMonitor.KEEP;
                             }
 
-                            public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object retVal, Object[] args) {
+                            @Override
+                            public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object retVal, Object... args) {
+                                // Empty
                             }
                         });
 
-        String duration = ", duration = " + (System.currentTimeMillis() - str) + "ms ";
-
-        if (httpMethod.equals(GET)) {
-//            if (cached[0] != null) {
-//                result = cached[0];
-//            } else {
-//                cache.put(cacheKey[0], result);
-//            }
-        }
-
-        ServletOutputStream outputStream = response.getOutputStream();
         if (result != null) {
-            outputStream.print(result);
+            response.getWriter().print(result);
         } else {
             response.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
         }
@@ -223,7 +128,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
     }
 
-
+    @Override
     public void init(ServletConfig servletConfig) throws ServletException {
     	this.xstream = createXStream();
         String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
