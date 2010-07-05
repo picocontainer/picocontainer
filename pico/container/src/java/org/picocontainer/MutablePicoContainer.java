@@ -119,13 +119,28 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance);
 
     /**
-     * Make a child container, using the same implementation of MutablePicoContainer as the parent.
+     * Make a child container, using both the same implementation of MutablePicoContainer as the parent
+     * and identical behaviors as well.
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.
      * Lifecycle events will be cascaded from parent to child
-     * as a consequence of this.
-     *
+     * as a consequence of this.  
+     * <p>Note that for long-lived parent containers, you need to unregister child containers
+     * made with this call before disposing or you will leak memory.  <em>(Experience
+     * speaking here! )</em></p>
+     * <p>Incorrect Example:</p>
+     * <pre>
+     *   MutablePicoContainer parent = new PicoBuilder().withCaching().withLifecycle().build();
+     *   MutablePicoContainer child = parent.makeChildContainer();
+     *   child = null; //Child still retains in memory because parent still holds reference.
+     * </pre>
+     * <p>Correct Example:</p>
+     * <pre>
+     *   MutablePicoContainer parent = new PicoBuilder().withCaching().withLifecycle().build();
+     *   MutablePicoContainer child = parent.makeChildContainer();
+     *   parent.removeChildContainer(child); //Remove the bi-directional references.
+     *   child = null; 
+     * </pre>
      * @return the new child container.
-     *
      */
     MutablePicoContainer makeChildContainer();
 
