@@ -169,7 +169,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	@Override
 	public synchronized void stop() {	    
 		super.stop();
-		flushInstances();
+		flushInstances();       
 	}
 
     /**

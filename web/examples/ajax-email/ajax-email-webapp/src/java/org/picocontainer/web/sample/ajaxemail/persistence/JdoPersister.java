@@ -7,31 +7,6 @@ import org.picocontainer.web.sample.ajaxemail.Query;
 
 public class JdoPersister implements Persister {
 
-//    public static interface GoogleServices {
-//        <T> T getService(Class<T> clazz);
-//        <T> T getService(Class<T> clazz, String hint);
-//    }
-//
-//    public static class FooServlet extends HttpServlet {
-//
-//        private final PersistenceManager pm;
-//
-//        /** GAE fills this in */
-//        public FooServlet(GoogleServices services) {
-//            this.pm = services.getService(PersistenceManager.class,
-//                    "transactional");
-//        }
-//
-//        /** But let us also stay compatible with non AppEngine servers */
-//        public FooServlet() {
-//            this.pm = JDOHelper.getPersistenceManagerFactory("transactional")
-//            .getPersistenceManager();
-//        }
-//
-//        protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-//        }
-//    }
-
     PersistenceManager pm = JDOHelper.getPersistenceManagerFactory("transactional").getPersistenceManager();
 
     public void makePersistent(Object persistent) {

@@ -15,7 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 
 public class AjaxEmailScenario extends JUnitScenario {
 
-    private Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
+    private Selenium selenium = new DefaultSelenium("localhost", 4444, "*safari", "http://localhost:8080");
 	private AjaxEmailSteps ajaxEmailSteps;
 
     public AjaxEmailScenario() {
