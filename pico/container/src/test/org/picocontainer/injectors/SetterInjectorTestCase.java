@@ -18,6 +18,10 @@ import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.api.Invocation;
+import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -25,13 +29,16 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 
 @SuppressWarnings("serial")
@@ -349,6 +356,47 @@ public class SetterInjectorTestCase
         assertTrue(burp.wind == null);
     }
 
+    @Test
+    public void shouldProvideEmptyArgumentListForDefaultConstructor() throws Exception {
+        final Mockery mockery = new Mockery();
+        final ComponentMonitor componentMonitor = mockery.mock(ComponentMonitor.class);
+        final MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(),
+             new NullLifecycleStrategy(), componentMonitor, new SetterInjection()
+        );
+
+        mockery.checking(new Expectations() {{
+            oneOf(componentMonitor).newInjector(
+                    with(any(org.picocontainer.Injector.class))
+            ); will(returnSameInjector());
+        }});
+
+        pico.addComponent(B.class);
+
+        mockery.checking(new Expectations() {{
+            oneOf(componentMonitor).instantiating(
+                    with(same(pico)), with(any(ComponentAdapter.class)), with(equal(B.class.getConstructor()))
+            ); will(new CustomAction("return same constructor") {
+                public Object invoke(Invocation invocation) {
+                    return invocation.getParameter(2);
+                }
+            });
+            oneOf(componentMonitor).instantiated(
+                    with(same(pico)), with(any(ComponentAdapter.class)), with(equal(B.class.getConstructor())),
+                    with(any(Object.class)), with(equal(new Object[0])), with(any(long.class))
+            );
+        }});
+        pico.getComponent(B.class);
+
+        mockery.assertIsSatisfied();
+    }
+
+    private CustomAction returnSameInjector() {
+        return new CustomAction("return same injector") {
+            public Object invoke(Invocation invocation) {
+                return invocation.getParameter(0);
+            }
+        };
+    }
 
     public static class C {
         private B b;

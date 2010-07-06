@@ -31,6 +31,9 @@ import java.util.Set;
  * Injection will happen iteratively after component instantiation
  */
 public abstract class IterativeInjector<T> extends AbstractInjector<T> {
+
+    private static final Object[] NONE = new Object[0];
+    
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
@@ -204,7 +207,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                                       IterativeInjector.this,
                                       constructorToUse,
                                       componentInstance,
-                                      null,
+                                      NONE,
                                       System.currentTimeMillis() - startTime);
         return componentInstance;
     }
