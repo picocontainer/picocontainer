@@ -50,17 +50,17 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-gems</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jmock</groupId>
