@@ -8,6 +8,7 @@
 	<url>http://www.picocontainer.org</url>
 	<modules>
 		<module>container</module>
+		<module>container-debug</module>
 		<module>tck</module>
 		<module>jsr330-tck</module>
 		<module>gems</module>
