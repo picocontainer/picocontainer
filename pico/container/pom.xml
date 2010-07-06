@@ -29,7 +29,7 @@
             <plugin>
                 <groupId>com.thoughtworks.paranamer</groupId>
                 <artifactId>paranamer-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.2.1</version>
                 <configuration>
                     <sourceDirectory>src/test</sourceDirectory>
                     <outputDirectory>target/test-classes</outputDirectory>
