@@ -105,12 +105,18 @@ public class ImplementationHiding extends AbstractBehavior {
 
         @SuppressWarnings("unchecked")
         protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+            final PicoContainer container1 = container;
             return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
+                private final PicoContainer container = container1;
+                private Object instance;
+
                 public synchronized Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-                    return invokeMethod(getDelegate().getComponentInstance(container, NOTHING.class), method, args, container);
+                    if (instance == null) {
+                        instance = getDelegate().getComponentInstance(container, NOTHING.class);
+                    }
+                    return invokeMethod(instance, method, args, container);
                 }
-            });
-        }
+            });        }
 
         protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
             ComponentMonitor monitor = currentMonitor();

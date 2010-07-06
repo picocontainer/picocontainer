@@ -10,9 +10,6 @@
 package org.picocontainer.behaviors;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -25,6 +22,9 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
@@ -130,20 +130,22 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
         assertEquals("<init>foo()", sb.toString()); // instantiated
     }
 
-    //@Test public void shouldNotInstantiateForEveryMethodCall() {
-    // ...
-    //}
+    @Test public void shouldInstantiateForEveryGetComponentCall() {
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        parent.addComponent(StringBuilder.class);
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(parent, new ImplementationHiding());
+        pico.addComponent(NeedsStringBuilder.class, NeedsStringBuilderImpl.class);
+        NeedsStringBuilder nsb = pico.getComponent(NeedsStringBuilder.class);
+        nsb.foo();
+        nsb = pico.getComponent(NeedsStringBuilder.class);
+        nsb.foo();
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals("<init>foo()<init>foo()", sb.toString());
+    }
 
     @Test public void shouldInstantiateForEveryMethodCall() {
-        cachingTestBody("<init>foo()<init>foo()", new ImplementationHiding());
-    }
-
-    @Test public void shouldNotInstantiateForEveryMethodCallIfCaching() {
-        cachingTestBody("<init>foo()foo()", new ImplementationHiding().wrap(new Caching()));
-    }
-
-    @Test public void shouldInstantiateForEveryMethodCallIfCachingWrapsImplementationHidingWhichIsFutile() {
-        cachingTestBody("<init>foo()<init>foo()", new Caching().wrap(new ImplementationHiding()));
+        cachingTestBody("<init>foo()foo()", new ImplementationHiding());
     }
 
     private void cachingTestBody(String expectation, ComponentFactory compFactory) {
