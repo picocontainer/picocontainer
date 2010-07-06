@@ -12,10 +12,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 /**
@@ -131,4 +133,32 @@ public class CompositeInjectionTestCase {
         assertEquals("2", foo4.two);
     }
 
+    @Test public void testWithNonNullLifecycleStrategy() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(
+                new EmptyPicoContainer(),
+                new NonNullLifecycleStrategy(),
+                new CompositeInjection(new ConstructorInjection(), new AnnotatedMethodInjection())
+        );
+        dpc.addComponent(Bar.class);
+        assertNotNull(dpc.getComponent(Bar.class));
+    }
+
+    private static class NonNullLifecycleStrategy implements LifecycleStrategy {
+        public void start(Object component) {
+        }
+
+        public void stop(Object component) {
+        }
+
+        public void dispose(Object component) {
+        }
+
+        public boolean hasLifecycle(Class<?> type) {
+            return false;
+        }
+
+        public boolean isLazy(ComponentAdapter<?> adapter) {
+            return false;
+        }
+    }
 }

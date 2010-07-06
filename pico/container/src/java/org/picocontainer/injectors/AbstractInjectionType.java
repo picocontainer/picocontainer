@@ -31,41 +31,41 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
     }
 
-    private static class LifecycleAdapter<T> implements ComponentAdapter<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
-        private final Injector<T> injector;
+    private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+        private final Injector<T> delegate;
         private final LifecycleStrategy lifecycle;
 
-        public LifecycleAdapter(Injector<T> injector, LifecycleStrategy lifecycle) {
-            this.injector = injector;
+        public LifecycleAdapter(Injector<T> delegate, LifecycleStrategy lifecycle) {
+            this.delegate = delegate;
             this.lifecycle = lifecycle;
         }
 
         public Object getComponentKey() {
-            return injector.getComponentKey();
+            return delegate.getComponentKey();
         }
 
         public Class<? extends T> getComponentImplementation() {
-            return injector.getComponentImplementation();
+            return delegate.getComponentImplementation();
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            return injector.getComponentInstance(container, into);
+            return delegate.getComponentInstance(container, into);
         }
 
         public void verify(PicoContainer container) throws PicoCompositionException {
-            injector.verify(container);
+            delegate.verify(container);
         }
 
         public void accept(PicoVisitor visitor) {
-            injector.accept(visitor);
+            delegate.accept(visitor);
         }
 
         public ComponentAdapter<T> getDelegate() {
-            return injector;
+            return delegate;
         }
 
         public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
-            return injector.findAdapterOfType(adapterType);
+            return delegate.findAdapterOfType(adapterType);
         }
 
         public String getDescriptor() {
@@ -73,7 +73,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         public String toString() {
-            return getDescriptor() + ":" + injector.toString();
+            return getDescriptor() + ":" + delegate.toString();
         }
 
         public void start(Object component) {
@@ -97,16 +97,20 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         public void changeMonitor(ComponentMonitor monitor) {
-            if (injector instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) injector).changeMonitor(monitor);
+            if (delegate instanceof ComponentMonitorStrategy) {
+                ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
             }
         }
 
         public ComponentMonitor currentMonitor() {
-            if (injector instanceof ComponentMonitorStrategy) {
-                return ((ComponentMonitorStrategy) injector).currentMonitor();
+            if (delegate instanceof ComponentMonitorStrategy) {
+                return ((ComponentMonitorStrategy) delegate).currentMonitor();
             }
             return null;
+        }
+
+        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+            return delegate.decorateComponentInstance(container, into, instance);
         }
     }
 }
