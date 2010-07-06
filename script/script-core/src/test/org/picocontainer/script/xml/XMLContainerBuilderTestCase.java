@@ -39,6 +39,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locking;
@@ -663,6 +664,20 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Object wsc2 = pico.getComponent(WebServerConfig.class);
 
         assertSame(wsc1, wsc2);
+    }
+
+    @Test public void testJndiCanBeLeveragedForComponents() {
+        Reader script = new StringReader("" +
+                "<container caching='true'>" +
+                "  <component-from-jndi class='org.picocontainer.script.testmodel.DefaultWebServerConfig' jndi-name='foo/bar'/>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(script);
+        try {
+            pico.getComponent(WebServerConfig.class);
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().indexOf("unable to resolve jndi name") > -1);
+        }
     }
 
     @Test public void testCustomInjectionFactory() throws IOException {

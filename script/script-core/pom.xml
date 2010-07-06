@@ -13,6 +13,11 @@
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.picocontainer</groupId>
+            <artifactId>picocontainer-gems</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- optional dependencies -->
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
@@ -33,11 +38,11 @@
             <optional>true</optional>
         </dependency>
         <!-- test scoped dependencies -->
-        <dependency>
+        <!--dependency>
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer-gems</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>org.picocontainer.script</groupId>
             <artifactId>picocontainer-script-testmodel</artifactId>

@@ -17,9 +17,11 @@ public interface XMLConstants {
     String COMPONENT = "component";
     String COMPONENT_IMPLEMENTATION = "component-implementation";
     String COMPONENT_INSTANCE = "component-instance";
+    String COMPONENT_FROM_JNDI = "component-from-jndi";
     String COMPONENT_ADAPTER = "component-adapter";
     String COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
     String CLASS = "class";
+    String JNDI_NAME = "jndi-name";
     String FACTORY = "factory";
     String FILE = "file";
     String KEY = "key";
