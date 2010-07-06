@@ -6,6 +6,38 @@
 </head>
 <body>
 
+	<p><strong>Jun 30, 2010 - PicoContainer 2.11.1 released (316K jar)</strong></p>
+
+	<p>Changes (versus 2.11):</p>
+	<ul>
+	    <li>Life-cycles and CompositeInjection play better now. See <a href="http://jira.codehaus.org/browse/PICO-371">PICO-371</a> </li>
+	    <li>Setter Injection and Log4JComponentMonitor play better now. See <a href="http://jira.codehaus.org/browse/PICO-372">PICO-372</a> </li>
+	</ul>
+	<br/>	
+	
+	<p><strong>Jun 27, 2009 - PicoContainer-Web 2.5 released</strong></p>
+
+	<p>See the <a href="http://picocontainer.org/web/news.html">news page</a> for it</p>
+	<br/>
+
+	<p><strong>Jun 27, 2010 - PicoContainer 2.11 released (312K jar)</strong></p>
+
+	<p>New (since 2.10.2):</p>
+	<ul>
+		<li>Alternate 'debug' version of PicoContainer made that does not have shaded Paranamer which in turn uses real ASM.  Both those are transitive deps now</li>
+	</ul>
+	<p>Changes (versus 2.10.2):</p>
+	<ul>
+	    <li>Fix HiddenImplementation to cache delegate per instance not per invocation reported by Chris Floersch</li>
+	    <li>JNDI fixes. See <a href="http://jira.codehaus.org/browse/PICO-370">PICO-370</a> </li>
+	    <li>Rare ArrayIndexOutOfBoundsException when adding components fixed<a href="http://jira.codehaus.org/browse/PICO-367">PICO-367</a> </li>
+	    <li>Getters added for 'name' and 'lifecyclestate' for containers.</a> </li>
+	    <li>PicoBuilder instances are reusable now.</li>
+	    <li>Better support for handling ComponentAdapters while flushing instances.</li>	
+	    <li>Some component monitors vulnerable to race conditions (now fixed)</li>	
+	</ul>
+	<br/>	
+
 	<p><strong>Feb 25, 2010 - PicoContainer 2.10.2 released (308K jar)</strong></p>
 
 	<p>Changes (versus 2.10.1):</p>
