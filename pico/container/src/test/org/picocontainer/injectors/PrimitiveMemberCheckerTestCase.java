@@ -10,14 +10,14 @@ package org.picocontainer.injectors;
 
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgument;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * @author Michael Rimov
@@ -46,7 +46,7 @@ public class PrimitiveMemberCheckerTestCase {
             //Does nothing.            
         }
         
-        public void doSomething(int anotherValue ) {
+        public void doSomething(int anotherValue) {
             //Does nothing.            
         }
     }

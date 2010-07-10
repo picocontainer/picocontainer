@@ -53,31 +53,31 @@ public class JavaEE5LifecycleStrategyTestCase {
     private LifecycleStrategy strategy;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         strategy = new JavaEE5LifecycleStrategy(new NullComponentMonitor());
         pico = new DefaultPicoContainer(new EmptyPicoContainer(), strategy, new Caching());
         pico.addComponent(StringBuilder.class);
         pico.addComponent(ProPostAnnotationJava5Startable.class);
     }
 
-    @Test public void testStartable(){
+    @Test public void testStartable() {
         pico.start();
         assertEquals("post()", pico.getComponent(StringBuilder.class).toString());
     }
 
-    @Test public void testStopHasNoMeaning(){
+    @Test public void testStopHasNoMeaning() {
         pico.start();
         pico.stop();
         assertEquals("post()", pico.getComponent(StringBuilder.class).toString());
     }
 
-    @Test public void testDispose(){
+    @Test public void testDispose() {
         pico.start();
         pico.dispose();
         assertEquals("post()pre()", pico.getComponent(StringBuilder.class).toString());
     }
 
-    @Test public void testSerializable(){
+    @Test public void testSerializable() {
     }
 
 }

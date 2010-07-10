@@ -156,7 +156,7 @@ public class SynchronizedTestCase {
     @Test public void testSingletonCreationWithSynchronizedAdapterOutsideUsingFactory() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer(
                 makeBehaviorFactory().wrap(new Caching().wrap(new ConstructorInjection()))
-        );
+       );
         pico.addComponent("slow", SlowCtor.class);
         runConcurrencyTest(pico);
     }

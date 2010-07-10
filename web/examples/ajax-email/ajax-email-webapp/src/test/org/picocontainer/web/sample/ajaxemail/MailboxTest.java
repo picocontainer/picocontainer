@@ -35,7 +35,7 @@ public class MailboxTest {
 
     @Test
     public void testReadingOfMessages() {
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
     		one(persister).newQuery(Message.class, "XXX == user_name");
     		will(returnValue(query));
             one(query).declareImports("import java.lang.String");
@@ -53,7 +53,7 @@ public class MailboxTest {
 
     @Test
     public void testReadOfSingleMessageFlipsReadFlag() {
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(persister).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
             one(persister).beginTransaction();
@@ -71,7 +71,7 @@ public class MailboxTest {
 
     @Test
     public void testReadOfMissingMessageCausesException() {
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(persister).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
             one(persister).beginTransaction();
@@ -93,7 +93,7 @@ public class MailboxTest {
 
     @Test
     public void testDeleteOfSingleMessage() {
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(persister).newQuery(Message.class, "id == message_id");
             will(returnValue(query));
             one(query).declareImports("import java.lang.Long");
@@ -109,7 +109,7 @@ public class MailboxTest {
 
     @Test
     public void testDeleteOfMissingMessageCausesException() {
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(persister).newQuery(Message.class, "id == message_id");
             will(returnValue(query));
             one(query).declareImports("import java.lang.Long");

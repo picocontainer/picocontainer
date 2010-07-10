@@ -51,8 +51,8 @@ public class TraversalCheckingVisitorTest {
 
         pico = new DefaultPicoContainer();
         SetterInjection.SetterInjector componentAdapter = new SetterInjection.SetterInjector(StringBuffer.class, StringBuffer.class,
-                                                             null, new NullComponentMonitor(),
-                                                             "set", false);
+                new NullComponentMonitor(), "set", false, null
+       );
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
         ConstructorInjection.ConstructorInjector adapter = new ConstructorInjection.ConstructorInjector(ArrayList.class, ArrayList.class, new NullComponentMonitor(), false, new Parameter[] {new ConstantParameter(3)});
@@ -160,8 +160,8 @@ public class TraversalCheckingVisitorTest {
         ConstantParameter constantParameter = (ConstantParameter) allParameters.get(0);
         Parameter.Resolver resolver = constantParameter.resolve(null, null, null, null, null, false, null);
         Object o = resolver.resolveInstance(ComponentAdapter.NOTHING.class);
-        assertTrue( o instanceof Integer);
-        assertEquals(3, ( (Integer) ( (ConstantParameter) allParameters.get(0)).resolve(null, null,
+        assertTrue(o instanceof Integer);
+        assertEquals(3, ((Integer) ((ConstantParameter) allParameters.get(0)).resolve(null, null,
                 null, null, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class)).intValue());
     }
 

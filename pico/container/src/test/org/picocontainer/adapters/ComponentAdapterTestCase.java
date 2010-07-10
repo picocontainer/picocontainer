@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 
 import org.junit.Test;
@@ -23,7 +22,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 
@@ -82,7 +80,7 @@ public class ComponentAdapterTestCase {
     @SuppressWarnings("serial")
 	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
         TestInstantiatingAdapter(Object key, Class<T> impl, Parameter... parameters) {
-            super(key, impl, parameters, new NullComponentMonitor(), false);
+            super(key, impl, new NullComponentMonitor(), false, parameters);
         }
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {

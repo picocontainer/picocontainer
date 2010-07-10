@@ -128,7 +128,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	 * itself and SimpleTouchable. Problem is basically the same as above. Pico
 	 * should not consider self as solution.
 	 * 
-	 * JS fixed it ( PICO-222 ) KP
+	 * JS fixed it (PICO-222 ) KP
 	 */
 	@Test public void testUnambiguouSelfDependency() {
 		MutablePicoContainer pico = createPicoContainer(null);
@@ -842,7 +842,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     private static class MyNullComponentMonitor extends NullComponentMonitor {
 		public Injector newInjector(Injector injector) {
             if (injector.getComponentKey() == List.class) {
-                return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, false) {
+                return new AbstractInjector(List.class, ArrayList.class, MyNullComponentMonitor.this, false, Parameter.DEFAULT) {
                     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");

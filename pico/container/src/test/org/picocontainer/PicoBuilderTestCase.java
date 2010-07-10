@@ -109,7 +109,7 @@ public class PicoBuilderTestCase {
         assertEquals(toXml(expected), toXml(actual));
         actual = new PicoBuilder().withLifecycle().withLifecycle(new FooLifecycleStrategy()).build();
         expected = new DefaultPicoContainer(parent, new FooLifecycleStrategy(), ai
-        );
+       );
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -262,14 +262,14 @@ public class PicoBuilderTestCase {
     @Test public void testWithImplementationHidingAndSetterDI() {
         Object actual = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
         Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new ImplementationHiding().wrap(new SetterInjection())
-        );
+       );
         assertEquals(toXml(expected), toXml(actual));
     }
 
     @Test public void testWithCachingImplementationHidingAndSetterDI() {
         Object actual = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
         Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection()))
-        );
+       );
         assertEquals(toXml(expected), toXml(actual));
     }
 
@@ -295,7 +295,7 @@ public class PicoBuilderTestCase {
     @Test public void testWithCustomComponentFactory() {
         Object actual = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
         Object expected = new DefaultPicoContainer(parent, lifecycle, ncm, new CustomComponentFactory(new SomeContainerDependency())
-        );
+       );
         assertEquals(toXml(expected), toXml(actual));
     }
 

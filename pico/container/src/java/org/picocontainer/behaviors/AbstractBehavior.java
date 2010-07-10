@@ -192,7 +192,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * {@inheritDoc}
          */
         public void changeMonitor(ComponentMonitor monitor) {
-            if (delegate instanceof ComponentMonitorStrategy ) {
+            if (delegate instanceof ComponentMonitorStrategy) {
                 ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
             }
         }
@@ -204,7 +204,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * @throws org.picocontainer.PicoCompositionException if no component monitor is found in delegate
          */
         public ComponentMonitor currentMonitor() {
-            if (delegate instanceof ComponentMonitorStrategy ) {
+            if (delegate instanceof ComponentMonitorStrategy) {
                 return ((ComponentMonitorStrategy)delegate).currentMonitor();
             }
             throw new PicoCompositionException("No component monitor found in delegate");
@@ -265,7 +265,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * {@inheritDoc}
          */
         public void start(Object component) {
-            if (delegate instanceof LifecycleStrategy ) {
+            if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy)delegate).start(component);
             }
         }
@@ -275,7 +275,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * {@inheritDoc}
          */
         public void stop(Object component) {
-            if (delegate instanceof LifecycleStrategy ) {
+            if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy)delegate).stop(component);
             }
         }
@@ -285,7 +285,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * {@inheritDoc}
          */
         public void dispose(Object component) {
-            if (delegate instanceof LifecycleStrategy ) {
+            if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy)delegate).dispose(component);
             }
         }

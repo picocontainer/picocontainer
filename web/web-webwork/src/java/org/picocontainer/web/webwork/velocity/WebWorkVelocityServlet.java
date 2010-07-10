@@ -24,7 +24,7 @@ import webwork.view.velocity.WebWorkUtil;
  * velocity integration servlet. integrates container hieararchy into velocity
  * context as well webwork specific objects. This servlet is not derived from
  * standart webwork velocity servlet because it inherits from obsolete velocity
- * servlet ( which does not allow resource loading from webapp ). acc
+ * servlet (which does not allow resource loading from webapp ). acc
  * configuration is done like original velocity servlet does
  * 
  * @author Konstantin Pribluda

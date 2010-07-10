@@ -53,7 +53,7 @@ public class RegisteredMBeanConstructingProviderTest {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Person person = new Person();
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(same(mBeanInfo)));
         }});
 
@@ -68,7 +68,7 @@ public class RegisteredMBeanConstructingProviderTest {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Person person = new Person();
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(same(mBeanInfo)));
         }});
 
@@ -83,7 +83,7 @@ public class RegisteredMBeanConstructingProviderTest {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Touchable touchable = new SimpleTouchable();
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanFactory).create(with(same(touchable)), with(same(Touchable.class)), with(same(mBeanInfo)));
         }});
 
@@ -97,7 +97,7 @@ public class RegisteredMBeanConstructingProviderTest {
     @Test public void testRegisterWithTypedComponentKeyButWithoutMBeanInfo() {
         final Person person = new Person();
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanFactory).create(with(same(person)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
         }});
 
@@ -111,7 +111,7 @@ public class RegisteredMBeanConstructingProviderTest {
     @Test public void testRegisterWithArbitraryComponentKeyButWithoutMBeanInfo() {
         final Person person = new Person();
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(aNull(MBeanInfo.class)));
         }});
 

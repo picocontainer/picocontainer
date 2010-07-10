@@ -104,7 +104,7 @@ public class BrownBear implements Startable {
 
         String qdox = "http://www.ibiblio.org/maven/qdox/jars/qdox-1.5.jar";
         try {
-            URLClassLoader urlClassLoader = new URLClassLoader(new URL[] {new URL(qdox)} );
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[] {new URL(qdox)});
             Class qdoxClass = urlClassLoader.loadClass("com.thoughtworks.qdox.JavaDocBuilder");
             qdoxClass.newInstance();
             System.out.println("BrownBear: Can instantiate new URLClassLoader (incorrect)");
@@ -116,7 +116,7 @@ public class BrownBear implements Startable {
         permissionsMap.put(qdox, new AllPermission());
 
         try {
-            URLClassLoader urlClassLoader = new CustomPermissionsURLClassLoader(new URL[] {new URL(qdox)}, permissionsMap, this.getClass().getClassLoader() );
+            URLClassLoader urlClassLoader = new CustomPermissionsURLClassLoader(new URL[] {new URL(qdox)}, permissionsMap, this.getClass().getClassLoader());
             Class qdoxClass = urlClassLoader.loadClass("com.thoughtworks.qdox.JavaDocBuilder");
             qdoxClass.newInstance();
             System.out.println("BrownBear: Can instantiate new CustomPermissionsURLClassLoader (incorrect)");

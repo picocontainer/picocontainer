@@ -37,7 +37,7 @@ public class NamedMethodInjection extends AbstractInjectionType {
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, parameters, monitor, prefix, optional)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, monitor, prefix, optional, parameters)), lifecycle);
     }
 
     @SuppressWarnings("serial")
@@ -45,20 +45,20 @@ public class NamedMethodInjection extends AbstractInjectionType {
 
         private final boolean optional;
 
-        public NamedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor, boolean optional) {
-            this(key, impl, parameters, monitor, "set", optional);
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, boolean optional, Parameter... parameters) {
+            this(key, impl, monitor, "set", optional, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor) {
-            this(key, impl, parameters, monitor, "set", true);
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, Parameter... parameters) {
+            this(key, impl, monitor, "set", true, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor, String prefix) {
-            this(key, impl, parameters, monitor, prefix, true);
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, Parameter... parameters) {
+            this(key, impl, monitor, prefix, true, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor, String prefix, boolean optional) {
-            super(key, impl, parameters, monitor, prefix, true);
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, boolean optional, Parameter... parameters) {
+            super(key, impl, monitor, prefix, true, parameters);
             this.optional = optional;
         }
 

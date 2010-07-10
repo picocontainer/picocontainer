@@ -35,7 +35,7 @@ public class Issue0229TestCase {
             _runners = runnables;
         }
         
-        public Runnable[] getRunners(){
+        public Runnable[] getRunners() {
             return _runners;
         }
     }

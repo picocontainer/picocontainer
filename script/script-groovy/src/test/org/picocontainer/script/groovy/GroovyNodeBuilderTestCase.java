@@ -345,7 +345,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         final A a = new A();
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
@@ -503,7 +503,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "scripted = builder.container(parent:parent) {\n" +
-                "  if ( assemblyScope instanceof SomeAssemblyScope ){\n "+
+                "  if (assemblyScope instanceof SomeAssemblyScope) {\n "+
                 "    component(B)\n" +
                 "  }\n "+
                 "}\n");
@@ -518,10 +518,10 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "scripted = builder.container(parent:parent) {\n" +
                 "  System.out.println('assemblyScope:'+assemblyScope)\n " +
-                "  if ( assemblyScope instanceof ParentAssemblyScope ){\n "+
+                "  if (assemblyScope instanceof ParentAssemblyScope) {\n "+
                 "    System.out.println('parent scope')\n " +
                 "    component(A)\n" +
-                "  } else if ( assemblyScope instanceof SomeAssemblyScope ){\n "+
+                "  } else if (assemblyScope instanceof SomeAssemblyScope) {\n "+
                 "    System.out.println('child scope')\n " +
                 "    component(B)\n" +
                 "  } else { \n" +
@@ -550,7 +550,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "scripted = builder.container(parent:parent) {\n" +
-                "  if ( assemblyScope instanceof SomeAssemblyScope ){\n "+
+                "  if (assemblyScope instanceof SomeAssemblyScope) {\n "+
                 "    component(B)\n" +
                 "  }\n "+
                 "}\n");
@@ -564,7 +564,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
-        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection() );
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader("" +
                 "scripted = builder.container(parent:parent) {\n" +
                 "}\n");
@@ -578,7 +578,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection() );
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +

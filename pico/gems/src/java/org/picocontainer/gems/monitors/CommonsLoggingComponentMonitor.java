@@ -132,8 +132,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 
     /** {@inheritDoc} **/
    public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
-                                     final Constructor<T> constructor
-    ) {
+                                     final Constructor<T> constructor) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
@@ -185,8 +184,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                         final Member member,
                         final Object instance,
                         final long duration,
-                        final Object retVal, final Object[] args
-    ) {
+                        final Object retVal, final Object[] args) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
@@ -240,7 +238,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @return the Commons logging instance.
      */
     protected synchronized Log getLog(final Member member) {
-        if ( log != null ){
+        if (log != null) {
             return log;
         } 
         return LogFactory.getLog(member.getDeclaringClass());

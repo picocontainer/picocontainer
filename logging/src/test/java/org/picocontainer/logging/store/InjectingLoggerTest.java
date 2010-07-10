@@ -45,7 +45,7 @@ public class InjectingLoggerTest {
             this.logger = logger;
         }
         
-        public Logger getLogger(){
+        public Logger getLogger() {
             return logger;
         }
     }
@@ -57,7 +57,7 @@ public class InjectingLoggerTest {
             this.logger = loggerStore.getLogger("someLogger");
         }
 
-        public Logger getLogger(){
+        public Logger getLogger() {
             return logger;
         }
     }

@@ -214,7 +214,7 @@ public class JMXExposing extends AbstractBehavior {
 
         @Override
         public void dispose(final Object component) {
-            if( null != registeredObjectNames ) {
+            if(null != registeredObjectNames) {
                 for (Object registeredObjectName : registeredObjectNames) {
                     try {
                         mBeanServer.unregisterMBean((ObjectName)registeredObjectName);
@@ -226,13 +226,13 @@ public class JMXExposing extends AbstractBehavior {
                 }
             }
 
-            if( super.hasLifecycle( getComponentImplementation( ) ) ) {
+            if(super.hasLifecycle(getComponentImplementation())) {
                 super.dispose(component);
             }
         }
 
         @Override
-        public boolean hasLifecycle( final Class<?> type ) {
+        public boolean hasLifecycle(final Class<?> type) {
             return true;
         }
 

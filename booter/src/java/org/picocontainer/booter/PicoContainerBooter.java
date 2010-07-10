@@ -64,10 +64,10 @@ public class PicoContainerBooter {
     {
 
         URLClassLoader commonClassLoader = new URLClassLoader(toURLs(COMMON_PATH),
-                        PicoContainerBooter.class.getClassLoader().getParent() );
+                        PicoContainerBooter.class.getClassLoader().getParent());
 
         URLClassLoader hiddenClassLoader = new URLClassLoader(toURLs(HIDDEN_PATH), 
-                        commonClassLoader );
+                        commonClassLoader);
 
         System.out.println("PicoContainer Booter: Booting...");
         newStandalone(hiddenClassLoader, args);

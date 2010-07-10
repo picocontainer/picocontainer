@@ -33,7 +33,7 @@ public class DependencyInjectionTestServlet extends HttpServlet {
         }
 
         String initParameter = servletConfig.getServletContext().getInitParameter("a");
-        String text = "hello " + message + ( foo != null ? " "+  foo : "" ) + "<" + initParameter + ">";
+        String text = "hello " + message + (foo != null ? " "+  foo : "" ) + "<" + initParameter + ">";
         response.getWriter().write(text);
     }
 

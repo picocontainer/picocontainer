@@ -11,7 +11,7 @@ import org.picocontainer.classname.ClassName;
  */
 public class ClassNameKeyTestCase {
 
-    @Test public void testGetClassName(){
+    @Test public void testGetClassName() {
         String className = ClassName.class.getName();
         ClassName key = new ClassName(className);
         assertEquals(className, key.toString());

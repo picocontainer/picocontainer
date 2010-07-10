@@ -306,7 +306,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
             }
         };
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
         	will(returnValue(emptyHashMapCtor));
         	one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)),
@@ -334,7 +334,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 			}
         };
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
         	will(returnValue(barfingActionListenerCtor));
         	one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),

@@ -55,8 +55,8 @@ public class TypedFieldInjection extends AbstractInjectionType {
         if (fieldTypes == null) {
             fieldTypes = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, parameters, monitor,
-                fieldTypes)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, monitor, fieldTypes, parameters
+        )), lifecycle);
     }
 
     public static Properties injectionFieldTypes(String... fieldTypes) {
@@ -77,11 +77,10 @@ public class TypedFieldInjection extends AbstractInjectionType {
         private final List<String> classes;
 
         public TypedFieldInjector(Object key,
-                                      Class<?> impl,
-                                      Parameter[] parameters,
-                                      ComponentMonitor monitor,
-                                      String classNames) {
-            super(key, impl, parameters, monitor, true);
+                                  Class<?> impl,
+                                  ComponentMonitor monitor, String classNames,
+                                  Parameter... parameters) {
+            super(key, impl, monitor, true, parameters);
             this.classes = Arrays.asList(classNames.trim().split(" "));
         }
 

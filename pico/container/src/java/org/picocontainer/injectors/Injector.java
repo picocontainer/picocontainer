@@ -39,16 +39,16 @@ public class Injector {
      *
      * @param key            the search key for this implementation
      * @param impl the concrete implementation
-     * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
+     * @param parameters              the parameters to use for the initialization
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      * @return
      */
-    public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                               boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+    public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames,
+                                                      Parameter... parameters) {
         return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, parameters);
     }
 
@@ -57,19 +57,18 @@ public class Injector {
      *
      * @param key            the search key for this implementation
      * @param impl the concrete implementation
-     * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
      * @param rememberChosenCtor      remember the chosen constructor (to speed up second/subsequent calls)
+     * @param parameters              the parameters to use for the initialization
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      * @return
      */
-    public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                              boolean useNames, boolean rememberChosenCtor) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenCtor, parameters
-        );
+    public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames, boolean rememberChosenCtor,
+                                                      Parameter... parameters) {
+        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenCtor, parameters);
     }
 
     /**
@@ -79,13 +78,13 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param monitor
-     * @param injectionAnnotation
      * @param useNames
+     * @param injectionAnnotations
      * @return annotated field injector instance.
      */
     public static <T> ComponentAdapter<T> annotatedField(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotation));
+                                                         boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
+        return monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations));
     }
 
     /**
@@ -95,13 +94,13 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param monitor
-     * @param injectionAnnotation
      * @param useNames
+     * @param injectionAnnotations
      * @return method injector instance.
      */
     public static <T> ComponentAdapter<T> annotatedMethod(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotation));
+                                                          boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
+        return monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations));
 
     }
 
@@ -128,17 +127,17 @@ public class Injector {
      *
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
      * @param methodName
      * @param useNames
+     * @param parameters
      * @return method injector instance.
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
-    public static <T> ComponentAdapter<T> method(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                          String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new MethodInjection.MethodInjector<T>(key, impl, parameters, monitor, methodName, useNames));
+    public static <T> ComponentAdapter<T> method(final Object key, final Class<T> impl, ComponentMonitor monitor, String methodName, boolean useNames,
+                                                 Parameter... parameters) {
+        return monitor.newInjector(new MethodInjection.MethodInjector<T>(key, impl, monitor, methodName, useNames, parameters));
     }
 
     /**
@@ -146,16 +145,16 @@ public class Injector {
      *
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
      * @param setterPrefix
      * @param useNames
+     * @param parameters
      * @return MultiInjector component adapter instance.
      */
 
-    public static <T> ComponentAdapter<T> multi(Object key, Class<T> impl, Parameter[] parameters,
-                                         ComponentMonitor monitor, String setterPrefix, boolean useNames) {
-        return monitor.newInjector(new MultiInjection.MultiInjector<T>(key, impl, parameters, monitor, setterPrefix, useNames));
+    public static <T> ComponentAdapter<T> multi(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames,
+                                                Parameter... parameters) {
+        return monitor.newInjector(new MultiInjection.MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, parameters));
     }
 
     /**
@@ -163,14 +162,14 @@ public class Injector {
      *
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
      * @param fieldNames
+     * @param parameters
      * @return named field component injector instance.
      */
-    public static <T> ComponentAdapter<T> namedField(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                              String fieldNames) {
-        return monitor.newInjector(new NamedFieldInjection.NamedFieldInjector<T>(key, impl, parameters, monitor, fieldNames));
+    public static <T> ComponentAdapter<T> namedField(Object key, Class<T> impl, ComponentMonitor monitor, String fieldNames,
+                                                     Parameter... parameters) {
+        return monitor.newInjector(new NamedFieldInjection.NamedFieldInjector<T>(key, impl, monitor, fieldNames, parameters));
     }
 
     /**
@@ -178,17 +177,17 @@ public class Injector {
      *
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
      * @param prefix
      * @param useNames
+     * @param parameters
      * @return setter injector instance.
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
-    public static <T> ComponentAdapter<T> setter(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                          String prefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, parameters, monitor, prefix, useNames));
+    public static <T> ComponentAdapter<T> setter(final Object key, final Class<T> impl, ComponentMonitor monitor, String prefix, boolean useNames,
+                                                 Parameter... parameters) {
+        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, prefix, useNames, parameters));
     }
 
     /**
@@ -196,13 +195,13 @@ public class Injector {
      *
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
      * @param classNames
+     * @param parameters
      * @return typed field injector instance.
      */
-    public static <T> ComponentAdapter<T> typedField(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                              String classNames) {
-        return monitor.newInjector(new TypedFieldInjection.TypedFieldInjector<T>(key, impl, parameters, monitor, classNames));
+    public static <T> ComponentAdapter<T> typedField(Object key, Class<T> impl, ComponentMonitor monitor, String classNames,
+                                                     Parameter... parameters) {
+        return monitor.newInjector(new TypedFieldInjection.TypedFieldInjector<T>(key, impl, monitor, classNames, parameters));
     }
 }

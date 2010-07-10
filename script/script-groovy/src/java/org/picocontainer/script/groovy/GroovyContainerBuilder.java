@@ -64,7 +64,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
 
         Binding binding = new Binding();
-        if ( parentContainer == null ){
+        if (parentContainer == null) {
             parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new EmptyPicoContainer(), new Caching()));
         }
         binding.setVariable("parent", parentContainer);
@@ -117,7 +117,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
      * @param binding Binding
      * @return PicoContainer
      */
-    private PicoContainer runGroovyScript(Binding binding){
+    private PicoContainer runGroovyScript(Binding binding) {
         Script script = createGroovyScript(binding);
 
         Object result = script.run();

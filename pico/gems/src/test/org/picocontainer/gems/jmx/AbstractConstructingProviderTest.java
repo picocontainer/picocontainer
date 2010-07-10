@@ -93,7 +93,7 @@ public class AbstractConstructingProviderTest {
         final DynamicMBean dynamicMBean = mockery.mock(DynamicMBean.class);
         final MBeanInfoProvider mBeanInfoProvider = mockery.mock(MBeanInfoProvider.class);
         mBeanInfoProviders = new MBeanInfoProvider[]{mBeanInfoProvider};
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanInfoProvider).provide(with(same(pico)), with(same(componentAdapter)));
         	will(returnValue(Person.createMBeanInfo()));
             one(dynamicMBeanFactory).create(with(same(person)), with(same(PersonMBean.class)), with(equal(Person.createMBeanInfo())));
@@ -115,7 +115,7 @@ public class AbstractConstructingProviderTest {
     }
 
     @Test public void testObjectNameMustBeGiven() throws MalformedObjectNameException {
-    	 mockery.checking(new Expectations(){{
+    	 mockery.checking(new Expectations() {{
              one(dynamicMBeanFactory).create(with(any(Person.class)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
              will(returnValue(mockery.mock(DynamicMBean.class)));
              one(objectNameFactory).create(with(same(Person.class)), with(any(DynamicMBean.class)));
@@ -127,7 +127,7 @@ public class AbstractConstructingProviderTest {
     }
 
     @Test public void testMalformedObjectNameThrowsJMXRegistrationException() throws MalformedObjectNameException {
-    	 mockery.checking(new Expectations(){{
+    	 mockery.checking(new Expectations() {{
              one(dynamicMBeanFactory).create(with(any(Person.class)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
              will(returnValue(mockery.mock(DynamicMBean.class)));
              one(objectNameFactory).create(with(same(Person.class)), with(any(DynamicMBean.class)));

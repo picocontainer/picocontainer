@@ -51,11 +51,11 @@ public final class GroovyCompilationException extends ScriptedPicoContainerMarku
      */
     private List<?> getErrors(CompilationFailedException e) {
         ProcessingUnit unit = e.getUnit();
-        if ( unit != null ){
+        if (unit != null) {
             ErrorCollector collector = unit.getErrorCollector();
-            if ( collector != null ){
+            if (collector != null) {
                 List<?> errors = collector.getErrors();
-                if ( errors != null ){
+                if (errors != null) {
                     return errors;
                 }
             }

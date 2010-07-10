@@ -9,15 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.script.jython;
 
+import org.picocontainer.PicoContainer;
+import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+import org.python.util.PythonInterpreter;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
-
-import org.picocontainer.PicoContainer;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedContainerBuilder;
-import org.python.util.PythonInterpreter;
 
 /**
  * {@inheritDoc}
@@ -34,7 +34,7 @@ import org.python.util.PythonInterpreter;
  */
 public class JythonContainerBuilder extends ScriptedContainerBuilder {
 
-    public JythonContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode ) {
+    public JythonContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(script, classLoader, lifecycleMode);
     }
     

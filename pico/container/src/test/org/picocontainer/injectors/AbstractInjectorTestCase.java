@@ -22,12 +22,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 @SuppressWarnings("serial")
@@ -141,7 +139,7 @@ public class AbstractInjectorTestCase {
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
                                   boolean useNames) {
-            super(key, impl, parameters, monitor, useNames);
+            super(key, impl, monitor, useNames, parameters);
         }
 
         @Override

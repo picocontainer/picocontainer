@@ -37,7 +37,7 @@ public interface ComponentMonitor {
      */
     <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
                               Constructor<T> constructor
-    );
+   );
 
     /**
      * Event thrown after the component has been instantiated using the given constructor.

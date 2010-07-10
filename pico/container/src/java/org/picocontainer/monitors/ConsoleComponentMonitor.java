@@ -81,8 +81,7 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor
-    ) {
+                                     Constructor<T> constructor) {
         out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }

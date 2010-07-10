@@ -50,7 +50,7 @@ public class JMXExposedTestCase {
         final DynamicMBeanPerson person = new DynamicMBeanPerson();
         final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         }});
         
@@ -61,13 +61,13 @@ public class JMXExposedTestCase {
         final DynamicMBeanPerson person = new DynamicMBeanPerson();
         final JMXExposing.JMXExposed componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	one(mBeanServer).unregisterMBean(with(any(ObjectName.class)));
         }});
         
         assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
-        componentAdapter.dispose( person );
+        componentAdapter.dispose(person);
     }
 
     @Test public void testWillTryAnyDynamicMBeanProvider() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
@@ -81,7 +81,7 @@ public class JMXExposedTestCase {
         final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer, new DynamicMBeanProvider[]{
                 provider1, provider2});
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(provider1).provide(with(aNull(PicoContainer.class)), with(any(ComponentAdapter.class)));
         	will(returnValue(null));
         	one(provider2).provide(with(aNull(PicoContainer.class)), with(any(ComponentAdapter.class)));
@@ -97,7 +97,7 @@ public class JMXExposedTestCase {
         final Exception exception = new InstanceAlreadyExistsException("JUnit");
         final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});
@@ -116,7 +116,7 @@ public class JMXExposedTestCase {
         final ComponentAdapter componentAdapter = new JMXExposing.JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), mBeanServer);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});
@@ -136,7 +136,7 @@ public class JMXExposedTestCase {
                 PersonMBean.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), mBeanServer);
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});

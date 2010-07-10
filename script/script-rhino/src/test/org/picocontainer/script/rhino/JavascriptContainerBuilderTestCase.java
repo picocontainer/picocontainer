@@ -120,8 +120,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         		"importPackage(Packages.org.picocontainer) \n" +
                 "importPackage(Packages.org.picocontainer.classname) \n" +
                 "var pico = new DefaultClassLoadingPicoContainer()\n" +
-                "pico.addComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
-                "pico.addComponent( 'foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
+                "pico.addComponent(new Packages." + FooTestComp.class.getName() + "())\n" +
+                "pico.addComponent('foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 

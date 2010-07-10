@@ -66,7 +66,7 @@ public class MethodInjection extends AbstractInjectionType {
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-            return wrapLifeCycle(new MethodInjector(key, impl, parameters, monitor, injectionMethodName, useNames), lifecycle);
+            return wrapLifeCycle(new MethodInjector(key, impl, monitor, injectionMethodName, useNames, parameters), lifecycle);
         }
     }
 
@@ -80,7 +80,7 @@ public class MethodInjection extends AbstractInjectionType {
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
             if (injectionMethod.getDeclaringClass().isAssignableFrom(impl)) {
-                return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, parameters, monitor, injectionMethod, useNames)), lifecycle);
+                return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, monitor, injectionMethod, useNames, parameters)), lifecycle);
             } else {
                 throw new PicoCompositionException("method [" + injectionMethod + "] not on impl " + impl.getName());
             }
@@ -109,16 +109,16 @@ public class MethodInjection extends AbstractInjectionType {
          *
          * @param key            the search key for this implementation
          * @param impl the concrete implementation
-         * @param parameters              the parameters to use for the initialization
          * @param monitor                 the component monitor used by this addAdapter
          * @param methodName              the method name
          * @param useNames                use argument names when looking up dependencies
+         * @param parameters              the parameters to use for the initialization
          * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
          *                              if the implementation is not a concrete class.
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
-        public MethodInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
-                              String methodName, boolean useNames) throws NotConcreteRegistrationException {
+        public MethodInjector(final Object key, final Class impl, ComponentMonitor monitor, String methodName, boolean useNames,
+                              Parameter... parameters) throws NotConcreteRegistrationException {
             super(key, impl, parameters, monitor, useNames);
             this.methodNamePrefix = methodName;
         }

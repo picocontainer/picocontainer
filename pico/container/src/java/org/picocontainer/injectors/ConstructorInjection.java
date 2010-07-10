@@ -82,7 +82,7 @@ public class ConstructorInjection extends AbstractInjectionType {
         return wrapLifeCycle(monitor.newInjector(injector), lifecycle);
     }
 
-    protected <T>ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, Parameter[] parameters) {
+    protected <T>ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, Parameter... parameters) {
         return new ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenConstructor, parameters);
     }
 

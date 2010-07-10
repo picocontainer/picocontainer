@@ -125,7 +125,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                          "pico = DefaultPicoContainer.new($parent)\n" +
                          "pico.addComponent(org.picocontainer.script.testmodel.A)\n"  +
                          "pico"
-                         );
+                        );
 
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(script, parent, "SOME_SCOPE");
@@ -261,7 +261,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         final A a = new A();
         
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
@@ -578,7 +578,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
             + "container {\n"
             + "  classPathElement(:path => compJarPath)\n"
             + "  component(:class => \"TestComp\")\n"
-            + "}" );
+            + "}");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
 
@@ -599,7 +599,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
             + "    grant(:perm => SocketPermission.new('google.com','connect'))\n"
             + "  }\n"
             + "  component(:class => \"TestComp\")\n"
-            + "}" );
+            + "}");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
 

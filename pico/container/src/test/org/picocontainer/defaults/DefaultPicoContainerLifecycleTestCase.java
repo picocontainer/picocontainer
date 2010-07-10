@@ -235,7 +235,7 @@ public class DefaultPicoContainerLifecycleTestCase {
         try {
             parent.start();
             fail("Thrown " + AbstractInjector.UnsatisfiableDependenciesException.class.getName() + " expected");
-        } catch ( AbstractInjector.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set
         }
         String recording = parent.getComponent("recording").toString();
@@ -252,7 +252,7 @@ public class DefaultPicoContainerLifecycleTestCase {
 
 
     public static class NotStartable {
-         public void start(){
+         public void start() {
             Assert.fail("start() should not get invoked on NonStartable");
         }
     }
@@ -384,7 +384,7 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     	final Startable s1 = mockery.mock(Startable.class, "s1");
         Startable s2 = mockery.mock(Startable.class, "s2");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
         }});
@@ -406,7 +406,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     	final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         final ComponentMonitor cm = mockery.mock(ComponentMonitor.class);
-    	mockery.checking(new Expectations(){{
+    	mockery.checking(new Expectations() {{
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
             one(s1).stop();
@@ -441,7 +441,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     	final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         final Startable s3 = mockery.mock(Startable.class, "s3");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
             one(s1).stop();
@@ -476,7 +476,7 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     	final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(s1).start();
             one(s1).stop();
             one(s2).start();
@@ -501,7 +501,7 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     	final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(s1).start();
             one(s1).stop();
             one(s2).start();
@@ -532,7 +532,7 @@ public class DefaultPicoContainerLifecycleTestCase {
         MutablePicoContainer child = parent.makeChildContainer();
 
         final Startable s1 = mockery.mock(Startable.class, "s1");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(s1).start();
             one(s1).stop();
         }});

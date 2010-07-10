@@ -17,8 +17,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Bind;
 
-import static org.picocontainer.Characteristics.immutable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -31,6 +29,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import static org.picocontainer.Characteristics.immutable;
 
 /**
  * A {@link org.picocontainer.InjectionType} for named fields.
@@ -57,8 +57,8 @@ public class NamedFieldInjection extends AbstractInjectionType {
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, parameters, monitor,
-                fieldNames)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, monitor, fieldNames, parameters
+        )), lifecycle);
     }
 
     public static Properties injectionFieldNames(String... fieldNames) {
@@ -80,12 +80,10 @@ public class NamedFieldInjection extends AbstractInjectionType {
         private final List<String> fieldNames;
 
         public NamedFieldInjector(Object key,
-                                      Class<T> impl,
-                                      Parameter[] parameters,
-                                      ComponentMonitor monitor,
-                                      String fieldNames) {
-
-            super(key, impl, parameters, monitor, true);
+                                  Class<T> impl,
+                                  ComponentMonitor monitor, String fieldNames,
+                                  Parameter... parameters) {
+            super(key, impl, monitor, true, parameters);
             this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
         }
 

@@ -1,12 +1,11 @@
 package org.picocontainer.jetty;
 
-import java.io.IOException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class DependencyInjectionTestServlet extends HttpServlet {
     private final String name;
@@ -30,7 +29,7 @@ public class DependencyInjectionTestServlet extends HttpServlet {
             message = message + request.getAttribute("foo2");
         }
         
-        String text = "hello " + message + ( foo != null ? " "+  foo : "" );
+        String text = "hello " + message + (foo != null ? " "+  foo : "");
         response.getWriter().write(text);
     }
 

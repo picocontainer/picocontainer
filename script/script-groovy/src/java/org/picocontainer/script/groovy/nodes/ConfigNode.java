@@ -27,11 +27,11 @@ public class ConfigNode extends AbstractBuilderNode {
     public static final String NODE_NAME = "config";
 
     /**
-     * attribute name for key attribute ( Required )
+     * attribute name for key attribute (Required )
      */
     public static final String KEY = "key";
     /**
-     * attribute name for value attribute ( Required )
+     * attribute name for value attribute (Required )
      */
     public static final String VALUE = "value";
 

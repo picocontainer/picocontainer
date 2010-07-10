@@ -136,7 +136,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
      */
     protected int getComponentAdapterNature() {
-        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING );
+        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
     /**

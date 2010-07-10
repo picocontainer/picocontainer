@@ -196,7 +196,7 @@ public final class Characteristics {
          */
         @Override
         @SuppressWarnings("unused")
-        public Object remove( Object o) {
+        public Object remove(Object o) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 

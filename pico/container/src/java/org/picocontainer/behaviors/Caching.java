@@ -38,7 +38,7 @@ public class Caching extends AbstractBehavior {
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         return monitor.changedBehavior(new Cached<T>(
                 super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters), new SimpleReference<Storing.Stored.Instance<T>>())
-        );
+       );
 	}
 
 	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,

@@ -395,7 +395,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 	//Check:  We can't check everything here since we aren't schema validating
                 	//But it will at least catch some goofs.
                 	if (!parametersList.isEmpty()) {
-                		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes." );
+                		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes.");
                 	}
                 	
                 	return Parameter.ZERO;
@@ -549,7 +549,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
     private XMLComponentInstanceFactory createComponentInstanceFactory(String factoryClass) {
-        if ( notSet(factoryClass)) {
+        if (notSet(factoryClass)) {
             // no factory has been specified for the node
             // return globally defined factory for the container - if there is one
             if (componentInstanceFactory != null) {
@@ -592,7 +592,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
     private ComponentFactory createComponentFactory(String factoryName, ClassLoadingPicoContainer metaContainer) throws PicoCompositionException {
-        if ( notSet(factoryName)) {
+        if (notSet(factoryName)) {
             return new Caching().wrap(new ConstructorInjection());
         }
         final Serializable key;

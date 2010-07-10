@@ -56,7 +56,7 @@ public class JMXExposingTestCase  {
         final JMXExposing componentFactory = new JMXExposing(
                 mBeanServer);
         componentFactory.wrap(new ConstructorInjection());
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
         }});
 
@@ -96,7 +96,7 @@ public class JMXExposingTestCase  {
         	.as(NO_JMX)
         	.addComponent("Test Person", DynamicMBeanPerson.class);  //No Register
         
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
         }});
     	

@@ -136,7 +136,7 @@ public class SimpleNamedBindingAnnotationTestCase {
     public static class FieldInjector<T> extends AbstractInjector<T> {
 
         protected FieldInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, boolean useNames) {
-            super(key, impl, parameters, monitor, useNames);
+            super(key, impl, monitor, useNames, parameters);
         }
 
         @Override

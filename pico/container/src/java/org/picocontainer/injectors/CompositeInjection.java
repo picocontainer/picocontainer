@@ -64,7 +64,7 @@ public class CompositeInjection extends AbstractInjectionType {
 
         public CompositeInjector(Object key, Class<?> impl, Parameter[] parameters, ComponentMonitor monitor,
                                  boolean useNames, Injector... injectors) {
-            super(key, impl, parameters, monitor, useNames);
+            super(key, impl, monitor, useNames, parameters);
             this.injectors = injectors;
         }
 

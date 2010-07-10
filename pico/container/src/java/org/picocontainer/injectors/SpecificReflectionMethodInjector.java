@@ -15,8 +15,8 @@ import java.util.List;
 public class SpecificReflectionMethodInjector extends MethodInjection.MethodInjector {
     private final List<Method> injectionMethods;
 
-    public SpecificReflectionMethodInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
-        super(key, impl, parameters, monitor, null, useNames);
+    public SpecificReflectionMethodInjector(Object key, Class impl, ComponentMonitor monitor, Method injectionMethod, boolean useNames, Parameter... parameters) throws NotConcreteRegistrationException {
+        super(key, impl, monitor, null, useNames, parameters);
         ArrayList<Method> methods = new ArrayList<Method>();
         methods.add(injectionMethod);
         this.injectionMethods = methods;

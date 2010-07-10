@@ -46,16 +46,16 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      *
      * @param key            the search key for this implementation
      * @param impl the concrete implementation
-     * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
+     * @param parameters              the parameters to use for the initialization
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public IterativeInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
-                             boolean useNames) throws  NotConcreteRegistrationException {
-        super(key, impl, parameters, monitor, useNames);
+    public IterativeInjector(final Object key, final Class impl, ComponentMonitor monitor, boolean useNames,
+                             Parameter... parameters) throws  NotConcreteRegistrationException {
+        super(key, impl, monitor, useNames, parameters);
     }
 
     protected Constructor getConstructor()  {
@@ -101,7 +101,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    private Set<Integer> matchParameters(PicoContainer container, List<Object> matchingParameterList, Parameter[] currentParameters) {
+    private Set<Integer> matchParameters(PicoContainer container, List<Object> matchingParameterList, Parameter... currentParameters) {
         Set<Integer> unmatchedParameters = new HashSet<Integer>();
         for (int i = 0; i < currentParameters.length; i++) {
             if (!matchParameter(container, matchingParameterList, currentParameters[i])) {
@@ -287,7 +287,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private Annotation getBindings(Method method, int i) {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (parameterAnnotations.length >= i +1 ) {
+        if (parameterAnnotations.length >= i +1) {
             Annotation[] o = parameterAnnotations[i];
             for (Annotation annotation : o) {
                 if (annotation.annotationType().getAnnotation(Bind.class) != null) {

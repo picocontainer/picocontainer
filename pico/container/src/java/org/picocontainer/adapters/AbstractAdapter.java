@@ -123,7 +123,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * Returns the monitor currently used
      * @return The ComponentMonitor currently used
      */
-    public ComponentMonitor currentMonitor(){
+    public ComponentMonitor currentMonitor() {
         return monitor;
     }
 

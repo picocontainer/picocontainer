@@ -35,7 +35,7 @@ public final class PicoObjectFactoryTestCase {
     private DefaultPicoContainer container;
     private final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
     
-    @Before public void setUp(){
+    @Before public void setUp() {
         container = (DefaultPicoContainer)new DefaultPicoContainer().change(Characteristics.CACHE);
         factory = new PicoObjectFactory();
     }
@@ -46,7 +46,7 @@ public final class PicoObjectFactoryTestCase {
         try {
             factory.buildBean("invalidAction");
             fail("PicoCompositionException expected");
-        } catch ( PicoCompositionException e) {
+        } catch (PicoCompositionException e) {
             // expected
         }
     }

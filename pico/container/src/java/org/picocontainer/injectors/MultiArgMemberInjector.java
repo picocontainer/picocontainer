@@ -42,7 +42,7 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
                                 Parameter[] parameters,
                                 ComponentMonitor monitor,
                                 boolean useNames) {
-        super(key, impl, parameters, monitor, useNames);
+        super(key, impl, monitor, useNames, parameters);
     }
 
     protected Paranamer getParanamer() {

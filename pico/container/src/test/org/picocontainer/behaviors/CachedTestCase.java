@@ -192,7 +192,7 @@ public class CachedTestCase {
             final boolean start, final boolean stop, final boolean dispose, final boolean getKey, final boolean instantiate) {
         final boolean hasLifecycle = start || stop || dispose;
         final ComponentAdapterSupportingLifecycleStrategy ca = mockery.mock(ComponentAdapterSupportingLifecycleStrategy.class);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             if (getKey) {
                 atLeast(1).of(ca).getComponentKey();
                 will(returnValue(Touchable.class));

@@ -44,7 +44,7 @@ public class Issue0265TestCase {
         final ComponentMonitor monitor1 = mockery.mock(ComponentMonitor.class, "Monitor1");
         final ComponentMonitor monitor2 = mockery.mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(monitor1).changedBehavior(with(any(ChangedBehavior.class)));
             will(returnParameterAction(0));
             one(monitor1).newInjector(with(any(AbstractInjector.class)));
@@ -68,7 +68,7 @@ public class Issue0265TestCase {
         Startable startable = pico.getComponent(DefaultPicoContainerTestCase.MyStartable.class);
         assertNotNull(startable);
         pico.changeMonitor(monitor2);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)), with(any(Object[].class)));
             one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 

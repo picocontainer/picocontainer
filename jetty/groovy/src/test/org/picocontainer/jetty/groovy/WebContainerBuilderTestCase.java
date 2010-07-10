@@ -57,7 +57,7 @@ public final class WebContainerBuilderTestCase {
                 "        context(path:'/bar') {\n" +
                 "            initParam(name:'a', value:'b')\n" +
                 "            filter(path:'/*', class:org.picocontainer.jetty.groovy.DependencyInjectionTestFilter," +
-                "                   dispatchers: new Integer(0)){\n" +
+                "                   dispatchers: new Integer(0)) {\n" +
                 "               initParam(name:'foo', value:'bau')\n" +
                 "            }\n" +
                 "            servlet(path:'/foo2', class:org.picocontainer.jetty.groovy.DependencyInjectionTestServlet)\n" +
@@ -80,7 +80,7 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
-                "            servlet(path:'/foo', class:org.picocontainer.jetty.groovy.DependencyInjectionTestServlet){\n" +
+                "            servlet(path:'/foo', class:org.picocontainer.jetty.groovy.DependencyInjectionTestServlet) {\n" +
                 "               initParam(name:'foo', value:'bar')\n" +
                 "            }\n" +
                 "        }\n" +

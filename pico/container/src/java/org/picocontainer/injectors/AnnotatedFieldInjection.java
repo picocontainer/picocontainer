@@ -77,7 +77,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
         public AnnotatedFieldInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
                                       boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
 
-            super(key, impl, parameters, monitor, useNames);
+            super(key, impl, monitor, useNames, parameters);
             this.injectionAnnotations = injectionAnnotations;
         }
 

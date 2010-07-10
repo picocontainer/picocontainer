@@ -113,7 +113,7 @@ public class MethodInjectionTestCase {
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
+        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, new NullComponentMonitor(), "inject", false, null));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
@@ -161,7 +161,7 @@ public class MethodInjectionTestCase {
 
     @Test public void testMethodInjectionWithAllowedNullableParam() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection()
-        );
+       );
         pico.addComponent(Foo2.class);
         pico.addComponent(Bar.class);
         Foo2 foo = pico.getComponent(Foo2.class);
@@ -172,7 +172,7 @@ public class MethodInjectionTestCase {
 
     @Test public void aComponentWithMoreThanOneInjectMethodAndMoreThanOneParam() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new MethodInjection()
-        );
+       );
         pico.addComponent(Foo3.class);
         pico.addComponent(Bar.class);
         Foo3 foo3 = pico.getComponent(Foo3.class);

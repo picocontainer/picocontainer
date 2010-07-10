@@ -41,7 +41,7 @@ public class AbstractComponentMonitorTestCase {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
-    @Test public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
+    @Test public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate() {
         try {
             new AbstractComponentMonitor(null);
             fail("NPE expected");
@@ -50,7 +50,7 @@ public class AbstractComponentMonitorTestCase {
         }
     }
 
-    @Test public void testDelegatingMonitorThrowsExpectionWhenChangingToNullMonitor(){
+    @Test public void testDelegatingMonitorThrowsExpectionWhenChangingToNullMonitor() {
         AbstractComponentMonitor dcm = new AbstractComponentMonitor();
         try {
             dcm.changeMonitor(null);
@@ -89,7 +89,7 @@ public class AbstractComponentMonitorTestCase {
 
     private ComponentMonitor mockMonitorThatSupportsStrategy(final ComponentMonitor currentMonitor) {
     	final TestMonitorThatSupportsStrategy monitor = mockery.mock(TestMonitorThatSupportsStrategy.class);
-    	mockery.checking(new Expectations(){{
+    	mockery.checking(new Expectations() {{
             one(monitor).changeMonitor(with(equal(currentMonitor)));
             one(monitor).currentMonitor();
             will(returnValue(currentMonitor));
@@ -133,7 +133,7 @@ public class AbstractComponentMonitorTestCase {
 				description.appendText("Should have injected our intended vector and string");
 			}
         };
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(monitor).instantiating(with(same(child)), with(any(ConstructorInjection.ConstructorInjector.class)), with(equal(needsACoupleOfThings)));
         	will(returnValue(needsACoupleOfThings));
         	one(monitor).instantiated(with(same(child)), with(any(ConstructorInjection.ConstructorInjector.class)), with(equal(needsACoupleOfThings)), with(isANACOTThatWozCreated), with(collectionAndStringWereInjected), with(durationIsGreaterThanOrEqualToZero));

@@ -60,7 +60,7 @@ public class ComponentTypeConventionMBeanInfoProviderTest {
         final Person person = new Person();
 
         final ComponentAdapter componentAdapter = mockery.mock(ComponentAdapter.class);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	atLeast(1).of(componentAdapter).getComponentKey();
         	will(returnValue(Person.class));
         	atLeast(1).of(componentAdapter).getComponentImplementation();

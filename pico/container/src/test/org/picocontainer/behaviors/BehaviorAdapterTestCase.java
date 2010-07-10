@@ -86,7 +86,7 @@ public class BehaviorAdapterTestCase {
 
     private ComponentAdapter mockComponentAdapterThatDoesSupportStrategy() {
     	final ComponentAdapterThatSupportsStrategy ca = mockery.mock(ComponentAdapterThatSupportsStrategy.class);
-    	mockery.checking(new Expectations(){{
+    	mockery.checking(new Expectations() {{
     		one(ca).changeMonitor(with(any(ComponentMonitor.class)));
     		one(ca).currentMonitor();
     		will(returnValue(mockMonitorWithNoExpectedMethods()));
@@ -103,7 +103,7 @@ public class BehaviorAdapterTestCase {
 
     private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {
     	final ComponentAdapterThatCanManageLifecycle ca = mockery.mock(ComponentAdapterThatCanManageLifecycle.class);
-    	mockery.checking(new Expectations(){{
+    	mockery.checking(new Expectations() {{
     		one(ca).start(with(any(PicoContainer.class)));
     		one(ca).stop(with(any(PicoContainer.class)));
     		one(ca).dispose(with(any(PicoContainer.class)));

@@ -54,13 +54,14 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param key the search key for this implementation
      * @param impl the concrete implementation
-     * @param parameters the parameters to use for the initialization
      * @param monitor the component monitor used by this ComponentAdapter
+     * @param parameters the parameters to use for the initialization
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected AbstractInjector(final Object key, final Class<?> impl, final Parameter[] parameters,
-                                            final ComponentMonitor monitor, final boolean useNames) {
+    protected AbstractInjector(final Object key, final Class<?> impl,
+                               final ComponentMonitor monitor, final boolean useNames,
+                               final Parameter... parameters) {
         super(key, impl, monitor);
         this.useNames = useNames;
         checkConcrete();

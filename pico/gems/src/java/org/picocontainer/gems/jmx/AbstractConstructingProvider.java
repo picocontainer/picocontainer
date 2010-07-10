@@ -53,7 +53,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
 			// No management interface available
 		}
 
-		if( management != null || mBeanInfo != null ) {
+		if(management != null || mBeanInfo != null) {
 			try {
 				// create MBean
 				final DynamicMBean mBean = getMBeanFactory().create(

@@ -75,7 +75,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	 * @todo create a way to prevent initialization and shutdown with each script invocation.
 	 */
 	protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
-        if ( parentContainer == null ){
+        if (parentContainer == null) {
             parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new EmptyPicoContainer(), new Caching()));
         }
 		

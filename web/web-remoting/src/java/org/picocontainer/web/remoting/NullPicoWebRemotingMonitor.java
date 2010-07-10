@@ -19,7 +19,7 @@ public class NullPicoWebRemotingMonitor implements PicoWebRemotingMonitor {
     public Object runtimeExceptionForMethodInvocation(RuntimeException e) {
         Class<? extends RuntimeException> appBaseRuntimeException = getAppBaseRuntimeException();
         if (appBaseRuntimeException != null && appBaseRuntimeException.isAssignableFrom(e.getClass()) ||
-            PicoContainerWebException.class.isAssignableFrom(e.getClass()) ) {
+            PicoContainerWebException.class.isAssignableFrom(e.getClass())) {
             return new ErrorReply(e.getMessage());
         } else {
             return otherRuntimeException(e);

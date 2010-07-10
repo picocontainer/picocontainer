@@ -987,7 +987,7 @@ public abstract class AbstractPicoContainerTest {
     @Test
     public void testIntegrationWithConverters() {        
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        if ( !(mpc instanceof Converting)) {
+        if (!(mpc instanceof Converting)) {
             System.out.println("Skipping 'testIntegrationWithConverters' " +
             		"because pico implementation is not Converting");
             return;

@@ -26,7 +26,7 @@ public class Behaviors {
     /**
      * Prevents instantiation
      */
-    private Behaviors(){
+    private Behaviors() {
         // no-op
     }
     

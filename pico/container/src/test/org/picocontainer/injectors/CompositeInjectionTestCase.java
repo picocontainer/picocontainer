@@ -138,7 +138,7 @@ public class CompositeInjectionTestCase {
                 new EmptyPicoContainer(),
                 new NonNullLifecycleStrategy(),
                 new CompositeInjection(new ConstructorInjection(), new AnnotatedMethodInjection())
-        );
+       );
         dpc.addComponent(Bar.class);
         assertNotNull(dpc.getComponent(Bar.class));
     }

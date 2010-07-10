@@ -42,28 +42,28 @@ public class PicoGemsBuilderTestCase {
     @Test public void testWithImplementationHiding() {
         MutablePicoContainer actual = new PicoBuilder().withBehaviors(ASM_IMPL_HIDING()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycle, new NullComponentMonitor(), new AsmImplementationHiding().wrap(new AdaptingInjection())
-        );
+       );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycle, new Log4JComponentMonitor(), new AdaptingInjection()
-        );
+       );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitorByInstance() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(LOG4J()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycle, new Log4JComponentMonitor(), new AdaptingInjection()
-        );
+       );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCommonsLoggingComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         MutablePicoContainer expected = new DefaultPicoContainer(parent, lifecycle, new CommonsLoggingComponentMonitor(), new AdaptingInjection()
-        );
+       );
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 

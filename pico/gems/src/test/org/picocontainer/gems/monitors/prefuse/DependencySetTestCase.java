@@ -9,7 +9,7 @@ public class DependencySetTestCase {
     int callCount = 0;
 
     @Test public void testShouldNotAddDuplicates() throws Exception {
-        ComponentDependencyListener mockListener = new ComponentDependencyListener(){
+        ComponentDependencyListener mockListener = new ComponentDependencyListener() {
             public void addDependency(Dependency dependency) {
              callCount++;
             }    
@@ -20,6 +20,6 @@ public class DependencySetTestCase {
         set.addDependency(dependency);
         assertEquals(1, set.getDependencies().length);
         assertEquals(dependency, set.getDependencies()[0]);
-        assertEquals("Call count should be called once",1,callCount );
+        assertEquals("Call count should be called once",1,callCount);
     }
 }

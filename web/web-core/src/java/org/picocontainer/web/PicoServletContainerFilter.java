@@ -155,7 +155,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     }
 
     private void printSessionSizeDetailsForDebugging(SessionStoreHolder ssh) throws IOException {
-        if ( debug ){
+        if (debug) {
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        ObjectOutputStream oos = new ObjectOutputStream(baos);
 	        oos.writeObject(ssh);

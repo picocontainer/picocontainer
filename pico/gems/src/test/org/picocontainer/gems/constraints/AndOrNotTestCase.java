@@ -43,7 +43,7 @@ public final class AndOrNotTestCase  {
     @Test public void testAndAllChildrenConstraintsTrueGivesTrue() {
         Constraint c = new And(c1, c2, c3);
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(c1).evaluate(with(same(adapter)));
         	will(returnValue(true)); inSequence(sequence);
         	one(c2).evaluate(with(same(adapter)));
@@ -59,7 +59,7 @@ public final class AndOrNotTestCase  {
         final Constraint c = new And(c1, c2, c3);
         
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
         	one(c2).accept(with(same(visitor))); inSequence(sequence);
@@ -73,7 +73,7 @@ public final class AndOrNotTestCase  {
         Constraint c = new And(new Constraint[] {c1, c2, c3});
 
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(c1).evaluate(with(same(adapter)));
         	will(returnValue(true)); inSequence(sequence);
         	one(c2).evaluate(with(same(adapter)));
@@ -89,7 +89,7 @@ public final class AndOrNotTestCase  {
         Constraint c = new And(c1, c2, c3);
 
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(c1).evaluate(with(same(adapter)));
         	will(returnValue(true)); inSequence(sequence);
         	one(c2).evaluate(with(same(adapter)));
@@ -104,7 +104,7 @@ public final class AndOrNotTestCase  {
         Constraint c = new Or(c1, c2, c3);
 
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(c1).evaluate(with(same(adapter)));
         	will(returnValue(false)); inSequence(sequence);
         	one(c2).evaluate(with(same(adapter)));
@@ -120,7 +120,7 @@ public final class AndOrNotTestCase  {
         final Constraint c = new Or(c1, c2, c3);
         
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
         	one(c2).accept(with(same(visitor))); inSequence(sequence);
@@ -134,7 +134,7 @@ public final class AndOrNotTestCase  {
         Constraint c = new Or(c1, new Not(c2), c3);
 
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(c1).evaluate(with(same(adapter)));
         	will(returnValue(false)); inSequence(sequence);
         	one(c2).evaluate(with(same(adapter)));
@@ -149,7 +149,7 @@ public final class AndOrNotTestCase  {
         final Constraint c = new Not(c1);
         
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
         }});        

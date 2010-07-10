@@ -128,7 +128,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
      */
     public void changeMonitor(ComponentMonitor monitor) {
         checkMonitor(monitor);
-        if ( delegate instanceof ComponentMonitorStrategy ){
+        if (delegate instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
         } else {
             delegate = monitor;
@@ -136,7 +136,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
     }
 
     public ComponentMonitor currentMonitor() {
-        if ( delegate instanceof ComponentMonitorStrategy ){
+        if (delegate instanceof ComponentMonitorStrategy) {
             return ((ComponentMonitorStrategy)delegate).currentMonitor();
         } else {
             return delegate;
@@ -144,7 +144,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
     }
     
     private void checkMonitor(ComponentMonitor monitor) {
-        if ( monitor == null ){
+        if (monitor == null) {
             throw new NullPointerException("monitor");
         }
     }

@@ -57,7 +57,7 @@ public final class DefaultConstructorParameter extends AbstractParameter impleme
 		try {
 			Constructor constructor = type.getConstructor();
 		} catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException("No default constructor for type " + expectedType,e );
+			throw new IllegalArgumentException("No default constructor for type " + expectedType,e);
 		}	
 	}
 

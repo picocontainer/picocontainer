@@ -32,7 +32,7 @@ public class PicoActionFactoryTestCase {
     private PicoActionFactory factory;
     private DefaultPicoContainer container;
     
-    @Before public void setUp(){
+    @Before public void setUp() {
         factory = new PicoActionFactory();
         container = new DefaultPicoContainer(new Caching());
     }

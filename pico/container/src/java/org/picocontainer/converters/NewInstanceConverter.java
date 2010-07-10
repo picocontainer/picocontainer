@@ -1,7 +1,5 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.converters.Converter;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,7 +16,7 @@ public class NewInstanceConverter implements Converter<Object> {
         }
     }
     public Object convert(String paramValue) {
-        if ( c == null ){
+        if (c == null) {
             return null;
         }
         try {

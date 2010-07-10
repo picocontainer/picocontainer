@@ -121,7 +121,7 @@ public class ConstraintsTestCase {
         final Constraint c = new CollectionConstraint(c1);
         final PicoVisitor visitor = mockery.mock(PicoVisitor.class);
         final Sequence sequence = mockery.sequence("contraints");
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(visitor);  inSequence(sequence);
         }});

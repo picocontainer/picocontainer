@@ -7,11 +7,10 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.ComponentMonitorHelper;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -26,10 +25,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.ComponentMonitorHelper;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 /**
  * @author Paul Hammant
@@ -119,7 +119,7 @@ public abstract class ComponentMonitorHelperTestCase {
     
 
     protected void assertFileContent(final String line) throws IOException{
-        List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
+        List lines = toLines(new StringReader(ForTestSakeAppender.CONTENT ));
         String s = lines.toString();
         assertTrue("Line '" + line + "' not found.  Instead got: " + line, s.indexOf(line) > 0);
     }
@@ -128,7 +128,7 @@ public abstract class ComponentMonitorHelperTestCase {
         BufferedReader br = new BufferedReader(resource);
         List lines = new ArrayList();
         String line = br.readLine();
-        while ( line != null) {
+        while (line != null) {
             lines.add(line);
             line = br.readLine();
         }

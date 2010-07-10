@@ -32,7 +32,7 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     	this(separator,arguments,null);
     }
 
-    public CommandLinePicoContainer(String separator, String[] arguments, PicoContainer parent ) {
+    public CommandLinePicoContainer(String separator, String[] arguments, PicoContainer parent) {
     	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);

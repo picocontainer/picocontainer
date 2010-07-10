@@ -137,7 +137,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         "       <dependency class='java.lang.String'/>" +
         "   </implementation>" + 
         "</container>"
-        );
+       );
         
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,
                 null);
@@ -156,7 +156,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         "       <string>blurge</string>" + 
         "   </instance>" + 
         "</container>"
-         );  
+        );
         
         
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);

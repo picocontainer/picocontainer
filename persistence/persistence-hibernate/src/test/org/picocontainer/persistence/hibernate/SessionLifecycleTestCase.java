@@ -26,7 +26,7 @@ public class SessionLifecycleTestCase {
     @Test 
     public void canCloseSessionOnStop() throws Exception {
     	final Session session = mockery.mock(Session.class);
-    	mockery.checking(new Expectations(){{
+    	mockery.checking(new Expectations() {{
             one(session).flush();
     		one(session).close();
     	}});
@@ -37,7 +37,7 @@ public class SessionLifecycleTestCase {
     @Test(expected=HibernateException.class)
     public void cannotCloseSessionOnStop() throws Exception {
         final Session session = mockery.mock(Session.class);
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
             one(session).flush();
             will(throwException(new HibernateException("mock")));
         }});

@@ -41,7 +41,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
         this.scriptURL = null;
         this.classLoader = classLoader;
-        if ( classLoader == null) {
+        if (classLoader == null) {
             throw new NullPointerException("classLoader");
         }
     }
@@ -58,7 +58,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
             throw new NullPointerException("script");
         }
         this.classLoader = classLoader;
-        if ( classLoader == null) {
+        if (classLoader == null) {
             throw new NullPointerException("classLoader");
         }
     }
@@ -85,7 +85,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     
     @SuppressWarnings("synthetic-access")
     protected final InputStream getScriptInputStream() throws IOException{
-        if ( scriptReader != null ){
+        if (scriptReader != null) {
             return new InputStream() {
                 @Override
                 public int read() throws IOException {
@@ -97,7 +97,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     }
 
     protected final Reader getScriptReader() throws IOException{
-        if ( scriptReader != null ){
+        if (scriptReader != null) {
             return scriptReader;
         }
         return new InputStreamReader(scriptURL.openStream());

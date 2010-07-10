@@ -138,8 +138,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
     /** {@inheritDoc} **/
     public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
-                                     final Constructor<T> constructor
-    ) {
+                                     final Constructor<T> constructor) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
@@ -240,7 +239,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     protected synchronized Logger getLogger(final Member member) {
-        if ( logger != null ){
+        if (logger != null) {
             return logger;
         } 
         return LogManager.getLogger(member.getDeclaringClass());

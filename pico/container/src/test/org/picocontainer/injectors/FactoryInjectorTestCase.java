@@ -225,7 +225,7 @@ public class FactoryInjectorTestCase {
         pico.addConfig("leafColor", "green");
         pico.addComponent(Tree.class, OakTree.class);
 
-        Footle<Map> ft = new Footle<Map>(){};
+        Footle<Map> ft = new Footle<Map>() {};
 
         ft.addAdapter(pico);
 

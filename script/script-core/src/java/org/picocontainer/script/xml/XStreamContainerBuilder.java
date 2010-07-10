@@ -219,7 +219,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
         // ok , we processed our children. insert implementation
         Parameter[] parameterArray =  getParameters(rootElement);
-        if ("default".equals(constructor)){
+        if ("default".equals(constructor)) {
         	parameterArray = Parameter.ZERO;
         }
         
@@ -285,7 +285,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
                     	//Check:  We can't check everything here since we aren't schema validating
                     	//But it will at least catch some goofs.
                     	if (!parameters.isEmpty()) {
-                    		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes." );
+                    		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes.");
                     	}
                     	
                     	return Parameter.ZERO;
@@ -296,8 +296,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
     }
 
     /**
-     * process instance node. we get key from atributes ( if any ) and leave
-     * content to xstream. we allow only one child node inside. ( first one wins )
+     * process instance node. we get key from atributes (if any ) and leave
+     * content to xstream. we allow only one child node inside. (first one wins )
      * 
      * @param container
      * @param rootElement

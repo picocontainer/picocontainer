@@ -56,7 +56,7 @@ public class SetterInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, parameters, monitor, prefix, useNames);
+        SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, monitor, prefix, useNames, parameters);
         Injector<T> injector = monitor.newInjector(setterInjector);
         return wrapLifeCycle(injector, lifecycle);
     }
@@ -87,20 +87,19 @@ public class SetterInjection extends AbstractInjectionType {
          *
          * @param key            the search key for this implementation
          * @param impl the concrete implementation
-         * @param parameters              the parameters to use for the initialization
          * @param monitor                 the component monitor used by this addAdapter
          * @param prefix                  the prefix to use (e.g. 'set')
          * @param useNames
+         * @param parameters              the parameters to use for the initialization
          * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
          *                              if the implementation is not a concrete class.
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
         public SetterInjector(final Object key,
                               final Class impl,
-                              Parameter[] parameters,
-                              ComponentMonitor monitor,
-                              String prefix, boolean useNames) throws  NotConcreteRegistrationException {
-            super(key, impl, parameters, monitor, useNames);
+                              ComponentMonitor monitor, String prefix, boolean useNames,
+                              Parameter... parameters) throws  NotConcreteRegistrationException {
+            super(key, impl, monitor, useNames, parameters);
             this.prefix = prefix;
         }
 

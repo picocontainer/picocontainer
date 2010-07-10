@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 public interface ComponentAdapter<T> {
 
     public class NOTHING {
-        private NOTHING(){
+        private NOTHING() {
         }
     };
 

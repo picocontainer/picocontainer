@@ -89,7 +89,7 @@ public class JMXVisitorTestCase  {
         final ComponentAdapter componentAdapter = picoContainer.addComponent(
                 Person.class, Person.class, new ConstantParameter("John Doe")).getComponentAdapter(Person.class, (NameBinding) null);
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter)));
         	will(returnValue(registrationInfo));
         	one(mBeanServer).registerMBean(with(same(registrationInfo.getMBean())), with(same(registrationInfo.getObjectName())));
@@ -119,7 +119,7 @@ public class JMXVisitorTestCase  {
         final ComponentAdapter componentAdapter2 = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
                                                                                                         (NameBinding) null);
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter1)));
         	will(returnValue(null));
         	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter1)));
@@ -142,7 +142,7 @@ public class JMXVisitorTestCase  {
         final ComponentAdapter componentAdapter = child.addComponent(Person.class).getComponentAdapter(Person.class,
                                                                                                        (NameBinding) null);
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanProvider).provide(with(same(child)), with(same(componentAdapter)));
         	will(returnValue(null));
         }});
@@ -206,7 +206,7 @@ public class JMXVisitorTestCase  {
         final ComponentAdapter componentAdapter = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
                                                                                                                (NameBinding) null);
 
-        mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations() {{
         	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter)));
         	will(returnValue(registrationInfo));
         	one(mBeanServer).registerMBean(with(same(registrationInfo.getMBean())), with(same(registrationInfo.getObjectName())));

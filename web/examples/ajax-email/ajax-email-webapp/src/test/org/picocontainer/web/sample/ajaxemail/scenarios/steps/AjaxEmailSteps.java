@@ -35,7 +35,7 @@ public class AjaxEmailSteps extends SeleniumSteps {
     public void beforeScenario() throws Exception {
         super.beforeScenario();
         selenium.setSpeed("750");
-        selenium.getEval( "window.moveTo(1,250); window.resizeTo(800,537);" );
+        selenium.getEval("window.moveTo(1,250); window.resizeTo(800,537);");
     }
 
     @Given("test data")
