@@ -42,7 +42,7 @@ public class PicoExceptionsTestCase {
 
     @SuppressWarnings({ "unchecked" })
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjection.ConstructorInjector(clazz, clazz, null, new AbstractComponentMonitor(), false, false);
+        final ComponentAdapter componentAdapter = new ConstructorInjection.ConstructorInjector(clazz, clazz, new AbstractComponentMonitor(), false, false, null);
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(MESSAGE);
         try {

@@ -73,7 +73,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testNewIsInstantiatedOnEachRequest() {
         ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
 
         Object borrowed0 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         Object borrowed1 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
@@ -84,7 +84,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testInstancesAreDifferent() throws InterruptedException {
         ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
 
         Object borrowed0 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         Object borrowed1 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
@@ -97,7 +97,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testInstancesCanBeRecycled() throws InterruptedException {
         ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
 
         Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(0, borrowed.getId());
@@ -111,7 +111,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testBlocksWhenExhausted() throws InterruptedException {
         final ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext() {
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext() {
             @Override
 			public int getMaxSize() {
                 return 2;
@@ -173,7 +173,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testTimeoutWhenExhausted() {
         final ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext() {
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext() {
             @Override
 			public int getMaxSize() {
                 return 2;
@@ -202,7 +202,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testGrowsAlways() {
         Pooling.Pooled behavior = new Pooling.Pooled(
-                new ConstructorInjection.ConstructorInjector("foo", Object.class, null, new NullComponentMonitor(), false),
+                new ConstructorInjection.ConstructorInjector("foo", Object.class, new NullComponentMonitor(), false, null),
                 new Pooling.Pooled.DefaultContext() {
 
                     @Override
@@ -246,7 +246,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testFailsWhenExhausted() {
         final Pooling.Pooled behavior = new Pooling.Pooled(
-                new ConstructorInjection.ConstructorInjector(Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false),
+                new ConstructorInjection.ConstructorInjector(Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null),
                 new Pooling.Pooled.DefaultContext() {
                     @Override
 					public int getMaxSize() {
@@ -272,7 +272,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     @Test
     public void testInternalGCCall() {
         ComponentAdapter componentAdapter = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext() {
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext() {
             @Override
 			public int getMaxSize() {
                 return 1;
@@ -302,7 +302,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     private ComponentAdapter prepDEF_lifecycleManagerSupport(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooling.Pooled poolingBehavior = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
         return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.One.class, (NameBinding) null);
     }
 
@@ -339,7 +339,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooling.Pooled poolingBehavior = new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
         return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.Two.class, (NameBinding) null);
     }
 
@@ -378,7 +378,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
     private ComponentAdapter createPoolOfTouchables() {
         return new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                Touchable.class, SimpleTouchable.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
     }
 
     @Override
@@ -398,7 +398,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
     private ComponentAdapter createSerializable() {
         return new Pooling.Pooled(new ConstructorInjection.ConstructorInjector(
-                Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), false), new Pooling.Pooled.DefaultContext());
+                Identifiable.class, InstanceCounter.class, new NullComponentMonitor(), false, null), new Pooling.Pooled.DefaultContext());
     }
 
     @Override

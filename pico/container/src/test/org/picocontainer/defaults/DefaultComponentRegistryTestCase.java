@@ -89,6 +89,6 @@ public class DefaultComponentRegistryTestCase {
     }
 
     private ComponentAdapter createComponentAdapter() throws PicoCompositionException {
-        return new ConstructorInjection.ConstructorInjector(Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false);
+        return new ConstructorInjection.ConstructorInjector(Touchable.class, SimpleTouchable.class, new NullComponentMonitor(), false, null);
     }
 }

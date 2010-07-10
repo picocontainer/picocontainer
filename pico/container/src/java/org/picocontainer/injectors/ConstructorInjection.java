@@ -10,6 +10,18 @@
 
 package org.picocontainer.injectors;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Emjection;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.monitors.NullComponentMonitor;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -29,18 +41,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Emjection;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.monitors.NullComponentMonitor;
-
 /**
  * A {@link org.picocontainer.InjectionType} for constructor injection.
  * The factory creates {@link ConstructorInjector}.
@@ -55,7 +55,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 @SuppressWarnings("serial")
 public class ConstructorInjection extends AbstractInjectionType {
 
-    private final boolean rememberChosenConstructor;
+    protected final boolean rememberChosenConstructor;
 
     /**
      *
@@ -77,9 +77,13 @@ public class ConstructorInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties properties, Object key,
                                                    Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
-        ConstructorInjector injector = new ConstructorInjector(key, impl, parameters, monitor, useNames, rememberChosenConstructor);
+        ConstructorInjector injector = newConstructorInjector(monitor, key, impl, useNames, parameters);
         injector.enableEmjection(AbstractBehavior.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
         return wrapLifeCycle(monitor.newInjector(injector), lifecycle);
+    }
+
+    protected <T>ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, Parameter[] parameters) {
+        return new ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenConstructor, parameters);
     }
 
     /**
@@ -109,7 +113,7 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @param parameters the parameters used for initialization
          */
         public ConstructorInjector(final Object key, final Class<?> impl, Parameter... parameters) {
-            this(key, impl, parameters, new NullComponentMonitor(), false);
+            this(key, impl, new NullComponentMonitor(), false, parameters);
         }
 
         /**
@@ -117,15 +121,15 @@ public class ConstructorInjection extends AbstractInjectionType {
          *
          * @param key            the search key for this implementation
          * @param impl the concrete implementation
-         * @param parameters              the parameters to use for the initialization
          * @param monitor                 the component monitor used by this addAdapter
          * @param useNames                use argument names when looking up dependencies
+         * @param parameters              the parameters to use for the initialization
          * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
          *                              if the implementation is not a concrete class.
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
-        public ConstructorInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
-                                   boolean useNames) throws  NotConcreteRegistrationException {
+        public ConstructorInjector(final Object key, final Class impl, ComponentMonitor monitor, boolean useNames,
+                                   Parameter... parameters) throws  NotConcreteRegistrationException {
             super(key, impl, parameters, monitor, useNames);
         }
 
@@ -134,16 +138,16 @@ public class ConstructorInjection extends AbstractInjectionType {
          *
          * @param key            the search key for this implementation
          * @param impl the concrete implementation
-         * @param parameters              the parameters to use for the initialization
          * @param monitor                 the component monitor used by this addAdapter
          * @param useNames                use argument names when looking up dependencies
          * @param rememberChosenCtor      remember the chosen constructor (to speed up second/subsequent calls)
+         * @param parameters              the parameters to use for the initialization
          * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
          *                              if the implementation is not a concrete class.
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
-        public ConstructorInjector(final Object key, final Class impl, Parameter[] parameters, ComponentMonitor monitor,
-                                   boolean useNames, boolean rememberChosenCtor) throws  NotConcreteRegistrationException {
+        public ConstructorInjector(final Object key, final Class impl, ComponentMonitor monitor, boolean useNames, boolean rememberChosenCtor,
+                                   Parameter... parameters) throws  NotConcreteRegistrationException {
             super(key, impl, parameters, monitor, useNames);
             this.rememberChosenConstructor = rememberChosenCtor;
         }
@@ -361,6 +365,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                                                 + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
                             }
                             long startTime = System.currentTimeMillis();
+                            changeAccessToModifierifNeeded(ctor);
                             T inst = newInstance(ctor, ctorParameters);
                             monitor.instantiated(container, ConstructorInjector.this,
                                     ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
@@ -397,9 +402,10 @@ public class ConstructorInjection extends AbstractInjectionType {
         private List<Constructor<T>> getSortedMatchingConstructors() {
             List<Constructor<T>> matchingConstructors = new ArrayList<Constructor<T>>();
             Constructor<T>[] allConstructors = getConstructors();
-            // filter out all constructors that will definately not match
+            // filter out all constructors that will definitely not match
             for (Constructor<T> constructor : allConstructors) {
-                if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (constructor.getModifiers() & Modifier.PUBLIC) != 0) {
+                if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
+                        && hasApplicableConstructorModifiers(constructor.getModifiers())) {
                     matchingConstructors.add(constructor);
                 }
             }
@@ -412,6 +418,22 @@ public class ConstructorInjection extends AbstractInjectionType {
                 });
             }
             return matchingConstructors;
+        }
+
+        /**
+         * Tests to see if modifier is public
+         * @param modifiers the modifiers to test
+         * @return true if public
+         */
+        protected boolean hasApplicableConstructorModifiers(int modifiers) {
+            return (modifiers & Modifier.PUBLIC) != 0;
+        }
+
+        /**
+         * Not by default, but some constructors may need to be setAccessible(true)
+         * @param ctor the ctor to change
+         */
+        protected void changeAccessToModifierifNeeded(Constructor<T> ctor) {
         }
 
         private Constructor<T>[] getConstructors() {

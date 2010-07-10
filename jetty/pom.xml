@@ -103,6 +103,11 @@
     </testResources>
     <pluginManagement>
       <plugins>
+		<plugin>
+		          <groupId>org.apache.maven.plugins</groupId>
+		          <artifactId>maven-dependency-plugin</artifactId>
+		          <version>2.1</version>
+		</plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -223,6 +228,11 @@
       </plugins>
     </pluginManagement>
     <plugins>
+		<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-dependency-plugin</artifactId>
+		        <version>2.1</version>
+		</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

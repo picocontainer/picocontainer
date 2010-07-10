@@ -49,7 +49,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
                                                boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, parameters, monitor, useNames);
+        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, parameters);
     }
 
     /**
@@ -68,8 +68,8 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
                                               boolean useNames, boolean rememberChosenCtor) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, parameters, monitor,
-                useNames, rememberChosenCtor);
+        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenCtor, parameters
+        );
     }
 
     /**

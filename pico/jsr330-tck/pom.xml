@@ -25,16 +25,4 @@
         <version>1</version>
     </dependency>
   </dependencies>
-	<repositories>
-		<repository>
-			<id>jboss</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>http://repository.jboss.org/maven2/</url>
-		</repository>
-	</repositories>
 </project>
