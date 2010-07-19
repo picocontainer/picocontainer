@@ -1,9 +1,8 @@
 package org.picocontainer.script.groovy
 
-import org.picocontainer.defaults.ComponentParameter
-import org.picocontainer.defaults.UnsatisfiableDependenciesException
+import org.picocontainer.parameters.ComponentParameter
+import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException
 
-import org.picocontainer.script.groovy.NanoContainerBuilder
 import org.picocontainer.script.testmodel.DefaultWebServerConfig
 import org.picocontainer.script.testmodel.WebServer
 import org.picocontainer.script.testmodel.WebServerConfig
@@ -70,7 +69,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         def sb = new StringBuffer();
 
         def builder = new GroovyNodeBuilder()
-        def componentFactory = new TestComponentAdapterFactory(sb)
+        //def componentFactory = new TestComponentFactory(sb)
         def scripted = builder.container(componentFactory:componentFactory) {
             component(key:WebServerConfig, class:DefaultWebServerConfig)
             component(key:WebServer, class:WebServerImpl)

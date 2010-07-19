@@ -403,6 +403,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);
         }
 
+        public <T> BindWithOrTo<T> bind(Class<T> type) {
+            return new DefaultPicoContainer.DpcBindWithOrTo<T>(DefaultClassLoadingPicoContainer.this, type);
+        }
+
         public MutablePicoContainer addComponent(Object key, Object implOrInstance,
                 Parameter... parameters) {
             delegate.addComponent(classNameToClassIfApplicable(key),
@@ -552,7 +556,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
         /**
          * {@inheritDoc}
-         * @see org.picocontainer.MutablePicoContainer#getName(java.lang.String)
+         * @see org.picocontainer.MutablePicoContainer#getName()
          */
         public String getName() {
             return DefaultClassLoadingPicoContainer.this.getName();

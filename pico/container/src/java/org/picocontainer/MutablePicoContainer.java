@@ -9,8 +9,11 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.picocontainer.injectors.Provider;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
 
+import java.lang.annotation.Annotation;
 import java.util.Properties;
 
 /**
@@ -23,6 +26,22 @@ import java.util.Properties;
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use PicoContainer.</a>
  */
 public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {
+
+    public static interface BindTo<T> {
+        MutablePicoContainer to(Class<? extends T> impl);
+        MutablePicoContainer to(T instance);
+        MutablePicoContainer toProvider(javax.inject.Provider<? extends T> provider);
+        MutablePicoContainer toProvider(Provider provider);
+    }
+
+    public static interface BindWithOrTo<T> extends BindTo<T> {
+        <T> BindTo<T> withAnnotation(Class<? extends Annotation> annotation);
+        <T> BindTo<T> named(String name);
+    }
+
+
+
+    <T> BindWithOrTo<T> bind(Class<T> type);
 
     /**
      * Register a component and creates specific instructions on which constructor to use, along with

@@ -23,6 +23,7 @@ import org.picocontainer.converters.ConvertsNothing;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -506,6 +507,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return adapter;
     }
 
+
+    public <T> BindWithOrTo<T> bind(Class<T> type) {
+        return new DpcBindWithOrTo<T>(DefaultPicoContainer.this, type);
+    }
+
     /**
      * {@inheritDoc}
      * The returned ComponentAdapter will be an {@link org.picocontainer.adapters.InstanceAdapter}.
@@ -580,6 +586,59 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                 potentiallyStartAdapter(adapter);
             }
             return addAdapter(adapter, properties);
+        }
+    }
+
+    public static class DpcBindWithOrTo<T> extends DpcBindTo<T> implements BindWithOrTo<T> {
+
+        public DpcBindWithOrTo(MutablePicoContainer mutablePicoContainer, Class<T> type) {
+            super(mutablePicoContainer, type);
+        }
+
+        public <T> BindTo<T> withAnnotation(Class<? extends Annotation> annotation) {
+            return new DpcBindTo<T>(mutablePicoContainer, (Class<T>) type).withAnno(annotation);
+        }
+
+        public <T> BindTo<T> named(String name) {
+            return new DpcBindTo<T>(mutablePicoContainer, (Class<T>) type).named(name);
+        }
+    }
+
+    public static class DpcBindTo<T> implements BindTo<T> {
+        final MutablePicoContainer mutablePicoContainer;
+        final Class<T> type;
+        private Class<? extends Annotation> annotation;
+        private String name;
+
+        private DpcBindTo(MutablePicoContainer mutablePicoContainer, Class<T> type) {
+            this.mutablePicoContainer = mutablePicoContainer;
+            this.type = type;
+        }
+
+        public MutablePicoContainer to(Class<? extends T> impl) {
+            return mutablePicoContainer.addComponent(type, impl);
+        }
+
+        public MutablePicoContainer to(T instance) {
+            return mutablePicoContainer.addComponent(type, instance);
+        }
+
+        public MutablePicoContainer toProvider(javax.inject.Provider<? extends T> provider) {
+            return mutablePicoContainer.addAdapter(new ProviderAdapter(provider));
+        }
+
+        public MutablePicoContainer toProvider(org.picocontainer.injectors.Provider provider) {
+            return mutablePicoContainer.addAdapter(new ProviderAdapter(provider));
+        }
+
+        private BindTo<T> withAnno(Class<? extends Annotation> annotation) {
+            this.annotation = annotation;
+            return this;
+        }
+
+        private BindTo<T> named(String name) {
+            this.name = name;
+            return this;
         }
     }
 
@@ -1156,6 +1215,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         @Override
         public MutablePicoContainer makeChildContainer() {
             return getDelegate().makeChildContainer();
+        }
+
+        @Override
+        public <T> BindWithOrTo<T> bind(Class<T> type) {
+            return new DpcBindWithOrTo<T>(AsPropertiesPicoContainer.this, type);
         }
 
         @Override

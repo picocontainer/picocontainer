@@ -29,6 +29,10 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		super(delegate);
 	}
 
+    public <T> BindWithOrTo<T> bind(Class<T> type) {
+        return getDelegate().bind(type);
+    }
+
 	public MutablePicoContainer addComponent(Object key,
                                              Object implOrInstance,
                                              Parameter... parameters) throws PicoCompositionException {

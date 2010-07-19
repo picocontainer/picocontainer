@@ -14,7 +14,8 @@ import org.picocontainer.injectors.Jsr330Injection;
 
 public class PicoContainerJsr330Tests {
     public static Test suite() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching(), new Jsr330Injection());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching(), 
+                new Jsr330Injection());
         pico.addComponent(Car.class, Convertible.class)
                 .addComponent(DriversSeat.class)
                 .addComponent(FuelTank.class)
