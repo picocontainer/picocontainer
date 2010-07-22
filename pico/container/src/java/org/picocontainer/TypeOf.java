@@ -11,7 +11,17 @@ package org.picocontainer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class TypeOf<T> implements Type{
+public abstract class TypeOf<T> {
+
+    public static final TypeOf INTEGER = TypeOf.fromClass(Integer.class);
+    public static final TypeOf LONG = TypeOf.fromClass(Long.class);
+    public static final TypeOf FLOAT = TypeOf.fromClass(Float.class);
+    public static final TypeOf DOUBLE = TypeOf.fromClass(Double.class);
+    public static final TypeOf BOOLEAN = TypeOf.fromClass(Boolean.class);
+    public static final TypeOf CHARACTER = TypeOf.fromClass(Character.class);
+    public static final TypeOf SHORT = TypeOf.fromClass(Short.class);
+    public static final TypeOf BYTE = TypeOf.fromClass(Byte.class);
+    public static final TypeOf VOID = TypeOf.fromClass(Void.TYPE);
 
     private Type type;
 
@@ -34,6 +44,32 @@ public abstract class TypeOf<T> implements Type{
         return type;
     }
 
+    public boolean isPrimitive() {
+        return type instanceof Class && ((Class) type).isPrimitive();
+    }
+
+    public String getName() {
+        if (type instanceof Class) {
+            return ((Class) type).getName();
+        } else {
+            return type.toString();
+        }
+    }
+
+    public boolean isAssignableFrom(Class<?> aClass) {
+        if (type instanceof Class) {
+            return ((Class) type).isAssignableFrom(aClass);
+        }
+        return false;
+    }
+
+    public boolean isAssignableTo(Class aClass) {
+        if (type instanceof Class) {
+            return aClass.isAssignableFrom((Class<?>) type);
+        }
+        return false;
+    }
+
     private static class ClassType<T> extends TypeOf<T> {
         @Override
         protected Type getTypeFromSuperOfSubclass() {
@@ -41,6 +77,20 @@ public abstract class TypeOf<T> implements Type{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TypeOf)) return false;
 
+        TypeOf typeOf = (TypeOf) o;
 
+        if (type != null ? !type.equals(typeOf.type) : typeOf.type != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return type != null ? type.hashCode() : 0;
+    }
 }

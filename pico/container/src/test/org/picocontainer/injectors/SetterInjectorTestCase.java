@@ -31,6 +31,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -434,12 +435,9 @@ public class SetterInjectorTestCase
     }
 
     @Test public void testHybridBeans() {
-        SetterInjection.SetterInjector bAdapter = new SetterInjection.SetterInjector("b", B.class, new NullComponentMonitor(), "set", false, null
-       );
-        SetterInjection.SetterInjector cAdapter = new SetterInjection.SetterInjector("c", C.class, new NullComponentMonitor(), "set", false, null
-       );
-        SetterInjection.SetterInjector cNullAdapter = new SetterInjection.SetterInjector("c0", C.class, new NullComponentMonitor(), "set", false, null
-       );
+        SetterInjection.SetterInjector bAdapter = new SetterInjection.SetterInjector("b", B.class, new NullComponentMonitor(), "set", false, null);
+        SetterInjection.SetterInjector cAdapter = new SetterInjection.SetterInjector("c", C.class, new NullComponentMonitor(), "set", false, null);
+        SetterInjection.SetterInjector cNullAdapter = new SetterInjection.SetterInjector("c0", C.class, new NullComponentMonitor(), "set", false, null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(bAdapter);

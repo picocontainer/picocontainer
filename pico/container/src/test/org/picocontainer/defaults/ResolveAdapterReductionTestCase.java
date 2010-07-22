@@ -9,24 +9,25 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.TypeOf;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.testmodel.Touchable;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.injectors.ConstructorInjection;
-
-import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
 
 /**
  * @author Paul Hammant
@@ -156,8 +157,8 @@ public class ResolveAdapterReductionTestCase {
             return true;
         }
 
-        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-            if (expectedType == Two.class || expectedType == Touchable.class) {
+        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, TypeOf<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+            if (expectedType.getType() == Two.class || expectedType.getType() == Touchable.class) {
                 resolveAdapterCalls++;
             }
             return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.

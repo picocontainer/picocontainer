@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertNotSame;
 
 public class TypeOfTest {
 
@@ -52,7 +53,7 @@ public class TypeOfTest {
     public void oldWaylooksGoodInAMethodDeclaration() {
         StringBuffer sb = new StringBuffer();
         Set<Color> setOfColors = getComponent(Color.class, sb);
-        assertEquals("java.awt.Color", sb.toString());
+        assertEquals("class java.awt.Color", sb.toString());
 
         setOfColors.add(Color.red);
         setOfColors.add(Color.orange);
@@ -62,6 +63,17 @@ public class TypeOfTest {
     public static <T> Set<T> getComponent(Class<T> foos, StringBuffer sb) {
         // and can delegate
         return getComponent(TypeOf.fromClass(foos), sb);
+    }
+
+    @Test
+    public void hashCodeWorks() {
+        assertEquals(TypeOf.fromClass(Set.class).hashCode(), TypeOf.fromClass(Set.class).hashCode());
+    }
+
+    @Test
+    public void equalsWorks() {
+        assertNotSame(TypeOf.fromClass(Set.class), TypeOf.fromClass(Set.class));
+        assertEquals(TypeOf.fromClass(Set.class), TypeOf.fromClass(Set.class));
     }
 
 }

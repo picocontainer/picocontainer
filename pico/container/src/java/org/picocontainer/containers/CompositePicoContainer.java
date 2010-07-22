@@ -15,6 +15,7 @@ import org.picocontainer.Converting;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.TypeOf;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -70,6 +71,16 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return null;
     }
 
+    public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+        for (PicoContainer container : containers) {
+            T inst = container.getComponentInto(componentType, into);
+            if (inst != null) {
+                return inst;
+            }
+        }
+        return null;
+    }
+
     public Object getComponent(Object keyOrType) {
         return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
     }
@@ -85,7 +96,18 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponentInto(componentType, ComponentAdapter.NOTHING.class);
+        return getComponent(TypeOf.fromClass(componentType));
+    }
+
+
+    public <T> T getComponent(TypeOf<T> componentType) {
+        for (PicoContainer container : containers) {
+            Object inst = container.getComponent(componentType);
+            if (inst != null) {
+                return (T) inst;
+            }
+        }
+        return null;
     }
 
     public ComponentAdapter getComponentAdapter(Object key) {
@@ -100,6 +122,16 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
         for (PicoContainer container : containers) {
+            ComponentAdapter<T> inst = container.getComponentAdapter(TypeOf.fromClass(componentType), nameBinding);
+            if (inst != null) {
+                return inst;
+            }
+        }
+        return null;
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding nameBinding) {
+        for (PicoContainer container : containers) {
             ComponentAdapter<T> inst = container.getComponentAdapter(componentType, nameBinding);
             if (inst != null) {
                 return inst;
@@ -109,6 +141,10 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return getComponentAdapter(TypeOf.fromClass(componentType), binding);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
         for (PicoContainer container : containers) {
             ComponentAdapter<T> inst = container.getComponentAdapter(componentType, binding);
             if (inst != null) {
@@ -142,7 +178,15 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         return Collections.emptyList();
     }
 
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+        return Collections.emptyList();
+    }
+
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        return Collections.emptyList();
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 

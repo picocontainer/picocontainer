@@ -10,9 +10,20 @@
 
 package org.picocontainer.script.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.TypeOf;
+import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.script.testmodel.DefaultWebServerConfig;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -21,20 +32,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.Test;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.testmodel.DefaultWebServerConfig;
-import org.picocontainer.script.xml.XMLContainerBuilder;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVisitor;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Maarten Grootendorst
@@ -49,6 +48,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         }
 
         public <T> T getComponent(Class<T> componentType) {
+            return null;
+        }
+
+        public <T> T getComponent(TypeOf<T> componentType) {
             return null;
         }
 
@@ -67,8 +70,18 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 			return null;
 		}
 
+		public <T> ComponentAdapter<T> getComponentAdapter(
+				TypeOf<T> componentType, Class<? extends Annotation> binding) {
+			return null;
+		}
+
 		public <T> List<ComponentAdapter<T>> getComponentAdapters(
 				Class<T> componentType, Class<? extends Annotation> binding) {
+			return null;
+		}
+
+		public <T> List<ComponentAdapter<T>> getComponentAdapters(
+				TypeOf<T> componentType, Class<? extends Annotation> binding) {
 			return null;
 		}
 
@@ -77,6 +90,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 		}
 
 		public <T> T getComponentInto(Class<T> componentType, Type into) {
+			return null;
+		}
+
+		public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
 			return null;
 		}
 
@@ -92,7 +109,11 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
+            return null;
+        }
+
+        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding componentNameBinding) {
             return null;  
         }
 
@@ -108,6 +129,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         }
 
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+            return null;
+        }
+
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
             return null;
         }
     }

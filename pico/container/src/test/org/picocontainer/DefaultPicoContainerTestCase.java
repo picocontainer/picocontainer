@@ -166,7 +166,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testGetComponentAdaptersOfTypeNullReturnsEmptyList() {
 		DefaultPicoContainer pico = new DefaultPicoContainer();
-		List adapters = pico.getComponentAdapters(null);
+		List adapters = pico.getComponentAdapters((TypeOf)null);
 		assertNotNull(adapters);
 		assertEquals(0, adapters.size());
 	}
@@ -316,8 +316,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertNotNull(t2);
 		final String s2 = writer2.toString();
 		assertTrue("writer not empty", s2.length() > 0);
-		assertTrue("writers of same length",
-				writer1.toString().length() == writer2.toString().length());
+		assertEquals("writers should be of same length",
+				writer1.toString().length(), writer2.toString().length());
 		Touchable t3 = (Touchable) pico.getComponent("t3");
 		assertNotNull(t3);
 		assertTrue("old writer was used", writer1.toString().length() < writer2

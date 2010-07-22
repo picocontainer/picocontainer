@@ -10,12 +10,13 @@
 
 package org.picocontainer.containers;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.TypeOf;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mauro Talevi
@@ -24,10 +25,10 @@ public class EmptyPicoContainerTestCase {
 
     @Test public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();
-        assertNull(pico.getComponentAdapter(null, (NameBinding) null));
-        assertNull(pico.getComponentAdapter(null, (NameBinding) null));
+        assertNull(pico.getComponentAdapter((TypeOf)null, (NameBinding) null));
+        assertNull(pico.getComponentAdapter((TypeOf)null, (NameBinding) null));
         assertTrue(pico.getComponentAdapters().isEmpty());
-        assertTrue(pico.getComponentAdapters(null).isEmpty());
+        assertTrue(pico.getComponentAdapters((TypeOf) null).isEmpty());
         assertNull(pico.getComponent((Class) null));
         assertNull(pico.getComponent((Class) null));
         assertTrue(pico.getComponents().isEmpty());

@@ -13,6 +13,7 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter;
+import org.picocontainer.TypeOf;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
@@ -68,7 +69,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 	protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(final PicoContainer container,
                                                                             final ComponentAdapter adapter,
                                                                             final Class keyType,
-                                                                            final Class valueType) {
+                                                                            final TypeOf<?> valueType) {
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {
