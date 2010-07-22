@@ -42,6 +42,11 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     @SuppressWarnings("unused")
     public <T> T getComponent(Class<T> componentType) {
         return null;
+    }    
+
+    @SuppressWarnings("unused")
+    public <T> T getComponent(TypeOf<T> componentType) {
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -71,13 +76,22 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return null;
     }
 
-    @SuppressWarnings("unused") 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
+        return null;
+    }
+
+    @SuppressWarnings("unused")
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding nameBinding) {
         return null;
     }
 
     @SuppressWarnings("unused") 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return null;
+    }
+
+    @SuppressWarnings("unused")
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
 
@@ -90,8 +104,18 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused") 
+    @SuppressWarnings("unused")
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("unused")
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("unused")
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 

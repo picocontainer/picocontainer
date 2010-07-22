@@ -7,6 +7,7 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.TypeOf;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -67,16 +68,27 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponentInto(componentType, ComponentAdapter.NOTHING.class);
+        return delegate.getComponent(TypeOf.fromClass(componentType));
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,
+    public <T> T getComponent(TypeOf<T> componentType) {
+        return delegate.getComponent(componentType);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+        return delegate.getComponentAdapter(TypeOf.fromClass(componentType), componentNameBinding);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType,
 			NameBinding componentNameBinding) {
-		return delegate.getComponentAdapter(componentType,
-                                            componentNameBinding);
+		return delegate.getComponentAdapter(componentType, componentNameBinding);
 	}
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapter(TypeOf.fromClass(componentType), binding);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
         return delegate.getComponentAdapter(componentType, binding);
     }
 
@@ -88,14 +100,21 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.getComponentAdapters();
 	}
 
-	public <T> List<ComponentAdapter<T>> getComponentAdapters(
-			Class<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return delegate.getComponentAdapters(TypeOf.fromClass(componentType));
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
 		return delegate.getComponentAdapters(componentType);
 	}
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
-        return delegate.getComponentAdapters(componentType, binding);
+        return delegate.getComponentAdapters(TypeOf.fromClass(componentType), binding);
     }    
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapters(componentType, binding);
+    }
 
     public List<Object> getComponents() {
 		return delegate.getComponents();

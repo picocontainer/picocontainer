@@ -69,16 +69,16 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
                             NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
     	
-    	Class<?> resolvedClassType = null;
+    	TypeOf<?> resolvedClassType = null;
         // TODO take this out for Pico3
         if (!(expectedType instanceof Class)) {
         	if (expectedType instanceof ParameterizedType) {
-        		resolvedClassType = (Class<?>) ((ParameterizedType)expectedType).getRawType();
+        		resolvedClassType = TypeOf.fromClass((Class<?>) ((ParameterizedType)expectedType).getRawType());
         	} else {
         		return new Parameter.NotResolved();
         	}
         } else {
-        	resolvedClassType = (Class<?>)expectedType;
+        	resolvedClassType = TypeOf.fromClass((Class<?>) expectedType);
         }
         assert resolvedClassType != null;
 
@@ -132,7 +132,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                        Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, forAdapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
+            resolveAdapter(container, forAdapter, TypeOf.fromClass((Class<?>) expectedType), expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
             final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
@@ -152,27 +152,27 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
     protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
-                                                   Class<T> expectedType,
+                                                   TypeOf<T> expectedType,
                                                    NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        Class type = expectedType;
+        TypeOf type = expectedType;
         if (type.isPrimitive()) {
-            String expectedTypeName = expectedType.getName();
+            String expectedTypeName = type.getName();
             if (expectedTypeName == "int") {
-                type = Integer.class;
+                type = TypeOf.INTEGER;
             } else if (expectedTypeName == "long") {
-                type = Long.class;
+                type = TypeOf.LONG;
             } else if (expectedTypeName == "float") {
-                type = Float.class;
+                type = TypeOf.FLOAT;
             } else if (expectedTypeName == "double") {
-                type = Double.class;
+                type = TypeOf.DOUBLE;
             } else if (expectedTypeName == "boolean") {
-                type = Boolean.class;
+                type = TypeOf.BOOLEAN;
             } else if (expectedTypeName == "char") {
-                type = Character.class;
+                type = TypeOf.CHARACTER;
             } else if (expectedTypeName == "short") {
-                type = Short.class;
+                type = TypeOf.SHORT;
             } else if (expectedTypeName == "byte") {
-                type = Byte.class;
+                type = TypeOf.BYTE;
             }
         }
 
@@ -216,7 +216,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
         if (!type.isAssignableFrom(result.getComponentImplementation())) {
 //            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
-            if (!(result.getComponentImplementation() == String.class && getConverters(container).canConvert(type))) {
+            if (!(result.getComponentImplementation() == String.class && getConverters(container).canConvert(type.getType()))) {
                 return null;
             }
         }
@@ -228,7 +228,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         return (ComponentAdapter<T>)componentAdapter;
     }
 
-    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, Class<T> expectedType,
+    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, TypeOf<T> expectedType,
                                                             NameBinding expectedNameBinding, Annotation binding) {
         if (container.getParent() != null) {
             if (binding != null) {
@@ -241,7 +241,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
     }
 
-    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(Class<T> expectedType, List<ComponentAdapter<T>> found) {
+    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(TypeOf<T> expectedType, List<ComponentAdapter<T>> found) {
         Class[] foundClasses = new Class[found.size()];
         for (int i = 0; i < foundClasses.length; i++) {
             foundClasses[i] = found.get(i).getComponentImplementation();
@@ -261,11 +261,11 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         found.remove(exclude);
     }
 
-    private <T> boolean areCompatible(PicoContainer container, Class<T> expectedType, ComponentAdapter found) {
+    private <T> boolean areCompatible(PicoContainer container, TypeOf<T> expectedType, ComponentAdapter found) {
         Class foundImpl = found.getComponentImplementation();
         return expectedType.isAssignableFrom(foundImpl) ||
                //(foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
                (foundImpl == String.class && getConverters(container) != null
-                       && getConverters(container).canConvert(expectedType))  ;
+                       && getConverters(container).canConvert(expectedType.getType()))  ;
     }
 }

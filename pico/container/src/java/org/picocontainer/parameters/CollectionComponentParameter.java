@@ -15,6 +15,7 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.TypeOf;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -59,7 +60,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
     private final boolean emptyCollection;
     private final Class keyType;
-    private final Class componentValueType;
+    private final TypeOf<?> componentValueType;
 
     /**
      * Expect an {@link Array}of an appropriate type as parameter. At least one component of
@@ -76,7 +77,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      *                        resolution.
      */
     public CollectionComponentParameter(boolean emptyCollection) {
-        this(Void.TYPE, emptyCollection);
+        this(TypeOf.VOID, emptyCollection);
     }
 
     /**
@@ -85,9 +86,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      *
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
-     *                           dependency.
      */
-    public CollectionComponentParameter(Class componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(TypeOf<?> componentValueType, boolean emptyCollection) {
         this(Object.class, componentValueType, emptyCollection);
     }
 
@@ -98,9 +98,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param keyType   the type of the component's key
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
-     *                           dependency.
      */
-    public CollectionComponentParameter(Class keyType, Class componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(Class keyType, TypeOf<?> componentValueType, boolean emptyCollection) {
         this.emptyCollection = emptyCollection;
         this.keyType = keyType;
         this.componentValueType = componentValueType;
@@ -187,7 +186,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final Class valueType = getValueType(expectedType);
+            final TypeOf<?> valueType = getValueType(expectedType);
             final Collection componentAdapters =
                     getMatchingComponentAdapters(container, adapter, keyType, valueType).values();
             if (componentAdapters.isEmpty()) {
@@ -231,7 +230,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * Collect the matching ComponentAdapter instances.
      *
      * @param container container to use for dependency resolution
-     * @param adapter   {@link ComponentAdapter} to exclude
+     * @param adapter   {@link org.picocontainer.ComponentAdapter} to exclude
      * @param keyType   the compatible type of the key
      * @param valueType the compatible type of the addComponent
      * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
@@ -239,7 +238,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
     @SuppressWarnings({"unchecked"})
     protected Map<Object, ComponentAdapter<?>> 
                 getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
-                                             Class keyType, Class valueType) {
+                                             Class keyType, TypeOf<?> valueType) {
         final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
@@ -272,7 +271,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         return null;
     }
 
-    private Class getValueType(Type collectionType) {
+    private TypeOf<?> getValueType(Type collectionType) {
         if (collectionType instanceof Class) {
             return getValueType((Class) collectionType);
         } else if (collectionType instanceof ParameterizedType) {
@@ -280,23 +279,23 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         throw new IllegalArgumentException("Unable to determine collection type from " + collectionType);
     }
 
-    private Class getValueType(final Class collectionType) {
-        Class valueType = componentValueType; 
+    private TypeOf<?> getValueType(final Class collectionType) {
+        TypeOf<?> valueType = componentValueType;
         if (collectionType.isArray()) {
-            valueType = collectionType.getComponentType();
+            valueType = TypeOf.fromClass(collectionType.getComponentType());
         }
         return valueType;
     }
 
-    private Class getValueType(final ParameterizedType collectionType) {
-        Class valueType = componentValueType;
+    private TypeOf<?> getValueType(final ParameterizedType collectionType) {
+        TypeOf<?> valueType = componentValueType;
         if (Collection.class.isAssignableFrom((Class<?>) collectionType.getRawType())) {
             Type type = collectionType.getActualTypeArguments()[0];
             if (type instanceof Class) {
-                if (((Class)type).isAssignableFrom(valueType)) {
+                if (valueType.isAssignableTo((Class) type)) {
                     return valueType;
                 }
-                valueType = (Class) type;
+                valueType = TypeOf.fromClass((Class)type);
             }
         }
         return valueType;

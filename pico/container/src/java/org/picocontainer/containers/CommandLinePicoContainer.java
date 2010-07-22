@@ -14,6 +14,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.TypeOf;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -28,25 +29,25 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
-    public CommandLinePicoContainer(String separator, String[] arguments) {
-    	this(separator,arguments,null);
+    public CommandLinePicoContainer(char separator, String... arguments) {
+    	this(separator, (PicoContainer) null, arguments);
     }
 
-    public CommandLinePicoContainer(String separator, String[] arguments, PicoContainer parent) {
+    public CommandLinePicoContainer(char separator, PicoContainer parent, String... arguments) {
     	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
-    public CommandLinePicoContainer(String separator, StringReader argumentsProps) throws IOException {
+    public CommandLinePicoContainer(char separator, StringReader argumentsProps) throws IOException {
         this(separator, argumentsProps, new String[0]);
     }
     
-    public CommandLinePicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
-    	this(separator,argumentProperties,arguments,null);
+    public CommandLinePicoContainer(char separator, StringReader argumentProperties, String... arguments) throws IOException{
+    	this(separator, argumentProperties, null, arguments);
     }
 
-    public CommandLinePicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
+    public CommandLinePicoContainer(char separator, StringReader argumentProperties, PicoContainer parent, String... arguments)
         throws IOException {
     	super(new DefaultPicoContainer(parent));
     	
@@ -61,12 +62,12 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
         }
     }
     
-    public CommandLinePicoContainer(String[] arguments) {
-        this("=", arguments);
+    public CommandLinePicoContainer(String... arguments) {
+        this('=', arguments);
     }
 
-    public CommandLinePicoContainer(String[] arguments, PicoContainer parent) {
-    	this("=", arguments,parent);
+    public CommandLinePicoContainer(PicoContainer parent, String... arguments) {
+    	this('=', parent, arguments);
     }
 
     private void addConfig(String key, Object val) {
@@ -80,6 +81,10 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
         return null;
     }
 
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+        return null;
+    }
+
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return null;
     }
@@ -88,8 +93,8 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
         return new EmptyPicoContainer();
     }
 
-    private void processArgument(String argument, String separator) {
-        String[] kvs = argument.split(separator);
+    private void processArgument(String argument, char separator) {
+        String[] kvs = argument.split(Character.valueOf(separator).toString());
         if (kvs.length == 2) {
             addConfig(kvs[0], kvs[1]);
         } else if (kvs.length == 1) {

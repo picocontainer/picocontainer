@@ -1,11 +1,13 @@
 package org.picocontainer.defaults.issues;
 
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.TypeOf;
+import org.picocontainer.parameters.CollectionComponentParameter;
 
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class Issue0343TestCase {
 
@@ -15,7 +17,7 @@ public class Issue0343TestCase {
         pico.addComponent(Cod.class);
         pico.addComponent(Shark.class);
         pico.addComponent(GenericBowl.class, GenericBowl.class,
-                new CollectionComponentParameter(Cod.class, false));
+                new CollectionComponentParameter(TypeOf.fromClass(Cod.class), false));
 
         GenericBowl bowl = pico.getComponent(GenericBowl.class);
         // FAILS with PicoContainer 2.7-SNAPSHOT, returns 2

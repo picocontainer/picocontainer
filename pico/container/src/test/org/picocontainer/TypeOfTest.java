@@ -52,7 +52,7 @@ public class TypeOfTest {
     public void oldWaylooksGoodInAMethodDeclaration() {
         StringBuffer sb = new StringBuffer();
         Set<Color> setOfColors = getComponent(Color.class, sb);
-        assertEquals("java.awt.Color", sb.toString());
+        assertEquals("class java.awt.Color", sb.toString());
 
         setOfColors.add(Color.red);
         setOfColors.add(Color.orange);

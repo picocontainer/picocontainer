@@ -16,6 +16,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.TypeOf;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 
@@ -324,7 +325,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
 
 		private Class<?> component;
-        private final Class<?> ambiguousDependency;
+        private final TypeOf<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 
 
@@ -334,7 +335,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          * @param ambiguousDependency the unresolved dependency type
          * @param keys the ambiguous keys.
          */
-        public AmbiguousComponentResolutionException(final Class<?> ambiguousDependency, final Object[] keys) {
+        public AmbiguousComponentResolutionException(final TypeOf<?> ambiguousDependency, final Object[] keys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
             this.ambiguousComponentKeys = new Class[keys.length];
