@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
