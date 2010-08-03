@@ -133,7 +133,9 @@ public class ComponentParameter
 
             public Object resolveInstance(Type into) {
                 Object result = null;
-                if (expectedType instanceof Class) {
+                if (expectedType instanceof Class ||
+                        (expectedType instanceof ParameterizedType
+                                && ((ParameterizedType) expectedType).getRawType() == javax.inject.Provider.class)) {
                     result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding).resolveInstance(into);
                 } else if (expectedType instanceof ParameterizedType) {
                     result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding).resolveInstance(into);

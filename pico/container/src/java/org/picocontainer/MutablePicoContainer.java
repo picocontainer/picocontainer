@@ -10,7 +10,6 @@
 package org.picocontainer;
 
 import org.picocontainer.injectors.Provider;
-import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
 
 import java.lang.annotation.Annotation;
@@ -118,6 +117,8 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter);
+
+    MutablePicoContainer addProvider(javax.inject.Provider<?> provider);
 
     /**
      * Unregister a component by key.

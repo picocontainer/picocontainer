@@ -200,7 +200,10 @@ public class ConstructorInjection extends AbstractInjectionType {
                     ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
                     Parameter.Resolver resolver = resolvers.get(resolverKey);
                     if (resolver == null) {
-                        resolver = currentParameters[j].resolve(container, this, null, expectedType, expectedNameBinding, useNames(), bindings[j]);
+                        Parameter currentParameter = currentParameters[j];
+                        Annotation annotation = bindings[j];
+                        boolean b = useNames();
+                        resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
                         resolvers.put(resolverKey, resolver);
                     }
                     if (resolver.isResolved()) {

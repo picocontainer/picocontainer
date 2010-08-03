@@ -15,8 +15,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
 
+import javax.inject.Provider;
 import java.util.Properties;
 
 /**
@@ -50,6 +52,11 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
         return getDelegate().addAdapter(componentAdapter);
     }
+
+    public MutablePicoContainer addProvider(Provider<?> provider) {
+        return getDelegate().addAdapter(new ProviderAdapter(provider));
+    }
+
 
     public <T> ComponentAdapter<T> removeComponent(Object key) {
         return getDelegate().removeComponent(key);

@@ -29,9 +29,11 @@ import java.util.Properties;
  */
 public class ProviderAdapter implements org.picocontainer.Injector, Provider, LifecycleStrategy {
 
+    private static Method AT_INJECT_GET = javax.inject.Provider.class.getDeclaredMethods()[0];    
+
     private final Object provider;
     private final Method provideMethod;
-    private final Class key;
+    private final Type key;
     private Properties properties;
     private LifecycleStrategy lifecycle;
 
@@ -59,7 +61,12 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         this.lifecycle = lifecycle;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
-        key = provideMethod.getReturnType();
+        if (provideMethod == AT_INJECT_GET) {
+            key = provider.getClass().getGenericInterfaces()[0];
+             
+        } else {
+            key = provideMethod.getReturnType();
+        }
         setUseNames(useNames);
     }
 
@@ -84,7 +91,11 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     }
 
     public Class getComponentImplementation() {
-        return key;
+        if (provider instanceof javax.inject.Provider) {
+            return provider.getClass();
+        } else {
+            return (Class) key;
+        }
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
@@ -93,6 +104,9 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 
     public static Method getProvideMethod(Class clazz) {
         Method provideMethod = null;
+        if (javax.inject.Provider.class.isAssignableFrom(clazz)) {
+            return AT_INJECT_GET;
+        }
         // TODO doPrivileged
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.getName().equals("provide")) {

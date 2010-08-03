@@ -20,6 +20,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -140,7 +141,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Class implementation, Object instance, Properties properties,
+    public Object reinject(Type key, Class implementation, Object instance, Properties properties,
                            InjectionType reinjectionType) {
         Reinjection reinjection = new Reinjection(reinjectionType, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(

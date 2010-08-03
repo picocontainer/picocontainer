@@ -21,6 +21,8 @@ import org.picocontainer.*;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
 
+import javax.inject.Provider;
+
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
  * different component's constructor. This is particularly useful in cases where several
@@ -71,12 +73,14 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     	
     	TypeOf<?> resolvedClassType = null;
         // TODO take this out for Pico3
-        if (!(expectedType instanceof Class)) {
+        if (notAClass(expectedType) && notAJsr330Provider(expectedType)) {
         	if (expectedType instanceof ParameterizedType) {
-        		resolvedClassType = TypeOf.fromClass((Class<?>) ((ParameterizedType)expectedType).getRawType());
+        		resolvedClassType = TypeOf.fromParameterizedType((ParameterizedType)expectedType);
         	} else {
         		return new Parameter.NotResolved();
         	}
+        } else if (expectedType instanceof ParameterizedType) {
+            resolvedClassType = TypeOf.fromParameterizedType((ParameterizedType) expectedType);
         } else {
         	resolvedClassType = TypeOf.fromClass((Class<?>) expectedType);
         }
@@ -110,6 +114,15 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 return componentAdapter;
             }
         };
+    }
+
+    private boolean notAJsr330Provider(Type expectedType) {
+        return !(expectedType instanceof ParameterizedType
+                && ((ParameterizedType) expectedType).getRawType() == Provider.class);
+    }
+
+    private boolean notAClass(Type expectedType) {
+        return !(expectedType instanceof Class);
     }
 
     private Converters getConverters(PicoContainer container) {
@@ -264,7 +277,6 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     private <T> boolean areCompatible(PicoContainer container, TypeOf<T> expectedType, ComponentAdapter found) {
         Class foundImpl = found.getComponentImplementation();
         return expectedType.isAssignableFrom(foundImpl) ||
-               //(foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
                (foundImpl == String.class && getConverters(container) != null
                        && getConverters(container).canConvert(expectedType.getType()))  ;
     }

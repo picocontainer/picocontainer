@@ -13,6 +13,7 @@ import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AdaptingInjection;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
 public class TieringPicoContainer extends DefaultPicoContainer {

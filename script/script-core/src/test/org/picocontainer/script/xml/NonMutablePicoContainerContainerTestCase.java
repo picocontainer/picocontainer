@@ -138,8 +138,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
     }
 
     @Test public void testCreateSimpleContainerWithPicoContainer()
-        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
-    {
+        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
         Reader script = new StringReader("" +
                                          "<container>" +
                                          "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
@@ -154,8 +153,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
     }
 
     @Test public void testCreateSimpleContainerWithMutablePicoContainer()
-        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
-    {
+        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
         Reader script = new StringReader("" +
                                          "<container>" +
                                          "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +

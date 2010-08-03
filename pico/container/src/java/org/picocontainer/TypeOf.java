@@ -35,8 +35,14 @@ public abstract class TypeOf<T> {
     }
 
     public static <T> TypeOf<T> fromClass(Class<T> type) {
-        TypeOf typeOf = new ClassType<T>();
+        TypeOf<T> typeOf = new ClassType<T>();
         typeOf.type = type;
+        return typeOf;
+    }
+
+    public static TypeOf fromParameterizedType(ParameterizedType parameterizedType) {
+        TypeOf typeOf = new Dummy();
+        typeOf.type = parameterizedType.getRawType();
         return typeOf;
     }
 
@@ -71,6 +77,13 @@ public abstract class TypeOf<T> {
     }
 
     private static class ClassType<T> extends TypeOf<T> {
+        @Override
+        protected Type getTypeFromSuperOfSubclass() {
+            return null;
+        }
+    }
+
+    private static class Dummy<T> extends TypeOf<T> {
         @Override
         protected Type getTypeFromSuperOfSubclass() {
             return null;

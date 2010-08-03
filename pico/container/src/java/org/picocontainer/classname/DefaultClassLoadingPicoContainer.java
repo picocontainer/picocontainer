@@ -24,9 +24,11 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.TypeOf;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 
+import javax.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -304,6 +306,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return this;
     }
 
+
     public ClassLoader getComponentClassLoader() {
         if (componentClassLoader == null) {
             componentClassLoaderLocked = true;
@@ -427,6 +430,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
         public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) {
             delegate.addAdapter(componentAdapter);
+            return DefaultClassLoadingPicoContainer.this;
+        }
+
+        public MutablePicoContainer addProvider(Provider<?> provider) {
+            delegate.addAdapter(new ProviderAdapter(provider));
             return DefaultClassLoadingPicoContainer.this;
         }
 

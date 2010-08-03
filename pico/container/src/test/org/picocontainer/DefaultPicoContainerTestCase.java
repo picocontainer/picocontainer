@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -23,6 +24,8 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import javax.inject.Provider;
+import java.awt.Color;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
@@ -874,6 +877,28 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                     "Index 0 (org.picocontainer.injectors.ConstructorInjection) should be a BehaviorFactory but is not.", e.getMessage());
         }
     }
+
+    public static class NeedsColorProvider {
+        Provider<Color> color;
+        public NeedsColorProvider(Provider<Color> color) {
+            this.color = color;
+        }
+    }
+
+    @Ignore
+    @Test public void testJsr330Provider() {
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
+        Provider<Color> provider = new Provider<Color>() {
+            public Color get() {
+                return Color.red;
+            }
+        };
+        pico.addProvider(provider).addComponent(NeedsColorProvider.class);
+        NeedsColorProvider ncp = pico.getComponent(NeedsColorProvider.class);
+        assertEquals(Color.red, ncp.color);
+    }
+
+
 
 
 }

@@ -30,6 +30,7 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.DefaultConstructorParameter;
 
+import javax.inject.Provider;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
@@ -498,6 +499,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
         return addAdapter(componentAdapter, this.containerProperties);
+    }
+
+    public MutablePicoContainer addProvider(Provider<?> provider) {
+        return addAdapter(new ProviderAdapter(provider), this.containerProperties);
     }
 
     /**
@@ -1275,7 +1280,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
             return DefaultPicoContainer.this.addAdapter(componentAdapter, properties);
         }
-        
+
+        @Override
+        public MutablePicoContainer addProvider(Provider<?> provider) {
+            return DefaultPicoContainer.this.addAdapter(new ProviderAdapter(provider), properties);
+        }
 
         /**
          * {@inheritDoc}
