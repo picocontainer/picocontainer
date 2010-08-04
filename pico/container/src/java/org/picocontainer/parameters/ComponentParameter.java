@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
-import org.picocontainer.TypeOf;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.annotation.Annotation;
@@ -90,7 +90,7 @@ public class ComponentParameter
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
-    public ComponentParameter(TypeOf<?> componentValueType, boolean emptyCollection) {
+    public ComponentParameter(Generic<?> componentValueType, boolean emptyCollection) {
         this(null, new CollectionComponentParameter(componentValueType, emptyCollection));
     }
 
@@ -104,7 +104,7 @@ public class ComponentParameter
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
-    public ComponentParameter(Class keyType, TypeOf<?> componentValueType, boolean emptyCollection) {
+    public ComponentParameter(Class keyType, Generic<?> componentValueType, boolean emptyCollection) {
         this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
     }
 

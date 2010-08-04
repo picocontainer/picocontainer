@@ -8,13 +8,13 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.InjectionType;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -64,7 +64,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Method reinjectionMethod) {
-        return reinject(key, key, parent.getComponentInto(TypeOf.fromClass(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(reinjectionMethod));
+        return reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(reinjectionMethod));
     }
 
     /**
@@ -74,7 +74,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Enum reinjectionMethodEnum) {
-        return reinject(key, key, parent.getComponentInto(TypeOf.fromClass(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
+        return reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
     }
 
     private Method toMethod(final Enum reinjectionMethodEnum) {
@@ -105,7 +105,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, InjectionType reinjectionType) {
-        Object o = reinject(key, key, parent.getComponentInto(TypeOf.fromClass( key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
+        Object o = reinject(key, key, parent.getComponentInto(Generic.get( key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
         return o;
     }
 

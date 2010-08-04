@@ -1,5 +1,6 @@
 package org.picocontainer.containers;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -8,12 +9,10 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AdaptingInjection;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
 public class TieringPicoContainer extends DefaultPicoContainer {
@@ -131,10 +130,10 @@ public class TieringPicoContainer extends DefaultPicoContainer {
 
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
-            return getComponentAdapter(TypeOf.fromClass(componentType), nameBinding);
+            return getComponentAdapter(Generic.get(componentType), nameBinding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding nameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -156,10 +155,10 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         }
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
-            return getComponentAdapter(TypeOf.fromClass(componentType), binding);
+            return getComponentAdapter(Generic.get(componentType), binding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {

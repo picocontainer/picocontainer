@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.junit.Ignore;
+import com.googlecode.jtype.Generic;
 import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -169,7 +169,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testGetComponentAdaptersOfTypeNullReturnsEmptyList() {
 		DefaultPicoContainer pico = new DefaultPicoContainer();
-		List adapters = pico.getComponentAdapters((TypeOf)null);
+		List adapters = pico.getComponentAdapters((Generic)null);
 		assertNotNull(adapters);
 		assertEquals(0, adapters.size());
 	}
@@ -879,13 +879,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     }
 
     public static class NeedsColorProvider {
-        Provider<Color> color;
-        public NeedsColorProvider(Provider<Color> color) {
-            this.color = color;
+        private Provider<Color> colorProvider;
+        public NeedsColorProvider(Provider<Color> colorProvider) {
+            this.colorProvider = colorProvider;
         }
     }
 
-    @Ignore
     @Test public void testJsr330Provider() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
         Provider<Color> provider = new Provider<Color>() {
@@ -895,10 +894,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         };
         pico.addProvider(provider).addComponent(NeedsColorProvider.class);
         NeedsColorProvider ncp = pico.getComponent(NeedsColorProvider.class);
-        assertEquals(Color.red, ncp.color);
+        assertSame(provider, ncp.colorProvider);
+        assertSame(Color.red, ncp.colorProvider.get());
     }
-
-
-
 
 }

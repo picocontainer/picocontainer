@@ -10,10 +10,10 @@
 
 package org.picocontainer.containers;
 
+import com.googlecode.jtype.Generic;
 import org.junit.Test;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -25,10 +25,10 @@ public class EmptyPicoContainerTestCase {
 
     @Test public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();
-        assertNull(pico.getComponentAdapter((TypeOf)null, (NameBinding) null));
-        assertNull(pico.getComponentAdapter((TypeOf)null, (NameBinding) null));
+        assertNull(pico.getComponentAdapter((Generic)null, (NameBinding) null));
+        assertNull(pico.getComponentAdapter((Generic)null, (NameBinding) null));
         assertTrue(pico.getComponentAdapters().isEmpty());
-        assertTrue(pico.getComponentAdapters((TypeOf) null).isEmpty());
+        assertTrue(pico.getComponentAdapters((Generic) null).isEmpty());
         assertNull(pico.getComponent((Class) null));
         assertNull(pico.getComponent((Class) null));
         assertTrue(pico.getComponents().isEmpty());

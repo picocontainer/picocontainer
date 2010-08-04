@@ -8,18 +8,18 @@
 
 package org.picocontainer.gems.constraints;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter;
-import org.picocontainer.TypeOf;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
@@ -69,7 +69,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 	protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(final PicoContainer container,
                                                                             final ComponentAdapter adapter,
                                                                             final Class keyType,
-                                                                            final TypeOf<?> valueType) {
+                                                                            final Generic<?> valueType) {
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {

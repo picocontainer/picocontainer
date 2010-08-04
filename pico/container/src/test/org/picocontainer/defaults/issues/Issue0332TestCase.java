@@ -1,16 +1,17 @@
 package org.picocontainer.defaults.issues;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.parameters.ComponentParameter;
+import com.googlecode.jtype.Generic;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Caching;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 public class Issue0332TestCase {
 
@@ -60,8 +61,8 @@ public class Issue0332TestCase {
     	searchPath.add("a");
     	searchPath.add("b");
 
-    	pico.addComponent("searchPath",searchPath);
-    	pico.addComponent(Searcher.class, Searcher.class, new ComponentParameter("searchPath"));
+    	pico.addComponent(new Generic<List<String>>(){}, searchPath);
+    	pico.addComponent(Searcher.class);
 
     	assertNotNull(pico.getComponent(Searcher.class));
     	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
@@ -72,7 +73,7 @@ public class Issue0332TestCase {
     }
 
     @Test
-    public void canInstantiateAutowiredCollectionThatAreDefinedExplicitlyAnotherWay() {
+    public void canInstantiateAutowiredCollectionThatAreDefinedWithAConcretedOverGeneric() {
     	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
     	List<String> searchPath = new StringArrayList();
     	searchPath.add("a");

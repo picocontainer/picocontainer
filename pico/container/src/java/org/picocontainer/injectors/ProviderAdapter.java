@@ -99,7 +99,11 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-        return new Reinjector(container).reinject(key, provider.getClass(), provider, properties, new MethodInjection(provideMethod));
+        if (provideMethod == AT_INJECT_GET) {
+            return provider;
+        } else {
+            return new Reinjector(container).reinject(key, provider.getClass(), provider, properties, new MethodInjection(provideMethod));
+        }
     }
 
     public static Method getProvideMethod(Class clazz) {

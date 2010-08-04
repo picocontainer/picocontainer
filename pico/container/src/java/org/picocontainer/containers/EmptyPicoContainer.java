@@ -9,15 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.*;
+import com.googlecode.jtype.Generic;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.converters.ConvertsNothing;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 
 /**
  * Empty pico container serving as recoil damper in situations where you
@@ -45,7 +51,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }    
 
     @SuppressWarnings("unused")
-    public <T> T getComponent(TypeOf<T> componentType) {
+    public <T> T getComponent(Generic<T> componentType) {
         return null;
     }
 
@@ -55,7 +61,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+    public <T> T getComponentInto(Generic<T> componentType, Type into) {
         return null;
     }
 
@@ -86,7 +92,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding nameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding) {
         return null;
     }
 
@@ -96,7 +102,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
 
@@ -110,7 +116,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
         return Collections.emptyList();
     }
 
@@ -120,7 +126,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     @SuppressWarnings("unused")
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 

@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
@@ -291,8 +292,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * {@inheritDoc}
      */
     public final ComponentAdapter<?> getComponentAdapter (Object key) {
-        if (key instanceof TypeOf) {
-            key = ((TypeOf) key).getType();
+        if (key instanceof Generic) {
+            key = ((Generic) key).getType();
         }
         ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(key);
         if (adapter == null && parent != null) {
@@ -381,20 +382,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
-        return getComponentAdapter(TypeOf.fromClass(componentType), nameBinding, null);
+        return getComponentAdapter(Generic.get(componentType), nameBinding, null);
     }
 
     /**
      * {@inheritDoc} *
      */
-    public <T> ComponentAdapter<T> getComponentAdapter(final TypeOf<T> componentType, final NameBinding nameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding nameBinding) {
         return getComponentAdapter(componentType, nameBinding, null);
     }
 
     /**
      * {@inheritDoc} *
      */
-    private <T> ComponentAdapter<T> getComponentAdapter(final TypeOf<T> componentType, final NameBinding componentNameBinding, final Class<? extends Annotation> binding) {
+    private <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding componentNameBinding, final Class<? extends Annotation> binding) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<T> adapterByKey = (ComponentAdapter<T>) getComponentAdapter(componentType);
         if (adapterByKey != null) {
@@ -416,7 +417,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                 String parameterName = componentNameBinding.getName();
                 if (parameterName != null) {
                     ComponentAdapter<?> ca = getComponentAdapter(parameterName);
-                    if (ca != null && componentType.isAssignableFrom(ca.getComponentImplementation())) {
+                    if (ca != null && JTypeHelper.isAssignableFrom(componentType, ca.getComponentImplementation())) {
                         return (ComponentAdapter<T>) ca;
                     }
                 }
@@ -434,13 +435,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * {@inheritDoc} *
      */
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
-        return getComponentAdapter(TypeOf.fromClass(componentType), null, binding);
+        return getComponentAdapter(Generic.get(componentType), null, binding);
     }
 
     /**
      * {@inheritDoc} *
      */
-    public <T> ComponentAdapter<T> getComponentAdapter(final TypeOf<T> componentType, final Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
         return getComponentAdapter(componentType, null, binding);
     }
 
@@ -448,10 +449,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * {@inheritDoc} *
      */
     public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
-        return getComponentAdapters(TypeOf.fromClass(componentType), null);
+        return getComponentAdapters(Generic.get(componentType), null);
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(final TypeOf<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
         return getComponentAdapters(componentType, null);
     }
 
@@ -459,20 +460,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * {@inheritDoc} *
      */
     public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType, final Class<? extends Annotation> binding) {
-        return getComponentAdapters(TypeOf.fromClass(componentType), binding);
+        return getComponentAdapters(Generic.get(componentType), binding);
     }
 
     /**
      * {@inheritDoc} *
      */
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(final TypeOf<T> componentType, final Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType, final Class<? extends Annotation> binding) {
         if (componentType == null) {
             return Collections.emptyList();
         }
         List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
         for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
             Object key = componentAdapter.getComponentKey();
-            boolean b = componentType.isAssignableFrom(componentAdapter.getComponentImplementation());
+            boolean b = JTypeHelper.isAssignableFrom(componentType, componentAdapter.getComponentImplementation());
             if (b &&
                     (!(key instanceof Key) || ((((Key<?>) key).getAnnotation() == null || binding == null ||
                             ((Key<?>) key).getAnnotation() == binding)))) {
@@ -580,10 +581,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return this.addComponent(key, implOrInstance, this.containerProperties, parameters);
     }
 
-    private MutablePicoContainer addComponent(final Object key,
+    private MutablePicoContainer addComponent(Object key,
                                               final Object implOrInstance,
                                               final Properties properties,
                                               Parameter... parameters) {
+        if (key instanceof Generic) {
+            key = Generic.get(((Generic) key).getType());
+        }
         if (parameters != null && parameters.length == 0) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
@@ -734,10 +738,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponent(TypeOf.fromClass(componentType));
+        return getComponent(Generic.get(componentType));
     }
 
-    public <T> T getComponent(TypeOf<T> componentType) {
+    public <T> T getComponent(Generic<T> componentType) {
         Object o = getComponent((Object) componentType, null, ComponentAdapter.NOTHING.class);
         return (T) o;
     }
@@ -746,11 +750,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         ComponentAdapter<?> componentAdapter;
         Object component;
         if (annotation != null) {
-            componentAdapter = getComponentAdapter((TypeOf<?>) keyOrType, annotation);
+            componentAdapter = getComponentAdapter((Generic<?>) keyOrType, annotation);
             component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
-        } else if (keyOrType instanceof TypeOf && ((TypeOf) keyOrType).getType() instanceof Class) {
-            componentAdapter = getComponentAdapter((TypeOf<?>) keyOrType, (NameBinding) null);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, (TypeOf<?>) keyOrType, into);
+        } else if (keyOrType instanceof Generic && ((Generic) keyOrType).getType() instanceof Class) {
+            componentAdapter = getComponentAdapter((Generic<?>) keyOrType, (NameBinding) null);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, (Generic<?>) keyOrType, into);
         } else {
             componentAdapter = getComponentAdapter(keyOrType);
             component = componentAdapter == null ? null : getInstance(componentAdapter, null, into);
@@ -776,7 +780,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding, Type into) {
-        Object o = getComponent((Object) TypeOf.fromClass(componentType), binding, into);
+        Object o = getComponent((Object) Generic.get(componentType), binding, into);
         return componentType.cast(o);
     }
 
@@ -789,12 +793,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return componentType.cast(o);
     }
 
-    public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+    public <T> T getComponentInto(Generic<T> componentType, Type into) {
         Object o = getComponent((Object) componentType, null, into);
         return (T) o;
     }
 
-    private Object getInstance(final ComponentAdapter<?> componentAdapter, TypeOf<?> key, Type into) {
+    private Object getInstance(final ComponentAdapter<?> componentAdapter, Generic<?> key, Type into) {
         // check whether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);

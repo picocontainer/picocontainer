@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ObjectReference;
@@ -16,7 +17,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 
@@ -325,7 +325,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
 
 		private Class<?> component;
-        private final TypeOf<?> ambiguousDependency;
+        private final Generic<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 
 
@@ -335,7 +335,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          * @param ambiguousDependency the unresolved dependency type
          * @param keys the ambiguous keys.
          */
-        public AmbiguousComponentResolutionException(final TypeOf<?> ambiguousDependency, final Object[] keys) {
+        public AmbiguousComponentResolutionException(final Generic<?> ambiguousDependency, final Object[] keys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
             this.ambiguousComponentKeys = new Class[keys.length];
@@ -350,7 +350,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             StringBuffer msg = new StringBuffer();
             msg.append(component != null ? component : "<no-component>");
             msg.append(" needs a '");
-            msg.append(ambiguousDependency.getName());
+            msg.append(ambiguousDependency.toString());
             msg.append("' injected, but there are too many choices to inject. These:");
             msg.append(Arrays.asList(getAmbiguousComponentKeys()));
             msg.append(", refer http://picocontainer.org/ambiguous-injectable-help.html");
