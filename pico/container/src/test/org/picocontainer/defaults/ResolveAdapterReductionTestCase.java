@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import com.googlecode.jtype.Generic;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -16,7 +17,6 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
@@ -157,7 +157,7 @@ public class ResolveAdapterReductionTestCase {
             return true;
         }
 
-        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, TypeOf<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Generic<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
             if (expectedType.getType() == Two.class || expectedType.getType() == Touchable.class) {
                 resolveAdapterCalls++;
             }

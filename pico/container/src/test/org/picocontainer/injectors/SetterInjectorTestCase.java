@@ -361,21 +361,19 @@ public class SetterInjectorTestCase
         final Mockery mockery = new Mockery();
         final ComponentMonitor componentMonitor = mockery.mock(ComponentMonitor.class);
         final MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(),
-             new NullLifecycleStrategy(), componentMonitor, new SetterInjection()
-       );
+             new NullLifecycleStrategy(), componentMonitor, new SetterInjection());
 
         mockery.checking(new Expectations() {{
-            oneOf(componentMonitor).newInjector(
-                    with(any(org.picocontainer.Injector.class))
-           ); will(returnSameInjector());
+            oneOf(componentMonitor).newInjector(with(any(org.picocontainer.Injector.class)));
+            will(returnSameInjector());
         }});
 
         pico.addComponent(B.class);
 
         mockery.checking(new Expectations() {{
             oneOf(componentMonitor).instantiating(
-                    with(same(pico)), with(any(ComponentAdapter.class)), with(equal(B.class.getConstructor()))
-           ); will(new CustomAction("return same constructor") {
+                    with(same(pico)), with(any(ComponentAdapter.class)), with(equal(B.class.getConstructor())));
+            will(new CustomAction("return same constructor") {
                 public Object invoke(Invocation invocation) {
                     return invocation.getParameter(2);
                 }

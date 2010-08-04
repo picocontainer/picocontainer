@@ -8,9 +8,9 @@
 
 package org.picocontainer.gems.constraints;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
 /**
@@ -30,7 +30,7 @@ public final class CollectionConstraint extends CollectionComponentParameter imp
     }
 
     public CollectionConstraint(final Constraint constraint, final boolean emptyCollection) {
-        super(TypeOf.fromClass(Object.class), emptyCollection);
+        super(Generic.get(Object.class), emptyCollection);
         this.constraint = constraint;
     }
 

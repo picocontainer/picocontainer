@@ -1,5 +1,6 @@
 package org.picocontainer.containers;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Converters;
 import org.picocontainer.Converting;
@@ -7,7 +8,6 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -22,7 +22,7 @@ import java.util.List;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Converting, Serializable{
+public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Converting, Serializable {
 
     private PicoContainer delegate;
 
@@ -51,7 +51,7 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return componentType.cast(getComponentInto((Object) componentType, into));
 	}
 
-    public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+    public <T> T getComponentInto(Generic<T> componentType, Type into) {
         return (T) getComponentInto((Object) componentType, into);
     }
 
@@ -72,27 +72,27 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return getComponentInto(TypeOf.fromClass(componentType), ComponentAdapter.NOTHING.class);
+        return getComponentInto(Generic.get(componentType), ComponentAdapter.NOTHING.class);
     }
 
-    public <T> T getComponent(TypeOf<T> componentType) {
+    public <T> T getComponent(Generic<T> componentType) {
         return delegate.getComponent(componentType);
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
-        return delegate.getComponentAdapter(TypeOf.fromClass(componentType), componentNameBinding);
+        return delegate.getComponentAdapter(Generic.get(componentType), componentNameBinding);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType,
+    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType,
 			NameBinding componentNameBinding) {
 		return delegate.getComponentAdapter(componentType, componentNameBinding);
 	}
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
-        return delegate.getComponentAdapter(TypeOf.fromClass(componentType), binding);
+        return delegate.getComponentAdapter(Generic.get(componentType), binding);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
         return delegate.getComponentAdapter(componentType, binding);
     }
 
@@ -105,18 +105,18 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 	}
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
-        return delegate.getComponentAdapters(TypeOf.fromClass(componentType));
+        return delegate.getComponentAdapters(Generic.get(componentType));
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
 		return delegate.getComponentAdapters(componentType);
 	}
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
-        return delegate.getComponentAdapters(TypeOf.fromClass(componentType), binding);
+        return delegate.getComponentAdapters(Generic.get(componentType), binding);
     }    
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding) {
         return delegate.getComponentAdapters(componentType, binding);
     }
 

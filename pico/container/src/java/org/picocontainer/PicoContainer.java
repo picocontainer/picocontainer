@@ -9,10 +9,12 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.util.Collection;
-import java.util.List;
+import com.googlecode.jtype.Generic;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only
@@ -46,7 +48,7 @@ public interface PicoContainer {
      */
     <T> T getComponent(Class<T> componentType);
 
-    <T> T getComponent(TypeOf<T> componentType);
+    <T> T getComponent(Generic<T> componentType);
 
     /**
      * Retrieve a component keyed by the component type.
@@ -56,7 +58,7 @@ public interface PicoContainer {
      */
     <T> T getComponentInto(Class<T> componentType, Type into);
 
-    <T> T getComponentInto(TypeOf<T> componentType, Type into);
+    <T> T getComponentInto(Generic<T> componentType, Type into);
 
     /**
      * Retrieve a component keyed by the component type and binding type.
@@ -105,7 +107,7 @@ public interface PicoContainer {
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding);
 
-    <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding nameBinding);
+    <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding);
 
     /**
      * Find a component adapter associated with the specified type and binding type. If a component adapter cannot be found in this
@@ -116,7 +118,7 @@ public interface PicoContainer {
      * @param binding the typed binding to use
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding);
-    <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding);
+    <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding);
 
     /**
      * Retrieve all the component adapters inside this container. The component adapters from the parent container are
@@ -124,7 +126,7 @@ public interface PicoContainer {
      *
      * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will not
      *         be modifiable.
-     * @see #getComponentAdapters(TypeOf a variant of this method which returns the component adapters inside this
+     * @see #getComponentAdapters(Generic a variant of this method which returns the component adapters inside this
      *      container that are associated with the specified type.
      */
     Collection<ComponentAdapter<?>> getComponentAdapters();
@@ -139,7 +141,7 @@ public interface PicoContainer {
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType);
     
-    <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType);
+    <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType);
 
     /**
      * Retrieve all component adapters inside this container that are associated with the specified type and binding type. The addComponent
@@ -151,7 +153,7 @@ public interface PicoContainer {
      *         the specified type. Changes to this collection will not be reflected in the container itself.
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding);
-    <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType, Class<? extends Annotation> binding);
+    <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding);
 
     /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting

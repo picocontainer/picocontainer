@@ -9,19 +9,27 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.picocontainer.*;
+import com.googlecode.jtype.Generic;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.JTypeHelper;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
 
 import javax.inject.Provider;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -71,18 +79,18 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
                             NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
     	
-    	TypeOf<?> resolvedClassType = null;
+    	Generic<?> resolvedClassType = null;
         // TODO take this out for Pico3
         if (notAClass(expectedType) && notAJsr330Provider(expectedType)) {
         	if (expectedType instanceof ParameterizedType) {
-        		resolvedClassType = TypeOf.fromParameterizedType((ParameterizedType)expectedType);
+        		resolvedClassType = Generic.get((ParameterizedType)expectedType);
         	} else {
         		return new Parameter.NotResolved();
         	}
         } else if (expectedType instanceof ParameterizedType) {
-            resolvedClassType = TypeOf.fromParameterizedType((ParameterizedType) expectedType);
+            resolvedClassType = Generic.get((ParameterizedType) expectedType);
         } else {
-        	resolvedClassType = TypeOf.fromClass((Class<?>) expectedType);
+        	resolvedClassType = Generic.get((Class<?>) expectedType);
         }
         assert resolvedClassType != null;
 
@@ -145,7 +153,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                        Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, forAdapter, TypeOf.fromClass((Class<?>) expectedType), expectedNameBinding, useNames, binding);
+            resolveAdapter(container, forAdapter, Generic.get((Class<?>) expectedType), expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
             final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
@@ -165,27 +173,27 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
     protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
-                                                   TypeOf<T> expectedType,
+                                                   Generic<T> expectedType,
                                                    NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        TypeOf type = expectedType;
-        if (type.isPrimitive()) {
-            String expectedTypeName = type.getName();
+        Generic type = expectedType;
+        if (JTypeHelper.isPrimitive(type)) {
+            String expectedTypeName = type.toString();
             if (expectedTypeName == "int") {
-                type = TypeOf.INTEGER;
+                type = JTypeHelper.INTEGER;
             } else if (expectedTypeName == "long") {
-                type = TypeOf.LONG;
+                type = JTypeHelper.LONG;
             } else if (expectedTypeName == "float") {
-                type = TypeOf.FLOAT;
+                type = JTypeHelper.FLOAT;
             } else if (expectedTypeName == "double") {
-                type = TypeOf.DOUBLE;
+                type = JTypeHelper.DOUBLE;
             } else if (expectedTypeName == "boolean") {
-                type = TypeOf.BOOLEAN;
+                type = JTypeHelper.BOOLEAN;
             } else if (expectedTypeName == "char") {
-                type = TypeOf.CHARACTER;
+                type = JTypeHelper.CHARACTER;
             } else if (expectedTypeName == "short") {
-                type = TypeOf.SHORT;
+                type = JTypeHelper.SHORT;
             } else if (expectedTypeName == "byte") {
-                type = TypeOf.BYTE;
+                type = JTypeHelper.BYTE;
             }
         }
 
@@ -227,7 +235,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             return null;
         }
 
-        if (!type.isAssignableFrom(result.getComponentImplementation())) {
+        Class<? extends T> componentImplementation = result.getComponentImplementation();
+        if (!JTypeHelper.isAssignableFrom(type, componentImplementation)) {
 //            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
             if (!(result.getComponentImplementation() == String.class && getConverters(container).canConvert(type.getType()))) {
                 return null;
@@ -241,7 +250,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         return (ComponentAdapter<T>)componentAdapter;
     }
 
-    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, TypeOf<T> expectedType,
+    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, Generic<T> expectedType,
                                                             NameBinding expectedNameBinding, Annotation binding) {
         if (container.getParent() != null) {
             if (binding != null) {
@@ -254,7 +263,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
     }
 
-    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(TypeOf<T> expectedType, List<ComponentAdapter<T>> found) {
+    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(Generic<T> expectedType, List<ComponentAdapter<T>> found) {
         Class[] foundClasses = new Class[found.size()];
         for (int i = 0; i < foundClasses.length; i++) {
             foundClasses[i] = found.get(i).getComponentImplementation();
@@ -274,9 +283,9 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         found.remove(exclude);
     }
 
-    private <T> boolean areCompatible(PicoContainer container, TypeOf<T> expectedType, ComponentAdapter found) {
+    private <T> boolean areCompatible(PicoContainer container, Generic<T> expectedType, ComponentAdapter found) {
         Class foundImpl = found.getComponentImplementation();
-        return expectedType.isAssignableFrom(foundImpl) ||
+        return JTypeHelper.isAssignableFrom(expectedType, foundImpl) ||
                (foundImpl == String.class && getConverters(container) != null
                        && getConverters(container).canConvert(expectedType.getType()))  ;
     }

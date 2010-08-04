@@ -20,7 +20,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassName;
@@ -473,7 +472,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             
             boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
-            parameter = new ComponentParameter(keyType, TypeOf.fromClass(componentValueType), emptyCollection);
+            parameter = new ComponentParameter(keyType, Generic.get(componentValueType), emptyCollection);
         } else if (componentValueTypeString != null && !EMPTY.equals(componentValueTypeString)) {
             if (emptyCollectionString == null || EMPTY.equals(emptyCollectionString)) {
                 
@@ -486,7 +485,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             
             boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
-            parameter = new ComponentParameter(TypeOf.fromClass(componentValueType), emptyCollection);
+            parameter = new ComponentParameter(Generic.get(componentValueType), emptyCollection);
         } else if (emptyCollectionString != null && !EMPTY.equals(emptyCollectionString)) {
             boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             

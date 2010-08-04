@@ -7,6 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.classname;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -21,7 +22,6 @@ import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.injectors.ProviderAdapter;
@@ -475,10 +475,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public <T> T getComponent(Class<T> componentType) {
-            return DefaultClassLoadingPicoContainer.this.getComponent(TypeOf.fromClass(componentType));
+            return DefaultClassLoadingPicoContainer.this.getComponent(Generic.get(componentType));
         }
 
-        public <T> T getComponent(TypeOf<T> componentType) {
+        public <T> T getComponent(Generic<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponent(componentType);
         }
 
@@ -486,7 +486,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getComponentInto(componentType, into);
         }
 
-        public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+        public <T> T getComponentInto(Generic<T> componentType, Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponentInto(componentType, into);
         }
 
@@ -511,18 +511,18 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
-            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(TypeOf.fromClass(componentType), componentNameBinding);
+            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(Generic.get(componentType), componentNameBinding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding componentNameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding componentNameBinding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentType, componentNameBinding);
         }
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
-            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(TypeOf.fromClass(componentType), binding);
+            return DefaultClassLoadingPicoContainer.this.getComponentAdapter(Generic.get(componentType), binding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentType, binding);
         }
 
@@ -531,19 +531,19 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
-            return DefaultClassLoadingPicoContainer.this.getComponentAdapters(TypeOf.fromClass(componentType));
+            return DefaultClassLoadingPicoContainer.this.getComponentAdapters(Generic.get(componentType));
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(componentType);
         }
 
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType,
                 Class<? extends Annotation> binding) {
-            return DefaultClassLoadingPicoContainer.this.getComponentAdapters(TypeOf.fromClass(componentType), binding);
+            return DefaultClassLoadingPicoContainer.this.getComponentAdapters(Generic.get(componentType), binding);
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType,
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType,
                 Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(componentType, binding);
         }

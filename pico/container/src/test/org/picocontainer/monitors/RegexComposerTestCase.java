@@ -1,21 +1,24 @@
 package org.picocontainer.monitors;
 
+import com.googlecode.jtype.Generic;
 import junit.framework.TestCase;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.*;
-
-import static org.picocontainer.Characteristics.USE_NAMES;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.composers.RegexComposer;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.picocontainer.Characteristics.USE_NAMES;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 @RunWith(JMock.class)
 public class RegexComposerTestCase extends TestCase {
@@ -56,7 +59,7 @@ public class RegexComposerTestCase extends TestCase {
 
         final ComponentMonitor fallThru = mockery.mock(ComponentMonitor.class);
         mockery.checking(new Expectations() {{
-            one(fallThru).noComponentFound(with(any(MutablePicoContainer.class)), with(same(List.class)));
+            one(fallThru).noComponentFound(with(any(MutablePicoContainer.class)), with(equal(new Generic<List<String>>(){}.getType())));
             will(returnValue(null));
             one(fallThru).noComponentFound(with(any(MutablePicoContainer.class)), with(equal("apples")));
             will(returnValue(apples));

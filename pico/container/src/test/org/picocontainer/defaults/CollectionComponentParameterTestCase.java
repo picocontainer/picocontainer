@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import com.googlecode.jtype.Generic;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -20,7 +21,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
@@ -76,7 +76,7 @@ public class CollectionComponentParameterTestCase {
 				will(returnValue(new HashSet()));
 
                 one(pico).getComponentAdapters(
-						with(equal(TypeOf.fromClass(String.class))));
+						with(equal(Generic.get(String.class))));
 				will(returnValue(Arrays.asList(
                         new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(), new NullComponentMonitor()), 
                         new InstanceAdapter("z", "World", new NullLifecycleStrategy(), new NullComponentMonitor()))));
@@ -178,8 +178,8 @@ public class CollectionComponentParameterTestCase {
 	public void testCollections() {
 		MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
 		mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
-				new ComponentParameter(TypeOf.fromClass(Cod.class), false),
-				new ComponentParameter(TypeOf.fromClass(Fish.class), false));
+				new ComponentParameter(Generic.get(Cod.class), false),
+				new ComponentParameter(Generic.get(Fish.class), false));
 		mpc.addComponent(Cod.class);
 		mpc.addComponent(Shark.class);
 		Cod cod = mpc.getComponent(Cod.class);
@@ -218,7 +218,7 @@ public class CollectionComponentParameterTestCase {
 	public void testMaps() {
 		MutablePicoContainer mpc = new DefaultPicoContainer();
 		mpc.addComponent(MappedBowl.class, MappedBowl.class,
-				new ComponentParameter(TypeOf.fromClass(Fish.class), false));
+				new ComponentParameter(Generic.get(Fish.class), false));
 		mpc.addComponent(Cod.class);
 		mpc.addComponent(Shark.class);
 		MappedBowl bowl = mpc.getComponent(MappedBowl.class);
@@ -328,11 +328,11 @@ public class CollectionComponentParameterTestCase {
 		mpc.addComponent("Harry", Cod.class);
 		mpc.addComponent(Shark.class);
 		mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
-				new CollectionComponentParameter(TypeOf.fromClass(Cod.class), false) {
+				new CollectionComponentParameter(Generic.get(Cod.class), false) {
 					protected boolean evaluate(ComponentAdapter adapter) {
 						return !"Tom".equals(adapter.getComponentKey());
 					}
-				}, new CollectionComponentParameter(TypeOf.fromClass(Fish.class), false));
+				}, new CollectionComponentParameter(Generic.get(Fish.class), false));
 		CollectedBowl bowl = mpc.getComponent(CollectedBowl.class);
 		Cod tom = (Cod) mpc.getComponent("Tom");
 		assertEquals(4, bowl.fishes.length);
@@ -362,7 +362,7 @@ public class CollectionComponentParameterTestCase {
 	public void testDifferentCollectiveTypesAreResolved() {
 		MutablePicoContainer pico = new DefaultPicoContainer();
 		CollectionComponentParameter parameter = new CollectionComponentParameter(
-				TypeOf.fromClass(Fish.class), true);
+				Generic.get(Fish.class), true);
 		pico.addComponent(DependsOnAll.class, DependsOnAll.class, parameter,
 				parameter, parameter, parameter, parameter, parameter);
 		assertNotNull(pico.getComponent(DependsOnAll.class));

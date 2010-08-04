@@ -9,14 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
 
 public final class Issue0342TestCase {
 
@@ -26,10 +21,10 @@ public final class Issue0342TestCase {
     interface SubInterface extends Interface {
     }
 
-    public static class Generic<I extends Interface> {
+    public static class AGeneric<I extends Interface> {
         private final I iface;
 
-        public Generic(final I iface) {
+        public AGeneric(final I iface) {
             this.iface = iface;
         }
     }
@@ -44,9 +39,9 @@ public final class Issue0342TestCase {
     @Test
     public void testNotTheBug() {
         //hard coded instantitation
-        Generic<Implementation> generic1 = new Generic<Implementation>(new Implementation());
+        AGeneric<Implementation> generic1 = new AGeneric<Implementation>(new Implementation());
         Assert.assertNotNull(generic1);
-        Generic<SubImplementation> generic2 = new Generic<SubImplementation>(new SubImplementation());
+        AGeneric<SubImplementation> generic2 = new AGeneric<SubImplementation>(new SubImplementation());
         Assert.assertNotNull(generic2);
     }
 
@@ -57,8 +52,8 @@ public final class Issue0342TestCase {
         //using picocontainer
         DefaultPicoContainer container = new DefaultPicoContainer();
         container.addComponent(Implementation.class);
-        container.addComponent(Generic.class);
-        Generic result = container.getComponent(Generic.class); // fails here.
+        container.addComponent(AGeneric.class);
+        AGeneric result = container.getComponent(AGeneric.class); // fails here.
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.iface);
 
@@ -70,9 +65,9 @@ public final class Issue0342TestCase {
 
         DefaultPicoContainer container = new DefaultPicoContainer();
         container.addComponent(SubImplementation.class);
-        container.addComponent(Generic.class);
+        container.addComponent(AGeneric.class);
         //should be Generic<SubImplementation> but requires unsafe cast
-        Generic<?> result2 = container.getComponent(Generic.class); // fails here
+        AGeneric<?> result2 = container.getComponent(AGeneric.class); // fails here
         Assert.assertNotNull(result2);
         Assert.assertNotNull(result2.iface);
 

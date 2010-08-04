@@ -10,6 +10,7 @@
 
 package org.picocontainer.script.xml;
 
+import com.googlecode.jtype.Generic;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -18,7 +19,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.testmodel.DefaultWebServerConfig;
 import org.xml.sax.SAXException;
@@ -51,7 +51,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public <T> T getComponent(TypeOf<T> componentType) {
+        public <T> T getComponent(Generic<T> componentType) {
             return null;
         }
 
@@ -71,7 +71,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 		}
 
 		public <T> ComponentAdapter<T> getComponentAdapter(
-				TypeOf<T> componentType, Class<? extends Annotation> binding) {
+				Generic<T> componentType, Class<? extends Annotation> binding) {
 			return null;
 		}
 
@@ -81,7 +81,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 		}
 
 		public <T> List<ComponentAdapter<T>> getComponentAdapters(
-				TypeOf<T> componentType, Class<? extends Annotation> binding) {
+				Generic<T> componentType, Class<? extends Annotation> binding) {
 			return null;
 		}
 
@@ -93,7 +93,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 			return null;
 		}
 
-		public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+		public <T> T getComponentInto(Generic<T> componentType, Type into) {
 			return null;
 		}
 
@@ -113,7 +113,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(TypeOf<T> componentType, NameBinding componentNameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding componentNameBinding) {
             return null;  
         }
 
@@ -132,7 +132,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
             return null;
         }
     }

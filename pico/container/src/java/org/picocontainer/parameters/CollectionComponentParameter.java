@@ -9,19 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
+import org.picocontainer.JTypeHelper;
 import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.TypeOf;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,7 +61,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
     private final boolean emptyCollection;
     private final Class keyType;
-    private final TypeOf<?> componentValueType;
+    private final Generic<?> componentValueType;
 
     /**
      * Expect an {@link Array}of an appropriate type as parameter. At least one component of
@@ -77,7 +78,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      *                        resolution.
      */
     public CollectionComponentParameter(boolean emptyCollection) {
-        this(TypeOf.VOID, emptyCollection);
+        this(JTypeHelper.VOID, emptyCollection);
     }
 
     /**
@@ -87,7 +88,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      */
-    public CollectionComponentParameter(TypeOf<?> componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(Generic<?> componentValueType, boolean emptyCollection) {
         this(Object.class, componentValueType, emptyCollection);
     }
 
@@ -99,7 +100,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      */
-    public CollectionComponentParameter(Class keyType, TypeOf<?> componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(Class keyType, Generic<?> componentValueType, boolean emptyCollection) {
         this.emptyCollection = emptyCollection;
         this.keyType = keyType;
         this.componentValueType = componentValueType;
@@ -186,14 +187,14 @@ public class CollectionComponentParameter extends AbstractParameter implements P
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final TypeOf<?> valueType = getValueType(expectedType);
+            final Generic<?> valueType = getValueType(expectedType);
             final Collection componentAdapters =
                     getMatchingComponentAdapters(container, adapter, keyType, valueType).values();
             if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
                     throw new PicoCompositionException(expectedType
                             + " not resolvable, no components of type "
-                            + valueType.getName()
+                            + valueType.toString()
                             + " available");
                 }
             } else {
@@ -238,7 +239,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
     @SuppressWarnings({"unchecked"})
     protected Map<Object, ComponentAdapter<?>> 
                 getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
-                                             Class keyType, TypeOf<?> valueType) {
+                                             Class keyType, Generic<?> valueType) {
         final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
@@ -271,7 +272,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         return null;
     }
 
-    private TypeOf<?> getValueType(Type collectionType) {
+    private Generic<?> getValueType(Type collectionType) {
         if (collectionType instanceof Class) {
             return getValueType((Class) collectionType);
         } else if (collectionType instanceof ParameterizedType) {
@@ -279,23 +280,23 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         throw new IllegalArgumentException("Unable to determine collection type from " + collectionType);
     }
 
-    private TypeOf<?> getValueType(final Class collectionType) {
-        TypeOf<?> valueType = componentValueType;
+    private Generic<?> getValueType(final Class collectionType) {
+        Generic<?> valueType = componentValueType;
         if (collectionType.isArray()) {
-            valueType = TypeOf.fromClass(collectionType.getComponentType());
+            valueType = Generic.get(collectionType.getComponentType());
         }
         return valueType;
     }
 
-    private TypeOf<?> getValueType(final ParameterizedType collectionType) {
-        TypeOf<?> valueType = componentValueType;
+    private Generic<?> getValueType(final ParameterizedType collectionType) {
+        Generic<?> valueType = componentValueType;
         if (Collection.class.isAssignableFrom((Class<?>) collectionType.getRawType())) {
             Type type = collectionType.getActualTypeArguments()[0];
             if (type instanceof Class) {
-                if (valueType.isAssignableTo((Class) type)) {
+                if (JTypeHelper.isAssignableTo(valueType, (Class) type)) {
                     return valueType;
                 }
-                valueType = TypeOf.fromClass((Class)type);
+                valueType = Generic.get((Class)type);
             }
         }
         return valueType;

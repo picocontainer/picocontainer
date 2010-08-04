@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.TypeOf;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -81,11 +81,11 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
         return null;
     }
 
-    public <T> T getComponentInto(TypeOf<T> componentType, Type into) {
+    public <T> T getComponentInto(Generic<T> componentType, Type into) {
         return null;
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(TypeOf<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
         return null;
     }
 
