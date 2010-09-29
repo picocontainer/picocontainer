@@ -16,13 +16,13 @@ public class TestHelper {
         	throw new NullPointerException("base");
         }
         
-        File tj = new File(base,"src/test-comp/testcomp.jar");
+        File tj = new File(base,"src/test-comp/TestComp.jar");
         while (!tj.exists()) {
             base = base.getParentFile();
             if (base == null) {
             	throw new NullPointerException("Could not find testcomp.jar");
             }
-            tj = new File(base,"src/test-comp/testcomp.jar");
+            tj = new File(base,"src/test-comp/TestComp.jar");
         }
         return tj;
     }

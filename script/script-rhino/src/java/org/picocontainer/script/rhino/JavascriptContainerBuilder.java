@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.net.URL;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.DefiningClassLoader;
 import org.mozilla.javascript.GeneratedClassLoader;
 import org.mozilla.javascript.ImporterTopLevel;
@@ -58,12 +59,18 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         final ClassLoader loader = getClassLoader();
-        Context cx = new Context() {
-            public GeneratedClassLoader createClassLoader(ClassLoader parent) {
-                return new DefiningClassLoader(loader);
-            }
+        ContextFactory contextFactory = new ContextFactory() {
+          public GeneratedClassLoader createClassLoader(ClassLoader parent) {
+        	  return new DefiningClassLoader(loader);
+	      }
         };
-        cx = Context.enter(cx);
+        Context cx = contextFactory.enterContext();
+//        Context cx = new Context() {
+//            public GeneratedClassLoader createClassLoader(ClassLoader parent) {
+//                return new DefiningClassLoader(loader);
+//            }
+//        };
+//        cx = Context.enter(cx);
 
         try {
             Scriptable scope = new ImporterTopLevel(cx);
