@@ -13,19 +13,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import java.util.Properties;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
-import org.picocontainer.testmodel.NullLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
  * @author J&ouml;rg Schaible
