@@ -83,6 +83,12 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         return classLoader;
     }
     
+    /**
+     * Retrieves the script input stream, however, you should use {@link #getScriptReader() getScriptReader()}
+     * instead to prevent any encoding problems. 
+     * @return InputStream containing the data for the script.
+     * @throws IOException
+     */
     @SuppressWarnings("synthetic-access")
     protected final InputStream getScriptInputStream() throws IOException{
         if (scriptReader != null) {
@@ -96,6 +102,12 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         return scriptURL.openStream();
     }
 
+    /**
+     * Use this method to get a text-reader for the script's input stream.
+     * @return a java.io.Reader instance.  (You should close it yourself
+     * once finished.)
+     * @throws IOException
+     */
     protected final Reader getScriptReader() throws IOException{
         if (scriptReader != null) {
             return scriptReader;
