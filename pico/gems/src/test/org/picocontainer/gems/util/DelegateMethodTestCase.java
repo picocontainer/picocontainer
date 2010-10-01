@@ -23,7 +23,7 @@ import org.junit.Test;
 public class DelegateMethodTestCase {
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void testVoidReturnType() {
 		DelegateMethod<Map, Void> method = new DelegateMethod<Map, Void>(
 				Map.class, "clear");
@@ -34,7 +34,7 @@ public class DelegateMethodTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void testTypeMatching() {
 		HashMap<String, String> testMap = new HashMap<String, String>();
 		DelegateMethod<Map, String> method = new DelegateMethod<Map, String>(
@@ -47,7 +47,7 @@ public class DelegateMethodTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void testPrimitiveTypeMatching() {
 		HashMap<Integer, Integer> testMap = new HashMap<Integer, Integer>();
 		DelegateMethod<Map, Integer> method = new DelegateMethod<Map, Integer>(
@@ -60,7 +60,7 @@ public class DelegateMethodTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void testNullTypeMatching() {
 		HashMap<Integer, Integer> testMap = new HashMap<Integer, Integer>();
 		DelegateMethod<Map, Integer> method = new DelegateMethod<Map, Integer>(
@@ -103,5 +103,63 @@ public class DelegateMethodTestCase {
 		}
 
 	}
+	
+	@Test
+	public void testPrimitivesAreAllowedViaAutoboxing() {
+		DelegateMethod<DelegatePrimitiveTest, Boolean> method1 =
+				new DelegateMethod<DelegatePrimitiveTest, Boolean>(DelegatePrimitiveTest.class, "getSomething", true);
+
+		DelegatePrimitiveTest dt = new DelegatePrimitiveTest();
+		assertTrue( method1.invoke(dt) );
+		
+		DelegateMethod<DelegatePrimitiveTest, Byte> method2 =
+			new DelegateMethod<DelegatePrimitiveTest, Byte>(DelegatePrimitiveTest.class, "getSomething", (byte)1);
+		assertTrue(((byte)1) == method2.invoke(dt));
+
+		DelegateMethod<DelegatePrimitiveTest, Short> method3 =
+			new DelegateMethod<DelegatePrimitiveTest, Short>(DelegatePrimitiveTest.class, "getSomething", (short)3);
+		assertTrue(((short)3) == method3.invoke(dt));
+
+		DelegateMethod<DelegatePrimitiveTest, Integer> method4 =
+			new DelegateMethod<DelegatePrimitiveTest, Integer>(DelegatePrimitiveTest.class, "getSomething", 4);
+		assertTrue(4 == method4.invoke(dt));
+
+		DelegateMethod<DelegatePrimitiveTest, Long> method5 =
+			new DelegateMethod<DelegatePrimitiveTest, Long>(DelegatePrimitiveTest.class, "getSomething", 5L);
+		assertTrue(5 == method5.invoke(dt));
+
+		DelegateMethod<DelegatePrimitiveTest, Float> method6 =
+			new DelegateMethod<DelegatePrimitiveTest, Float>(DelegatePrimitiveTest.class, "getSomething", 3.14f);
+		assertTrue(Math.abs(method6.invoke(dt)) - 3.14 < .1);
+
+		DelegateMethod<DelegatePrimitiveTest, Double> method7 =
+			new DelegateMethod<DelegatePrimitiveTest, Double>(DelegatePrimitiveTest.class, "getSomething", 3.14);
+		assertTrue(Math.abs(method7.invoke(dt)) - 3.14 < .1);
+
+		DelegateMethod<DelegatePrimitiveTest, Character> method8 =
+			new DelegateMethod<DelegatePrimitiveTest, Character>(DelegatePrimitiveTest.class, "getSomething", 'c');
+		assertTrue('c' == method8.invoke(dt));
+
+		
+		
+	}
+	
+	public static class DelegatePrimitiveTest {
+		public byte getSomething(byte aValue) {return aValue;}
+
+		public short getSomething(short aValue) {return aValue;}
+	
+		public int getSomething(int aValue) {return aValue;}
+
+		public long getSomething(long aValue) {return aValue;}
+
+		public float getSomething(float aValue) {return aValue;}
+
+		public double getSomething(double aValue) {return aValue;}
+
+		public boolean getSomething(boolean aValue) {return aValue;}
+
+		public char getSomething(char aValue) {return aValue;}
+	};
 
 }

@@ -169,12 +169,57 @@ public class DelegateMethod<TARGET_TYPE, RETURN_TYPE> {
 				continue;
 			}
 
-			if (!argParameters[i].isAssignableFrom(paramTypes[i])) {
+			if (!(argParameters[i].isAssignableFrom(paramTypes[i]) 
+					|| isCompatibleAutoboxedType(paramTypes[i], argParameters[i]))) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Introspecting isAssignableFrom doesn't handle autoboxing.  So we check it out here.
+	 * @param candidateType the incoming parameter type
+	 * @param typeToMatch the method to invoke's parameter type.
+	 * @return true if they're possibly compatible
+	 */
+	private boolean isCompatibleAutoboxedType(Class<?> candidateType, Class<?> typeToMatch) {
+		if (Integer.class.isAssignableFrom(candidateType) || Integer.TYPE.isAssignableFrom(candidateType)) {
+			return Integer.class.isAssignableFrom(typeToMatch) || Integer.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Boolean.class.isAssignableFrom(candidateType) || Boolean.TYPE.isAssignableFrom(candidateType)) {
+			return Boolean.class.isAssignableFrom(typeToMatch) || Boolean.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Long.class.isAssignableFrom(candidateType) || Long.TYPE.isAssignableFrom(candidateType)) {
+			return Long.class.isAssignableFrom(typeToMatch) || Long.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Float.class.isAssignableFrom(candidateType) || Float.TYPE.isAssignableFrom(candidateType)) {
+			return Float.class.isAssignableFrom(typeToMatch) || Float.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Double.class.isAssignableFrom(candidateType) || Double.TYPE.isAssignableFrom(candidateType)) {
+			return Double.class.isAssignableFrom(typeToMatch) || Double.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Character.class.isAssignableFrom(candidateType) || Character.TYPE.isAssignableFrom(candidateType)) {
+			return Character.class.isAssignableFrom(typeToMatch) || Character.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Byte.class.isAssignableFrom(candidateType) || Byte.TYPE.isAssignableFrom(candidateType)) {
+			return Byte.class.isAssignableFrom(typeToMatch) || Byte.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+		if (Short.class.isAssignableFrom(candidateType) || Short.TYPE.isAssignableFrom(candidateType)) {
+			return Short.class.isAssignableFrom(typeToMatch) || Short.TYPE.isAssignableFrom(typeToMatch);
+		}
+		
+
+		
+		return false;
 	}
 
 	/**
