@@ -23,6 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Properties;
 
@@ -150,6 +151,9 @@ public class SimpleNamedBindingAnnotationTestCase {
                 inst = getComponentImplementation().newInstance();
                 Field[] declaredFields = getComponentImplementation().getDeclaredFields();
                 for (final Field field : declaredFields) {
+                	if (Modifier.isFinal( field.getModifiers())) {
+                		continue;
+                	}
                     Named bindAnnotation = field.getAnnotation(Named.class);
                     Object value;
                     if (bindAnnotation != null) {
