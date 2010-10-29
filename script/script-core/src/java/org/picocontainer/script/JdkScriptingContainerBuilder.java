@@ -106,6 +106,7 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 			if (result == null) {
 				result = (PicoContainer) bindings.get("pico");
 				if (result == null) {
+					//Todo: remove as a deprecated variable name
 					result = (PicoContainer) bindings.get("nano");
 					if (result == null) {
 						throw new PicoCompositionException(
