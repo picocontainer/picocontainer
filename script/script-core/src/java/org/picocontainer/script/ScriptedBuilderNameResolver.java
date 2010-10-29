@@ -27,13 +27,15 @@ public class ScriptedBuilderNameResolver {
     public static final String JAVASCRIPT = ".js";
     public static final String JYTHON = ".py";
     public static final String XML = ".xml";
-
+    public static final String RUBY = ".rb";
+    
     public static final String DEFAULT_GROOVY_BUILDER = "org.picocontainer.script.groovy.GroovyContainerBuilder";
     public static final String DEFAULT_BEANSHELL_BUILDER = "org.picocontainer.script.bsh.BeanShellContainerBuilder";
     public static final String DEFAULT_JAVASCRIPT_BUILDER = "org.picocontainer.script.rhino.JavascriptContainerBuilder";
     public static final String DEFAULT_XML_BUILDER = "org.picocontainer.script.xml.XMLContainerBuilder";
     public static final String DEFAULT_JYTHON_BUILDER = "org.picocontainer.script.jython.JythonContainerBuilder";
-
+    public static final String DEFAULT_RUBY_BUILDER = "org.picocontainer.script.jruby.JRubyContainerBuilder";
+    
     private final Map<String, String> extensionToBuilders = new HashMap<String, String>();
 
     public ScriptedBuilderNameResolver() {
@@ -98,7 +100,7 @@ public class ScriptedBuilderNameResolver {
         registerBuilder(JAVASCRIPT, DEFAULT_JAVASCRIPT_BUILDER);
         registerBuilder(XML, DEFAULT_XML_BUILDER);
         registerBuilder(JYTHON, DEFAULT_JYTHON_BUILDER);
-
+        registerBuilder(RUBY, DEFAULT_RUBY_BUILDER);
     }
 
     /**

@@ -29,8 +29,8 @@ import org.picocontainer.PicoContainer;
  * 
  * @author Michael Rimov, Centerline Computers, Inc.
  */
+//Why Eclipse complains about access to javax.scripting I don't understand.
 @SuppressWarnings("restriction")
-// Why Eclipse complains about this, I don't understand
 public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 
 	private final String engineName;
