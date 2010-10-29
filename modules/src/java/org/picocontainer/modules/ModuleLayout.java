@@ -12,6 +12,7 @@ import org.apache.commons.vfs.FileSystemException;
  * @todo it would be really nice to be able to have a module layout as a declarative definition rather than
  * a class since a lot of the behavior gets copied between layout-to-layout
  */
+@SuppressWarnings("restriction")
 public interface ModuleLayout {
 
 	 
@@ -22,7 +23,7 @@ public interface ModuleLayout {
 	 * @return FileObject representing the script to manage.
 	 * @throws FileSystemException
 	 */
-	FileObject getDeploymentScript(FileObject applicationFolder, ScriptEngineManager mgr) throws FileSystemException, DeploymentException;
+	FileObject getDeploymentScript(FileObject applicationFolder) throws FileSystemException, DeploymentException;
 
 	
 	/**
@@ -35,5 +36,11 @@ public interface ModuleLayout {
 	ClassLoader constructModuleClassLoader(ClassLoader parentClassLoader, 
 			FileObject applicationFolder) throws FileSystemException;
 
+	
+	/**
+	 * Retrieve the file extension mapper.
+	 * @return
+	 */
+	FileExtensionMapper getFileExtensionMapper();
 	
 }

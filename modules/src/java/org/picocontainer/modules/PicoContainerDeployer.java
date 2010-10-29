@@ -59,14 +59,13 @@ public class PicoContainerDeployer implements Deployer {
      * Module definition to be deployed
      */
 	private final ModuleLayout moduleLayout;
-
-
+	
     /**
      * Default constructor that makes sensible defaults.
      * @throws FileSystemException
      */
     public PicoContainerDeployer() throws FileSystemException {
-        this(new ScriptedBuilderNameResolver(), new DefaultModuleLayout("picocontainer"));
+        this(new ScriptedBuilderNameResolver(), new DefaultModuleLayout(new NanoDeployScriptExtensionMapper(new ScriptedBuilderNameResolver())));
     }
 
     /**
@@ -95,28 +94,15 @@ public class PicoContainerDeployer implements Deployer {
     }
 
 
-    @SuppressWarnings("restriction")
 	public MutablePicoContainer deploy(FileObject applicationFolder, ClassLoader parentClassLoader, MutablePicoContainer parentContainer, Object assemblyScope) throws FileSystemException {
+
+        FileObject deploymentScript = moduleLayout.getDeploymentScript(applicationFolder);
+
         ClassLoader applicationClassLoader = moduleLayout.constructModuleClassLoader(parentClassLoader, applicationFolder);
-
-		final ScriptEngineManager mgr = new ScriptEngineManager();
-        FileObject deploymentScript = moduleLayout.getDeploymentScript(applicationFolder, mgr);
-
-        String extension = "." + deploymentScript.getName().getExtension();
-        Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
-        String builderClassName;
-        try {
-            builderClassName = resolver.getBuilderClassName(extension);
-        } catch (UnsupportedScriptTypeException ex) {
-            throw new FileSystemException("Could not find a suitable builder for: " + deploymentScript.getName()
-                + ".  Known extensions are: [groovy|bsh|js|py|xml]", ex);
-        }
-
-
-        ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, applicationClassLoader);
-        ContainerBuilder builder = scriptedContainerBuilderFactory.getContainerBuilder();
+        ContainerBuilder builder = moduleLayout.getFileExtensionMapper().instantiateContainerBuilder(applicationClassLoader, deploymentScript);
 
         return (MutablePicoContainer) builder.buildContainer(parentContainer, assemblyScope, true);
     }
+
 
 }

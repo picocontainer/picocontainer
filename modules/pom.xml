@@ -1,0 +1,217 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+   <parent>
+	   <groupId>org.picocontainer</groupId>
+	   <artifactId>picocontainer-root</artifactId>
+   		<version>3.0-SNAPSHOT</version>
+   </parent>
+  <artifactId>picocontainer-modules</artifactId>
+  <name>PicoContainer Modules</name>
+  <packaging>jar</packaging>
+    <dependencies>
+		<dependency>
+		  <groupId>org.picocontainer</groupId>
+		  <artifactId>picocontainer</artifactId>
+		  <version>3.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.picocontainer</groupId>
+			<artifactId>picocontainer-tck</artifactId>
+			<version>3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		  <groupId>org.picocontainer.script</groupId>
+		  <artifactId>picocontainer-script-core</artifactId>
+		  <version>3.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.picocontainer.script</groupId>
+		  <artifactId>picocontainer-script-groovy</artifactId>
+		  <version>3.0-SNAPSHOT</version>
+		  <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-vfs</groupId>
+			<artifactId>commons-vfs</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- For test -->
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-junit4</artifactId>
+			<version>2.5.1</version>
+			<scope>test</scope>
+		</dependency>		
+    </dependencies>
+    <scm>
+        <connection>scm:git:git@git.codehaus.org/picocontainer-git.git</connection>
+        <developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
+	    <url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>        
+    </scm>
+	<distributionManagement>
+		<repository>
+			<id>codehaus.org</id>
+			<name>Codehaus PicoContainer Repository</name>
+			<url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
+		</repository>
+		<snapshotRepository>
+			<id>codehaus.org</id>
+			<name>Codehaus PicoContainer Snapshots Repository</name>
+			<url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
+		</snapshotRepository>
+	</distributionManagement>	
+    <build>
+		<sourceDirectory>src/java</sourceDirectory>
+		<testSourceDirectory>src/test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+    
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!--  Create test components -->
+                                <mkdir dir="${project.build.directory}/test-jars/" />
+								<war destfile="${project.build.directory}/test-jars/alternate-layout.jar" needxmlfile="false">
+                                    <classes dir="${project.build.directory}/test-classes/">
+                                        <include name="foo/**" />
+                                    </classes>
+                                    <fileset dir="${project.build.directory}/test-classes/alternate-layout" />								
+								</war>
+                                <jar destfile="${project.build.directory}/test-jars/successful-deploy.jar">
+                                    <fileset dir="${project.build.directory}/test-classes/">
+                                        <include name="foo/**" />
+                                    </fileset>
+                                    <fileset dir="${project.build.directory}/test-classes/successful-deploy" />
+                                </jar>
+
+                                <jar destfile="${project.build.directory}/test-jars/badscript-deploy.jar">
+                                    <fileset dir="${project.build.directory}/test-classes/">
+                                        <include name="foo/**" />
+                                    </fileset>
+                                    <fileset dir="${project.build.directory}/test-classes/badscript-deploy" />
+                                </jar>
+
+                                <jar destfile="${project.build.directory}/test-jars/malformed-deploy.jar">
+                                    <fileset dir="${project.build.directory}/test-classes/">
+                                        <include name="foo/**" />
+                                    </fileset>
+                                    <fileset dir="${project.build.directory}/test-classes/malformed-deploy" />
+                                </jar>
+
+                                <copy todir="${project.build.directory}/deployer/apps">
+                                    <fileset dir="${project.build.directory}/test-jars">
+                                        <include name="*.jar" />
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding>
+					<optimize>false</optimize>
+					<debug>true</debug>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>        
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.7</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<links>
+							<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+							<link>http://atinject.googlecode.com/svn/tags/1/javadoc/</link>
+							<link>http://proxytoys.codehaus.org/apidocs/</link>
+							<link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
+							<link>http://paranamer.codehaus.org/javadoc/</link>
+						</links>
+						<stylesheet>maven</stylesheet>
+						<header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
+						<linksource>true</linksource>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<junitArtifactName>junit:junit-dep</junitArtifactName>
+						<forkMode>once</forkMode>
+						<printSummary>true</printSummary>
+						<useFile>true</useFile>
+						<systemPropertyVariables>
+							<test.src.dir>${basedir}/src/test</test.src.dir>
+							<java.awt.headless>true</java.awt.headless>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.4</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+            
+        </plugins>
+    </build>
+</project>
