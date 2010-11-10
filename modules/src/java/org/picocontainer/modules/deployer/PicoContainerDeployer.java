@@ -1,17 +1,12 @@
-package org.picocontainer.modules;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import javax.script.ScriptEngineManager;
+package org.picocontainer.modules.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.modules.adapter.ModuleMonitor;
+import org.picocontainer.modules.monitor.commonslogging.CommonsLoggingModuleMonitor;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
-import org.picocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.script.UnsupportedScriptTypeException;
 
 /**
  * This class is capable of deploying an application from any kind of file system
@@ -49,34 +44,20 @@ import org.picocontainer.script.UnsupportedScriptTypeException;
  * @author Michael Rimov
  */
 public class PicoContainerDeployer implements Deployer {
-
-    /**
-     * File Name to builder class name resolver.
-     */
-    private ScriptedBuilderNameResolver resolver;
-
     /**
      * Module definition to be deployed
      */
 	private final ModuleLayout moduleLayout;
+	private final ModuleMonitor monitor;
 	
     /**
      * Default constructor that makes sensible defaults.
      * @throws FileSystemException
      */
     public PicoContainerDeployer() throws FileSystemException {
-        this(new ScriptedBuilderNameResolver(), new DefaultModuleLayout(new NanoDeployScriptExtensionMapper(new ScriptedBuilderNameResolver())));
+        this(new DefaultModuleLayout(new NanoDeployScriptExtensionMapper(new ScriptedBuilderNameResolver())));
     }
 
-    /**
-     * Constructs this object with both a VFS file system manager, and
-     * @param fileSystemManager FileSystemManager
-     * @param builderResolver ScriptBuilderResolver
-     */
-    public PicoContainerDeployer(ScriptedBuilderNameResolver builderResolver, ModuleLayout layout) {
-        this(layout);
-        resolver = builderResolver;
-    }
 
     /**
      * Constructs a picocontainer deployer with the specified file system manager
@@ -88,12 +69,16 @@ public class PicoContainerDeployer implements Deployer {
      * @param baseFileName
      */
     public PicoContainerDeployer( ModuleLayout moduleLayout) {
+		this(moduleLayout, new CommonsLoggingModuleMonitor());
+    }
+    
+    public PicoContainerDeployer(ModuleLayout moduleLayout, ModuleMonitor monitor) {
 		this.moduleLayout = moduleLayout;
-        resolver = new ScriptedBuilderNameResolver();
-        
+		this.monitor = monitor;    	
     }
 
 
+	/** {@inheritDoc} **/
 	public MutablePicoContainer deploy(FileObject applicationFolder, ClassLoader parentClassLoader, MutablePicoContainer parentContainer, Object assemblyScope) throws FileSystemException {
 
         FileObject deploymentScript = moduleLayout.getDeploymentScript(applicationFolder);
@@ -101,8 +86,23 @@ public class PicoContainerDeployer implements Deployer {
         ClassLoader applicationClassLoader = moduleLayout.constructModuleClassLoader(parentClassLoader, applicationFolder);
         ContainerBuilder builder = moduleLayout.getFileExtensionMapper().instantiateContainerBuilder(applicationClassLoader, deploymentScript);
 
-        return (MutablePicoContainer) builder.buildContainer(parentContainer, assemblyScope, true);
+        try {
+			return (MutablePicoContainer) builder.buildContainer(parentContainer, assemblyScope, true);
+		} catch (RuntimeException e) {
+			getMonitor().errorPerformingDeploy(applicationFolder, e);
+			throw e;
+		}
     }
+
+	/** {@inheritDoc} **/
+	public ModuleLayout getModuleLayout() {
+		return this.moduleLayout;
+	}
+
+
+	public ModuleMonitor getMonitor() {
+		return this.getMonitor();
+	}
 
 
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.picocontainer.modules;
+package org.picocontainer.modules.deployer;
 
 /**
  * Exception that indicates that the deployment folder/archive didn't have the 

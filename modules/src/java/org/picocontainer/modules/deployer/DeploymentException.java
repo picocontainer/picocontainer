@@ -1,4 +1,4 @@
-package org.picocontainer.modules;
+package org.picocontainer.modules.deployer;
 
 import org.picocontainer.PicoException;
 

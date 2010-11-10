@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.picocontainer.modules;
+package org.picocontainer.modules.deployer;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

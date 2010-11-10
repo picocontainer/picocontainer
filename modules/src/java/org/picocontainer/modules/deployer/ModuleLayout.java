@@ -1,6 +1,4 @@
-package org.picocontainer.modules;
-
-import javax.script.ScriptEngineManager;
+package org.picocontainer.modules.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
@@ -12,7 +10,6 @@ import org.apache.commons.vfs.FileSystemException;
  * @todo it would be really nice to be able to have a module layout as a declarative definition rather than
  * a class since a lot of the behavior gets copied between layout-to-layout
  */
-@SuppressWarnings("restriction")
 public interface ModuleLayout {
 
 	 
@@ -42,5 +39,14 @@ public interface ModuleLayout {
 	 * @return
 	 */
 	FileExtensionMapper getFileExtensionMapper();
+	
+	
+	/**
+	 * Retrieve the espected &quot;base name&quot; for scripts.  For example, if the base name is
+	 * &quot;picocontainer&quot;, then the deployment script will be (for example):
+	 *   &quot;picocontainer.js&quot;, or &quot;picocontainer.groovy&quot;
+	 * @return the layout's file base name.
+	 */
+	String getFileBasename();
 	
 }

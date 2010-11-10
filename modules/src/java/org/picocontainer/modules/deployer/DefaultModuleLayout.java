@@ -1,4 +1,4 @@
-package org.picocontainer.modules;
+package org.picocontainer.modules.deployer;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -60,7 +60,7 @@ public class DefaultModuleLayout implements ModuleLayout {
 	/**
 	 * The name of the composition script minus the extension.  Example:  &quot;picocontainer&quot;
 	 */
-	private String filebasename = "picocontainer";
+	private String filebasename = "composition";
 
 	
 	public DefaultModuleLayout() {
@@ -132,7 +132,7 @@ public class DefaultModuleLayout implements ModuleLayout {
 		
 	}
 
-	private String getFileBasename() {
+	public String getFileBasename() {
 		return this.filebasename;
 	}
 
