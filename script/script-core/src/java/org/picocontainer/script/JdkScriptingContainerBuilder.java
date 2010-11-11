@@ -3,6 +3,8 @@ package org.picocontainer.script;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Arrays;
 
 import javax.script.Bindings;
@@ -26,7 +28,6 @@ import org.picocontainer.PicoContainer;
  * A list of well known scripting engines are <a
  * href="https://scripting.dev.java.net">here</a>
  * </p>
- * 
  * @author Michael Rimov, Centerline Computers, Inc.
  */
 //Why Eclipse complains about access to javax.scripting I don't understand.
@@ -41,7 +42,7 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 	 * engine you wish to use.  An example is 'js' (without quotes) for the Javascript
 	 * engine.
 	 * @param script
-	 * @param classLoader
+	 * @param classLoader  Ignored in this implementation due to limitation with JSR 223
 	 * @param lifecycleMode
 	 */
 	public JdkScriptingContainerBuilder(final String scriptEngineShortName,
@@ -73,71 +74,97 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 	@Override
 	protected PicoContainer createContainerFromScript(
 			final PicoContainer parentContainer, final Object assemblyScope) {
-		final ScriptEngineManager mgr = new ScriptEngineManager();
-		final ScriptEngine engine = mgr.getEngineByName(engineName);
-		if (engine == null) {
-			final StringBuilder message = new StringBuilder(
-					"Could not find a script engine named: '" + engineName
-							+ "' all script engines in your classpath are:\n");
-			for (final ScriptEngineFactory eachFactory : mgr
-					.getEngineFactories()) {
-				message.append("\t Engine named '"
-						+ eachFactory.getEngineName()
-						+ "' which supports the language '"
-						+ eachFactory.getLanguageName()
-						+ "' with short names '"
-						+ Arrays.toString(eachFactory.getNames().toArray())
-						+ "'\n");
-			}
-
-			throw new PicoCompositionException(message.toString());
-		}
-
-		final Bindings bindings = engine.createBindings();
-		bindings.put("parent", parentContainer);
-		bindings.put("assemblyScope", assemblyScope);
-		applyOtherBindings(bindings);
-
 		Reader reader = null;
-		try {
-			reader = this.getScriptReader();
-			PicoContainer result = (PicoContainer) engine
-					.eval(reader, bindings);
-			if (result == null) {
-				result = (PicoContainer) bindings.get("pico");
+		ScriptEngine engine = null;
+		final ScriptEngineManager mgr = new ScriptEngineManager();
+			final ClassLoader oldClassLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+				
+				public ClassLoader run() {
+					return Thread.currentThread().getContextClassLoader();
+				}});
+			final ClassLoader newClassLoader = this.getClassLoader();
+			try {
+				if (applyCustomClassLoader()) { 
+					AccessController.doPrivileged(new PrivilegedAction<Void>() {
+						public Void run() {
+							Thread.currentThread().setContextClassLoader(newClassLoader);
+							return null;
+						}});
+				}
+
+				engine = mgr.getEngineByName(engineName);
+				if (engine == null) {
+					final StringBuilder message = new StringBuilder(
+							"Could not find a script engine named: '" + engineName
+									+ "' all script engines in your classpath are:\n");
+					for (final ScriptEngineFactory eachFactory : mgr
+							.getEngineFactories()) {
+						message.append("\t Engine named '"
+								+ eachFactory.getEngineName()
+								+ "' which supports the language '"
+								+ eachFactory.getLanguageName()
+								+ "' with short names '"
+								+ Arrays.toString(eachFactory.getNames().toArray())
+								+ "'\n");
+					}
+		
+					throw new PicoCompositionException(message.toString());
+				}
+		
+				final Bindings bindings = engine.createBindings();
+				bindings.put("parent", parentContainer);
+				bindings.put("assemblyScope", assemblyScope);
+				applyOtherBindings(bindings);
+	
+				reader = this.getScriptReader();
+				
+				PicoContainer result = (PicoContainer) engine.eval(reader, bindings);
 				if (result == null) {
-					//Todo: remove as a deprecated variable name
-					result = (PicoContainer) bindings.get("nano");
+					result = (PicoContainer) bindings.get("pico");
 					if (result == null) {
-						throw new PicoCompositionException(
-								"Script completed successfully, but did not return any value, nor did it declare a variable named 'pico'");
+						//Todo: remove as a deprecated variable name
+						result = (PicoContainer) bindings.get("nano");
+						if (result == null) {
+							throw new PicoCompositionException(
+									"Script completed successfully, but did not return any value, nor did it declare a variable named 'pico'");
+						}
 					}
 				}
-			}
-			return result;
-		} catch (final ClassCastException e) {
-			throw new ScriptedPicoContainerMarkupException(
-					"The return type of the script must be of type PicoContainer",
-					e);
-		} catch (final IOException e) {
-			throw new ScriptedPicoContainerMarkupException(
-					"IOException encountered, message -'" + e.getMessage()
-							+ "'", e);
-		} catch (final ScriptException e) {
-			throw new ScriptedPicoContainerMarkupException(
-					"Error executing composition script under engine '"
-							+ engine.getFactory().getEngineName() + "'", e);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (final IOException e) {
-					// Ignore
-				}
-			}
-		}
-	}
+				return result;
+			} catch (final ClassCastException e) {
+				throw new ScriptedPicoContainerMarkupException(
+						"The return type of the script must be of type PicoContainer",
+						e);
+			} catch (final IOException e) {
+				throw new ScriptedPicoContainerMarkupException(
+						"IOException encountered, message -'" + e.getMessage()
+								+ "'", e);
+			} catch (final ScriptException e) {
+				throw new ScriptedPicoContainerMarkupException(
+						"Error executing composition script under engine '"
+								+ engine.getFactory().getEngineName() + "'", e);
+			} finally {
+				if (applyCustomClassLoader()) {
+					AccessController.doPrivileged(new PrivilegedAction<Void>() {
 
+						public Void run() {
+							Thread.currentThread().setContextClassLoader(oldClassLoader);
+							return null;
+						}});
+					
+				}
+				
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (final IOException e) {
+						// Ignore
+					}
+				}
+				
+			}
+				
+	}
 	/**
 	 * Allows other bindings to be managed by the descendent implementations.
 	 * Examples would be servlet requests/responses, JNDI contexts, etc.
@@ -146,6 +173,15 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 	 */
 	protected void applyOtherBindings(final Bindings bindings) {
 
+	}
+	
+	/**
+	 * Override for situations where Thread.setContextClassLoader() simply
+	 * cannot be called (in OSGi containerss, for example)
+	 * @return
+	 */
+	protected boolean applyCustomClassLoader() {
+		return true;
 	}
 
 }
