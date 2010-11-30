@@ -17,6 +17,7 @@ package org.picocontainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public abstract class PicoException extends RuntimeException {
 
     /**
