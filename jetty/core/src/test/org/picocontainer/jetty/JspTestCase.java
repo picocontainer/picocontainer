@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.mortbay.jetty.handler.ErrorHandler;
 import org.mortbay.util.IO;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.testhelper.PlatformAssert;
 
 public class JspTestCase {
 
@@ -53,7 +54,7 @@ public class JspTestCase {
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/test.jsp");
-        assertEquals("<HTML>\n" +
+        PlatformAssert.assertSameExceptCarriageReturns("<HTML>\n" +
                 "  <HEAD>\n" +
                 "    <TITLE>Test JSP</TITLE>\n" +
                 "  </HEAD>\n" +
@@ -61,12 +62,9 @@ public class JspTestCase {
                 "    hello\n" +
                 "  </BODY>\n" +
                 "</HTML>", IO.toString(url.openStream()));
-
         Thread.sleep(1000);
-
-
     }
-
+    
     @Test public void testCanInstantiateWebContainerContextAndMissingJspPageHandled() throws InterruptedException, IOException {
 
         File warFile = TestHelper.getTestWarFile();

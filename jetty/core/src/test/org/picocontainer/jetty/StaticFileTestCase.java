@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.mortbay.util.IO;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.testhelper.PlatformAssert;
 
 public class StaticFileTestCase {
 
@@ -35,7 +36,7 @@ public class StaticFileTestCase {
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/hello.html");
-        assertEquals("<html>\n" +
+        PlatformAssert.assertSameExceptCarriageReturns("<html>\n" +
                 " <body>\n" +
                 "   hello\n" +
                 " </body>\n" +
@@ -58,7 +59,7 @@ public class StaticFileTestCase {
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/");
-        assertEquals("<html>\n" +
+        PlatformAssert.assertSameExceptCarriageReturns("<html>\n" +
                 " <body>\n" +
                 "   hello\n" +
                 " </body>\n" +
