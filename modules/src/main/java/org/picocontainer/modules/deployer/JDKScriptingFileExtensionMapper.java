@@ -11,7 +11,6 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.JdkScriptingContainerBuilder;
-import org.picocontainer.script.LifecycleMode;
 
 @SuppressWarnings("restriction")
 public class JDKScriptingFileExtensionMapper implements FileExtensionMapper {
@@ -58,6 +57,6 @@ public class JDKScriptingFileExtensionMapper implements FileExtensionMapper {
 		final ScriptEngine engine = mgr.getEngineByExtension(script.getName()
 				.getExtension());
 		return new JdkScriptingContainerBuilder(engine.getFactory().getNames()
-				.get(0), scriptReader, cl, LifecycleMode.AUTO_LIFECYCLE);
+				.get(0), scriptReader, cl);
 	}
 }

@@ -7,17 +7,17 @@
  ******************************************************************************/
 package org.picocontainer.script.util;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.behaviors.Caching;
-
-import java.util.Set;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Helper for ScriptedPicoContainer

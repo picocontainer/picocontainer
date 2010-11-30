@@ -11,10 +11,10 @@
 
 package org.picocontainer.script.util;
 
-import org.picocontainer.PicoCompositionException;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.picocontainer.PicoCompositionException;
 
 @SuppressWarnings("serial")
 public class StringConversions {

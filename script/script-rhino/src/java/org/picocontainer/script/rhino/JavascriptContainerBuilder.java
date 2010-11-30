@@ -22,9 +22,8 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 
 /**
@@ -42,19 +41,12 @@ import org.picocontainer.script.ScriptedContainerBuilder;
 public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
 
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-	
-    public JavascriptContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+    	super(script,classLoader);
     }
 
+
     public JavascriptContainerBuilder(URL script, ClassLoader classLoader) {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-    
-    public JavascriptContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+    	super(script,classLoader);
     }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {

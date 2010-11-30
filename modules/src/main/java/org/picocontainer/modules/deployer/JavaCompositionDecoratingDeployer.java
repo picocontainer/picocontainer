@@ -6,6 +6,7 @@ package org.picocontainer.modules.deployer;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.modules.ModuleMonitor;
 
 /**
@@ -48,11 +49,6 @@ public class JavaCompositionDecoratingDeployer implements Deployer {
 
 	private String compositionClassName;
 
-	/**
-	 * Allow people to configure autostart behavior similar to scripting
-	 * behavior.
-	 */
-	private boolean autoStart = true;
 
 	/**
 	 * Constructs a java composition-based deployer that wraps a backup deployer
@@ -117,10 +113,6 @@ public class JavaCompositionDecoratingDeployer implements Deployer {
 					.newInstance();
 			final MutablePicoContainer returnValue = composer.createContainer(
 					parentContainer, moduleClassLoader, assemblyScope);
-
-			if (isAutoStart()) {
-				returnValue.start();
-			}
 
 			getMonitor().deploySuccess(applicationFolder, returnValue,
 					System.currentTimeMillis() - startTime);
@@ -203,21 +195,8 @@ public class JavaCompositionDecoratingDeployer implements Deployer {
 		return this;
 	}
 
-	public boolean isAutoStart() {
-		return autoStart;
-	}
-
-	/**
-	 * Allows you to turn off automatic starting of the container once it is
-	 * constructed.
-	 * 
-	 * @param autoStart
-	 * @return <code>this</code> to allow for method chaining.
-	 */
-	public JavaCompositionDecoratingDeployer setAutoStart(
-			final boolean autoStart) {
-		this.autoStart = autoStart;
-		return this;
+	public void killContainer(PicoContainer container) {
+		delegate.killContainer(container);
 	}
 
 }

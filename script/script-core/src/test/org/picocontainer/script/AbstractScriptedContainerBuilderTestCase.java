@@ -8,7 +8,6 @@
 package org.picocontainer.script;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.ScriptedContainerBuilder;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -16,12 +15,12 @@ import org.picocontainer.script.ScriptedContainerBuilder;
  */
 public abstract class AbstractScriptedContainerBuilderTestCase {
 
-    protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer,
+    protected PicoContainer buildContainer(ContainerBuilder builder, PicoContainer parentContainer,
             Object assemblyScope) {
         return buildContainer(builder, parentContainer, assemblyScope, true);
     }
 
-    protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer,
+    protected PicoContainer buildContainer(ContainerBuilder builder, PicoContainer parentContainer,
             Object assemblyScope, boolean addChildToParent) {
         return builder.buildContainer(parentContainer, assemblyScope, addChildToParent);
     }

@@ -28,6 +28,7 @@ import org.picocontainer.jetty.groovy.TestHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.references.SimpleReference;
 
@@ -269,10 +270,10 @@ public final class WebContainerBuilderTestCase {
         } catch (FileNotFoundException e) {
             actual = "";
         }
-        assertEquals(message, actual);
+        PlatformAssert.assertSameExceptCarriageReturns(message, actual);
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        return new GroovyContainerBuilder(script, getClass().getClassLoader()).buildContainer(parent, scope, true);
+        return new AutoStartingContainerBuilder(new GroovyContainerBuilder(script, getClass().getClassLoader())).buildContainer(parent, scope, true);
     }
 }

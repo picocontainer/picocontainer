@@ -10,10 +10,10 @@
 package org.picocontainer.script.xml;
 
 
+import java.lang.reflect.Type;
+
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.AbstractAdapter;
-
-import java.lang.reflect.Type;
 
 /**
  * component adapter to test script instantiation.

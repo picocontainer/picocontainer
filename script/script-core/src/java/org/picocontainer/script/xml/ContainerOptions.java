@@ -9,9 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.script.xml;
 
+import static org.picocontainer.script.xml.AttributeUtils.boolValue;
+import static org.picocontainer.script.xml.XMLConstants.CACHING_ATTRIBUTE;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_MONITOR;
+import static org.picocontainer.script.xml.XMLConstants.INHERIT_BEHAVIORS_ATTRIBUTE;
+
 import org.w3c.dom.Element;
-import static org.picocontainer.script.xml.AttributeUtils.*;
-import static org.picocontainer.script.xml.XMLConstants.*;
 
 /**
  * Extensible way to bundle up attributes for the container

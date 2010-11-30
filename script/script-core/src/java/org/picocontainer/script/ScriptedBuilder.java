@@ -7,22 +7,22 @@
  ******************************************************************************/
 package org.picocontainer.script;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.InjectionType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
-
-import java.net.URL;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Facade to build ScriptedScriptedPicoContainer

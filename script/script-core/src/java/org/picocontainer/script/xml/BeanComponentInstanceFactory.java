@@ -8,17 +8,16 @@
  *****************************************************************************/
 package org.picocontainer.script.xml;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.ComponentFactory;
-
 import java.util.Properties;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.PropertyApplying;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

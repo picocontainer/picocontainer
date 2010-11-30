@@ -22,8 +22,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.groovy.GroovyContainerBuilder;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.testmodel.A;
 
 /**
@@ -146,7 +145,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "  component(org.picocontainer.script.testmodel.A)\n" +
                 "}");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        PicoContainer pico = buildContainer(new AutoStartingContainerBuilder(new GroovyContainerBuilder(script, getClass().getClassLoader())), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -161,7 +160,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "  component(A)\n" +
                 "}");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        GroovyContainerBuilder containerBuilder = new GroovyContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        GroovyContainerBuilder containerBuilder = new GroovyContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

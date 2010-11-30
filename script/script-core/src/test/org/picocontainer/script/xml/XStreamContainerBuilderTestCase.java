@@ -18,6 +18,11 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locking;
@@ -25,11 +30,6 @@ import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.testmodel.DefaultWebServerConfig;
 import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
 import org.picocontainer.script.testmodel.WebServerImpl;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoBuilder;
-import org.picocontainer.PicoContainer;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 

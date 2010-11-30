@@ -21,7 +21,6 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
@@ -44,20 +43,12 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     private Class<?> scriptClass;
 
     public GroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
-        this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-    
-    public GroovyContainerBuilder(final Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-    	super(script,classLoader, lifecycleMode);
+    	super(script,classLoader);
     	createGroovyClass();
     }
 
     public GroovyContainerBuilder(final URL script, ClassLoader classLoader) {
-        this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-
-    public GroovyContainerBuilder(final URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+        super(script, classLoader);
         createGroovyClass();
     }
     
@@ -101,8 +92,9 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     private void createGroovyClass() {
         try {
             GroovyClassLoader loader = new GroovyClassLoader(getClassLoader());
-            InputStream scriptIs = getScriptInputStream();
-            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(scriptIs,"picocontainer.groovy","groovyGeneratedForPicoContainer");
+            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(getScriptReader(),
+            		"picocontainer.groovy",
+            		"groovyGeneratedForPicoContainer");
             scriptClass = loader.parseClass(groovyCodeSource);
         } catch (CompilationFailedException e) {
             throw new GroovyCompilationException("Compilation Failed '" + e.getMessage() + "'", e);

@@ -7,8 +7,6 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.modules.deployer.FolderContentHandler;
-import org.picocontainer.modules.deployer.FolderContentPoller;
 import org.picocontainer.tck.MockFactory;
 
 /**

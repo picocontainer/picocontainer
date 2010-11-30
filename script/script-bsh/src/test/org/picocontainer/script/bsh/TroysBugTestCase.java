@@ -1,5 +1,10 @@
 package org.picocontainer.script.bsh;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.Reader;
+import java.io.StringReader;
+
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -11,13 +16,8 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedContainerBuilder;
-
-import java.io.Reader;
-import java.io.StringReader;
-
-import static org.junit.Assert.assertTrue;
+import org.picocontainer.script.AutoStartingContainerBuilder;
+import org.picocontainer.script.ContainerBuilder;
 
 public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -31,7 +31,7 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
                 "// add dependencies...\n" +
                 "pico.addComponent("+Thing.class.getName()+".class, "+ThingImpl.class.getName()+".class, null);");
 
-        ScriptedContainerBuilder builder = new BeanShellContainerBuilder(script, AbstractScriptedContainerBuilderTestCase.class.getClassLoader(), LifecycleMode.AUTO_LIFECYCLE);
+        ContainerBuilder builder = new AutoStartingContainerBuilder(new BeanShellContainerBuilder(script, AbstractScriptedContainerBuilderTestCase.class.getClassLoader()));
 
         ComponentFactory componentFactory = new Caching().wrap(new ConstructorInjection());
         ComponentMonitor monitor = new ConsoleComponentMonitor();
@@ -52,12 +52,13 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
         void sstop(); 
     }
 
-    public static class CustomLifecycleStrategy extends StartableLifecycleStrategy {
+    @SuppressWarnings("serial")
+	public static class CustomLifecycleStrategy extends StartableLifecycleStrategy {
         public CustomLifecycleStrategy(ComponentMonitor monitor) {
             super(monitor);
         }
 
-        protected Class getStartableInterface() {
+        protected Class<?> getStartableInterface() {
             return CustomStartable.class;
         }
 

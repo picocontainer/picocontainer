@@ -19,6 +19,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.classname.ClassName;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.web.WebappComposer;
@@ -85,7 +86,7 @@ public class ScriptedWebappComposer implements WebappComposer {
         Parameter[] parameters = new Parameter[] { new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         scripted.addComponent(containerBuilderClassName, new ClassName(containerBuilderClassName), parameters);
-        return scripted.getComponent(ContainerBuilder.class);
+        return new AutoStartingContainerBuilder(scripted.getComponent(ContainerBuilder.class));
     }
 
     private Reader getResource(String resource) {

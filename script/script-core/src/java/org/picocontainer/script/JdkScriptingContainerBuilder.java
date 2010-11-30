@@ -43,25 +43,10 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 	 * engine.
 	 * @param script
 	 * @param classLoader  Ignored in this implementation due to limitation with JSR 223
-	 * @param lifecycleMode
 	 */
-	public JdkScriptingContainerBuilder(final String scriptEngineShortName,
-			final Reader script, final ClassLoader classLoader,
-			final LifecycleMode lifecycleMode) {
-		super(script, classLoader, lifecycleMode);
-		this.engineName = scriptEngineShortName;
-	}
-
 	public JdkScriptingContainerBuilder(final String scriptEngineShortName,
 			final Reader script, final ClassLoader classLoader) {
 		super(script, classLoader);
-		engineName = scriptEngineShortName;
-	}
-
-	public JdkScriptingContainerBuilder(final String scriptEngineShortName,
-			final URL script, final ClassLoader classLoader,
-			final LifecycleMode lifecycleMode) {
-		super(script, classLoader, lifecycleMode);
 		engineName = scriptEngineShortName;
 	}
 

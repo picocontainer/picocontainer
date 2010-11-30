@@ -7,28 +7,23 @@
  ******************************************************************************/
 package org.picocontainer.script;
 
+import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.Disposable;
+import org.picocontainer.script.util.MultiException;
 
 /**
+ * Template implementation of a ContainerBuilder.
  * @author Joe Walnes
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-// TODO -- Perhaps the start/stop behavior should be moved to a decorator?
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
 
-    private final LifecycleMode startMode;
-
     public AbstractContainerBuilder() {
-        this(LifecycleMode.AUTO_LIFECYCLE);
-    }
-
-    public AbstractContainerBuilder(LifecycleMode startMode) {
-        this.startMode = startMode;
+    	super();
     }
 
     public final PicoContainer buildContainer(PicoContainer parentContainer, Object assemblyScope,
@@ -49,37 +44,45 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
             }
         }
 
-        autoStart(container);
-
         return container;
     }
 
-    protected void autoStart(PicoContainer container) {
-        if (!startMode.isInvokeLifecycle()) {
-            return;
-        }
-
-        if (container instanceof Startable) {
-            ((Startable) container).start();
-        }
-    }
-
+    /**
+     * Removes the container from the parent if possible.
+     */
     public void killContainer(PicoContainer container) {
-        if (startMode.isInvokeLifecycle()) {
-            if (container instanceof Startable) {
-                ((Startable) container).stop();
-            }
-        }
+    	MultiException ex = new MultiException("killContainer(" + container + ")");
+        try {
+			if (container instanceof Startable) {
+			    ((Startable) container).stop();
+			}
+		} catch (Exception e) {
+			ex.addException(e);
+		}
 
-        if (container instanceof Disposable) {
-            ((Disposable) container).dispose();
-        }
+        try {
+        	if (container instanceof Disposable) {
+        		((Disposable) container).dispose();
+        	}
+		} catch (Exception e) {
+			ex.addException(e);
+		}
+    	
+    	
         PicoContainer parent = container.getParent();
         if (parent != null && parent instanceof MutablePicoContainer) {
             // see comment in buildContainer
-            synchronized (parent) {
-                ((MutablePicoContainer) parent).removeChildContainer(container);
-            }
+            try {
+				synchronized (parent) {
+				    ((MutablePicoContainer) parent).removeChildContainer(container);
+				}
+			} catch (Exception e) {
+				ex.addException(e);
+			}
+        }
+        
+        if (ex.getErrorCount() > 0) {
+        	throw ex;
         }
     }
 

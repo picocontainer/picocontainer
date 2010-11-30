@@ -3,6 +3,7 @@ package org.picocontainer.modules.deployer;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.modules.ModuleMonitor;
 
 /**
@@ -55,6 +56,14 @@ public interface Deployer {
 			ClassLoader parentClassLoader,
 			MutablePicoContainer parentContainer, Object assemblyScope)
 			throws FileSystemException;
+	
+	
+    /**
+     * Undeploys the containers.
+     * 
+     * @param container the PicoContainer to be killed
+     */
+    void killContainer(PicoContainer container);
 
 	/**
 	 * Retrieve the module layout (usually defined in the constructor).

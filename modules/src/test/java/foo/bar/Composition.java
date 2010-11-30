@@ -5,7 +5,6 @@ package foo.bar;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.modules.deployer.AbstractPicoComposer;
-import foo.bar.Zap;
 
 /**
  * @author Mike

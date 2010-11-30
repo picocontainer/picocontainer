@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.modules.deployer.PicoScriptingExtensionMapper;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
 
 public class PicoScriptingExtensionMapperTestCase {

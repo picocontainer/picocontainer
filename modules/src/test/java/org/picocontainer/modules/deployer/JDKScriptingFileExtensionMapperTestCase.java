@@ -1,13 +1,14 @@
 package org.picocontainer.modules.deployer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.script.ScriptEngineManager;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.modules.deployer.JDKScriptingFileExtensionMapper;
-
-import javax.script.ScriptEngineManager;
 
 @SuppressWarnings("restriction")
 public class JDKScriptingFileExtensionMapperTestCase {

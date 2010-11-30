@@ -20,6 +20,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.classname.ClassName;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
@@ -64,8 +65,6 @@ public final class ServletChainBuilder {
      * @param path the String representing the servlet path used as key for the
      *            recorder cache
      */
-
-
     private void populateContainer(String resourcePath, MutablePicoContainer container) {
         PicoContainer buildContainer = buildContainer(resourcePath, container.getParent());
         for (ComponentAdapter<?> adapter : buildContainer.getComponentAdapters()) {
@@ -83,7 +82,7 @@ public final class ServletChainBuilder {
         Parameter[] parameters = new Parameter[] { new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         scripted.addComponent(containerBuilderClassName, new ClassName(containerBuilderClassName), parameters);
-        return scripted.getComponent(ContainerBuilder.class);
+        return new AutoStartingContainerBuilder(scripted.getComponent(ContainerBuilder.class));
     }
 
 

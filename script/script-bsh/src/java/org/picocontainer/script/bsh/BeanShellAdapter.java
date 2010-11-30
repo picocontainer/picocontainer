@@ -9,20 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.script.bsh;
 
-import bsh.EvalError;
-import bsh.Interpreter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.adapters.AbstractAdapter;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.lang.reflect.Type;
+
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.AbstractAdapter;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 /**
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation

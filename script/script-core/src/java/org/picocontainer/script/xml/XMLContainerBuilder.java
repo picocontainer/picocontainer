@@ -7,6 +7,52 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
+import static org.picocontainer.script.xml.AttributeUtils.EMPTY;
+import static org.picocontainer.script.xml.AttributeUtils.isSet;
+import static org.picocontainer.script.xml.AttributeUtils.notSet;
+import static org.picocontainer.script.xml.XMLConstants.CLASS;
+import static org.picocontainer.script.xml.XMLConstants.CLASSLOADER;
+import static org.picocontainer.script.xml.XMLConstants.CLASSNAME;
+import static org.picocontainer.script.xml.XMLConstants.CLASSPATH;
+import static org.picocontainer.script.xml.XMLConstants.CLASS_NAME_KEY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_FROM_JNDI;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_IMPLEMENTATION;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_KEY_TYPE;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_VALUE_TYPE;
+import static org.picocontainer.script.xml.XMLConstants.CONTAINER;
+import static org.picocontainer.script.xml.XMLConstants.CONTEXT;
+import static org.picocontainer.script.xml.XMLConstants.EMPTY_COLLECTION;
+import static org.picocontainer.script.xml.XMLConstants.FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.FILE;
+import static org.picocontainer.script.xml.XMLConstants.JNDI_NAME;
+import static org.picocontainer.script.xml.XMLConstants.KEY;
+import static org.picocontainer.script.xml.XMLConstants.PARAMETER;
+import static org.picocontainer.script.xml.XMLConstants.PARAMETER_ZERO;
+import static org.picocontainer.script.xml.XMLConstants.URL;
+import static org.picocontainer.script.xml.XMLConstants.VALUE;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.Permission;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.naming.NamingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -25,6 +71,8 @@ import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassName;
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.gems.jndi.JNDIObjectReference;
+import org.picocontainer.gems.jndi.JNDIProvided;
 import org.picocontainer.injectors.AbstractInjectionType;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.MultiArgMemberInjector;
@@ -32,9 +80,6 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.gems.jndi.JNDIProvided;
-import org.picocontainer.gems.jndi.JNDIObjectReference;
-import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -45,52 +90,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.googlecode.jtype.Generic;
-
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.naming.NamingException;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import static org.picocontainer.script.xml.AttributeUtils.EMPTY;
-import static org.picocontainer.script.xml.AttributeUtils.isSet;
-import static org.picocontainer.script.xml.AttributeUtils.notSet;
-import static org.picocontainer.script.xml.XMLConstants.CLASS;
-import static org.picocontainer.script.xml.XMLConstants.CLASSLOADER;
-import static org.picocontainer.script.xml.XMLConstants.CLASSNAME;
-import static org.picocontainer.script.xml.XMLConstants.CLASSPATH;
-import static org.picocontainer.script.xml.XMLConstants.CLASS_NAME_KEY;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER_FACTORY;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_IMPLEMENTATION;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_KEY_TYPE;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_VALUE_TYPE;
-import static org.picocontainer.script.xml.XMLConstants.CONTAINER;
-import static org.picocontainer.script.xml.XMLConstants.CONTEXT;
-import static org.picocontainer.script.xml.XMLConstants.EMPTY_COLLECTION;
-import static org.picocontainer.script.xml.XMLConstants.FACTORY;
-import static org.picocontainer.script.xml.XMLConstants.FILE;
-import static org.picocontainer.script.xml.XMLConstants.KEY;
-import static org.picocontainer.script.xml.XMLConstants.PARAMETER;
-import static org.picocontainer.script.xml.XMLConstants.PARAMETER_ZERO;
-import static org.picocontainer.script.xml.XMLConstants.URL;
-import static org.picocontainer.script.xml.XMLConstants.VALUE;
-import static org.picocontainer.script.xml.XMLConstants.JNDI_NAME;
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_FROM_JNDI;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -111,13 +110,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
      * It may be overridden at node level.
      */
     private XMLComponentInstanceFactory componentInstanceFactory;
-
-    public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
     
-    public XMLContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+    public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
+        super(script, classLoader);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             parse(documentBuilder, new InputSource(script));
@@ -127,11 +122,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
     public XMLContainerBuilder(final URL script, ClassLoader classLoader) {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-    
-    public XMLContainerBuilder(final URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+        super(script, classLoader);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             documentBuilder.setEntityResolver(new EntityResolver() {

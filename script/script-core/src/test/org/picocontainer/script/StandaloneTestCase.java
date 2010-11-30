@@ -9,16 +9,17 @@
 
 package org.picocontainer.script;
 
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import junit.framework.TestCase;import static junit.framework.Assert.assertTrue;import static junit.framework.Assert.assertNull;
-
 import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
 
 
 /**

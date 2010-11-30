@@ -39,15 +39,15 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
-import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.B;
@@ -482,7 +482,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                 "       component(A)\n" +
                 "}\n");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        PicoContainer pico = buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        PicoContainer pico = buildContainer(new AutoStartingContainerBuilder(new JRubyContainerBuilder(script, getClass().getClassLoader())), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -497,7 +497,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                 "       component(A)\n" +
                 "}\n");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        JRubyContainerBuilder containerBuilder = new JRubyContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        JRubyContainerBuilder containerBuilder = new JRubyContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
@@ -687,6 +687,6 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        return buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
+        return buildContainer(new AutoStartingContainerBuilder(new JRubyContainerBuilder(script, getClass().getClassLoader())), parent, scope);
     }
 }

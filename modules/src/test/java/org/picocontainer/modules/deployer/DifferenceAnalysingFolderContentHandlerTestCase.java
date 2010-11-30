@@ -8,8 +8,6 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.modules.deployer.DifferenceAnalysingFolderContentHandler;
-import org.picocontainer.modules.deployer.FolderListener;
 import org.picocontainer.tck.MockFactory;
 
 /**

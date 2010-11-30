@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.vfs.FileObject;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.script.util.MultiException;
 
 /**
  * Monitor interface that receives events during deployment
@@ -26,26 +27,36 @@ public interface ModuleMonitor extends Serializable {
 	/**
 	 * Indicates that a composition class was found in the specified module, 
 	 * but it is not the correct type.
-	 * @param applicationFolder
+	 * @param componentFolder
 	 * @param compositionClass
 	 * @param moduleClassLoader
 	 */
-	void compositionClassNotCorrectType(FileObject applicationFolder,
+	void compositionClassNotCorrectType(FileObject componentFolder,
 			Class<?> compositionClass, ClassLoader moduleClassLoader);
 
 	/**
 	 * Generic event when an exception is thrown during deployment. 
-	 * @param applicationFolder
+	 * @param componentFolder
 	 * @param e
 	 */
-	void errorPerformingDeploy(FileObject applicationFolder, Throwable e);
+	void errorPerformingDeploy(FileObject componentFolder, Throwable e);
 
 	/**
 	 * Indicates a deployment was successful.
-	 * @param applicationFolder
+	 * @param componentFolder
 	 * @param returnValue
 	 * @param timeInMillis
 	 */
-	void deploySuccess(FileObject applicationFolder,
+	void deploySuccess(FileObject componentFolder,
 			MutablePicoContainer returnValue, long timeInMillis);
+
+	void skippingDeploymentBecauseNotDeployable(FileObject allChildren);
+
+	void startingMultiModuleDeployment(FileObject moduleDirectory);
+
+	void multiModuleDeploymentFailed(FileObject moduleDirectory,
+			MultiException errors);
+
+	void multiModuleDeploymentSuccess(FileObject moduleDirectory,
+			MutablePicoContainer returnValue, long deploymentTime);
 }

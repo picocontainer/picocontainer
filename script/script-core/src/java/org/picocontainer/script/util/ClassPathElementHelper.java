@@ -8,14 +8,14 @@
 package org.picocontainer.script.util;
 
 
-import java.net.URL;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.io.File;
 
-import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 public class ClassPathElementHelper {

@@ -6,10 +6,9 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.junit.Test;
-import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 

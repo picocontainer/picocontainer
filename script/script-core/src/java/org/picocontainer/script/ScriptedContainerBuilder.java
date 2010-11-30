@@ -28,13 +28,10 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;
-    
-    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
 
-    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(lifecycleMode);
+
+    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
+        super();
     	this.scriptReader = script;
         if (script == null) {
             throw new NullPointerException("script");
@@ -46,12 +43,8 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
     }
     
-    public ScriptedContainerBuilder(URL script, ClassLoader classLoader)  {
-    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-    }
-
-    public ScriptedContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(lifecycleMode);
+    public ScriptedContainerBuilder(URL script, ClassLoader classLoader) {
+        super();
     	this.scriptReader = null;        
         this.scriptURL = script;
         if (script == null) {

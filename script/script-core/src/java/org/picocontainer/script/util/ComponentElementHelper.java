@@ -7,12 +7,12 @@
  ******************************************************************************/
 package org.picocontainer.script.util;
 
+import java.util.Properties;
+
 import org.picocontainer.Parameter;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-
-import java.util.Properties;
 
 
 public class ComponentElementHelper {

@@ -23,6 +23,7 @@ import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
@@ -804,7 +805,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        return buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
+        return buildContainer(new AutoStartingContainerBuilder(new GroovyContainerBuilder(script, getClass().getClassLoader())), parent, scope);
     }
 
 }

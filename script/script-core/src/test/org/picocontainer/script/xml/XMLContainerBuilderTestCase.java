@@ -13,8 +13,8 @@ package org.picocontainer.script.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -26,9 +26,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-import java.util.Collection;
 
 import javax.swing.JButton;
 
@@ -37,9 +37,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locking;
@@ -48,6 +48,7 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.CustomerEntityImpl;
@@ -999,7 +1000,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
     private PicoContainer buildContainer(Reader script) {
-        return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
+        return buildContainer(new AutoStartingContainerBuilder( new XMLContainerBuilder(script, getClass().getClassLoader())), null, "SOME_SCOPE");
     }
 
     static public final class StaticWriterComponentMonitor extends WriterComponentMonitor {

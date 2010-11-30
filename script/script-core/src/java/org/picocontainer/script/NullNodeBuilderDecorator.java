@@ -7,10 +7,10 @@
  ******************************************************************************/
 package org.picocontainer.script;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentFactory;
-
 import java.util.Map;
+
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Null-object implementation of NodeBuilderDecorator

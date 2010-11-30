@@ -9,6 +9,11 @@
 
 package org.picocontainer.script.jruby;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.util.Collections;
+
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.exceptions.RaiseException;
@@ -22,14 +27,8 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.util.Collections;
 
 /**
  * The script uses the {@code scriptedcontainer.rb} script to create an instance of
@@ -42,14 +41,9 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	public static final String MARKUP_EXCEPTION_PREFIX = "scriptedbuilder: ";
 
 	private final String script;
-
+	
 	public JRubyContainerBuilder(Reader script, ClassLoader classLoader) {
-		this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
-	}
-	
-	
-	public JRubyContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycle) {
-		super(script, classLoader, lifecycle);
+		super(script, classLoader);
 		this.script = toString(script);
 	}
 

@@ -9,17 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.script.jython;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+
 import java.io.Reader;
 import java.io.StringReader;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
 import org.picocontainer.script.testmodel.WebServerImpl;
@@ -91,7 +94,10 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "pico.addComponent(A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        PicoContainer pico = buildContainer(
+        		new AutoStartingContainerBuilder(
+        				new JythonContainerBuilder(script, getClass().getClassLoader())
+        		), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is immutable
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -108,7 +114,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "pico.addComponent(A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        JythonContainerBuilder containerBuilder = new JythonContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        JythonContainerBuilder containerBuilder = new JythonContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

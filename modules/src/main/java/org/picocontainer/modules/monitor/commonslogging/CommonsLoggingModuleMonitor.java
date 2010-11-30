@@ -10,6 +10,7 @@ import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.modules.ModuleMonitor;
 import org.picocontainer.modules.deployer.AbstractPicoComposer;
+import org.picocontainer.script.util.MultiException;
 
 /**
  * @author Mike
@@ -116,6 +117,31 @@ public class CommonsLoggingModuleMonitor implements ModuleMonitor {
 			log.debug("Deployed Container: " + returnValue);
 		}
 
+	}
+
+	public void skippingDeploymentBecauseNotDeployable(FileObject targetFile) {
+		if (targetFile == null) {
+			log.warn("Received skipping deployment because not deployable, but targetFile paramter was null!");
+		} else {
+			log.info("File " + targetFile + " has not been deployed because it is not a recognizable directory/archive");
+		}
+	}
+
+	public void startingMultiModuleDeployment(FileObject moduleDirectory) {
+		log.info("Beginning deployment of folder " + moduleDirectory);
+	}
+
+	public void multiModuleDeploymentFailed(FileObject moduleDirectory,
+			MultiException errors) {
+		log.error("Error performing deployment in folder " + moduleDirectory, errors);
+		
+	}
+
+	public void multiModuleDeploymentSuccess(FileObject moduleDirectory,
+			MutablePicoContainer returnValue, long deploymentTime) {
+		log.info("Successfully deployed module folder " + moduleDirectory
+				+ " resulting picocontainer: " 
+				+ returnValue + "\n\tDeplyoment Time: " + deploymentTime + " m.s.");
 	}
 
 }

@@ -29,9 +29,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.bsh.BeanShellContainerBuilder;
 import org.picocontainer.script.testmodel.A;
 
 /**
@@ -108,7 +107,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
                 "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();
-        PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        PicoContainer pico = buildContainer(new AutoStartingContainerBuilder( new BeanShellContainerBuilder(script, getClass().getClassLoader())), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -123,7 +122,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
                 "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();
-        BeanShellContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        BeanShellContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

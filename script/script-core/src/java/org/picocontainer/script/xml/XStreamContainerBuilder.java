@@ -7,7 +7,6 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
-import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
 import static org.picocontainer.script.xml.XMLConstants.PARAMETER_ZERO;
 
 import java.io.IOException;
@@ -20,19 +19,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -88,12 +82,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
     }
 
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
-        this(script, classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
-    }
-
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver,
-            LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+        super(script, classLoader);
         xsdriver = driver;
         InputSource inputSource = new InputSource(script);
         try {
@@ -109,12 +98,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
     }
 
     public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
-        this(script, classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
-    }
-
-    public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver,
-            LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
+        super(script, classLoader);
         xsdriver = driver;
         try {
             InputSource inputSource = new InputSource(getScriptReader());

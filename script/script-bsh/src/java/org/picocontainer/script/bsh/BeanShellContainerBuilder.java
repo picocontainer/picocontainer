@@ -5,9 +5,8 @@ import java.io.Reader;
 import java.net.URL;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -27,20 +26,13 @@ import bsh.Interpreter;
 public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
 
     public BeanShellContainerBuilder(Reader script, ClassLoader classLoader) {
-        this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
+        super(script, classLoader);
     }
 
     public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {
-    	this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    	super(script, classLoader);
     }
 
-    public BeanShellContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
-    }
-
-    public BeanShellContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader, lifecycleMode);
-    }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Interpreter i = new Interpreter();
