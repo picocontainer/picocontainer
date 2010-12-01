@@ -11,20 +11,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.servlet.ServletContext;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.classname.ClassName;
-import org.picocontainer.script.AutoStartingContainerBuilder;
-import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.web.WebappComposer;
-
-import javax.servlet.ServletContext;
 
 /**
  * Script-based webapp composer. Allows to build containers for each webapp
@@ -86,7 +85,7 @@ public class ScriptedWebappComposer implements WebappComposer {
         Parameter[] parameters = new Parameter[] { new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         scripted.addComponent(containerBuilderClassName, new ClassName(containerBuilderClassName), parameters);
-        return new AutoStartingContainerBuilder(scripted.getComponent(ContainerBuilder.class));
+        return scripted.getComponent(ContainerBuilder.class);
     }
 
     private Reader getResource(String resource) {

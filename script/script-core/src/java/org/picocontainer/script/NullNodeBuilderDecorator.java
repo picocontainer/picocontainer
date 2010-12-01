@@ -18,9 +18,9 @@ import org.picocontainer.MutablePicoContainer;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-@SuppressWarnings({"unchecked","unused"})
+@SuppressWarnings({"rawtypes"})
 public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
-    public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
+	public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
         return componentFactory;
     }
 

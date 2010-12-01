@@ -48,7 +48,6 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.CustomerEntityImpl;
@@ -1000,7 +999,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
     private PicoContainer buildContainer(Reader script) {
-        return buildContainer(new AutoStartingContainerBuilder( new XMLContainerBuilder(script, getClass().getClassLoader())), null, "SOME_SCOPE");
+        return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
     }
 
     static public final class StaticWriterComponentMonitor extends WriterComponentMonitor {

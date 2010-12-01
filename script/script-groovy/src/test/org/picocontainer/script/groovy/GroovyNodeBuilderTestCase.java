@@ -1,5 +1,23 @@
 package org.picocontainer.script.groovy;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Properties;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -23,7 +41,6 @@ import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
@@ -33,24 +50,6 @@ import org.picocontainer.script.testmodel.ParentAssemblyScope;
 import org.picocontainer.script.testmodel.SomeAssemblyScope;
 import org.picocontainer.script.testmodel.WebServerConfig;
 import org.picocontainer.script.testmodel.X;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 /**
  *
@@ -805,7 +804,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        return buildContainer(new AutoStartingContainerBuilder(new GroovyContainerBuilder(script, getClass().getClassLoader())), parent, scope);
+        return buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
     }
 
 }

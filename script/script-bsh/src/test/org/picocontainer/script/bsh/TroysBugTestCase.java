@@ -16,7 +16,6 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.ContainerBuilder;
 
 public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
@@ -31,7 +30,7 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
                 "// add dependencies...\n" +
                 "pico.addComponent("+Thing.class.getName()+".class, "+ThingImpl.class.getName()+".class, null);");
 
-        ContainerBuilder builder = new AutoStartingContainerBuilder(new BeanShellContainerBuilder(script, AbstractScriptedContainerBuilderTestCase.class.getClassLoader()));
+        ContainerBuilder builder = new BeanShellContainerBuilder(script, AbstractScriptedContainerBuilderTestCase.class.getClassLoader());
 
         ComponentFactory componentFactory = new Caching().wrap(new ConstructorInjection());
         ComponentMonitor monitor = new ConsoleComponentMonitor();

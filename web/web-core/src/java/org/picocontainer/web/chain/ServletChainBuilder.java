@@ -18,12 +18,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.classname.ClassName;
-import org.picocontainer.script.AutoStartingContainerBuilder;
-import org.picocontainer.script.ContainerBuilder;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.script.ContainerBuilder;
 
 /**
  * <p>
@@ -82,7 +81,7 @@ public final class ServletChainBuilder {
         Parameter[] parameters = new Parameter[] { new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         scripted.addComponent(containerBuilderClassName, new ClassName(containerBuilderClassName), parameters);
-        return new AutoStartingContainerBuilder(scripted.getComponent(ContainerBuilder.class));
+        return scripted.getComponent(ContainerBuilder.class);
     }
 
 

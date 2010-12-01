@@ -24,13 +24,9 @@ import java.net.URL;
 import org.junit.After;
 import org.junit.Test;
 import org.mortbay.util.IO;
-import org.picocontainer.jetty.groovy.TestHelper;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.AutoStartingContainerBuilder;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
-import org.picocontainer.references.SimpleReference;
 
 public final class WebContainerBuilderTestCase {
 
@@ -274,6 +270,6 @@ public final class WebContainerBuilderTestCase {
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        return new AutoStartingContainerBuilder(new GroovyContainerBuilder(script, getClass().getClassLoader())).buildContainer(parent, scope, true);
+        return new GroovyContainerBuilder(script, getClass().getClassLoader()).buildContainer(parent, scope, true);
     }
 }

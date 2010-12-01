@@ -28,7 +28,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.AutoStartingContainerBuilder;
+import org.picocontainer.script.ContainerBuilder;
+import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
@@ -151,9 +152,9 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        PicoContainer pico = buildContainer(new AutoStartingContainerBuilder(
+        PicoContainer pico = buildContainer(
         			new JavascriptContainerBuilder(script, getClass().getClassLoader())
-        		), parent, "SOME_SCOPE");
+        		, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -167,7 +168,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        JavascriptContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader());
+        ContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

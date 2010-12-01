@@ -22,7 +22,8 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.AutoStartingContainerBuilder;
+import org.picocontainer.script.ContainerBuilder;
+import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
 import org.picocontainer.script.testmodel.WebServerImpl;
@@ -95,9 +96,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
         PicoContainer pico = buildContainer(
-        		new AutoStartingContainerBuilder(
-        				new JythonContainerBuilder(script, getClass().getClassLoader())
-        		), parent, "SOME_SCOPE");
+    				new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is immutable
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -114,7 +113,8 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "pico.addComponent(A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        JythonContainerBuilder containerBuilder = new JythonContainerBuilder(script, getClass().getClassLoader());
+        ContainerBuilder containerBuilder = new JythonContainerBuilder(script, 
+        		getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

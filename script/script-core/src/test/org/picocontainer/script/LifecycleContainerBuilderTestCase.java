@@ -39,7 +39,7 @@ public class LifecycleContainerBuilderTestCase {
             }
         });
 
-        ContainerBuilder builder = new AutoStartingContainerBuilder( new LifecycleContainerBuilder(childStartable));
+        ContainerBuilder builder = new LifecycleContainerBuilder(childStartable);
 
         MutablePicoContainer parent = new DefaultPicoContainer();
 

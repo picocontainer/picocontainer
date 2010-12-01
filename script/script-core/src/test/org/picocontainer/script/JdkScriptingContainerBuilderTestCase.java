@@ -143,7 +143,7 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        PicoContainer pico = buildContainer(new AutoStartingContainerBuilder( new JdkScriptingContainerBuilder("js",script, getClass().getClassLoader())), parent, "SOME_SCOPE") ;
+        PicoContainer pico = buildContainer(new JdkScriptingContainerBuilder("js",script, getClass().getClassLoader()), parent, "SOME_SCOPE") ;
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("<A",A.componentRecorder);		
@@ -157,7 +157,7 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        JdkScriptingContainerBuilder containerBuilder = new JdkScriptingContainerBuilder("js",script, getClass().getClassLoader());
+        ContainerBuilder containerBuilder = new JdkScriptingContainerBuilder("js",script, getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

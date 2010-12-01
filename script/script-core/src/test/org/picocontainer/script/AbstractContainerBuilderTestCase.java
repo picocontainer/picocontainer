@@ -2,6 +2,7 @@ package org.picocontainer.script;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.PrintWriter;
@@ -80,9 +81,6 @@ public class AbstractContainerBuilderTestCase {
 	}
 
 	@Test
-	/**
-	 * FAILURE!  Marked in JIRA-
-	 */
 	public void testKillContainerRemovesChildFromParentAndStopsChild() {
 		parentContainer.start();
 		toTest.killContainer(simpleContainer);
@@ -148,4 +146,16 @@ public class AbstractContainerBuilderTestCase {
 		}
 	}
 
+	@Test
+	public void testBuildContainerCallsPostConstructionActions() {
+		final PostBuildContainerAction action = context.mock(PostBuildContainerAction.class);
+		context.checking(new Expectations() {{
+			oneOf(action).onNewContainer(simpleContainer);
+		}});
+		
+		PicoContainer pico = toTest.setPostBuildAction(action)
+			.buildContainer(this.parentContainer, "SOME_SCOPE", false);
+		
+		assertNotNull(pico);
+	}
 }

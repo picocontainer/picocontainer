@@ -42,6 +42,8 @@ import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 public class ScriptedContainerBuilderFactory {
 
     private ScriptedContainerBuilder containerBuilder;
+    
+	private PostBuildContainerAction postBuildAction = new StartContainerPostBuildContainerAction();
 
     /**
      * Creates a ScriptedContainerBuilderFactory
@@ -193,6 +195,7 @@ public class ScriptedContainerBuilderFactory {
         MutablePicoContainer mutablePicoContainer = defaultScriptedContainer.addComponent(className, className);
         ComponentAdapter<?> componentAdapter = mutablePicoContainer.getComponentAdapter(className);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultScriptedContainer, ComponentAdapter.NOTHING.class);
+        containerBuilder.setPostBuildAction(this.postBuildAction);
     }
 
     private static File fileExists(final File file) throws FileNotFoundException {
@@ -210,5 +213,20 @@ public class ScriptedContainerBuilderFactory {
     public ScriptedContainerBuilder getContainerBuilder() {
         return containerBuilder;
     }
+    
+    /**
+     * Allows you to define the default post build action for any container builder created
+     * through his class.
+     * @param action the action to perform, may not be null.
+     * @return <em>this</em> to allow for method chaining.
+     */
+    public ScriptedContainerBuilderFactory setDefaultPostBuildAction(PostBuildContainerAction action) {
+    	if (action == null) {
+    		throw new NullPointerException("action -- if you want no action taken, use " + NoOpPostBuildContainerAction.class.getName());
+    	}
+    	this.postBuildAction = action;
+    	return this;
+    }
+
 
 }

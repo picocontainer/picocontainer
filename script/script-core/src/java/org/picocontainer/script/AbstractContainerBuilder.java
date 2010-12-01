@@ -21,6 +21,8 @@ import org.picocontainer.script.util.MultiException;
  * @author Mauro Talevi
  */
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
+	
+	private PostBuildContainerAction postBuildAction = new StartContainerPostBuildContainerAction();
 
     public AbstractContainerBuilder() {
     	super();
@@ -43,6 +45,8 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
                 }
             }
         }
+        
+        container = postBuildAction.onNewContainer(container);
 
         return container;
     }
@@ -87,4 +91,19 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
     }
 
     protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
+    
+    
+    /**
+     * Allows you to set the post container build actions.  (After script is executed,
+     * before container is returned).
+     * @param action the action to perform, may not be null.
+     * @return <em>this</em> to allow for method chaining.
+     */
+    public AbstractContainerBuilder setPostBuildAction(PostBuildContainerAction action) {
+    	if (action == null) {
+    		throw new NullPointerException("action -- if you want no action taken, use " + NoOpPostBuildContainerAction.class.getName());
+    	}
+    	this.postBuildAction = action;
+    	return this;
+    }
 }
