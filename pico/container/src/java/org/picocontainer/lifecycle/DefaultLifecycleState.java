@@ -115,4 +115,10 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
 		return state == CONSTRUCTED;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ".state=" + state;
+
+	}
+
 }

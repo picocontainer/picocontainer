@@ -45,6 +45,12 @@ public class ScriptedContainerBuilderFactory {
     
 	private PostBuildContainerAction postBuildAction = new StartContainerPostBuildContainerAction();
 
+	private final Object composition;
+
+	private final String builderClassName;
+
+	private final ClassLoader classLoader;
+
     /**
      * Creates a ScriptedContainerBuilderFactory
      * 
@@ -129,7 +135,10 @@ public class ScriptedContainerBuilderFactory {
      *            using the specified classloader.
      */
     public ScriptedContainerBuilderFactory(URL compositionURL, String builderClassName, ClassLoader classLoader) {
-        createContainerBuilder(compositionURL, builderClassName, classLoader);
+		this.composition = compositionURL;
+		this.builderClassName = builderClassName;
+		this.classLoader = classLoader;
+//        createContainerBuilder(compositionURL, builderClassName, classLoader);
     }
 
     /**
@@ -156,7 +165,10 @@ public class ScriptedContainerBuilderFactory {
      * @param classLoader the Classloader to use for instantiation
      */
     public ScriptedContainerBuilderFactory(Reader composition, String builderClassName, ClassLoader classLoader) {
-        createContainerBuilder(composition, builderClassName, classLoader);
+		this.composition = composition;
+		this.builderClassName = builderClassName;
+		this.classLoader = classLoader;
+        //createContainerBuilder(composition, builderClassName, classLoader);
     }
 
     /**
@@ -211,6 +223,10 @@ public class ScriptedContainerBuilderFactory {
      * @return The ScriptedContainerBuilder instance
      */
     public ScriptedContainerBuilder getContainerBuilder() {
+    	if (containerBuilder == null) {
+    		//Delayed creation so setters can be applied.
+    		createContainerBuilder(composition, builderClassName, classLoader);
+    	}
         return containerBuilder;
     }
     
@@ -222,7 +238,7 @@ public class ScriptedContainerBuilderFactory {
      */
     public ScriptedContainerBuilderFactory setDefaultPostBuildAction(PostBuildContainerAction action) {
     	if (action == null) {
-    		throw new NullPointerException("action -- if you want no action taken, use " + NoOpPostBuildContainerAction.class.getName());
+    		throw new NullPointerException("action cannot be null -- if you want no action taken, use " + NoOpPostBuildContainerAction.class.getName());
     	}
     	this.postBuildAction = action;
     	return this;

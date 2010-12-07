@@ -34,7 +34,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     
     private static final String NAME_ATTRIBUTE = "name";
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) {
         String className = element.getNodeName();
         Object instance;
@@ -54,9 +54,8 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         return instance;
     }
 
-    @SuppressWarnings("unchecked")
-    private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
-        Class implementation = loadClass(classLoader, className);
+    private ComponentAdapter<?> createComponentAdapter(String className, ClassLoader classLoader)  {
+        Class<?> implementation = loadClass(classLoader, className);
         ComponentFactory factory = new AdaptingInjection();
         return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation);
     }

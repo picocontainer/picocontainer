@@ -81,7 +81,7 @@ public class ClassNameDefaultClassLoadingPicoContainerTestCase {
 
         // Set up parent
         ClassLoadingPicoContainer parentContainer = new DefaultClassLoadingPicoContainer();
-        parentContainer.addClassLoaderURL(testCompJar.toURL());
+        parentContainer.addClassLoaderURL(testCompJar.toURI().toURL());
         parentContainer.addComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.addComponent(new ClassName("java.lang.StringBuffer"));
 
@@ -91,7 +91,7 @@ public class ClassNameDefaultClassLoadingPicoContainerTestCase {
         // Set up child
         ClassLoadingPicoContainer childContainer = (ClassLoadingPicoContainer) parentContainer.makeChildContainer();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
-        childContainer.addClassLoaderURL(testCompJar2.toURL());
+        childContainer.addClassLoaderURL(testCompJar2.toURI().toURL());
         childContainer.addComponent("childTestComp", new ClassName("TestComp2"));
 
         Object childTestComp = childContainer.getComponent("childTestComp");

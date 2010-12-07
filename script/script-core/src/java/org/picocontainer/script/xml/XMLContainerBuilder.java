@@ -321,7 +321,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     if (!file.exists()) {
                         throw new IOException(file.getAbsolutePath() + " doesn't exist");
                     }
-                    url = file.toURL();
+                    
+                    url = file.toURI().toURL();
                 }
                 ClassPathElement cpe = container.addClassLoaderURL(url);
                 addPermissions(cpe, childElement);
