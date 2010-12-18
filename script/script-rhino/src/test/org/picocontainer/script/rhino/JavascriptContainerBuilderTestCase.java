@@ -176,4 +176,19 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         A.reset();
     }
     
+    @Test
+    public void testApiJavascriptImpedenceMismatch() {
+        A.reset();
+        Reader script = new StringReader("" +
+        		"importClass(Packages.org.picocontainer.NameBinding);\n\n" +
+                "var pico = parent.makeChildContainer() \n" +
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
+                "var ca = pico.getComponentAdapter(Packages.org.picocontainer.script.testmodel.A, NameBinding.NULL);\n" +
+                "");
+        PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
+        ContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
+        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");   
+        assertNotNull(pico);
+    }
+    
 }

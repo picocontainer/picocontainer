@@ -202,7 +202,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             // key tells us where to look so we follow
             result = typeComponentAdapter(container.getComponentAdapter(key));
         } else if (adapter == null) {
-            result = container.getComponentAdapter(type, (NameBinding) null);
+            result = container.getComponentAdapter(type, NameBinding.NULL);
         } else {
             Object excludeKey = adapter.getComponentKey();
             ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);

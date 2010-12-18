@@ -101,12 +101,25 @@ public interface PicoContainer {
      * Find a component adapter associated with the specified type and binding name. If a component adapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
      *
+     * @param componentType the type of the component.
+     * @param nameBinding the name binding to use. May be {@link org.picocontainer.NameBinding.NULL NameBinding.NULL}
+     * 			if name binding is not going to be used to resolve the component adapter.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key.  @param componentType the type of the component.
-     * @param nameBinding the name binding to use
+     *         registered for the specified key. 
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding);
 
+    /**
+     * Similar to {@link #getComponentAdapter(Class, NameBinding)}, except that it uses a JType generic
+     * as its type.
+     * @param <T> refers to the type of object the ComponentAdapter will construct.
+     * @param componentType the type of the component that a ComponentAdapter retrieved by
+     * this call will construct.
+     * @param nameBinding the name binding to use. May be {@link org.picocontainer.NameBinding.NULL NameBinding.NULL}
+     * 			if name binding is not going to be used to resolve the component adapter.
+     * @return the component adapter associated with this class, or <code>null</code> if no component has been
+     *         registered for the specified key. 
+     */
     <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding);
 
     /**
