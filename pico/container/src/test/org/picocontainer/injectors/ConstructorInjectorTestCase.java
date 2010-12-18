@@ -21,6 +21,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.AbstractButton;
 
@@ -382,15 +383,38 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testSpeedOfRememberedConstructor()  {
         long with, without;
+        
         injectionType = new ForgetfulConstructorInjection();
         timeIt(); // discard
         timeIt(); // discard
         timeIt(); // discard
+        garbageCollect();
         without = timeIt();
         injectionType = new ConstructorInjection();
+        garbageCollect();
         with = timeIt();
         assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
     }
+
+	private void garbageCollect() throws Error {
+		Runtime rt = Runtime.getRuntime();
+        rt.gc();
+        rt.runFinalization();
+        final CountDownLatch latch = new CountDownLatch(1);
+        new Object() {
+          protected void finalize() {
+            latch.countDown();
+          }
+        };
+        rt.gc();
+        rt.runFinalization();
+        try {
+          latch.await();
+        }
+        catch(InterruptedException ie){
+          throw new Error(ie);
+        }
+	}
 
     InjectionType injectionType;
     private long timeIt() {
