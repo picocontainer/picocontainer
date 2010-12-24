@@ -130,6 +130,28 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("",A.componentRecorder);
         A.reset();
     }
-    
+
+	@Test
+	public void testExecutionWithinCustomnClassLoader() throws MalformedURLException, ClassNotFoundException {
+		Reader script = new StringReader("" +
+        		"import org.picocontainer.*;\n" +
+        		"import org.picocontainer.parameters.ComponentParameter;\n" +
+                "pico = new PicoBuilder(parent).withLifecycle().withCaching().build();\n" +
+                //Beanshell cannot handle variable arg arrays yet :(
+				"pico.addComponent(\"TestComp\",TestComp.class, new ComponentParameter[]{});"
+			);
+        File testCompJar = TestHelper.getTestCompJarFile();
+        assertTrue(testCompJar.isFile());
+        URL compJarURL = testCompJar.toURI().toURL();
+        final URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, getClass().getClassLoader());
+        assertNotNull(cl.loadClass("TestComp"));
+        
+        ContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, cl);
+        
+        PicoContainer pico = buildContainer(containerBuilder, null, null);
+        assertNotNull(pico.getComponent("TestComp"));
+        assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
+
+	}
 
 }

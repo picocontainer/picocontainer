@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.junit.Test;
 import org.mozilla.javascript.JavaScriptException;
@@ -112,6 +115,30 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         ClassLoader loader1 = loader2.getParent();
         ClassLoader loader = loader1.getParent();
         assertSame(parentComponent.getClass().getClassLoader(), loader);
+    }
+    
+    @Test
+    public void testExecutionWithinCustomClassLoader() throws MalformedURLException, ClassNotFoundException {
+        File testCompJar = TestHelper.getTestCompJarFile();
+        assertTrue(testCompJar.isFile());
+        URL compJarURL = testCompJar.toURI().toURL();
+        URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, getClass().getClassLoader());
+        assertNotNull(cl.loadClass("TestComp"));
+        Reader script = new StringReader(
+        		"importPackage(Packages.java.io) \n" +
+        		"importPackage(Packages.org.picocontainer.script) \n" +
+        		"importPackage(Packages.org.picocontainer) \n" +
+        		"importPackage(Packages.org.picocontainer.injectors) \n" +
+                "importPackage(Packages.org.picocontainer.classname) \n" +
+                "\n" +
+                "var pico = new PicoBuilder().withCaching().withLifecycle().build();\n" +
+                "pico.addComponent('TestComp', Packages.TestComp);\n" 
+           );
+         
+        JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, cl);
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+        assertNotNull(pico.getComponent("TestComp"));
+        assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
     }
 
     @Test public void testRegisterComponentInstance() throws JavaScriptException, IOException {

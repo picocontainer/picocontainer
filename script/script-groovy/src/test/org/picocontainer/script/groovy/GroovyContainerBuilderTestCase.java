@@ -12,10 +12,15 @@ package org.picocontainer.script.groovy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import groovy.lang.Binding;
 
+import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -24,6 +29,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
+import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
 
 /**
@@ -35,7 +41,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
                 "builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 "  component(StringBuffer)\n" +
                 "}");
         PicoContainer parent = new DefaultPicoContainer();
@@ -48,7 +54,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testAdditionalBindingViaSubClassing() {
                 Reader script = new StringReader("" +
                 "builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 "  component(key:String.class, instance:foo)\n" +
                 "}");
 
@@ -63,7 +69,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testBuildingWithDefaultBuilder() {
         // NOTE script does NOT define a "builder"
         Reader script = new StringReader("" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 "  component(key:String.class, instance:'foo')\n" +
                 "}");
 
@@ -77,7 +83,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testBuildingWithAppendingNodes() {
         Reader script = new StringReader("" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 			"}\n" + 
                 			"\n" + 
                 			"builder.append(container:pico) {" +
@@ -96,7 +102,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testBuildingWithPicoSyntax() {
         Reader script = new StringReader("" +
                 "parent.addComponent('foo', java.lang.String)\n"  +
-                "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
+                "def pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
                 "pico.addComponent(org.picocontainer.script.testmodel.A)\n" +
                 "");
 
@@ -112,7 +118,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testBuildingWithPicoSyntaxAndNullParent() {
         Reader script = new StringReader("" +
-                "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
+                "def pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
                 "pico.addComponent(org.picocontainer.script.testmodel.A)\n" +
                 "");
 
@@ -139,10 +145,28 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
 	}
 	
-	@Test public void testAutoStartingContainerBuilderStarts() {
+	@Test
+	public void testRunningGroovyScriptWithinCustomClassLoader() throws MalformedURLException, ClassNotFoundException {
+		Reader script = new StringReader("" +
+				"def pico = new org.picocontainer.PicoBuilder().withCaching().withLifecycle().build();\n" +
+				"pico.addComponent(\"TestComp\", TestComp);"
+			);
+        File testCompJar = TestHelper.getTestCompJarFile();
+        assertTrue(testCompJar.isFile());
+        URL compJarURL = testCompJar.toURI().toURL();
+        URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, getClass().getClassLoader());
+        assertNotNull(cl.loadClass("TestComp"));
+        
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, cl), null, null);
+        assertNotNull(pico.getComponent("TestComp"));
+        assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
+	}
+	
+	
+	@Test public void testAutoStar1tingContainerBuilderStarts() {
         A.reset();
         Reader script = new StringReader("" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 "  component(org.picocontainer.script.testmodel.A)\n" +
                 "}");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
@@ -157,7 +181,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         A.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.testmodel.A\n" +
-                "pico = builder.container(parent:parent) { \n" +
+                "def pico = builder.container(parent:parent) { \n" +
                 "  component(A)\n" +
                 "}");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();

@@ -28,6 +28,16 @@ import org.picocontainer.PicoContainer;
  * A list of well known scripting engines are <a
  * href="https://scripting.dev.java.net">here</a>
  * </p>
+ * <h4>Executing Scripts Within Custom ClassLoaders</h4>
+ * <p>
+ * Currently, JDK 1.6 scripting engine does not specify running scripts within
+ * custom classloaders.  (The ScriptEngineManager classloader constructor
+ * is only for finding ScriptEngines, not running scripts). 
+ * </p>
+ * <p>Some script engines (such as Groovy) 
+ * will work with the current Thread's context class loader.  So this class sets the 
+ * context classloader before executing the script.
+ * </p>
  * @author Michael Rimov, Centerline Computers, Inc.
  */
 //Why Eclipse complains about access to javax.scripting I don't understand.
