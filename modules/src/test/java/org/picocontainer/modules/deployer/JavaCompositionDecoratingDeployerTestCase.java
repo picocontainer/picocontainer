@@ -47,7 +47,7 @@ public class JavaCompositionDecoratingDeployerTestCase {
         PicoContainer pico = deployer.deploy(applicationArchive, getClass().getClassLoader(), null, null);
         Object zap = pico.getComponent("zap");
         assertNotNull(zap);
-        assertEquals("Java Started", zap.toString());
+        assertEquals("Not started", zap.toString());
 	}
 	
 	@Test
@@ -82,9 +82,7 @@ public class JavaCompositionDecoratingDeployerTestCase {
         Deployer deployer = new JavaCompositionDecoratingDeployer(new PicoContainerDeployer(new DefaultModuleLayout(new PicoScriptingExtensionMapper(new ScriptedBuilderNameResolver()))));
         PicoContainer pico = deployer.deploy(applicationArchive, getClass().getClassLoader(), null, null);
         Object zap = pico.getComponent("zap");
-        assertEquals("Groovy Started", zap.toString());
-
+        assertEquals("Not started", zap.toString());
 	}
-	
 	
 }

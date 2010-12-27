@@ -144,4 +144,16 @@ public class CommonsLoggingModuleMonitor implements ModuleMonitor {
 				+ returnValue + "\n\tDeplyoment Time: " + deploymentTime + " m.s.");
 	}
 
+	public void multiModuleUndeploymentBeginning(MutablePicoContainer parent) {
+		log.info("Beginning Module Undeploy " + parent);
+	}
+
+	public void multiModuleUndeploymentSuccess(long timeInMillis) {
+		log.info("Undeployed Modules in " + timeInMillis + " m.s.");
+	}
+
+	public void multiModuleUndeploymentFailure(MultiException errors, long timeInMillis) {
+		log.error("Failed to undeploy modules in (time: " + timeInMillis + " m.s.)", errors);
+	}
+
 }

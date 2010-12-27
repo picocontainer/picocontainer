@@ -11,12 +11,24 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.JdkScriptingContainerBuilder;
+import org.picocontainer.script.NoOpPostBuildContainerAction;
 
 @SuppressWarnings("restriction")
 public class JDKScriptingFileExtensionMapper implements FileExtensionMapper {
 
 	private final ScriptEngineManager mgr;
 
+	/**
+	 * Default constructor that creates its own script manager instance.
+	 */
+	public JDKScriptingFileExtensionMapper() {
+		this(new ScriptEngineManager());
+	}
+	
+	/**
+	 * Constructor that allows sharing of script engine manager instances.
+	 * @param mgr
+	 */
 	public JDKScriptingFileExtensionMapper(final ScriptEngineManager mgr) {
 		this.mgr = mgr;
 	}
@@ -57,6 +69,6 @@ public class JDKScriptingFileExtensionMapper implements FileExtensionMapper {
 		final ScriptEngine engine = mgr.getEngineByExtension(script.getName()
 				.getExtension());
 		return new JdkScriptingContainerBuilder(engine.getFactory().getNames()
-				.get(0), scriptReader, cl);
+				.get(0), scriptReader, cl).setPostBuildAction(new NoOpPostBuildContainerAction()) ;
 	}
 }

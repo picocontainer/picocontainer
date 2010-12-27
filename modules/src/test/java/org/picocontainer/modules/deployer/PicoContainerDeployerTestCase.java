@@ -19,7 +19,10 @@ import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
 import org.apache.commons.vfs.provider.zip.ZipFileProvider;
 import org.junit.Test;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
 
 /**
@@ -29,6 +32,8 @@ import org.picocontainer.script.ScriptedBuilderNameResolver;
 public final class PicoContainerDeployerTestCase {
 
     public static final String JAR_DIRECTORY = "target/deployer/apps";
+    
+    public static final String MODULE_DIRECTORY = "target/deployer/modules";
 
     @Test public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
@@ -37,7 +42,7 @@ public final class PicoContainerDeployerTestCase {
         Deployer deployer = new PicoContainerDeployer(new DefaultModuleLayout(new PicoScriptingExtensionMapper(new ScriptedBuilderNameResolver())));
         PicoContainer pico = deployer.deploy(applicationArchive, getClass().getClassLoader(), null, null);
         Object zap = pico.getComponent("zap");
-        assertEquals("Groovy Started", zap.toString());
+        assertEquals("Not started", zap.toString());
     }
 
     @Test public void testZipWithBadScriptNameThrowsFileSystemException() throws ClassNotFoundException, FileSystemException {
@@ -78,7 +83,7 @@ public final class PicoContainerDeployerTestCase {
             deployer = new PicoContainerDeployer(new DefaultModuleLayout());
             PicoContainer pico = deployer.deploy(applicationFolder, getClass().getClassLoader(), null,null);
             Object zap = pico.getComponent("zap");
-            assertEquals("Groovy Started", zap.toString());
+            assertEquals("Not started", zap.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,7 +157,23 @@ public final class PicoContainerDeployerTestCase {
         Deployer deployer = new PicoContainerDeployer(new DefaultModuleLayout(new JDKScriptingFileExtensionMapper(new ScriptEngineManager())));
         PicoContainer pico = deployer.deploy(applicationArchive, getClass().getClassLoader(), null, null);
         Object zap = pico.getComponent("zap");
-        assertEquals("Groovy Started", zap.toString());
+        assertEquals("Not started", zap.toString());
+    }
+    
+    @Test
+    public void testJavascriptScriptingEngineAndSingleModule() throws Exception {
+        DefaultFileSystemManager manager = new DefaultFileSystemManager();
+        FileObject applicationArchive = getApplicationFolder(manager, MODULE_DIRECTORY + "/org.picocontainer.testmodules.moduleTwo");
+
+        Deployer deployer = new PicoContainerDeployer();
+
+        MutablePicoContainer parent = new DefaultClassLoadingPicoContainer(new PicoBuilder()
+        		.withCaching()
+        		.withLifecycle()
+        		.build());
+        MutablePicoContainer pico = deployer.deploy(applicationArchive, getClass().getClassLoader(), parent, "Test");
+        assertEquals("org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo",
+        		pico.getComponent("ServiceTwo").getClass().getName());    	
     }
 
 
@@ -175,9 +196,4 @@ public final class PicoContainerDeployerTestCase {
         assertTrue(src.exists());
         return manager.resolveFile("zip:/" + src.getAbsolutePath());
     }
-
-
-
-
-
 }

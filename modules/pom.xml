@@ -8,30 +8,39 @@
   <artifactId>picocontainer-modules</artifactId>
   <name>PicoContainer Modules</name>
   <packaging>jar</packaging>
+  <properties>
+	<pico-version>3.0-SNAPSHOT</pico-version>
+	<pico-script-version>3.0-SNAPSHOT</pico-script-version>
+  </properties>
     <dependencies>
 		<dependency>
 		  <groupId>org.picocontainer</groupId>
 		  <artifactId>picocontainer</artifactId>
-		  <version>3.0-SNAPSHOT</version>
+		  <version>${pico-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.picocontainer</groupId>
 			<artifactId>picocontainer-tck</artifactId>
-			<version>3.0-SNAPSHOT</version>
+			<version>${pico-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 		  <groupId>org.picocontainer.script</groupId>
 		  <artifactId>picocontainer-script-core</artifactId>
-		  <version>3.0-SNAPSHOT</version>
+		  <version>${pico-script-version}</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.picocontainer.script</groupId>
 		  <artifactId>picocontainer-script-groovy</artifactId>
-		  <version>3.0-SNAPSHOT</version>
+		  <version>${pico-script-version}</version>
 		  <scope>provided</scope>
 		</dependency>
 		<dependency>
+		  <groupId>org.picocontainer.script</groupId>
+		  <artifactId>picocontainer-script-rhino</artifactId>
+		  <version>${pico-script-version}</version>
+		  <scope>provided</scope>
+		</dependency>		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
@@ -196,6 +205,24 @@
 								indeed working since foo.bar.Zap will exist in each jar 
 								-->
                                 <delete dir="${project.build.directory}/test-classes/foo"/>
+                                
+                                <!-- Build Module Directory Test Deploy As Well -->
+                                <mkdir dir="${project.build.directory}/deployer/modules"/>
+                                <copy todir="${project.build.directory}/deployer/modules">
+                                	<fileset dir="${project.basedir}/src/test/modules">
+                                		<include name="org.picocontainer.testmodules.*/**"/>
+                                	</fileset>
+                                </copy>
+                                <move todir="${project.build.directory}/deployer/modules/org.picocontainer.testmodules.moduleOne">
+                                	<fileset dir="${project.build.directory}/test-classes">
+                                		<include name="org/picocontainer/testmodules/moduleOne/**/*"/>
+                                	</fileset>
+                                </move>
+                                <move todir="${project.build.directory}/deployer/modules/org.picocontainer.testmodules.moduleTwo">
+                                	<fileset dir="${project.build.directory}/test-classes">
+                                		<include name="org/picocontainer/testmodules/moduleTwo/**/*"/>
+                                	</fileset>
+                                </move>
                             </tasks>
                         </configuration>
                     </execution>

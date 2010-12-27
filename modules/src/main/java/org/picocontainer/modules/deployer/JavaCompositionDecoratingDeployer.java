@@ -59,6 +59,17 @@ public class JavaCompositionDecoratingDeployer implements Deployer {
 	public JavaCompositionDecoratingDeployer(final Deployer delegate) {
 		this.delegate = delegate;
 	}
+	
+	/**
+	 * Easier integration with TransientPicoContainer class definition.  Will automatically
+	 * wrap PicoContainerDeployer with the specified arguments
+	 * @param moduleLayout
+	 * @param monitor
+	 */
+	public JavaCompositionDecoratingDeployer(final ModuleLayout moduleLayout,
+			final ModuleMonitor monitor) {
+		this.delegate = new PicoContainerDeployer(moduleLayout, monitor);
+	}
 
 	/** {@inheritDoc} **/
 	public MutablePicoContainer deploy(final FileObject applicationFolder,
@@ -139,25 +150,29 @@ public class JavaCompositionDecoratingDeployer implements Deployer {
 	 */
 	private String constructExpectedClassName(final FileObject applicationFolder)
 			throws FileSystemException {
-		String baseName;
-		String extension = null;
 		if (this.compositionClassName != null) {
 			return compositionClassName;
 		}
 
+		String expectedName;
 		if (applicationFolder.getFileSystem().getParentLayer() == null) {
 			// If in raw directory.
-			baseName = applicationFolder.getName().getRoot().getBaseName();
-			extension = applicationFolder.getName().getExtension();
+			expectedName = applicationFolder.getName().getBaseName();
 		} else {
 			// If in zip files
 			final FileObject parentObject = applicationFolder.getFileSystem()
 					.getParentLayer();
-			baseName = parentObject.getName().getBaseName();
-			extension = parentObject.getName().getExtension();
+			String baseName = parentObject.getName().getBaseName();
+			String extension = parentObject.getName().getExtension();
+			if (baseName == null || baseName.length() == 0) {
+				throw new NullPointerException("Base name for file " + applicationFolder + " was " + baseName);
+			}
+			expectedName = baseName.substring(0, baseName.length()
+					- extension.length() - 1);		
 		}
-		String expectedName = baseName.substring(0, baseName.length()
-				- extension.length() - 1);
+		
+		
+
 
 		final String moduleName = getModuleLayout().getFileBasename();
 

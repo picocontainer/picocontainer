@@ -21,7 +21,7 @@ public class DeployingFolderListener implements FolderListener, Startable {
 		try {
 			deployer.deploy(folder, getClass().getClassLoader(), null, null);
 		} catch (final FileSystemException e) {
-			throw new DeploymentException(e);
+			throw new DeploymentException("Error deploying folder " + folder, e);
 		}
 	}
 

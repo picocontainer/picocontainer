@@ -28,11 +28,4 @@ public class MalformedArchiveException extends DeploymentException {
 		super(message, t);
 	}
 
-	/**
-	 * @param t
-	 */
-	public MalformedArchiveException(final Throwable t) {
-		super(t);
-	}
-
 }

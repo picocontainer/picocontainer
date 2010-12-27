@@ -59,4 +59,10 @@ public interface ModuleMonitor extends Serializable {
 
 	void multiModuleDeploymentSuccess(FileObject moduleDirectory,
 			MutablePicoContainer returnValue, long deploymentTime);
+
+	void multiModuleUndeploymentBeginning(MutablePicoContainer parent);
+
+	void multiModuleUndeploymentSuccess(long l);
+
+	void multiModuleUndeploymentFailure(MultiException errors, long l);
 }

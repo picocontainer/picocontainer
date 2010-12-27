@@ -3,9 +3,11 @@ package org.picocontainer.modules.deployer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 
 import org.apache.commons.vfs.FileObject;
@@ -20,6 +22,8 @@ import org.junit.Test;
 
 public class DefaultModuleLayoutTestCase {
     private static final String JAR_DIRECTORY = "target/deployer/apps";
+    public static final String MODULE_DIRECTORY = "target/deployer/modules";
+
 
 	@Test
 	public void testDefaultClassLoader() throws FileSystemException, ClassNotFoundException {
@@ -114,6 +118,17 @@ public class DefaultModuleLayoutTestCase {
 	}
 	
 	
+	@Test
+	public void testModuleAppClassLoader() throws FileSystemException, ClassNotFoundException, MalformedURLException {
+        DefaultFileSystemManager manager = new DefaultFileSystemManager();
+        FileObject applicationArchive = getApplicationFolder(manager, MODULE_DIRECTORY + "/org.picocontainer.testmodules.moduleTwo");
+        DefaultModuleLayout moduleLayout = new DefaultModuleLayout();
+        VFSClassLoader cl = (VFSClassLoader) moduleLayout
+        	.constructModuleClassLoader(DefaultModuleLayoutTestCase.class.getClassLoader(), 
+        			applicationArchive);
+        assertEquals("org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo",cl.loadClass("org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo").getName());
+	}	
+	
 	/**
 	 * To handle nested jars, the VFS manager has to have a few more things configured so
 	 * it can replicate the nested jars.
@@ -135,4 +150,13 @@ public class DefaultModuleLayoutTestCase {
         return manager.resolveFile("jar:/" + src.getAbsolutePath());
     }
 	
+    private FileObject getApplicationFolder(final DefaultFileSystemManager manager, String folderPath) throws FileSystemException, MalformedURLException {
+        manager.setDefaultProvider(new DefaultLocalFileProvider());
+        manager.addProvider("file", new DefaultLocalFileProvider());
+        manager.init();
+        File testapp = new File(folderPath);
+        assertTrue(testapp.exists());
+        return manager.toFileObject(testapp);
+    }
+    
 }

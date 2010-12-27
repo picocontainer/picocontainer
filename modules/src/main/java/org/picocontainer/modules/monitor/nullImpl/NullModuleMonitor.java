@@ -66,4 +66,19 @@ public class NullModuleMonitor implements ModuleMonitor {
 		// No-op
 	}
 
+	/** {@inheritDoc} **/
+	public void multiModuleUndeploymentBeginning(MutablePicoContainer parent) {
+		// No-op
+	}
+
+	/** {@inheritDoc} **/
+	public void multiModuleUndeploymentSuccess(long l) {
+		// No-op
+	}
+
+	/** {@inheritDoc} **/
+	public void multiModuleUndeploymentFailure(MultiException errors, long l) {
+		// No-op
+	}
+
 }

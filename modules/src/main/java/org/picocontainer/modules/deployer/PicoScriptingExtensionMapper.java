@@ -9,6 +9,7 @@ import java.io.Reader;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.script.ContainerBuilder;
+import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
 import org.picocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.script.UnsupportedScriptTypeException;
@@ -73,6 +74,7 @@ public class PicoScriptingExtensionMapper implements FileExtensionMapper {
 
 		final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(
 				scriptReader, builderClassName, cl);
+		scriptedContainerBuilderFactory.setDefaultPostBuildAction(new NoOpPostBuildContainerAction());
 		final ContainerBuilder builder = scriptedContainerBuilderFactory
 				.getContainerBuilder();
 		return builder;

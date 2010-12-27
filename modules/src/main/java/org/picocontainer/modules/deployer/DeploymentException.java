@@ -18,8 +18,4 @@ public class DeploymentException extends PicoException {
 	public DeploymentException(final String message, final Throwable t) {
 		super(message, t);
 	}
-
-	public DeploymentException(final Throwable t) {
-		super(t);
-	}
 }

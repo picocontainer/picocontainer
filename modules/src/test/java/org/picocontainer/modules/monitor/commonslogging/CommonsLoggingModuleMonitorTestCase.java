@@ -25,6 +25,9 @@ public class CommonsLoggingModuleMonitorTestCase {
 		monitor.startingMultiModuleDeployment(null);
 		monitor.multiModuleDeploymentFailed(null, null);
 		monitor.multiModuleDeploymentSuccess(null, null, 0);
+		monitor.multiModuleUndeploymentSuccess(0);
+		monitor.multiModuleUndeploymentBeginning(null);
+		monitor.multiModuleUndeploymentFailure(null, 0);
 	}
 	
 	@Test
