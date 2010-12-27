@@ -11,12 +11,12 @@ public class ThreadLocalLifecycleState implements LifecycleState {
         tl.get().removingComponent();
     }
 
-    public void starting() {
-        tl.get().starting();
+    public void starting(String containerName) {
+        tl.get().starting(containerName);
     }
 
-    public void stopping() {
-        tl.get().stopping();
+    public void stopping(String containerName) {
+        tl.get().stopping(containerName);
     }
 
     public void stopped() {
@@ -35,8 +35,8 @@ public class ThreadLocalLifecycleState implements LifecycleState {
         return tl.get().isDisposed();
     }
 
-    public void disposing() {
-        tl.get().disposing();
+    public void disposing(String containerName) {
+        tl.get().disposing(containerName);
     }
 
     public void disposed() {

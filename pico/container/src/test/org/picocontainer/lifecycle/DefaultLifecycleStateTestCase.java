@@ -26,45 +26,47 @@ public class DefaultLifecycleStateTestCase {
     }
 
     @Test public void testNormalLifecycle() {
-        dls.starting();
-        dls.stopping();
+        dls.starting(null);
+        dls.stopping(null);
         dls.stopped();
-        dls.disposing();
+        dls.disposing(null);
         dls.disposed();
 	}
 
     @Test public void testReStartLifecycle() {
-        dls.starting();
-        dls.stopping();
+        dls.starting(null);
+        dls.stopping(null);
         dls.stopped();
-        dls.starting();
-        dls.stopping();
+        dls.starting(null);
+        dls.stopping(null);
         dls.stopped();
 	}
 
     @Test public void testDisposalWithoutStarting() {
-        dls.disposing();
+        dls.disposing(null);
         dls.disposed();
 	}
 
     @Test public void testDisposalWithoutStop() {
-        dls.starting();
+        dls.starting(null);
         try {
-            dls.disposing();
+            dls.disposing("test");
             Assert.fail("should have barfed");
         } catch (IllegalStateException e) {
-            assertTrue(e.getMessage().endsWith("STARTED"));
             //expected
+        	assertTrue(e.getMessage().contains("test"));
+            assertTrue(e.getMessage().endsWith("STARTED"));
         }
     }
 
     @Test public void testStopWithoutStart() {
         try {
-            dls.stopping();
+            dls.stopping("test2");
             Assert.fail("should have barfed");
         } catch (IllegalStateException e) {
-            assertTrue(e.getMessage().endsWith("CONSTRUCTED"));
             //expected
+            assertTrue(e.getMessage().endsWith("CONSTRUCTED"));
+        	assertTrue(e.getMessage().contains("test2"));
         }
     }
 

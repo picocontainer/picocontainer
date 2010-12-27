@@ -57,19 +57,23 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void starting() {
+    public void starting(String containerName) {
 		if (isConstructed() || isStopped()) {
             state = STARTED;
 			return;
 		}
-	    throw new IllegalStateException("Cannot start.  Current container state was: " + state);
+	    throw new IllegalStateException("Cannot start container '" 
+	    		+ containerName
+	    		+ "'.  Current container state was: " + state);
     }
 
 
     /** {@inheritDoc} **/
-    public void stopping() {
+    public void stopping(String containerName) {
         if (!(isStarted())) {
-            throw new IllegalStateException("Cannot stop.  Current container state was: " + state);
+            throw new IllegalStateException("Cannot stop container '"
+            		+ containerName
+            		+ "'.  Current container state was: " + state);
         }
     }
 
@@ -84,9 +88,11 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void disposing() {
+    public void disposing(String containerName) {
         if (!(isStopped() || isConstructed())) {
-            throw new IllegalStateException("Cannot dispose.  Current lifecycle state is: " + state);
+            throw new IllegalStateException("Cannot dispose container '" 
+            		+ containerName
+            		+ "'.  Current lifecycle state is: " + state);
         }
 
     }

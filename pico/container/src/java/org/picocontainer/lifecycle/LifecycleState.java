@@ -23,15 +23,17 @@ public interface LifecycleState {
 	 * Start is normally allowed if the object is constructed or
 	 * already stopped.  It is not allowed if the system is already
 	 * started or disposed.
+	 * @param containerName Container debug info so IllegalStateExceptions
+	 * can be traced
 	 * @return true if start lifecycle methods should be allowed.
 	 */
-    void starting();
+    void starting(String containerName);
 
     /**
      * Lifecycle state for when the container is being stopped.  (Ie, right after Picocontainer.stop()
      * has been called, but before any components are stopped.
      */
-    void stopping();
+    void stopping(String containerName);
 
     /**
      * Lifecycle state for when stop has been completed.
@@ -48,7 +50,7 @@ public interface LifecycleState {
      * Turns the lifecycle state to indicate that the dispose() process is being
      * executed on the container.
      */
-    void disposing();
+    void disposing(String containerName);
 
     /**
      * Turns the lifecycle state to completely disposed.  Internally called after PicoContainer.dispose()
@@ -68,4 +70,5 @@ public interface LifecycleState {
      * @return
      */
     boolean isStopped();
+
 }

@@ -868,7 +868,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public synchronized void start() {
 
-        lifecycleState.starting();
+        lifecycleState.starting(getName());
 
         startAdapters();
         childrenStarted.clear();
@@ -897,7 +897,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public synchronized void stop() {
 
-        lifecycleState.stopping();
+        lifecycleState.stopping(getName());
 
         for (PicoContainer child : children) {
             if (childStarted(child)) {
@@ -949,7 +949,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             stop();
         }
 
-        lifecycleState.disposing();
+        lifecycleState.disposing(getName());
 
         for (PicoContainer child : children) {
             if (child instanceof MutablePicoContainer) {
