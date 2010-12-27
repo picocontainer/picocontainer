@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -99,6 +101,10 @@ public class MultiException extends RuntimeException {
     @Override
     public String toString() {
         return "CollectingException with error list of size: " + errors.size() + "\n Errors: " + getMessage();
+    }
+    
+    public List<Throwable> getNestedExceptions() {
+    	return Collections.unmodifiableList(this.errors);
     }
 
 }
