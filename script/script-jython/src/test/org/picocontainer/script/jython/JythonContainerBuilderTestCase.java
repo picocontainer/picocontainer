@@ -12,10 +12,16 @@ package org.picocontainer.script.jython;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -24,6 +30,7 @@ import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesExc
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
+import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
 import org.picocontainer.script.testmodel.WebServerImpl;
@@ -34,7 +41,33 @@ import org.picocontainer.script.testmodel.WebServerImpl;
  */
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
  
-    @Test public void testDependenciesAreSatisfiable() {
+	
+	@Test
+	public void testExecutionWithinCustomClassLoader() 
+			throws MalformedURLException, ClassNotFoundException {
+		Reader script = new StringReader("" +
+        		"from org.picocontainer import *;\n" +
+        		"from org.picocontainer.parameters import ComponentParameter;\n" +
+        		"import TestComp;\n" +
+                "pico = PicoBuilder().withLifecycle().withCaching().build();\n" +
+				"pico.addComponent(\"TestComp\",TestComp, Parameter.ZERO);\n"
+			);
+        File testCompJar = TestHelper.getTestCompJarFile();
+        assertTrue(testCompJar.isFile());
+        URL compJarURL = testCompJar.toURI().toURL();
+        final URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, 
+        		getClass().getClassLoader());
+        assertNotNull(cl.loadClass("TestComp"));
+        
+        ContainerBuilder containerBuilder = new JythonContainerBuilder(script, cl);
+        
+        PicoContainer pico = buildContainer(containerBuilder, null, null);
+        assertNotNull(pico.getComponent("TestComp"));
+        assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
+		
+	}
+
+	@Test public void testDependenciesAreSatisfiable() {
         Reader script = new StringReader(
                 "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +
@@ -121,7 +154,5 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         assertEquals("",A.componentRecorder);
         A.reset();
     }
-	
-    
 
 }
