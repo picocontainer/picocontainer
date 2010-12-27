@@ -19,6 +19,10 @@
               <name>python.cachedir</name>
               <value>${project.build.outputDirectory}/cachedir</value>
             </property>
+            <property>
+              <name>testcomp.jar</name>
+              <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
+            </property>
           </systemProperties>
         </configuration>
       </plugin>
