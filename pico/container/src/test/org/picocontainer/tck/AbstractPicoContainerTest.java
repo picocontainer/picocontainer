@@ -797,7 +797,8 @@ public abstract class AbstractPicoContainerTest {
         List<Object> visitedList = new LinkedList<Object>();
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
         visitor.traverse(parent);
-        assertEquals(expectedList.size(), visitedList.size());
+        assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray()) 
+        		+ "\nGot:  " + Arrays.deepToString(visitedList.toArray()), expectedList.size(), visitedList.size());
         for (Class c : expectedList) {
             assertTrue(visitedList.remove(c));
         }

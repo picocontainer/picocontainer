@@ -127,7 +127,7 @@ public class MultiExceptionTestCase {
     	Throwable exceptionTwo = new IllegalArgumentException();
     	
     	MultiException exception = new MultiException();
-    	exception.addException(exceptionOne, exceptionTwo);
+    	exception.addException(exceptionOne).addException(exceptionTwo);
     	
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	ObjectOutputStream oos = new ObjectOutputStream(bos);

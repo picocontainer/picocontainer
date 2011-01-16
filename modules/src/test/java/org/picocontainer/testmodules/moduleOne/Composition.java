@@ -3,10 +3,8 @@
  */
 package org.picocontainer.testmodules.moduleOne;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.modules.adapter.Publishing;
+import org.picocontainer.modules.Publisher;
 import org.picocontainer.modules.deployer.AbstractPicoComposer;
 
 public class Composition extends AbstractPicoComposer {
@@ -23,10 +21,14 @@ public class Composition extends AbstractPicoComposer {
 		childContainer.addComponent("moduleOneTest")
 			.addComponent(ServiceOne.class.getName(), DefaultServiceOne.class);
 
-		final ComponentAdapter<ServiceOne> ca = childContainer
-				.getComponentAdapter(ServiceOne.class, (NameBinding) null);
-
-		parent.addAdapter(new Publishing<ServiceOne>(childContainer, ca));
+		new Publisher(childContainer, parent)
+			.publish(ServiceOne.class.getName());
+			
+		
+//		final ComponentAdapter<ServiceOne> ca = childContainer
+//				.getComponentAdapter(ServiceOne.class, (NameBinding) null);
+//
+//		parent.addAdapter(new Publishing<ServiceOne>(childContainer, ca));
 
 		return childContainer;
 	}

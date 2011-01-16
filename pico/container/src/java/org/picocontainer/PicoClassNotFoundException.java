@@ -9,6 +9,9 @@
  *****************************************************************************/
 package org.picocontainer;
 
+/**
+ * Runtime Exception wrapper for a ClassNotFoundException.
+ */
 @SuppressWarnings("serial")
 public class PicoClassNotFoundException extends PicoException {
 

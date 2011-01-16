@@ -5,6 +5,7 @@ package org.picocontainer.modules.deployer;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.modules.Publisher;
 
 /**
  * 
@@ -79,5 +80,4 @@ abstract public class AbstractPicoComposer {
 	abstract protected MutablePicoContainer populateChildContainer(
 			MutablePicoContainer childContainer, MutablePicoContainer parent,
 			Object assemblyScope);
-
 }

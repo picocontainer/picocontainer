@@ -2,9 +2,9 @@ package org.picocontainer.script.util;
 
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class MultiException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    private final ArrayList< Throwable > errors = new ArrayList< Throwable >();
+    private final ArrayList< ExceptionPair > errors = new ArrayList< ExceptionPair >();
 
     public MultiException() {
         super();
@@ -30,14 +30,20 @@ public class MultiException extends RuntimeException {
         super(operationDescription);
     }
 
+    
+    
     /**
      * Adds an exception
      * 
      * @param error Throwable
      */
-    public void addException(final Throwable... error) {
-    	assert error != null && error.length > 0;
-        errors.addAll(Arrays.asList(error));
+    public MultiException addException(final String context, final Throwable error) {
+    	errors.add(new ExceptionPair(context != null ? context : "", error));
+    	return this;
+    }
+    
+    public MultiException addException(final Throwable error) {
+    	return this.addException("", error);
     }
 
     /**
@@ -63,10 +69,10 @@ public class MultiException extends RuntimeException {
         writer.println("The following errors occurred while performing the operation: " + super.getMessage());
 
         int i = 1;
-        for (Throwable exception : errors) {
-            writer.print("Exception #" + i + ": ");
-            writer.println(exception.getMessage());
-            exception.printStackTrace(writer);
+        for (ExceptionPair exceptionPair : errors) {
+            writer.print("Exception #" + i + ": " + exceptionPair.subOperation + "\n\t");
+            writer.println(exceptionPair.exception.getMessage());
+            exceptionPair.exception.printStackTrace(writer);
             i++;
         }
 
@@ -88,10 +94,10 @@ public class MultiException extends RuntimeException {
         writer.println("The following errors occurred while performing the operation: " + super.getMessage());
 
         for (int i = 0; i < errors.size(); i++) {
-            final Throwable exception = errors.get(i);
+            final ExceptionPair error = errors.get(i);
 
-            writer.print("Exception #" + i + ": ");
-            writer.println(exception.getMessage());
+            writer.print("Exception #" + i + ": " + error.subOperation);
+            writer.println(error.exception.getMessage());
         }
 
         writer.close();
@@ -104,7 +110,24 @@ public class MultiException extends RuntimeException {
     }
     
     public List<Throwable> getNestedExceptions() {
-    	return Collections.unmodifiableList(this.errors);
+    	ArrayList<Throwable> returnErrors = new ArrayList<Throwable>(errors.size());
+    	for (ExceptionPair eachPair : errors) {
+    		returnErrors.add(eachPair.exception);
+    	}
+    	return Collections.unmodifiableList(returnErrors);
     }
 
+    @SuppressWarnings("serial")
+	private static class ExceptionPair implements Serializable{
+    	
+    	final String subOperation;
+    	final Throwable exception;
+    	
+    	ExceptionPair(String subOperation, Throwable exception) {
+			this.subOperation = subOperation;
+			this.exception = exception;
+    		
+    	}
+    	
+    }
 }

@@ -55,7 +55,10 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 				"Pico Module Deployment");
 		final MutablePicoContainer returnValue = parent;
 		try {
+			String currentChild;
 			for (final FileObject eachChild : moduleDirectory.getChildren()) {
+				currentChild = null;
+				currentChild = eachChild.getName().getFriendlyURI();
 				try {
 					if (!isDeployable(eachChild)) {
 						monitor.skippingDeploymentBecauseNotDeployable(eachChild);
@@ -67,24 +70,19 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 					result.setName(eachChild.getName().getBaseName());
 					this.builtContainers.add(result);
 				} catch (final Exception ex) {
-					errors.addException(ex);
+					errors.addException("Error Deploying Module " + currentChild, ex);
 				}
 			}
-
 		} catch (final FileSystemException ex) {
 			errors.addException(ex);
 		}
-
-		try {
-			parent.start();
-		} catch (final Exception e) {
-			errors.addException(e);
-		}
-		final long endTime = System.currentTimeMillis();
 		if (errors.getErrorCount() > 0) {
 			monitor.multiModuleDeploymentFailed(moduleDirectory, errors);
 			throw errors;
 		}
+
+		parent.start();
+		final long endTime = System.currentTimeMillis();
 		monitor.multiModuleDeploymentSuccess(moduleDirectory, returnValue,
 				endTime - startTime);
 		return this;

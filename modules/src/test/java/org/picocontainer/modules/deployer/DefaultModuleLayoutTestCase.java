@@ -10,21 +10,30 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 
+import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.NameScope;
 import org.apache.commons.vfs.impl.DefaultFileReplicator;
 import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.provider.jar.JarFileProvider;
 import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
 import org.apache.commons.vfs.provider.url.UrlFileProvider;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(JMock.class)
 public class DefaultModuleLayoutTestCase {
     private static final String JAR_DIRECTORY = "target/deployer/apps";
     public static final String MODULE_DIRECTORY = "target/deployer/modules";
 
-
+    private Mockery context = new JUnit4Mockery();
+    
 	@Test
 	public void testDefaultClassLoader() throws FileSystemException, ClassNotFoundException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
@@ -127,7 +136,37 @@ public class DefaultModuleLayoutTestCase {
         	.constructModuleClassLoader(DefaultModuleLayoutTestCase.class.getClassLoader(), 
         			applicationArchive);
         assertEquals("org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo",cl.loadClass("org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo").getName());
-	}	
+	}
+	
+	@Test
+	public void testFileSystemExceptionWhileLookingForDeploymentScriptTurnsIntoMalformedArchiveException() throws FileSystemException {
+        final FileObject appFolder = context.mock(FileObject.class);
+        final FileName fileName = context.mock(FileName.class);
+        final FileSystemException ex = new FileSystemException("Testing!");
+        context.checking(new Expectations() {{
+        	oneOf(appFolder).resolveFile(with(any(String.class)));
+        	will(throwException(ex));
+        	
+        	allowing(appFolder).getName();
+        	will(returnValue(fileName));
+        	
+        	oneOf(fileName).getPathDecoded();
+        	will(returnValue("/test"));
+        	
+        	oneOf(fileName).getFriendlyURI();
+        	will(returnValue("/able/baker"));
+        }});
+		
+
+        try {
+			DefaultModuleLayout moduleLayout = new DefaultModuleLayout();
+			moduleLayout.getDeploymentScript(appFolder);
+		} catch (MalformedArchiveException e) {
+			assertNotNull(e.getMessage());
+			assertTrue(ex == e.getCause());
+		}
+		
+	}
 	
 	/**
 	 * To handle nested jars, the VFS manager has to have a few more things configured so

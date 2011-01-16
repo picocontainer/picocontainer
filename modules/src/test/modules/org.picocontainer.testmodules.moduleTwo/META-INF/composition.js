@@ -1,13 +1,15 @@
 importPackage(Packages.org.picocontainer)
-importClass(Packages.org.picocontainer.modules.adapter.Publishing)
-importPackage(org.picocontainer.classname)
+importPackage(Packages.org.picocontainer.modules)
 
 var pico = parent.makeChildContainer()
 		.addComponent("moduleOneTest")
 		.addComponent("ServiceTwo",org.picocontainer.testmodules.moduleTwo.DefaultServiceTwo);
 	
+	new Publisher(pico, parent)
+		.publish("ServiceTwo");
+
 	
-	var ca = pico.getComponentAdapter("ServiceTwo");
+	//var ca = pico.getComponentAdapter("ServiceTwo");
 	
 	//Publish service in parent container
-	parent.addAdapter(new Publishing(pico, ca));
+	//parent.addAdapter(new Publishing(pico, ca));

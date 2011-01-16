@@ -3,6 +3,9 @@ package org.picocontainer.modules.defaults;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -193,7 +196,6 @@ public class DefaultModuleSystemTestCase {
 
 		final HashSet<Class> expectedErrors = new HashSet<Class>();
 		expectedErrors.add(MalformedArchiveException.class);
-		expectedErrors.add(PicoClassNotFoundException.class);
 		
 		try {
 			MutablePicoContainer pico = moduleSystem.deploy().getPico();
@@ -206,8 +208,12 @@ public class DefaultModuleSystemTestCase {
 				receivedErrors.add(eachException.getClass());
 			}
 			
+			StringWriter writer = new StringWriter();
+			ex.printStackTrace(new PrintWriter(writer));
 			expectedErrors.removeAll(receivedErrors);
-			assertEquals(0,expectedErrors.size());
+			assertEquals("Unexpected Errors or Expected Errors not thrown " 
+					+ Arrays.deepToString(expectedErrors.toArray()) + "\n Fill Stack Trace" + writer,
+					0,expectedErrors.size());
 		}
 
 	}
