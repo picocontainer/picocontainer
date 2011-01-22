@@ -7,6 +7,7 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import org.picocontainer.monitors.NullComponentMonitor;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
@@ -171,6 +172,62 @@ public class ReflectionLifecycleStrategyTestCase {
 		strategy.start(startable);
 		strategy.stop(startable);
 		strategy.dispose(startable);
+	}
+
+	public static class DummyLifecycle implements MyLifecycle {
+
+		public int startCount = 0;
+		public int stopCount = 0;
+		public int disposeCount = 0;
+		
+		public void start() {
+			startCount++;
+		}
+
+		public void stop() {
+			stopCount++;
+		}
+
+		public void dispose() {
+			disposeCount++;
+		}
+		
+	}
+	
+	/**
+	 * <a href="http://jira.codehaus.org/browse/PICO-379">PICO-379</a>
+	 */
+	@Test
+	public void testNullArgsResultsInNoExecution() {
+		//Control Test -- verify model
+		monitor = new NullComponentMonitor();
+		strategy = new ReflectionLifecycleStrategy(monitor, "start", "stop", "dispose");
+		DummyLifecycle dummyTest = new DummyLifecycle();
+		strategy.start(dummyTest);
+		assertEquals(1, dummyTest.startCount);
+		strategy.stop(dummyTest);
+		assertEquals(1, dummyTest.stopCount);
+		strategy.dispose(dummyTest);
+		assertEquals(1, dummyTest.disposeCount);
+		
+		//What we want test.
+		strategy = new ReflectionLifecycleStrategy(monitor, null, "stop", null);
+		dummyTest = new DummyLifecycle();
+		strategy.start(dummyTest);
+		assertEquals(0, dummyTest.startCount);
+		strategy.stop(dummyTest);
+		assertEquals(1, dummyTest.stopCount);
+		strategy.dispose(dummyTest);
+		assertEquals(0, dummyTest.disposeCount);
+
+		strategy = new ReflectionLifecycleStrategy(monitor, null, null, "dispose");
+		dummyTest = new DummyLifecycle();
+		strategy.start(dummyTest);
+		assertEquals(0, dummyTest.startCount);
+		strategy.stop(dummyTest);
+		assertEquals(0, dummyTest.stopCount);
+		strategy.dispose(dummyTest);
+		assertEquals(1, dummyTest.disposeCount);	
 	}
 
 	private Object mockComponent(boolean startable, boolean disposable) {
