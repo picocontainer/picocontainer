@@ -158,7 +158,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
                 methods = new Method[methodNames.length];
                 for (int i = 0; i < methods.length; i++) {
                     try {
-                        methods[i] = type.getMethod(methodNames[i]);
+                    	 final String methodName = methodNames[i];
+                    	 	if (methodName == null) {
+                    	 	// skipping, we're not interested in this lifecycle method.
+                    	 		continue;
+                    	 }
+                    	 methods[i] = type.getMethod(methodName);
                     } catch (NoSuchMethodException e) {
                         continue;
                     }

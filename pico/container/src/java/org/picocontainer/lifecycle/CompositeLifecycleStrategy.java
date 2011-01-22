@@ -19,32 +19,32 @@ import org.picocontainer.LifecycleStrategy;
  */
 public class CompositeLifecycleStrategy implements LifecycleStrategy {
 
-    private final StartableLifecycleStrategy[] alternateStrategies;
+    private final LifecycleStrategy[] alternateStrategies;
 
-    public CompositeLifecycleStrategy(StartableLifecycleStrategy... alternateStrategies) {
+    public CompositeLifecycleStrategy(LifecycleStrategy... alternateStrategies) {
         this.alternateStrategies = alternateStrategies;
     }
 
     public void start(Object component) {
-        for (StartableLifecycleStrategy lifecycle : alternateStrategies) {
-            lifecycle.start(component);
+        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    		lifecycle.start(component);
         }
     }
 
     public void stop(Object component) {
-        for (StartableLifecycleStrategy lifecycle : alternateStrategies) {
-            lifecycle.stop(component);
+        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    		lifecycle.stop(component);
         }
     }
 
     public void dispose(Object component) {
-        for (StartableLifecycleStrategy lifecycle : alternateStrategies) {
+        for (LifecycleStrategy lifecycle : alternateStrategies) {
             lifecycle.dispose(component);
         }
     }
 
     public boolean hasLifecycle(Class<?> type) {
-        for (StartableLifecycleStrategy lifecycle : alternateStrategies) {
+        for (LifecycleStrategy lifecycle : alternateStrategies) {
             if (lifecycle.hasLifecycle(type)) {
                 return true;
             }
@@ -53,7 +53,7 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
     }
 
     public boolean isLazy(ComponentAdapter<?> adapter) {
-        for (StartableLifecycleStrategy lifecycle : alternateStrategies) {
+        for (LifecycleStrategy lifecycle : alternateStrategies) {
             if (lifecycle.isLazy(adapter)) {
                 return true;
             }
