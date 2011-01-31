@@ -58,7 +58,7 @@ public class NamedMethodInjection extends AbstractInjectionType {
         }
 
         public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, boolean optional, Parameter... parameters) {
-            super(key, impl, monitor, prefix, true, parameters);
+            super(key, impl, monitor, prefix, true, false, parameters);
             this.optional = optional;
         }
 

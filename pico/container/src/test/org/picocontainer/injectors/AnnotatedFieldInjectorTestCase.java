@@ -69,7 +69,7 @@ public class AnnotatedFieldInjectorTestCase {
     @Test
     public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjection.SetterInjector(Helicopter.class, Helicopter.class, new NullComponentMonitor(), "set", false, null
+        pico.addAdapter(new SetterInjection.SetterInjector(Helicopter.class, Helicopter.class, new NullComponentMonitor(), "set", false, false, null
         ));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
