@@ -27,6 +27,47 @@ public class FactoryInjectorTestCase {
     public static interface Swede {
     }
 
+    @Test
+    public void brendansNullTypeCase() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(BrendansComponent.class);
+        pico.addAdapter(new BrendansLoggerInjector());
+
+        BrendansComponent bc = pico.getComponent(BrendansComponent.class);
+        assertEquals("org.picocontainer.injectors.InjectInto", bc.logger.canonicalName);
+    }
+
+    public static class BrendansLogger {
+        private String canonicalName;
+
+        public BrendansLogger(String canonicalName) {
+            this.canonicalName = canonicalName;
+        }
+
+        public static BrendansLogger getLogger(String canonicalName) {
+            return new BrendansLogger(canonicalName);
+        }
+    }
+
+    public static class BrendansComponent {
+        BrendansLogger logger;
+
+        public BrendansComponent(BrendansLogger logger) {
+            this.logger = logger;
+        }
+    }
+
+    public static class BrendansLoggerInjector extends FactoryInjector<BrendansLogger> {
+
+        @Override
+        public BrendansLogger getComponentInstance(PicoContainer arg0, final Type arg1)
+                throws PicoCompositionException {
+            return BrendansLogger.getLogger(arg1.getClass().getCanonicalName());
+        }
+
+    }
+
+
     public static class Turnip2 {
         Swede swede;
         private final String foo;

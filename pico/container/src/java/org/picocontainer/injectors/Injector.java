@@ -187,7 +187,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> setter(final Object key, final Class<T> impl, ComponentMonitor monitor, String prefix, boolean useNames,
                                                  Parameter... parameters) {
-        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, prefix, useNames, false, parameters));
+        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, prefix, useNames, "", false, parameters));
     }
 
     /**

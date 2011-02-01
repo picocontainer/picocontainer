@@ -52,7 +52,7 @@ public class MultiInjection extends AbstractInjectionType {
                              Parameter... parameters) {
             super(key, impl, parameters, monitor, useNames,
                     monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, parameters)),
-                    monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, false, parameters)),
+                    monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, "", false, parameters)),
                     monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject"))),
                     monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject")))
            );
