@@ -13,14 +13,17 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer-gems</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer-tck</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
   </dependencies>
   <build>
