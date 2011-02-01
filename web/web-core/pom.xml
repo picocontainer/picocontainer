@@ -13,9 +13,16 @@
       <groupId>org.picocontainer</groupId>
       <artifactId>picocontainer</artifactId>
     </dependency>
+      <dependency>
+          <groupId>javax.inject</groupId>
+          <artifactId>javax.inject</artifactId>
+          <version>1</version>
+          <optional>true</optional>
+      </dependency>
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
