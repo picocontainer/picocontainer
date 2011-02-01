@@ -27,6 +27,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Properties;
 
+import static java.lang.reflect.Modifier.isStatic;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -154,17 +155,19 @@ public class SimpleNamedBindingAnnotationTestCase {
                 	if (Modifier.isFinal( field.getModifiers())) {
                 		continue;
                 	}
-                    Named bindAnnotation = field.getAnnotation(Named.class);
-                    Object value;
-                    if (bindAnnotation != null) {
-                        value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));
-                    } else {
-                        value = container.getComponent(field.getType());
+                    Object value = null;
+                    if (!isStatic(field.getModifiers())) {
+                        Named bindAnnotation = field.getAnnotation(Named.class);
+                        if (bindAnnotation != null) {
+                            value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));
+                        } else {
+                            value = container.getComponent(field.getType());
+                        }
+                        field.setAccessible(true);
+                        field.set(inst, value);
                     }
-                    field.setAccessible(true);
                     currentMonitor().invoking(container, this, field, inst, value);
                     long start = System.currentTimeMillis();
-                    field.set(inst, value);
                     currentMonitor().invoked(container, this, field, inst, (System.currentTimeMillis() - start), null, value);
                 }
 
