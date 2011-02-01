@@ -45,25 +45,33 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         this.lifecycle = new NullLifecycleStrategy();
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycle, Object provider) {
-        this(lifecycle, provider, false);
+    public ProviderAdapter(LifecycleStrategy lifecycle, Provider provider) {
+        this(lifecycle, (Object) provider, false);
     }
 
-    public ProviderAdapter(Object provider) {
-        this(new NullLifecycleStrategy(), provider, false);
+    public ProviderAdapter(Provider provider) {
+        this(new NullLifecycleStrategy(), (Object) provider, false);
     }
 
-    public ProviderAdapter(Object provider, boolean useNames) {
-        this(new NullLifecycleStrategy(), provider, useNames);
+    public ProviderAdapter(javax.inject.Provider provider) {
+        this(new NullLifecycleStrategy(), (Object) provider, false);
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycle, Object provider, boolean useNames) {
+    public ProviderAdapter(Provider provider, boolean useNames) {
+        this(new NullLifecycleStrategy(), (Object) provider, useNames);
+    }
+
+    public ProviderAdapter(LifecycleStrategy lifecycle, Provider provider, boolean useNames) {
+        this(lifecycle, (Object) provider, useNames);
+    }
+
+    private ProviderAdapter(LifecycleStrategy lifecycle, Object provider, boolean useNames) {
         this.lifecycle = lifecycle;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
         if (provideMethod == AT_INJECT_GET) {
             key = provider.getClass().getGenericInterfaces()[0];
-             
+
         } else {
             key = provideMethod.getReturnType();
         }
