@@ -24,6 +24,7 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -66,7 +67,7 @@ public class PicoBuilder {
 
     public PicoBuilder(PicoContainer parentContainer, InjectionType injectionType) {
         this(parentContainer);
-        injectors.add(injectionType);
+        addInjector(injectionType);
     }
 
     /**
@@ -112,7 +113,7 @@ public class PicoBuilder {
 
     /**
      * Allows you to specify your own lifecycle strategy class.
-     * @param specifiedLifecycleStrategyType lifecycle strategy type.
+     * @param lifecycleClass lifecycle strategy type.
      * @return <em>this</em> to allow for method chaining.
      */
     public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> lifecycleClass) {
@@ -146,7 +147,7 @@ public class PicoBuilder {
     /**
      * Allows you to specify your very own component monitor to be used by the created
      * picocontainer
-     * @param specifiedComponentMonitor
+     * @param cmClass the component monitor class to use
      * @return <em>this</em> to allow for method chaining.
      */
     public PicoBuilder withMonitor(Class<? extends ComponentMonitor> cmClass) {
@@ -245,39 +246,47 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withSetterInjection() {
-        injectors.add(SDI());
+        addInjector(SDI());
+        return this;
+    }
+
+    public PicoBuilder withAnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation) {
+        addInjector(annotatedMethodDI(injectionAnnotation));
         return this;
     }
 
     public PicoBuilder withAnnotatedMethodInjection() {
-        injectors.add(annotatedMethodDI());
+        addInjector(annotatedMethodDI());
         return this;
     }
 
+    public PicoBuilder withAnnotatedFieldInjection(Class<? extends Annotation> injectionAnnotation) {
+        addInjector(annotatedFieldDI(injectionAnnotation));
+        return this;
+    }
 
     public PicoBuilder withAnnotatedFieldInjection() {
-        injectors.add(annotatedFieldDI());
+        addInjector(annotatedFieldDI());
         return this;
     }
 
     public PicoBuilder withTypedFieldInjection() {
-        injectors.add(typedFieldDI());
+        addInjector(typedFieldDI());
         return this;
     }
 
-
     public PicoBuilder withConstructorInjection() {
-        injectors.add(CDI());
+        addInjector(CDI());
         return this;
     }
 
     public PicoBuilder withNamedMethodInjection() {
-        injectors.add(namedMethod());
+        addInjector(namedMethod());
         return this;
     }
 
     public PicoBuilder withNamedFieldInjection() {
-        injectors.add(namedField());
+        addInjector(namedField());
         return this;
     }
 
@@ -343,12 +352,16 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withMethodInjection() {
-        injectors.add(new MethodInjection());
+        addInjector(new MethodInjection());
         return this;
     }
 
     public PicoBuilder addChildToParent() {
         addChildToParent =  true;
         return this;
+    }
+
+    protected void addInjector(InjectionType injectionType) {
+        injectors.add(injectionType);
     }
 }
