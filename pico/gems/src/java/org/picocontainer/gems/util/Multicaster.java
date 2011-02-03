@@ -35,13 +35,12 @@ public class Multicaster {
      * @return the Multicasting proxy
      */
     public static Object object(final PicoContainer pico, boolean callInInstantiationOrder, final ProxyFactory proxyFactory) {
-        List copy = new ArrayList(pico.getComponents());
+        List<Object> copy = new ArrayList<Object>(pico.getComponents());
 
         if (!callInInstantiationOrder) {
             // reverse the list
             Collections.reverse(copy);
         }
-        Object[] targets = copy.toArray();
-        return Multicasting.object(proxyFactory, targets);
+        return Multicasting.proxy(copy.toArray()).build(proxyFactory);
     }
 }

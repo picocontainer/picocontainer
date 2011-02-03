@@ -172,13 +172,12 @@ public class Assimilating extends AbstractBehavior {
          * Create and return a component instance. If the component instance and the type to assimilate is not compatible, a proxy
          * for the instance is generated, that implements the assimilated type.
          *
-         * @see org.picocontainer.behaviors.AbstractBehavior.AbstractChangedBehavior#getComponentInstance(org.picocontainer.PicoContainer, Class into)
+         * @see org.picocontainer.behaviors.AbstractBehavior.AbstractChangedBehavior#getComponentInstance(org.picocontainer.PicoContainer, Type into)
          */
         @Override
-        public T getComponentInstance(final PicoContainer container, final Type into)
-                throws PicoCompositionException  {
-            return (T) (isCompatible ? super.getComponentInstance(container, into) : Delegating.object(
-                    type, super.getComponentInstance(container, into), proxyFactory));
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException  {
+            return isCompatible ? super.getComponentInstance(container, into)
+                    : Delegating.proxy(type).with(super.getComponentInstance(container, into)).build(proxyFactory);
         }
 
         public String getDescriptor() {

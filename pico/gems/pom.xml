@@ -24,7 +24,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>proxytoys</groupId><artifactId>proxytoys</artifactId>
+            <groupId>com.thoughtworks.proxytoys</groupId><artifactId>proxytoys</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

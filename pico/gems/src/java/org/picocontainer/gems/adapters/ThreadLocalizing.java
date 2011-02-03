@@ -192,7 +192,7 @@ public final class ThreadLocalizing extends AbstractBehavior {
             }
 
             final Invoker invoker = new ThreadLocalInvoker(pico, getDelegate());
-            return (T)proxyFactory.createProxy(interfaces, invoker);
+            return (T)proxyFactory.createProxy(invoker, interfaces);
         }
 
 

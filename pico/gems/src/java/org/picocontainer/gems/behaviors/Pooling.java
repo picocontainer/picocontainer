@@ -15,21 +15,12 @@ import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.nullobject.Null;
 import com.thoughtworks.proxy.toys.pool.Pool;
-import org.picocontainer.PicoContainer;
+import com.thoughtworks.proxy.toys.pool.SerializationMode;
+import org.picocontainer.*;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,14 +153,14 @@ public class Pooling extends AbstractBehavior {
             /**
              * Retrieve the serialization mode of the pool. Following values are possible:
              * <ul>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_STANDARD}</li>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_NONE}</li>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_FORCE}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#STANDARD}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#NONE}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#FORCE}</li>
              * </ul>
              *
              * @return the serialization mode
              */
-            int getSerializationMode();
+            SerializationMode getSerializationMode();
         }
 
         /**
@@ -215,10 +206,10 @@ public class Pooling extends AbstractBehavior {
             }
 
             /**
-             * {@inheritDoc} Returns {@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_STANDARD}.
+             * {@inheritDoc} Returns {@link com.thoughtworks.proxy.toys.pool.SerializationMode#STANDARD}.
              */
-            public int getSerializationMode() {
-                return Pool.SERIALIZATION_STANDARD;
+            public SerializationMode getSerializationMode() {
+                return SerializationMode.STANDARD;
             }
 
         }
@@ -249,7 +240,7 @@ public class Pooling extends AbstractBehavior {
         private int maxPoolSize;
         private int waitMilliSeconds;
         private Pool pool;
-        private int serializationMode;
+        private SerializationMode serializationMode;
         private boolean autostartGC;
         private boolean started;
         private boolean disposed;
@@ -285,9 +276,14 @@ public class Pooling extends AbstractBehavior {
 
             final Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate
                     .getComponentKey() : delegate.getComponentImplementation();
+            this.pool = Pool.create(type).resettedBy(makeResetted(context)).mode(serializationMode).build(context.getProxyFactory());
+
+        }
+
+        private Resetter makeResetted(Context context) {
             final Resetter resetter = context.getResetter();
-            this.pool = new Pool(type, delegateHasLifecylce ? new LifecycleResetter(
-                    this, resetter) : resetter, context.getProxyFactory(), serializationMode);
+            return delegateHasLifecylce ? new LifecycleResetter(
+                    this, resetter) : resetter;
         }
 
         /**
@@ -296,7 +292,7 @@ public class Pooling extends AbstractBehavior {
          */
         protected Pooled() {
             // TODO super class should support standard ctor
-            super((ComponentAdapter) Null.object(ComponentAdapter.class));
+            super((ComponentAdapter) Null.proxy(ComponentAdapter.class).build(new StandardProxyFactory()));
         }
 
         /**
@@ -461,18 +457,18 @@ public class Pooling extends AbstractBehavior {
 
         private synchronized void writeObject(final ObjectOutputStream out) throws IOException {
             out.defaultWriteObject();
-            int mode = serializationMode;
-            if (mode == Pool.SERIALIZATION_FORCE && components.size() > 0) {
+            SerializationMode mode = serializationMode;
+            if (mode == SerializationMode.FORCE && components.size() > 0) {
                 try {
                     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                     final ObjectOutputStream testStream = new ObjectOutputStream(buffer);
                     testStream.writeObject(components); // force NotSerializableException
                     testStream.close();
                 } catch (final NotSerializableException e) {
-                    mode = Pool.SERIALIZATION_NONE;
+                    mode = SerializationMode.NONE;
                 }
             }
-            if (mode == Pool.SERIALIZATION_STANDARD) {
+            if (mode == SerializationMode.STANDARD) {
                 out.writeObject(components);
             } else {
                 out.writeObject(new ArrayList());
