@@ -3,35 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer</groupId>
-        <artifactId>picocontainer-parent</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-distribution</artifactId>
     <packaging>pom</packaging>
     <name>Picocontainer Distribution</name>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>picocontainer</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>${project.groupId}</groupId><artifactId>picocontainer</artifactId><version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>picocontainer-gems</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>${project.groupId}</groupId><artifactId>picocontainer-gems</artifactId><version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>${project.groupId}</groupId><artifactId>picocontainer-tck</artifactId><version>${project.parent.version}</version>
         </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>unpack-javadoc</id>
@@ -44,20 +35,17 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>picocontainer</artifactId>
+                                    <groupId>${project.groupId}</groupId><artifactId>picocontainer</artifactId>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>picocontainer-gems</artifactId>
+                                    <groupId>${project.groupId}</groupId><artifactId>picocontainer-gems</artifactId>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/site/javadoc/gems</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>picocontainer-tck</artifactId>
+                                    <groupId>${project.groupId}</groupId><artifactId>picocontainer-tck</artifactId>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/site/javadoc/tck</outputDirectory>
                                 </artifactItem>
@@ -75,9 +63,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.picocontainer</groupId>
-                                    <artifactId>picocontainer-site-resources</artifactId>
-                                    <version>2.0</version>
+                                    <groupId>org.picocontainer</groupId><artifactId>picocontainer-site-resources</artifactId><version>2.0</version>
                                     <outputDirectory>${project.build.directory}/site</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
@@ -86,8 +72,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.xsite</groupId>
-                <artifactId>xsite-maven-plugin</artifactId>
+                <groupId>org.codehaus.xsite</groupId><artifactId>xsite-maven-plugin</artifactId>
                 <configuration>
                     <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
                     <sitemapPath>content/sitemap.xml</sitemapPath>
@@ -105,8 +90,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>bin</id>
@@ -139,8 +123,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <goals>deploy site-deploy</goals>
                 </configuration>

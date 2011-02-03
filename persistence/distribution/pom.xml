@@ -3,26 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.persistence</groupId>
-        <artifactId>picocontainer-persistence</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer.persistence</groupId><artifactId>picocontainer-persistence</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
-    <artifactId>picocontainer-persistence-distribution</artifactId>
-    <version>2.1</version>
+    <artifactId>picocontainer-persistence-distribution</artifactId><version>2.1</version>
     <packaging>pom</packaging>
     <name>PicoContainer Persistence Distribution</name>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer.persistence</groupId>
-            <artifactId>picocontainer-persistence-hibernate</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.picocontainer.persistence</groupId><artifactId>picocontainer-persistence-hibernate</artifactId><version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>unpack-javadoc</id>
@@ -35,9 +29,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.picocontainer.persistence</groupId>
-                                    <artifactId>picocontainer-persistence-hibernate</artifactId>
-                                    <version>${project.version}</version>
+                                    <groupId>org.picocontainer.persistence</groupId><artifactId>picocontainer-persistence-hibernate</artifactId><version>${project.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/site/javadoc/hibernate</outputDirectory>
                                 </artifactItem>
@@ -55,9 +47,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.picocontainer</groupId>
-                                    <artifactId>picocontainer-site-resources</artifactId>
-                                    <version>2.0</version>
+                                    <groupId>org.picocontainer</groupId><artifactId>picocontainer-site-resources</artifactId><version>2.0</version>
                                     <outputDirectory>${project.build.directory}/site</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
@@ -66,8 +56,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.xsite</groupId>
-                <artifactId>xsite-maven-plugin</artifactId>
+                <groupId>org.codehaus.xsite</groupId><artifactId>xsite-maven-plugin</artifactId>
                 <configuration>
                     <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
                     <sitemapPath>content/sitemap.xml</sitemapPath>
@@ -85,8 +74,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>bin</id>
@@ -119,8 +107,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <goals>deploy site-deploy</goals>
                 </configuration>

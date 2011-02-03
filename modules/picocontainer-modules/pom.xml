@@ -2,9 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.modules</groupId>
-        <artifactId>picocontainer-modules-parent</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer.modules</groupId><artifactId>picocontainer-modules-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-modules</artifactId>
     <name>PicoContainer Modules</name>
@@ -15,75 +13,52 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
-            <version>${pico-version}</version>
+            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId><version>${pico-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${pico-version}</version>
+            <groupId>org.picocontainer</groupId><artifactId>picocontainer-tck</artifactId><version>${pico-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId>
-            <artifactId>picocontainer-script-core</artifactId>
-            <version>${pico-script-version}</version>
+            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${pico-script-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId>
-            <artifactId>picocontainer-script-groovy</artifactId>
-            <version>${pico-script-version}</version>
+            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId><version>${pico-script-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId>
-            <artifactId>picocontainer-script-rhino</artifactId>
-            <version>${pico-script-version}</version>
+            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-rhino</artifactId><version>${pico-script-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId><version>1.6.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <!--  Commons Logging Adapter to Slf4j -->
             <!--  Required for Commons-VFS -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.6.1</version>
+            <groupId>org.slf4j</groupId><artifactId>jcl-over-slf4j</artifactId><version>1.6.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>0.9.26</version>
+            <groupId>ch.qos.logback</groupId><artifactId>logback-core</artifactId><version>0.9.26</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>0.9.26</version>
+            <groupId>ch.qos.logback</groupId><artifactId>logback-classic</artifactId><version>0.9.26</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>commons-vfs</groupId>
-            <artifactId>commons-vfs</artifactId>
-            <version>1.0</version>
+            <groupId>commons-vfs</groupId><artifactId>commons-vfs</artifactId><version>1.0</version>
             <exclusions>
                 <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <!-- For test -->
         <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock-junit4</artifactId>
-            <version>2.5.1</version>
+            <groupId>org.jmock</groupId><artifactId>jmock-junit4</artifactId><version>2.5.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -133,8 +108,7 @@
                 <!--
                         The following series of ant tasks build a batch of testable jars to validate deployer execution.
                     -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>test-compile</phase>
@@ -232,9 +206,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>2.3.1</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -245,9 +217,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-source-plugin</artifactId><version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -259,9 +229,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId><version>2.7</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -285,9 +253,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.5</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>2.5</version>
                 <configuration>
                     <junitArtifactName>junit:junit-dep</junitArtifactName>
                     <forkMode>once</forkMode>
@@ -300,9 +266,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.4</version>
+                <groupId>org.codehaus.mojo</groupId><artifactId>cobertura-maven-plugin</artifactId><version>2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -316,8 +280,7 @@
     <reporting>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-project-info-reports-plugin</artifactId>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -329,26 +292,19 @@
                 </reportSets>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-report-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.4</version>
+                <groupId>org.codehaus.mojo</groupId><artifactId>cobertura-maven-plugin</artifactId><version>2.4</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.3.1</version>
+                <groupId>org.codehaus.mojo</groupId><artifactId>findbugs-maven-plugin</artifactId><version>2.3.1</version>
                 <configuration>
                     <effort>Max</effort>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.5</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-pmd-plugin</artifactId><version>2.5</version>
                 <configuration>
                     <linkXref>true</linkXref>
                     <sourceEncoding>utf-8</sourceEncoding>
@@ -357,9 +313,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-jxr-plugin</artifactId><version>2.2</version>
             </plugin>
         </plugins>
     </reporting>

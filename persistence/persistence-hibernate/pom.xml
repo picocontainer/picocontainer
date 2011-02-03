@@ -3,27 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.persistence</groupId>
-        <artifactId>picocontainer-persistence</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer.persistence</groupId><artifactId>picocontainer-persistence</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-persistence-hibernate</artifactId>
     <name>PicoContainer Persistence Hibernate</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
+            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.3.1.GA</version>
+            <groupId>org.hibernate</groupId><artifactId>hibernate-annotations</artifactId><version>3.3.1.GA</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-            <version>1.1.1</version>
+            <groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-jta_1.0.1B_spec</artifactId><version>1.1.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

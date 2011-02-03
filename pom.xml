@@ -2,8 +2,7 @@
 2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 h
 ttp://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.picocontainer</groupId>
-    <artifactId>picocontainer-root</artifactId>
+    <groupId>org.picocontainer</groupId><artifactId>picocontainer-root</artifactId>
     <name>PicoContainer Root</name>
     <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>

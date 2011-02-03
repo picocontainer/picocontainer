@@ -2,47 +2,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer</groupId>
-        <artifactId>picocontainer-parent</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer</artifactId>
     <name>PicoContainer Core</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
+            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId><version>1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.jtype</groupId>
-            <artifactId>jtype</artifactId>
-            <version>0.1.1</version>
+            <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>0.1.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.mockito</groupId><artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
+            <groupId>javax.annotation</groupId><artifactId>jsr250-api</artifactId>
             <optional>true</optional>
         </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                <groupId>com.thoughtworks.paranamer</groupId>
-                <artifactId>paranamer-maven-plugin</artifactId>
-                <version>2.3</version>
+                <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>2.3</version>
                 <configuration>
                     <sourceDirectory>src/test</sourceDirectory>
                     <outputDirectory>target/test-classes</outputDirectory>
@@ -58,9 +47,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>1.3</version>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId><version>1.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

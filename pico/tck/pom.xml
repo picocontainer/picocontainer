@@ -2,46 +2,37 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer</groupId>
-        <artifactId>picocontainer-parent</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-tck</artifactId>
     <name>PicoContainer TCK</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>picocontainer</artifactId>
+            <groupId>${project.groupId}</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
+            <groupId>javax.annotation</groupId><artifactId>jsr250-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
+            <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock-junit4</artifactId>
+            <groupId>org.jmock</groupId><artifactId>jmock-junit4</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.mockito</groupId><artifactId>mockito-core</artifactId>
             <!-- for some reason the version isn't being inherited on my system??!?!?!? -MR -->
             <version>1.8.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
+            <groupId>com.thoughtworks.xstream</groupId><artifactId>xstream</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>xpp3</groupId>
-            <artifactId>xpp3_min</artifactId>
+            <groupId>xpp3</groupId><artifactId>xpp3_min</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -49,8 +40,7 @@
         <sourceDirectory>../container/src/test</sourceDirectory>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <includes>
                         <include>org/picocontainer/tck/**/*.java</include>
