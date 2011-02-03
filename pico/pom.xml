@@ -335,13 +335,6 @@
             </repositories>
         </profile>
         <profile>
-            <!-- Distribution profile -->
-            <id>distribution</id>
-            <modules>
-                <module>distribution</module>
-            </modules>
-        </profile>
-        <profile>
             <!-- No-test profile:  equivalent to -Dmaven.test.skip=true -->
             <id>nt</id>
             <build>
