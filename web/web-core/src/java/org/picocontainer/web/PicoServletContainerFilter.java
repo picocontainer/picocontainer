@@ -121,7 +121,12 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
             if (printSessionSize) {
                 PrintSessionSizeDetailsForDebugging.printItIfDebug(debug, ssh);
             }
-            sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
+            try {
+                sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
+            }
+            catch (IllegalStateException ex) {
+                // catalina can report 'Session already invalidated'
+            }
         }
         scopedContainers.getRequestStoring().invalidateCacheForThread();
         scopedContainers.getRequestState().invalidateStateModelForThread();
