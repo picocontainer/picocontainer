@@ -317,11 +317,11 @@ public abstract class AbstractPicoContainerTest {
         assertNull(picoContainer.removeComponent("COMPONENT DOES NOT EXIST"));
     }
 
-    /** Important! Nanning really, really depends on this! */
+    /* Important! Nanning really, really depends on this! */
     @Test public void testComponentAdapterRegistrationOrderIsMaintained() throws NoSuchMethodException {
 
-        ConstructorInjection.ConstructorInjector c1 = new ConstructorInjection.ConstructorInjector("1", Object.class, new NullComponentMonitor(), false, null);
-        ConstructorInjection.ConstructorInjector c2 = new ConstructorInjection.ConstructorInjector("2", String.class, new NullComponentMonitor(), false, null);
+        ConstructorInjection.ConstructorInjector c1 = new ConstructorInjection.ConstructorInjector<Object>("1", Object.class, null);
+        ConstructorInjection.ConstructorInjector c2 = new ConstructorInjection.ConstructorInjector<String>("2", String.class, null);
 
         MutablePicoContainer picoContainer = createPicoContainer(null);
         picoContainer.addAdapter(c1).addAdapter(c2);
@@ -763,22 +763,22 @@ public abstract class AbstractPicoContainerTest {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter =
-            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector(HashMap.class, HashMap.class, new NullComponentMonitor(), false, null))
+            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashMap>(HashMap.class, HashMap.class, null))
                 .getComponentAdapter(HashMap.class, (NameBinding) null);
         ComponentAdapter hashSetAdapter =
-            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector(HashSet.class, HashSet.class, new NullComponentMonitor(), false, null))
+            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashSet>(HashSet.class, HashSet.class, null))
                 .getComponentAdapter(HashSet.class, (NameBinding) null);
-        InstanceAdapter instanceAdapter = new InstanceAdapter(String.class, "foo",
+        InstanceAdapter instanceAdapter = new InstanceAdapter<String>(String.class, "foo",
                                                               new NullLifecycleStrategy(),
                                                               new NullComponentMonitor());
         ComponentAdapter stringAdapter = parent.as(getProperties()).addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
-            child.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector(ArrayList.class, ArrayList.class, new NullComponentMonitor(), false, null))
+            child.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<ArrayList>(ArrayList.class, ArrayList.class, null))
                 .getComponentAdapter(ArrayList.class, (NameBinding) null);
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
-        ConstructorInjection.ConstructorInjector ci = new ConstructorInjection.ConstructorInjector(Exception.class, Exception.class, new NullComponentMonitor(), false, new Parameter[] {componentParameter,
-                                                         throwableParameter});
+        ConstructorInjection.ConstructorInjector<Exception> ci = new ConstructorInjection.ConstructorInjector<Exception>(Exception.class, Exception.class, componentParameter,
+                throwableParameter);
         ComponentAdapter exceptionAdapter = child.as(getProperties()).addAdapter(ci).getComponentAdapter(Exception.class, (NameBinding) null);
 
         List<Class> expectedList = new ArrayList<Class>();

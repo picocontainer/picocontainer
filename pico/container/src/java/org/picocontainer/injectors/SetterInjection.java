@@ -17,7 +17,9 @@ import org.picocontainer.behaviors.AbstractBehavior;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -30,6 +32,8 @@ import java.util.Properties;
 public class SetterInjection extends AbstractInjectionType {
 
     private final String prefix;
+    private boolean optional;
+    private String notThisOneThough;
 
     public SetterInjection(String prefix) {
         this.prefix = prefix;
@@ -37,6 +41,16 @@ public class SetterInjection extends AbstractInjectionType {
 
     public SetterInjection() {
         this("set");
+    }
+
+    /**
+     * Specify a prefix and an exclusion
+     * @param prefix the prefix like 'set'
+     * @param notThisOneThough to exclude, like 'setMetaClass' for Groovy
+     */
+    public SetterInjection(String prefix, String notThisOneThough) {
+        this(prefix);
+        this.notThisOneThough = notThisOneThough;
     }
 
     /**
@@ -53,12 +67,18 @@ public class SetterInjection extends AbstractInjectionType {
      * @return Returns a new {@link SetterInjector}.
      * @throws PicoCompositionException if dependencies cannot be solved
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters)
-            throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
+                                           Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, monitor, prefix, useNames, parameters);
+        SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, monitor, prefix, useNames,
+                notThisOneThough != null ? notThisOneThough : "", optional, parameters);
         Injector<T> injector = monitor.newInjector(setterInjector);
         return wrapLifeCycle(injector, lifecycle);
+    }
+
+    public SetterInjection withInjectionOptional() {
+        optional = true;
+        return this;
     }
 
     /**
@@ -81,15 +101,20 @@ public class SetterInjection extends AbstractInjectionType {
     public static class SetterInjector<T> extends IterativeInjector<T> {
 
         protected final String prefix;
+        private final boolean optional;
+        private final String notThisOneThough;
 
         /**
          * Constructs a SetterInjector
+         *
          *
          * @param key            the search key for this implementation
          * @param impl the concrete implementation
          * @param monitor                 the component monitor used by this addAdapter
          * @param prefix                  the prefix to use (e.g. 'set')
-         * @param useNames
+         * @param useNames                use parameter names
+         * @param notThisOneThough
+         * @param optional                not all setters need to be injected
          * @param parameters              the parameters to use for the initialization
          * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
          *                              if the implementation is not a concrete class.
@@ -97,10 +122,12 @@ public class SetterInjection extends AbstractInjectionType {
          */
         public SetterInjector(final Object key,
                               final Class impl,
-                              ComponentMonitor monitor, String prefix, boolean useNames,
-                              Parameter... parameters) throws  NotConcreteRegistrationException {
+                              ComponentMonitor monitor, String prefix, boolean useNames, String notThisOneThough,
+                              boolean optional, Parameter... parameters) throws  NotConcreteRegistrationException {
             super(key, impl, monitor, useNames, parameters);
             this.prefix = prefix;
+            this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";
+            this.optional = optional;
         }
 
         protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
@@ -116,7 +143,17 @@ public class SetterInjection extends AbstractInjectionType {
         @Override
         protected boolean isInjectorMethod(Method method) {
             String methodName = method.getName();
-            return methodName.length() >= getInjectorPrefix().length() + 1 && methodName.startsWith(getInjectorPrefix()) && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));
+            return methodName.length() >= getInjectorPrefix().length() + 1 // long enough
+                    && methodName.startsWith(getInjectorPrefix())
+                    && !methodName.equals(notThisOneThough)
+                    && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));
+        }
+
+        @Override
+        protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
+            if (!optional) {
+                super.unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+            }
         }
 
         protected String getInjectorPrefix() {

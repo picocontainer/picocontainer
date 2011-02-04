@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class LifecycleAdapterTestCase {
 
     private final ConstructorInjection.ConstructorInjector INJECTOR = new ConstructorInjection.ConstructorInjector(
-            Foo.class, Foo.class, new NullComponentMonitor(), false, new Parameter[0]
+            Foo.class, Foo.class, new Parameter[0]
    );
 
     private AbstractComponentAdapterTest.RecordingLifecycleStrategy strategy = new AbstractComponentAdapterTest.RecordingLifecycleStrategy(new StringBuffer());
@@ -31,7 +31,7 @@ public class LifecycleAdapterTestCase {
     @Test
     public void passesOnLifecycleOperations() {
 
-        LifecycleStrategy adapter = (LifecycleStrategy) ais.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), null, null, new Parameter[0]);
+        LifecycleStrategy adapter = (LifecycleStrategy) ais.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), null, null);
         assertEquals("org.picocontainer.injectors.AbstractInjectionType$LifecycleAdapter", adapter.getClass().getName());
         Touchable touchable = new SimpleTouchable();
         adapter.start(touchable);
@@ -42,7 +42,7 @@ public class LifecycleAdapterTestCase {
 
     @Test
     public void canHaveMonitorChanged() {
-        ComponentMonitorStrategy adapter = (ComponentMonitorStrategy) ais.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), Foo.class, Foo.class, new Parameter[0]);
+        ComponentMonitorStrategy adapter = (ComponentMonitorStrategy) ais.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), Foo.class, Foo.class);
         assertTrue(adapter.currentMonitor() instanceof NullComponentMonitor);
         adapter.changeMonitor(new WriterComponentMonitor(new PrintWriter(System.out)));
         assertTrue(adapter.currentMonitor() instanceof WriterComponentMonitor);

@@ -10,7 +10,7 @@ public class Jsr330Injection extends ConstructorInjection {
 
     @Override
     protected <T> ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, Parameter... parameters) {
-        return new ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenConstructor, parameters) {
+        return new ConstructorInjector<T>(monitor, useNames, rememberChosenConstructor, key, impl, parameters) {
             @Override
             protected boolean hasApplicableConstructorModifiers(int modifiers) {
                 return true;

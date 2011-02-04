@@ -1,1 +1,14 @@
-ee
+PicoContainer3 in Git at Github and Codehaus (mirrors) is a work in progress.  
+The major piece that's taking a while to do is JSR330 compatibility.
+
+   Run tests - PicoContainerJsr330Tests - to see how far we have to go.
+
+PicoContainer 3.x is good enough to use in production, but it is not finished yet.
+
+If you want stability choose PicoContainer2 which is still at Codehaus in Subversion.
+
+   Source here: https://svn.codehaus.org/picocontainer/java/2.x/trunk
+   Binaries here: https://nexus.codehaus.org/content/repositories/releases/org/picocontainer/picocontainer/2.12/
+
+The Website for PicoContainer itself is http://picocontainer.org 
+Presently, it is for the 2.x series of releases.

@@ -9,16 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
+
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * @author J&ouml;rg Schaible
@@ -108,5 +107,57 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         assertEquals("Tom", bean.getName());
     }
 
+    public static class AnotherNamedBean2 extends AnotherNamedBean {
+        private String name2;
 
+        public String getName2() {
+            return name2;
+        }
+
+        public void initName2(String name) {
+            this.name2 = name;
+        }
+    }
+
+    @Test
+    public void testNotMatcherWorks() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection("init", "initName2"));
+        picoContainer.addComponent(Bean.class, AnotherNamedBean2.class);
+        picoContainer.addComponent("Tom");
+        AnotherNamedBean2 bean = picoContainer.getComponent(AnotherNamedBean2.class);
+        assertEquals("Tom", bean.getName());
+        assertNull(bean.getName2());
+    }
+
+
+    public static class RecursivelyNamedBean implements Bean {
+        private String name;
+        private NamedBean namedBean;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setNamedBean(NamedBean namedBean) {
+            this.namedBean = namedBean;
+        }
+
+        public NamedBean getNamedBean() {
+            return namedBean;
+        }
+    }
+
+    @Test
+    public void testOptionalWorks() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection().withInjectionOptional());
+        picoContainer.addComponent(RecursivelyNamedBean.class, RecursivelyNamedBean.class);
+        picoContainer.addComponent("Tom");
+        RecursivelyNamedBean bean = picoContainer.getComponent(RecursivelyNamedBean.class);
+        assertEquals("Tom", bean.getName());
+        assertNull(bean.getNamedBean());
+    }
 }

@@ -27,7 +27,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 public class HiddenImplementationTestCase {
 
     @Test public void testMultipleInterfacesCanBeHidden() {
-        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, new NullComponentMonitor(), false, null);
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
         ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
         Object comp = ihca.getComponentInstance(null, null);
         assertNotNull(comp);
@@ -36,7 +36,7 @@ public class HiddenImplementationTestCase {
     }    
 
     @Test public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{String.class}, Footle.class, new NullComponentMonitor(), false, null);
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{String.class}, Footle.class);
         ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
         try {
             ihca.getComponentInstance(null, null);

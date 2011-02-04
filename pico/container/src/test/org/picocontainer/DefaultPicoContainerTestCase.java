@@ -191,10 +191,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 				new Caching().wrap(new ConstructorInjection()));
 
 		picoContainer.addComponent(Service.class);
-		picoContainer.as(Characteristics.NO_CACHE).addAdapter(
-				new ConstructorInjection.ConstructorInjector(TransientComponent.class,
-						TransientComponent.class, new NullComponentMonitor(), false, (Parameter[])null
-                ));
+		picoContainer.as(Characteristics.NO_CACHE).addAdapter(new ConstructorInjection.ConstructorInjector(TransientComponent.class,
+						TransientComponent.class, null));
 		TransientComponent c1 = picoContainer
 				.getComponent(TransientComponent.class);
 		TransientComponent c2 = picoContainer

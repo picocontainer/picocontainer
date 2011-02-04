@@ -15,21 +15,12 @@ import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.nullobject.Null;
 import com.thoughtworks.proxy.toys.pool.Pool;
-import org.picocontainer.PicoContainer;
+import com.thoughtworks.proxy.toys.pool.SerializationMode;
+import org.picocontainer.*;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +110,7 @@ public class Pooling extends AbstractBehavior {
          *
          * @author J&ouml;rg Schaible
          */
-        public static interface Context {
+        public static interface Context<T> {
             /**
              * Retrieve the maximum size of the pool. An implementation may return the maximum value or
              * {@link org.picocontainer.gems.behaviors.Pooling.Pooled#UNLIMITED_SIZE} for <em>unlimited</em> growth.
@@ -157,19 +148,19 @@ public class Pooling extends AbstractBehavior {
              *
              * @return the Resetter instance
              */
-            Resetter getResetter();
+            Resetter<T> getResetter();
 
             /**
              * Retrieve the serialization mode of the pool. Following values are possible:
              * <ul>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_STANDARD}</li>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_NONE}</li>
-             * <li>{@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_FORCE}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#STANDARD}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#NONE}</li>
+             * <li>{@link com.thoughtworks.proxy.toys.pool.SerializationMode#FORCE}</li>
              * </ul>
              *
              * @return the serialization mode
              */
-            int getSerializationMode();
+            SerializationMode getSerializationMode();
         }
 
         /**
@@ -177,7 +168,7 @@ public class Pooling extends AbstractBehavior {
          *
          * @author J&ouml;rg Schaible
          */
-        public static class DefaultContext implements Context {
+        public static class DefaultContext<T> implements Context<T> {
 
             /**
              * {@inheritDoc} Returns {@link org.picocontainer.gems.behaviors.Pooling.Pooled#DEFAULT_MAX_SIZE}.
@@ -210,15 +201,15 @@ public class Pooling extends AbstractBehavior {
             /**
              * {@inheritDoc} Returns the {@link org.picocontainer.gems.behaviors.Pooling.Pooled#DEFAULT_RESETTER}.
              */
-            public Resetter getResetter() {
+            public Resetter<T> getResetter() {
                 return DEFAULT_RESETTER;
             }
 
             /**
-             * {@inheritDoc} Returns {@link com.thoughtworks.proxy.toys.pool.Pool#SERIALIZATION_STANDARD}.
+             * {@inheritDoc} Returns {@link com.thoughtworks.proxy.toys.pool.SerializationMode#STANDARD}.
              */
-            public int getSerializationMode() {
-                return Pool.SERIALIZATION_STANDARD;
+            public SerializationMode getSerializationMode() {
+                return SerializationMode.STANDARD;
             }
 
         }
@@ -249,7 +240,7 @@ public class Pooling extends AbstractBehavior {
         private int maxPoolSize;
         private int waitMilliSeconds;
         private Pool pool;
-        private int serializationMode;
+        private SerializationMode serializationMode;
         private boolean autostartGC;
         private boolean started;
         private boolean disposed;
@@ -267,7 +258,7 @@ public class Pooling extends AbstractBehavior {
          * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
          *             invalid
          */
-        public Pooled(final ComponentAdapter delegate, final Context context) {
+        public Pooled(final ComponentAdapter<T> delegate, final Context context) {
             super(delegate);
             this.maxPoolSize = context.getMaxSize();
             this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
@@ -285,9 +276,13 @@ public class Pooling extends AbstractBehavior {
 
             final Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate
                     .getComponentKey() : delegate.getComponentImplementation();
-            final Resetter resetter = context.getResetter();
-            this.pool = new Pool(type, delegateHasLifecylce ? new LifecycleResetter(
-                    this, resetter) : resetter, context.getProxyFactory(), serializationMode);
+            this.pool = Pool.create(type).resettedBy(makeResetted(context)).mode(serializationMode).build(context.getProxyFactory());
+
+        }
+
+        private Resetter<T> makeResetted(Context context) {
+            final Resetter<T> resetter = context.getResetter();
+            return delegateHasLifecylce ? new LifecycleResetter<T>(this, resetter) : resetter;
         }
 
         /**
@@ -296,7 +291,7 @@ public class Pooling extends AbstractBehavior {
          */
         protected Pooled() {
             // TODO super class should support standard ctor
-            super((ComponentAdapter) Null.object(ComponentAdapter.class));
+            super(Null.proxy(ComponentAdapter.class).build(new StandardProxyFactory()));
         }
 
         /**
@@ -374,16 +369,16 @@ public class Pooling extends AbstractBehavior {
             return pool.size();
         }
 
-        static final class LifecycleResetter implements Resetter, Serializable {
-            private final Resetter delegate;
+        static final class LifecycleResetter<T> implements Resetter<T>, Serializable {
+            private final Resetter<T> delegate;
             private final Pooled adapter;
 
-            LifecycleResetter(final Pooled adapter, final Resetter delegate) {
+            LifecycleResetter(final Pooled adapter, final Resetter<T> delegate) {
                 this.adapter = adapter;
                 this.delegate = delegate;
             }
 
-            public boolean reset(final Object object) {
+            public boolean reset(final T object) {
                 final boolean result = delegate.reset(object);
                 if (!result || adapter.disposed) {
                     if (adapter.started) {
@@ -461,18 +456,18 @@ public class Pooling extends AbstractBehavior {
 
         private synchronized void writeObject(final ObjectOutputStream out) throws IOException {
             out.defaultWriteObject();
-            int mode = serializationMode;
-            if (mode == Pool.SERIALIZATION_FORCE && components.size() > 0) {
+            SerializationMode mode = serializationMode;
+            if (mode == SerializationMode.FORCE && components.size() > 0) {
                 try {
                     final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                     final ObjectOutputStream testStream = new ObjectOutputStream(buffer);
                     testStream.writeObject(components); // force NotSerializableException
                     testStream.close();
                 } catch (final NotSerializableException e) {
-                    mode = Pool.SERIALIZATION_NONE;
+                    mode = SerializationMode.NONE;
                 }
             }
-            if (mode == Pool.SERIALIZATION_STANDARD) {
+            if (mode == SerializationMode.STANDARD) {
                 out.writeObject(components);
             } else {
                 out.writeObject(new ArrayList());
@@ -481,7 +476,7 @@ public class Pooling extends AbstractBehavior {
 
         private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
-            components = (List<Object>)in.readObject();
+            components = (List<Object>) in.readObject();
         }
 
         /**

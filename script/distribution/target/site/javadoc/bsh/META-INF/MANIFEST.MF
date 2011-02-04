@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: 14.3-b01-101 (Apple Inc.)
-
