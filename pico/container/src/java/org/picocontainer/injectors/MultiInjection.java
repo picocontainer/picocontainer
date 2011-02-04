@@ -41,7 +41,7 @@ public class MultiInjection extends AbstractInjectionType {
                                                           Class<T> impl,
                                                           Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(new MultiInjector(key, impl, monitor, setterPrefix, useNames, parameters), lifecycle);
+        return wrapLifeCycle(new MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, parameters), lifecycle);
     }
 
     /** @author Paul Hammant */
@@ -51,7 +51,7 @@ public class MultiInjection extends AbstractInjectionType {
         public MultiInjector(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames,
                              Parameter... parameters) {
             super(key, impl, parameters, monitor, useNames,
-                    monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, parameters)),
+                    monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, parameters)),
                     monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, "", false, parameters)),
                     monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject"))),
                     monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject")))

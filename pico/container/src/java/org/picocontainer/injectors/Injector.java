@@ -49,7 +49,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames,
                                                       Parameter... parameters) {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, parameters);
+        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, parameters);
     }
 
     /**
@@ -68,7 +68,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames, boolean rememberChosenCtor,
                                                       Parameter... parameters) {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, monitor, useNames, rememberChosenCtor, parameters);
+        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, rememberChosenCtor, key, impl, parameters);
     }
 
     /**

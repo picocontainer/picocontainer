@@ -9,17 +9,6 @@
 
 package org.picocontainer.gems.behaviors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -29,8 +18,14 @@ import org.picocontainer.gems.GemsCharacteristics;
 import org.picocontainer.gems.PicoGemsBuilder;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
@@ -95,7 +90,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     @Test
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ConstructorInjection.ConstructorInjector constructorInjector = new ConstructorInjection.ConstructorInjector("l", ArrayList.class, new NullComponentMonitor(), false, null);
+        ConstructorInjection.ConstructorInjector constructorInjector = new ConstructorInjection.ConstructorInjector<ArrayList>("l", ArrayList.class, null);
         HotSwapping.HotSwappable hsca = (HotSwapping.HotSwappable) pico.addAdapter(new HotSwapping.HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");

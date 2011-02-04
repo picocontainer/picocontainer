@@ -146,8 +146,7 @@ public class CollectionComponentParameterTestCase {
 	@Test
 	public void testCollectionsAreGeneratedOnTheFly() {
 		MutablePicoContainer mpc = new DefaultPicoContainer();
-		mpc.addAdapter(new ConstructorInjection.ConstructorInjector(Bowl.class, Bowl.class,
-                new NullComponentMonitor(), false, null));
+		mpc.addAdapter(new ConstructorInjection.ConstructorInjector<Bowl>(Bowl.class, Bowl.class, null));
 		mpc.addComponent(Cod.class);
 		Bowl bowl = mpc.getComponent(Bowl.class);
 		assertEquals(1, bowl.cods.length);
@@ -161,9 +160,9 @@ public class CollectionComponentParameterTestCase {
 		private final Cod[] cods;
 		private final Fish[] fishes;
 
-		public CollectedBowl(Collection cods, Collection fishes) {
-			this.cods = (Cod[]) cods.toArray(new Cod[cods.size()]);
-			this.fishes = (Fish[]) fishes.toArray(new Fish[fishes.size()]);
+		public CollectedBowl(Collection<Cod> cods, Collection<Fish> fishes) {
+			this.cods = cods.toArray(new Cod[cods.size()]);
+			this.fishes = fishes.toArray(new Fish[fishes.size()]);
 		}
 	}
 

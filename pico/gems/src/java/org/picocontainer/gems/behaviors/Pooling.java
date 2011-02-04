@@ -110,7 +110,7 @@ public class Pooling extends AbstractBehavior {
          *
          * @author J&ouml;rg Schaible
          */
-        public static interface Context {
+        public static interface Context<T> {
             /**
              * Retrieve the maximum size of the pool. An implementation may return the maximum value or
              * {@link org.picocontainer.gems.behaviors.Pooling.Pooled#UNLIMITED_SIZE} for <em>unlimited</em> growth.
@@ -148,7 +148,7 @@ public class Pooling extends AbstractBehavior {
              *
              * @return the Resetter instance
              */
-            Resetter getResetter();
+            Resetter<T> getResetter();
 
             /**
              * Retrieve the serialization mode of the pool. Following values are possible:
@@ -168,7 +168,7 @@ public class Pooling extends AbstractBehavior {
          *
          * @author J&ouml;rg Schaible
          */
-        public static class DefaultContext implements Context {
+        public static class DefaultContext<T> implements Context<T> {
 
             /**
              * {@inheritDoc} Returns {@link org.picocontainer.gems.behaviors.Pooling.Pooled#DEFAULT_MAX_SIZE}.
@@ -201,7 +201,7 @@ public class Pooling extends AbstractBehavior {
             /**
              * {@inheritDoc} Returns the {@link org.picocontainer.gems.behaviors.Pooling.Pooled#DEFAULT_RESETTER}.
              */
-            public Resetter getResetter() {
+            public Resetter<T> getResetter() {
                 return DEFAULT_RESETTER;
             }
 
@@ -258,7 +258,7 @@ public class Pooling extends AbstractBehavior {
          * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
          *             invalid
          */
-        public Pooled(final ComponentAdapter delegate, final Context context) {
+        public Pooled(final ComponentAdapter<T> delegate, final Context context) {
             super(delegate);
             this.maxPoolSize = context.getMaxSize();
             this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
@@ -280,10 +280,9 @@ public class Pooling extends AbstractBehavior {
 
         }
 
-        private Resetter makeResetted(Context context) {
-            final Resetter resetter = context.getResetter();
-            return delegateHasLifecylce ? new LifecycleResetter(
-                    this, resetter) : resetter;
+        private Resetter<T> makeResetted(Context context) {
+            final Resetter<T> resetter = context.getResetter();
+            return delegateHasLifecylce ? new LifecycleResetter<T>(this, resetter) : resetter;
         }
 
         /**
@@ -292,7 +291,7 @@ public class Pooling extends AbstractBehavior {
          */
         protected Pooled() {
             // TODO super class should support standard ctor
-            super((ComponentAdapter) Null.proxy(ComponentAdapter.class).build(new StandardProxyFactory()));
+            super(Null.proxy(ComponentAdapter.class).build(new StandardProxyFactory()));
         }
 
         /**
@@ -370,16 +369,16 @@ public class Pooling extends AbstractBehavior {
             return pool.size();
         }
 
-        static final class LifecycleResetter implements Resetter, Serializable {
-            private final Resetter delegate;
+        static final class LifecycleResetter<T> implements Resetter<T>, Serializable {
+            private final Resetter<T> delegate;
             private final Pooled adapter;
 
-            LifecycleResetter(final Pooled adapter, final Resetter delegate) {
+            LifecycleResetter(final Pooled adapter, final Resetter<T> delegate) {
                 this.adapter = adapter;
                 this.delegate = delegate;
             }
 
-            public boolean reset(final Object object) {
+            public boolean reset(final T object) {
                 final boolean result = delegate.reset(object);
                 if (!result || adapter.disposed) {
                     if (adapter.started) {
@@ -477,7 +476,7 @@ public class Pooling extends AbstractBehavior {
 
         private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
-            components = (List<Object>)in.readObject();
+            components = (List<Object>) in.readObject();
         }
 
         /**

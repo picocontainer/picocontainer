@@ -10,11 +10,6 @@
 
 package org.picocontainer.defaults;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -25,6 +20,8 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+
+import static org.junit.Assert.*;
 
 public class DefaultComponentRegistryTestCase {
     private DefaultPicoContainer picoContainer;
@@ -88,7 +85,7 @@ public class DefaultComponentRegistryTestCase {
         assertEquals(AlternativeTouchable.class, component.getClass());
     }
 
-    private ComponentAdapter createComponentAdapter() throws PicoCompositionException {
-        return new ConstructorInjection.ConstructorInjector(Touchable.class, SimpleTouchable.class, new NullComponentMonitor(), false, null);
+    private ComponentAdapter<SimpleTouchable> createComponentAdapter() throws PicoCompositionException {
+        return new ConstructorInjection.ConstructorInjector<SimpleTouchable>(new NullComponentMonitor(), false,Touchable.class, SimpleTouchable.class, null);
     }
 }
