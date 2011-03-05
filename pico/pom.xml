@@ -1,7 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId>
+    <parent>
+        <groupId>org.codehaus</groupId>
+        <artifactId>codehaus-parent</artifactId>
+        <version>3</version>
+    </parent>
+    <groupId>org.picocontainer</groupId>
+    <artifactId>picocontainer-parent</artifactId>
     <name>PicoContainer Parent</name>
     <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -18,18 +24,11 @@
         <url>http://codehaus.org/</url>
     </organization>
     <inceptionYear>2003</inceptionYear>
-    <description>
-        <![CDATA[Please refer to the <a href="http://picocontainer.org/">site</a> for documentation.]]></description>
+    <description>A small Java embeddable Dependency Injection container</description>
     <issueManagement>
         <system>JIRA</system>
         <url>http://jira.codehaus.org/browse/PICO</url>
     </issueManagement>
-    <licenses>
-        <license>
-            <url>https://svn.codehaus.org/picocontainer/java/picocontainer/2.x/trunk/LICENSE.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <scm>
         <connection>scm:git:git@git.codehaus.org/picocontainer-git.git</connection>
         <developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
@@ -212,6 +211,7 @@
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
+                            <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
                             </goals>
@@ -404,4 +404,24 @@
             </reporting>
         </profile>
     </profiles>
+
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>LICENSE.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>devs</id>
+            <name>Developers</name>
+            <email>dev@picocontainer.codehaus.org</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-6</timezone>
+        </developer>
+    </developers>
+
 </project>
