@@ -112,7 +112,7 @@ public class ImplementationHiding extends AbstractBehavior {
 
                 public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
                     if (instance == null) {
-                        synchronized (this) {
+                        synchronized (HiddenImplementation.this) {
                             if (instance == null) {
                                 instance = getDelegate().getComponentInstance(container, NOTHING.class);
                             }
