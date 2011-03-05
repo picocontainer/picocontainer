@@ -1,0 +1,135 @@
+***************
+*** 1,5 ****
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  	<groupId>org.picocontainer</groupId>
+  	<artifactId>picocontainer-parent</artifactId>
+  	<name>PicoContainer Parent</name>
+--- 1,10 ----
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
++     <parent>
++       <groupId>org.codehaus</groupId>
++       <artifactId>codehaus-parent</artifactId>
++       <version>3</version>
++     </parent>
+  	<groupId>org.picocontainer</groupId>
+  	<artifactId>picocontainer-parent</artifactId>
+  	<name>PicoContainer Parent</name>
+***************
+*** 17,37 ****
+  		<url>http://codehaus.org/</url>
+  	</organization>
+  	<inceptionYear>2003</inceptionYear>
+- 	<description><![CDATA[Please refer to the <a href="http://picocontainer.org/">site</a> for documentation.]]></description>
+  	<issueManagement>
+  		<system>JIRA</system>
+  		<url>http://jira.codehaus.org/browse/PICO</url>
+  	</issueManagement>
+- 	<licenses>
+- 		<license>
+- 			<url>https://svn.codehaus.org/picocontainer/java/picocontainer/2.x/trunk/LICENSE.txt</url>
+- 			<distribution>repo</distribution>
+- 		</license>
+- 	</licenses>
+  	<scm>
+  		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
+  		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
+- 		<url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
+  	</scm>
+  	<distributionManagement>
+  		<repository>
+--- 22,36 ----
+  		<url>http://codehaus.org/</url>
+  	</organization>
+  	<inceptionYear>2003</inceptionYear>
++ 	<description>A small Java embeddable Dependency Injection container</description>
+  	<issueManagement>
+  		<system>JIRA</system>
+  		<url>http://jira.codehaus.org/browse/PICO</url>
+  	</issueManagement>
+  	<scm>
+  		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
+  		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
++ 		<url>http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
+  	</scm>
+  	<distributionManagement>
+  		<repository>
+***************
+*** 48,61 ****
+  	<dependencyManagement>
+  		<dependencies>
+  			<dependency>
+- 				<groupId>${pom.groupId}</groupId>
+  				<artifactId>picocontainer</artifactId>
+- 				<version>${pom.version}</version>
+  			</dependency>
+  			<dependency>
+- 				<groupId>${pom.groupId}</groupId>
+  				<artifactId>picocontainer-tck</artifactId>
+- 				<version>${pom.version}</version>
+  				<scope>test</scope>
+  			</dependency>
+  			<!-- For JavaEE5 annotations -->
+--- 47,60 ----
+  	<dependencyManagement>
+  		<dependencies>
+  			<dependency>
++ 				<groupId>${project.groupId}</groupId>
+  				<artifactId>picocontainer</artifactId>
++ 				<version>${project.version}</version>
+  			</dependency>
+  			<dependency>
++ 				<groupId>${project.groupId}</groupId>
+  				<artifactId>picocontainer-tck</artifactId>
++ 				<version>${project.version}</version>
+  				<scope>test</scope>
+  			</dependency>
+  			<!-- For JavaEE5 annotations -->
+***************
+*** 251,256 ****
+  					<executions>
+  						<execution>
+  							<id>attach-javadocs</id>
+  							<goals>
+  								<goal>jar</goal>
+  							</goals>
+--- 250,256 ----
+  					<executions>
+  						<execution>
+  							<id>attach-javadocs</id>
++ 							<phase>package</phase>
+  							<goals>
+  								<goal>jar</goal>
+  							</goals>
+***************
+*** 482,485 ****
+  			</reporting>
+  		</profile>
+  	</profiles>
+  </project>
+--- 482,505 ----
+  			</reporting>
+  		</profile>
+  	</profiles>
++ 
++     <licenses>
++         <license>
++             <name>BSD</name>
++             <url>LICENSE.txt</url>
++         </license>
++     </licenses>
++ 
++     <developers>
++         <developer>
++             <id>devs</id>
++             <name>Developers</name>
++             <email>dev@picocontainer.codehaus.org</email>
++             <roles>
++                 <role>developer</role>
++             </roles>
++             <timezone>-6</timezone>
++         </developer>
++     </developers>
++ 
+  </project>
