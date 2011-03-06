@@ -1,4 +1,5 @@
 import junit.framework.Test;
+import junit.framework.TestCase;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
@@ -12,7 +13,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.Jsr330Injection;
 
-public class PicoContainerJsr330Tests {
+public class PicoContainerJsr330TestCase extends TestCase {
+
     public static Test suite() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching(), 
                 new Jsr330Injection());
