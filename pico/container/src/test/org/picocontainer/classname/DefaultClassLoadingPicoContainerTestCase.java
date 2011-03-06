@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -26,6 +27,7 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
 import java.util.List;
 import java.util.Properties;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -119,6 +121,76 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     protected void addDefaultComponentFactories(List expectedList) {
         expectedList.add(Caching.class);
     }
+
+    @Test()
+    public void visitingClassesSiblingToAClassWithRegexSubsetWorksWithRecursive() {
+
+        final StringBuilder sb = new StringBuilder();
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        int found = pico.visit(new ClassName("org.picocontainer.DefaultPicoContainer"), ".*Container\\.class", true, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+                sb.append(clazz.getName()).append("\n");
+            }
+        });
+        assertEquals("org.picocontainer.classname.ClassLoadingPicoContainer\n" +
+                "org.picocontainer.classname.DefaultClassLoadingPicoContainer$AsPropertiesPicoContainer\n" +
+                "org.picocontainer.classname.DefaultClassLoadingPicoContainer\n" +
+                "org.picocontainer.containers.AbstractDelegatingMutablePicoContainer\n" +
+                "org.picocontainer.containers.AbstractDelegatingPicoContainer\n" +
+                "org.picocontainer.containers.CommandLinePicoContainer\n" +
+                "org.picocontainer.containers.CompositePicoContainer\n" +
+                "org.picocontainer.containers.EmptyPicoContainer\n" +
+                "org.picocontainer.containers.ImmutablePicoContainer\n" +
+                "org.picocontainer.containers.PropertiesPicoContainer\n" +
+                "org.picocontainer.containers.SystemPropertiesPicoContainer\n" +
+                "org.picocontainer.containers.TieringPicoContainer\n" +
+                "org.picocontainer.containers.TransientPicoContainer\n" +
+                "org.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
+                "org.picocontainer.DefaultPicoContainer\n" +
+                "org.picocontainer.MutablePicoContainer\n" +
+                "org.picocontainer.PicoContainer\n",
+                sb.toString());
+        assertEquals(17, found);
+    }
+
+    @Test()
+    public void visitingClassesSiblingToAClassWithRegexSubsetWorksWithoutRecursive() {
+
+        final StringBuilder sb = new StringBuilder();
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        int found = pico.visit(new ClassName("org.picocontainer.DefaultPicoContainer"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+                sb.append(clazz.getName()).append("\n");
+            }
+        });
+        assertEquals("org.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
+                "org.picocontainer.DefaultPicoContainer\n" +
+                "org.picocontainer.MutablePicoContainer\n" +
+                "org.picocontainer.PicoContainer\n",
+                sb.toString());
+        assertEquals(4, found);
+    }
+
+    @Test(expected = PicoClassNotFoundException.class)
+    public void visitingFailsIfBogusClass() {
+
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        int found = pico.visit(new ClassName("org.picocontainer.BlahBlah"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+            }
+        });
+    }
+
+    @Test(expected = DefaultClassLoadingPicoContainer.CannotListClassesInAJarException.class)
+    public void visitingFailsIfClassInAJar() {
+
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        int found = pico.visit(new ClassName("java.util.ArrayList"), ".*List\\.class", false, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+            }
+        });
+    }
+
 
 
 }
