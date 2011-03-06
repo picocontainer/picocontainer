@@ -15,8 +15,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
+import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class ThreadCachingTestCase {
 
@@ -132,6 +135,48 @@ public class ThreadCachingTestCase {
         assertEquals("<Foo<Bar<Foo<Bar", sb.toString());
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
+
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithInstanceRegistrationAndClassLoadingPicoContainer() {
+
+        final Foo[] foos = new Foo[4];
+
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        parent.change(Characteristics.USE_NAMES);
+        final DefaultClassLoadingPicoContainer child = new DefaultClassLoadingPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent, this.getClass().getClassLoader(), new NullComponentMonitor());
+        child.change(Characteristics.USE_NAMES);
+
+        parent.addComponent(StringBuilder.class);
+        child.addComponent(Foo.class);
+        child.addComponent("hello");
+
+        StringBuilder sb = parent.getComponent(StringBuilder.class);
+        foos[0] = child.getComponent(Foo.class);
+
+        Thread thread = new Thread() {
+            public void run() {
+                foos[1] = child.getComponent(Foo.class);
+                foos[3] = child.getComponent(Foo.class);
+            }
+        };
+        thread.start();
+        foos[2] = child.getComponent(Foo.class);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+
+        assertNotNull(foos[0]);
+        assertNotNull(foos[1]);
+        assertNotNull(foos[2]);
+        assertNotNull(foos[3]);
+        assertSame(foos[0],foos[2]);
+        assertEquals(foos[1],foos[3]);
+        assertFalse(foos[0] == foos[1]);
+        assertEquals("<Foo<Foo", sb.toString());
+        assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+    }
+
+
 
 
 }
