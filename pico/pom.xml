@@ -34,18 +34,6 @@
         <developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
         <url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>
     </scm>
-    <distributionManagement>
-        <repository>
-            <id>codehaus.org</id>
-            <name>Codehaus PicoContainer Repository</name>
-            <url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
-        </repository>
-        <snapshotRepository>
-            <id>codehaus.org</id>
-            <name>Codehaus PicoContainer Snapshot Repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
-        </snapshotRepository>
-    </distributionManagement>
     <dependencyManagement>
         <dependencies>
             <dependency>
