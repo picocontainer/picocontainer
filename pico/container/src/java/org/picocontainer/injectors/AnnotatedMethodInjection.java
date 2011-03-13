@@ -19,6 +19,7 @@ import org.picocontainer.annotations.Inject;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -65,7 +66,7 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
                                                    Object key, Class<T> impl, Parameter... parameters)
             throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, useNames, injectionAnnotations)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations)), lifecycle);
     }
 
      static Class<? extends Annotation> getInjectionAnnotation(String className) {
@@ -80,7 +81,7 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
     @SuppressWarnings("serial")
     public static class AnnotatedMethodInjector<T> extends MethodInjection.MethodInjector<T> {
 
-         private final Class<? extends Annotation>[] injectionAnnotations;
+        private final Class<? extends Annotation>[] injectionAnnotations;
         private String injectionAnnotationNames;
 
         public AnnotatedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
