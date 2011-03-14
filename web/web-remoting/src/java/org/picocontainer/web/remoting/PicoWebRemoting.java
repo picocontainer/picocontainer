@@ -103,6 +103,9 @@ public class PicoWebRemoting {
 			PicoContainer reqContainer, String httpMethod,
 			NullComponentMonitor monitor) throws IOException {
 		try {
+		    if (pathInfo == null || pathInfo.length() == 0) {
+		        throw makeNothingMatchingException();
+		    }
 			String path = pathInfo.substring(1);
 			if (path.endsWith(SLASH)) {
 				path = path.substring(0, path.length() - 1);
