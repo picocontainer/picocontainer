@@ -114,12 +114,17 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
             Object o = matchingParameterList.get(j);
-            if (o == null
-                    && parameter.resolve(container, this, null, injectionTypes[j],
-                                               makeParameterNameImpl(injectionMembers.get(j)),
-                                               useNames(), bindings[j]).isResolved()) {
-                matchingParameterList.set(j, parameter);
-                return true;
+            try {
+                if (o == null
+                        && parameter.resolve(container, this, null, injectionTypes[j],
+                                                   makeParameterNameImpl(injectionMembers.get(j)),
+                                                   useNames(), bindings[j]).isResolved()) {
+                    matchingParameterList.set(j, parameter);
+                    return true;
+                }
+            } catch (AmbiguousComponentResolutionException e) {
+                e.setComponent(getComponentImplementation());
+                throw e;
             }
         }
         return false;

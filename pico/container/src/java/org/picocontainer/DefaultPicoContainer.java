@@ -511,6 +511,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
         Properties tmpProperties = (Properties) properties.clone();
+        AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
         if (AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof Behavior) {
             MutablePicoContainer container = addAdapterInternal(((Behavior) componentFactory).addComponentAdapter(
                     monitor,

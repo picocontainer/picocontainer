@@ -201,7 +201,7 @@ public abstract class AbstractPicoContainerTest {
             pico.getComponent(String.class);
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
-            assertTrue(e.getMessage().indexOf("<no-component>") != -1);
+            assertTrue(e.getMessage().indexOf("<not-specified>") != -1);
         }
     }
 

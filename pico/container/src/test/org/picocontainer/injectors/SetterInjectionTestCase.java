@@ -129,6 +129,20 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         assertNull(bean.getName2());
     }
 
+    @Test
+    public void testTooManyMatches() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection("init", "initName2"));
+        picoContainer.addComponent(Bean.class, AnotherNamedBean2.class);
+        picoContainer.addComponent("Tom");
+        picoContainer.addComponent("Tom2");
+        try {
+            picoContainer.getComponent(AnotherNamedBean2.class);
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
+            // into class is in message
+            assertTrue(e.getMessage().indexOf("class org.picocontainer.injectors.SetterInjectionTestCase$AnotherNamedBean2 needs a") > -1);
+        }
+    }
+
 
     public static class RecursivelyNamedBean implements Bean {
         private String name;

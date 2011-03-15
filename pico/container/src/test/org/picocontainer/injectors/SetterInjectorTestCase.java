@@ -178,6 +178,18 @@ public class SetterInjectorTestCase
         }
     }
 
+    public static class Tycoon extends PersonBean {
+        String bankName;
+
+        public String getBankName() {
+            return bankName;
+        }
+
+        public void setBankName(String bankName) {
+            this.bankName = bankName;
+        }
+    }
+
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
@@ -185,6 +197,21 @@ public class SetterInjectorTestCase
                 PurseBean.class, PurseBean.class, new NullComponentMonitor(), "set", false, "", false, new Parameter[] {DEFAULT}
        );
         return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, (NameBinding) null);
+    }
+
+    @Test
+    public void parentAndChildShouldReceiveSetterInjections() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new SetterInjection());
+        picoContainer.addComponent("Pico Container");
+        picoContainer.addComponent(PersonBean.class, Tycoon.class);
+        SetterInjection.SetterInjector componentAdapter = new SetterInjection.SetterInjector(
+                PurseBean.class, PurseBean.class, new NullComponentMonitor(), "set", false, "", false, new Parameter[] {DEFAULT}
+       );
+        picoContainer.addAdapter(componentAdapter);
+        Tycoon tycoon = picoContainer.getComponent(Tycoon.class);
+        assertNotNull(tycoon);
+        assertNotNull(tycoon.bankName);
+        assertNotNull(tycoon.getBankName());
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {

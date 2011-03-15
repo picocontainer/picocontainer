@@ -110,9 +110,13 @@ public class ImplementationHiding extends AbstractBehavior {
                 private final PicoContainer container = container1;
                 private Object instance;
 
-                public synchronized Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
                     if (instance == null) {
-                        instance = getDelegate().getComponentInstance(container, NOTHING.class);
+                        synchronized (HiddenImplementation.this) {
+                            if (instance == null) {
+                                instance = getDelegate().getComponentInstance(container, NOTHING.class);
+                            }
+                        }
                     }
                     return invokeMethod(instance, method, args, container);
                 }

@@ -37,9 +37,9 @@ public class AnnotatedMethodInjectorTestCase  {
 
     public static class AnnotatedBurp2 {
 
-        private Wind wind;
-        private Wind wind2;
-        private Wind wind3;
+        protected Wind wind;
+        protected Wind wind2;
+        protected Wind wind3;
 
         @Inject
         public void windyWind(Wind wind) {
@@ -51,6 +51,17 @@ public class AnnotatedMethodInjectorTestCase  {
             this.wind2 = wind2;
             this.wind3 = wind3;
         }
+    }
+
+    public static class DepplyAnnotatedThing extends AnnotatedBurp2 {
+
+        private Wind wind4;
+
+        @Inject
+        public void inCaseNotEnoughWind(Wind wind4) {
+            this.wind4 = wind4;
+        }
+
     }
 
     public static class SetterBurp {
@@ -87,6 +98,19 @@ public class AnnotatedMethodInjectorTestCase  {
     }
 
     @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethod() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DepplyAnnotatedThing.class, DepplyAnnotatedThing.class, null,
+                                               new NullComponentMonitor(), false, Inject.class));
+        pico.addComponent(Wind.class, new Wind());
+        DepplyAnnotatedThing burp = pico.getComponent(DepplyAnnotatedThing.class);
+        assertNotNull(burp);
+        assertNotNull(burp.wind);
+        assertNotNull(burp.wind2);
+        assertNotNull(burp.wind3);
+        assertNotNull(burp.wind4);
+    }
+
+    @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethodAndSubClassesNeedingInjectionToo() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp2.class, AnnotatedBurp2.class, null,
                                                new NullComponentMonitor(), false, Inject.class));

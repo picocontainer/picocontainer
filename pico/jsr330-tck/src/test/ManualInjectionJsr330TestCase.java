@@ -1,4 +1,5 @@
 import junit.framework.Test;
+import junit.framework.TestCase;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
@@ -17,7 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class StoneageSimulationJsr330Tests {
+public class ManualInjectionJsr330TestCase extends TestCase {
     
     public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
 
@@ -79,13 +80,13 @@ public class StoneageSimulationJsr330Tests {
         final V8Engine v8Engine = new V8Engine();
         // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
-        injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
+        injectIntoMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
         // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
         // V8Engine has same method but declared w/o @Inject - not called at all.
         //injectMethod(v8Engine, GasEngine.class, "injectTwiceOverriddenWithOmissionInSubclass");
-        injectMethod(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
-        injectMethod(v8Engine, V8Engine.class, "injectPackagePrivateMethod");
+        injectIntoMethod(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
+        injectIntoMethod(v8Engine, V8Engine.class, "injectPackagePrivateMethod");
 
         Provider<Engine> engineProvider = new Provider<Engine>() {
             public Engine get() {
@@ -99,22 +100,22 @@ public class StoneageSimulationJsr330Tests {
         Car car = (Car) convertibelCtor.newInstance(plainSeat[0], driversSeatA, plainTire, spareTire,
                 plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
-        injectField(car, Convertible.class, "driversSeatA", driversSeatA);
-        injectField(car, Convertible.class, "driversSeatB", driversSeatB);
-        injectField(car, Convertible.class, "spareTire", spareTire);
-        injectField(car, Convertible.class, "cupholder", cupholder);
-        injectField(car, Convertible.class, "engineProvider", engineProvider);
-        injectField(car, Convertible.class, "fieldPlainSeat", plainSeat[0]);
-        injectField(car, Convertible.class, "fieldDriversSeat", driversSeatA);
-        injectField(car, Convertible.class, "fieldPlainTire", plainTire);
-        injectField(car, Convertible.class, "fieldSpareTire", spareTire);
-        injectField(car, Convertible.class, "fieldPlainSeatProvider", plainSeatProvider);
-        injectField(car, Convertible.class, "fieldDriversSeatProvider", driversSeatProvider);
-        injectField(car, Convertible.class, "fieldPlainTireProvider", plainTireProvider);
-        injectField(car, Convertible.class, "fieldSpareTireProvider", spareTireProvider);
+        injectIntoField(car, Convertible.class, "driversSeatA", driversSeatA);
+        injectIntoField(car, Convertible.class, "driversSeatB", driversSeatB);
+        injectIntoField(car, Convertible.class, "spareTire", spareTire);
+        injectIntoField(car, Convertible.class, "cupholder", cupholder);
+        injectIntoField(car, Convertible.class, "engineProvider", engineProvider);
+        injectIntoField(car, Convertible.class, "fieldPlainSeat", plainSeat[0]);
+        injectIntoField(car, Convertible.class, "fieldDriversSeat", driversSeatA);
+        injectIntoField(car, Convertible.class, "fieldPlainTire", plainTire);
+        injectIntoField(car, Convertible.class, "fieldSpareTire", spareTire);
+        injectIntoField(car, Convertible.class, "fieldPlainSeatProvider", plainSeatProvider);
+        injectIntoField(car, Convertible.class, "fieldDriversSeatProvider", driversSeatProvider);
+        injectIntoField(car, Convertible.class, "fieldPlainTireProvider", plainTireProvider);
+        injectIntoField(car, Convertible.class, "fieldSpareTireProvider", spareTireProvider);
 
-        injectMethod(car, Convertible.class, "injectMethodWithZeroArgs");
-        injectMethod(car, Convertible.class, "injectMethodWithNonVoidReturn");
+        injectIntoMethod(car, Convertible.class, "injectMethodWithZeroArgs");
+        injectIntoMethod(car, Convertible.class, "injectMethodWithNonVoidReturn");
 
         Method injectInstanceMethodWithManyArgs = Convertible.class.getDeclaredMethod("injectInstanceMethodWithManyArgs",
                 Seat.class, Seat.class, Tire.class, Tire.class, Provider.class, Provider.class, Provider.class, Provider.class);
@@ -126,41 +127,41 @@ public class StoneageSimulationJsr330Tests {
     }
 
     private static void spareTireInjections(SpareTire spareTire) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
-        injectField(spareTire, SpareTire.class,"fieldInjection", new FuelTank());
-        injectMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
-        injectMethod(spareTire, SpareTire.class, "injectPrivateMethod");
-        injectMethod(spareTire, SpareTire.class, "injectProtectedMethod");
-        injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
-        injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethodForOverride");
+        injectIntoField(spareTire, SpareTire.class, "fieldInjection", new FuelTank());
+        injectIntoMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
+        injectIntoMethod(spareTire, SpareTire.class, "injectPrivateMethod");
+        injectIntoMethod(spareTire, SpareTire.class, "injectProtectedMethod");
+        injectIntoMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
+        injectIntoMethod(spareTire, SpareTire.class, "injectPackagePrivateMethodForOverride");
         spareTire.injectPublicMethod();
     }
 
     private static void tireInjections(Tire tire) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        injectField(tire, Tire.class,"fieldInjection", new FuelTank());
-        injectMethod(tire, Tire.class, "injectPrivateMethod");
-        injectMethod(tire, Tire.class, "injectPackagePrivateMethod");
-        injectMethod(tire, Tire.class, "injectPrivateMethodForOverride");
-        injectMethod(tire, Tire.class, "injectPackagePrivateMethodForOverride");
-        injectMethod(tire, Tire.class, "injectProtectedMethodForOverride");
-        injectMethod(tire, Tire.class, "injectPublicMethodForOverride");
-        injectMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
+        injectIntoField(tire, Tire.class, "fieldInjection", new FuelTank());
+        injectIntoMethod(tire, Tire.class, "injectPrivateMethod");
+        injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethod");
+        injectIntoMethod(tire, Tire.class, "injectPrivateMethodForOverride");
+        injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethodForOverride");
+        injectIntoMethod(tire, Tire.class, "injectProtectedMethodForOverride");
+        injectIntoMethod(tire, Tire.class, "injectPublicMethodForOverride");
+        injectIntoMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
     }
 
-    private static void injectField(Object inst, Class<?> type, String name, Object param) throws NoSuchFieldException, IllegalAccessException {
+    private static void injectIntoField(Object inst, Class<?> type, String name, Object param) throws NoSuchFieldException, IllegalAccessException {
         Field field = type.getDeclaredField(name);
         field.setAccessible(true);
         field.set(inst, param);
     }
 
-    private static void injectMethod(Object inst, Class<?> type, String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        injectMethod(inst, type, name, new Class[0], new Object[0]);
+    private static void injectIntoMethod(Object inst, Class<?> type, String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        injectIntoMethod(inst, type, name, new Class[0], new Object[0]);
     }
 
-    private static void injectMethod(Object inst, Class<?> type, String name, Class<?> pType, Object param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        injectMethod(inst, type, name, new Class[] {pType}, new Object[]{param});
+    private static void injectIntoMethod(Object inst, Class<?> type, String name, Class<?> pType, Object param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        injectIntoMethod(inst, type, name, new Class[]{pType}, new Object[]{param});
     }
 
-    private static void injectMethod(Object inst, Class<?> type, String name, Class<?>[] pTypes, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private static void injectIntoMethod(Object inst, Class<?> type, String name, Class<?>[] pTypes, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = type.getDeclaredMethod(name, pTypes);
         method.setAccessible(true);
         method.invoke(inst, params);
