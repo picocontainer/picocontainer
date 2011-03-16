@@ -23,6 +23,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.modules.DeploymentException;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
 
 /**

@@ -1,6 +1,10 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (C)  PicoContainer Committers. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.modules.monitor.nullImpl;
 
 import org.apache.commons.vfs.FileObject;
@@ -9,8 +13,8 @@ import org.picocontainer.modules.ModuleMonitor;
 import org.picocontainer.script.util.MultiException;
 
 /**
- * @author Mike
- * 
+ * Null Monitor that just accepts the callbacks and does nothing.
+ * @author Michael Rimov, Centerline Computers Inc.
  */
 @SuppressWarnings("serial")
 public class NullModuleMonitor implements ModuleMonitor {
@@ -42,42 +46,50 @@ public class NullModuleMonitor implements ModuleMonitor {
 	}
 
 	/** {@inheritDoc} **/
-	public void skippingDeploymentBecauseNotDeployable(FileObject allChildren) {
+	public void skippingDeploymentBecauseNotDeployable(
+			final FileObject allChildren) {
 		// No-op
-		
+
 	}
 
 	/** {@inheritDoc} **/
-	public void startingMultiModuleDeployment(FileObject moduleDirectory) {
+	public void startingMultiModuleDeployment(final FileObject moduleDirectory) {
 		// No-op
-		
+
 	}
 
 	/** {@inheritDoc} **/
-	public void multiModuleDeploymentFailed(FileObject moduleDirectory,
-			MultiException errors) {
+	public void multiModuleDeploymentFailed(final FileObject moduleDirectory,
+			final MultiException errors) {
 		// No-op
-		
+
 	}
 
 	/** {@inheritDoc} **/
-	public void multiModuleDeploymentSuccess(FileObject moduleDirectory,
-			MutablePicoContainer returnValue, long deploymentTime) {
-		// No-op
-	}
-
-	/** {@inheritDoc} **/
-	public void multiModuleUndeploymentBeginning(MutablePicoContainer parent) {
+	public void multiModuleDeploymentSuccess(final FileObject moduleDirectory,
+			final MutablePicoContainer returnValue, final long deploymentTime) {
 		// No-op
 	}
 
 	/** {@inheritDoc} **/
-	public void multiModuleUndeploymentSuccess(long l) {
+	public void multiModuleUndeploymentBeginning(
+			final MutablePicoContainer parent) {
 		// No-op
 	}
 
 	/** {@inheritDoc} **/
-	public void multiModuleUndeploymentFailure(MultiException errors, long l) {
+	public void multiModuleUndeploymentSuccess(final long l) {
+		// No-op
+	}
+
+	/** {@inheritDoc} **/
+	public void multiModuleUndeploymentFailure(final MultiException errors,
+			final long l) {
+		// No-op
+	}
+
+	/** {@inheritDoc} **/
+	public void moduleAlreadyDeployed(final String moduleName) {
 		// No-op
 	}
 

@@ -156,4 +156,11 @@ public class CommonsLoggingModuleMonitor implements ModuleMonitor {
 		log.error("Failed to undeploy modules in (time: " + timeInMillis + " m.s.)", errors);
 	}
 
+	public void moduleAlreadyDeployed(String moduleName) {
+		if (log.isDebugEnabled()) {
+			log.debug("Skipping deployment of module '" + moduleName + "' since it was already deployed earlier");
+		}
+		
+	}
+
 }

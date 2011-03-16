@@ -3,6 +3,8 @@
  */
 package org.picocontainer.modules.deployer;
 
+import org.picocontainer.modules.DeploymentException;
+
 /**
  * Exception that indicates that the deployment folder/archive didn't have the
  * expected folders or files.

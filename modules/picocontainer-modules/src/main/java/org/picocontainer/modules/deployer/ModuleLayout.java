@@ -2,6 +2,7 @@ package org.picocontainer.modules.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
+import org.picocontainer.modules.DeploymentException;
 
 /**
  * There are many possible ways to define a module layout. Will it look more

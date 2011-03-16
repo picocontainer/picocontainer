@@ -9,6 +9,7 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.impl.VFSClassLoader;
+import org.picocontainer.modules.DeploymentException;
 import org.picocontainer.script.ScriptedBuilderNameResolver;
 
 /**

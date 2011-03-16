@@ -3,6 +3,7 @@ package org.picocontainer.modules.deployer;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.Startable;
+import org.picocontainer.modules.DeploymentException;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -5,19 +5,17 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.modules;
+package org.picocontainer.modules.defaults;
 
-import org.apache.commons.vfs.FileSystemException;
+import org.picocontainer.modules.PicoModuleSystem;
 
 /**
- * Runtime Exception wrapper around VFS's checked FileSystemException
- * @author Micael Rimov, Centerline Computers
+ * Labels interfaces used internally in the deployment process, not fit for normal
+ * public consumption :)
+ * @author Michael Rimov, Centerline Computers, Inc.
  *
  */
-@SuppressWarnings("serial")
-public class FileSystemRuntimeException extends RuntimeException {
+public interface PicoModuleSystemSPI extends PicoModuleSystem {
+	public PicoModuleSystem deployModuleByName(String moduleName);
 
-	public FileSystemRuntimeException(String message, FileSystemException vfsException) {
-		super(message, vfsException);
-	}
 }

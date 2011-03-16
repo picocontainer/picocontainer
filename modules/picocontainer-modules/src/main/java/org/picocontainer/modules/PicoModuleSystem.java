@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C)  PicoContainer Committers. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.modules;
 
 import org.picocontainer.MutablePicoContainer;
@@ -18,7 +25,7 @@ public interface PicoModuleSystem {
 	 * @return <code>this</code> to allow for method chaining.
 	 * @throws MultiException
 	 */
-	public PicoModuleSystem deploy() throws MultiException;
+	public PicoModuleSystem deploy() throws MultiException, CircularDependencyException;
 	
 	/**
 	 * Use getPico() after a call to deploy to retrieve the deployed PicoContainer.  The value

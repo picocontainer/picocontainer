@@ -65,4 +65,6 @@ public interface ModuleMonitor extends Serializable {
 	void multiModuleUndeploymentSuccess(long l);
 
 	void multiModuleUndeploymentFailure(MultiException errors, long l);
+
+	void moduleAlreadyDeployed(String moduleName);
 }

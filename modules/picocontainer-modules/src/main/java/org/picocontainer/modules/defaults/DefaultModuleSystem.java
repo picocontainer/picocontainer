@@ -4,12 +4,18 @@
 package org.picocontainer.modules.defaults;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.modules.CircularDependencyException;
+import org.picocontainer.modules.DeploymentException;
+import org.picocontainer.modules.FileSystemRuntimeException;
 import org.picocontainer.modules.ModuleMonitor;
 import org.picocontainer.modules.PicoModuleSystem;
 import org.picocontainer.modules.deployer.Deployer;
@@ -21,7 +27,7 @@ import org.picocontainer.script.util.MultiException;
  * @author Michael Rimov, Centerline Computers, Inc.
  * 
  */
-public class DefaultModuleSystem implements PicoModuleSystem {
+public class DefaultModuleSystem implements PicoModuleSystemSPI {
 
 	private final ModuleMonitor monitor;
 	private final Deployer deployer;
@@ -29,6 +35,8 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 	private final ClassLoader classLoader;
 	private MutablePicoContainer parent;
 	private final List<MutablePicoContainer> builtContainers = new ArrayList<MutablePicoContainer>();
+	private final Set<String> builtContainerNames = new HashSet<String>();
+	private final Stack<String> containerRecursionPath = new Stack<String>();
 
 	public DefaultModuleSystem(final ModuleMonitor monitor,
 			final Deployer deployer, final FileObject moduleDirectory,
@@ -39,8 +47,13 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 		this.classLoader = classLoader;
 	}
 
+	/**
+	 * @throws MultiException
+	 * @throws IllegalStateException
+	 * @throws CircularDependencyException
+	 */
 	public synchronized DefaultModuleSystem deploy(
-			final MutablePicoContainer parent) throws MultiException {
+			final MutablePicoContainer parent) throws MultiException, CircularDependencyException {		
 		if (this.parent != null) {
 			throw new IllegalStateException(
 					"This module system already appears"
@@ -54,27 +67,25 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 		final MultiException errors = new MultiException(
 				"Pico Module Deployment");
 		final MutablePicoContainer returnValue = parent;
+		ModuleSystemDeploymentRegistry.setDeployingModule(this);
 		try {
 			String currentChild;
 			for (final FileObject eachChild : moduleDirectory.getChildren()) {
-				currentChild = null;
+				String moduleName = eachChild.getName().getBaseName();
 				currentChild = eachChild.getName().getFriendlyURI();
 				try {
-					if (!isDeployable(eachChild)) {
-						monitor.skippingDeploymentBecauseNotDeployable(eachChild);
-						continue;
-					}
-
-					final MutablePicoContainer result = deployer.deploy(
-							eachChild, this.classLoader, parent, null);
-					result.setName(eachChild.getName().getBaseName());
-					this.builtContainers.add(result);
-				} catch (final Exception ex) {
+					 deployModuleByName(moduleName);
+				} catch (final CircularDependencyException e) {
+					//Let it through immediately.
+					throw e;
+				} catch (final RuntimeException ex) {
 					errors.addException("Error Deploying Module " + currentChild, ex);
 				}
 			}
 		} catch (final FileSystemException ex) {
 			errors.addException(ex);
+		} finally {
+			ModuleSystemDeploymentRegistry.deploymentComplete();			
 		}
 		if (errors.getErrorCount() > 0) {
 			monitor.multiModuleDeploymentFailed(moduleDirectory, errors);
@@ -86,6 +97,70 @@ public class DefaultModuleSystem implements PicoModuleSystem {
 		monitor.multiModuleDeploymentSuccess(moduleDirectory, returnValue,
 				endTime - startTime);
 		return this;
+	}
+	
+	private CharSequence getRecursionPathAsString() {
+		StringBuilder builder = new StringBuilder();
+		boolean needComma = false;
+		for (String eachString : containerRecursionPath) {
+			if (needComma) {
+				builder.append(" -> ");
+			}
+			needComma = true;
+			builder.append(eachString);
+		}
+		return builder;
+	}
+
+	public PicoModuleSystem deployModuleByName(String moduleName) throws RuntimeException {
+		if (builtContainerNames.contains(moduleName)) {
+			monitor.moduleAlreadyDeployed(moduleName);
+			return this;
+		}
+		
+		containerRecursionPath.push(moduleName);
+		checkAgainstRecursion(containerRecursionPath);
+		try {			
+			FileObject moduleFile = moduleDirectory.getChild(moduleName);
+			if (!isDeployable(moduleFile)) {
+				monitor.skippingDeploymentBecauseNotDeployable(moduleFile);
+			} else {
+
+				final MutablePicoContainer result = deployer.deploy(
+						moduleFile, this.classLoader, parent, null);
+				result.setName(moduleName);
+				this.builtContainers.add(result);
+			}
+		} catch (FileSystemException e) {
+			throw new FileSystemRuntimeException("Error deploying module named '" 
+					+ moduleName + "'. Deployment path to error: "
+					+ getRecursionPathAsString(), e);
+		} catch (DeploymentException e) {
+			//Let it through.
+			throw e;
+		} catch (CircularDependencyException e) {
+			//Let it through.
+			throw e;
+		} catch (RuntimeException e) {
+			throw new DeploymentException("Error deploying module named '" 
+					+ moduleName + "'. Deployment path to error: "
+					+ getRecursionPathAsString(), e);
+			
+		} finally {
+			builtContainerNames.add(moduleName);
+			containerRecursionPath.pop();
+		}
+		return this;
+	}
+
+	private void checkAgainstRecursion(Stack<String> recursionPath) {
+		HashSet<String> allStrings = new HashSet<String>();
+		for (String eachString : recursionPath) {
+			if (allStrings.contains(eachString)) {
+				throw new CircularDependencyException("Circular Dependency detected in modules during deployment.  Path to this recursion: " + getRecursionPathAsString());
+			}
+			allStrings.add(eachString);
+		}
 	}
 
 	public DefaultModuleSystem deploy() throws MultiException {
