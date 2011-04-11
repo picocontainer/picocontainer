@@ -19,6 +19,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -202,7 +203,8 @@ public class CollectionComponentParameterTestCase {
 		assertSame(cod, bowl.cods[0]);
 		assertNotSame(bowl.fishes[0], bowl.fishes[1]);
 	}
-
+	
+	
 	static public class MappedBowl {
 		private final Fish[] fishes;
 
@@ -415,6 +417,35 @@ public class CollectionComponentParameterTestCase {
 			assertEquals("fourth", s[3]);
 			assertEquals("fifth", s[4]);
 		}
+	}
+	
+	public static interface GenericInterface<T> {
+		
+	}
+	
+	public static class GenericOne implements GenericInterface<String>{
+		
+	}
+	
+	public static class GenericReceiver {
+		public final GenericInterface<?>[] items;
+
+		public GenericReceiver(GenericInterface<?>[] items) {
+			this.items = items;
+			
+		}
+	}
+	
+	@Test
+	public void testArraysWithGenericArguments() {
+		MutablePicoContainer pico = new PicoBuilder().withCaching().build();
+		
+		pico.addComponent("one", GenericOne.class)
+			.addComponent("two", GenericOne.class)
+			.addComponent(GenericReceiver.class, GenericReceiver.class, new CollectionComponentParameter(true));
+		
+		GenericReceiver receiver = pico.getComponent(GenericReceiver.class);
+		assertEquals(2, receiver.items.length);
 	}
 
 }

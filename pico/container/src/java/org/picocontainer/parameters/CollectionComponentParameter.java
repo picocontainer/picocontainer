@@ -21,6 +21,7 @@ import org.picocontainer.PicoVisitor;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -155,13 +156,15 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         return new Parameter.NotResolved();
     }
 
-    private Class getCollectionType(Type expectedType) {
+    public Class getCollectionType(Type expectedType) {
         if (expectedType instanceof Class) {
             return getCollectionType((Class) expectedType);
         } else if (expectedType instanceof ParameterizedType) {
             ParameterizedType type = (ParameterizedType) expectedType;
 
             return getCollectionType(type.getRawType());
+        } else if (expectedType instanceof GenericArrayType) {
+        	return getCollectionType( ((GenericArrayType)expectedType).getGenericComponentType());
         }
 
         throw new IllegalArgumentException("Unable to get collection type from " + expectedType);

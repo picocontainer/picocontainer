@@ -107,6 +107,15 @@ public class ComponentParameter
     public ComponentParameter(Class keyType, Generic<?> componentValueType, boolean emptyCollection) {
         this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
     }
+    
+    /**
+     * Use this constructor if you are using CollectionComponentParameter
+    * @param collectionParameter the collection component parameter used for finding matching components
+     */
+    public ComponentParameter(Parameter mapDefiningParameter) {
+    	this(null, mapDefiningParameter);
+    }
+
 
     private ComponentParameter(Object key, Parameter collectionParameter) {
         super(key);
