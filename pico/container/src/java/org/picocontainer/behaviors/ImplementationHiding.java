@@ -108,7 +108,7 @@ public class ImplementationHiding extends AbstractBehavior {
             final PicoContainer container1 = container;
             return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
                 private final PicoContainer container = container1;
-                private Object instance;
+                private volatile Object instance;
 
                 public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
                     if (instance == null) {
