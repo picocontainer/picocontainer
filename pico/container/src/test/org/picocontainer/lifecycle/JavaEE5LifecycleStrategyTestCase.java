@@ -99,9 +99,36 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.addComponent(ProPostAnnotationJava5Startable2.class);
         pico.start();
         pico.dispose();
-        assertEquals("post()subPost()pre()subPre()", pico.getComponent(StringBuilder.class).toString());
+        assertEquals("post()subPost()subPre()pre()", pico.getComponent(StringBuilder.class).toString());
     }    
     @Test public void testSerializable() {
     }
+    
+    public static class ProPostAnnotationJava5Startable3 extends ProPostAnnotationJava5Startable {
+
+        public ProPostAnnotationJava5Startable3(StringBuilder sb) {
+            super(sb);
+        }
+
+        @PostConstruct
+        @Override
+        public void post() {
+            sb.append("subPost3()");
+        }
+
+        @PreDestroy
+        public void subPre() {
+            sb.append("subPre3()");
+        }
+    }
+
+    @Test
+    public void testLifecycleOfSubclassWhichOverrides(){
+        pico.removeComponent(ProPostAnnotationJava5Startable.class);
+        pico.addComponent(ProPostAnnotationJava5Startable3.class);
+        pico.start();
+        pico.dispose();
+        assertEquals("subPost3()subPre3()pre()", pico.getComponent(StringBuilder.class).toString());
+    }    
 
 }
