@@ -367,7 +367,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                 instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                     @Override
                     @SuppressWarnings("synthetic-access")
-                    public T run() {
+                    public T run(Object instance) {
                         CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
                         ComponentMonitor monitor = currentMonitor();
                         Constructor<T> ctor = ctorAndAdapters.getConstructor();
@@ -402,7 +402,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                 };
             }
             instantiationGuard.setGuardedContainer(container);
-            T inst = instantiationGuard.observe(getComponentImplementation());
+            T inst = instantiationGuard.observe(getComponentImplementation(), null);
             decorate(inst, container);
             return inst;
         }
@@ -463,7 +463,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             if (verifyingGuard == null) {
                 verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                     @Override
-                    public Object run() {
+                    public Object run(Object inst) {
                         final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                         final Class[] parameterTypes = constructor.getParameterTypes();
                         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
@@ -477,7 +477,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                 };
             }
             verifyingGuard.setGuardedContainer(container);
-            verifyingGuard.observe(getComponentImplementation());
+            verifyingGuard.observe(getComponentImplementation(), null);
         }
 
         @Override

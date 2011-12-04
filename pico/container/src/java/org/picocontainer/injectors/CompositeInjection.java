@@ -111,7 +111,12 @@ public class CompositeInjection extends AbstractInjectionType {
 
         @Override
         public String getDescriptor() {
-            return "CompositeInjector";
+            StringBuilder sb = new StringBuilder("CompositeInjector(");
+            for (Injector<T> injector : injectors) {
+                sb.append(injector.getDescriptor());
+            }
+            sb.deleteCharAt(sb.length()-1); // remove last dash
+            return sb.toString().replace("-", "+") + ")-";
         }
     }
 }

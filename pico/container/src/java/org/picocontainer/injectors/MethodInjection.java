@@ -150,7 +150,7 @@ public class MethodInjection extends AbstractInjectionType {
                 instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                     @Override
                     @SuppressWarnings("synthetic-access")
-                    public Object run() {
+                    public Object run(Object instance) {
                         List<Method> methods = getInjectorMethods();
                         T inst = null;
                         ComponentMonitor monitor = currentMonitor();
@@ -178,7 +178,7 @@ public class MethodInjection extends AbstractInjectionType {
                 };
             }
             instantiationGuard.setGuardedContainer(container);
-            return (T) instantiationGuard.observe(getComponentImplementation());
+            return (T) instantiationGuard.observe(getComponentImplementation(), null);
         }
 
         protected Object[] getMemberArguments(PicoContainer container, final Method method, Type into) {
@@ -191,13 +191,13 @@ public class MethodInjection extends AbstractInjectionType {
                 instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                     @Override
                     @SuppressWarnings("synthetic-access")
-                    public Object run() {
+                    public Object run(Object inst) {
                         List<Method> methods = getInjectorMethods();
                         Object lastReturn = null;
                         for (Method method : methods) {
-                            if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
+                            if (method.getDeclaringClass().isAssignableFrom(inst.getClass())) {
                                 Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
-                                lastReturn = invokeMethod(method, methodParameters, instance, container);
+                                lastReturn = invokeMethod(method, methodParameters, (T) inst, container);
                             }
                         }
                         return lastReturn;
@@ -205,7 +205,7 @@ public class MethodInjection extends AbstractInjectionType {
                 };
             }
             instantiationGuard.setGuardedContainer(container);
-            Object o = instantiationGuard.observe(getComponentImplementation());
+            Object o = instantiationGuard.observe(getComponentImplementation(), instance);
             return o;
         }
 
@@ -237,7 +237,7 @@ public class MethodInjection extends AbstractInjectionType {
             if (verifyingGuard == null) {
                 verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                     @Override
-                    public Object run() {
+                    public Object run(Object inst) {
                         final List<Method> methods = getInjectorMethods();
                         for (Method method : methods) {
                             final Class[] parameterTypes = method.getParameterTypes();
@@ -254,7 +254,7 @@ public class MethodInjection extends AbstractInjectionType {
                 };
             }
             verifyingGuard.setGuardedContainer(container);
-            verifyingGuard.observe(getComponentImplementation());
+            verifyingGuard.observe(getComponentImplementation(), null);
         }
 
         @Override

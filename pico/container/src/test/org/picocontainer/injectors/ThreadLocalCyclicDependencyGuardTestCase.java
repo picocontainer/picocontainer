@@ -31,7 +31,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
         public ThreadLocalRunner() {
             this.blocker = new Blocker();
             this.guard = new AbstractInjector.ThreadLocalCyclicDependencyGuard() {
-                public Object run() {
+                public Object run(Object instance) {
                     try {
                         blocker.block();
                     } catch (InterruptedException e) {
@@ -43,7 +43,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
 
         public void run() {
             try {
-                guard.observe(ThreadLocalRunner.class);
+                guard.observe(ThreadLocalRunner.class,null);
             } catch (AbstractInjector.CyclicDependencyException e) {
                 exception = e;
             }
