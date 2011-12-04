@@ -219,7 +219,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			assertEquals(
 					"class "
 							+ doc
-							+ " needs a 'java.util.Collection' injected, but there are too many choices to inject. These:[class java.util.ArrayList, class java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable-help.html",
+							+ " needs a 'java.util.Collection' injected via 'public org.picocontainer.DefaultPicoContainerTestCase$DependsOnCollection(java.util.Collection)', but there are too many choices to inject. These:[class java.util.ArrayList, class java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable-help.html",
 					expected.getMessage());
 		}
 	}

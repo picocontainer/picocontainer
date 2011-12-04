@@ -104,7 +104,8 @@ public class ConstructorInjection extends AbstractInjectionType {
         private boolean rememberChosenConstructor = true;
         private transient CtorAndAdapters<T> chosenConstructor;
         private boolean enableEmjection = false;
-
+        private boolean allowNonPublicClasses = false;
+        
         /**
          * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
          * convenient constructor for use when instantiating a constructor injector directly.
@@ -174,7 +175,7 @@ public class ConstructorInjection extends AbstractInjectionType {
 
         @SuppressWarnings("synthetic-access")
         protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
-            final Set<Constructor> conflicts = new HashSet<Constructor>();
+            final Set<Constructor<?>> conflicts = new HashSet<Constructor<?>>();
             final Set<List<Type>> unsatisfiableDependencyTypes = new HashSet<List<Type>>();
             final Map<ResolverKey, Parameter.Resolver> resolvers = new HashMap<ResolverKey, Parameter.Resolver>();
             if (sortedMatchingConstructors == null) {
@@ -186,6 +187,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             int lastSatisfiableConstructorSize = -1;
             Type unsatisfiedDependencyType = null;
             for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
+            	try {
                 boolean failedDependency = false;
                 Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
                 fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
@@ -233,6 +235,12 @@ public class ConstructorInjection extends AbstractInjectionType {
                     greediestConstructorsParametersComponentAdapters = currentAdapters;
                     lastSatisfiableConstructorSize = parameterTypes.length;
                 }
+
+            	} catch (AmbiguousComponentResolutionException e) {
+                    // embellish with the constructor being injected into.
+                    e.setMember(sortedMatchingConstructor);
+                    throw e;
+                }            
             }
             if (!conflicts.isEmpty()) {
                 throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
@@ -250,6 +258,11 @@ public class ConstructorInjection extends AbstractInjectionType {
         public void enableEmjection(boolean enableEmjection) {
             this.enableEmjection = enableEmjection;
         }
+        
+        public ConstructorInjector<T> withNonPublicConstructors() {
+            allowNonPublicClasses = true;
+            return this;
+        }        
 
         private static final class ResolverKey {
             private final Type expectedType;
@@ -427,7 +440,7 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @return true if public
          */
         protected boolean hasApplicableConstructorModifiers(int modifiers) {
-            return (modifiers & Modifier.PUBLIC) != 0;
+            return allowNonPublicClasses || ( (modifiers & Modifier.PUBLIC) != 0);
         }
 
         /**

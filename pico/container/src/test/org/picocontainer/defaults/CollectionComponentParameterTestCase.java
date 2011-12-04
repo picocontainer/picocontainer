@@ -442,7 +442,7 @@ public class CollectionComponentParameterTestCase {
 		
 		pico.addComponent("one", GenericOne.class)
 			.addComponent("two", GenericOne.class)
-			.addComponent(GenericReceiver.class, GenericReceiver.class, new CollectionComponentParameter(true));
+			.addComponent(GenericReceiver.class, GenericReceiver.class, CollectionComponentParameter.ARRAY);
 		
 		GenericReceiver receiver = pico.getComponent(GenericReceiver.class);
 		assertEquals(2, receiver.items.length);

@@ -122,6 +122,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <useNames>false</useNames>\n" +
                      "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
                      "  <enableEmjection>false</enableEmjection>\n" +
+                     "  <allowNonPublicClasses>false</allowNonPublicClasses>\n" +
                      "</Constructor-Injection>", foo);
 
 

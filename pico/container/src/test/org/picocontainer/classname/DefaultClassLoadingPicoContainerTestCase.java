@@ -21,6 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer.CannotListClassesInAJarException;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
@@ -171,15 +172,6 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
         assertEquals(4, found);
     }
 
-    @Test(expected = PicoClassNotFoundException.class)
-    public void visitingFailsIfBogusClass() {
-
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
-        int found = pico.visit(new ClassName("org.picocontainer.BlahBlah"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
-            public void classFound(Class clazz) {
-            }
-        });
-    }
 
     @Test(expected = DefaultClassLoadingPicoContainer.CannotListClassesInAJarException.class)
     public void visitingFailsIfClassInAJar() {
@@ -191,6 +183,67 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
         });
     }
 
+    @Test(expected = PicoClassNotFoundException.class)
+    public void visitingFailsIfBogusClass() {
+
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        pico.visit(new ClassName("org.picocontainer.BlahBlah"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+            	//Does nothing.
+            }
+        });
+    }
+
+    @Test(expected = CannotListClassesInAJarException.class)
+    public void visitingFailsIfJDKClass() {
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        pico.visit(new ClassName("java.util.ArrayList"), 
+            ".*Container\\.class",
+            false, 
+            new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+                //Does nothing, we're expecting the class to get thrown.
+            }
+        });
+    }
+
+    @Test
+    public void visitingPassesIfClassInAJar() {
+
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        final StringBuilder sb = new StringBuilder();
+        int found = pico.visit(new ClassName("com.thoughtworks.xstream.XStream"),
+        			".*m\\.class", 
+        			false, 
+        			new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+        	
+            public void classFound(Class clazz) {
+                sb.append(clazz.getName()).append("\n");
+            }
+        });
+        assertEquals("com.thoughtworks.xstream.XStream\n",
+                sb.toString());
+        assertEquals(1, found);
+    }
+
+    @Test
+    public void visitingPassesIfClassInAJarRecursively() {
+
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        final StringBuilder sb = new StringBuilder();
+        int found = pico.visit(new ClassName("com.thoughtworks.xstream.XStream"), ".*m\\.class", true, new DefaultClassLoadingPicoContainer.ClassNameVisitor() {
+            public void classFound(Class clazz) {
+                sb.append(clazz.getName()).append("\n");
+            }
+        });
+        assertEquals("com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
+                "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
+                "com.thoughtworks.xstream.core.util.CustomObjectInputStream\n" +
+                "com.thoughtworks.xstream.core.util.CustomObjectOutputStream\n" +
+                "com.thoughtworks.xstream.XStream\n",
+                sb.toString());
+        assertEquals(5, found);
+    }
 
 
 }

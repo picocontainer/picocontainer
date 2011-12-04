@@ -31,6 +31,7 @@ import org.picocontainer.security.CustomPermissionsURLClassLoader;
 
 import javax.inject.Provider;
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -40,12 +41,15 @@ import java.security.Permissions;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Default implementation of ClassLoadingPicoContainer.
@@ -608,19 +612,71 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
         Class clazz = loadClass(thisClassesPackage);
-        String pkgName = clazz.getPackage().getName().replace(".", File.separator);
+        /* File Seperator of '\\' can cause bogus results in Windows -- So we keep it to forward slash since Windows
+         * can handle it.  
+         * -MR
+         */
+        String pkgName = clazz.getPackage().getName().replace(".", "/");  
         CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
         if(codeSource == null) {
             throw new CannotListClassesInAJarException();
         }
-        String fileName = codeSource.getLocation().getFile() + File.separator + pkgName;
+
+        String codeSourceRoot = codeSource.getLocation().getFile();
+        String fileName = codeSourceRoot + '/' + pkgName;
         File file = new File(fileName);
-        if (file.isFile()) {
-            file = file.getParentFile();
+        Pattern compiledPattern = Pattern.compile(regex);
+        
+        if (file.exists()) {
+            if (file.isFile()) {
+                file = file.getParentFile();
+            }
+            return visit(file, pkgName, compiledPattern, recursive, classNameVisitor);
+        } else {
+            return visit(pkgName, codeSourceRoot, compiledPattern, recursive, classNameVisitor);
         }
-        return visit(file, pkgName, regex, recursive, classNameVisitor);
     }
 
+    public int visit(String pkgName, String codeSourceRoot, Pattern compiledPattern, boolean recursive, ClassNameVisitor classNameVisitor) {
+        int found = 0;
+        try {
+            ZipFile zip = new ZipFile(new File(codeSourceRoot));
+            for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
+                ZipEntry entry = (ZipEntry) e.nextElement();
+                String entryName = entry.getName();
+                if (entryName.startsWith(pkgName) && entryName.endsWith(".class")) {
+                    String name =  entryName.substring(pkgName.length()+1);
+                    if (name.endsWith("XStream.class")) {
+                        System.out.println();
+                    }
+                    int length = name.split("/").length;
+                    if (length == 1 || recursive) {
+                        found = visit(pkgName, compiledPattern, classNameVisitor, found, entryName.replace("/","."), null);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
+
+
+    private int visit(String pkgName, Pattern pattern, ClassNameVisitor classNameVisitor, int foundSoFar, String fileName, String absolutePath) {
+        boolean matches = pattern.matcher(fileName).matches();
+        if (matches) {
+            if (absolutePath != null) {
+                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));                
+                fileName = fqn.substring(0, fqn.indexOf(".class")).replace('/', '.');;
+            } else {
+                fileName = fileName.substring(0, fileName.indexOf(".class"));
+            }
+            classNameVisitor.classFound(loadClass(new ClassName(fileName)));
+            foundSoFar++;
+        }
+        return foundSoFar;
+    }
+    
 
     public int visit(File pkgDir, String pkgName, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
         Pattern pattern = Pattern.compile(regex);
@@ -640,9 +696,9 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
                     String name = file.getName();
                     boolean matches = pattern.matcher(name).matches();
                     if (matches) {
-                        String fullPath = file.getAbsolutePath();
+                        String fullPath = file.getAbsolutePath().replace('\\', '/'); //Wasted effort on *nix, but needed for windows.
                         String fqn = fullPath.substring(fullPath.indexOf(pkgName));
-                        classNameVisitor.classFound(loadClass(new ClassName(fqn.substring(0, fqn.indexOf(".class")).replace(File.separator, "."))));
+                        classNameVisitor.classFound(loadClass(new ClassName(fqn.substring(0, fqn.indexOf(".class")).replace("/", "."))));
                         found++;
                     }
                 }
