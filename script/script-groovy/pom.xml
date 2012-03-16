@@ -12,7 +12,9 @@
             <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId><artifactId>groovy-all</artifactId><version>1.7.5</version>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.8.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId><artifactId>junit</artifactId>
