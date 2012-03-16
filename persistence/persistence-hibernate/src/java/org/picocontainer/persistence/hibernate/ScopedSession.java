@@ -8,12 +8,18 @@
 
 package org.picocontainer.persistence.hibernate;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
+import org.hibernate.LobHelper;
+import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.TypeHelper;
+import org.hibernate.UnknownProfileException;
+import org.hibernate.jdbc.Work;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 
@@ -233,5 +239,71 @@ public final class ScopedSession extends AbstractSessionDecorator implements Sta
 
         disposed = true;
     }
+
+	public boolean isDefaultReadOnly() {
+		return session.isDefaultReadOnly();
+	}
+
+	public void setDefaultReadOnly(boolean readOnly) {
+		session.setDefaultReadOnly(readOnly);
+	}
+
+	public Object load(Class theClass, Serializable id, LockOptions lockOptions)
+			throws HibernateException {
+		return session.load(theClass, id, lockOptions);
+	}
+
+	public Object load(String entityName, Serializable id,
+			LockOptions lockOptions) throws HibernateException {
+		return session.load(entityName, id,lockOptions);
+	}
+
+	public LockRequest buildLockRequest(LockOptions lockOptions) {
+		return session.buildLockRequest(lockOptions);
+	}
+
+	public void refresh(Object object, LockOptions lockOptions)
+			throws HibernateException {
+		session.refresh(object,lockOptions);
+	}
+
+	public Object get(Class clazz, Serializable id, LockOptions lockOptions)
+			throws HibernateException {
+		return session.get(clazz, id, lockOptions);
+	}
+
+	public Object get(String entityName, Serializable id,
+			LockOptions lockOptions) throws HibernateException {
+		return session.get(entityName,id,lockOptions);
+	}
+
+	public boolean isReadOnly(Object entityOrProxy) {
+		return session.isReadOnly(entityOrProxy);
+	}
+
+	public void doWork(Work work) throws HibernateException {
+		session.doWork(work);
+	}
+
+	public boolean isFetchProfileEnabled(String name)
+			throws UnknownProfileException {
+		return session.isFetchProfileEnabled(name);
+	}
+
+	public void enableFetchProfile(String name) throws UnknownProfileException {
+		session.enableFetchProfile(name);
+	}
+
+	public void disableFetchProfile(String name) throws UnknownProfileException {
+		session.disableFetchProfile(name);
+	}
+
+	public TypeHelper getTypeHelper() {
+		return session.getTypeHelper();
+	}
+
+	public LobHelper getLobHelper() {
+		return session.getLobHelper();
+	}
 
 }

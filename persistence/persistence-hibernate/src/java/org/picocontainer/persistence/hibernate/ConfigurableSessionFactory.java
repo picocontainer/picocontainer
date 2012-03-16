@@ -16,10 +16,12 @@ import java.util.Set;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 
+import org.hibernate.Cache;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.hibernate.TypeHelper;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
 import org.hibernate.engine.FilterDefinition;
@@ -60,42 +62,50 @@ public final class ConfigurableSessionFactory implements SessionFactory, Disposa
 
 	/** {@inheritDoc} **/
     @SuppressWarnings("unchecked")
+    @Deprecated
 	public void evict(Class persistentClass) {
         delegate.evict(persistentClass);
     }
 
 	/** {@inheritDoc} **/
     @SuppressWarnings("unchecked")
+    @Deprecated
 	public void evict(Class persistentClass, Serializable id) {
         delegate.evict(persistentClass, id);
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictCollection(String roleName) {
         delegate.evictCollection(roleName);
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictCollection(String roleName, Serializable id) {
         delegate.evictCollection(roleName, id);
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictEntity(String entityName) {
         delegate.evictEntity(entityName);
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictEntity(String entityName, Serializable id) {
         delegate.evictEntity(entityName, id);
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictQueries() {
         delegate.evictQueries();
     }
 
 	/** {@inheritDoc} **/
+    @Deprecated
     public void evictQueries(String cacheRegion) {
         delegate.evictQueries(cacheRegion);
     }
@@ -194,6 +204,18 @@ public final class ConfigurableSessionFactory implements SessionFactory, Disposa
      */
 	public void dispose() {
 		close();
+	}
+
+	public Cache getCache() {
+		return delegate.getCache();
+	}
+
+	public boolean containsFetchProfileDefinition(String name) {
+		return delegate.containsFetchProfileDefinition(name);
+	}
+
+	public TypeHelper getTypeHelper() {
+		return delegate.getTypeHelper();
 	}
 
 }
