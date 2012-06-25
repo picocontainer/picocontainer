@@ -34,6 +34,7 @@ import java.lang.annotation.Annotation;
 import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
 import static org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector.makeAnnotationNames;
 
+
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated fields.
  * The factory creates {@link AnnotatedFieldInjector}.

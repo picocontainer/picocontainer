@@ -40,7 +40,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Annotation[] bindings;
 
     private transient Paranamer paranamer;
-
+    private transient boolean initialized;
     /**
      * Constructs a IterativeInjector
      *
@@ -78,9 +78,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException {
-        if (injectionMembers == null) {
+        if (initialized == false) {
         	synchronized(this) {
-        		if (injectionMembers == null) {
+        		if (initialized == false) {
         			initializeInjectionMembersAndTypeLists();
         		}
         	}
@@ -258,6 +258,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
+        Set<String> injectionMemberNames = new HashSet<String>();
         List<Annotation> bingingIds = new ArrayList<Annotation>();
         final List<String> nameList = new ArrayList<String>();
         final List<Type> typeList = new ArrayList<Type>();
@@ -266,11 +267,16 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             final Type[] parameterTypes = method.getGenericParameterTypes();
             fixGenericParameterTypes(method, parameterTypes);
 
+            String methodSignature = crudeMethodSignature(method);            
+            
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
                 boolean isInjector = isInjectorMethod(method);
-                if (isInjector) {
+                // ... and the method name is bean-style.
+                // We're also not interested in dupes from parent classes (not all JDK impls)
+                if (isInjector && !injectionMemberNames.contains(methodSignature)) {
                     injectionMembers.add(method);
+                    injectionMemberNames.add(methodSignature);
                     nameList.add(getName(method));
                     typeList.add(box(parameterTypes[0]));
                     bingingIds.add(getBindings(method, 0));
@@ -279,7 +285,19 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
         injectionTypes = typeList.toArray(new Type[0]);
         bindings = bingingIds.toArray(new Annotation[0]);
+        initialized = true;
     }
+    
+    public static String crudeMethodSignature(Method method) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(method.getReturnType().getName());
+        sb.append(method.getName());
+        for (Class<?> pType : method.getParameterTypes()) {
+            sb.append(pType.getName());
+        }
+        return sb.toString();
+    }
+    
 
     protected String getName(Method method) {
         return null;

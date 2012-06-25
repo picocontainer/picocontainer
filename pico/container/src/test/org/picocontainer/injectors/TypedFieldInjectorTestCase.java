@@ -25,7 +25,7 @@ public class TypedFieldInjectorTestCase {
     public static class PogoStick {
     }
 
-    @Test public void testFieldInjectionByType() {
+    @Test public void testFieldInjectionByTypeWhereMatch() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new TypedFieldInjection.TypedFieldInjector(Helicopter.class, Helicopter.class, new NullComponentMonitor(), Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName(), null
         ));
@@ -34,6 +34,7 @@ public class TypedFieldInjectorTestCase {
         assertNotNull(chopper);
         assertNotNull(chopper.pogo);
     }
+    
 
 
 }
