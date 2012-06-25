@@ -35,7 +35,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private static final Object[] NONE = new Object[0];
     
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    protected transient List<AccessibleObject> injectionMembers;
+    protected volatile transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
@@ -79,7 +79,11 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException {
         if (injectionMembers == null) {
-            initializeInjectionMembersAndTypeLists();
+        	synchronized(this) {
+        		if (injectionMembers == null) {
+        			initializeInjectionMembersAndTypeLists();
+        		}
+        	}
         }
 
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
