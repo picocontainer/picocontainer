@@ -7,10 +7,12 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -73,9 +75,10 @@ public class NamedMethodInjection extends AbstractInjectionType {
         }
 
         @Override
-        protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
+        protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers) {
             if (!optional) {
-                super.unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+                throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName() + " has unsatisfied dependencies " + unsatisfiableDependencyTypes
+                        + " for members " + unsatisfiableDependencyMembers + " from " + container);
             }
         }
 

@@ -56,7 +56,7 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
     protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings, Type into) {
         boxParameters(parameterTypes);
         Object[] result = new Object[parameterTypes.length];
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null, into);

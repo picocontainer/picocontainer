@@ -69,8 +69,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
      * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
      * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
      */
-    @SuppressWarnings("serial")
-    public static class AnnotatedFieldInjector<T> extends IterativeInjector<T> {
+    public static class AnnotatedFieldInjector<T> extends AbstractFieldInjector<T> {
 
         private final Class<? extends Annotation>[] injectionAnnotations;
         private String injectionAnnotationNames;
@@ -87,7 +86,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             injectionMembers = new ArrayList<AccessibleObject>();
             List<Annotation> bindingIds = new ArrayList<Annotation>();
             final List<Type> typeList = new ArrayList<Type>();
-            Class drillInto = getComponentImplementation();
+            Class<?> drillInto = getComponentImplementation();
             while (drillInto != Object.class) {
                 final Field[] fields = getFields(drillInto);
                 for (final Field field : fields) {

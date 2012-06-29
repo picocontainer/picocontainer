@@ -33,7 +33,7 @@ public class SystemPropertiesPicoContainerTestCase {
 		child.addComponent("hello", "goodbye");
         child.addComponent("bonjour", "aurevior");
         int num = System.getProperties().size(); 
-        assertEquals("child:2<I<D<parent:"+num+"<|", child.toString());
+        assertEquals("child:2<[Immutable]:[SysProps]:parent:"+num+"<|", child.toString());
     }
 
 

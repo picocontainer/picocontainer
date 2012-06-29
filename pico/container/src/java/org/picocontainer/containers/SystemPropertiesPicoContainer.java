@@ -23,4 +23,9 @@ public class SystemPropertiesPicoContainer extends PropertiesPicoContainer {
 	public SystemPropertiesPicoContainer(PicoContainer parent) {
 		super(System.getProperties(),parent);
 	}
+	
+    @Override
+    public String toString() {
+        return "[SysProps]:" + super.getDelegate().toString();
+    }
 }

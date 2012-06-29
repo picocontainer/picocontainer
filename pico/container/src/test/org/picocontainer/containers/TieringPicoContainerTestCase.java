@@ -179,7 +179,7 @@ public class TieringPicoContainerTestCase {
         child.setName("child");
 		parent.addComponent("st", SimpleTouchable.class);
 		child.addComponent("dot", DependsOnTouchable.class);
-        assertEquals("child:1<I<parent:1<|", child.toString());
+		assertEquals("child:1<[Immutable]:parent:1<|", child.toString());
     }
 
 

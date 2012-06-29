@@ -1212,7 +1212,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
     @Override
     public String toString() {
-        return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
+    	return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), 
+    				(parent != null && !(parent instanceof EmptyPicoContainer)? parent.toString() : "|"));    
     }
 
     /**

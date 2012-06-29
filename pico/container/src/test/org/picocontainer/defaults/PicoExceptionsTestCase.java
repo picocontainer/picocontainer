@@ -39,38 +39,20 @@ public class PicoExceptionsTestCase {
 
     @SuppressWarnings({ "unchecked" })
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjection.ConstructorInjector(new AbstractComponentMonitor(), false, false, clazz, clazz, null);
+        final ComponentAdapter<?> componentAdapter = new ConstructorInjection.ConstructorInjector(new AbstractComponentMonitor(), false, false, clazz, clazz, null);
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(MESSAGE);
-        try {
-            final Exception exception = (Exception) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
+        Exception exception = (Exception) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
             assertEquals(MESSAGE, exception.getMessage());
-        } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
-            final Set<Object> set = new HashSet<Object>();
-            for (Object o : ex.getUnsatisfiableDependencies()) {
-                final List<Object> list = (List<Object>)o;
-                set.addAll(list);
-            }
-            assertTrue(set.contains(Throwable.class));
-        }
         pico = new DefaultPicoContainer();
         pico.addComponent(THROWABLE);
-        try {
-            final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
-            assertSame(THROWABLE, exception.getCause());
-        } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
-            final Set<Object> set = new HashSet<Object>();
-            for (Object o : ex.getUnsatisfiableDependencies()) {
-                final List<Object> list = (List<Object>)o;
-                set.addAll(list);
-            }
-            assertTrue(set.contains(String.class));
-        }
+        exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
+        assertSame(THROWABLE, exception.getCause());
         pico.addComponent(MESSAGE);
-        final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
+        exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         assertEquals(MESSAGE, exception.getMessage());
         assertSame(THROWABLE, exception.getCause());
-    }
+   }
 
     @Test public void testPicoInitializationException() {
         executeTestOfStandardException(PicoCompositionException.class);

@@ -8,6 +8,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -105,7 +106,9 @@ public class MultiInjectionTestCase {
         try {
             Foo foo = dpc.getComponent(Foo.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertTrue(e.getMessage().contains(Baz.class.getName()));
+            String message = e.getMessage().replace("org.picocontainer.injectors.MultiInjectionTestCase$", "");
+
+            assertEquals("Foo has unsatisfied dependencies [class Baz] for members [public void Foo.setBaz(Baz)] from " + dpc, message);
         }
     }
 

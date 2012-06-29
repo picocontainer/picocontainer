@@ -241,7 +241,7 @@ public class MethodInjection extends AbstractInjectionType {
                         final List<Method> methods = getInjectorMethods();
                         for (Method method : methods) {
                             final Class[] parameterTypes = method.getParameterTypes();
-                            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                             for (int i = 0; i < currentParameters.length; i++) {
                                 currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
                                         new ParameterNameBinding(getParanamer(), method, i), useNames(),

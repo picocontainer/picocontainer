@@ -288,28 +288,38 @@ public class SetterInjectorTestCase
     }
 
     @Test public void testAllUnsatisfiableDependenciesAreSignalled() {
-        SetterInjection.SetterInjector aAdapter = new SetterInjection.SetterInjector("a", A.class, new NullComponentMonitor(), "set", false, "", false, Parameter.DEFAULT
+        SetterInjection.SetterInjector<A> aAdapter = new SetterInjection.SetterInjector<A>("a", A.class, new NullComponentMonitor(), "set", false, "", false, Parameter.DEFAULT
        );
-        SetterInjection.SetterInjector bAdapter = new SetterInjection.SetterInjector("b", B.class, new NullComponentMonitor(), "set", false, "", false, Parameter.DEFAULT
+        SetterInjection.SetterInjector<B> bAdapter = new SetterInjection.SetterInjector<B>("b", B.class, new NullComponentMonitor(), "set", false, "", false, Parameter.DEFAULT
        );
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(bAdapter);
-        pico.addAdapter(aAdapter);
+        pico.setName("parent");
+        pico.addAdapter(bAdapter)
+         	.addAdapter(aAdapter);
 
         try {
             aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
-            assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
+            String message = e.getMessage().replace("org.picocontainer.injectors.SetterInjectorTestCase$", "");
+            
+            //Order can't be determined so we "standardize" the order of things so to speak.
+            message = message.replace("interface java.util.List, class java.lang.String",
+            		                   "class java.lang.String, interface java.util.List");
+            message = message.replace(
+            		                  "public void A.setList(java.util.List), public void A.setString(java.lang.String)",
+            		                  "public void A.setString(java.lang.String), public void A.setList(java.util.List)"
+            		
+            						);
+            
+            assertEquals("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members [public void A.setString(java.lang.String), public void A.setList(java.util.List)] from parent:2<|",
+                    message);
         }
     }
 
     @Test public void testAllUnsatisfiableDependenciesAreSignalled2() {
-        SetterInjection.SetterInjector aAdapter = new SetterInjection.SetterInjector(A2.class, A2.class, new NullComponentMonitor(), "set", false, "", false, null
-       );
-        SetterInjection.SetterInjector bAdapter = new SetterInjection.SetterInjector("b", B.class, new NullComponentMonitor(), "set", false, "", false, null
-       );
+        SetterInjection.SetterInjector<A2> aAdapter = new SetterInjection.SetterInjector<A2>(A2.class, A2.class, new NullComponentMonitor(), "set", false, "", false);
+        SetterInjection.SetterInjector<B> bAdapter = new SetterInjection.SetterInjector<B>("b", B.class, new NullComponentMonitor(), "set", false, "", false);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(List.class, ArrayList.class)

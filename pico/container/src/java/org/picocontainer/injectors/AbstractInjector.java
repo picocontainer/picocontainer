@@ -88,28 +88,26 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             throw new NotConcreteRegistrationException(getComponentImplementation());
         }
     }
-
+    
     /**
      * Create default parameters for the given types.
      *
-     * @param parameterTypes the parameter types
+     * @param length parameter list length
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(final Type[] parameterTypes) {
-        Parameter[] componentParameters = new Parameter[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
+    protected Parameter[] createDefaultParameters(int length) {
+        Parameter[] componentParameters = new Parameter[length];
+        for (int i = 0; i < length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
         }
         return componentParameters;
-    }
+    }    
 
-    @SuppressWarnings("unused") 
     public void verify(PicoContainer container) throws PicoCompositionException {
     }
 
     public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
-    @SuppressWarnings("unused") 
     public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
         return null;
     }
@@ -195,7 +193,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         throw new PicoCompositionException(e.getTargetException());
     }
 
-    protected Object caughtIllegalAccessException(final ComponentMonitor monitor,
+    protected T caughtIllegalAccessException(final ComponentMonitor monitor,
                                                 final Member member,
                                                 final Object componentInstance, final IllegalAccessException e) {
         monitor.invocationFailed(member, componentInstance, e);
@@ -385,44 +383,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
-		
-		private final ComponentAdapter<?> instantiatingComponentAdapter;
-        private final Set unsatisfiableDependencies;
-        private final Type unsatisfiedDependencyType;
-        
-        /**
-         * The original container requesting the instantiation of the component.
-         */
-        private final PicoContainer leafContainer;
-
-        public UnsatisfiableDependenciesException(final ComponentAdapter<?> instantiatingComponentAdapter,
-                                                  final Type unsatisfiedDependencyType, final Set unsatisfiableDependencies,
-                                                  final PicoContainer leafContainer) {
-            super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
-                    +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer
-                    + " was the leaf container being asked for dependencies.");
-            this.instantiatingComponentAdapter = instantiatingComponentAdapter;
-            this.unsatisfiableDependencies = unsatisfiableDependencies;
-            this.unsatisfiedDependencyType = unsatisfiedDependencyType;
-            this.leafContainer = leafContainer;
+        public UnsatisfiableDependenciesException(String message) {
+        	super(message);
         }
-
-        public ComponentAdapter<?> getUnsatisfiableComponentAdapter() {
-            return instantiatingComponentAdapter;
-        }
-
-        public Set getUnsatisfiableDependencies() {
-            return unsatisfiableDependencies;
-        }
-
-        public Type getUnsatisfiedDependencyType() {
-            return unsatisfiedDependencyType;
-        }
-
-        public PicoContainer getLeafContainer() {
-            return leafContainer;
-        }
-
     }
 
     /**

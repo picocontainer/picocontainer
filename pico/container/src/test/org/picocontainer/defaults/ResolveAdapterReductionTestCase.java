@@ -137,9 +137,9 @@ public class ResolveAdapterReductionTestCase {
             return adapters;
         }
 
-        protected Parameter[] createDefaultParameters(Type[] parameters) {
-            Parameter[] componentParameters = new Parameter[parameters.length];
-            for (int i = 0; i < parameters.length; i++) {
+        protected Parameter[] createDefaultParameters(int length) {
+            Parameter[] componentParameters = new Parameter[length];
+            for (int i = 0; i < length; i++) {
                 componentParameters[i] = new CountingComponentParameter();
 
             }

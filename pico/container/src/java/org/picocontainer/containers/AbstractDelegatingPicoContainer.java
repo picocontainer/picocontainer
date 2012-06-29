@@ -138,7 +138,7 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
     
     @Override
     public String toString() {
-        return "D<" + delegate.toString();
+        return "[Delegate]:" + delegate.toString();
     }
 
     public Converters getConverters() {

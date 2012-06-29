@@ -191,7 +191,8 @@ public class CommandLinePicoContainerTestCase {
         child.setName("child");
 		child.addComponent("hello", "goodbye");
         child.addComponent("bonjour", "aurevior");
-        assertEquals("child:2<I<D<parent:3<|", child.toString());
+        String actual = child.toString();
+        assertEquals("child:2<[Immutable]:[CommandLine]:parent:3<|", actual);
     }
 
 

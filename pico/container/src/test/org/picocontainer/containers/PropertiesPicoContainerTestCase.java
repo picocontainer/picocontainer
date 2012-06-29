@@ -123,7 +123,7 @@ public class PropertiesPicoContainerTestCase {
         child.setName("child");
 		child.addComponent("hello", "goodbye");
         child.addComponent("bonjour", "aurevior");
-        assertEquals("child:2<I<D<parent:3<|", child.toString());
+        assertEquals("child:2<[Immutable]:[Properties]:parent:3<|", child.toString());
     }
 
 

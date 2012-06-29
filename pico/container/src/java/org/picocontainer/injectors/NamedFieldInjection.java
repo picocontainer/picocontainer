@@ -74,8 +74,7 @@ public class NamedFieldInjection extends AbstractInjectionType {
      * Injection happens after instantiation, and fields are marked as
      * injection points via a named field.
      */
-    @SuppressWarnings("serial")
-    public static class NamedFieldInjector<T> extends IterativeInjector<T> {
+    public static class NamedFieldInjector<T> extends AbstractFieldInjector<T> {
 
         private final List<String> fieldNames;
 

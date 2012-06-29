@@ -72,7 +72,7 @@ public class TypedFieldInjection extends AbstractInjectionType {
      * injection points via a field type.
      */
     @SuppressWarnings("serial")
-    public static class TypedFieldInjector<T> extends IterativeInjector<T> {
+    public static class TypedFieldInjector<T> extends AbstractFieldInjector<T> {
 
         private final List<String> classes;
 

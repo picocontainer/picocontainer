@@ -30,11 +30,12 @@ import java.util.Set;
 /**
  * Injection will happen iteratively after component instantiation
  */
+@SuppressWarnings("serial")
 public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private static final Object[] NONE = new Object[0];
     
-    private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
+    private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
     protected volatile transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
@@ -53,12 +54,12 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public IterativeInjector(final Object key, final Class impl, ComponentMonitor monitor, boolean useNames,
+    public IterativeInjector(final Object key, final Class<?> impl, ComponentMonitor monitor, boolean useNames,
                              Parameter... parameters) throws  NotConcreteRegistrationException {
         super(key, impl, monitor, useNames, parameters);
     }
 
-    protected Constructor getConstructor()  {
+    protected Constructor<?> getConstructor()  {
         Object retVal = AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
                 try {
@@ -71,7 +72,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             }
         });
         if (retVal instanceof Constructor) {
-            return (Constructor) retVal;
+            return (Constructor<?>) retVal;
         } else {
             throw (PicoCompositionException) retVal;
         }
@@ -88,17 +89,22 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
 
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
+        //final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
+        System.out.println(parameters);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes.length);
         final Set<Integer> nonMatchingParameterPositions = matchParameters(container, matchingParameterList, currentParameters);
 
         final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
+        final List<AccessibleObject> unsatisfiableDependencyMembers = new ArrayList<AccessibleObject>();
+        
         for (int i = 0; i < matchingParameterList.size(); i++) {
             if (matchingParameterList.get(i) == null) {
                 unsatisfiableDependencyTypes.add(injectionTypes[i]);
+                unsatisfiableDependencyMembers.add(injectionMembers.get(i));
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
-            unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+        	unsatisfiedDependencies(container, unsatisfiableDependencyTypes, unsatisfiableDependencyMembers);
         } else if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
@@ -142,26 +148,24 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return new ParameterNameBinding(paranamer,  member, 0);
     }
 
-    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
-        throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
-    }
+    protected abstract void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers);
 
     public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        final Constructor constructor = getConstructor();
+        final Constructor<?> constructor = getConstructor();
         if (instantiationGuard == null) {
-            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
-                public Object run(Object instance) {
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+                public T run(Object instance) {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     Object componentInstance = makeInstance(container, constructor, currentMonitor());
-                    return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer, into);
+                    return  decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer, into);
                 }
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return (T) instantiationGuard.observe(getComponentImplementation(), null);
+        return instantiationGuard.observe(getComponentImplementation(), null);
     }
 
-    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
+    private T decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
         Object lastReturn = null;
@@ -183,7 +187,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                     injected[i] = toInject;
                 }
             }
-            return memberInvocationReturn(lastReturn, member, componentInstance);
+            return (T) memberInvocationReturn(lastReturn, member, componentInstance);
         } catch (InvocationTargetException e) {
             return caughtInvocationTargetException(monitor, (Member) member, componentInstance, e);
         } catch (IllegalAccessException e) {

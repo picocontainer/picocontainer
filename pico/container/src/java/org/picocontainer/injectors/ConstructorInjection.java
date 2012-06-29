@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * A {@link org.picocontainer.InjectionType} for constructor injection.
@@ -176,7 +177,7 @@ public class ConstructorInjection extends AbstractInjectionType {
         @SuppressWarnings("synthetic-access")
         protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
             final Set<Constructor<?>> conflicts = new HashSet<Constructor<?>>();
-            final Set<List<Type>> unsatisfiableDependencyTypes = new HashSet<List<Type>>();
+            final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
             final Map<ResolverKey, Parameter.Resolver> resolvers = new HashMap<ResolverKey, Parameter.Resolver>();
             if (sortedMatchingConstructors == null) {
                 sortedMatchingConstructors = getSortedMatchingConstructors();
@@ -185,14 +186,15 @@ public class ConstructorInjection extends AbstractInjectionType {
             Parameter[] greediestConstructorsParameters = null;
             ComponentAdapter[] greediestConstructorsParametersComponentAdapters = null;
             int lastSatisfiableConstructorSize = -1;
-            Type unsatisfiedDependencyType = null;
+            Type unsatisfiedDependency = null;
+            Constructor unsatisfiedConstructor = null;
             for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             	try {
                 boolean failedDependency = false;
                 Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
                 fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
                 Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                 final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
                 // remember: all constructors with less arguments than the given parameters are filtered out already
                 for (int j = 0; j < currentParameters.length; j++) {
@@ -212,10 +214,10 @@ public class ConstructorInjection extends AbstractInjectionType {
                         currentAdapters[j] = resolver.getComponentAdapter();
                         continue;
                     }
-                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                    unsatisfiedDependencyType = box(parameterTypes[j]);
+                    unsatisfiableDependencyTypes.add(expectedType);
+                    unsatisfiedDependency = box(parameterTypes[j]);
+                    unsatisfiedConstructor = sortedMatchingConstructor;
                     failedDependency = true;
-                    break;
                 }
 
                 if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
@@ -245,7 +247,9 @@ public class ConstructorInjection extends AbstractInjectionType {
             if (!conflicts.isEmpty()) {
                 throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
             } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
-                throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
+                throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName()
+                        + " has unsatisfied dependency '" + unsatisfiedDependency
+                        + "' for constructor '" + unsatisfiedConstructor + "'" + " from " + container);
             } else if (greediestConstructor == null) {
                 // be nice to the user, show all constructors that were filtered out
                 final Set<Constructor> nonMatching = new HashSet<Constructor>();
@@ -254,7 +258,8 @@ public class ConstructorInjection extends AbstractInjectionType {
             }
             return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
         }
-
+      
+        
         public void enableEmjection(boolean enableEmjection) {
             this.enableEmjection = enableEmjection;
         }
@@ -466,7 +471,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                     public Object run(Object inst) {
                         final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                         final Class[] parameterTypes = constructor.getParameterTypes();
-                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                         for (int i = 0; i < currentParameters.length; i++) {
                             currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
                                 new ParameterNameBinding(getParanamer(),  constructor, i),

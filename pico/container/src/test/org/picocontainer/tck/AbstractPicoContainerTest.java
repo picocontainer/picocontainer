@@ -158,20 +158,14 @@ public abstract class AbstractPicoContainerTest {
 
 
     @Test public void testGettingComponentWithMissingDependencyFails() throws PicoException {
-        PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
+    	MutablePicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
+        picoContainer.setName("parent");
         try {
             picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertSame(picoContainer.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null).getComponentImplementation(),
-                       e.getUnsatisfiableComponentAdapter().getComponentImplementation());
-            final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(1, unsatisfiableDependencies.size());
-
-            // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
-            List unsatisfied = (List)unsatisfiableDependencies.iterator().next();
-            assertEquals(1, unsatisfied.size());
-            assertEquals(Touchable.class, unsatisfied.get(0));
+            String message = e.getMessage().replace("org.picocontainer.testmodel.", "");
+            assertEquals("DependsOnTouchable has unsatisfied dependency 'interface Touchable' for constructor 'public DependsOnTouchable(Touchable)' from parent:1<|", message);        
         }
     }
 
@@ -224,26 +218,20 @@ public abstract class AbstractPicoContainerTest {
 
     @Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
         MutablePicoContainer pico = createPicoContainer(null);
+        pico.setName("parent");
         pico.addComponent(ComponentD.class);
 
         try {
             pico.getComponent(ComponentD.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(1, unsatisfiableDependencies.size());
-
-            List list = (List)unsatisfiableDependencies.iterator().next();
-
-            final List<Class> expectedList = new ArrayList<Class>(2);
-            expectedList.add(ComponentE.class);
-            expectedList.add(ComponentB.class);
-
-            assertEquals(expectedList, list);
+            String msg = e.getMessage().replace("org.picocontainer.tck.AbstractPicoContainerTest$Component", "");
+            assertEquals("D has unsatisfied dependency 'class B' for constructor 'public D(E,B)' from parent:1<|", msg);
         }
     }
 
     @Test public void testUnsatisfiableDependenciesExceptionGivesUnsatisfiedDependencyTypes() {
         MutablePicoContainer pico = createPicoContainer(null);
+        pico.setName("parent");
         // D depends on E and B
         pico.addComponent(ComponentD.class);
 
@@ -252,17 +240,8 @@ public abstract class AbstractPicoContainerTest {
         try {
             pico.getComponent(ComponentD.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(1, unsatisfiableDependencies.size());
-            List list = (List)unsatisfiableDependencies.iterator().next();
-            final List<Class> expectedList = new ArrayList<Class>(2);
-            expectedList.add(ComponentE.class);
-            expectedList.add(ComponentB.class);
-            assertEquals(expectedList, list);
-
-            Type unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
-            assertNotNull(unsatisfiedDependencyType);
-            assertEquals(ComponentE.class, unsatisfiedDependencyType);
+            String message = e.getMessage().replace("org.picocontainer.tck.AbstractPicoContainerTest$Component", "");
+            assertEquals("D has unsatisfied dependency 'class B' for constructor 'public D(E,B)' from parent:1<|", message);
         }
 
         // now register only first dependency
@@ -271,17 +250,8 @@ public abstract class AbstractPicoContainerTest {
         try {
             pico.getComponent(ComponentD.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(1, unsatisfiableDependencies.size());
-            List list = (List)unsatisfiableDependencies.iterator().next();
-            final List<Class> expectedList = new ArrayList<Class>(2);
-            expectedList.add(ComponentE.class);
-            expectedList.add(ComponentB.class);
-            assertEquals(expectedList, list);
-
-            Type unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
-            assertNotNull(unsatisfiedDependencyType);
-            assertEquals(ComponentB.class, unsatisfiedDependencyType);
+            String message = e.getMessage().replace("org.picocontainer.tck.AbstractPicoContainerTest$Component", "");
+            assertEquals("D has unsatisfied dependency 'class B' for constructor 'public D(E,B)' from parent:2<|", message);
         }
     }
 
