@@ -31,7 +31,7 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>2.3</version>
+                <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>2.4</version>
                 <configuration>
                     <sourceDirectory>src/test</sourceDirectory>
                     <outputDirectory>target/test-classes</outputDirectory>
