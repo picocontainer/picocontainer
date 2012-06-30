@@ -825,7 +825,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
             return instance;
         } else if (parent != null) {
-            return getParent().getComponentInto(componentAdapter.getComponentKey(), into);
+        	Object componentKey = key;
+        	if (componentKey == null) {
+        		componentKey = componentAdapter.getComponentKey();
+        	}
+            return getParent().getComponentInto(componentKey, into);
         }
 
         return null;
