@@ -51,7 +51,6 @@ public class ThreadCaching extends AbstractBehavior {
      *
      * @author Paul Hammant
      */
-    @SuppressWarnings("serial")
     public static final class ThreadCached<T> extends Storing.Stored<T> {
 
         public ThreadCached(ComponentAdapter<T> delegate) {

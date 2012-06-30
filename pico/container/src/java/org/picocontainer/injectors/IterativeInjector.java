@@ -41,7 +41,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Annotation[] bindings;
 
     private transient Paranamer paranamer;
-    private transient boolean initialized;
+    private volatile transient boolean initialized;
     /**
      * Constructs a IterativeInjector
      *
@@ -230,9 +230,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
-                public Object run(Object inst) {
+                public Object run(final Object inst) {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    return decorateComponentInstance(matchingParameters, currentMonitor(), instance, container, guardedContainer, into);
+                    return decorateComponentInstance(matchingParameters, currentMonitor(), inst, container, guardedContainer, into);
                 }
             };
         }

@@ -114,7 +114,10 @@ public class SynchronizedTestCase {
     }
 
     @Test public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(), false, "key", Blocker.class, null));
+        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(), 
+        		false, 
+        		"key", 
+        		Blocker.class, null));
         initTest(componentAdapter);
 
         assertNull(runner[0].exception);

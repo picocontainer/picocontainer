@@ -70,15 +70,15 @@ public class CompositeInjection extends AbstractInjectionType {
 
         @Override
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            T instance = null;
-            for (Injector<T> injector : injectors) {
-                if (instance == null) {
-                    instance = injector.getComponentInstance(container, NOTHING.class);
-                } else {
-                    injector.decorateComponentInstance(container, into, instance);
-                }
-            }
-            return (T) instance;
+	            T instance = null;
+	            for (Injector<T> injector : injectors) {
+	                if (instance == null) {
+	                    instance = injector.getComponentInstance(container, NOTHING.class);
+	                } else {
+	                    injector.decorateComponentInstance(container, into, instance);
+	                }
+	            }
+	            return (T) instance;
         }
 
 

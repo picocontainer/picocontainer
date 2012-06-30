@@ -44,22 +44,17 @@ public class ThreadCachingTestCase {
 
     public static class Qux {
 
-        private static final Object lock = new Object();
-
         private static int CTR;
 
         private int inst;
 
         public Qux(StringBuilder sb) {
-            synchronized (lock) {
-                inst = CTR++;
+                inst = CTR;
+                CTR++;
                 sb.append("!").append(inst).append(" ");
-            }
         }
         public void setStringBuilder(StringBuilder sb) {
-            synchronized (lock) {
                 sb.append("<").append(inst).append(" ");
-            }
         }
 
         @Override
@@ -149,14 +144,15 @@ public class ThreadCachingTestCase {
         assertEquals("ThreadCached:LifecycleAdapter:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithCompositeInjection() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithCompositeInjection() throws InterruptedException {
 
         final Qux[] quxs = new Qux[4];
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new ThreadCaching().wrap(
-                new CompositeInjection(new ConstructorInjection(), new SetterInjection())));
+        final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(),
+        		new ThreadCaching().wrap(new CompositeInjection(new ConstructorInjection(), new SetterInjection())));
 
+        
         parent.addComponent(StringBuilder.class);
         child.addComponent(Qux.class);
 
@@ -169,12 +165,18 @@ public class ThreadCachingTestCase {
                 quxs[3] = child.getComponent(Qux.class);
             }
         };
+        
         thread.start();
-        quxs[2] = child.getComponent(Qux.class);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+        
+        synchronized(this) {
+        	thread.join();
         }
+        
+        
+        assertFalse(thread.isAlive());
+        
+        
+        quxs[2] = child.getComponent(Qux.class);
 
         assertNotNull(quxs[0]);
         assertNotNull(quxs[1]);
@@ -184,7 +186,8 @@ public class ThreadCachingTestCase {
         assertEquals(quxs[1],quxs[3]);
         assertFalse(quxs[0] == quxs[1]);
         assertEquals("!0 <0 !1 <1", sb.toString().trim());
-        assertEquals("ThreadCached:CompositeInjector(ConstructorInjector+SetterInjector)-class org.picocontainer.behaviors.ThreadCachingTestCase$Qux", child.getComponentAdapter(Qux.class).toString());
+        assertEquals("ThreadCached:CompositeInjector(ConstructorInjector+SetterInjector)" +
+        		"-class org.picocontainer.behaviors.ThreadCachingTestCase$Qux", child.getComponentAdapter(Qux.class).toString());
     }
 
     @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithInstanceRegistrationAndClassLoadingPicoContainer() {
