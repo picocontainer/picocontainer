@@ -13,10 +13,13 @@ package org.picocontainer.injectors;
 import java.lang.reflect.AccessibleObject;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Properties;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.InjectionType;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
@@ -46,80 +49,118 @@ import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionA
  */
 @SuppressWarnings("serial")
 public class AdaptingInjection extends AbstractInjectionType {
+	
+	private ConstructorInjection constructorInjection;
+	
+	private MethodInjection methodInjection;
+	
+	private SetterInjection setterInjection;
+	
+	private AnnotatedMethodInjection annotatedMethodInjection;
+	
+	private AnnotatedFieldInjection annotatedFieldInjection;
+	
+	public AdaptingInjection() {
+		constructorInjection = new ConstructorInjection();
+		methodInjection = new MethodInjection();
+		setterInjection = new SetterInjection();
+		annotatedMethodInjection = new AnnotatedMethodInjection();
+		annotatedFieldInjection = new AnnotatedFieldInjection();
+	}
+	
+	
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Properties componentProps, Object key, Class<T> impl,
                                                    Parameter... parameters) throws PicoCompositionException {
-        ComponentAdapter<T> componentAdapter = null;
+		
+		
+		ArrayList<InjectionType> injectors = new ArrayList<InjectionType>();
+		
+        InjectionType componentAdapter = null;
 
         componentAdapter = fieldAnnotatedInjectionAdapter(impl, monitor, lifecycle, componentProps,
-                               key, componentAdapter, parameters);
+                               key, null, parameters);
 
         if (componentAdapter != null) {
-            return componentAdapter;
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+            //return componentAdapter;
         }
 
         componentAdapter = methodAnnotatedInjectionAdapter(impl, monitor, lifecycle, componentProps,
-                                                           key, componentAdapter, parameters);
+                                                           key, null, parameters);
 
         if (componentAdapter != null) {
-            return componentAdapter;
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+            //return componentAdapter;
         }
 
-        componentAdapter = setterInjectionAdapter(componentProps, monitor, lifecycle, key, impl, componentAdapter, parameters);
+        componentAdapter = setterInjectionAdapter(componentProps, monitor, lifecycle, key, impl, null, parameters);
 
         if (componentAdapter != null) {
-            return componentAdapter;
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+//            return componentAdapter;
         }
 
-        componentAdapter = methodInjectionAdapter(componentProps, monitor, lifecycle, key, impl, componentAdapter, parameters);
+        componentAdapter = methodInjectionAdapter(componentProps, monitor, lifecycle, key, impl, null, parameters);
 
         if (componentAdapter != null) {
-            return componentAdapter;
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+//            return componentAdapter;
         }
 
 
-        return defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters);
+        injectors.add(defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters));
+
+        Collections.reverse(injectors);
+        //return defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters);
+        InjectionType[] aArray = injectors.toArray(new InjectionType[injectors.size()]);
+        return new CompositeInjection(aArray)
+        	.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
     }
 
-    private <T> ComponentAdapter<T> defaultInjectionAdapter(Properties componentProps, ComponentMonitor monitor,
+    private  <T> InjectionType defaultInjectionAdapter(Properties componentProps, ComponentMonitor monitor,
                                                   LifecycleStrategy lifecycle, Object key, Class<T> impl, Parameter... parameters) {
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CDI);
-        return new ConstructorInjection().createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        return constructorInjection;
     }
 
-    private <T> ComponentAdapter<T> setterInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
+    private <T> InjectionType setterInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Object key, Class<T> impl, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.SDI)) {
-            componentAdapter = new SetterInjection().createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        	return setterInjection;
         }
-        return componentAdapter;
+        return null;
     }
 
-    private <T> ComponentAdapter<T> methodInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
+    private <T> InjectionType methodInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Object key, Class<T> impl, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.METHOD_INJECTION)) {
-            componentAdapter = new MethodInjection().createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+            return methodInjection;
         }
-        return componentAdapter;
+        return null;
     }
 
 
-    private <T> ComponentAdapter<T> methodAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
+    private <T> InjectionType methodAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                        Properties componentProps, Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (injectionMethodAnnotated(impl)) {
-            componentAdapter =
-                new AnnotatedMethodInjection().createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        	return annotatedMethodInjection;
         }
-        return componentAdapter;
+        return null;
     }
 
-    private <T> ComponentAdapter<T> fieldAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
+    private <T> InjectionType fieldAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                  Properties componentProps, Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (injectionFieldAnnotated(impl)) {
-             componentAdapter = new AnnotatedFieldInjection().createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        	return this.annotatedFieldInjection;
         }
-        return componentAdapter;
+        
+        return null;
     }
 
     private boolean injectionMethodAnnotated(final Class<?> impl) {

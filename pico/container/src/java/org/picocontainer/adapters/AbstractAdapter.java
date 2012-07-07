@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  */
+@SuppressWarnings("serial")
 public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
     private Object key;
     private Class<T> impl;

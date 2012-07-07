@@ -86,7 +86,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         assertEquals("How do you do?", foo.greeting());
         assertEquals("<english-greeting>How do you do?</english-greeting>", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+        assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testPreAndPostObservationWithParameter() {
@@ -115,7 +115,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         assertEquals("Goodbye Fred.", foo.parting("Fred").trim());
         assertEquals("<english-parting who='Fred'>Goodbye Fred.</english-parting>", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+        assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testPreCanPreventInvocationWithAlternateReturnValue() {
@@ -137,7 +137,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         assertEquals("Au revoir Fred.", foo.parting("Fred"));
         assertEquals("", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+        assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testOverrideOfReturnValue() {
@@ -172,7 +172,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         assertEquals("Arrivederci Fred", foo.parting("Fred"));
         assertEquals("[Before parting]Goodbye Fred.[After parting]", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+        assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testNothingHappensIfNoPreOrPost() {
@@ -184,7 +184,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         assertEquals("Goodbye Fred.", foo.parting("Fred"));
         assertEquals("Goodbye Fred.", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+        assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
 

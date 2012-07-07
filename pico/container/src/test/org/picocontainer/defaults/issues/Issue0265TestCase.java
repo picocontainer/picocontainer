@@ -47,7 +47,7 @@ public class Issue0265TestCase {
         mockery.checking(new Expectations() {{
             one(monitor1).changedBehavior(with(any(ChangedBehavior.class)));
             will(returnParameterAction(0));
-            one(monitor1).newInjector(with(any(AbstractInjector.class)));
+            allowing(monitor1).newInjector(with(any(AbstractInjector.class)));
             will(returnParameterAction(0));
             one(monitor1).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
             will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));

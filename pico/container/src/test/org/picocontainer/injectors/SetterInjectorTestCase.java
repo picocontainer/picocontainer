@@ -10,6 +10,7 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -301,18 +302,28 @@ public class SetterInjectorTestCase
         try {
             aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+            assertNotNull(e.getMessage());
             String message = e.getMessage().replace("org.picocontainer.injectors.SetterInjectorTestCase$", "");
+            message.trim();
+            
+            System.out.println("-----------  Message -----------------");
+            System.out.println(message);
+            System.out.println("-----------==========-----------------");
             
             //Order can't be determined so we "standardize" the order of things so to speak.
-            message = message.replace("interface java.util.List, class java.lang.String",
-            		                   "class java.lang.String, interface java.util.List");
+            message = message.replaceAll(" ","");
+            message = message.replaceAll("\t","");
+            message = message.replace("interfacejava.util.List,classjava.lang.String",
+            		                   "classjava.lang.String,interfacejava.util.List");            
+            assertFalse(message.contains(" "));            
             message = message.replace(
-            		                  "public void A.setList(java.util.List), public void A.setString(java.lang.String)",
-            		                  "public void A.setString(java.lang.String), public void A.setList(java.util.List)"
+            		                  "publicvoidA.setList(java.util.List),publicvoidA.setString(java.lang.String)",
+            		                  "publicvoidA.setString(java.lang.String),publicvoidA.setList(java.util.List)"
             		
             						);
             
-            assertEquals("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members [public void A.setString(java.lang.String), public void A.setList(java.util.List)] from parent:2<|",
+            
+            assertEquals("Got " + message, "Ahasunsatisfieddependencies[classjava.lang.String,interfacejava.util.List]formembers[publicvoidA.setString(java.lang.String),publicvoidA.setList(java.util.List)]fromparent:2<|",
                     message);
         }
     }

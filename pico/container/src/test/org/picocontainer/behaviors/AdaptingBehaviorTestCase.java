@@ -16,6 +16,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.CompositeInjection;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -45,7 +46,7 @@ public class AdaptingBehaviorTestCase {
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
-        assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("Cached:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
     }
 
     @Test public void testCachingBehaviorCanBeAddedByAnnotation() {
@@ -58,7 +59,7 @@ public class AdaptingBehaviorTestCase {
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
-        assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("Cached:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
     }
 
     @Cache
@@ -88,7 +89,7 @@ public class AdaptingBehaviorTestCase {
         assertTrue(!(map instanceof HashMap));
 
         assertEquals(0, cc.size());
-        assertEquals("Hidden:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("Hidden:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
 
     }
 
@@ -107,7 +108,7 @@ public class AdaptingBehaviorTestCase {
         assertEquals("bar", ((MyHashMap2) map).foo);
 
         assertEquals(0, cc.size());
-        assertEquals("PropertyApplied:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("PropertyApplied:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
     }
 
     @Test public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
@@ -115,11 +116,11 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.SDI,cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof SetterInjection.SetterInjector);
+        assertTrue(ca instanceof CompositeInjection.CompositeInjector);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertEquals(0, cc.size());
-        assertEquals("SetterInjector-interface java.util.Map", ca.toString());
+        assertEquals("CompositeInjector(ConstructorInjector+SetterInjector)-interface java.util.Map", ca.toString());
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
@@ -146,7 +147,7 @@ public class AdaptingBehaviorTestCase {
         assertTrue(sb>ih);
 
         assertEquals(0, cc.size());
-        assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("Cached:Hidden:Synchronized:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
@@ -169,7 +170,7 @@ public class AdaptingBehaviorTestCase {
         String str = "<" + Caching.Cached.class.getName() + ">";
         assertTrue(foo.indexOf(str, 0)  > -1);  // xml does start with CB
         assertFalse(foo.indexOf("<" + Caching.Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
-        assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
+        assertEquals("Cached:Hidden:Synchronized:CompositeInjector(ConstructorInjector)-interface java.util.Map",ca.toString());
     }
 
     @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {

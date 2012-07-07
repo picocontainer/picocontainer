@@ -16,8 +16,8 @@
 		<module>container</module>
 		<module>container-debug</module>
 		<module>tck</module>
-		<module>jsr330-tck</module>
 		<module>gems</module>
+		<module>jsr330-tck</module>
 	</modules>
 	<organization>
 		<name>Codehaus</name>
@@ -65,7 +65,7 @@
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
 				<artifactId>paranamer</artifactId>
-				<version>2.4</version>
+				<version>2.5</version>
 				<optional>true</optional>
 			</dependency>
 			<!-- For proxy -->
@@ -210,12 +210,12 @@
 				<plugin>
 					<groupId>com.thoughtworks.paranamer</groupId>
 					<artifactId>paranamer-maven-plugin</artifactId>
-					<version>2.3</version>
+					<version>2.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
+					<version>2.5.1</version>
 					<configuration>
 						<source>1.5</source>
 						<target>1.5</target>

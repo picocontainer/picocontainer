@@ -86,7 +86,7 @@ public class ThreadCachingTestCase {
         assertNotNull(foo2);
         assertEquals(foo,foo2);
         assertEquals("<Foo", sb.toString());
-        assertEquals("ThreadCached:LifecycleAdapter:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("ThreadCached:LifecycleAdapter:CompositeInjector(LifecycleAdapter)-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCachingWithSetterInjection() {
@@ -141,7 +141,7 @@ public class ThreadCachingTestCase {
         assertEquals(foos[1],foos[3]);
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
-        assertEquals("ThreadCached:LifecycleAdapter:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("ThreadCached:LifecycleAdapter:CompositeInjector(LifecycleAdapter)-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithCompositeInjection() throws InterruptedException {
@@ -227,7 +227,7 @@ public class ThreadCachingTestCase {
         assertEquals(foos[1],foos[3]);
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
-        assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("ThreadCached:CompositeInjector(ConstructorInjector)-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
 
@@ -272,7 +272,7 @@ public class ThreadCachingTestCase {
         assertSame(bars[2].foo,foos[2]);
         assertSame(bars[3].foo,foos[3]);
         assertEquals("<Foo<Bar<Foo<Bar", sb.toString());
-        assertEquals("ThreadCached:LifecycleAdapter:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
+        assertEquals("ThreadCached:LifecycleAdapter:CompositeInjector(LifecycleAdapter)-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
 
 

@@ -107,7 +107,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("MethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("CompositeInjector(ConstructorInjector+MethodInjector[inject])-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaAdapter() {
@@ -181,8 +181,13 @@ public class MethodInjectionTestCase {
         assertNotNull(foo3.bar3);
         assertTrue(foo3.num == null);
         ComponentAdapter<?> adapter = pico.getComponentAdapter(Foo3.class);
+        String result = adapter.toString();
+        
+        //Allow for undefined method return order.
+        //This seems prevalent in JDK >= 1.7
+        result = result.replace("[injectSomethingElse,inject]", "[inject,injectSomethingElse]");
         assertEquals("MethodInjector[inject,injectSomethingElse]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo3",
-                adapter.toString());
+        		result);
     }
 
     @Test public void testMethodInjectionWithDisallowedNullableParam() {

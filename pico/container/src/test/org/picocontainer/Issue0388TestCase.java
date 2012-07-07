@@ -4,20 +4,23 @@ import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.CompositeInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.MultiInjection;
+import org.picocontainer.injectors.SetterInjection;
 
-public class GregoryTestCase {
+public class Issue0388TestCase {
 
 	@Test
 	 public void testComponentCanUseConstructorAndAtInjectWithoutAnInitMethod() {
 		
-	        final MutablePicoContainer pico = new PicoBuilder(new MultiInjection())
-	        		.withBehaviors(new AdaptingBehavior())
-	        		.build();
+		
+	        final MutablePicoContainer pico = new DefaultPicoContainer();
 	        pico.addComponent(Carrot.class)
 	        	.addComponent(Cheese.class)
 	        	.addComponent(Mixer.class);

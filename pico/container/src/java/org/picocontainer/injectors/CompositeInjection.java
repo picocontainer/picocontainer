@@ -11,6 +11,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.InjectionType;
 import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
@@ -115,8 +116,23 @@ public class CompositeInjection extends AbstractInjectionType {
             for (Injector<T> injector : injectors) {
                 sb.append(injector.getDescriptor());
             }
-            sb.deleteCharAt(sb.length()-1); // remove last dash
+            
+            if (sb.charAt(sb.length() - 1) == '-') {
+            	sb.deleteCharAt(sb.length()-1); // remove last dash	
+            }
+                        
             return sb.toString().replace("-", "+") + ")-";
         }
+
+		@Override
+		public void changeMonitor(ComponentMonitor monitor) {
+			super.changeMonitor(monitor);
+			for (Injector<?> eachInjector : injectors) {
+				if (eachInjector instanceof ComponentMonitorStrategy) {
+					((ComponentMonitorStrategy)eachInjector).changeMonitor(monitor);
+				}
+			}
+		}
+
     }
 }

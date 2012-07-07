@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Properties;
 
 @SuppressWarnings("serial")
-public class AdaptingBehavior implements Behavior, Serializable {
+public class AdaptingBehavior extends AbstractBehavior implements Behavior, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
@@ -148,9 +148,5 @@ public class AdaptingBehavior implements Behavior, Serializable {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC)) {
             list.add(new Automating());
         }
-    }
-
-    public ComponentFactory wrap(ComponentFactory delegate) {
-        throw new UnsupportedOperationException();
     }
 }

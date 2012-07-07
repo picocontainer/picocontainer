@@ -10,15 +10,23 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.StringWriter;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
 import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
+
+import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.WriterComponentMonitor;
 
 /**
  * @author Paul Hammant
@@ -141,6 +149,37 @@ public class CompositeInjectionTestCase {
        );
         dpc.addComponent(Bar.class);
         assertNotNull(dpc.getComponent(Bar.class));
+    }
+    
+    @Test
+    public void testChangeMonitor() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        
+		StringWriter writer1 = new StringWriter();
+		ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
+
+		
+		StringWriter writer2 = new StringWriter();
+		ComponentMonitor monitor2 = new WriterComponentMonitor(writer2) {
+			
+		};
+		
+		dpc.changeMonitor(monitor1);
+        dpc.addComponent(Bar.class);
+        dpc.addComponent(Baz.class);
+        dpc.addComponent(Foo.class);
+        dpc.changeMonitor(monitor2);
+        
+        ComponentAdapter<?> adapter = dpc.getComponentAdapter(Foo.class);
+    	ComponentAdapter<?> current = adapter;
+        while(current != null) {
+        	if (current instanceof ComponentMonitorStrategy) {
+        		ComponentMonitorStrategy castValue = (ComponentMonitorStrategy)current;
+	        	assertTrue("Failed on " + current.getDescriptor(),  castValue.currentMonitor() == monitor2);
+        	}
+        	current = current.getDelegate();
+        }
+        
     }
 
     private static class NonNullLifecycleStrategy implements LifecycleStrategy {

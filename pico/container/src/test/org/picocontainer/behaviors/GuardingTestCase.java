@@ -20,6 +20,7 @@ import org.picocontainer.DefaultPicoContainer;
 import static org.picocontainer.Characteristics.GUARD;
 
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.CompositeInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
@@ -85,7 +86,8 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
         assertEquals(Guarding.Guarded.class, fooAdapter.getClass());
-        assertEquals(ConstructorInjection.ConstructorInjector.class, fooAdapter.getDelegate().getClass());
+        assertEquals("Got " + fooAdapter.getDelegate().getClass().getName(), 
+        		CompositeInjection.CompositeInjector.class, fooAdapter.getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");
             fail("should have barfed");

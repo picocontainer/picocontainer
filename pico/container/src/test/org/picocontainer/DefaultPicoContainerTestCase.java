@@ -310,6 +310,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		final String s = writer1.toString();
 		assertTrue("writer not empty", s.length() > 0);
 		StringWriter writer2 = new StringWriter();
+		
 		ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
 		pico.changeMonitor(monitor2);
 		pico.addComponent("t2", SimpleTouchable.class);
