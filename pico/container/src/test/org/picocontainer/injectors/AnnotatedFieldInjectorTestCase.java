@@ -14,6 +14,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.annotations.Inject;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.containers.SomeQualifier;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
@@ -21,9 +23,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.inject.Named;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class AnnotatedFieldInjectorTestCase {
@@ -175,5 +180,70 @@ public class AnnotatedFieldInjectorTestCase {
             assertEquals(expected, actual);
         }
     }    
+    
+    
+    public static interface A3 {
+    	
+    }
+    
+    public static class B3 implements A3 {
+    	
+    }
+    
+    public static class C3 implements A3 {
+    	
+    }
+
+    @SomeQualifier
+    public static class D3 implements A3 {
+    	
+    }
+    
+    
+    
+    public static class Z3 {
+    	
+    	@Inject
+    	@Named("b3")
+    	private A3 b3;
+    	
+    	public A3 getB3() {
+    		return b3;
+    	}
+    	
+    	
+    	@Inject
+    	@Named("c3")
+    	private A3 c3;
+    	
+    	public A3 getC3() {
+    		return c3;
+    	}
+    	
+    	@Inject
+    	@SomeQualifier
+    	private A3 d3;
+    	public A3 getD3() {
+    		return d3;
+    	}
+    }
+    
+    @Test
+    public void testFieldInjectionWithNamedQualifier() {
+        JSRPicoContainer container = new JSRPicoContainer(new PicoBuilder().withAnnotatedFieldInjection().build());
+        
+        container.addComponent("b3", B3.class)
+        		.addComponent("c3", C3.class)
+        		.addComponent(D3.class)
+        		.addComponent(Z3.class);
+        
+        
+        Z3 z3 =  container.getComponent(Z3.class);
+        assertNotNull(z3);
+        assertTrue(z3.getB3() instanceof B3);
+        assertTrue(z3.getC3() instanceof C3);
+    	assertTrue(z3.getD3() instanceof D3);
+    }
+    
     
 }

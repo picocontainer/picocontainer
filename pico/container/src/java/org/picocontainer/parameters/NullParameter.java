@@ -85,6 +85,10 @@ public class NullParameter extends AbstractParameter implements Serializable {
         }
         return true;
     }
+
+	public String getTargetName() {
+		return null;
+	}
 	
 	
 }

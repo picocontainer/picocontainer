@@ -18,6 +18,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.annotations.Bind;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.annotations.Inject;
 
 import java.lang.reflect.AccessibleObject;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.lang.annotation.Annotation;
+
+import javax.inject.Named;
 
 import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
 import static org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector.makeAnnotationNames;
@@ -120,9 +124,9 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             }
             return false;
         }
+        
 
-
-        private Field[] getFields(final Class clazz) {
+        private Field[] getFields(final Class<?> clazz) {
             return AccessController.doPrivileged(new PrivilegedAction<Field[]>() {
                 public Field[] run() {
                     return clazz.getDeclaredFields();
@@ -130,6 +134,10 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             });
         }
 
+        /**
+         * Performs the actual injection.
+         */
+        @Override
         protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
                 throws IllegalAccessException, InvocationTargetException {
             Field field = (Field) member;
@@ -137,6 +145,37 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             field.set(componentInstance, toInject);
             return null;
         }
+        
+        /**
+         * Allows swapping of parameter to a component parameter specified by {@linkplain javax.inject.Named}
+         * <p>{@inheritDoc}</p>
+         */
+        @Override
+        protected Parameter getParameterToUseForObject(final AccessibleObject targetInjectionMember, final Parameter currentParameter) {
+        	
+        	//Allow composition script operator to override what's in code.  
+        	//TODO:  Is this a good idea?  @Named is a horrible way to lock in the code, so this provides
+        	//flexibility if you're stuck with code you can't change.... but it might
+        	//make for some wild bugs where maintenance programmers only see the @Named annotation
+        	//and look no further.  -MR
+        	if (currentParameter == ComponentParameter.DEFAULT) {
+        		if (targetInjectionMember.isAnnotationPresent(Named.class)) {
+        			Named annotation = targetInjectionMember.getAnnotation(Named.class);
+        			ComponentParameter newParameter = new ComponentParameter(  ((Field)targetInjectionMember).getName(), annotation.value());
+        			return newParameter;
+        		}
+        		
+        		Annotation qualifier = JSRPicoContainer.getQualifier(targetInjectionMember.getAnnotations());
+        		if (qualifier != null) {
+        			ComponentParameter newParameter = new ComponentParameter(  ((Field)targetInjectionMember).getName(), qualifier.annotationType().getName());
+        			return newParameter;
+        		}
+        		
+        	}
+        	
+        	return currentParameter;
+    	}        
+        
 
         @Override
         public String getDescriptor() {
@@ -146,8 +185,9 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             return "AnnotatedFieldInjector["+injectionAnnotationNames+"]-";
         }
 
+        
         @Override
-        protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
+        protected NameBinding makeParameterNameImpl(final AccessibleObject member) { 
             return new NameBinding() {
                 public String getName() {
                     return ((Field) member).getName();

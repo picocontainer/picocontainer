@@ -16,6 +16,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject-tck</artifactId>
+				<scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>0.1.1</version>
             <optional>true</optional>
         </dependency>

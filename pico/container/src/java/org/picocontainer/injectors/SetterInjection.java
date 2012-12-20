@@ -16,6 +16,7 @@ import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -165,6 +166,29 @@ public class SetterInjection extends AbstractInjectionType {
         public String getDescriptor() {
             return "SetterInjector-";
         }
+
+		@Override
+		protected boolean isAccessibleObjectEqualToParameterTarget(AccessibleObject testObject,
+				Parameter currentParameter) {
+			if (currentParameter.getTargetName() == null) {
+				return false;
+			}
+			
+			if (!(testObject instanceof Method)) {
+				throw new PicoCompositionException(testObject + " must be a method to use setter injection");
+			}
+			
+			String targetProperty = currentParameter.getTargetName();
+			
+			//Convert to setter name.
+			String testProperty = "set" + Character.toUpperCase(targetProperty.charAt(0));
+			if (targetProperty.length() > 0) {
+				testProperty = testProperty + targetProperty.substring(1);
+			}
+			
+			Method targetMethod = (Method)testObject;			
+			return targetMethod.getName().equals(testProperty);
+		}
 
 
     }

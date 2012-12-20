@@ -13,7 +13,12 @@ import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.annotations.Inject;
+import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.A3;
+import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.B3;
+import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.C3;
+import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.Z3;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
@@ -21,7 +26,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.inject.Named;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class AnnotatedMethodInjectorTestCase  {
 
@@ -147,5 +156,80 @@ public class AnnotatedMethodInjectorTestCase  {
         assertNotNull(burp.wind);
     }
 
+    
+    public static class PackageTestParent {
+    	boolean injected = false;
+    	boolean otherInjected = false;
+    	
+    	@Inject
+    	void doSomething(String something) {
+    		injected = true;
+    	}
+    	
+    	@Inject
+    	void doSomethingElse(String somethingElse) {
+    		otherInjected = true;
+    	}
+    }
+    
+    public static class PackageTestChild extends PackageTestParent {
+    	@Override
+    	void doSomething(String something) {
+    		injected = true;
+    	}
+    }
+    
+    @Test
+    public void testPackagePrivateChildCanIgnoreInjectionIfOverridingAnnotationOmitted() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection());
+    	picoContainer.addComponent(String.class, "Test")
+    				.addComponent(PackageTestChild.class);
+    	
+    	System.out.println(picoContainer.getComponentAdapter(PackageTestChild.class).toString());
+
+    	PackageTestChild testChild = picoContainer.getComponent(PackageTestChild.class);
+    	assertNotNull(testChild);
+    	assertTrue(testChild.otherInjected);
+    	assertFalse(testChild.injected);
+    	
+    }
+    
+    public static class PublicTestParent {
+    	boolean injected = false;
+    	boolean otherInjected = false;
+    	
+    	@Inject
+    	public void doSomething(String something) {
+    		injected = true;
+    	}
+    	
+    	@Inject
+    	public void doSomethingElse(String somethingElse) {
+    		otherInjected = true;
+    	}
+    }
+    
+    public static class PublicTestChild extends PublicTestParent {
+    	@Override
+    	public void doSomething(String something) {
+    		injected = true;
+    	}
+    }
+    
+    
+    @Test
+    public void testPublicInheritedChildCanIgnoreInjectionIfOvrridingAnnoationOmitted() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection());
+    	picoContainer.addComponent(String.class, "Test")
+				.addComponent(PublicTestChild.class);
+		
+		System.out.println(picoContainer.getComponentAdapter(PublicTestChild.class).toString());
+		
+		PublicTestChild testChild = picoContainer.getComponent(PublicTestChild.class);
+		assertNotNull(testChild);
+		assertTrue(testChild.otherInjected);
+		assertFalse(testChild.injected);
+    	
+    }       
 
 }

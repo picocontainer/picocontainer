@@ -570,7 +570,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return addAdapterInternal(new InstanceAdapter<Object>(name, val, lifecycle, monitor));
     }
 
-
     /**
      * {@inheritDoc}
      * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}

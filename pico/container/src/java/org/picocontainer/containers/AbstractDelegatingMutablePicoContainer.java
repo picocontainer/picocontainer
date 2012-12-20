@@ -25,6 +25,7 @@ import java.util.Properties;
  * abstract base class for delegating to mutable containers
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDelegatingPicoContainer implements MutablePicoContainer {
 
     public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {

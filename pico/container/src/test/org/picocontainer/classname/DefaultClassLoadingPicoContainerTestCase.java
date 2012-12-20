@@ -133,6 +133,8 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.append(clazz.getName()).append("\n");
             }
         });
+        
+        //TODO: these should be "contains" so the test doesn't fail every time we add a container.
         assertEquals("org.picocontainer.classname.ClassLoadingPicoContainer\n" +
                 "org.picocontainer.classname.DefaultClassLoadingPicoContainer$AsPropertiesPicoContainer\n" +
                 "org.picocontainer.classname.DefaultClassLoadingPicoContainer\n" +
@@ -142,6 +144,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 "org.picocontainer.containers.CompositePicoContainer\n" +
                 "org.picocontainer.containers.EmptyPicoContainer\n" +
                 "org.picocontainer.containers.ImmutablePicoContainer\n" +
+                "org.picocontainer.containers.JSRPicoContainer\n"+
                 "org.picocontainer.containers.PropertiesPicoContainer\n" +
                 "org.picocontainer.containers.SystemPropertiesPicoContainer\n" +
                 "org.picocontainer.containers.TieringPicoContainer\n" +
@@ -151,7 +154,9 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 "org.picocontainer.MutablePicoContainer\n" +
                 "org.picocontainer.PicoContainer\n",
                 sb.toString());
-        assertEquals(17, found);
+        
+        //Same here.
+        assertEquals(18, found);
     }
 
     @Test()

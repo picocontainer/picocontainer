@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 @SuppressWarnings("serial")
@@ -41,5 +42,20 @@ public abstract class AbstractFieldInjector<T> extends IterativeInjector<T> {
 		final String container1 = container.toString();
 		throw new UnsatisfiableDependenciesException(sb.toString() + "] from " + container1);
 	}
+	
 
+	@Override
+	protected boolean isAccessibleObjectEqualToParameterTarget(AccessibleObject testObject,
+			Parameter currentParameter) {
+		if (currentParameter.getTargetName() == null) {
+			return false;
+		}		
+		
+		if (!(testObject instanceof Field)) {
+			throw new PicoCompositionException(testObject + " must be a field to use setter injection");
+		}
+		
+		Field testField = (Field)testObject;			
+		return testField.getName().equals(currentParameter.getTargetName());
+	}
 }

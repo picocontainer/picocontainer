@@ -63,7 +63,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	public static final CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);
 
 	private final boolean emptyCollection;
-	private final Class keyType;
+	private final Class<?> keyType;
 	private final Generic<?> componentValueType;
 
 	/**
@@ -109,7 +109,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	 * @param emptyCollection
 	 *            <code>true</code> if an empty collection resolves the
 	 */
-	public CollectionComponentParameter(final Class keyType, final Generic<?> componentValueType,
+	public CollectionComponentParameter(final Class<?> keyType, final Generic<?> componentValueType,
 			final boolean emptyCollection) {
 		this.emptyCollection = emptyCollection;
 		this.keyType = keyType;

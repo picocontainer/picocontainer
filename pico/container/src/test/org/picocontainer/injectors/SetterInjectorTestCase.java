@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) 2003-2011 PicoContainer Committers. All rights reserved.    *
+ * Copyright (C) 2003-2012 PicoContainer Committers. All rights reserved.    *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
@@ -23,6 +24,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -35,6 +37,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.PersonBean;
@@ -520,7 +523,8 @@ public class SetterInjectorTestCase
         }
     }
 
-    //@Test  http://jira.codehaus.org/browse/PICO-188
+    @Ignore
+    @Test  //http://jira.codehaus.org/browse/PICO-188
     public void shouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjection()));
 
@@ -533,5 +537,156 @@ public class SetterInjectorTestCase
         assertSame(yin, yang.getYin());
         assertSame(yang, yin.getYang());
     }
+    
+    public interface TestBase {
+    	
+    }
+    
+    public static class Derived1 implements TestBase {
+    	
+    }
+    
+    public static class Derived2 implements TestBase {
+    	
+    }
+    
+    public static class CompositionTest {
+    	private TestBase avalue;
+    	
+    	private TestBase avalue2;
+    	
+    	public void setAvalue(TestBase newValue) {
+    		avalue = newValue;
+    	}
+    	
+    	public TestBase getAvalue() {
+    		return avalue;
+    	}
+
+		public TestBase getAvalue2() {
+			return avalue2;
+		}
+
+		public void setAvalue2(TestBase avalue2) {
+			this.avalue2 = avalue2;
+		}
+
+    }
+
+    
+    
+    @Test
+    public void testComponentParemtersWithJDK7OrderParameters() {
+        MutablePicoContainer localPico = new DefaultPicoContainer(new SetterInjection());
+
+        localPico.addComponent(Derived1.class)
+        	.addComponent(Derived2.class)
+        	.addComponent(CompositionTest.class, CompositionTest.class, 
+        			new ComponentParameter("avalue", Derived1.class),
+        			new ComponentParameter("avalue2", Derived2.class));
+        
+        
+        CompositionTest value = localPico.getComponent(CompositionTest.class);
+        assertNotNull(value);
+        assertNotNull(value.getAvalue());
+        assertNotNull(value.getAvalue2());
+        assertTrue("Got " + value.getAvalue(), value.getAvalue().getClass().equals(Derived1.class));    	
+        assertTrue("Got " + value.getAvalue2(), value.getAvalue2().getClass().equals(Derived2.class));    	
+    }
+    
+    @Test
+    public void testComponentParmetersWithReverseOrderComponentParameters() {
+        MutablePicoContainer anotherLocalPico = new DefaultPicoContainer(new SetterInjection());
+
+        anotherLocalPico.addComponent(Derived1.class)
+        	.addComponent(Derived2.class)
+        	.addComponent(CompositionTest.class, CompositionTest.class,
+        			new ComponentParameter("avalue2", Derived2.class),
+        			new ComponentParameter("avalue", Derived1.class)
+        			);
+        
+        
+        CompositionTest value = anotherLocalPico.getComponent(CompositionTest.class);
+        assertNotNull(value);
+        assertNotNull(value.getAvalue());
+        assertNotNull(value.getAvalue2());
+        assertTrue("Got " + value.getAvalue(), value.getAvalue().getClass().equals(Derived1.class));    	
+        assertTrue("Got " + value.getAvalue2(), value.getAvalue2().getClass().equals(Derived2.class));    	
+    }
+
+    
+    
+    public static class ConstantParameterTest {
+    	
+    	private int aValue;
+
+		public int getAValue() {
+			return aValue;
+		}
+
+		public void setAValue(int aValue) {
+			this.aValue = aValue;
+		}
+    	
+
+    	
+    }
+    
+    @Test
+    public void testConstantParameters() {
+        MutablePicoContainer pico = new DefaultPicoContainer(new SetterInjection());
+        pico.addComponent(ConstantParameterTest.class, ConstantParameterTest.class, new ConstantParameter("aValue", 3));
+        
+        ConstantParameterTest test = pico.getComponent(ConstantParameterTest.class);
+        assertNotNull(test);
+        assertEquals(3, test.getAValue());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

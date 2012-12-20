@@ -52,17 +52,25 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
     private Object key;
 
+
+    
     /**
      * Expect a parameter matching a component of a specific key.
      *
      * @param key the key of the desired addComponent
      */
     public BasicComponentParameter(Object key) {
+    	this(key, null);
+    }
+    
+    public BasicComponentParameter(Object key,String targetName ) {
+    	super(targetName);
         this.key = key;
     }
 
     /** Expect any parameter of the appropriate type. */
     public BasicComponentParameter() {
+    	this(null,null);
     }
 
     /**
@@ -174,29 +182,12 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     }
 
     protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
-                                                   ComponentAdapter adapter,
+                                                   ComponentAdapter<?> adapter,
                                                    Generic<T> expectedType,
                                                    NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        Generic type = expectedType;
+        Generic<T> type = expectedType;
         if (JTypeHelper.isPrimitive(type)) {
-            String expectedTypeName = type.toString();
-            if (expectedTypeName == "int") {
-                type = JTypeHelper.INTEGER;
-            } else if (expectedTypeName == "long") {
-                type = JTypeHelper.LONG;
-            } else if (expectedTypeName == "float") {
-                type = JTypeHelper.FLOAT;
-            } else if (expectedTypeName == "double") {
-                type = JTypeHelper.DOUBLE;
-            } else if (expectedTypeName == "boolean") {
-                type = JTypeHelper.BOOLEAN;
-            } else if (expectedTypeName == "char") {
-                type = JTypeHelper.CHARACTER;
-            } else if (expectedTypeName == "short") {
-                type = JTypeHelper.SHORT;
-            } else if (expectedTypeName == "byte") {
-                type = JTypeHelper.BYTE;
-            }
+            type = convertToPrimitiveType(type);
         }
 
         ComponentAdapter<T> result = null;
@@ -246,6 +237,29 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
         return result;
     }
+
+	@SuppressWarnings("unchecked")
+	private <T> Generic<T> convertToPrimitiveType(Generic<T> type) {
+		String expectedTypeName = type.toString();
+		if (expectedTypeName == "int") {
+		    type = JTypeHelper.INTEGER;
+		} else if (expectedTypeName == "long") {
+		    type = JTypeHelper.LONG;
+		} else if (expectedTypeName == "float") {
+		    type = JTypeHelper.FLOAT;
+		} else if (expectedTypeName == "double") {
+		    type = JTypeHelper.DOUBLE;
+		} else if (expectedTypeName == "boolean") {
+		    type = JTypeHelper.BOOLEAN;
+		} else if (expectedTypeName == "char") {
+		    type = JTypeHelper.CHARACTER;
+		} else if (expectedTypeName == "short") {
+		    type = JTypeHelper.SHORT;
+		} else if (expectedTypeName == "byte") {
+		    type = JTypeHelper.BYTE;
+		}
+		return type;
+	}
 
     @SuppressWarnings({ "unchecked" })
     private static <T> ComponentAdapter<T> typeComponentAdapter(ComponentAdapter<?> componentAdapter) {

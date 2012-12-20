@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -155,7 +156,5 @@ public class NamedFieldInjection extends AbstractInjectionType {
         List<String> getInjectionFieldNames() {
             return Collections.unmodifiableList(fieldNames);
         }
-
-
     }
 }

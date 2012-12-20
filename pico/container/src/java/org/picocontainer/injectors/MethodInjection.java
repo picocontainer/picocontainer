@@ -25,8 +25,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.lang.reflect.Method;
 
 /**
@@ -124,23 +127,74 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         protected List<Method> getInjectorMethods() {
-            Method[] methods = new Method[0];
+        	Class<?> toIntrospect = null;
+            //Method[] methods = new Method[0];
             try {
-                methods = super.getComponentImplementation().getMethods();
+                //methods = super.getComponentImplementation().getMethods();
+            	toIntrospect = super.getComponentImplementation();
             } catch (AmbiguousComponentResolutionException e) {
                 e.setComponent(getComponentImplementation());
                 throw e;
             }
-            List<Method> methodz = new ArrayList<Method>();
-            for (Method method : methods) {
-                if (isInjectorMethod(method)) {
-                    methodz.add(method);
-                }
+            
+            if (toIntrospect == null) {
+            	throw new NullPointerException("No implementation class defined for " + this);
             }
+            
+//            List<Method> methodz = new ArrayList<Method>();
+//            for (Method method : methods) {
+//                if (isInjectorMethod(method)) {
+//                    methodz.add(method);
+//                }
+//            }
+            HashMap<String, Set<Method>> allMethodsAnalyzed = new HashMap<String,Set<Method>>();
+            List<Method> methodz = new ArrayList<Method>();
+            recursiveCheckInjectorMethods(toIntrospect, toIntrospect, methodz, allMethodsAnalyzed);
             return methodz;
         }
+        
+        protected void recursiveCheckInjectorMethods(Class<?> originalType, Class<?> type, List<Method> receiver, HashMap<String, Set<Method>> allMethodsAnalyzed) {
+        	if (type.isAssignableFrom(Object.class)) {
+        		return;
+        	}
+        	
+        	for (Method eachMethod : type.getDeclaredMethods()) {
+        		if(alreadyAnalyzedChildClassMethod(eachMethod, allMethodsAnalyzed)) {
+        			//This method was defined in a child class, what the child class says, goes.
+        			continue;
+        		} 
+        		
+        		addToMethodsAnalyzed(allMethodsAnalyzed, eachMethod);
+        		
+        		if (isInjectorMethod(originalType, eachMethod)) {
+        			receiver.add(eachMethod);
+        		}
+        	}
+        	
+        	recursiveCheckInjectorMethods(originalType, type.getSuperclass(), receiver, allMethodsAnalyzed);
+        }
 
-        protected boolean isInjectorMethod(Method method) {
+        
+        private void addToMethodsAnalyzed(HashMap<String, Set<Method>> allMethodsAnalyzed, Method eachMethod) {
+        	if (!allMethodsAnalyzed.containsKey(eachMethod.getName())) {
+        		allMethodsAnalyzed.put(eachMethod.getName(), new HashSet<Method>());
+        	} 
+			
+        	allMethodsAnalyzed.get(eachMethod.getName()).add(eachMethod);
+		}
+
+		private boolean alreadyAnalyzedChildClassMethod(Method eachMethod,
+				HashMap<String, Set<Method>> allMethodsAnalyzed) {
+			
+			Set<Method> methodsByName = allMethodsAnalyzed.get(eachMethod.getName());
+			if (methodsByName == null) {
+				return false;
+			}
+
+			return false;
+		}
+
+		protected boolean isInjectorMethod(Class<?> originalType, Method method) {
             return method.getName().startsWith(methodNamePrefix);
         }
 

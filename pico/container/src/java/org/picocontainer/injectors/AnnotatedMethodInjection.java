@@ -10,17 +10,23 @@
 
 package org.picocontainer.injectors;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
+
+import javax.inject.Named;
+
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.annotations.Inject;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Properties;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated methods.
@@ -34,7 +40,8 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
 	private final Class<? extends Annotation>[] injectionAnnotations;
     private final boolean useNames;
 
-    public AnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+    @SuppressWarnings("unchecked")
+	public AnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation, boolean useNames) {
         this(useNames, injectionAnnotation);
     }
 
@@ -43,11 +50,12 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
         this.useNames = useNames;
     }
 
-    public AnnotatedMethodInjection() {
-        this(false, Inject.class, getInjectionAnnotation("javax.inject.Inject"));
+    @SuppressWarnings("unchecked")
+	public AnnotatedMethodInjection() {
+        this(false, org.picocontainer.annotations.Inject.class, getInjectionAnnotation("javax.inject.Inject"));
     }
 
-    /**
+	/**
      * Create a {@link org.picocontainer.injectors.SetterInjection.SetterInjector}.
      * 
      * @param monitor
@@ -69,45 +77,61 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
         return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations)), lifecycle);
     }
 
-     static Class<? extends Annotation> getInjectionAnnotation(String className) {
+     @SuppressWarnings("unchecked")
+	static Class<? extends Annotation> getInjectionAnnotation(String className) {
         try {
             return (Class<? extends Annotation>) AnnotatedMethodInjection.class.getClassLoader().loadClass(className);
         } catch (ClassNotFoundException e) {
             // JSR330 not in classpath.  No matter carry on without it with a kludge:
-            return Inject.class;
+            return org.picocontainer.annotations.Inject.class;
         }
     }
 
-    @SuppressWarnings("serial")
     public static class AnnotatedMethodInjector<T> extends MethodInjection.MethodInjector<T> {
 
         private final Class<? extends Annotation>[] injectionAnnotations;
+        
         private String injectionAnnotationNames;
+        
+        private transient volatile Collection<Method> injectingMethods = null;
+        
 
         public AnnotatedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
                                        boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
             super(key, impl, monitor, "", useNames, parameters);
             this.injectionAnnotations = injectionAnnotations;
         }
+        
+        
 
         @Override
-        protected final boolean isInjectorMethod(Method method) {
-            for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
-                if (method.getAnnotation(injectionAnnotation) != null) {
-                    return true;
-                }
-            }
+        protected final boolean isInjectorMethod(Class<?> originalType, Method method) {
+        	
+        	if (injectingMethods == null) {
+        		synchronized (this) {
+        			if (injectingMethods == null) {
+        				injectingMethods = new InjectableMethodSelector(injectionAnnotations).retreiveAllInjectableMethods(originalType) ;
+        			}        			
+        		}
+        	}
+        	
+        	if (injectingMethods.contains(method)) {
+        		return true;
+        	}
+        	
             return false;
         }
-
-        @Override
-        public String getDescriptor() {
+       
+     
+		@Override
+        public synchronized String getDescriptor() {
             if (injectionAnnotationNames == null) {
                 injectionAnnotationNames = makeAnnotationNames(injectionAnnotations);
             }
             return "AnnotatedMethodInjector[" + injectionAnnotationNames + "]-";
         }
 
+		
         static String makeAnnotationNames(Class<? extends Annotation>[] injectionAnnotations) {
             StringBuilder sb = new StringBuilder();
             for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {

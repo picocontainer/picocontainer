@@ -6,6 +6,7 @@ import org.picocontainer.Parameter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
+@SuppressWarnings("serial")
 public class Jsr330Injection extends ConstructorInjection {
 
     @Override
@@ -14,7 +15,7 @@ public class Jsr330Injection extends ConstructorInjection {
 
     }
 
-    private static class ConstructorInjectorWithForcedPublicCtors<T> extends ConstructorInjector<T> {
+	private static class ConstructorInjectorWithForcedPublicCtors<T> extends ConstructorInjector<T> {
         public ConstructorInjectorWithForcedPublicCtors(boolean rememberChosenConstructor, ComponentMonitor monitor, boolean useNames, Object key, Class<T> impl, Parameter... parameters) throws NotConcreteRegistrationException {
             super(monitor, useNames, rememberChosenConstructor, key, impl, parameters);
         }

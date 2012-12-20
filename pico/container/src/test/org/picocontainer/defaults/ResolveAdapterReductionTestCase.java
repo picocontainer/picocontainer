@@ -148,7 +148,8 @@ public class ResolveAdapterReductionTestCase {
 
     }
 
-    private class CountingComponentParameter extends ComponentParameter {
+    @SuppressWarnings("serial")
+	private class CountingComponentParameter extends ComponentParameter {
         public int hashCode() {
             return ResolveAdapterReductionTestCase.super.hashCode();
         }
@@ -157,7 +158,7 @@ public class ResolveAdapterReductionTestCase {
             return true;
         }
 
-        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Generic<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter<?> adapter, Generic<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
             if (expectedType.getType() == Two.class || expectedType.getType() == Touchable.class) {
                 resolveAdapterCalls++;
             }

@@ -167,7 +167,8 @@ public class AdaptingInjection extends AbstractInjectionType {
         return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
             @SuppressWarnings("synthetic-access")
             public Object run() {
-                return injectionAnnotated(impl.getDeclaredMethods());
+            	InjectableMethodSelector methodSelector = new InjectableMethodSelector(Inject.class);
+            	return (methodSelector.retreiveAllInjectableMethods(impl).size() > 0);
             }
         });
     }

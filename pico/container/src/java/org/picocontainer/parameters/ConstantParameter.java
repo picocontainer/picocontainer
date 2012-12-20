@@ -40,16 +40,24 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
 
     private final Object value;
     
+    private final String targetName;
+    
+    
+    public ConstantParameter(String targetName, Object value) {
+        this.targetName = targetName;
+		this.value = value;
+        
+    }
 
     public ConstantParameter(Object value) {
-        this.value = value;
+    	this(null, value);
     }
 
     public Resolver resolve(PicoContainer container, ComponentAdapter<?> forAdapter,
                             ComponentAdapter<?> injecteeAdapter, final Type expectedType, NameBinding expectedNameBinding,
                             boolean useNames, Annotation binding) {
         if (expectedType instanceof Class) {
-            return new Parameter.ValueResolver(isAssignable((Class) expectedType), value, null);
+            return new Parameter.ValueResolver(isAssignable((Class<?>) expectedType), value, null);
         } else if (expectedType instanceof ParameterizedType) {
         	return new Parameter.ValueResolver(isAssignable(((ParameterizedType)expectedType).getRawType()), value, null);
         }
@@ -72,9 +80,8 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
     }
 
     protected boolean isAssignable(Type expectedType) {
-        boolean isAssignable;
         if (expectedType instanceof Class) {
-            Class expectedClass = (Class) expectedType;
+            Class<?> expectedClass = (Class<?>) expectedType;
             if (checkPrimitive(expectedClass) || expectedClass.isInstance(value)) {
                 return true;
             }
@@ -91,11 +98,11 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         visitor.visitParameter(this);
     }
 
-    private boolean checkPrimitive(Class expectedType) {
+    private boolean checkPrimitive(Class<?> expectedType) {
         try {
             if (expectedType.isPrimitive()) {
                 final Field field = value.getClass().getField("TYPE");
-                final Class type = (Class) field.get(value);
+                final Class<?> type = (Class<?>) field.get(value);
                 return expectedType.isAssignableFrom(type);
             }
         } catch (NoSuchFieldException e) {
@@ -105,5 +112,9 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         }
         return false;
     }
+
+	public String getTargetName() {
+		return targetName;
+	}
 
 }
