@@ -61,6 +61,11 @@
 				<version>1</version>
 				<optional>true</optional>
 			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject-tck</artifactId>
+				<version>1</version>
+			</dependency>
 			<!-- For parameter name leverage -->
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
