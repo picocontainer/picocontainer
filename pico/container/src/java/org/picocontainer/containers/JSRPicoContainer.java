@@ -1,7 +1,6 @@
 package org.picocontainer.containers;
 
 import java.lang.annotation.Annotation;
-import java.util.Properties;
 
 import javax.inject.Named;
 import javax.inject.Qualifier;
@@ -83,6 +82,12 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
             Parameter... parameters) throws PicoCompositionException {
 		 super.addComponent(key, implOrInstance,parameters);
 		 return this;
+	}
+
+	@Override
+	public MutablePicoContainer makeChildContainer() {
+		MutablePicoContainer childDelegate = getDelegate().makeChildContainer();
+		return new JSRPicoContainer(childDelegate);
 	}
 
 	

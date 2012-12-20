@@ -39,23 +39,28 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 	public MutablePicoContainer addComponent(Object key,
                                              Object implOrInstance,
                                              Parameter... parameters) throws PicoCompositionException {
-        return getDelegate().addComponent(key, implOrInstance, parameters);
+        getDelegate().addComponent(key, implOrInstance, parameters);
+        return this;
     }
 
     public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {
-        return getDelegate().addComponent(implOrInstance);
+	     getDelegate().addComponent(implOrInstance);
+	     return this;
     }
 
     public MutablePicoContainer addConfig(String name, Object val) {
-        return getDelegate().addConfig(name, val); 
+        getDelegate().addConfig(name, val);
+        return this;
     }
 
     public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
-        return getDelegate().addAdapter(componentAdapter);
+        getDelegate().addAdapter(componentAdapter);
+        return this;
     }
 
     public MutablePicoContainer addProvider(Provider<?> provider) {
-        return getDelegate().addAdapter(new ProviderAdapter(provider));
+        getDelegate().addAdapter(new ProviderAdapter(provider));
+        return this;
     }
 
 
@@ -68,7 +73,8 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     }
 
     public MutablePicoContainer addChildContainer(PicoContainer child) {
-        return getDelegate().addChildContainer(child);
+        getDelegate().addChildContainer(child);
+        return this;
     }
 
     public boolean removeChildContainer(PicoContainer child) {
@@ -76,22 +82,21 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     }
 
 	public MutablePicoContainer change(Properties... properties) {
-	    return getDelegate().change(properties);
+	    getDelegate().change(properties);
+	    return this;
 	}
 
 	public MutablePicoContainer as(Properties... properties) {
-	    return getDelegate().as(properties);
+	    getDelegate().as(properties);
+	    return this;
 	}
 	
 	public void dispose() {
 		getDelegate().dispose();
 	}
 
-	public MutablePicoContainer makeChildContainer() {
-
-		return null;
-	}
-
+	abstract public MutablePicoContainer makeChildContainer();
+	
 	public void start() {
 		getDelegate().start();
 	}
