@@ -32,6 +32,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -755,7 +756,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void BROKEN_testNestedCAFLooksRightinXml() {
+    @Ignore
+    @Test
+    public void testNestedCAFLooksRightinXml() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='"+ MyComponentFactory3.class.getName()+"' key='factory'>" +
