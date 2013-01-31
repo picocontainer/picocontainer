@@ -473,8 +473,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
         for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
             Object key = componentAdapter.getComponentKey();
-            boolean b = JTypeHelper.isAssignableFrom(componentType, componentAdapter.getComponentImplementation());
-            if (b &&
+            
+            //JSR 330 Provider compatibility... we have to be able to return both the providers that provide
+            //the type as well as the actual types themselves.
+            Class<?> implementation = componentAdapter.getComponentImplementation();
+            boolean compatible;
+
+            compatible = JTypeHelper.isAssignableFrom(componentType, componentAdapter.getComponentImplementation());
+            if (componentAdapter.findAdapterOfType(ProviderAdapter.class) != null) {
+            	//If provider
+            	//Todo: Direct access of provider adapter... work around.
+            	ProviderAdapter adapter = (ProviderAdapter)componentAdapter.findAdapterOfType(ProviderAdapter.class);
+            	compatible |= JTypeHelper.isAssignableFrom(componentType, adapter.getProviderReturnType());
+            }            
+            
+            if (compatible &&
                     (!(key instanceof Key) || ((((Key<?>) key).getAnnotation() == null || binding == null ||
                             ((Key<?>) key).getAnnotation() == binding)))) {
                 found.add((ComponentAdapter<T>) componentAdapter);
@@ -502,12 +515,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return addAdapter(componentAdapter, this.containerProperties);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public MutablePicoContainer addProvider(Provider<?> provider) {
         return addAdapter(new ProviderAdapter(provider), this.containerProperties);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public MutablePicoContainer addProvider(Object key, Provider<?> provider) {
+        return addAdapter(new ProviderAdapter(key, provider), this.containerProperties);
+    }
+    
 
     /**
-     * {@inheritDoc} *
+     * {@inheritDoc} 
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
         Properties tmpProperties = (Properties) properties.clone();

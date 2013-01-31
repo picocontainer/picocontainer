@@ -128,7 +128,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Class implementation, Object instance, InjectionType reinjectionType) {
+    public Object reinject(Class<?> key, Class<?> implementation, Object instance, InjectionType reinjectionType) {
         return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionType);
     }
 
@@ -141,7 +141,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Type key, Class implementation, Object instance, Properties properties,
+    public Object reinject(Object key, Class<?> implementation, Object instance, Properties properties,
                            InjectionType reinjectionType) {
         Reinjection reinjection = new Reinjection(reinjectionType, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(

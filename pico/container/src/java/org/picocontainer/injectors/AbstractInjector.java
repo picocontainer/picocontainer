@@ -139,7 +139,15 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     protected T newInstance(final Constructor<T> constructor, final Object[] parameters)
             throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        return constructor.newInstance(parameters);
+        try {
+			return constructor.newInstance(parameters);
+		} catch (IllegalArgumentException e) {
+			//Chain it with the calling parameters to give us some real information.
+			throw new IllegalArgumentException("Type mismatch calling constructor " 
+						+ constructor 
+						+ " with parameters " 
+						+ Arrays.deepToString(parameters), e);
+		}
     }
     /**
      * inform monitor about component instantiation failure

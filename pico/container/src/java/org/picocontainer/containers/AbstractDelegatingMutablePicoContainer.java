@@ -58,9 +58,14 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         return this;
     }
 
-    public MutablePicoContainer addProvider(Provider<?> provider) {
-        getDelegate().addAdapter(new ProviderAdapter(provider));
+    public MutablePicoContainer addProvider(javax.inject.Provider<?> provider) {
+        getDelegate().addProvider(provider);
         return this;
+    }
+    
+    public MutablePicoContainer addProvider(Object key, javax.inject.Provider<?> provider) {
+    	getDelegate().addProvider(key, provider);
+    	return this;
     }
 
 

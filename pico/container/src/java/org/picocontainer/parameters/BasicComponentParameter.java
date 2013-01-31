@@ -19,8 +19,10 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
+import org.picocontainer.injectors.ProviderAdapter;
 
 import javax.inject.Provider;
 import java.io.Serializable;
@@ -109,25 +111,36 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             componentAdapter0 = injecteeAdapter;
         }
         final ComponentAdapter<?> componentAdapter = componentAdapter0;
+        final Generic<?> targetClassType = resolvedClassType;
         return new Resolver() {
             public boolean isResolved() {
                 return componentAdapter != null;
             }
             public Object resolveInstance(Type into) {
+            	final Generic<?> targetType = targetClassType;
                 if (componentAdapter == null) {
                     return null;
                 }
-                if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
+                
+                if (componentAdapter.findAdapterOfType(DefaultPicoContainer.LateInstance.class) != null) {
                     return convert(getConverters(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
 //                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
+                    //We don't examine perfect match here, that's all been determined by the time we get here.
+                } else if(componentAdapter.findAdapterOfType(ProviderAdapter.class) != null && !(targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
+                    return convert(getConverters(container), container.getComponentInto(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
+                    //We don't examine perfect match here, that's all been determined by the time we get here.
+                } else if(componentAdapter.findAdapterOfType(ProviderAdapter.class) != null && (targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
+                	//Target requires Provideradapter
+                	ProviderAdapter providerAdapter = componentAdapter.findAdapterOfType(ProviderAdapter.class);
+                	return providerAdapter.getProvider();                	
                 } else {
                     return convert(getConverters(container), container.getComponentInto(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
             }
 
             public ComponentAdapter<?> getComponentAdapter() {
-                return componentAdapter;
+            	return componentAdapter;
             }
         };
     }
@@ -181,7 +194,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         visitor.visitParameter(this);
     }
 
-    protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
+    @SuppressWarnings("unchecked")
+	protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter<?> adapter,
                                                    Generic<T> expectedType,
                                                    NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
@@ -190,6 +204,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             type = convertToPrimitiveType(type);
         }
 
+        
         ComponentAdapter<T> result = null;
         if (key != null) {
             // key tells us where to look so we follow
@@ -198,15 +213,18 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             result = container.getComponentAdapter(type, NameBinding.NULL);
         } else {
             Object excludeKey = adapter.getComponentKey();
-            ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
+            ComponentAdapter<?> byKey = container.getComponentAdapter((Object)expectedType);
             if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 result = typeComponentAdapter(byKey);
             }
 
             if (result == null && useNames) {
-                ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
-                if ((found != null) && areCompatible(container, expectedType, found) && found != adapter) {
-                    result = found;
+                ComponentAdapter<?> found = container.getComponentAdapter(expectedNameBinding.getName());
+                
+                
+                
+                if ((found != null) && isCompatible(expectedType, found, container) && found != adapter) {
+                    result = (ComponentAdapter<T>) found;
                 }
             }
 
@@ -219,7 +237,10 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 } else if (found.size() == 1) {
                     result = found.get(0);
                 } else {
-                    throw tooManyMatchingAdaptersFound(expectedType, found);
+                	result = sortThroughTooManyAdapters(expectedType, found);
+                	if (result == null) {
+                		throw tooManyMatchingAdaptersFound(expectedType, found);
+                	}
                 }
             }
         }
@@ -228,16 +249,45 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             return null;
         }
 
-        Class<? extends T> componentImplementation = result.getComponentImplementation();
-        if (!JTypeHelper.isAssignableFrom(type, componentImplementation)) {
-//            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
-            if (!(result.getComponentImplementation() == String.class && getConverters(container).canConvert(type.getType()))) {
+        if (!isCompatible(type, result, container)) {
                 return null;
-            }
         }
         return result;
     }
 
+    protected <T> boolean isCompatible(Generic<T> type, ComponentAdapter<?> testValue, PicoContainer container) {
+    	Class<?> componentImplementation = testValue.getComponentImplementation();
+    	//Normal happy path.
+    	boolean compatible = JTypeHelper.isAssignableFrom(type, testValue.getComponentImplementation());
+    	if (compatible == false) {
+    		//String conversion
+            if ((componentImplementation == String.class && getConverters(container).canConvert(type.getType()))) {
+            	compatible = true;
+            }
+            
+            //javax.inject.Provider -- have to compare the return type of the provider to 
+            //the desired type instead.
+            if (compatible == false) {
+	            if (testValue.findAdapterOfType(ProviderAdapter.class) != null) {
+	            	ProviderAdapter providerAdapter = testValue.findAdapterOfType(ProviderAdapter.class);
+	            	compatible = JTypeHelper.isAssignableFrom(type, providerAdapter.getProviderReturnType());
+	            }
+            }
+    	}
+    	
+    	return compatible;
+    }
+    
+    /**
+     * Allow and adapter to pick an adapter if there is more than one found
+     * @param expectedType the expected type of the adapter.
+     * @param found the list of found component adapters that fit the type.
+     * @return null if you still don't find an adapter, otherwise, the <em>one</em> adapter you want to use.
+     */
+    protected <T> ComponentAdapter<T> sortThroughTooManyAdapters(Generic<T> expectedType, List<ComponentAdapter<T>> found) {
+    	return null;
+    }
+    
 	@SuppressWarnings("unchecked")
 	private <T> Generic<T> convertToPrimitiveType(Generic<T> type) {
 		String expectedTypeName = type.toString();
@@ -299,10 +349,4 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         found.remove(exclude);
     }
 
-    private <T> boolean areCompatible(PicoContainer container, Generic<T> expectedType, ComponentAdapter found) {
-        Class foundImpl = found.getComponentImplementation();
-        return JTypeHelper.isAssignableFrom(expectedType, foundImpl) ||
-               (foundImpl == String.class && getConverters(container) != null
-                       && getConverters(container).canConvert(expectedType.getType()))  ;
-    }
 }

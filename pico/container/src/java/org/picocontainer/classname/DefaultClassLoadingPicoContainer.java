@@ -7,29 +7,6 @@
  ******************************************************************************/
 package org.picocontainer.classname;
 
-import com.googlecode.jtype.Generic;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.Converters;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.injectors.ProviderAdapter;
-import org.picocontainer.lifecycle.LifecycleState;
-import org.picocontainer.security.CustomPermissionsURLClassLoader;
-
-import javax.inject.Provider;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -50,6 +27,30 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import javax.inject.Provider;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.Converters;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.security.CustomPermissionsURLClassLoader;
+
+import com.googlecode.jtype.Generic;
 
 /**
  * Default implementation of ClassLoadingPicoContainer.
@@ -442,8 +443,13 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public MutablePicoContainer addProvider(Provider<?> provider) {
-            delegate.addAdapter(new ProviderAdapter(provider));
+            delegate.addProvider(provider);
             return DefaultClassLoadingPicoContainer.this;
+        }
+        
+        public MutablePicoContainer addProvider(Object key, Provider<?> provider) {
+        	delegate.addProvider(key, provider);
+        	return DefaultClassLoadingPicoContainer.this;
         }
 
         public ComponentAdapter removeComponent(Object key) {
@@ -639,8 +645,9 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     public int visit(String pkgName, String codeSourceRoot, Pattern compiledPattern, boolean recursive, ClassNameVisitor classNameVisitor) {
         int found = 0;
+        ZipFile zip = null;
         try {
-            ZipFile zip = new ZipFile(new File(codeSourceRoot));
+            zip = new ZipFile(new File(codeSourceRoot));
             for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
                 ZipEntry entry = (ZipEntry) e.nextElement();
                 String entryName = entry.getName();
@@ -657,6 +664,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	try {
+	        	if (zip != null) {
+	        		zip.close();
+	        	} 
+        	} catch (IOException e) {
+        		e.printStackTrace();
+        	}
         }
         return found;
     }
@@ -708,7 +723,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
     public interface ClassNameVisitor {
-         void classFound(Class clazz);
+         void classFound(Class<?> clazz);
     }
 
     public static class CannotListClassesInAJarException extends PicoException {

@@ -118,7 +118,20 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter);
 
+    /**
+     * Adds a {@linkplain javax.inject.Provider} to the container.
+     * @param provider
+     * @return the same instance of the PicoContainer to allow for method chaining.
+     */
     MutablePicoContainer addProvider(javax.inject.Provider<?> provider);
+    
+    /**
+     * Adds a {@linkplain javax.inject.Provider} with a particular key to the container.
+     * @param key if you use this, its usually a string value.
+     * @param provider
+     * @return the same instance of the PicoContainer to allow for method chaining.
+     */
+    MutablePicoContainer addProvider(Object key, javax.inject.Provider<?> provider);
 
     /**
      * Unregister a component by key.

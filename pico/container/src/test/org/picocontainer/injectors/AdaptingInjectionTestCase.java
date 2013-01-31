@@ -54,7 +54,8 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.alias("Annotated-Method-Injection", AnnotatedMethodInjection.AnnotatedMethodInjector.class);
         xs.alias("Annotated-Field-Injection", AnnotatedFieldInjection.AnnotatedFieldInjector.class);
-        xs.alias("Constructor-Injection", ConstructorInjection.ConstructorInjector.class);
+        //xs.alias("Constructor-Injection", ConstructorInjection.ConstructorInjector.class);
+        xs.alias("Constructor-Injection", Jsr330Injection.ConstructorInjectorWithForcedPublicCtors.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
@@ -107,7 +108,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
     }
 
 
-    @Test public void testFactoryMakesConstructorInjector() {
+    @Test public void testFactoryMakesJSR330ConstructorInjector() {
 
         ComponentFactory cf = createComponentFactory();
 

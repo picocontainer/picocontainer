@@ -61,7 +61,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 	private AnnotatedFieldInjection annotatedFieldInjection;
 	
 	public AdaptingInjection() {
-		constructorInjection = new ConstructorInjection();
+		constructorInjection = new Jsr330Injection();
 		methodInjection = new MethodInjection();
 		setterInjection = new SetterInjection();
 		annotatedMethodInjection = new AnnotatedMethodInjection();

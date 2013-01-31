@@ -2,9 +2,15 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.ComponentParameter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+
+import javax.inject.Named;
 
 @SuppressWarnings("serial")
 public class Jsr330Injection extends ConstructorInjection {
@@ -15,7 +21,7 @@ public class Jsr330Injection extends ConstructorInjection {
 
     }
 
-	private static class ConstructorInjectorWithForcedPublicCtors<T> extends ConstructorInjector<T> {
+	public static class ConstructorInjectorWithForcedPublicCtors<T> extends ConstructorInjector<T> {
         public ConstructorInjectorWithForcedPublicCtors(boolean rememberChosenConstructor, ComponentMonitor monitor, boolean useNames, Object key, Class<T> impl, Parameter... parameters) throws NotConcreteRegistrationException {
             super(monitor, useNames, rememberChosenConstructor, key, impl, parameters);
         }
@@ -31,5 +37,39 @@ public class Jsr330Injection extends ConstructorInjection {
                 ctor.setAccessible(true);
             }
         }
+
+        /**
+         * If there is no Parameter defined for the constructor arg, (Other than Default), then
+         * checks to see if there are {@linkplain javax.inject.Named} annotations or Qualifier annotations attached
+         * to the argument and uses those as ComponentParameters instead.  If not it uses the superclass default
+         * behavior.
+         */
+		@Override
+		protected Parameter getParameterToUse(Constructor<?> constructorToExamine, int constructorParameterIndex, Parameter parameter) {
+			if (parameter == ComponentParameter.DEFAULT) {
+				
+				//Search for Named class
+				for (Annotation eachAnnotation : constructorToExamine.getParameterAnnotations()[constructorParameterIndex]) {
+					if (eachAnnotation.annotationType().equals(Named.class)) {
+						return new ComponentParameter( ((Named)eachAnnotation).value()); 
+					}
+				}
+				
+				//Search for a qualifier that isn't @Named annotation.
+				Annotation qualifier = JSRPicoContainer.getQualifier(constructorToExamine.getParameterAnnotations()[constructorParameterIndex]);
+				if (qualifier != null) {
+					return new ComponentParameter(qualifier.annotationType().getName());
+				}
+
+				
+				
+			}
+			
+			return super.getParameterToUse(constructorToExamine, constructorParameterIndex, parameter);
+		}
+        
+        
+        
+        
     }
 }

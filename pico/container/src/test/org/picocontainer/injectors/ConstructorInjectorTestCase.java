@@ -195,7 +195,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     @Test public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new ConstructorInjection());
         try {
             picoContainer.addComponent(AllConstructorsArePrivate.class);
             picoContainer.getComponent(AllConstructorsArePrivate.class);
@@ -253,7 +253,8 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     // http://jira.codehaus.org/browse/PICO-201
     @Test public void testShouldNotConsiderNonPublicConstructors() {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+    	//Fix, default constructor gives adapting behavior, not straight constructorinjection.
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addComponent(Component201.class);
         pico.addComponent(new Integer(2));
         pico.addComponent(Boolean.TRUE);

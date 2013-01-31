@@ -8,6 +8,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Properties;
+
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
@@ -15,10 +20,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Properties;
 
 /**
  * Providers are a type of Injector that can participate in Injection via a custom method.
@@ -33,7 +34,8 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 
     private final Object provider;
     private final Method provideMethod;
-    private final Type key;
+    private final Object key;
+    private final Type providerReturnType;
     private Properties properties;
     private LifecycleStrategy lifecycle;
 
@@ -41,42 +43,63 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         provider = this;
         provideMethod = getProvideMethod(this.getClass());
         key = provideMethod.getReturnType();
+        providerReturnType = provideMethod.getReturnType();
         setUseNames(useNames());
         this.lifecycle = new NullLifecycleStrategy();
     }
+    
+    public ProviderAdapter(Provider theProvider) {
+        this(null, theProvider);
+    }
 
+    public ProviderAdapter(javax.inject.Provider<?> theProvider) {
+    	this(null, theProvider);
+    }
+    
+    
     public ProviderAdapter(LifecycleStrategy lifecycle, Provider provider) {
-        this(lifecycle, (Object) provider, false);
+    	this(null, lifecycle, provider);
+    }
+    
+    public ProviderAdapter(Object key, LifecycleStrategy lifecycle, Provider provider) {
+        this(lifecycle, key, (Object) provider, false);
     }
 
-    public ProviderAdapter(Provider provider) {
-        this(new NullLifecycleStrategy(), (Object) provider, false);
+    public ProviderAdapter(Object key, javax.inject.Provider<?>  provider) {
+        this(new NullLifecycleStrategy(), key, (Object) provider, false);
     }
 
-    public ProviderAdapter(javax.inject.Provider provider) {
-        this(new NullLifecycleStrategy(), (Object) provider, false);
+
+    public ProviderAdapter(javax.inject.Provider<?>  provider, boolean useNames) {
+    	this(null, provider, useNames);
+    }
+    
+    public ProviderAdapter(Object key, javax.inject.Provider<?>  provider, boolean useNames) {
+        this(new NullLifecycleStrategy(), key, (Object) provider, useNames);
     }
 
-    public ProviderAdapter(Provider provider, boolean useNames) {
-        this(new NullLifecycleStrategy(), (Object) provider, useNames);
+    
+    public ProviderAdapter(Object key, LifecycleStrategy lifecycle, javax.inject.Provider<?>  provider, boolean useNames) {
+        this(lifecycle, key, provider, useNames);
+    }
+    
+    public ProviderAdapter(LifecycleStrategy lifecycle, javax.inject.Provider<?>  provider, boolean useNames) {
+    	this((Object)null, lifecycle, provider, useNames);
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycle, Provider provider, boolean useNames) {
-        this(lifecycle, (Object) provider, useNames);
-    }
-
-    private ProviderAdapter(LifecycleStrategy lifecycle, Object provider, boolean useNames) {
+    private ProviderAdapter(LifecycleStrategy lifecycle, Object providerKey, Object provider, boolean useNames) {
         this.lifecycle = lifecycle;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
-        if (provideMethod == AT_INJECT_GET) {
-            key = provider.getClass().getGenericInterfaces()[0];
-
+        this.providerReturnType = determineProviderReturnType(provider);
+        if (providerKey == null) {
+        	key = determineProviderReturnType(provider);
         } else {
-            key = provideMethod.getReturnType();
+        	key = providerKey;
         }
         setUseNames(useNames);
     }
+
 
     private void setUseNames(boolean useNames) {
         if (useNames) {
@@ -90,9 +113,6 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         return false;
     }
 
-    public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
-        return null;
-    }
 
     public Object getComponentKey() {
         return key;
@@ -104,17 +124,67 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         } else {
             return (Class) key;
         }
+   }
+    
+    
+    /**
+     * @throws ClassCastException if the provider isn't a javax.inject.Provider (the only time this method
+     * is called in the codebase.)
+     * @return
+     */
+	public javax.inject.Provider<?> getProvider() {
+    	return (javax.inject.Provider<?>) provider;
+    }
+    
+    /**
+     * The return type that the provider creates.
+     * @return
+     */
+    public Class<?> getProviderReturnType() {
+    	if (providerReturnType instanceof Class<?>) {
+    		return (Class<?>)providerReturnType;
+    	}
+    	
+    	throw new PicoCompositionException("Unexpected condition, Provider Return type was not a class type, instead it was a : " + providerReturnType);
+    	
+    }
+    
+    public Class<?> getProviderImplmentation() {
+    	return provider.getClass();
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         if (provideMethod == AT_INJECT_GET) {
-            return provider;
+        	try {
+				return provideMethod.invoke(provider);
+			} catch (Exception e) {
+				throw new PicoCompositionException("Error invoking provider " + provider + " to inject into " + into, e);
+			}
+//            return provider;
         } else {
             return new Reinjector(container).reinject(key, provider.getClass(), provider, properties, new MethodInjection(provideMethod));
         }
     }
+    
+    public static Type determineProviderReturnType(Object provider) {
+        Method provideMethod = getProvideMethod(provider.getClass());
+        Type key;
+        if (provideMethod == AT_INJECT_GET) {
+        	Type paramType = provider.getClass().getGenericInterfaces()[0];
+        	if (paramType instanceof Class<?>) {
+        		key = paramType.getClass();
+        	} else {
+        		key = ((ParameterizedType)paramType).getActualTypeArguments()[0];	
+        	}
+        	
+        } else {
+            key = provideMethod.getReturnType();
+        }
+       
+        return key;
+    }
 
-    public static Method getProvideMethod(Class clazz) {
+    public static Method getProvideMethod(Class<?> clazz) {
         Method provideMethod = null;
         if (javax.inject.Provider.class.isAssignableFrom(clazz)) {
             return AT_INJECT_GET;
@@ -145,15 +215,17 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     }
 
     public void accept(PicoVisitor visitor) {
+    	visitor.visitComponentAdapter(this);
     }
 
-    public ComponentAdapter getDelegate() {
+    /**
+     * Last one in the chain, no delegate.
+     * @return null always.
+     */
+    public ComponentAdapter<?> getDelegate() {
         return null;
     }
 
-    public ComponentAdapter findAdapterOfType(Class adapterType) {
-        return null;
-    }
 
     public String getDescriptor() {
         return "ProviderAdapter";
@@ -178,4 +250,22 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     public boolean isLazy(ComponentAdapter<?> adapter) {
         return lifecycle.isLazy(adapter);
     }
+
+    /**
+     * Providers don't decorate component instances.
+     */
+	public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ComponentAdapter findAdapterOfType(Class adapterType) {
+		if (getClass().isAssignableFrom(adapterType)) {
+			return this;
+		}
+		
+		return null;
+	}
 }

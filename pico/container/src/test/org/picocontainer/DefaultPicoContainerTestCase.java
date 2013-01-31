@@ -884,17 +884,41 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
 
-    @Test public void testJsr330Provider() {
+    @Test public void testJsr330ProviderAsConstructorArgument() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
         Provider<Color> provider = new Provider<Color>() {
             public Color get() {
                 return Color.red;
             }
         };
-        pico.addProvider(provider).addComponent(NeedsColorProvider.class);
+        pico
+        	.addProvider(provider)
+        	.addComponent(NeedsColorProvider.class);
+        
         NeedsColorProvider ncp = pico.getComponent(NeedsColorProvider.class);
         assertSame(provider, ncp.colorProvider);
         assertSame(Color.red, ncp.colorProvider.get());
+    }
+    
+    
+    public static class NeedsColorProviderTwo {
+    	public Color color;
+    	public NeedsColorProviderTwo(Color theColor) {
+    		color = theColor;
+    	}
+    }
+    @Test
+    public void testJsr330ProviderWithCicaCallingGetMethod() {
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
+        Provider<Color> provider = new Provider<Color>() {
+            public Color get() {
+                return Color.green;
+            }
+        };
+        
+        pico.addProvider(provider).addComponent(NeedsColorProviderTwo.class);
+        NeedsColorProviderTwo ncp = pico.getComponent(NeedsColorProviderTwo.class);
+        assertEquals(Color.green, ncp.color);
     }
     
     @Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {

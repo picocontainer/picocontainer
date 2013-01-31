@@ -97,7 +97,6 @@ public class ConstructorInjection extends AbstractInjectionType {
      * @author J&ouml;rg Schaible
      * @author Mauro Talevi
      */
-    @SuppressWarnings("serial")
     public static class ConstructorInjector<T> extends MultiArgMemberInjector<T> {
 
         private transient List<Constructor<T>> sortedMatchingConstructors;
@@ -196,15 +195,21 @@ public class ConstructorInjection extends AbstractInjectionType {
                 Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
                 final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                 final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
+                
+                //For debug messages if something fails since we swap parameters part way through the function
+                List<Parameter> parametersUsed = new ArrayList<Parameter>(Arrays.asList(currentParameters));
+                
                 // remember: all constructors with less arguments than the given parameters are filtered out already
                 for (int j = 0; j < currentParameters.length; j++) {
                     // check whether this constructor is satisfiable
                     Type expectedType = box(parameterTypes[j]);
                     NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
-                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
+                    Parameter parameterToUse = getParameterToUse(sortedMatchingConstructor,j, currentParameters[j]);
+                    parametersUsed.set(j, parameterToUse);
+                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], parameterToUse);
                     Parameter.Resolver resolver = resolvers.get(resolverKey);
                     if (resolver == null) {
-                        Parameter currentParameter = currentParameters[j];
+                        Parameter currentParameter = parameterToUse;
                         Annotation annotation = bindings[j];
                         boolean b = useNames();
                         resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
@@ -233,7 +238,7 @@ public class ConstructorInjection extends AbstractInjectionType {
                     conflicts.add(greediestConstructor);
                 } else if (!failedDependency) {
                     greediestConstructor = sortedMatchingConstructor;
-                    greediestConstructorsParameters = currentParameters;
+                    greediestConstructorsParameters = parametersUsed.toArray(new Parameter[parametersUsed.size()]);
                     greediestConstructorsParametersComponentAdapters = currentAdapters;
                     lastSatisfiableConstructorSize = parameterTypes.length;
                 }
@@ -259,6 +264,18 @@ public class ConstructorInjection extends AbstractInjectionType {
             return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
         }
       
+
+        /**
+         * Allows for subclasses to override the {@link org.picocontainer.Parameter} for a given constructor argument.
+         * @param constructorToExamine the current constructor candidate.
+         * @param constructorParameterIndex the current index of the constructor arguments array.
+         * @param parameter the currently defined parameter.
+         * @return
+         */
+    	protected Parameter getParameterToUse(Constructor<?> constructorToExamine, int constructorParameterIndex, Parameter parameter) {
+    		return parameter;
+    	}
+        
         
         public void enableEmjection(boolean enableEmjection) {
             this.enableEmjection = enableEmjection;
@@ -492,4 +509,5 @@ public class ConstructorInjection extends AbstractInjectionType {
 
 
     }
+
 }

@@ -3,11 +3,13 @@ package org.picocontainer.containers;
 import java.lang.annotation.Annotation;
 
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.injectors.ProviderAdapter;
 
 @SuppressWarnings("serial")
 public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
@@ -24,6 +26,12 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		return this;
 	}
 	
+	/**
+	 * Overrides 
+	 * @param implOrInstance
+	 * @param parameters
+	 * @return
+	 */
 	public JSRPicoContainer addComponent(Object implOrInstance, Parameter... parameters) {
 		Object key = determineKey(implOrInstance);
 		
@@ -32,6 +40,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	}
 
 	
+
 	/**
 	 * Determines the key of the object.  It may have JSR 330 qualifiers or {@linkplain javax.inject.Named} annotations.
 	 * If none of these exist, the key is the object's class.
@@ -40,10 +49,19 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * @return the object's determined key. 
 	 */
 	protected Object determineKey(Object implOrInstance) {
+		
 		Class<?> instanceClass =  (implOrInstance instanceof Class) ? (Class)implOrInstance : implOrInstance.getClass();
 		
+		//Determine the key based on the provider's return type
+		Object key;
+		if (implOrInstance instanceof javax.inject.Provider || implOrInstance instanceof org.picocontainer.injectors.Provider) {
+			key = ProviderAdapter.determineProviderReturnType(implOrInstance);			
+		} else {
+			key = instanceClass;
+		}
 		
-		Object key = instanceClass;
+		//BUT, Named annotation or a Qualifier annotation will 
+		//override the normal value;
 		if (instanceClass.isAnnotationPresent(Named.class)) {
 			key = instanceClass.getAnnotation(Named.class).value();
 		} else {
@@ -52,7 +70,6 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 				key = qualifier.annotationType().getName();
 			}
 		}
-		
 		
 		return key;
 	}
@@ -88,6 +105,13 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	public MutablePicoContainer makeChildContainer() {
 		MutablePicoContainer childDelegate = getDelegate().makeChildContainer();
 		return new JSRPicoContainer(childDelegate);
+	}
+
+	@Override
+	public MutablePicoContainer addProvider(Provider<?> provider) {
+		Object key = determineKey(provider);
+		super.addProvider(key, provider);
+		return this;
 	}
 
 	
