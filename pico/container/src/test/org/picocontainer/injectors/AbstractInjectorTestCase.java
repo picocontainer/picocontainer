@@ -10,7 +10,9 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
@@ -26,7 +28,10 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AbstractInjector.AmbiguousComponentResolutionException;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import com.googlecode.jtype.Generic;
 
 @SuppressWarnings("serial")
 public class AbstractInjectorTestCase {
@@ -130,12 +135,11 @@ public class AbstractInjectorTestCase {
         }
     }
 
-
-
+    @SuppressWarnings("rawtypes")
     private static class MyAbstractInjector extends AbstractInjector {
 
         public MyAbstractInjector(Object key,
-                                  Class impl,
+                                   Class impl,
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
                                   boolean useNames) {
@@ -154,4 +158,107 @@ public class AbstractInjectorTestCase {
             return null;
         }
     }
+
+    
+    public static class TestObject {
+    	public String someField;
+    	
+    	public TestObject(String someValue) {
+    		
+    	}
+    	
+    	public void setSomething(String value) {
+    		
+    	}
+    }
+
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithNoAccsesibleObjectOrNoComponent() {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("<not-specified> needs a 'java.lang.String' injected through : <unknown>'," +
+    					" but there are too many choices to inject. These:[class java.lang.String, fwibble, fribbit]"));
+    }
+    
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithComponentButNoAccessibleObject() {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	acre.setComponent(TestObject.class);
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String' injected through : <unknown>'," +
+    					" but there are too many choices to inject. These:[class java.lang.String, fwibble, fribbit]"));
+    }
+    
+    
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithConstructorAccessibleObject() {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AccessibleObject accessibleObject = TestObject.class.getConstructors()[0];
+    	
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	acre.setComponent(TestObject.class);
+    	acre.setMember(accessibleObject);
+    	
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("class org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String' injected into constructor " +
+    					"'public org.picocontainer.injectors.AbstractInjectorTestCase$TestObject(java.lang.String)'"));
+    	
+    }
+    
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithConstructorAccessibleObjectAndParameterNumber() {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AccessibleObject accessibleObject = TestObject.class.getConstructors()[0];
+    	
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	acre.setComponent(TestObject.class);
+    	acre.setMember(accessibleObject);
+    	acre.setParameterNumber(0);
+    	
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("class org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String'" +
+    					" injected into parameter #0 (zero based index) of constructor " +
+    					"'public org.picocontainer.injectors.AbstractInjectorTestCase$TestObject(java.lang.String)'"));
+    	
+    }
+    
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithFieldAccessibleObject() throws NoSuchFieldException, SecurityException {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AccessibleObject accessibleObject = TestObject.class.getField("someField");
+    	
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	acre.setComponent(TestObject.class);
+    	acre.setMember(accessibleObject);
+    	
+    	
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("needs a 'java.lang.String' injected into field " +
+    					"'public java.lang.String org.picocontainer.injectors.AbstractInjectorTestCase$TestObject.someField'"));
+    }
+    
+    @Test
+    public void testAmbiguousComponentExceptionMessageWithMethodAccessibleObject() throws SecurityException, NoSuchMethodException {
+    	Generic<String> generic = Generic.get(String.class);
+    	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
+    	AccessibleObject accessibleObject = TestObject.class.getMethod("setSomething", String.class);
+    	
+    	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
+    	acre.setComponent(TestObject.class);
+    	acre.setMember(accessibleObject);
+    	
+    	
+    	assertTrue("Got " + acre.getMessage(),
+    			acre.getMessage().contains("needs a 'java.lang.String' injected into method " +
+    					"'public void org.picocontainer.injectors.AbstractInjectorTestCase$TestObject.setSomething(java.lang.String)'"));
+    }
+       
+
 }

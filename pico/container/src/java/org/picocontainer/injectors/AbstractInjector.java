@@ -22,8 +22,10 @@ import org.picocontainer.parameters.ComponentParameter;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -335,6 +337,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         private final Generic<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 		private AccessibleObject accessibleObject;
+		
+		/**
+		 * Zero-based parameter #
+		 */
+		private int parameterNumber = -1;
+		
 
 
         /**
@@ -346,7 +354,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         public AmbiguousComponentResolutionException(final Generic<?> ambiguousDependency, final Object[] keys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
-            this.ambiguousComponentKeys = new Class[keys.length];
+            this.ambiguousComponentKeys = new Object[keys.length];
             System.arraycopy(keys, 0, ambiguousComponentKeys, 0, keys.length);
         }
 
@@ -359,8 +367,31 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             msg.append(component != null ? component : "<not-specified>");
             msg.append(" needs a '");
             msg.append(ambiguousDependency.toString());
-            msg.append("' injected via '");
-            msg.append(accessibleObject != null ? accessibleObject : "<unknown>");
+            msg.append("' injected");
+            if (parameterNumber > -1) {
+            	msg.append(" into parameter #" + parameterNumber);
+            	msg.append(" (zero based index) of");
+            } 
+            
+            if (parameterNumber == -1 && accessibleObject != null) {
+            	msg.append(" into");            	
+            }
+            
+            if (accessibleObject != null) {
+            	if (accessibleObject instanceof Field) {
+            		msg.append(" field '");
+            	} else if (accessibleObject instanceof Constructor) {
+            		msg.append(" constructor '");
+            	} else if (accessibleObject instanceof Method) {
+            		msg.append(" method '");
+            	} else {
+            		msg.append(" '");
+            	}
+            	msg.append(accessibleObject);
+            } else {
+            	msg.append(" through : <unknown>");
+            }
+            //msg.append(accessibleObject != null ? accessibleObject : "<unknown>");
             msg.append("', but there are too many choices to inject. These:");
             msg.append(Arrays.asList(getAmbiguousComponentKeys()));
             msg.append(", refer http://picocontainer.org/ambiguous-injectable-help.html");
@@ -380,7 +411,11 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         
         public void setMember(AccessibleObject accessibleObject) {
             this.accessibleObject = accessibleObject;
-        }        
+        }
+
+		public void setParameterNumber(int parameterNumber) {
+			this.parameterNumber = parameterNumber;
+		}        
     }
 
     /**

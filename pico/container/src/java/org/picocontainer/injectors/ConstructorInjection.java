@@ -187,65 +187,69 @@ public class ConstructorInjection extends AbstractInjectionType {
             int lastSatisfiableConstructorSize = -1;
             Type unsatisfiedDependency = null;
             Constructor unsatisfiedConstructor = null;
+            int lastParameterTested = 0;
             for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             	try {
-                boolean failedDependency = false;
-                Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
-                fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
-                Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
-                final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
-                
-                //For debug messages if something fails since we swap parameters part way through the function
-                List<Parameter> parametersUsed = new ArrayList<Parameter>(Arrays.asList(currentParameters));
-                
-                // remember: all constructors with less arguments than the given parameters are filtered out already
-                for (int j = 0; j < currentParameters.length; j++) {
-                    // check whether this constructor is satisfiable
-                    Type expectedType = box(parameterTypes[j]);
-                    NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
-                    Parameter parameterToUse = getParameterToUse(sortedMatchingConstructor,j, currentParameters[j]);
-                    parametersUsed.set(j, parameterToUse);
-                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], parameterToUse);
-                    Parameter.Resolver resolver = resolvers.get(resolverKey);
-                    if (resolver == null) {
-                        Parameter currentParameter = parameterToUse;
-                        Annotation annotation = bindings[j];
-                        boolean b = useNames();
-                        resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
-                        resolvers.put(resolverKey, resolver);
-                    }
-                    if (resolver.isResolved()) {
-                        currentAdapters[j] = resolver.getComponentAdapter();
-                        continue;
-                    }
-                    unsatisfiableDependencyTypes.add(expectedType);
-                    unsatisfiedDependency = box(parameterTypes[j]);
-                    unsatisfiedConstructor = sortedMatchingConstructor;
-                    failedDependency = true;
-                }
-
-                if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
-                    if (conflicts.isEmpty()) {
-                        // we found our match [aka. greedy and satisfied]
-                        return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
-                    }
-                    // fits although not greedy
-                    conflicts.add(sortedMatchingConstructor);
-                } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
-                    // satisfied and same size as previous one?
-                    conflicts.add(sortedMatchingConstructor);
-                    conflicts.add(greediestConstructor);
-                } else if (!failedDependency) {
-                    greediestConstructor = sortedMatchingConstructor;
-                    greediestConstructorsParameters = parametersUsed.toArray(new Parameter[parametersUsed.size()]);
-                    greediestConstructorsParametersComponentAdapters = currentAdapters;
-                    lastSatisfiableConstructorSize = parameterTypes.length;
-                }
+	                boolean failedDependency = false;
+	                Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
+	                fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
+	                Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
+	                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
+	                final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
+	                
+	                //For debug messages if something fails since we swap parameters part way through the function
+	                List<Parameter> parametersUsed = new ArrayList<Parameter>(Arrays.asList(currentParameters));
+	                
+	                // remember: all constructors with less arguments than the given parameters are filtered out already
+	                for (int j = 0; j < currentParameters.length; j++) {
+	                	lastParameterTested = j;
+	                    // check whether this constructor is satisfiable
+	                    Type expectedType = box(parameterTypes[j]);
+	                    NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
+	                    Parameter parameterToUse = getParameterToUse(sortedMatchingConstructor,j, currentParameters[j]);
+	                    parametersUsed.set(j, parameterToUse);
+	                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], parameterToUse);
+	                    Parameter.Resolver resolver = resolvers.get(resolverKey);
+	                    if (resolver == null) {
+	                        Parameter currentParameter = parameterToUse;
+	                        Annotation annotation = bindings[j];
+	                        boolean b = useNames();
+	                        resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
+	                        resolvers.put(resolverKey, resolver);
+	                    }
+	                    if (resolver.isResolved()) {
+	                        currentAdapters[j] = resolver.getComponentAdapter();
+	                        continue;
+	                    }
+	                    unsatisfiableDependencyTypes.add(expectedType);
+	                    unsatisfiedDependency = box(parameterTypes[j]);
+	                    unsatisfiedConstructor = sortedMatchingConstructor;
+	                    failedDependency = true;
+	                }
+	
+	                if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
+	                    if (conflicts.isEmpty()) {
+	                        // we found our match [aka. greedy and satisfied]
+	                        return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
+	                    }
+	                    // fits although not greedy
+	                    conflicts.add(sortedMatchingConstructor);
+	                } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
+	                    // satisfied and same size as previous one?
+	                    conflicts.add(sortedMatchingConstructor);
+	                    conflicts.add(greediestConstructor);
+	                } else if (!failedDependency) {
+	                    greediestConstructor = sortedMatchingConstructor;
+	                    greediestConstructorsParameters = parametersUsed.toArray(new Parameter[parametersUsed.size()]);
+	                    greediestConstructorsParametersComponentAdapters = currentAdapters;
+	                    lastSatisfiableConstructorSize = parameterTypes.length;
+	                }
 
             	} catch (AmbiguousComponentResolutionException e) {
-                    // embellish with the constructor being injected into.
+                    // embellish with the constructor being injected into and
+            		// parameter # causing the problem
                     e.setMember(sortedMatchingConstructor);
+                    e.setParameterNumber(lastParameterTested);
                     throw e;
                 }            
             }
