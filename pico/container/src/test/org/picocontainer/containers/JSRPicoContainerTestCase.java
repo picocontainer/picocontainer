@@ -206,5 +206,44 @@ public class JSRPicoContainerTestCase {
 		ProviderTestTwo testObject = mpc.getComponent(ProviderTestTwo.class);
 		assertTrue(testObject != null);
 	}
+	
+	
+	public static class ProvderTestThree {
+		public ProvderTestThree(Provider<C> arg) {
+			assertNotNull(arg);
+		}
+	}
+	
+	public static class ThreeCProvider implements Provider<C> {
+
+		public C get() {
+			return new C();
+		}
+		
+	}
+	
+	public static class ThreeAProvider implements Provider<A> {
+
+		public A get() {
+			return new A();
+		}
+		
+	}
+	
+	@Test
+	public void testConstructorInjectionCanDifferentiateDifferentGenericTypesOnProviders() {
+		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		
+		
+		 mpc.addComponent(ProvderTestThree.class, ProvderTestThree.class, 
+						new JSR330ComponentParameter())  //The Test
+			.addProvider(new ThreeCProvider())  //No Qualifier
+			.addProvider(new ThreeAProvider()) //No Qualifier  Generic type provided should short it out
+			;
+		 
+		 ProvderTestThree testThree = mpc.getComponent(ProvderTestThree.class);
+		 assertNotNull(testThree);
+
+	}
 
 }

@@ -18,12 +18,19 @@ public class JTypeHelper {
     public static final Generic BYTE = Generic.get(Byte.class);
     public static final Generic VOID = Generic.get(Void.TYPE);
 
-    public static boolean isAssignableFrom(Generic<?> generic, Class<?> aClass) {
+    /**
+     * 
+     * @param generic
+     * @param aClass
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public static boolean isAssignableFrom(Generic<?> generic, Class<?> aClass) {
         Type type = generic.getType();
         if (type instanceof Class) {
             return ((Class) type).isAssignableFrom(aClass);
         } else if (type instanceof ParameterizedType) {
-            Generic g = Generic.get(aClass);
+            //Generic g = Generic.get(aClass);
             Type[] types = aClass.getGenericInterfaces();
             while (types.length == 0 && canGetSuperClass(aClass)) {
                 aClass = aClass.getSuperclass();
@@ -65,7 +72,14 @@ public class JTypeHelper {
 		return true;
 	}
 
-	public static boolean isAssignableTo(Generic<?> generic, Class aClass) {
+    /**
+     * Checks that the generic's type is a class, and performs a direct
+     * <code>aClass.isAssignableFrom(genericType)</code>
+     * @param generic the generic type to check
+     * @param aClass the type to check for compatibility/
+     * @return
+     */
+	public static boolean isAssignableTo(Generic<?> generic, Class<?> aClass) {
         if (generic.getType() instanceof Class) {
             return aClass.isAssignableFrom((Class<?>) generic.getType());
         }

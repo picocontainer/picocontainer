@@ -1,10 +1,12 @@
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.JTypeHelper;
+
+import com.googlecode.jtype.Generic;
 
 public class ProviderAdapterTestCase {
 	
@@ -20,18 +22,17 @@ public class ProviderAdapterTestCase {
 		
 	}
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testGetComponentKey() {
 		ProviderAdapter providerAdapter = new ProviderAdapter(new ProviderA());
 		assertEquals(A.class, providerAdapter.getComponentKey());
+	}
+	
+	@Test
+	public void testImplementationType() {
+		ProviderAdapter providerAdapter = new ProviderAdapter(new ProviderA());
+		assertEquals(ProviderA.class, providerAdapter.getComponentImplementation());
+		assertFalse(JTypeHelper.isAssignableFrom(Generic.get(A.class),  providerAdapter.getComponentImplementation()));
 	}
 
 }

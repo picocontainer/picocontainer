@@ -477,9 +477,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             //JSR 330 Provider compatibility... we have to be able to return both the providers that provide
             //the type as well as the actual types themselves.
             Class<?> implementation = componentAdapter.getComponentImplementation();
-            boolean compatible;
-
-            compatible = JTypeHelper.isAssignableFrom(componentType, componentAdapter.getComponentImplementation());
+            
+            
+            boolean compatible = JTypeHelper.isAssignableFrom(componentType, implementation);
             if (componentAdapter.findAdapterOfType(ProviderAdapter.class) != null) {
             	//If provider
             	//Todo: Direct access of provider adapter... work around.
