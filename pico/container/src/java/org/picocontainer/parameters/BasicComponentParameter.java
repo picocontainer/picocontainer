@@ -74,7 +74,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     public BasicComponentParameter() {
     	this(null,null);
     }
-
+    
     /**
      * Check whether the given Parameter can be satisfied by the container.
      *
@@ -349,4 +349,9 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         found.remove(exclude);
     }
 
+    public boolean isKeyDefined() {
+    	return key != null;
+    }
+
+    
 }

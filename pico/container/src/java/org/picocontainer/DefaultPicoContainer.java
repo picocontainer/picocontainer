@@ -480,11 +480,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             
             
             boolean compatible = JTypeHelper.isAssignableFrom(componentType, implementation);
-            if (componentAdapter.findAdapterOfType(ProviderAdapter.class) != null) {
+            if (!compatible && componentAdapter.findAdapterOfType(ProviderAdapter.class) != null) {
             	//If provider
             	//Todo: Direct access of provider adapter... work around.
             	ProviderAdapter adapter = (ProviderAdapter)componentAdapter.findAdapterOfType(ProviderAdapter.class);
-            	compatible |= JTypeHelper.isAssignableFrom(componentType, adapter.getProviderReturnType());
+            	compatible = JTypeHelper.isAssignableFrom(componentType, adapter.getProviderReturnType());
             }            
             
             if (compatible &&

@@ -28,6 +28,7 @@ import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
 import org.picocontainer.injectors.Jsr330Injection;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.JSR330ComponentParameter;
 
 public class PicoContainerJsr330TestCase extends TestCase {
 
@@ -50,12 +51,28 @@ public class PicoContainerJsr330TestCase extends TestCase {
 
 		public Seat get() {
 	        try {
-	            return pico.getComponent(DriversSeat.class);
+	            return (Seat)pico.getComponent("theDriversSeat");
 	        } catch (Exception e) {
 	            throw new RuntimeException(e);
 	        }
 		}
+	}
+	
+	public static class PlainSeatProvider implements Provider<Seat> {
 		
+		private MutablePicoContainer pico;
+
+		public PlainSeatProvider(MutablePicoContainer pico) {
+			this.pico = pico;
+		}
+
+		public Seat get() {
+	        try {
+	            return (Seat)pico.getComponent("theDriversSeat");
+	        } catch (Exception e) {
+	            throw new RuntimeException(e);
+	        }
+		}
 	}
 	
 	public static class PlainTireProvider implements Provider<Tire> {
@@ -66,7 +83,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 		}
 
         public Tire get() {
-            return pico.getComponent(Tire.class);
+            return (Tire) pico.getComponent("plainTire");
         }
 	}
 	
@@ -82,7 +99,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 		
         public Tire get() {
             try {
-            	return (Tire)pico.getComponent("spare");
+            	return (Tire)pico.getComponent("spareTire");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -98,20 +115,36 @@ public class PicoContainerJsr330TestCase extends TestCase {
     	DriverSeatProvider driversSeatProvider = new DriverSeatProvider(pico);
     	PlainTireProvider plainTireProvider = new PlainTireProvider(pico);
     	SpareTireProvider spareTireProvider = new SpareTireProvider(pico);
+    	PlainSeatProvider plainSeatProvider = new PlainSeatProvider(pico);
     	
-    	
-        pico.addComponent(Car.class, Convertible.class)
+        pico.addComponent(Car.class, Convertible.class, 
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter(), //Auto wire all 8 arguments.
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter(), 
+        			new JSR330ComponentParameter()
+        			)
                 //.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DriversSeat.class, DriversSeat.class, Parameter.DEFAULT, new NullComponentMonitor(), false, Drivers.class))
-                .addComponent(Seat.class)
-        		.addComponent(DriversSeat.class)
-                .addComponent("spare", SpareTire.class)
-                .addComponent(Tire.class)
                 .addComponent(FuelTank.class)
                 .addComponent(Engine.class, V8Engine.class)
                 .addComponent(Seatbelt.class)
+                .addComponent(Cupholder.class)
                 .addProvider(driversSeatProvider)
+                .addProvider(plainSeatProvider)
                 .addProvider(plainTireProvider)
-                .addProvider(spareTireProvider);
+                .addProvider(spareTireProvider)
+                
+                //Components Used By the providers
+                .addComponent("plainSeat", Seat.class)
+        		.addComponent("theDriversSeat", DriversSeat.class)
+                .addComponent("spareTire", SpareTire.class)
+                .addComponent("plainTire", Tire.class)
+                
+                ;
+        
         
         
         Car car = pico.getComponent(Car.class);

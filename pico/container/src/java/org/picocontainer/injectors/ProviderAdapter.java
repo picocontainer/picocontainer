@@ -149,7 +149,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     	
     }
     
-    public Class<?> getProviderImplmentation() {
+    public Class<?> getProviderImplementation() {
     	return provider.getClass();
     }
 
@@ -231,6 +231,26 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         return "ProviderAdapter";
     }
 
+    
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		
+		result.append(getClass().getName());
+		result.append("@");
+		result.append(System.identityHashCode(this));
+		result.append(" (key = ");
+		result.append(getComponentKey());
+		result.append(" ; implementation = ");
+		result.append(getProviderImplementation());
+		result.append(" ; provided type = ");
+		result.append(providerReturnType);
+		result.append(" )");
+		
+		return result.toString();
+	}
+    
+    
     public void start(Object component) {
         lifecycle.start(component);
     }
@@ -268,4 +288,5 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 		
 		return null;
 	}
+
 }

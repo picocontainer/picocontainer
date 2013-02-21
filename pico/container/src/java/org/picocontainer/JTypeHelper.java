@@ -4,6 +4,8 @@ import com.googlecode.jtype.Generic;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 
 @SuppressWarnings("rawtypes")
 public class JTypeHelper {
@@ -25,29 +27,92 @@ public class JTypeHelper {
      * @return
      */
     @SuppressWarnings("unchecked")
-	public static boolean isAssignableFrom(Generic<?> generic, Class<?> aClass) {
+	public static boolean isAssignableFrom(final Generic<?> generic, final Class<?> aClass) {
         Type type = generic.getType();
-        if (type instanceof Class) {
-            return ((Class) type).isAssignableFrom(aClass);
-        } else if (type instanceof ParameterizedType) {
+        Class<?> typeToCompare = aClass;
+        if (type instanceof ParameterizedType) {
             //Generic g = Generic.get(aClass);
-            Type[] types = aClass.getGenericInterfaces();
-            while (types.length == 0 && canGetSuperClass(aClass)) {
-                aClass = aClass.getSuperclass();
-                types = aClass.getGenericInterfaces();
+        	//Recursively look for first super class that has a a parameterized type argument.
+        	
+        	ParameterizedType castType = (ParameterizedType)type;
+        	boolean isWildcardType = false;
+        	if (castType.getActualTypeArguments()[0] instanceof WildcardType) {
+        		isWildcardType= true;
+        	}
+        	
+        	
+            Type[] types = typeToCompare.getGenericInterfaces();
+            while (types.length == 0 && canGetSuperClass(typeToCompare)) {
+            	typeToCompare = typeToCompare.getSuperclass();
+                types = typeToCompare.getGenericInterfaces();
             }
             if (types.length == 0) {
-                return false;
+            	//Parameter aClass doesn't have a type assigned to it, if the types are compatible
+            	//then we'll ignore the generic and hope for the best because aClass is a raw type.
+            	return generic.getRawType().isAssignableFrom(aClass);
             }
             Generic aClassGeneric = Generic.get(types[0]);
             boolean b = generic.equals(aClassGeneric);
-            boolean from = generic.getRawType().isAssignableFrom(aClass);
+            
+            
+            //boolean from = generic.getRawType().isAssignableFrom(aClass);
+            boolean from = false;
+            if (isWildcardType || isRawType(aClass)) {
+            	from = generic.getRawType().isAssignableFrom(aClass);
+            }
+            
             return b || from;
+        } else if (type instanceof Class) {
+            return ((Class) type).isAssignableFrom(typeToCompare);        	
         }
         return false;
     }
 
     /**
+     * Returns true if the type inspected is a raw type.  Example:  List, as opposed to a List<String>
+     * @todo I am NOT a generic expert, I came up with this code by watching the debugger, and reading javadocs.  If
+     * there is a better way to determine if something is new List() vs new List<String> I'd love to see it.
+     * @param aClass
+     * @return
+     */
+    public static boolean isRawType(Class<?> aClass) {
+		Class<?> typeToCompare = aClass;
+	    Type[] types = typeToCompare.getGenericInterfaces();
+	    while (types.length == 0 && canGetSuperClass(typeToCompare)) {
+	    	typeToCompare = typeToCompare.getSuperclass();
+	        types = typeToCompare.getGenericInterfaces();
+	    }    	
+
+	    if (types.length == 0) {
+        	return true;
+        }
+
+	    //
+	    // List is a good example
+	    //
+	    Type typeToExamine = types[0];
+	    if (typeToExamine instanceof ParameterizedType) {
+	    	ParameterizedType pt = (ParameterizedType)typeToExamine;
+	    	Type arg = pt.getActualTypeArguments()[0];
+	    	if (arg instanceof TypeVariable) {
+	    		TypeVariable tv = (TypeVariable)arg;
+	    		//best I can figure out, if the declaration has a "< such as List<String>
+	    		//then its not a raw type, if it doesn't, then its a raw type. -MR
+	    		if (!tv.getGenericDeclaration().toString().contains("<")) {
+	    			return true;
+	    		}
+	    	}
+	    	
+	    		
+	    	return false;
+	    } 
+
+	    
+	    
+		return true;
+	}
+
+	/**
      * Checks for conditions where aClass.getSuperClass() would
      * return null.
      * <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/lang/Class.html#getSuperclass()">

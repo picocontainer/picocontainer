@@ -4,6 +4,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.JSR330ComponentParameter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -46,7 +47,7 @@ public class Jsr330Injection extends ConstructorInjection {
          */
 		@Override
 		protected Parameter getParameterToUse(Constructor<?> constructorToExamine, int constructorParameterIndex, Parameter parameter) {
-			if (parameter == ComponentParameter.DEFAULT) {
+			if (isDefaultParameter(parameter)) {
 				
 				//Search for Named class
 				for (Annotation eachAnnotation : constructorToExamine.getParameterAnnotations()[constructorParameterIndex]) {
@@ -66,6 +67,19 @@ public class Jsr330Injection extends ConstructorInjection {
 			}
 			
 			return super.getParameterToUse(constructorToExamine, constructorParameterIndex, parameter);
+		}
+
+		private boolean isDefaultParameter(Parameter parameter) {
+			if (parameter == ComponentParameter.DEFAULT || parameter == JSR330ComponentParameter.DEFAULT) {
+				return true;
+			}
+			
+			if (parameter instanceof ComponentParameter) {
+				return !((ComponentParameter)parameter).isKeyDefined();
+				
+				
+			}
+			return false;
 		}
         
         

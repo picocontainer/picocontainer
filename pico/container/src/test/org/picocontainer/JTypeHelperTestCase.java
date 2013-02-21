@@ -4,18 +4,24 @@ package org.picocontainer;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Provider;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 import org.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.Apple;
+import org.picocontainer.containers.JSRPicoContainerTestCase.A;
+import org.picocontainer.containers.JSRPicoContainerTestCase.C;
 import org.picocontainer.containers.JSRPicoContainerTestCase.ThreeAProvider;
 import org.picocontainer.containers.JSRPicoContainerTestCase.ThreeCProvider;
-import org.picocontainer.containers.JSRPicoContainerTestCase.C;
+import org.picocontainer.defaults.issues.Issue0382TestCase.AcceptsParameterized;
+import org.picocontainer.defaults.issues.Issue0382TestCase.AcceptsParameterizedWithWildcardList;
+import org.picocontainer.defaults.issues.Issue0382TestCase.AcceptsParameterizedWithoutWildcardList;
+import org.picocontainer.defaults.issues.Issue0382TestCase.StringParameterized;
 
 import com.googlecode.jtype.Generic;
 
@@ -38,13 +44,48 @@ public class JTypeHelperTestCase {
 	}
 	
 	
+	@SuppressWarnings({ "serial", "rawtypes" })
+	public static class RawTest extends ArrayList {
+		
+	}
+	
+	@SuppressWarnings({ "serial", "rawtypes" })
+	public static class RawTestTwo extends ArrayList<String> {
+		
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static class UntypedProvider implements Provider {
+
+		public Object get() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+	
+	@Test
+	public void testIsRawType() {
+		assertTrue(JTypeHelper.isRawType(List.class));
+		assertFalse(JTypeHelper.isRawType(ThreeAProvider.class));
+		
+		assertTrue(JTypeHelper.isRawType(UntypedProvider.class));
+	}
 	
 	
 	@Test
 	public void testIsAssignableWithACompoundTypeAndANormalClass() {
-		Generic<?> listType = Generic.get(List.class, String.class);
-		assertFalse(JTypeHelper.isAssignableFrom(listType, String.class));
-		assertTrue(JTypeHelper.isAssignableFrom(listType, List.class));
+		Generic<?> listType = Generic.get(List.class, String.class); //Testing:  List<String>
+		
+		assertFalse(JTypeHelper.isAssignableFrom(listType, String.class)); //Testing: List<String> = String
+		
+		
+		
+		assertTrue(JTypeHelper.isAssignableFrom(listType, List.class)); //List<String> = List
+		
+		//Proof that the above type should pass.
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		List<String> test = new ArrayList();
 	}
 	
 	
@@ -72,20 +113,65 @@ public class JTypeHelperTestCase {
 		public void doSomething(Provider<C> threeCProvider) {
 			
 		}
+		
+		public void doSomethingElse(Provider<A> threeAProvider) {
+			
+		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testCombinationOfTypeFromOtherTests() throws NoSuchMethodException, SecurityException {
 		Generic<ThreeAProvider> aProvider = Generic.get(ThreeAProvider.class);
-		
+		Generic<ThreeCProvider> cProvider = Generic.get(ThreeCProvider.class);
+
+		//Test reflection.
+		assertTrue(JTypeHelper.isAssignableFrom(aProvider,  ThreeAProvider.class));
+		assertTrue(JTypeHelper.isAssignableFrom(cProvider, ThreeCProvider.class));
+
+		//Test as long as we're dealing standalone types.
 		assertFalse(JTypeHelper.isAssignableFrom(aProvider, ThreeCProvider.class));
+		assertFalse(JTypeHelper.isAssignableFrom(cProvider, ThreeAProvider.class));
 		
 		
-		Class<?> paramType = TestArg.class.getMethod("doSomething", Provider.class).getParameterTypes()[0];
-		Generic<?> argType = Generic.get(paramType);
+		//Check if we get the type from a parameter.
+		Type paramType = TestArg.class.getMethod("doSomething", Provider.class).getGenericParameterTypes()[0];	
 		
+		assertTrue(paramType instanceof ParameterizedType);
+		Generic<?> argType = Generic.get(paramType);	
+		
+		Type paramTypeTwo = TestArg.class.getMethod("doSomethingElse", Provider.class).getGenericParameterTypes()[0];
+		Generic<?> argTypeTwo = Generic.get(paramTypeTwo);
+		
+		//Check reflection
+		assertTrue(JTypeHelper.isAssignableFrom(argTypeTwo, ThreeAProvider.class));
+		assertTrue(JTypeHelper.isAssignableFrom(argType,ThreeCProvider.class));
+		
+		//Test opposite
 		assertFalse(JTypeHelper.isAssignableFrom(argType, ThreeAProvider.class));
+		assertFalse(JTypeHelper.isAssignableFrom(argTypeTwo, ThreeCProvider.class));
+		
+		//Test raw type CAN be assigned
+		//Below is compiler proof that this test should pass.
+		assertTrue(JTypeHelper.isAssignableFrom(argTypeTwo,  Provider.class));
+		@SuppressWarnings("unchecked")
+		Provider<C> c = new Provider() {
+
+			public Object get() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+		};
 	}
 
+	
+	@Test
+	public void testWildcardAssignment() {
+		Type parameterType = AcceptsParameterized.class.getConstructors()[0].getGenericParameterTypes()[0];
+		Generic<?> generic = Generic.get(parameterType);
+		
+		assertTrue(JTypeHelper.isAssignableFrom(generic, StringParameterized.class));
+	}
 
 }

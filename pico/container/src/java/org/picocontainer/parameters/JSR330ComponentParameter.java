@@ -23,6 +23,8 @@ import com.googlecode.jtype.Generic;
  */
 @SuppressWarnings("serial")
 public class JSR330ComponentParameter extends ComponentParameter {
+	
+	public static final JSR330ComponentParameter DEFAULT = new JSR330ComponentParameter();
 
 	/**
 	 * @param key

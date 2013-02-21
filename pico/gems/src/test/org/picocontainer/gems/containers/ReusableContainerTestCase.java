@@ -140,9 +140,9 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < ITERATIONS; i++) {
 			MutablePicoContainer pico = new PicoBuilder()
-			.implementedBy(DefaultPicoContainer.class)
-			.withCaching()
-			.build();
+				.implementedBy(DefaultPicoContainer.class)
+				.withCaching()
+				.build();
 
             addComponents(pico);
 
