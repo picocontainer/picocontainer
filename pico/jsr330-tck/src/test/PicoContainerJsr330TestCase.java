@@ -131,17 +131,17 @@ public class PicoContainerJsr330TestCase extends TestCase {
                 .addComponent(FuelTank.class)
                 .addComponent(Engine.class, V8Engine.class)
                 .addComponent(Seatbelt.class)
-                .addComponent(Cupholder.class)
+                .addComponent(Cupholder.class, Cupholder.class, new JSR330ComponentParameter())
                 .addProvider(driversSeatProvider)
                 .addProvider(plainSeatProvider)
                 .addProvider(plainTireProvider)
                 .addProvider(spareTireProvider)
                 
                 //Components Used By the providers
-                .addComponent("plainSeat", Seat.class)
-        		.addComponent("theDriversSeat", DriversSeat.class)
+                .addComponent("plainSeat", Seat.class, new JSR330ComponentParameter())
+        		.addComponent("theDriversSeat", DriversSeat.class, new JSR330ComponentParameter())
                 .addComponent("spareTire", SpareTire.class)
-                .addComponent("plainTire", Tire.class)
+                .addComponent("plainTire", Tire.class, new JSR330ComponentParameter())
                 
                 ;
         
