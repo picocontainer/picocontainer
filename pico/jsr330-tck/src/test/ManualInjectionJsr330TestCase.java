@@ -10,6 +10,7 @@ import org.atinject.tck.auto.Seat;
 import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
+import org.atinject.tck.auto.accessories.RoundThing;
 import org.atinject.tck.auto.accessories.SpareTire;
 
 import javax.inject.Provider;
@@ -45,7 +46,7 @@ public class ManualInjectionJsr330TestCase extends TestCase {
         tireInjections(plainTire);
 
         final SpareTire spareTire = new SpareTire(fuelTank, new FuelTank());
-        tireInjections(spareTire);
+        //tireInjections(spareTire);
         spareTireInjections(spareTire);
 
         Provider<Seat> driversSeatProvider = new Provider<Seat>() {
@@ -80,7 +81,7 @@ public class ManualInjectionJsr330TestCase extends TestCase {
         final V8Engine v8Engine = new V8Engine();
         // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
-        injectIntoMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
+        //injectIntoMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
         // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
         // V8Engine has same method but declared w/o @Inject - not called at all.
@@ -127,24 +128,51 @@ public class ManualInjectionJsr330TestCase extends TestCase {
     }
 
     private static void spareTireInjections(SpareTire spareTire) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+        injectIntoMethod(spareTire, RoundThing.class, "injectPackagePrivateMethod4");
+
+        injectIntoField(spareTire, Tire.class, "fieldInjection", new FuelTank());
+        injectIntoMethod(spareTire, Tire.class, "injectPrivateMethod");
+        injectIntoMethod(spareTire, Tire.class, "injectPackagePrivateMethod");
+        injectIntoMethod(spareTire, Tire.class, "injectPackagePrivateMethod2");
+        injectIntoMethod(spareTire, Tire.class, "injectPackagePrivateMethodForOverride");
+        injectIntoMethod(spareTire, Tire.class, "injectPrivateMethodForOverride");
+        injectIntoMethod(spareTire, Tire.class, "injectPackagePrivateMethod2");
+        injectIntoMethod(spareTire, Tire.class, "injectPackagePrivateMethod3");
+        injectIntoMethod(spareTire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
+
+        
         injectIntoField(spareTire, SpareTire.class, "fieldInjection", new FuelTank());
         injectIntoMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
         injectIntoMethod(spareTire, SpareTire.class, "injectPrivateMethod");
         injectIntoMethod(spareTire, SpareTire.class, "injectProtectedMethod");
+        
+        
         injectIntoMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
-        injectIntoMethod(spareTire, SpareTire.class, "injectPackagePrivateMethodForOverride");
+        
+        injectIntoMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod2");
         spareTire.injectPublicMethod();
     }
 
     private static void tireInjections(Tire tire) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        injectIntoMethod(tire, RoundThing.class, "injectPackagePrivateMethod2");
+        injectIntoMethod(tire, RoundThing.class, "injectPackagePrivateMethod3");
+        injectIntoMethod(tire, RoundThing.class, "injectPackagePrivateMethod4");
+
         injectIntoField(tire, Tire.class, "fieldInjection", new FuelTank());
         injectIntoMethod(tire, Tire.class, "injectPrivateMethod");
         injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethod");
+        injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethod2");
+        injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethod3");
         injectIntoMethod(tire, Tire.class, "injectPrivateMethodForOverride");
+        injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethodForOverride");
+        
+        
         injectIntoMethod(tire, Tire.class, "injectPackagePrivateMethodForOverride");
         injectIntoMethod(tire, Tire.class, "injectProtectedMethodForOverride");
         injectIntoMethod(tire, Tire.class, "injectPublicMethodForOverride");
         injectIntoMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
+
+        
     }
 
     private static void injectIntoField(Object inst, Class<?> type, String name, Object param) throws NoSuchFieldException, IllegalAccessException {
