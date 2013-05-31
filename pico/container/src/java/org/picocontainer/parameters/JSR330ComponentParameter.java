@@ -6,6 +6,7 @@ package org.picocontainer.parameters;
 import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.JTypeHelper;
 import org.picocontainer.Parameter;
 
 import com.googlecode.jtype.Generic;
@@ -33,13 +34,6 @@ public class JSR330ComponentParameter extends ComponentParameter {
 		super(key);
 	}
 
-	/**
-	 * @param targetName
-	 * @param key
-	 */
-	public JSR330ComponentParameter(String targetName, Object key) {
-		super(targetName, key);
-	}
 
 	/**
 	 * 
@@ -54,13 +48,6 @@ public class JSR330ComponentParameter extends ComponentParameter {
 		super(emptyCollection);
 	}
 
-	/**
-	 * @param targetName
-	 * @param emptyCollection
-	 */
-	public JSR330ComponentParameter(String targetName, boolean emptyCollection) {
-		super(targetName, emptyCollection);
-	}
 
 	/**
 	 * @param componentValueType
@@ -86,13 +73,6 @@ public class JSR330ComponentParameter extends ComponentParameter {
 		super(mapDefiningParameter);
 	}
 
-	/**
-	 * @param targetName
-	 * @param mapDefiningParameter
-	 */
-	public JSR330ComponentParameter(String targetName, Parameter mapDefiningParameter) {
-		super(targetName, mapDefiningParameter);
-	}
 
 	/**
 	 * Override that looks to see if there is only one component adapter with a class as the
@@ -106,13 +86,37 @@ public class JSR330ComponentParameter extends ComponentParameter {
 			if (eachAdapter.getComponentKey() instanceof Class<?>) {
 				//More than one found, bail.
 				if (lastAdapterWithClassKey != null) {
-					return null;
+					lastAdapterWithClassKey = null;
+					break;
 				}
 				
 				lastAdapterWithClassKey = eachAdapter;
 			}
 		}
+		
+		if (lastAdapterWithClassKey == null) {
+			lastAdapterWithClassKey = checkForMatchingGenericParameterTypes(expectedType, found);
+		}
 		return lastAdapterWithClassKey;
+	}
+	
+	protected <T> ComponentAdapter<T> checkForMatchingGenericParameterTypes(Generic<T> expectedType, List<ComponentAdapter<T>> found) {
+
+		ComponentAdapter<T> lastFound = null;
+		for (ComponentAdapter<T> eachCA : found) {
+			if (JTypeHelper.isAssignableFrom(expectedType, eachCA.getComponentImplementation())) {
+				//More than one found, bail.
+				if (lastFound != null) {
+					lastFound = null;
+					break;
+				}
+				
+				lastFound = eachCA;
+			}
+			
+		}
+		
+		return lastFound;
 	}
 
 }

@@ -11,13 +11,15 @@ package org.picocontainer.behaviors;
 
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
@@ -44,9 +46,9 @@ public final class PropertyApplying extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycle, Properties componentProps, Object key,
-            Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         ComponentAdapter<T> decoratedAdapter =
-                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return monitor.changedBehavior(new PropertyApplicator<T>(decoratedAdapter));
     }

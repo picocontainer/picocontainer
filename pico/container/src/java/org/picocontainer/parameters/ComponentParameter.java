@@ -65,12 +65,9 @@ public class ComponentParameter
      * @param key the key of the desired addComponent
      */
     public ComponentParameter(Object key) {
-        this(null, key, null);
+        this(key, null);
     }
     
-    public ComponentParameter(String targetName, Object key) {
-    	this(targetName,key,null);
-    }
 
     /**
      * Expect any scalar parameter of the appropriate type or an {@link java.lang.reflect.Array}.
@@ -87,12 +84,9 @@ public class ComponentParameter
      * @param emptyCollection <code>true</code> allows an Array to be empty
      */
     public ComponentParameter(boolean emptyCollection) {
-        this(null, null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
+        this(null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
     }
     
-    public ComponentParameter(String targetName, boolean emptyCollection) {
-    	this(targetName, null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
-    }
 
     /**
      * Expect any scalar parameter of the appropriate type or the collecting type
@@ -103,7 +97,7 @@ public class ComponentParameter
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
     public ComponentParameter(Generic<?> componentValueType, boolean emptyCollection) {
-        this(null, null, new CollectionComponentParameter(componentValueType, emptyCollection));
+        this(null, new CollectionComponentParameter(componentValueType, emptyCollection));
     }
 
     /**
@@ -117,7 +111,7 @@ public class ComponentParameter
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
     public ComponentParameter(Class<?> keyType, Generic<?> componentValueType, boolean emptyCollection) {
-        this(null, null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
+        this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
     }
     
 
@@ -126,16 +120,11 @@ public class ComponentParameter
     * @param collectionParameter the collection component parameter used for finding matching components
      */
     public ComponentParameter(Parameter mapDefiningParameter) {
-    	this(null, null, mapDefiningParameter);
+    	this(null, mapDefiningParameter);
     }
 
-    
-    public ComponentParameter(String targetName, Parameter mapDefiningParameter) {
-    	this(targetName, null, mapDefiningParameter);
-    }
-
-    private ComponentParameter(String targetName, Object key, Parameter collectionParameter) {
-        super(key, targetName);
+    private ComponentParameter(Object key, Parameter collectionParameter) {
+        super(key);
         this.collectionParameter = collectionParameter;
     }
 

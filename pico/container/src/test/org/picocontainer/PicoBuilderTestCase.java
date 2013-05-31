@@ -33,6 +33,9 @@ import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -312,7 +315,7 @@ public class PicoBuilderTestCase {
                                                        Properties componentProps,
                                                        Object key,
                                                        Class impl,
-                                                       Parameter... parameters) throws PicoCompositionException {
+                                                       ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
             return null;
         }
 

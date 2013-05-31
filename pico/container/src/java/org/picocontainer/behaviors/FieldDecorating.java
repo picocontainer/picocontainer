@@ -14,9 +14,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Decorator;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -37,11 +39,11 @@ public abstract class FieldDecorating extends AbstractBehavior implements Decora
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
+            ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
             throws PicoCompositionException {
         return monitor.changedBehavior(new FieldDecorated<T>(
                 super.createComponentAdapter(monitor, lifecycle, componentProps,
-                        key, impl, parameters),
+                        key, impl, constructorParams, fieldParams, methodParams),
                 fieldClass, this));
     }
 

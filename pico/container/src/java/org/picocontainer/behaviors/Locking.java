@@ -10,12 +10,14 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -33,14 +35,14 @@ public class Locking extends AbstractBehavior {
 
     /** {@inheritDoc} **/
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                   Properties componentProps, Object key, Class<T> impl, Parameter... parameters) {
+                                                   Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
     	
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
-     	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+     	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
         
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
-        return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters)));
+        return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams)));
     }
 
     /** {@inheritDoc} **/

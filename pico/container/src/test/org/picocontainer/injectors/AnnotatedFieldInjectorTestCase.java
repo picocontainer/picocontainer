@@ -55,7 +55,7 @@ public class AnnotatedFieldInjectorTestCase {
     public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
-                new NullComponentMonitor(), false, Inject.class));
+                new NullComponentMonitor(), false, true, Inject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -66,7 +66,7 @@ public class AnnotatedFieldInjectorTestCase {
     public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
-                new NullComponentMonitor(), false, Inject.class));
+                new NullComponentMonitor(), false, true, Inject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter2 chopper = pico.getComponent(Helicopter2.class);
         assertNotNull(chopper);
@@ -101,7 +101,7 @@ public class AnnotatedFieldInjectorTestCase {
     public void testFieldInjectionWithAlternativeInjectionAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjection.AnnotatedFieldInjector(Helicopter3.class, Helicopter3.class, null,
-                new NullComponentMonitor(), false, AlternativeInject.class));
+                new NullComponentMonitor(), false, true, AlternativeInject.class));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter3 chopper = pico.getComponent(Helicopter3.class);
         assertNotNull(chopper);
@@ -174,7 +174,7 @@ public class AnnotatedFieldInjectorTestCase {
             container.getComponent(C2.class);
             fail("should have barfed");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            String expected = "C2 has unsatisfied dependency for fields [D2.d2] from parent:1<|";
+            String expected = "C2 has unsatisfied dependency for fields [ A2.d2 (field's type is D2) ] from parent:1<|";
             String actual = e.getMessage();
             actual = actual.replace(AnnotatedFieldInjectorTestCase.class.getName() + "$", "");
             assertEquals(expected, actual);

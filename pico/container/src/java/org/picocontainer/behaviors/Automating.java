@@ -13,9 +13,11 @@ import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -29,14 +31,14 @@ public class Automating extends AbstractBehavior implements Serializable {
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return monitor.changedBehavior(new Automated<T>(super.createComponentAdapter(monitor,
                                             lifecycle,
                                             componentProps,
                                             key,
                                             impl,
-                                            parameters)));
+                                            constructorParams, fieldParams, methodParams)));
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,

@@ -20,10 +20,16 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Nullable;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.ConstructorInjectionTestCase.ClassAsConstructor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -113,7 +119,7 @@ public class MethodInjectionTestCase {
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, new NullComponentMonitor(), "inject", false, null));
+        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, new NullComponentMonitor(), "inject", false, true, null));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
@@ -215,5 +221,25 @@ public class MethodInjectionTestCase {
         assertEquals(123, (int)foo.num);
         assertEquals("MethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
+    
+	@Test
+	public void testOnlyMethodParametersAreUsed() {
+		MethodInjection componentFactory = new MethodInjection();
+        
+        MethodInjection.MethodInjector injector =  (MethodInjection.MethodInjector)
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),
+        		new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, 
+        		new ConstructorParameters(new ConstantParameter("Test")),
+        		new FieldParameters[] {new FieldParameters("joe", new ConstantParameter("Test"))}, 
+        		new MethodParameters[]{new MethodParameters("", new ConstantParameter("Value")) } );
+		
+        assertTrue(injector.parameters.length == 1);
+        assertEquals(1, injector.parameters.length);
+        assertEquals(1, injector.parameters[0].getParams().length);
+        assertEquals("Value",  ((ConstantParameter)injector.parameters[0].getParams()[0]).getValue());
+        
+        
+	}
+   
 
 }

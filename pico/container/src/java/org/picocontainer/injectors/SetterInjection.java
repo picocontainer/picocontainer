@@ -13,6 +13,9 @@ package org.picocontainer.injectors;
 import org.picocontainer.*;
 import org.picocontainer.Injector;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
@@ -63,17 +66,14 @@ public class SetterInjection extends AbstractInjectionType {
      * @param componentProps
      * @param key The component's key
      * @param impl The class of the bean.
-     * @param parameters Any parameters for the setters. If null the adapter
-     *            solves the dependencies for all setters internally. Otherwise
-     *            the number parameters must match the number of the setter.
      * @return Returns a new {@link SetterInjector}.
      * @throws PicoCompositionException if dependencies cannot be solved
      */
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                           Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+                                           Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, monitor, prefix, useNames,
-                notThisOneThough != null ? notThisOneThough : "", optional, parameters);
+                notThisOneThough != null ? notThisOneThough : "", optional, methodParams);
         Injector<T> injector = monitor.newInjector(setterInjector);
         return wrapLifeCycle(injector, lifecycle);
     }
@@ -124,7 +124,7 @@ public class SetterInjection extends AbstractInjectionType {
         public SetterInjector(final Object key,
                               final Class impl,
                               ComponentMonitor monitor, String prefix, boolean useNames, String notThisOneThough,
-                              boolean optional, Parameter... parameters) throws  NotConcreteRegistrationException {
+                              boolean optional, MethodParameters... parameters) throws  NotConcreteRegistrationException {
             super(key, impl, monitor, useNames, parameters);
             this.prefix = prefix;
             this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";

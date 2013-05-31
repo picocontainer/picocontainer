@@ -26,7 +26,7 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
-import org.picocontainer.injectors.Jsr330Injection;
+import org.picocontainer.injectors.Jsr330ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.JSR330ComponentParameter;
 
@@ -117,33 +117,24 @@ public class PicoContainerJsr330TestCase extends TestCase {
     	SpareTireProvider spareTireProvider = new SpareTireProvider(pico);
     	PlainSeatProvider plainSeatProvider = new PlainSeatProvider(pico);
     	
-        pico.addComponent(Car.class, Convertible.class, 
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter(), //Auto wire all 8 arguments.
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter(), 
-        			new JSR330ComponentParameter()
-        			)
+        pico.addComponent(Car.class, Convertible.class)
                 //.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DriversSeat.class, DriversSeat.class, Parameter.DEFAULT, new NullComponentMonitor(), false, Drivers.class))
                 .addComponent(FuelTank.class)
                 .addComponent(Engine.class, V8Engine.class)
                 .addComponent(Seatbelt.class)
-                .addComponent(Cupholder.class, Cupholder.class, new JSR330ComponentParameter())
+                .addComponent(Cupholder.class, Cupholder.class)
                 .addProvider(driversSeatProvider)
                 .addProvider(plainSeatProvider)
                 .addProvider(plainTireProvider)
                 .addProvider(spareTireProvider)
                 
                 //Components Used By the providers
-                .addComponent("plainSeat", Seat.class, new JSR330ComponentParameter())
-        		.addComponent("theDriversSeat", DriversSeat.class, new JSR330ComponentParameter())
+                .addComponent("plainSeat", Seat.class)
+        		.addComponent("theDriversSeat", DriversSeat.class)
                 .addComponent("spareTire", SpareTire.class)
-                .addComponent("plainTire", Tire.class, new JSR330ComponentParameter())
+                .addComponent("plainTire", Tire.class);
                 
-                ;
+                
         
         
         

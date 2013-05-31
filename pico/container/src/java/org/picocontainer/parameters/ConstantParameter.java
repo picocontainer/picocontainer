@@ -40,17 +40,10 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
 
     private final Object value;
     
-    private final String targetName;
     
-    
-    public ConstantParameter(String targetName, Object value) {
-        this.targetName = targetName;
+    public ConstantParameter(Object value) {
 		this.value = value;
         
-    }
-
-    public ConstantParameter(Object value) {
-    	this(null, value);
     }
 
     public Resolver resolve(PicoContainer container, ComponentAdapter<?> forAdapter,
@@ -113,8 +106,9 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         return false;
     }
 
-	public String getTargetName() {
-		return targetName;
+	
+	public Object getValue() {
+		return value;
 	}
 
 }

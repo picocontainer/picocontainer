@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,11 +12,27 @@ import java.util.Set;
 
 public class InjectableMethodSelector {
 	
-	private Class<? extends Annotation>[] annotation;
+	private Class<Annotation>[] annotation;
 
 
+	@SuppressWarnings("unchecked")
 	public InjectableMethodSelector(Class<? extends Annotation>... searchingAnnotation) {
-		this.annotation = searchingAnnotation;
+		//this.annotation = searchingAnnotation;
+		
+		
+		//
+		//Add javax.inject.Inject method if its available.
+		//
+		
+		ArrayList<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>(Arrays.asList(searchingAnnotation));
+		try {
+			Class<? extends Annotation> javaxInject = (Class<? extends Annotation>) Class.forName("javax.inject.Inject");
+			annotations.add(javaxInject);
+		} catch (ClassNotFoundException e) {
+			//Ignore
+		}
+		
+		annotation = annotations.toArray(new Class[annotations.size()]);
 	}
 
 

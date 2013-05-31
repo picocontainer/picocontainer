@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
@@ -40,7 +39,7 @@ public class TypedFieldInjectionTestCase {
         Properties props = new Properties();
         props.setProperty("injectionFieldTypes", FIELD_TYPES);
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(),
-                props, Map.class, HashMap.class, Parameter.DEFAULT);
+                props, Map.class, HashMap.class, null, null, null);
 
         assertTrue(ca instanceof TypedFieldInjection.TypedFieldInjector);
 

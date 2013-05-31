@@ -18,6 +18,10 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Nullable;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
@@ -56,8 +60,8 @@ public class MethodInjection extends AbstractInjectionType {
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key,
-                                                   Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        return delegate.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+                                                   Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        return delegate.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
     }
 
     public class MethodInjectionByName extends AbstractInjectionType {
@@ -67,9 +71,10 @@ public class MethodInjection extends AbstractInjectionType {
             this.injectionMethodName = injectionMethodName;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-            return wrapLifeCycle(new MethodInjector(key, impl, monitor, injectionMethodName, useNames, parameters), lifecycle);
+            boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
+            return wrapLifeCycle(new MethodInjector(key, impl, monitor, injectionMethodName, useNames, requireConsumptionOfAllParameters, methodParams), lifecycle);
         }
     }
 
@@ -80,10 +85,12 @@ public class MethodInjection extends AbstractInjectionType {
             this.injectionMethod = injectionMethod;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
+            boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
+            
             if (injectionMethod.getDeclaringClass().isAssignableFrom(impl)) {
-                return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, monitor, injectionMethod, useNames, parameters)), lifecycle);
+                return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, monitor, injectionMethod, useNames, requireConsumptionOfAllParameters, methodParams)), lifecycle);
             } else {
                 throw new PicoCompositionException("method [" + injectionMethod + "] not on impl " + impl.getName());
             }
@@ -102,7 +109,6 @@ public class MethodInjection extends AbstractInjectionType {
      * @author J&ouml;rg Schaible
      * @author Mauro Talevi
      */
-    @SuppressWarnings("serial")
     public static class MethodInjector<T> extends MultiArgMemberInjector<T> {
         private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
         private final String methodNamePrefix;
@@ -120,11 +126,15 @@ public class MethodInjection extends AbstractInjectionType {
          *                              if the implementation is not a concrete class.
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
-        public MethodInjector(final Object key, final Class impl, ComponentMonitor monitor, String methodName, boolean useNames,
-                              Parameter... parameters) throws NotConcreteRegistrationException {
-            super(key, impl, parameters, monitor, useNames);
+        public MethodInjector(final Object key, final Class<T> impl,
+        					ComponentMonitor monitor, String methodName, 
+        					boolean useNames, boolean useAllParameters,
+                              MethodParameters... parameters) throws NotConcreteRegistrationException {
+            super(key, impl, parameters, monitor, useNames, useAllParameters);
             this.methodNamePrefix = methodName;
         }
+        
+
 
         protected List<Method> getInjectorMethods() {
         	Class<?> toIntrospect = null;
@@ -141,18 +151,20 @@ public class MethodInjection extends AbstractInjectionType {
             	throw new NullPointerException("No implementation class defined for " + this);
             }
             
-//            List<Method> methodz = new ArrayList<Method>();
-//            for (Method method : methods) {
-//                if (isInjectorMethod(method)) {
-//                    methodz.add(method);
-//                }
-//            }
+
             HashMap<String, Set<Method>> allMethodsAnalyzed = new HashMap<String,Set<Method>>();
             List<Method> methodz = new ArrayList<Method>();
             recursiveCheckInjectorMethods(toIntrospect, toIntrospect, methodz, allMethodsAnalyzed);
             return methodz;
         }
         
+        /**
+         * Goes through all methods (including private base classes) to look for potential injection methods.
+         * @param originalType
+         * @param type
+         * @param receiver
+         * @param allMethodsAnalyzed
+         */
         protected void recursiveCheckInjectorMethods(Class<?> originalType, Class<?> type, List<Method> receiver, HashMap<String, Set<Method>> allMethodsAnalyzed) {
         	if (type.isAssignableFrom(Object.class)) {
         		return;
@@ -201,10 +213,10 @@ public class MethodInjection extends AbstractInjectionType {
         @Override
         public T getComponentInstance(final PicoContainer container, final @SuppressWarnings("unused") Type into) throws PicoCompositionException {
             if (instantiationGuard == null) {
-                instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
+                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                     @Override
                     @SuppressWarnings("synthetic-access")
-                    public Object run(Object instance) {
+                    public T run(Object instance) {
                         List<Method> methods = getInjectorMethods();
                         T inst = null;
                         ComponentMonitor monitor = currentMonitor();
@@ -236,7 +248,7 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         protected Object[] getMemberArguments(PicoContainer container, final Method method, Type into) {
-            return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()), into);
+            return super.getMemberArguments(container, method, method.getGenericParameterTypes(), getBindings(method.getParameterAnnotations()), into);
         }
 
         @Override
@@ -268,6 +280,7 @@ public class MethodInjection extends AbstractInjectionType {
                 Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, methodParameters);
                 if (rv == ComponentMonitor.KEEP) {
                     long str = System.currentTimeMillis();
+                    makeAccessibleIfDesired(method);
                     rv = method.invoke(instance, methodParameters);
                     currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, rv, methodParameters);
                 }
@@ -286,7 +299,16 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
 
-        @Override
+        /**
+         * Allow override to make methods accessible as per jsr.
+         * @param method
+         */
+        protected void makeAccessibleIfDesired(Method method) {
+
+        }
+
+
+		@Override
         public void verify(final PicoContainer container) throws PicoCompositionException {
             if (verifyingGuard == null) {
                 verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -294,8 +316,13 @@ public class MethodInjection extends AbstractInjectionType {
                     public Object run(Object inst) {
                         final List<Method> methods = getInjectorMethods();
                         for (Method method : methods) {
+                        	
                             final Class[] parameterTypes = method.getParameterTypes();
-                            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
+                            
+                            AccessibleObjectParameterSet paramsForMethod = getParameterToUseForObject(method, parameters);
+                            
+                            
+                            final Parameter[] currentParameters = paramsForMethod != null ? paramsForMethod.getParams() : createDefaultParameters(parameterTypes.length);
                             for (int i = 0; i < currentParameters.length; i++) {
                                 currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
                                         new ParameterNameBinding(getParanamer(), method, i), useNames(),
@@ -310,6 +337,8 @@ public class MethodInjection extends AbstractInjectionType {
             verifyingGuard.setGuardedContainer(container);
             verifyingGuard.observe(getComponentImplementation(), null);
         }
+		
+
 
         @Override
         public String getDescriptor() {

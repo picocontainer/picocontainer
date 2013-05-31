@@ -16,6 +16,9 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Bind;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
@@ -47,18 +50,28 @@ public class NamedFieldInjection extends AbstractInjectionType {
 
 
     private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";
+	private final boolean requireConsumptionOfallParameters;
+    
+    public NamedFieldInjection() {
+    	requireConsumptionOfallParameters = true;
+    }
+    
+    public NamedFieldInjection(boolean requireConsumptionOfallParameters) {
+		this.requireConsumptionOfallParameters = requireConsumptionOfallParameters;
+    	
+    }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         String fieldNames = (String) componentProps.remove(INJECTION_FIELD_NAMES);
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, monitor, fieldNames, parameters
+        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(key, impl, monitor, fieldNames, requireConsumptionOfallParameters, fieldParams
         )), lifecycle);
     }
 
@@ -81,9 +94,11 @@ public class NamedFieldInjection extends AbstractInjectionType {
 
         public NamedFieldInjector(Object key,
                                   Class<T> impl,
-                                  ComponentMonitor monitor, String fieldNames,
-                                  Parameter... parameters) {
-            super(key, impl, monitor, true, parameters);
+                                  ComponentMonitor monitor, 
+                                  String fieldNames,
+                                  boolean requireConsumptionOfAllParameters,
+                                  FieldParameters... parameters) {
+            super(key, impl, monitor, true, requireConsumptionOfAllParameters, parameters);
             this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
         }
 

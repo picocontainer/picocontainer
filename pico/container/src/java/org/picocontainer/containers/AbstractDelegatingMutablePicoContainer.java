@@ -17,6 +17,9 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import javax.inject.Provider;
 import java.util.Properties;
@@ -48,6 +51,15 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 	     return this;
     }
 
+    
+
+	public MutablePicoContainer addComponent(Object key, Object implOrInstance,
+			ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+		getDelegate().addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
+		return this;
+	}
+	
+    
     public MutablePicoContainer addConfig(String name, Object val) {
         getDelegate().addConfig(name, val);
         return this;
@@ -135,4 +147,6 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
     public void changeMonitor(ComponentMonitor monitor) {
         getDelegate().changeMonitor(monitor);
     }
+
+    
 }

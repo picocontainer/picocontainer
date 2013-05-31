@@ -11,6 +11,9 @@ package org.picocontainer;
 
 import org.picocontainer.injectors.Provider;
 import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.Annotation;
 import java.util.Properties;
@@ -64,8 +67,8 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *                     documentation of the implementing container.
      * @param implOrInstance
      *                     the component's implementation class. This must be a concrete class (ie, a
-     *                     class that can be instantiated). Or an intance of the compoent.
-     * @param parameters   the parameters that gives the container hints about what arguments to pass
+     *                     class that can be instantiated). Or an instance of the compoent.
+     * @param constructorParameters   the parameters that gives the container hints about what arguments to pass
      *                     to the constructor when it is instantiated. Container implementations may ignore
      *                     one or more of these hints.
      *
@@ -78,16 +81,29 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     MutablePicoContainer addComponent(Object key,
                                       Object implOrInstance,
-                                      Parameter... parameters);
+                                      Parameter... constructorParameters);
+    
+    /**
+     * Longhand method for adding components when multiple injection is used
+     * @param key the object key.  Most often either a string or a Class.
+     * @param implOrInstance the component's implementation class.
+     * @param constructorParams Parameters for the constructor of the object may be 
+     * 	zero length by using {@linkplain org.picocontainer.parameters.ConstructorParameters.NO_ARG_CONSTRUCTOR}
+     * @param fieldParams an array of field parameters to override Picocontainer's Autowiring capabilities.
+     * @param methodParams an array of method parameters to override PicoContainer's autowiring capabilities.
+     * @return <code>this</code> to allow for method chaining.
+     */
+    MutablePicoContainer addComponent(Object key, Object implOrInstance, 
+    			ConstructorParameters constructorParams, 
+    			FieldParameters[] fieldParams, 
+    			MethodParameters[] methodParams);
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
      * calling  <code>addComponent(impl, impl)</code>.
      *
      * @param implOrInstance Component implementation or instance
-     *
      * @return the same instance of MutablePicoContainer
-     *
      * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addComponent(Object implOrInstance);

@@ -142,7 +142,7 @@ public class SynchronizedTestCase {
     // This is overkill - an outer sync adapter is enough
     @Test public void testSingletonCreationWithSynchronizedAdapterAndDoubleLocking() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(makeComponentAdapter(new Caching.Cached<SlowCtor>(new Synchronizing.Synchronized<SlowCtor>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class)))));
+        pico.addAdapter(makeComponentAdapter(new Caching.Cached<SlowCtor>(new Synchronizing.Synchronized<SlowCtor>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null)))));
         runConcurrencyTest(pico);
     }
 

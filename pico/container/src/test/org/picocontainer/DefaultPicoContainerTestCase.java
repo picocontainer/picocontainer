@@ -18,6 +18,9 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -192,7 +195,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 		picoContainer.addComponent(Service.class);
 		picoContainer.as(Characteristics.NO_CACHE).addAdapter(new ConstructorInjection.ConstructorInjector(TransientComponent.class,
-						TransientComponent.class, null));
+						TransientComponent.class));
 		TransientComponent c1 = picoContainer
 				.getComponent(TransientComponent.class);
 		TransientComponent c2 = picoContainer
@@ -387,7 +390,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 				ComponentMonitor monitor,
 				LifecycleStrategy lifecycle,
 				Properties componentProps, Object key,
-				Class impl, Parameter... parameters)
+				Class impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
 				throws PicoCompositionException {
 			return adapter;
 		}
@@ -844,7 +847,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     private static class MyNullComponentMonitor extends NullComponentMonitor {
 		public Injector newInjector(Injector injector) {
             if (injector.getComponentKey() == List.class) {
-                return new AbstractInjector(List.class, ArrayList.class, MyNullComponentMonitor.this, false, Parameter.DEFAULT) {
+                return new AbstractInjector(List.class, ArrayList.class, MyNullComponentMonitor.this, false) {
                     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");
@@ -924,6 +927,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     @Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
         super.testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage();
     }
+    
+    
     
 
 }

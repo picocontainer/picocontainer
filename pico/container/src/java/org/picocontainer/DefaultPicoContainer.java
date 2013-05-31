@@ -29,7 +29,10 @@ import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.DefaultConstructorParameter;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import javax.inject.Provider;
 import java.io.Serializable;
@@ -586,7 +589,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         } else {
             clazz = implOrInstance.getClass();
         }
-        return addComponent(clazz, implOrInstance, props);
+        return addComponent(clazz, implOrInstance, props, null, null, null);
     }
 
 
@@ -601,25 +604,43 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public MutablePicoContainer addComponent(final Object key,
                                              final Object implOrInstance,
-                                             final Parameter... parameters) {
-        return this.addComponent(key, implOrInstance, this.containerProperties, parameters);
+                                             final Parameter... constructorParameters) {
+    	
+    	
+        return this.addComponent(key, implOrInstance, this.containerProperties, 
+        			new ConstructorParameters(constructorParameters), null, null);
+    }
+    
+    public MutablePicoContainer addComponent(final Object key, 
+    		final Object implOrInstance, 
+    		final ConstructorParameters constructorParams, 
+    		final FieldParameters[] fieldParameters, 
+    		final MethodParameters[] methodParams) {
+    	return this.addComponent(key, implOrInstance, containerProperties, constructorParams, fieldParameters, methodParams);
     }
 
     private MutablePicoContainer addComponent(Object key,
                                               final Object implOrInstance,
                                               final Properties properties,
-                                              Parameter... parameters) {
+                                              ConstructorParameters constructorParameters, 
+                                              FieldParameters[] fieldParameters, 
+                                              MethodParameters[] methodParameters) {
+    	
+    	Parameter[] tweakedParameters = (constructorParameters != null) ? constructorParameters.getParams() : null;
+    	
         if (key instanceof Generic) {
             key = Generic.get(((Generic) key).getType());
         }
-        if (parameters != null && parameters.length == 0) {
-            parameters = null; // backwards compatibility!  solve this better later - Paul
+        if (tweakedParameters != null && tweakedParameters.length == 0) {
+            tweakedParameters = null; // backwards compatibility!  solve this better later - Paul
         }
 
         //New replacement for Parameter.ZERO.
-        if (parameters != null && parameters.length == 1 && DefaultConstructorParameter.INSTANCE.equals(parameters[0])) {
-            parameters = new Parameter[0];
+        if (tweakedParameters != null && tweakedParameters.length == 1 && DefaultConstructorParameter.INSTANCE.equals(tweakedParameters[0])) {
+            tweakedParameters = new Parameter[0];
         }
+        
+        
 
         if (implOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
@@ -628,7 +649,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                     tmpProperties,
                     key,
                     (Class<?>) implOrInstance,
-                    parameters);
+                    new ConstructorParameters(tweakedParameters), fieldParameters, methodParameters);
             AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
             throwIfPropertiesLeft(tmpProperties);
             if (lifecycleState.isStarted()) {
@@ -646,6 +667,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapter(adapter, properties);
         }
     }
+    
+    
 
     public static class DpcBindWithOrTo<T> extends DpcBindTo<T> implements BindWithOrTo<T> {
 
@@ -1301,9 +1324,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return DefaultPicoContainer.this.addComponent(key,
                     implOrInstance,
                     properties,
-                    parameters);
+                    new ConstructorParameters(parameters), null, null);
         }
 
+        @Override
+        public MutablePicoContainer addComponent(final Object key,
+                                                 final Object implOrInstance,
+                                                 final ConstructorParameters constructorParams, 
+                                                 final FieldParameters[] fieldParams, 
+                                                 final MethodParameters[] methodParams) throws PicoCompositionException {
+            return DefaultPicoContainer.this.addComponent(key,
+                    implOrInstance,
+                    properties,
+                    constructorParams, fieldParams, methodParams);
+        }        
+        
         @Override
         public MutablePicoContainer addComponent(final Object implOrInstance) throws PicoCompositionException {
             return DefaultPicoContainer.this.addComponent(implOrInstance, properties);

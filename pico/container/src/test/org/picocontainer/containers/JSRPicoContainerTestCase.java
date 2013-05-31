@@ -2,15 +2,21 @@ package org.picocontainer.containers;
 
 import static org.junit.Assert.*;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.Characteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.JSR330ComponentParameter;
+import org.picocontainer.parameters.MethodParameters;
 
 public class JSRPicoContainerTestCase {
 
@@ -246,4 +252,45 @@ public class JSRPicoContainerTestCase {
 
 	}
 
+	
+	public static class ParameterTest {
+		
+		public Integer constructorArg;
+
+		@Inject
+		public String fieldArg;
+		
+		public String methodarg;
+		
+		@Inject
+		public ParameterTest(Integer constructorArg) {
+			this.constructorArg = constructorArg;
+		}
+		
+		@Inject
+		public void applyMethodArg(String value) {
+			this.methodarg = value;
+		}
+	}
+	
+    @Test
+    public void testConstructorAndFieldParametersGetTheAppropriateParameters() {
+		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		mpc.addComponent(ParameterTest.class, ParameterTest.class, 
+				new ConstructorParameters(new ConstantParameter(new Integer(3))),
+				new FieldParameters[] {
+					new FieldParameters("fieldArg", new ConstantParameter("Arg 1"))
+				},
+				new MethodParameters[] {	
+					new MethodParameters("applyMethodArg",new ConstantParameter("Arg 2"))
+				});
+		
+    	
+		ParameterTest test = mpc.getComponent(ParameterTest.class);
+		assertNotNull(test);
+		assertEquals(3, test.constructorArg.intValue());
+		assertEquals("Arg 1", test.fieldArg);
+		assertEquals("Arg 2", test.methodarg);
+    }
+	
 }

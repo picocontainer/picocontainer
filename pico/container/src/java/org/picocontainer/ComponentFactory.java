@@ -11,6 +11,10 @@ package org.picocontainer;
 
 import java.util.Properties;
 
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
+
 /**
  * <p/>
  * A component factory is responsible for creating
@@ -40,12 +44,9 @@ public interface ComponentFactory {
      *            with this adapter. This value should be returned from a call
      *            to {@link ComponentAdapter#getComponentImplementation()} on
      *            the created adapter. Should not be null.
-     * @param parameters additional parameters to use by the component adapter
-     *            in constructing component instances. These may be used, for
-     *            example, to make decisions about the arguments passed into the
-     *            component constructor. These should be considered hints; they
-     *            may be ignored by some implementations. May be null, and may
-     *            be of zero length.
+     * @param constructorParams TODO
+     * @param fieldParams TODO
+     * @param methodParams TODO
      * @return a new component adapter based on the specified arguments. Should
      *         not return null.
      * @throws PicoCompositionException if the creation of the component adapter
@@ -57,7 +58,7 @@ public interface ComponentFactory {
                                             Properties componentProps,
                                             Object key,
                                             Class<T> impl,
-                                            Parameter... parameters) throws PicoCompositionException;
+                                            ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException;
 
     /**
      * Verification for the ComponentFactory - subject to implementation.

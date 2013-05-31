@@ -14,9 +14,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Decorator;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -31,9 +33,9 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Properties componentProps, final Object key,
-                                                   final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
+                                                   final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         return monitor.changedBehavior(new Decorated<T>(super.createComponentAdapter(monitor, lifecycle,
-                componentProps,key, impl, parameters), this));
+                componentProps,key, impl, constructorParams, fieldParams, methodParams), this));
     }
 
     @SuppressWarnings("serial")

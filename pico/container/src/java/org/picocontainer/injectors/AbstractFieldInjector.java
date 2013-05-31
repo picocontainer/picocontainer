@@ -19,14 +19,15 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.FieldParameters;
 
 @SuppressWarnings("serial")
 public abstract class AbstractFieldInjector<T> extends IterativeInjector<T> {
 
 	public AbstractFieldInjector(final Object componentKey, final Class<?> componentImplementation,
-			final ComponentMonitor monitor, final boolean useNames, final Parameter... parameters)
+			final ComponentMonitor monitor, final boolean useNames, boolean requireConsumptionOfallParameters, final FieldParameters... parameters)
 			throws NotConcreteRegistrationException {
-		super(componentKey, componentImplementation, monitor, useNames, parameters);
+		super(componentKey, componentImplementation, monitor, useNames, requireConsumptionOfallParameters, parameters);
 	}
 
 	@Override
@@ -37,7 +38,14 @@ public abstract class AbstractFieldInjector<T> extends IterativeInjector<T> {
 		for (int i = 0; i < unsatisfiableDependencyMembers.size(); i++) {
 			final AccessibleObject accessibleObject = unsatisfiableDependencyMembers.get(i);
 			final Field m = (Field) accessibleObject;
-			sb.append(m.getType().getName()).append(".").append(m.getName());
+			sb
+					.append(" ")
+					.append(m.getDeclaringClass().getName())
+					.append(".")
+					.append(m.getName())
+					.append(" (field's type is ")
+					.append(m.getType().getName())
+					.append(") ");
 		}
 		final String container1 = container.toString();
 		throw new UnsatisfiableDependenciesException(sb.toString() + "] from " + container1);

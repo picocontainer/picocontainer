@@ -17,6 +17,9 @@ import org.picocontainer.injectors.AbstractInjectionType;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -127,17 +130,17 @@ public class SimpleNamedBindingAnnotationTestCase {
         public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor monitor, LifecycleStrategy lifecycle,
             Properties componentProps, Object key,
-            Class<T> impl, Parameter ... parameters)
+            Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
             throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(
                 componentProps, Characteristics.USE_NAMES, true);
-            return new FieldInjector<T>(key, impl, parameters, monitor, useNames);
+            return new FieldInjector<T>(key, impl, null, monitor, useNames);
         }
     }
 
     public static class FieldInjector<T> extends AbstractInjector<T> {
 
-        protected FieldInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, boolean useNames) {
+        protected FieldInjector(Object key, Class<?> impl, FieldParameters[] parameters, ComponentMonitor monitor, boolean useNames) {
             super(key, impl, monitor, useNames, parameters);
         }
 

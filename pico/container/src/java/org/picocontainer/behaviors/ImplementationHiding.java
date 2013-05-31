@@ -10,12 +10,14 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -32,12 +34,12 @@ import java.util.Properties;
 public class ImplementationHiding extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                    Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+                                    Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
 
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycle,
-                                                                         componentProps, key, impl, parameters);
+                                                                         componentProps, key, impl, constructorParams, fieldParams, methodParams);
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return componentAdapter;
         }

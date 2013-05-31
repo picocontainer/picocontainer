@@ -16,12 +16,14 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -46,10 +48,10 @@ public class AsmImplementationHiding extends AbstractBehavior {
                                                    final Properties componentProps,
                                                    final Object key,
                                                    final Class<T> impl,
-                                                   final Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return super.createComponentAdapter(monitor, lifecycle,
-                                                componentProps, key, impl, parameters);
+                                                componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL);
         ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor,
@@ -57,7 +59,7 @@ public class AsmImplementationHiding extends AbstractBehavior {
                                                                          componentProps,
                                                                          key,
                                                                          impl,
-                                                                         parameters);
+                                                                         constructorParams, fieldParams, methodParams);
         return monitor.changedBehavior(new AsmHiddenImplementation<T>(componentAdapter));
     }
 

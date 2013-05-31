@@ -44,9 +44,16 @@ public interface Parameter {
 	 * <p>By specifying the default constructor in this example code, you allow PicoContainer to recognize
 	 * that HashMap(Collection) should <em>not</em> be used and avoid a CircularDependencyException.</p>
 	 */
+	@Deprecated
     Parameter[] ZERO =  new Parameter[] {DefaultConstructorParameter.INSTANCE};
     
+    
+    /**
+     * Internally used to specify auto-wiring of the components. 
+     */
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
+    
+    Object NULL_RESULT = new Object();
     
     
     /**
@@ -58,7 +65,8 @@ public interface Parameter {
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
      * @param useNames              should use parameter names for disambiguation
-     * @param binding @return <code>true</code> if the component parameter can be resolved.
+     * @param binding
+     * @return <code>true</code> if the component parameter can be resolved.
      * @since 2.8.1
      *
      */
@@ -66,6 +74,13 @@ public interface Parameter {
                      ComponentAdapter<?> injecteeAdapter, Type expectedType, NameBinding expectedNameBinding,
                      boolean useNames, Annotation binding);
 
+	/**
+	 * @todo REMOVE ME
+	 * 
+	 * @return
+	 */
+	String getTargetName();    
+    
     /**
      * Verify that the Parameter can satisfy the expected type using the container
      *
@@ -90,16 +105,7 @@ public interface Parameter {
      *
      */
     void accept(PicoVisitor visitor);
-    
-    
-    /**
-     * Retrieves the name of the object this parameters is pointing to.  Typically this will be the unique name
-     * of the {@linkplain java.lang.reflect.AccessibleObject} used in setter/field injection.  It is 
-     * typically not used for ConstructorInjection.
-     * @return null if not defined, otherwise the target accessible object name.
-     * @todo This is an ugly hack since it only applies to a portion of the inherited parameters.  Refactor it out.
-     */
-    String getTargetName();
+
 
     /**
      * Resolver is used transitarily during resolving of Parameters.

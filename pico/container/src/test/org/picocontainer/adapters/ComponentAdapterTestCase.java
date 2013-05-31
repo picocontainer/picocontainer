@@ -24,6 +24,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
 
 /**
  * Test AbstractAdapter behaviour
@@ -80,7 +81,7 @@ public class ComponentAdapterTestCase {
     @SuppressWarnings("serial")
 	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
         TestInstantiatingAdapter(Object key, Class<T> impl, Parameter... parameters) {
-            super(key, impl, new NullComponentMonitor(), false, parameters);
+            super(key, impl, new NullComponentMonitor(), false, new ConstructorParameters(parameters));
         }
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
@@ -134,7 +135,8 @@ public class ComponentAdapterTestCase {
             new TestInstantiatingAdapter<String>("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
-            assertTrue(e.getMessage().endsWith("1 is null"));
+        	assertTrue(e.getMessage().contains("Parameter 1"));
+            assertTrue(e.getMessage().endsWith(" is null"));
         }
     }
     

@@ -37,7 +37,9 @@ public class TypedFieldInjectorTestCase {
         pico.addAdapter(new TypedFieldInjection.TypedFieldInjector<Helicopter>(Helicopter.class, 
         				Helicopter.class, 
         				new NullComponentMonitor(), 
-        				Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName(), (Parameter[])null) );
+        				Integer.class.getName() + " "
+        				+ PogoStick.class.getName() 
+        				+ " " + Float.class.getName(), true) );
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -50,13 +52,14 @@ public class TypedFieldInjectorTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.setName("parent");
         pico.addAdapter(new TypedFieldInjection.TypedFieldInjector<Helicopter>(Helicopter.class, Helicopter.class, new NullComponentMonitor(),
-                Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName(), (Parameter[])null));
+                Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName(), true));
         pico.addComponent(Hulahoop.class, new Hulahoop());
         try {
             pico.getComponent(Helicopter.class);
             fail("should have barfed");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            String expected = "Helicopter has unsatisfied dependency for fields [PogoStick.pogo] from parent:2<|";
+        	e.printStackTrace();
+            String expected = "Helicopter has unsatisfied dependency for fields [ Helicopter.pogo (field's type is PogoStick) ] from parent:2<|";
             String actual = e.getMessage();
             actual = actual.replace(TypedFieldInjectorTestCase.class.getName() + "$", "");
             assertEquals(expected, actual);

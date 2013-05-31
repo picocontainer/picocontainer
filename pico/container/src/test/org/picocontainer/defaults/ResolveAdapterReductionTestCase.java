@@ -124,10 +124,11 @@ public class ResolveAdapterReductionTestCase {
         }
     }
 
-    private class CountingConstructorInjector extends ConstructorInjection.ConstructorInjector {
+    @SuppressWarnings({"serial", "rawtypes", "unchecked"})
+	private class CountingConstructorInjector extends ConstructorInjection.ConstructorInjector {
 
-        public CountingConstructorInjector(Class<?> key, Class<?> impl) {
-            super(key, impl, null);
+		public CountingConstructorInjector(Class<?> key, Class<?> impl) {
+            super(key, impl);
         }
 
         protected CtorAndAdapters getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {

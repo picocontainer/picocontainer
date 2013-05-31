@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
 
 import static junit.framework.Assert.fail;
 import static junit.framework.Assert.assertNull;
@@ -22,7 +23,7 @@ public class NamedMethodInjectorTestCase {
     @Test
     public void shouldMatchBasedOnMethodNameIfComponentAvailableAndNonOptional() {
         final String expected = "use this one pico, its key matched the method name (ish)";
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, Parameter.DEFAULT
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, null 
        );
         Windmill windmill = new DefaultPicoContainer()
                 .addAdapter(nmi)
@@ -37,7 +38,7 @@ public class NamedMethodInjectorTestCase {
     
     @Test
     public void shouldBeAmbigiousMultipleComponentAvailableOfRightTypeWithoutMatchingName() {
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), Parameter.DEFAULT
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), null
        );
         try {
             new DefaultPicoContainer()
@@ -53,7 +54,7 @@ public class NamedMethodInjectorTestCase {
 
     @Test
     public void shouldBeUnsatisfiedIfNoComponentAvailableOfTheRightTypeAndNonOptional() {
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, Parameter.DEFAULT
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, null
        );
         try {
             new DefaultPicoContainer()
@@ -69,7 +70,7 @@ public class NamedMethodInjectorTestCase {
 
     @Test
     public void withoutNameMatchWillBeOKTooIfOnlyOneOfRightTypeAndNonOptional() {
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, Parameter.DEFAULT
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, null
        );
         Windmill windmill = new DefaultPicoContainer()
                 .addAdapter(nmi)
@@ -82,7 +83,7 @@ public class NamedMethodInjectorTestCase {
 
     @Test
     public void withoutNameMatchWillBeOKTooIfNoneOfRightTypeAndOptional() {
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), true, Parameter.DEFAULT
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), true, null
        );
         Windmill windmill = new DefaultPicoContainer()
                 .addAdapter(nmi)

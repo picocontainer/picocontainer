@@ -22,7 +22,6 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.Helicopter;
 import org.picocontainer.injectors.AnnotatedMethodInjectorTestCase.AnnotatedBurp;
@@ -39,6 +38,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -55,7 +55,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         xs.alias("Annotated-Method-Injection", AnnotatedMethodInjection.AnnotatedMethodInjector.class);
         xs.alias("Annotated-Field-Injection", AnnotatedFieldInjection.AnnotatedFieldInjector.class);
         //xs.alias("Constructor-Injection", ConstructorInjection.ConstructorInjector.class);
-        xs.alias("Constructor-Injection", Jsr330Injection.ConstructorInjectorWithForcedPublicCtors.class);
+        xs.alias("Constructor-Injection", Jsr330ConstructorInjection.ConstructorInjectorWithForcedPublicCtors.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
@@ -88,7 +88,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                             new Properties(Characteristics.CDI),
                                                             Touchable.class,
                                                             SimpleTouchable.class,
-                                                            (Parameter[])null);
+                                                            null, null, null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(comp);
@@ -102,7 +102,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                                                                 Characteristics.CDI),
                                                                                             "o",
                                                                                             Object.class,
-                                                                                            (Parameter[])null);
+                                                                                            null, null, null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(component);
     }
@@ -114,7 +114,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter<HashMap> ca = cf.createComponentAdapter(cm, new NullLifecycleStrategy(), new Properties(),
-                                                        Map.class, HashMap.class, Parameter.DEFAULT);
+                                                        Map.class, HashMap.class, null, null, null);
 
         assertNotNull(ca);
         String foo = xs.toXML(ca).replace("\"", "");
@@ -134,13 +134,13 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                         new Properties(),
                                                         AnnotatedFieldInjectorTestCase.Helicopter.class,
                                                         AnnotatedFieldInjectorTestCase.Helicopter.class,
-                                                        Parameter.DEFAULT);
+                                                        null, null, null);
 
         assertNotNull(ca);
         String foo = xs.toXML(ca).replace("\"", "");
         assertTrue("Got " + foo, foo.contains("<Annotated-Field-Injection>"));
         
-        assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedFieldInjector[org.picocontainer.annotations.@Inject,javax.inject.@Inject]"));
+        assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedFieldInjector[javax.inject.@Inject,org.picocontainer.annotations.@Inject]"));
         assertTrue("Got " + ca.toString(), ca.toString().contains("org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter"));
     }
 
@@ -154,7 +154,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                         new Properties(),
                                                         AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
                                                         AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
-                                                        Parameter.DEFAULT);
+                                                        null, null, null);
 
         assertNotNull(ca);
         String foo = xs.toXML(ca).replace("\"", "");
@@ -173,6 +173,28 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedMethodInjector[org.picocontainer.annotations.@Inject,javax.inject.@Inject]"));
         assertTrue("Got " + ca.toString(), ca.toString().contains("org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp"));
+    }
+    
+    @Test
+    public void testFailedParameterNames() {
+        ComponentFactory cf = createComponentFactory();
+
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        try {
+			ComponentAdapter<AnnotatedBurp> ca = cf.createComponentAdapter(cm,
+			                                                new NullLifecycleStrategy(),
+			                                                new Properties(),
+			                                                AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
+			                                                AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
+			                                                null, null, null);
+		} catch (PicoCompositionException e) {
+			String message = e.getMessage();
+			
+			assertTrue("Got " + message, message.contains("test"));
+			assertFalse("Got " + message, message.contains("fred"));
+			assertTrue("Got " + message, message.contains(AnnotatedMethodInjectorTestCase.AnnotatedBurp.class.getName()));
+		}
+    	
     }
 
 

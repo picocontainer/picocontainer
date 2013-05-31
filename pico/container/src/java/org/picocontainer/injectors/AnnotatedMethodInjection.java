@@ -15,18 +15,31 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Named;
 
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
 import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.JSR330ComponentParameter;
+import org.picocontainer.parameters.MethodParameters;
+
+import com.thoughtworks.xstream.annotations.Annotations;
 
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated methods.
@@ -59,22 +72,23 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
      * Create a {@link org.picocontainer.injectors.SetterInjection.SetterInjector}.
      * 
      * @param monitor
-     * @param lifecycle
-     * @param componentProps
-     * @param key The component's key
-     * @param impl The class of the bean.
-     * @param parameters Any parameters for the setters. If null the adapter
-     *            solves the dependencies for all setters internally. Otherwise
-     *            the number parameters must match the number of the setter.
+	 * @param lifecycle
+	 * @param componentProps
+	 * @param key The component's key
+	 * @param impl The class of the bean.
      * @return Returns a new {@link org.picocontainer.injectors.SetterInjection.SetterInjector}.
      * @throws org.picocontainer.PicoCompositionException if dependencies cannot
      *             be solved or if the implementation is an interface or an
      *             abstract class.
      */
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                                   Object key, Class<T> impl, Parameter... parameters)
+                                                   Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
             throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations)), lifecycle);
+    	
+
+        boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
+    	
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector<T>(key, impl, methodParams, monitor, useNames, requireConsumptionOfAllParameters, injectionAnnotations)), lifecycle);
     }
 
      @SuppressWarnings("unchecked")
@@ -96,9 +110,9 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
         private transient volatile Collection<Method> injectingMethods = null;
         
 
-        public AnnotatedMethodInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                       boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
-            super(key, impl, monitor, "", useNames, parameters);
+        public AnnotatedMethodInjector(Object key, Class<T> impl, MethodParameters[] parameters, ComponentMonitor monitor,
+                                       boolean useNames, boolean useAllParameters, Class<? extends Annotation>... injectionAnnotations) {
+            super(key, impl, monitor, "", useNames, useAllParameters, parameters);
             this.injectionAnnotations = injectionAnnotations;
         }
         
@@ -143,5 +157,75 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
             }
             return sb.toString();
         }
+
+
+
+		@Override
+		protected void makeAccessibleIfDesired(final Method method) {
+			if (Modifier.isPublic(method.getModifiers())) {
+				return;
+			}
+			AccessController.doPrivileged(new PrivilegedAction<Void>() {
+
+				public Void run() {
+					method.setAccessible(true);
+					return null;
+				}
+				
+			});
+		}
+		
+       
+		protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, AccessibleObject member) {
+			Method targetMethod = (Method)member;
+			Annotation[][] allAnnotations = targetMethod.getParameterAnnotations();
+			
+			if (currentParameters.length != allAnnotations.length) {
+				throw new PicoCompositionException("Internal error, parameter lengths, not the same as the annotation lengths");
+			}
+			
+			//Make this function side-effect free.
+			Parameter[] returnValue = Arrays.copyOf(currentParameters, currentParameters.length);
+			
+			
+			for (int i = 0; i < returnValue.length; i++) {
+				//Allow composition scripts to override annotations 
+				//See comment in org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector.getParameterToUseForObject(AccessibleObject, AccessibleObjectParameterSet...)
+				//for possible issues with this.
+				if (returnValue[i] != ComponentParameter.DEFAULT && returnValue[i] != JSR330ComponentParameter.DEFAULT) {
+					continue;
+				}
+				
+				Named namedAnnotation = getNamedAnnotation(allAnnotations[i]);
+        		if (namedAnnotation != null) {
+        			returnValue[i] = new ComponentParameter(namedAnnotation.value());
+        		} else {
+            		Annotation qualifier = JSRPicoContainer.getQualifier(allAnnotations[i]);
+            		if (qualifier != null) {
+            			returnValue[i] = new ComponentParameter(qualifier.annotationType().getName());
+            		}
+        		}
+
+        		//Otherwise don't modify it.
+			}
+			
+			return returnValue;
+		}
+		
+		@Override
+		protected Parameter constructDefaultComponentParameter() {
+			return JSR330ComponentParameter.DEFAULT;
+		}
+
+
+		private Named getNamedAnnotation(Annotation[] annotations) {
+			for (Annotation eachAnnotation : annotations) {
+				if (eachAnnotation.annotationType().equals(Named.class)) {
+					return (Named) eachAnnotation;
+				}
+			}
+			return null;
+		}
+		
     }
 }

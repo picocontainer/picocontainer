@@ -9,19 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
-import org.picocontainer.annotations.Bind;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.containers.JSRPicoContainer;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.annotations.Inject;
+import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
+import static org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector.makeAnnotationNames;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -31,12 +22,25 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.lang.annotation.Annotation;
 
 import javax.inject.Named;
 
-import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
-import static org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector.makeAnnotationNames;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Bind;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.JSR330ComponentParameter;
+import org.picocontainer.parameters.MethodParameters;
 
 
 /**
@@ -49,24 +53,31 @@ import static org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMeth
 public class AnnotatedFieldInjection extends AbstractInjectionType {
 
 	private final Class<? extends Annotation>[] injectionAnnotations;
+	
 
     public AnnotatedFieldInjection(Class<? extends Annotation>... injectionAnnotations) {
         this.injectionAnnotations = injectionAnnotations;
     }
 
-    public AnnotatedFieldInjection() {
-        this(Inject.class, getInjectionAnnotation("javax.inject.Inject"));
+    @SuppressWarnings("unchecked")
+	public AnnotatedFieldInjection() {
+    	this(getInjectionAnnotation("javax.inject.Inject"), getInjectionAnnotation("org.picocontainer.annotations.Inject"));
     }
+    
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, monitor,
-                useNames, injectionAnnotations)), lifecycle);
+        
+        boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
+        
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedFieldInjector(key, impl, fieldParams, monitor,
+                useNames, requireConsumptionOfAllParameters, injectionAnnotations)), lifecycle);
     }
 
     /**
@@ -78,10 +89,10 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
         private final Class<? extends Annotation>[] injectionAnnotations;
         private String injectionAnnotationNames;
 
-        public AnnotatedFieldInjector(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                      boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
+        public AnnotatedFieldInjector(Object key, Class<T> impl, FieldParameters[] parameters, ComponentMonitor monitor,
+                                      boolean useNames, boolean requireConsumptionOfAllParameters, Class<? extends Annotation>... injectionAnnotations) {
 
-            super(key, impl, monitor, useNames, parameters);
+            super(key, impl, monitor, useNames, requireConsumptionOfAllParameters, parameters);
             this.injectionAnnotations = injectionAnnotations;
         }
 
@@ -96,7 +107,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
                 for (final Field field : fields) {
                     if (isAnnotatedForInjection(field)) {
                         injectionMembers.add(field);
-                        typeList.add(box(field.getType()));
+                        typeList.add(box(field.getGenericType()));
                         bindingIds.add(getBinding(field));
                     }
                 }
@@ -118,7 +129,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
 
         protected final boolean isAnnotatedForInjection(Field field) {
             for (Class<? extends Annotation> injectionAnnotation : injectionAnnotations) {
-                if (field.getAnnotation(injectionAnnotation) != null) {
+                if (field.isAnnotationPresent(injectionAnnotation)) {
                     return true;
                 }
             }
@@ -133,6 +144,16 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
                 }
             });
         }
+        
+        /**
+         * Allows Different swapping of types.
+         * @return
+         */
+        @Override
+        protected Parameter constructDefaultComponentParameter() {
+        	return JSR330ComponentParameter.DEFAULT;
+        }
+                
 
         /**
          * Performs the actual injection.
@@ -140,40 +161,56 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
         @Override
         protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
                 throws IllegalAccessException, InvocationTargetException {
-            Field field = (Field) member;
-            field.setAccessible(true);
+            final Field field = (Field) member;
+            
+            AccessController.doPrivileged(new PrivilegedAction<Void>() {
+				public Void run() {
+		            field.setAccessible(true);
+		            return null;
+				}
+            });
+            
             field.set(componentInstance, toInject);
             return null;
         }
         
         /**
-         * Allows swapping of parameter to a component parameter specified by {@linkplain javax.inject.Named}
+         * Allows swapping of parameter to a component parameter specified by {@linkplain javax.inject.Named} annotations
+         * or different JSR330-based qualifiers
          * <p>{@inheritDoc}</p>
          */
         @Override
-        protected Parameter getParameterToUseForObject(final AccessibleObject targetInjectionMember, final Parameter currentParameter) {
+        protected AccessibleObjectParameterSet getParameterToUseForObject(final AccessibleObject targetInjectionMember, final AccessibleObjectParameterSet... currentParameter) {
+        	if (currentParameter == null || currentParameter.length == 0) {
+        		return null;
+        	}
+        	
+        	//Field injection only handles one parameter per accessible object.
+        	AccessibleObjectParameterSet targetParameter = currentParameter[0];
         	
         	//Allow composition script operator to override what's in code.  
         	//TODO:  Is this a good idea?  @Named is a horrible way to lock in the code, so this provides
         	//flexibility if you're stuck with code you can't change.... but it might
         	//make for some wild bugs where maintenance programmers only see the @Named annotation
         	//and look no further.  -MR
-        	if (currentParameter == ComponentParameter.DEFAULT) {
+			Field targetField = (Field)targetInjectionMember;
+        	if (targetParameter.getParams()[0] == ComponentParameter.DEFAULT || targetParameter.getParams()[0] == JSR330ComponentParameter.DEFAULT) {
         		if (targetInjectionMember.isAnnotationPresent(Named.class)) {
         			Named annotation = targetInjectionMember.getAnnotation(Named.class);
-        			ComponentParameter newParameter = new ComponentParameter(  ((Field)targetInjectionMember).getName(), annotation.value());
-        			return newParameter;
+        					
+        			ComponentParameter newParameter = new ComponentParameter(annotation.value());
+        			return new AccessibleObjectParameterSet(targetField.getDeclaringClass(), targetField.getName(), newParameter);
         		}
         		
         		Annotation qualifier = JSRPicoContainer.getQualifier(targetInjectionMember.getAnnotations());
         		if (qualifier != null) {
-        			ComponentParameter newParameter = new ComponentParameter(  ((Field)targetInjectionMember).getName(), qualifier.annotationType().getName());
-        			return newParameter;
+        			ComponentParameter newParameter = new ComponentParameter(qualifier.annotationType().getName());
+        			return new AccessibleObjectParameterSet(targetField.getDeclaringClass(), targetField.getName(), newParameter);
         		}
         		
         	}
         	
-        	return currentParameter;
+        	return targetParameter;
     	}        
         
 

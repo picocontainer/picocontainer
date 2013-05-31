@@ -30,6 +30,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector.AmbiguousComponentResolutionException;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
 
 import com.googlecode.jtype.Generic;
 
@@ -143,7 +144,7 @@ public class AbstractInjectorTestCase {
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
                                   boolean useNames) {
-            super(key, impl, monitor, useNames, parameters);
+            super(key, impl, monitor, useNames, new ConstructorParameters(parameters));
         }
 
         @Override

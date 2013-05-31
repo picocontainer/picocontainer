@@ -17,6 +17,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -142,10 +143,11 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Object key, Class<?> implementation, Object instance, Properties properties,
-                           InjectionType reinjectionType) {
+                           InjectionType reinjectionType, MethodParameters... methodParams) {
         Reinjection reinjection = new Reinjection(reinjectionType, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
-                monitor, NO_LIFECYCLE, properties, key, implementation, null);
+                monitor, NO_LIFECYCLE, properties, key, implementation, null, null, 
+                (methodParams != null && methodParams.length > 0) ? methodParams : null);
         return injector.decorateComponentInstance(parent, ComponentAdapter.NOTHING.class, instance);
     }
 

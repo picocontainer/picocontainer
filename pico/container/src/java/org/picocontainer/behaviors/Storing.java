@@ -13,12 +13,14 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentLifecycle;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.ThreadLocalMapObjectReference;
 
 import java.io.Serializable;
@@ -38,15 +40,15 @@ public class Storing extends AbstractBehavior {
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
     public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                       final Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+                                       final Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
-            return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+            return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
 
         return monitor.changedBehavior(new Stored<T>(
-                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters), threadLocalMapObjectReference));
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), threadLocalMapObjectReference));
 
     }
 

@@ -25,6 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -49,7 +50,7 @@ public abstract class AbstractComponentFactoryTest {
                                                                                                 Characteristics
                                                                                                     .CDI),
                                                                                             Touchable.class,
-                                                                                            SimpleTouchable.class);
+                                                                                            SimpleTouchable.class, null, null, null);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
@@ -62,7 +63,7 @@ public abstract class AbstractComponentFactoryTest {
                                                             new Properties(Characteristics
                                                                 .CDI),
                                                             Touchable.class,
-                                                            SimpleTouchable.class);
+                                                            SimpleTouchable.class, null, null, null);
 
         picoContainer.addAdapter(componentAdapter);
 
@@ -77,7 +78,7 @@ public abstract class AbstractComponentFactoryTest {
                                                             new Properties(Characteristics
                                                                 .CDI),
                                                             Touchable.class,
-                                                            SimpleTouchable.class);
+                                                            SimpleTouchable.class, null, null, null);
 
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);

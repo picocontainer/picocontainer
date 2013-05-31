@@ -20,6 +20,9 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -43,29 +46,30 @@ public class CompositeInjection extends AbstractInjectionType {
                                                           Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
-                                                          Parameter... parameters) throws PicoCompositionException {
+                                                          ConstructorParameters constructorParams, 
+                                                          FieldParameters[] fieldParams, 
+                                                          MethodParameters[] methodParams) throws PicoCompositionException {
 
-        Injector[] injectors = new Injector[injectionTypes.length];
+        @SuppressWarnings("unchecked")
+		Injector<T>[] injectors = new Injector[injectionTypes.length];
 
         for (int i = 0; i < injectionTypes.length; i++) {
             InjectionType injectionType = injectionTypes[i];
-            injectors[i] = (Injector) injectionType.createComponentAdapter(monitor,
-                    lifecycle, componentProps, key, impl, parameters);
+            injectors[i] = (Injector<T>) injectionType.createComponentAdapter(monitor,
+                    lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
 
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new CompositeInjector(key, impl, parameters,
-                monitor, useNames, injectors)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new CompositeInjector<T>(key, impl, monitor, useNames, injectors)), lifecycle);
     }
 
-    @SuppressWarnings("serial")
     public static class CompositeInjector<T> extends AbstractInjector<T> {
 
         private final Injector<T>[] injectors;
 
-        public CompositeInjector(Object key, Class<?> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                 boolean useNames, Injector... injectors) {
-            super(key, impl, monitor, useNames, parameters);
+        public CompositeInjector(Object key, Class<?> impl, ComponentMonitor monitor,
+                                 boolean useNames, Injector<T>... injectors) {
+            super(key, impl, monitor, useNames);
             this.injectors = injectors;
         }
 

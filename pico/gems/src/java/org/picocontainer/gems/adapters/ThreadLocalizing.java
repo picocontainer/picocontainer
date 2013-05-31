@@ -18,12 +18,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.ThreadLocalReference;
 
 import java.lang.reflect.InvocationTargetException;
@@ -116,13 +118,13 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-            final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
+            final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         if (ensureThreadLocal) {
             return new ThreadLocalized<T>(super.createComponentAdapter(
-                    monitor, lifecycle, componentProps, key, impl, parameters), proxyFactory);
+                    monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), proxyFactory);
         } else {
             return new Caching.Cached<T>(super.createComponentAdapter(
-                    monitor, lifecycle, componentProps, key, impl, parameters), new ThreadLocalReference<Storing.Stored.Instance<T>>());
+                    monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), new ThreadLocalReference<Storing.Stored.Instance<T>>());
         }
     }
 

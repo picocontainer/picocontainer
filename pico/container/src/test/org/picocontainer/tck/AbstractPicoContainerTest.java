@@ -291,8 +291,8 @@ public abstract class AbstractPicoContainerTest {
     /* Important! Nanning really, really depends on this! */
     @Test public void testComponentAdapterRegistrationOrderIsMaintained() throws NoSuchMethodException {
 
-        ConstructorInjection.ConstructorInjector c1 = new ConstructorInjection.ConstructorInjector<Object>("1", Object.class, null);
-        ConstructorInjection.ConstructorInjector c2 = new ConstructorInjection.ConstructorInjector<String>("2", String.class, null);
+        ConstructorInjection.ConstructorInjector c1 = new ConstructorInjection.ConstructorInjector<Object>("1", Object.class);
+        ConstructorInjection.ConstructorInjector c2 = new ConstructorInjection.ConstructorInjector<String>("2", String.class);
 
         MutablePicoContainer picoContainer = createPicoContainer(null);
         picoContainer.addAdapter(c1).addAdapter(c2);
@@ -734,17 +734,17 @@ public abstract class AbstractPicoContainerTest {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter =
-            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashMap>(HashMap.class, HashMap.class, null))
+            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashMap>(HashMap.class, HashMap.class))
                 .getComponentAdapter(HashMap.class, (NameBinding) null);
         ComponentAdapter hashSetAdapter =
-            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashSet>(HashSet.class, HashSet.class, null))
+            parent.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<HashSet>(HashSet.class, HashSet.class))
                 .getComponentAdapter(HashSet.class, (NameBinding) null);
         InstanceAdapter instanceAdapter = new InstanceAdapter<String>(String.class, "foo",
                                                               new NullLifecycleStrategy(),
                                                               new NullComponentMonitor());
         ComponentAdapter stringAdapter = parent.as(getProperties()).addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
-            child.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<ArrayList>(ArrayList.class, ArrayList.class, null))
+            child.as(getProperties()).addAdapter(new ConstructorInjection.ConstructorInjector<ArrayList>(ArrayList.class, ArrayList.class))
                 .getComponentAdapter(ArrayList.class, (NameBinding) null);
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
@@ -959,7 +959,7 @@ public abstract class AbstractPicoContainerTest {
     
     @Test
     public void testIntegrationWithConverters() {        
-        MutablePicoContainer mpc = new DefaultPicoContainer();
+        MutablePicoContainer mpc = createPicoContainer(null);
         if (!(mpc instanceof Converting)) {
             System.out.println("Skipping 'testIntegrationWithConverters' " +
             		"because pico implementation is not Converting");
@@ -972,5 +972,6 @@ public abstract class AbstractPicoContainerTest {
         ConverterSample result = mpc.getComponent(ConverterSample.class);
         assertEquals(42, result.value);
     }
+    
     
 }

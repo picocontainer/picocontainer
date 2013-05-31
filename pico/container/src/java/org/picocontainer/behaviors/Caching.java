@@ -12,10 +12,12 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.LifecycleStrategy;
 
@@ -31,13 +33,13 @@ import java.util.Properties;
 public class Caching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-			Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+			Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
 		if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
-			return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+			return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 		}
 		removePropertiesIfPresent(componentProps, Characteristics.CACHE);
         return monitor.changedBehavior(new Cached<T>(
-                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters), new SimpleReference<Storing.Stored.Instance<T>>())
+                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), new SimpleReference<Storing.Stored.Instance<T>>())
        );
 	}
 

@@ -8,6 +8,9 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
@@ -38,8 +41,8 @@ public class NamedMethodInjection extends AbstractInjectionType {
         this.optional = optional;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, monitor, prefix, optional, parameters)), lifecycle);
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, monitor, prefix, optional, methodParams)), lifecycle);
     }
 
     @SuppressWarnings("serial")
@@ -47,19 +50,19 @@ public class NamedMethodInjection extends AbstractInjectionType {
 
         private final boolean optional;
 
-        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, boolean optional, Parameter... parameters) {
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, boolean optional, MethodParameters... parameters) {
             this(key, impl, monitor, "set", optional, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, Parameter... parameters) {
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, MethodParameters... parameters) {
             this(key, impl, monitor, "set", true, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, Parameter... parameters) {
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, MethodParameters... parameters) {
             this(key, impl, monitor, prefix, true, parameters);
         }
 
-        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, boolean optional, Parameter... parameters) {
+        public NamedMethodInjector(Object key, Class<T> impl, ComponentMonitor monitor, String prefix, boolean optional, MethodParameters... parameters) {
             super(key, impl, monitor, prefix, true, "", false, parameters);
             this.optional = optional;
         }

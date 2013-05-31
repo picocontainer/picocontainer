@@ -11,6 +11,9 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.Annotation;
 
@@ -31,7 +34,7 @@ public class Injector {
      */
 
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, Parameter... parameters) {
-        return new ConstructorInjection.ConstructorInjector<T>(key, impl, parameters);
+        return new ConstructorInjection.ConstructorInjector<T>(key, impl, new ConstructorParameters(parameters));
     }
 
     /**
@@ -49,7 +52,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames,
                                                       Parameter... parameters) {
-        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, parameters);
+        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, new ConstructorParameters(parameters));
     }
 
     /**
@@ -68,7 +71,7 @@ public class Injector {
      */
     public static <T> ComponentAdapter<T> constructor(final Object key, final Class<T> impl, ComponentMonitor monitor, boolean useNames, boolean rememberChosenCtor,
                                                       Parameter... parameters) {
-        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, rememberChosenCtor, key, impl, parameters);
+        return new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, rememberChosenCtor, key, impl, new ConstructorParameters(parameters) );
     }
 
     /**
@@ -82,9 +85,9 @@ public class Injector {
      * @param injectionAnnotations
      * @return annotated field injector instance.
      */
-    public static <T> ComponentAdapter<T> annotatedField(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
+    public static <T> ComponentAdapter<T> annotatedField(Object key, Class<T> impl, FieldParameters[] parameters, ComponentMonitor monitor,
                                                          boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
-        return monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations));
+        return monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, true, injectionAnnotations));
     }
 
     /**
@@ -98,9 +101,9 @@ public class Injector {
      * @param injectionAnnotations
      * @return method injector instance.
      */
-    public static <T> ComponentAdapter<T> annotatedMethod(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
-                                                          boolean useNames, Class<? extends Annotation>... injectionAnnotations) {
-        return monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, injectionAnnotations));
+    public static <T> ComponentAdapter<T> annotatedMethod(Object key, Class<T> impl, MethodParameters[] parameters, ComponentMonitor monitor,
+                                                          boolean useNames, boolean useAllParameters,  Class<? extends Annotation>... injectionAnnotations) {
+        return monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, useAllParameters, injectionAnnotations));
 
     }
 
@@ -116,9 +119,9 @@ public class Injector {
      * @param injectors
      * @return composite injector instance.
      */
-    public static <T> ComponentAdapter<T> composite(Object key, Class<T> impl, Parameter[] parameters, ComponentMonitor monitor,
+    public static <T> ComponentAdapter<T> composite(Object key, Class<T> impl, ComponentMonitor monitor,
                                              boolean useNames, org.picocontainer.Injector... injectors) {
-        return monitor.newInjector(new CompositeInjection.CompositeInjector<T>(key, impl, parameters, monitor, useNames, injectors));
+        return monitor.newInjector(new CompositeInjection.CompositeInjector<T>(key, impl, monitor, useNames, injectors));
     }
 
 
@@ -136,8 +139,8 @@ public class Injector {
      *
      */
     public static <T> ComponentAdapter<T> method(final Object key, final Class<T> impl, ComponentMonitor monitor, String methodName, boolean useNames,
-                                                 Parameter... parameters) {
-        return monitor.newInjector(new MethodInjection.MethodInjector<T>(key, impl, monitor, methodName, useNames, parameters));
+    			boolean requireConsumptionOfAllParameters, MethodParameters... parameters) {
+        return monitor.newInjector(new MethodInjection.MethodInjector<T>(key, impl, monitor, methodName, useNames, requireConsumptionOfAllParameters, parameters));
     }
 
     /**
@@ -152,9 +155,9 @@ public class Injector {
      * @return MultiInjector component adapter instance.
      */
 
-    public static <T> ComponentAdapter<T> multi(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames,
-                                                Parameter... parameters) {
-        return monitor.newInjector(new MultiInjection.MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, parameters));
+    public static <T> ComponentAdapter<T> multi(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames, boolean requireConsumptionOfallParameters,
+                                                ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+        return monitor.newInjector(new MultiInjection.MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, requireConsumptionOfallParameters, constructorParams, fieldParams, methodParams));
     }
 
     /**
@@ -168,8 +171,8 @@ public class Injector {
      * @return named field component injector instance.
      */
     public static <T> ComponentAdapter<T> namedField(Object key, Class<T> impl, ComponentMonitor monitor, String fieldNames,
-                                                     Parameter... parameters) {
-        return monitor.newInjector(new NamedFieldInjection.NamedFieldInjector<T>(key, impl, monitor, fieldNames, parameters));
+                                                     FieldParameters... parameters) {
+        return monitor.newInjector(new NamedFieldInjection.NamedFieldInjector<T>(key, impl, monitor, fieldNames, true, parameters));
     }
 
     /**
@@ -185,9 +188,9 @@ public class Injector {
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
-    public static <T> ComponentAdapter<T> setter(final Object key, final Class<T> impl, ComponentMonitor monitor, String prefix, boolean useNames,
-                                                 Parameter... parameters) {
-        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, prefix, useNames, "", false, parameters));
+    public static <T> ComponentAdapter<T> setter(final Object key, final Class<T> impl, ComponentMonitor monitor, String prefix, boolean useNames, boolean requireConsumptionOfAllParameters,
+                                                 MethodParameters... parameters) {
+        return monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, prefix, useNames, "", requireConsumptionOfAllParameters, parameters));
     }
 
     /**
@@ -201,7 +204,7 @@ public class Injector {
      * @return typed field injector instance.
      */
     public static <T> ComponentAdapter<T> typedField(Object key, Class<T> impl, ComponentMonitor monitor, String classNames,
-                                                     Parameter... parameters) {
-        return monitor.newInjector(new TypedFieldInjection.TypedFieldInjector<T>(key, impl, monitor, classNames, parameters));
+                                                     FieldParameters... parameters) {
+        return monitor.newInjector(new TypedFieldInjection.TypedFieldInjector<T>(key, impl, monitor, classNames, true, parameters));
     }
 }

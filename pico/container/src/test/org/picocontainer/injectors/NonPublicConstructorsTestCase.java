@@ -28,7 +28,7 @@ public final class NonPublicConstructorsTestCase {
         ComponentAdapter<DummyNotPublicConstructor> dummyComponentAdapter =
                 new ConstructorInjector<DummyNotPublicConstructor>(
                         DummyNotPublicConstructor.class,
-                        DummyNotPublicConstructor.class, null)
+                        DummyNotPublicConstructor.class)
                 .withNonPublicConstructors();
 
         container.addAdapter(dummyComponentAdapter);
@@ -44,7 +44,7 @@ public final class NonPublicConstructorsTestCase {
         ComponentAdapter<DummyNotPublicClass> dummyComponentAdapter =
                 new ConstructorInjector<DummyNotPublicClass>(
                         DummyNotPublicClass.class.getCanonicalName(),
-                        DummyNotPublicClass.class, null)
+                        DummyNotPublicClass.class)
                 .withNonPublicConstructors();
 
         container.addAdapter(dummyComponentAdapter);
@@ -60,7 +60,7 @@ public final class NonPublicConstructorsTestCase {
         ComponentAdapter<DummyProtectedConstructor> dummyComponentAdapter =
                 new ConstructorInjector<DummyProtectedConstructor>(
                         DummyProtectedConstructor.class,
-                        DummyProtectedConstructor.class, null)
+                        DummyProtectedConstructor.class)
                 .withNonPublicConstructors();
 
 

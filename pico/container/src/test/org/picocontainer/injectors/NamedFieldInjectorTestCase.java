@@ -40,7 +40,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByType() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Helicopter>(Helicopter.class, Helicopter.class, new NullComponentMonitor(), " aa bb cc pogo dd ", (Parameter[])null))
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Helicopter>(Helicopter.class, Helicopter.class, new NullComponentMonitor(), " aa bb cc pogo dd ", true))
          	.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -49,7 +49,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByName() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Biplane>(Biplane.class, Biplane.class, new NullComponentMonitor(), " aa wing1 cc wing2 dd ", (Parameter[])null));
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Biplane>(Biplane.class, Biplane.class, new NullComponentMonitor(), " aa wing1 cc wing2 dd ", true));
         pico.addConfig("wing1", "hello");
         pico.addConfig("wing2", "goodbye");
         Biplane biplane = pico.getComponent(Biplane.class);
@@ -65,12 +65,12 @@ public class NamedFieldInjectorTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.setName("parent");
         pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Monoplane>(Monoplane.class, Monoplane.class,
-                new NullComponentMonitor(), " aa wing1 cc wing2 dd ", (Parameter[])null));
+                new NullComponentMonitor(), " aa wing1 cc wing2 dd ", true));
         try {
             pico.getComponent(Monoplane.class);
             fail("should have barfed");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            String expected = "Monoplane has unsatisfied dependency for fields [String.wing1] from parent:1<|";
+            String expected = "Monoplane has unsatisfied dependency for fields [ Monoplane.wing1 (field's type is String) ] from parent:1<|";
             String actual = e.getMessage().replace("java.lang.","");
             actual = actual.replace(NamedFieldInjectorTestCase.class.getName() + "$", "");
             assertEquals(expected, actual);

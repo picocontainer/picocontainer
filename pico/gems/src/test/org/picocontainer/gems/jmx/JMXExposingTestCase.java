@@ -32,7 +32,6 @@ import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
@@ -61,7 +60,7 @@ public class JMXExposingTestCase  {
         }});
 
         final ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, (Parameter[])null);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null, null, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null,null));
     }
@@ -74,7 +73,7 @@ public class JMXExposingTestCase  {
         final Properties rc = new Properties(NO_JMX);
 
         final ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, (Parameter[])null);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null, null, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null,null));
     }

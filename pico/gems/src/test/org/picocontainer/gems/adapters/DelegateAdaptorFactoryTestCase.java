@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -39,7 +38,7 @@ public class DelegateAdaptorFactoryTestCase {
         Properties getSizeProps = DelegateInjectionType.createDelegateProprties(testMap, "size");
         
         ComponentAdapter<Integer> ca = factory.createComponentAdapter(monitor, new StartableLifecycleStrategy(monitor),
-        		getSizeProps, Integer.class, Integer.class, Parameter.DEFAULT);
+        		getSizeProps, Integer.class, Integer.class, null, null, null);
         
         assertTrue(ca instanceof DelegateMethodAdapter);
         

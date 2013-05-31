@@ -23,6 +23,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
 
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.AnnotationParanamer;
@@ -30,7 +31,8 @@ import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 /**
- * Injection will happen iteratively after component instantiation
+ * Injection will happen iteratively after component instantiation.  This class deals with injection types that only
+ * have one argument.  Examples would be single-argument methods such as setters, or an object's fields.
  */
 @SuppressWarnings("serial")
 public abstract class IterativeInjector<T> extends AbstractInjector<T> {
@@ -44,6 +46,8 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private transient Paranamer paranamer;
     private volatile transient boolean initialized;
+
+	private boolean requireConsumptionOfAllParameters;
     
     
     
@@ -60,9 +64,31 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public IterativeInjector(final Object key, final Class<?> impl, ComponentMonitor monitor, boolean useNames,
-                             Parameter... parameters) throws  NotConcreteRegistrationException {
-        super(key, impl, monitor, useNames, parameters);
+                             AccessibleObjectParameterSet... parameters) throws  NotConcreteRegistrationException {
+        this(key, impl, monitor, useNames, true, parameters);
     }
+    
+    /**
+     * Constructs a IterativeInjector for use in a composite injection environment.
+     *
+     * @param key            the search key for this implementation
+     * @param impl the concrete implementation
+     * @param monitor                 the component monitor used by this addAdapter
+     * @param useNames                use argument names when looking up dependencies
+     * @param requireConsumptionOfAllParameters If set to true, then all parameters (ie: ComponentParameter/ConstantParameter) must be
+     * 		used by this injector.  If set to false, then no error occurs if all parameters don't match this type of injection.  It is assumed
+     * 		that another type of injection will be using them. 
+     * @param parameters              the parameters to use for the initialization
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
+     */
+    public IterativeInjector(final Object key, final Class<?> impl, ComponentMonitor monitor, boolean useNames, final boolean requireConsumptionOfAllParameters,
+    		AccessibleObjectParameterSet... parameters) throws  NotConcreteRegistrationException {
+    	super(key, impl, monitor, useNames, parameters);
+		this.requireConsumptionOfAllParameters = requireConsumptionOfAllParameters;
+    }
+
 
     protected Constructor<?> getConstructor()  {
         Object retVal = AccessController.doPrivileged(new PrivilegedAction<Object>() {
@@ -86,14 +112,14 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     
 
     /**
-     * Paired parameter/accessible object
+     * Key-Value Paired parameter/accessible object
      * @author Michael Rimov
      *
      */
     public static class ParameterToAccessibleObjectPair {
 		private final AccessibleObject accessibleObject;
     	
-    	private final Parameter parameter;
+    	private final AccessibleObjectParameterSet parameter;
     	
     	
     	/**
@@ -101,7 +127,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     	 * @param accessibleObject
     	 * @param parameter set to null if there was no resolution for this accessible object.
     	 */
-    	public ParameterToAccessibleObjectPair(AccessibleObject accessibleObject, Parameter parameter) {
+    	public ParameterToAccessibleObjectPair(AccessibleObject accessibleObject, AccessibleObjectParameterSet parameter) {
 			super();
 			this.accessibleObject = accessibleObject;
 			this.parameter = parameter;
@@ -111,12 +137,12 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 			return accessibleObject;
 		}
 
-		public Parameter getParameter() {
+		public AccessibleObjectParameterSet getAccessibleObjectParameters() {
 			return parameter;
 		}
 
     	public boolean isResolved() {
-    		return parameter != null;
+    		return parameter != null && parameter.getParams() != null;
     	}
     	
     }
@@ -132,10 +158,8 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
 
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
-
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes.length);
-        validateParametersAreEitherAllNoTargetOrAllTarget(currentParameters);
-        final Set<Integer> nonMatchingParameterPositions = matchParameters(container, matchingParameterList, currentParameters);
+        
+        final Set<AccessibleObjectParameterSet> notMatchingParameters = matchParameters(container, matchingParameterList, parameters);
 
         final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
         final List<AccessibleObject> unsatisfiableDependencyMembers = new ArrayList<AccessibleObject>();
@@ -149,53 +173,68 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
         	unsatisfiedDependencies(container, unsatisfiableDependencyTypes, unsatisfiableDependencyMembers);
-        } else if (nonMatchingParameterPositions.size() > 0) {
-            throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
+        } else if (notMatchingParameters.size() > 0 && this.requireConsumptionOfAllParameters) {
+            throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + notMatchingParameters.toString());
         }
         return matchingParameterList.toArray(new ParameterToAccessibleObjectPair[matchingParameterList.size()]);
     }
 
         
-    protected void validateParametersAreEitherAllNoTargetOrAllTarget(final Parameter[] currentParameters) {
-		boolean pass = true;
-		boolean firstHasTarget = false;
-		if (currentParameters.length > 0) {
-			firstHasTarget = (currentParameters[0].getTargetName() != null);
-		}
-		
-		for (Parameter eachParameter : currentParameters) {
-			pass = !(firstHasTarget ^ (eachParameter.getTargetName() != null));
-		}
-		
-	}
+
 
 	/**
      * Returns a set of integers that point to where in the Parameter array unmatched parameters exist.
      * @param container
      * @param matchingParameterList
-     * @param currentParameters {@link org.picocontainer.Parameter} for the current object being instantiated.
+     * @param assignedParameters {@link org.picocontainer.Parameter} for the current object being instantiated.
      * @return set of integers pointing to the index in the parameter array things went awry.
      */
-    private Set<Integer> matchParameters(PicoContainer container, List<Object> matchingParameterList, Parameter... currentParameters) {
+    private Set<AccessibleObjectParameterSet> matchParameters(PicoContainer container, List<Object> matchingParameterList, AccessibleObjectParameterSet... assignedParameters) {
     	
-        Set<Integer> unmatchedParameters = new HashSet<Integer>();
-        for (int i = 0; i < currentParameters.length; i++) {
+        Set<AccessibleObjectParameterSet> unmatchedParameters = new HashSet<AccessibleObjectParameterSet>();
+        //final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes.length);
+
+       
+        
+        /*for (int i = 0; i < currentParameters.length; i++) {
             if (!matchParameter(container, matchingParameterList, currentParameters[i])) {
                 unmatchedParameters.add(i);
             }
+        }*/
+        
+        for (AccessibleObject eachObject : injectionMembers) {
+        	AccessibleObjectParameterSet currentParameter =   getParameterToUseForObject(eachObject, assignedParameters);
+        	
+        	if (currentParameter == null) {
+        		currentParameter = this.constructAccessibleObjectParameterSet(eachObject,new Parameter[] {constructDefaultComponentParameter()});
+        	} 
+        	
+        	if (!matchParameter(container, matchingParameterList, currentParameter)) {
+        		unmatchedParameters.add(currentParameter);
+        	}
         }
         
         return unmatchedParameters;
     }
 
-    private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
+    private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, AccessibleObjectParameterSet parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
+        	
+        	
             Object o = matchingParameterList.get(j);
-            AccessibleObject targetInjectionMember = getTargetInjectionMember(injectionMembers, j, parameter);
-            Parameter paramToUse = getParameterToUseForObject(targetInjectionMember, parameter);
+            AccessibleObject targetInjectionMember = getTargetInjectionMember(injectionMembers, j, parameter.getParams()[0]);
+            if (targetInjectionMember == null) {
+            	return false;
+            }
+            
+            AccessibleObjectParameterSet paramToUse = getParameterToUseForObject(targetInjectionMember, parameter);
+            if (paramToUse == null) {
+            	paramToUse = constructAccessibleObjectParameterSet(targetInjectionMember);
+            }
+            
             try {
                 if (o == null
-                        && paramToUse.resolve(container, this, null, injectionTypes[j],
+                        && paramToUse.getParams()[0].resolve(container, this, null, injectionTypes[j],
                                                    makeParameterNameImpl(targetInjectionMember),
                                                    useNames(), bindings[j]).isResolved()) {
                     matchingParameterList.set(j, new ParameterToAccessibleObjectPair(targetInjectionMember, paramToUse));
@@ -210,18 +249,18 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return false;
     }
 
-    /**
-     * Allow swapping of parameters by derived classes.  Default implementation always returns the current parameter.
-     * @param targetInjectionMember
-     * @param currentParameter
-     * @return
-     */
-    protected Parameter getParameterToUseForObject(AccessibleObject targetInjectionMember, Parameter currentParameter) {
-    	return currentParameter;
-	}
+
 
 	abstract protected boolean isAccessibleObjectEqualToParameterTarget(AccessibleObject testObject, Parameter currentParameter);
     
+	/**
+	 * Retrieves the appropriate injection member or null if the parameter doesn't match anything we know about and {@linkplain #requireConsumptionOfAllParameters}
+	 * is set to false.
+	 * @param injectionMembers
+	 * @param currentIndex
+	 * @param parameter
+	 * @return Might return null if the parameter doesn't apply to this target.
+	 */
 	private AccessibleObject getTargetInjectionMember(List<AccessibleObject> injectionMembers, int currentIndex,
 			Parameter parameter) {
 		
@@ -235,7 +274,13 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 			}
 		}
 		
-		throw new PicoCompositionException("There was no matching target field/method for target name " + parameter.getTargetName());
+		if (this.requireConsumptionOfAllParameters) {
+			throw new PicoCompositionException("There was no matching target field/method for target name " 
+						+ parameter.getTargetName() 
+						+ " using injector " + this.getDescriptor());
+		}
+		
+		return null;
 	}
 
 	protected NameBinding makeParameterNameImpl(AccessibleObject member) {
@@ -277,7 +322,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             	}
             	
                 if (matchingParameters[i] != null && matchingParameters[i].isResolved()) {
-                    Object toInject = matchingParameters[i].getParameter().resolve(guardedContainer, this, null, injectionTypes[i],
+                	//Again, interative injector only supports 1 parameter
+                	//per method to inject.
+                    Object toInject = matchingParameters[i].getAccessibleObjectParameters().getParams()[0].resolve(guardedContainer, this, null, injectionTypes[i],
                                                                             makeParameterNameImpl(injectionMembers.get(i)),
                                                                             useNames(), bindings[i]).resolveInstance(into);
                     Object rv = monitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
@@ -353,7 +400,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 public T run(Object inst) {
                     final ParameterToAccessibleObjectPair[] currentParameters = getMatchingParameterListForMembers(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].getParameter().verify(container, IterativeInjector.this, injectionTypes[i],
+                        currentParameters[i].getAccessibleObjectParameters().getParams()[0].verify(container, IterativeInjector.this, injectionTypes[i],
                                                     makeParameterNameImpl(currentParameters[i].getAccessibleObject()), useNames(), bindings[i]);
                     }
                     return null;

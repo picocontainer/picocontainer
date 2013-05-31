@@ -21,6 +21,10 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -40,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Iterator;
 
 /**
  * A {@link org.picocontainer.InjectionType} for constructor injection.
@@ -76,14 +79,14 @@ public class ConstructorInjection extends AbstractInjectionType {
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties properties, Object key,
-                                                   Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+                                                   Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
-        ConstructorInjector<T> injector = newConstructorInjector(monitor, key, impl, useNames, parameters);
+        ConstructorInjector<T> injector = newConstructorInjector(monitor, key, impl, useNames, constructorParams);
         injector.enableEmjection(AbstractBehavior.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
         return wrapLifeCycle(monitor.newInjector(injector), lifecycle);
     }
 
-    protected <T>ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, Parameter... parameters) {
+    protected <T>ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl, boolean useNames, ConstructorParameters parameters) {
         return new ConstructorInjector<T>(monitor, useNames, rememberChosenConstructor, key, impl, parameters);
     }
 
@@ -106,6 +109,18 @@ public class ConstructorInjection extends AbstractInjectionType {
         private boolean enableEmjection = false;
         private boolean allowNonPublicClasses = false;
         
+              
+
+        /***
+         * Convenience method that allows creation of a constructor injector with specific, optional parameters.
+         * @param key 
+         * @param impl
+         * @param params
+         */
+        public ConstructorInjector(final Object key, final Class<T> impl, final Parameter... params) {
+        	this(key, impl, (params == null || params.length == 0) ? (ConstructorParameters)null :  new ConstructorParameters(params));
+        }
+        
         /**
          * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
          * convenient constructor for use when instantiating a constructor injector directly.
@@ -113,7 +128,7 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @param impl the concrete implementation
          * @param parameters the parameters used for initialization
          */
-        public ConstructorInjector(final Object key, final Class<T> impl, Parameter... parameters) {
+        public ConstructorInjector(final Object key, final Class<T> impl, ConstructorParameters parameters) {
             this(new NullComponentMonitor(), false, key, impl, parameters);
         }
 
@@ -130,8 +145,16 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
         public ConstructorInjector(ComponentMonitor monitor, boolean useNames, final Object key, final Class<T> impl,
-                                   Parameter... parameters) throws  NotConcreteRegistrationException {
-            super(key, impl, parameters, monitor, useNames);
+        		ConstructorParameters parameters) throws  NotConcreteRegistrationException {
+            super(key, impl,
+            		parameters != null ?  new AccessibleObjectParameterSet[] { parameters } : null, 
+            		monitor, useNames, 
+            		
+            		/**
+            		 * Constructor Injection should always be using all parameters provided to it that 
+            		 * don't have a member name attached.
+            		 */
+            		true);
         }
 
         /**
@@ -148,12 +171,13 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @throws NullPointerException if one of the parameters is <code>null</code>
          */
         public ConstructorInjector(ComponentMonitor monitor, boolean useNames, boolean rememberChosenCtor, final Object key, final Class<T> impl,
-                                   Parameter... parameters) throws  NotConcreteRegistrationException {
-            super(key, impl, parameters, monitor, useNames);
+                                   ConstructorParameters constructorParams) throws  NotConcreteRegistrationException {
+            super(key, impl, toAccessibleObjectParameterSetArray(constructorParams), monitor, useNames, true);
             this.rememberChosenConstructor = rememberChosenCtor;
         }
 
-        private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class<? extends T> impl) {
+
+        private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, Class<? extends T> impl) {
             CtorAndAdapters<T> ctor = null;
             try {
                 if (chosenConstructor == null) {
@@ -173,7 +197,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             return ctor;
         }
 
-        @SuppressWarnings("synthetic-access")
+        @SuppressWarnings({ "synthetic-access", "rawtypes" })
         protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
             final Set<Constructor<?>> conflicts = new HashSet<Constructor<?>>();
             final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
@@ -186,7 +210,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             ComponentAdapter[] greediestConstructorsParametersComponentAdapters = null;
             int lastSatisfiableConstructorSize = -1;
             Type unsatisfiedDependency = null;
-            Constructor unsatisfiedConstructor = null;
+            Constructor<?> unsatisfiedConstructor = null;
             int lastParameterTested = 0;
             for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             	try {
@@ -194,7 +218,10 @@ public class ConstructorInjection extends AbstractInjectionType {
 	                Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
 	                fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
 	                Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-	                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
+
+	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
+	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
+	                
 	                final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
 	                
 	                //For debug messages if something fails since we swap parameters part way through the function
@@ -346,9 +373,10 @@ public class ConstructorInjection extends AbstractInjectionType {
         protected class CtorAndAdapters<TYPE> {
             private final Constructor<TYPE> ctor;
             private final Parameter[] constructorParameters;
-            private final ComponentAdapter[] injecteeAdapters;
+            private final ComponentAdapter<?>[] injecteeAdapters;
 
-            public CtorAndAdapters(Constructor<TYPE> ctor, Parameter[] parameters, ComponentAdapter[] injecteeAdapters) {
+            @SuppressWarnings("rawtypes")
+			public CtorAndAdapters(Constructor<TYPE> ctor, Parameter[] parameters, ComponentAdapter[] injecteeAdapters) {
                 this.ctor = ctor;
                 this.constructorParameters = parameters;
                 this.injecteeAdapters = injecteeAdapters;
@@ -374,11 +402,16 @@ public class ConstructorInjection extends AbstractInjectionType {
 
                     result[i] = getParameter(container, ctor, i, parameterTypes[i],
                             bindings[i], constructorParameters[i], injecteeAdapters[i], into);
+                    
+                    
+                    //Shouldn't be possible for CDI.
+                    assert result[i] != Parameter.NULL_RESULT;
                 }
                 return result;
             }
 
-            public ComponentAdapter[] getInjecteeAdapters() {
+            @SuppressWarnings("rawtypes")
+			public ComponentAdapter[] getInjecteeAdapters() {
                 return injecteeAdapters;
             }
 
@@ -388,7 +421,7 @@ public class ConstructorInjection extends AbstractInjectionType {
         }
 
         @Override
-        public T getComponentInstance(final PicoContainer container, final @SuppressWarnings("unused") Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             if (instantiationGuard == null) {
                 instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                     @Override
@@ -443,14 +476,16 @@ public class ConstructorInjection extends AbstractInjectionType {
             List<Constructor<T>> matchingConstructors = new ArrayList<Constructor<T>>();
             Constructor<T>[] allConstructors = getConstructors();
             // filter out all constructors that will definitely not match
+            final Parameter[] paramsToUse = (parameters != null && parameters.length > 0) ? parameters[0].getParams() : null;
+            
             for (Constructor<T> constructor : allConstructors) {
-                if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
+                if ((paramsToUse == null || constructor.getParameterTypes().length == paramsToUse.length)
                         && hasApplicableConstructorModifiers(constructor.getModifiers())) {
                     matchingConstructors.add(constructor);
                 }
             }
             // optimize list of constructors moving the longest at the beginning
-            if (parameters == null) {
+            if (paramsToUse == null) {
                 Collections.sort(matchingConstructors, new Comparator<Constructor>() {
                     public int compare(Constructor arg0, Constructor arg1) {
                         return arg1.getParameterTypes().length - arg0.getParameterTypes().length;
@@ -478,13 +513,15 @@ public class ConstructorInjection extends AbstractInjectionType {
 
         private Constructor<T>[] getConstructors() {
             return AccessController.doPrivileged(new PrivilegedAction<Constructor<T>[]>() {
-                public Constructor<T>[] run() {
+                @SuppressWarnings("unchecked")
+				public Constructor<T>[] run() {
                     return (Constructor<T>[]) getComponentImplementation().getDeclaredConstructors();
                 }
             });
         }
 
-        @Override
+		@Override
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         public void verify(final PicoContainer container) throws PicoCompositionException {
             if (verifyingGuard == null) {
                 verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -492,7 +529,12 @@ public class ConstructorInjection extends AbstractInjectionType {
                     public Object run(Object inst) {
                         final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                         final Class[] parameterTypes = constructor.getParameterTypes();
-                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
+//                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
+                        
+    	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
+    	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
+                        
+                        
                         for (int i = 0; i < currentParameters.length; i++) {
                             currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
                                 new ParameterNameBinding(getParanamer(),  constructor, i),

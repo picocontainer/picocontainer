@@ -14,8 +14,10 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.util.Properties;
 
@@ -37,13 +39,13 @@ import java.util.Properties;
 public class OptInCaching extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, Object key,
-    			Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+    			Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.CACHE)) {
             return monitor.changedBehavior(new Caching.Cached<T>(
-                    super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters)));
+                    super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams)));
         }
         removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
-        return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
     }
 
 

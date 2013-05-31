@@ -15,12 +15,14 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.ComponentFactory;
 
 import java.lang.reflect.Method;
@@ -67,12 +69,12 @@ public class Assimilating extends AbstractBehavior {
      * Create a {@link Assimilated}. This adapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentFactory}.
      * 
-     * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
+     * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,ConstructorParameters, FieldParameters[], MethodParameters[])
      */
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                       final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
-        ComponentAdapter<T> delegate1 = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+                                       final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        ComponentAdapter<T> delegate1 = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         return monitor.changedBehavior(new Assimilated<T>(assimilationType, delegate1, proxyFactory));
     }
 

@@ -10,7 +10,15 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.ProviderAdapter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
+/**
+ * This class requires the JSR330 JAR to be in the classpath upon load.
+ * @author Michael Rimov
+ *
+ */
 @SuppressWarnings("serial")
 public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 
@@ -113,6 +121,5 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		super.addProvider(key, provider);
 		return this;
 	}
-
 	
 }

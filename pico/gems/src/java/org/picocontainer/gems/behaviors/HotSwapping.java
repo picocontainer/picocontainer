@@ -11,13 +11,15 @@
 package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -35,9 +37,9 @@ public class HotSwapping extends AbstractBehavior {
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                 final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
+                                 final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(monitor, lifecycle,
-                componentProps, key, impl, parameters);
+                componentProps, key, impl, constructorParams, fieldParams, methodParams);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return delegateAdapter;

@@ -55,7 +55,6 @@ public class Issue0303TestCase {
 	}
 
 	@Test
-	// @Ignore("filed as PICO-313 on jira.codehaus.org")
 	public void testCanSwallowExceptionFromStarableLifecycleStrategy() {
 		ComponentMonitor monitor = new SwallowingComponentMonitor();
 		DefaultPicoContainer container =

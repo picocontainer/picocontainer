@@ -19,6 +19,9 @@ import com.thoughtworks.proxy.toys.pool.SerializationMode;
 import org.picocontainer.*;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -40,9 +43,9 @@ public class Pooling extends AbstractBehavior {
     }
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters)
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
             throws PicoCompositionException {
-        ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
         	return delegate;

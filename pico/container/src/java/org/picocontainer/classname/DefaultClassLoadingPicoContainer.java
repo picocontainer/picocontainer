@@ -48,6 +48,9 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 
 import com.googlecode.jtype.Generic;
@@ -426,6 +429,12 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
                     classNameToClassIfApplicable(implOrInstance), parameters);
             return DefaultClassLoadingPicoContainer.this;
         }
+        
+        public MutablePicoContainer addComponent(Object key, Object implOrInstance, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+            delegate.addComponent(classNameToClassIfApplicable(key),
+                    classNameToClassIfApplicable(implOrInstance), constructorParams, fieldParams, methodParams);
+            return DefaultClassLoadingPicoContainer.this;
+        }
 
         public MutablePicoContainer addComponent(Object implOrInstance) {
             delegate.addComponent(classNameToClassIfApplicable(implOrInstance));
@@ -613,6 +622,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         public void changeMonitor(ComponentMonitor monitor) {
             DefaultClassLoadingPicoContainer.this.changeMonitor(monitor);
         }
+
+
 
     }
 

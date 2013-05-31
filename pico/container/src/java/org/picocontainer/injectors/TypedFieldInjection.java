@@ -9,13 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.annotations.Bind;
+import static org.picocontainer.Characteristics.immutable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
@@ -29,7 +23,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import static org.picocontainer.Characteristics.immutable;
+
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Bind;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 /**
  * A {@link org.picocontainer.InjectionType} for named fields.
@@ -45,17 +50,18 @@ public class TypedFieldInjection extends AbstractInjectionType {
 
     private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycle,
                                                    Properties componentProps,
                                                    Object key,
                                                    Class<T> impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
         String fieldTypes = (String) componentProps.remove(INJECTION_FIELD_TYPES);
         if (fieldTypes == null) {
             fieldTypes = "";
         }
-        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector(key, impl, monitor, fieldTypes, parameters
+        return wrapLifeCycle(monitor.newInjector(new TypedFieldInjector<T>(key, impl, monitor, fieldTypes, requireConsumptionOfAllParameters, fieldParams
         )), lifecycle);
     }
 
@@ -71,16 +77,17 @@ public class TypedFieldInjection extends AbstractInjectionType {
      * Injection happens after instantiation, and fields are marked as
      * injection points via a field type.
      */
-    @SuppressWarnings("serial")
     public static class TypedFieldInjector<T> extends AbstractFieldInjector<T> {
 
         private final List<String> classes;
 
         public TypedFieldInjector(Object key,
                                   Class<?> impl,
-                                  ComponentMonitor monitor, String classNames,
-                                  Parameter... parameters) {
-            super(key, impl, monitor, true, parameters);
+                                  ComponentMonitor monitor, 
+                                  String classNames,
+                                  boolean requireUseOfallParameters,
+                                  FieldParameters... parameters) {
+            super(key, impl, monitor, true, requireUseOfallParameters, parameters);
             this.classes = Arrays.asList(classNames.trim().split(" "));
         }
 

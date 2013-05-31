@@ -15,12 +15,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
                                                    Properties componentProps,
                                                    Object key,
                                                    Class impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         List<Behavior> list = new ArrayList<Behavior>();
         ComponentFactory lastFactory = makeInjectionFactory();
         processSynchronizing(componentProps, list);
@@ -60,7 +62,7 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
                                                   componentProps,
                                                   key,
                                                   impl,
-                                                  parameters);
+                                                  constructorParams, fieldParams, methodParams);
     }
 
 

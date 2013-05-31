@@ -11,11 +11,16 @@
 package org.picocontainer.injectors;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
+
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -25,6 +30,10 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
 
@@ -61,7 +70,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 	private AnnotatedFieldInjection annotatedFieldInjection;
 	
 	public AdaptingInjection() {
-		constructorInjection = new Jsr330Injection();
+		constructorInjection = new Jsr330ConstructorInjection();
 		methodInjection = new MethodInjection();
 		setterInjection = new SetterInjection();
 		annotatedMethodInjection = new AnnotatedMethodInjection();
@@ -72,24 +81,18 @@ public class AdaptingInjection extends AbstractInjectionType {
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
                                                    Properties componentProps, Object key, Class<T> impl,
-                                                   Parameter... parameters) throws PicoCompositionException {
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
 		
+		
+		verifyNamedParameters(impl, fieldParams, methodParams);
 		
 		ArrayList<InjectionType> injectors = new ArrayList<InjectionType>();
 		
         InjectionType componentAdapter = null;
-
-        componentAdapter = fieldAnnotatedInjectionAdapter(impl, monitor, lifecycle, componentProps,
-                               key, null, parameters);
-
-        if (componentAdapter != null) {
-        	injectors.add(componentAdapter);
-        	componentAdapter = null;
-            //return componentAdapter;
-        }
-
-        componentAdapter = methodAnnotatedInjectionAdapter(impl, monitor, lifecycle, componentProps,
-                                                           key, null, parameters);
+        
+        componentProps.putAll(Characteristics.ALLOW_UNUSED_PARAMETERS);
+        
+        componentAdapter = fieldAnnotatedInjectionAdapter(impl);
 
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
@@ -97,7 +100,15 @@ public class AdaptingInjection extends AbstractInjectionType {
             //return componentAdapter;
         }
 
-        componentAdapter = setterInjectionAdapter(componentProps, monitor, lifecycle, key, impl, null, parameters);
+        componentAdapter = methodAnnotatedInjectionAdapter(impl);
+
+        if (componentAdapter != null) {
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+            //return componentAdapter;
+        }
+
+        componentAdapter = setterInjectionAdapter(componentProps);
 
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
@@ -105,7 +116,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 //            return componentAdapter;
         }
 
-        componentAdapter = methodInjectionAdapter(componentProps, monitor, lifecycle, key, impl, null, parameters);
+        componentAdapter = methodInjectionAdapter(componentProps);
 
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
@@ -113,32 +124,90 @@ public class AdaptingInjection extends AbstractInjectionType {
 //            return componentAdapter;
         }
 
-
-        injectors.add(defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters));
+        
+        injectors.add(defaultInjectionAdapter(componentProps));
 
         Collections.reverse(injectors);
         //return defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters);
         InjectionType[] aArray = injectors.toArray(new InjectionType[injectors.size()]);
-        return new CompositeInjection(aArray)
-        	.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+        ComponentAdapter<T> result =  new CompositeInjection(aArray)
+        	.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
+        AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS);
+        return result;
     }
 
-    private  <T> InjectionType defaultInjectionAdapter(Properties componentProps, ComponentMonitor monitor,
-                                                  LifecycleStrategy lifecycle, Object key, Class<T> impl, Parameter... parameters) {
+	/**
+	 * Quick
+	 * @throws PicoCompositionException if there's a
+	 * @param parameters
+	 * @todo This only verifies that the names exist, it doesn't check for name hiding from base class to 
+	 * sub class.
+	 */
+    private void verifyNamedParameters(final Class<?> impl, final FieldParameters[] parameters, final MethodParameters[] methodParameters) {
+    	if (parameters == null) {
+    		return;
+    	}
+    	Set<String> allNames = AccessController.doPrivileged(new PrivilegedAction<Set<String>>() {
+
+			public Set<String> run() {
+				HashSet<String> result = new HashSet<String>(30);
+				Class<?> currentImpl = impl;
+				while (!Object.class.getName().equals(currentImpl.getName())) {
+					
+					for (Field eachField : currentImpl.getDeclaredFields()) {
+						result.add(eachField.getName());
+					}
+					
+					for (Method eachMethod : currentImpl.getDeclaredMethods()) {
+						result.add(eachMethod.getName());
+					}
+					
+					currentImpl = currentImpl.getSuperclass();
+				}
+				return result;
+			}});
+
+    	
+    	for (FieldParameters eachParam : parameters) {
+			if (!allNames.contains(eachParam.getName())) {
+				throwCompositionException(impl, eachParam);
+			}
+    	}
+    	
+    	
+    	for (MethodParameters eachParam : methodParameters) {
+			if (!allNames.contains(eachParam.getName())) {
+				throwCompositionException(impl, eachParam);
+			}    		
+    	}
+	}
+
+
+
+	private void throwCompositionException(final Class<?> impl, AccessibleObjectParameterSet eachParam) {
+		throw new PicoCompositionException("Cannot locate field or method '" 
+					+ eachParam.getName() 
+					+ "' in type " 
+					+ impl 
+					+ ". \n\tParameter in error: " 
+					+ eachParam);
+	}
+
+
+
+	private  <T> InjectionType defaultInjectionAdapter(Properties componentProps) {
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CDI);
         return constructorInjection;
     }
 
-    private <T> InjectionType setterInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                   Object key, Class<T> impl, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
+    private <T> InjectionType setterInjectionAdapter(Properties componentProps) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.SDI)) {
         	return setterInjection;
         }
         return null;
     }
 
-    private <T> InjectionType methodInjectionAdapter(Properties componentProps, ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                   Object key, Class<T> impl, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
+    private <T> InjectionType methodInjectionAdapter(Properties componentProps) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.METHOD_INJECTION)) {
             return methodInjection;
         }
@@ -146,16 +215,14 @@ public class AdaptingInjection extends AbstractInjectionType {
     }
 
 
-    private <T> InjectionType methodAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                       Properties componentProps, Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
+    private <T> InjectionType methodAnnotatedInjectionAdapter(Class<T> impl) {
         if (injectionMethodAnnotated(impl)) {
         	return annotatedMethodInjection;
         }
         return null;
     }
 
-    private <T> InjectionType fieldAnnotatedInjectionAdapter(Class<T> impl, ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                 Properties componentProps, Object key, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
+    private <T> InjectionType fieldAnnotatedInjectionAdapter(Class<T> impl) {
         if (injectionFieldAnnotated(impl)) {
         	return this.annotatedFieldInjection;
         }
@@ -164,9 +231,9 @@ public class AdaptingInjection extends AbstractInjectionType {
     }
 
     private boolean injectionMethodAnnotated(final Class<?> impl) {
-        return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+        return  AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
             @SuppressWarnings("synthetic-access")
-            public Object run() {
+            public Boolean run() {
             	InjectableMethodSelector methodSelector = new InjectableMethodSelector(Inject.class);
             	return (methodSelector.retreiveAllInjectableMethods(impl).size() > 0);
             }

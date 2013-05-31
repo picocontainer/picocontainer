@@ -432,11 +432,14 @@ public abstract class AbstractComponentAdapterTest  {
             final List dependencies = new LinkedList();
             final Object[] wrapperDependencies = new Object[]{dependencies};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
+            
             final ComponentAdapter componentAdapter = prepRES_dependenciesAreResolved(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
+            
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
                     CollectingChangedBehavior.class, picoContainer, wrapperDependencies);
+            
             final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             assertTrue(dependencies.size() > 0);

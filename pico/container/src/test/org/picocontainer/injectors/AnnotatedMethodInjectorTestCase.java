@@ -88,7 +88,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjection.SetterInjector(SetterBurp.class, SetterBurp.class, new NullComponentMonitor(), "set", false, "", false, Parameter.DEFAULT
+        pico.addAdapter(new SetterInjection.SetterInjector(SetterBurp.class, SetterBurp.class, new NullComponentMonitor(), "set", false, "", false, null 
         ));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
@@ -98,8 +98,8 @@ public class AnnotatedMethodInjectorTestCase  {
 
     @Test public void tesMethodInjectionWithInjectionAnnontation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
-                                               new NullComponentMonitor(), false, Inject.class));
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, null,
+                                               new NullComponentMonitor(), false, true, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp burp = pico.getComponent(AnnotatedBurp.class);
         assertNotNull(burp);
@@ -109,7 +109,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethod() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DepplyAnnotatedThing.class, DepplyAnnotatedThing.class, null,
-                                               new NullComponentMonitor(), false, Inject.class));
+                                               new NullComponentMonitor(), false, true, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         DepplyAnnotatedThing burp = pico.getComponent(DepplyAnnotatedThing.class);
         assertNotNull(burp);
@@ -122,7 +122,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void tesMethodInjectionWithInjectionAnnontationWhereThereIsMoreThanOneInjectMethodAndSubClassesNeedingInjectionToo() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnnotatedBurp2.class, AnnotatedBurp2.class, null,
-                                               new NullComponentMonitor(), false, Inject.class));
+                                               new NullComponentMonitor(), false, true, Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp2 burp = pico.getComponent(AnnotatedBurp2.class);
         assertNotNull(burp);
@@ -147,9 +147,9 @@ public class AnnotatedMethodInjectorTestCase  {
     
     @Test public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
-                                               new NullComponentMonitor(),
-                false, AlternativeInject.class));
+        pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, null,
+                new NullComponentMonitor(),
+                false, true, AlternativeInject.class));
         pico.addComponent(Wind.class, new Wind());
         AnotherAnnotatedBurp burp = pico.getComponent(AnotherAnnotatedBurp.class);
         assertNotNull(burp);
@@ -229,7 +229,26 @@ public class AnnotatedMethodInjectorTestCase  {
 		assertNotNull(testChild);
 		assertTrue(testChild.otherInjected);
 		assertFalse(testChild.injected);
+    }
+    
+    
+    public static class PrivateMethodInjectionTest {
+    	public boolean injected;
     	
-    }       
+    	@Inject
+    	private void doSomething() {
+    		injected = true;
+    	}
+    }
+    
+    @Test
+    public void testInjectionWorksOnPrivateMethodsToo() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection())
+        		.addComponent(PrivateMethodInjectionTest.class);
+        
+        PrivateMethodInjectionTest result = picoContainer.getComponent(PrivateMethodInjectionTest.class);
+        assertNotNull(result);
+        assertTrue(result.injected);
+    }
 
 }

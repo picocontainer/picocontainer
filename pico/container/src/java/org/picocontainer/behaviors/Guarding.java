@@ -11,12 +11,14 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -30,10 +32,10 @@ import java.util.Properties;
 public class Guarding extends AbstractBehavior {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-            Properties componentProps, Object key, Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle,
-                componentProps, key, impl, parameters);
+                componentProps, key, impl, constructorParams, fieldParams, methodParams);
         if (guard == null) {
             return delegate;
         } else {

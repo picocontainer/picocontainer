@@ -11,23 +11,18 @@ package org.picocontainer.parameters;
 import org.picocontainer.Parameter;
 
 public abstract class AbstractParameter implements Parameter {
-    
-    /**
-     * Target field/property/whatever name.  Used with named accessible objects such as fields and setters
-     */
-    private final String targetName;
-
-
-	public String getTargetName() {
-		return targetName;
-	}    
-    
 	
 	public AbstractParameter() {
-		this(null);
+
 	}
 	
-	public AbstractParameter(String targetName) {
-		this.targetName = targetName;
+	/**
+	 * @todo REMOVE ME
+	 * 
+	 * @return
+	 */
+	public String getTargetName() {
+		return null;
 	}
+	
 }

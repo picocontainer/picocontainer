@@ -6,10 +6,12 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.gems.util.DelegateMethod;
 import org.picocontainer.injectors.AbstractInjectionType;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.util.Properties;
 
@@ -48,7 +50,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 			final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final Object key,
-			final Class<T> impl, final Parameter... parameters)
+			final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
 			throws PicoCompositionException {
 		
 		DelegateMethod<?, T> method =  cast(componentProps.remove(DELEGATE));

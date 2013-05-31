@@ -30,7 +30,6 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -170,7 +169,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      "foo",
                                                                      Foo.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -191,7 +190,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      "foo",
                                                                      Foo.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperty("message", "hello");
 
         Foo foo = (Foo)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
@@ -215,7 +214,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                                   .CDI),
                                                                               Touchable.class,
                                                                               SimpleTouchable.class,
-                                                                              (Parameter[])null);
+                                                                              null, null, null);
 
         assertNotNull(componentAdapter.getDelegate());
     }
@@ -233,7 +232,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      impl,
                                                                      impl,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperties(properties);
         return adapter;
     }
@@ -260,7 +259,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      Primitives.class,
                                                                      Primitives.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
@@ -293,7 +292,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      A.class,
                                                                      A.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
         A a = picoContainer.getComponent(A.class);
@@ -312,7 +311,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      "foo",
                                                                      Foo.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
 
 
         PropertyApplying.PropertyApplicator pa = adapter.findAdapterOfType(PropertyApplying.PropertyApplicator.class);
@@ -338,7 +337,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      SimpleDateFormat.class,
                                                                      SimpleDateFormat.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
 
@@ -372,7 +371,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      "TestBean",
                                                                      testBean.getClass(),
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
 
         Map properties = new HashMap();
         properties.put("multiValues", "abcdefg");
@@ -407,7 +406,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                          .CDI),
                                                                      SimpleDateFormat.class,
                                                                      SimpleDateFormat.class,
-                                                                     (Parameter[])null);
+                                                                     null, null, null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
 

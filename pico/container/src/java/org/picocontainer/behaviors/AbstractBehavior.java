@@ -16,11 +16,13 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.InjectionType;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -39,12 +41,12 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
             LifecycleStrategy lifecycle, Properties componentProps, Object key,
-            Class<T> impl, Parameter... parameters) throws PicoCompositionException {
+            Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         if (delegate == null) {
             delegate = new AdaptingInjection();
         }
         ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(monitor, lifecycle, componentProps, key,
-                impl, parameters);
+                impl, constructorParams, fieldParams, methodParams);
 
         boolean enableCircular = removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
         if (enableCircular && delegate instanceof InjectionType) {
@@ -75,6 +77,16 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
         return adapter;
     }
 
+    /**
+     * Checks to see if one or more properties in the parameter <code>present</code> are available in
+     * the <code>current</code> parameter.
+     * @param current the current set of properties to check
+     * @param present the properties to check for.
+     * @param compareValueToo If set to true, then we also check the <em>value</em> of the property to make
+     * sure it matches.  Some items in {@link org.picocontainer.Characteristics} have both a true and a false value.  
+     * @return true if the property is present <em>and</em> the value that exists equals the value of 
+     * caompareValueToo
+     */
     public static boolean arePropertiesPresent(Properties current, Properties present, boolean compareValueToo) {
         Enumeration<?> keys = present.keys();
         while (keys.hasMoreElements()) {

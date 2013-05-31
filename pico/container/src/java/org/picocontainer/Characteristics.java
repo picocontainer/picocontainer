@@ -35,7 +35,8 @@ public final class Characteristics {
     private static final String _HIDE_IMPL = "hide-impl";
     private static final String _PROPERTY_APPLYING = "property-applying";
     private static final String _AUTOMATIC = "automatic";
-    private static final String _USE_NAMES = "use-parameter-names";    
+    private static final String _USE_NAMES = "use-parameter-names";  
+    private static final String  _USE_ALL_PARAMETERS = "use-all-parameters";
     private static final String _ENABLE_CIRCULAR = "enable-circular";
     private static final String _GUARD = "guard";
     private static final String _EMJECTION = "emjection_enabled";
@@ -152,6 +153,8 @@ public final class Characteristics {
     public static final Properties AUTOMATIC = immutable(_AUTOMATIC, TRUE);
 
     public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
+    
+    public static final Properties ALLOW_UNUSED_PARAMETERS = immutable(_USE_ALL_PARAMETERS, FALSE);
 
     public static final Properties EMJECTION_ENABLED = immutable(_EMJECTION, TRUE);
 

@@ -16,12 +16,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.containers.SomeQualifier;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
@@ -94,6 +98,43 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
             fail("Instantiation should have failed.");
         } catch (PicoCompositionException e) {
         }
+    }
+    
+    
+    public static class DoSomething {
+    	
+    	public String a;
+    	public String b;
+    	public String c;
+
+		@Inject
+    	public void injectSomething(String a, @Named("b") String b, @SomeQualifier String c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+    	}
+    	
+    }
+    
+    @Test
+    public void testAnnationsOnParametersForMethodInjection() {
+    	
+    	MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
+    	
+    	pico
+    		.addComponent(String.class, "This is A test")
+    		.addComponent("b", "This is B test")
+    		.addComponent(SomeQualifier.class.getName(), "This is C test")
+    		.addComponent(DoSomething.class);
+    	
+    	
+    	DoSomething instance = pico.getComponent(DoSomething.class);
+    	assertNotNull(instance);
+    	
+    	assertEquals("This is A test", instance.a);
+    	assertEquals("This is B test", instance.b);
+    	assertEquals("This is C test", instance.c);
+    	
     }
     
 }

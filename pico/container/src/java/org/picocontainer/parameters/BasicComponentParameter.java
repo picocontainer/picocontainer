@@ -62,17 +62,12 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
      * @param key the key of the desired addComponent
      */
     public BasicComponentParameter(Object key) {
-    	this(key, null);
-    }
-    
-    public BasicComponentParameter(Object key,String targetName ) {
-    	super(targetName);
         this.key = key;
     }
 
     /** Expect any parameter of the appropriate type. */
     public BasicComponentParameter() {
-    	this(null,null);
+    	this(null);
     }
     
     /**
@@ -199,7 +194,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                                                    ComponentAdapter<?> adapter,
                                                    Generic<T> expectedType,
                                                    NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        Generic<T> type = expectedType;
+    
+    	Generic<T> type = expectedType;
         if (JTypeHelper.isPrimitive(type)) {
             type = convertToPrimitiveType(type);
         }
@@ -213,7 +209,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             result = container.getComponentAdapter(type, NameBinding.NULL);
         } else {
             Object excludeKey = adapter.getComponentKey();
-            ComponentAdapter<?> byKey = container.getComponentAdapter((Object)expectedType);
+            ComponentAdapter<?> byKey = container.getComponentAdapter((Object)type);
             if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 result = typeComponentAdapter(byKey);
             }
@@ -223,23 +219,23 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 
                 
                 
-                if ((found != null) && isCompatible(expectedType, found, container) && found != adapter) {
+                if ((found != null) && isCompatible(type, found, container) && found != adapter) {
                     result = (ComponentAdapter<T>) found;
                 }
             }
 
             if (result == null) {
-                List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
-                        container.getComponentAdapters(expectedType, binding.annotationType());
+                List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(type) :
+                        container.getComponentAdapters(type, binding.annotationType());
                 removeExcludedAdapterIfApplicable(excludeKey, found);
                 if (found.size() == 0) {
-                    result = noMatchingAdaptersFound(container, expectedType, expectedNameBinding, binding);
+                    result = noMatchingAdaptersFound(container, type, expectedNameBinding, binding);
                 } else if (found.size() == 1) {
                     result = found.get(0);
                 } else {
-                	result = sortThroughTooManyAdapters(expectedType, found);
+                	result = sortThroughTooManyAdapters(type, found);
                 	if (result == null) {
-                		throw tooManyMatchingAdaptersFound(expectedType, found);
+                		throw tooManyMatchingAdaptersFound(type, found);
                 	}
                 }
             }

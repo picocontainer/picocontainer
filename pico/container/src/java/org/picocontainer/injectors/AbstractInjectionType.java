@@ -14,6 +14,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
+@SuppressWarnings("serial")
 public abstract class AbstractInjectionType implements InjectionType, Serializable {
 
     public void verify(PicoContainer container) {
@@ -31,7 +32,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
     }
 
-    private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+	private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
         private final Injector<T> delegate;
         private final LifecycleStrategy lifecycle;
 
@@ -64,7 +65,8 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return delegate;
         }
 
-        public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+        @SuppressWarnings("rawtypes")
+		public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
             return delegate.findAdapterOfType(adapterType);
         }
 

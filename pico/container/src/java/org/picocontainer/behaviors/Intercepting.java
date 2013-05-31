@@ -11,9 +11,11 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -33,10 +35,10 @@ public class Intercepting extends AbstractBehavior {
                                                           Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
-                                                          Parameter... parameters) throws PicoCompositionException {
+                                                          ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         return monitor.changedBehavior(new Intercepted<T>(super.createComponentAdapter(monitor,
                 lifecycle, componentProps, key,
-                impl, parameters)));
+                impl, constructorParams, fieldParams, methodParams)));
     }
 
     /**

@@ -8,18 +8,20 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.behaviors.AbstractBehavior;
+import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
 
 import java.util.Properties;
 
-import static org.picocontainer.injectors.AnnotatedMethodInjection.getInjectionAnnotation;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 /** @author Paul Hammant */
 @SuppressWarnings("serial")
@@ -39,22 +41,25 @@ public class MultiInjection extends AbstractInjectionType {
                                                           Properties componentProps,
                                                           Object key,
                                                           Class<T> impl,
-                                                          Parameter... parameters) throws PicoCompositionException {
+                                                          ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(new MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, parameters), lifecycle);
+        boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
+
+        return wrapLifeCycle(new MultiInjector<T>(key, impl, monitor, setterPrefix, useNames, requireConsumptionOfAllParameters, constructorParams, fieldParams, methodParams), lifecycle);
     }
 
     /** @author Paul Hammant */
     @SuppressWarnings("serial")
     public static class MultiInjector<T> extends CompositeInjection.CompositeInjector<T> {
 
-        public MultiInjector(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames,
-                             Parameter... parameters) {
-            super(key, impl, parameters, monitor, useNames,
-                    monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, parameters)),
-                    monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, "", false, parameters)),
-                    monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject"))),
-                    monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, parameters, monitor, useNames, Inject.class, getInjectionAnnotation("javax.inject.Inject")))
+        @SuppressWarnings("unchecked")
+		public MultiInjector(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames, boolean useAllParameter,
+        		ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+            super(key, impl, monitor, useNames,
+                    monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, constructorParams)),
+                    monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, "", false, methodParams)),
+                    monitor.newInjector(new AnnotatedMethodInjection.AnnotatedMethodInjector<T>(key, impl, methodParams, monitor, useNames, useAllParameter, Inject.class, getInjectionAnnotation("javax.inject.Inject"))),
+                    monitor.newInjector(new AnnotatedFieldInjection.AnnotatedFieldInjector<T>(key, impl, fieldParams, monitor, useNames, useAllParameter, Inject.class, getInjectionAnnotation("javax.inject.Inject")))
            );
 
         }

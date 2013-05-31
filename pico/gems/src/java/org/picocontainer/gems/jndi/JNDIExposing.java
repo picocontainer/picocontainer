@@ -17,10 +17,12 @@ import javax.naming.NamingException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Storing;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 /**
  * produce JNDI exposing behaviour
@@ -47,9 +49,9 @@ public class JNDIExposing extends AbstractBehavior {
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-			final Properties componentProps, final Object key, final Class<T> impl, final Parameter... parameters) throws PicoCompositionException {
+			final Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
 		// TODO Auto-generated method stub
-		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, parameters);
+		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 		try {
 			return new JNDIExposed<T>(componentAdapter);
 		} catch (NamingException e) {

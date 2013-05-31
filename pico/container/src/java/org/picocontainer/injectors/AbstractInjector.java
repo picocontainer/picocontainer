@@ -9,17 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import com.googlecode.jtype.Generic;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.parameters.ComponentParameter;
-
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -31,7 +20,21 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
+
+import com.googlecode.jtype.Generic;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -49,8 +52,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
+    
     /** The parameters to use for initialization. */
-    protected final transient Parameter[] parameters;
+    protected final transient AccessibleObjectParameterSet[] parameters;
+    
     /** The strategy used to control the lifecycle */
     private final boolean useNames;
 
@@ -65,7 +70,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     protected AbstractInjector(final Object key, final Class<?> impl,
                                final ComponentMonitor monitor, final boolean useNames,
-                               final Parameter... parameters) {
+                               final AccessibleObjectParameterSet... parameters) {
         super(key, impl, monitor);
         this.useNames = useNames;
         checkConcrete();
@@ -74,9 +79,27 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
                 if(parameters[i] == null) {
                     throw new NullPointerException("Parameter " + i + " is null");
                 }
+                
+                if (parameters[i].getParams() != null) {
+                	Parameter[] nestedParams = parameters[i].getParams();
+	                for (int j= 0; j < nestedParams.length; j++) {
+	                	if (nestedParams[j] == null){
+	                		throw new NullPointerException("Parameter " + j + " inside " + parameters[i] + " is null" );
+	                	}
+	                }
+                }
             }
         }
         this.parameters = parameters;
+    }
+    
+    
+    protected static AccessibleObjectParameterSet[] toAccessibleObjectParameterSetArray(AccessibleObjectParameterSet singleParam) {
+    	if (singleParam == null) {
+    		return AccessibleObjectParameterSet.EMPTY;
+    	}
+    	
+    	return new AccessibleObjectParameterSet[] {singleParam}; 
     }
 
     public boolean useNames() {
@@ -98,13 +121,151 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @return the array with the default parameters.
      */
     protected Parameter[] createDefaultParameters(int length) {
-        Parameter[] componentParameters = new Parameter[length];
+    	Parameter[] componentParameters = new Parameter[length];
         for (int i = 0; i < length; i++) {
-            componentParameters[i] = ComponentParameter.DEFAULT;
+            componentParameters[i] = constructDefaultComponentParameter();
         }
         return componentParameters;
     }    
+    
+    /**
+     * Allows Different swapping of types.
+     * @return
+     */
+    protected Parameter constructDefaultComponentParameter() {
+    	return ComponentParameter.DEFAULT;
+    }
+    
 
+    /**
+     * Constructs an appropriate {@link org.picocontainer.parameters.AccessibleObjectParameterSet} based on the type 
+     * of {@link java.lang.reflect.AccessibleObject} sent.  If params are null or zero length then default parameter is used.
+     * @param object
+     * @param params
+     * @return
+     */
+    protected AccessibleObjectParameterSet constructAccessibleObjectParameterSet(AccessibleObject object, Parameter... params) {
+    	Parameter[] paramsToUse = params;
+    	if (paramsToUse == null || paramsToUse.length == 0) {
+    		paramsToUse = createDefaultParamsBasedOnTypeOfAccessibleObject(object);
+    	}
+    	
+    	if (object instanceof Constructor) {
+    		return new ConstructorParameters(paramsToUse);
+    	} else if (object instanceof Field) {
+    		return new FieldParameters( ((Field)object).getDeclaringClass(),  ((Field) object).getName(), paramsToUse);
+    	} else if (object instanceof Method) {
+    		return new MethodParameters( ((Method)object).getDeclaringClass(),  ((Method) object).getName(), paramsToUse);    		
+    	} 
+    	throw new IllegalArgumentException("Object " + object + " doesn't appear to be a constructor, a field, or a method.  Don't know how to proceed.");
+    }
+
+    
+    
+    @SuppressWarnings("rawtypes")
+	private Parameter[] createDefaultParamsBasedOnTypeOfAccessibleObject(AccessibleObject object) {
+    	if (object instanceof Constructor) {
+    		return createDefaultParameters( ((Constructor)object).getParameterTypes().length );
+    	}
+
+    	if (object instanceof Field) {
+    		return createDefaultParameters(1);
+    	}
+    	
+    	if (object instanceof Method) {
+    		return createDefaultParameters( ((Method)object).getParameterTypes().length );
+    	}
+
+    	throw new IllegalArgumentException("Object " + object + " doesn't appear to be a constructor, a field, or a method.  Don't know how to proceed.");
+    }
+
+
+	/**
+     * @param targetInjectionMember
+     * @param assignedParameters
+     * @return null if no parameter set for the given accessible object has been defined.
+     */
+    protected AccessibleObjectParameterSet getParameterToUseForObject(AccessibleObject targetInjectionMember, AccessibleObjectParameterSet... assignedParameters) {
+    	if (assignedParameters == null || assignedParameters.length == 0) {
+    		return null;
+    	}
+    	
+    	
+    	for (AccessibleObjectParameterSet eachParameter : assignedParameters) {
+    		
+    		//if a target type is defined then we have to match against it. 
+    		//This allows injection into private members of base classes of the same name
+    		//as the subclasses.
+    		Class<?> targetType = eachParameter.getTargetType();
+    		if (targetType != null && !targetType.equals(getAccessibleObjectDefiningType(targetInjectionMember))) {
+    			continue;
+    		}
+    		
+    		if (eachParameter.getName().equals(getAccessibleObjectName(targetInjectionMember))) {
+    			return eachParameter;
+    		}
+    	}
+    	
+    	return null;
+	}
+
+    
+    /**
+     * Retrieves the enclosing class of the accessible object. (Constructor, Method, and Field all 
+     * supply the method "getDeclaringClass()", yet it isn't supplied in the AccessibleObject base class.
+     * @param targetAccessibleObject
+     * @return the enclosing type of the accessible object.
+     */
+    protected Class<?> getAccessibleObjectDefiningType(AccessibleObject targetAccessibleObject) {
+    	if (targetAccessibleObject == null) {
+    		throw new NullPointerException("targetAccessibleObject");
+    	}
+
+    	try {
+			Method declaringClassMethod = targetAccessibleObject.getClass().getMethod("getDeclaringClass");
+			return (Class<?>) declaringClassMethod.invoke(targetAccessibleObject);
+		} catch (NoSuchMethodException e) {
+			throw new PicoCompositionException("Target Type '" + targetAccessibleObject.getClass() 
+					+ "' does not appear to suppot getDeclaringClass().  Please override getAccessibleObjectDefiningType() for your type of injection", e);
+		} catch (IllegalAccessException e) {
+			throw new PicoCompositionException("Error invoking 'getDeclaringClass()' in type " 
+		+ targetAccessibleObject.getClass(), e);
+		} catch (InvocationTargetException e) {
+			throw new PicoCompositionException("Error invoking 'getDeclaringClass()' in type " 
+		+ targetAccessibleObject.getClass(), e);
+		}
+    	
+    }   
+    
+    /**
+     * Retrieves the name of the accessible object or null if it doesn't have one (such as a constructor)
+     * @param targetAccessibleObject
+     * @return 
+     */
+    public String getAccessibleObjectName(final AccessibleObject targetAccessibleObject) {
+    	if (targetAccessibleObject == null) {
+    		throw new NullPointerException("targetAccessibleObject");
+    	}
+    	
+    	if (targetAccessibleObject instanceof Constructor) {
+    		return null;
+    	}
+    	
+    	try {
+			Method declaringClassMethod = targetAccessibleObject.getClass().getMethod("getName");
+			return (String) declaringClassMethod.invoke(targetAccessibleObject);
+		} catch (NoSuchMethodException e) {
+			throw new PicoCompositionException("Target Type '" + targetAccessibleObject.getClass() 
+					+ "' does not appear to suppot getName().  Please override getAccessibleObjectDefiningType() for your type of injection", e);
+		} catch (IllegalAccessException e) {
+			throw new PicoCompositionException("Error invoking 'getName()' in type " 
+		+ targetAccessibleObject.getClass(), e);
+		} catch (InvocationTargetException e) {
+			throw new PicoCompositionException("Error invoking 'getName()' in type " 
+		+ targetAccessibleObject.getClass(), e);
+		}
+    }
+    
     public void verify(PicoContainer container) throws PicoCompositionException {
     }
 
@@ -118,8 +279,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         if (parameters != null) {
-            for (Parameter parameter : parameters) {
-                parameter.accept(visitor);
+            for (AccessibleObjectParameterSet parameter : parameters) {
+            	if (parameter.getParams() != null) {
+	            	for (Parameter eachContainedParameter : parameter.getParams()) {
+	            		eachContainedParameter.accept(visitor);
+	            	}
+            	}
             }
         }
     }
@@ -207,10 +372,13 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
                                                 final Member member,
                                                 final Object componentInstance, final IllegalAccessException e) {
         monitor.invocationFailed(member, componentInstance, e);
-        throw new PicoCompositionException(e);
+        throw new PicoCompositionException("Illegal Access Exception for Injector " 
+        		+ this.getDescriptor() 
+        		+ " and target member " + member != null ? member.toString() : " null",e);
     }
 
-    protected Type box(Type parameterType) {
+    @SuppressWarnings("rawtypes")
+	protected Type box(Type parameterType) {
         if (parameterType instanceof Class && ((Class) parameterType).isPrimitive()) {
             String parameterTypeName = ((Class) parameterType).getName();
             if (parameterTypeName == "int") {

@@ -2,15 +2,18 @@ package org.picocontainer.parameters;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
@@ -21,6 +24,10 @@ public class JSR330ComponentParameterTestCase {
 
 
 	public static class A {
+		public String value;
+	}
+	
+	public static class B {
 		public String value;
 	}
 	
@@ -57,6 +64,16 @@ public class JSR330ComponentParameterTestCase {
 		}
 	}
 	
+	public static class ProviderB implements Provider<B> {
+
+		public B get() {
+			B returnValue = new B();
+			returnValue.value = "To Bee";
+			return returnValue;
+		}
+		
+	}
+	
 	
 	@Test
 	public void testHappyPathTrimmingOfMatches() {
@@ -81,6 +98,29 @@ public class JSR330ComponentParameterTestCase {
 		
 		AmbiguousTest test = pico.getComponent(AmbiguousTest.class);
 		assertNotNull(test);
+	}
+	
+	public static class MultiProviderBaseTest {
+		
+		@Inject
+		public Provider<A> theProvider;
+		
+		
+	}
+	
+	
+	@Test
+	public void testSortingByProviderBaseClass() {
+		MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
+		
+		Provider2 provider2 = new Provider2();
+		pico.addComponent(MultiProviderBaseTest.class)
+			.addProvider(new ProviderB())
+			.addProvider(provider2);
+		
+		MultiProviderBaseTest test =  pico.getComponent(MultiProviderBaseTest.class);
+		assertNotNull(test);
+		assertTrue(provider2 == test.theProvider);
 	}
 	
 }

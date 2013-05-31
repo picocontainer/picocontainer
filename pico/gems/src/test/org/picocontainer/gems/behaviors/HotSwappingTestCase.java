@@ -90,7 +90,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     @Test
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ConstructorInjection.ConstructorInjector constructorInjector = new ConstructorInjection.ConstructorInjector<ArrayList>("l", ArrayList.class, null);
+        ConstructorInjection.ConstructorInjector constructorInjector = new ConstructorInjection.ConstructorInjector<ArrayList>("l", ArrayList.class);
         HotSwapping.HotSwappable hsca = (HotSwapping.HotSwappable) pico.addAdapter(new HotSwapping.HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");
