@@ -105,6 +105,19 @@ public class PicoContainerJsr330TestCase extends TestCase {
             }
         }    	
 	}
+    
+    public static class EngineProvider implements Provider<Engine> {
+		private MutablePicoContainer pico;
+
+		public EngineProvider(MutablePicoContainer pico) {
+			this.pico = pico;
+		}
+		
+		public Engine get() {
+			return (Engine)pico.getComponent("engine");
+		}
+    	
+    }
 	
 	
 	public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
@@ -116,23 +129,25 @@ public class PicoContainerJsr330TestCase extends TestCase {
     	PlainTireProvider plainTireProvider = new PlainTireProvider(pico);
     	SpareTireProvider spareTireProvider = new SpareTireProvider(pico);
     	PlainSeatProvider plainSeatProvider = new PlainSeatProvider(pico);
+    	EngineProvider engineProvider = new EngineProvider(pico);
     	
         pico.addComponent(Car.class, Convertible.class)
                 //.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DriversSeat.class, DriversSeat.class, Parameter.DEFAULT, new NullComponentMonitor(), false, Drivers.class))
                 .addComponent(FuelTank.class)
-                .addComponent(Engine.class, V8Engine.class)
                 .addComponent(Seatbelt.class)
                 .addComponent(Cupholder.class, Cupholder.class)
                 .addProvider(driversSeatProvider)
                 .addProvider(plainSeatProvider)
                 .addProvider(plainTireProvider)
                 .addProvider(spareTireProvider)
-                
+                .addProvider(engineProvider)
+        
                 //Components Used By the providers
                 .addComponent("plainSeat", Seat.class)
         		.addComponent("theDriversSeat", DriversSeat.class)
                 .addComponent("spareTire", SpareTire.class)
-                .addComponent("plainTire", Tire.class);
+                .addComponent("plainTire", Tire.class)
+        		.addComponent("engine", V8Engine.class);
                 
                 
         
