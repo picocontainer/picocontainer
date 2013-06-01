@@ -80,6 +80,9 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -582,7 +585,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         Parameter[] parameters = createChildParameters(container, element);
         ComponentFactory componentFactory = createComponentFactory(element.getAttribute(FACTORY), metaContainer);
 
-        container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
+        container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, new ConstructorParameters(parameters), null, null));
     }
 
     private ComponentFactory createComponentFactory(String factoryName, ClassLoadingPicoContainer metaContainer) throws PicoCompositionException {
@@ -605,28 +608,33 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
         ConstructorInjection constructorInjection = new ConstructorInjection();
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties props, Object key, Class<T> impl, Parameter... parms)
+        @SuppressWarnings("unchecked")
+		public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties props, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
                 throws PicoCompositionException {
 
-            ComponentAdapter<T> adapter = constructorInjection.createComponentAdapter(monitor, lifecycle, props, key, impl, parms);
+            ComponentAdapter<T> adapter = constructorInjection.createComponentAdapter(monitor, lifecycle, props, key, impl, constructorParams, fieldParams, methodParams);
             String otherKey = props.getProperty("ForCAF");
             if (otherKey != null && !otherKey.equals("")) {
                 props.remove("ForCAF");
-                return new MySingleMemberInjector(key, impl, parms, monitor, false, otherKey, (Injector) adapter);
+                return new MySingleMemberInjector(key, impl, monitor, false, true, otherKey, (Injector) adapter);
             }
             return adapter;
         }
     }
 
+    /**
+     * @todo Revisit params used for this injector (if any) 
+     */
     @SuppressWarnings("serial")
     private static class MySingleMemberInjector extends MultiArgMemberInjector {
         private final String otherKey;
         private final Injector injector;
 
-        private MySingleMemberInjector(Object key, Class impl, Parameter[] parms,
+        @SuppressWarnings("unchecked")
+		private MySingleMemberInjector(Object key, Class impl,
                                        ComponentMonitor monitor, 
-                                       boolean useNames, String otherKey, Injector injector) {
-            super(key, impl, parms, monitor, useNames);
+                                       boolean useNames, boolean requireUseOfAllParameters, String otherKey, Injector injector) {
+            super(key, impl, null, monitor, useNames, requireUseOfAllParameters);
             this.otherKey = otherKey;
             this.injector = injector;
         }

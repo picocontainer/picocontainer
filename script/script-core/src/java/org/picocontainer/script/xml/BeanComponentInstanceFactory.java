@@ -12,12 +12,14 @@ import java.util.Properties;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -57,7 +59,13 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     private ComponentAdapter<?> createComponentAdapter(String className, ClassLoader classLoader)  {
         Class<?> implementation = loadClass(classLoader, className);
         ComponentFactory factory = new AdaptingInjection();
-        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation);
+        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation, 
+ 
+        		//Adapting injection will now support simultanous constructor 
+        		//and other types of injection (since 3.0)
+        		//Must provide empty parameter array to use the default constructor.
+        		//
+        		new ConstructorParameters(new Parameter[0]), null, null);
     }
 
     private Class<?> loadClass(final ClassLoader classLoader, final String className) {
