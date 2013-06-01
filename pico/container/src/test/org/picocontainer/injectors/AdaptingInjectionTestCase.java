@@ -25,6 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.Helicopter;
 import org.picocontainer.injectors.AnnotatedMethodInjectorTestCase.AnnotatedBurp;
+import org.picocontainer.injectors.CompositeInjection.CompositeInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -36,6 +37,8 @@ import org.picocontainer.testmodel.Touchable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -194,6 +197,46 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 			assertFalse("Got " + message, message.contains("fred"));
 			assertTrue("Got " + message, message.contains(AnnotatedMethodInjectorTestCase.AnnotatedBurp.class.getName()));
 		}
+    	
+    }
+    
+    
+    /**
+     * Both types of injection are present to trigger both times of component adapters
+     */
+    public static class InjectionOrderTest {
+    	
+    	@Inject
+    	private String something;
+    	
+    	@Inject
+    	public void injectSomething() {
+    		
+    	}
+    	
+    }
+    
+    @Test
+    public void testJSRFieldsAreInjectedBeforeJSRMethods() {
+        ComponentFactory cf = createComponentFactory();
+		ComponentAdapter<InjectionOrderTest> ca = cf.createComponentAdapter(new NullComponentMonitor(),
+                new NullLifecycleStrategy(),
+                new Properties(),
+                InjectionOrderTest.class,
+                InjectionOrderTest.class,
+                null, null, null);
+		
+		CompositeInjector<?> ci = ca.findAdapterOfType(CompositeInjector.class);
+		assertNotNull(ci);
+		
+		String result = ci.getDescriptor();
+		assertNotNull(result);
+		
+		int methodInjectionLocation = result.indexOf("AnnotatedMethodInjector");
+		int fieldInjectionLocation = result.indexOf("AnnotatedFieldInjector");
+		
+		assertTrue(fieldInjectionLocation < methodInjectionLocation);
+		
     	
     }
 

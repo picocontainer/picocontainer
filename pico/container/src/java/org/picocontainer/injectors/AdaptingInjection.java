@@ -92,34 +92,39 @@ public class AdaptingInjection extends AbstractInjectionType {
         
         componentProps.putAll(Characteristics.ALLOW_UNUSED_PARAMETERS);
         
-        componentAdapter = fieldAnnotatedInjectionAdapter(impl);
-
-        if (componentAdapter != null) {
-        	injectors.add(componentAdapter);
-        	componentAdapter = null;
-        }
-
-        componentAdapter = methodAnnotatedInjectionAdapter(impl);
-
-        if (componentAdapter != null) {
-        	injectors.add(componentAdapter);
-        	componentAdapter = null;
-        }
-
+        //Pico Style Injections
+        //Must specifically set Characteristics.SDI
         componentAdapter = setterInjectionAdapter(componentProps);
-
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
         }
 
+        //Must specifically set Characteristics.METHOD_INJECTION
         componentAdapter = methodInjectionAdapter(componentProps);
-
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
         }
 
+
+        
+        //JSR 330 injection
+        //Turned on by default
+        componentAdapter = methodAnnotatedInjectionAdapter(impl);
+        if (componentAdapter != null) {
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+        }
+
+        
+        //JSR 330 injection
+        //Turned on by default
+        componentAdapter = fieldAnnotatedInjectionAdapter(impl);
+        if (componentAdapter != null) {
+        	injectors.add(componentAdapter);
+        	componentAdapter = null;
+        }
         
         injectors.add(defaultInjectionAdapter(componentProps));
 
