@@ -34,7 +34,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
@@ -45,6 +44,9 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
@@ -263,7 +265,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
         mockery.checking(new Expectations() {{
-        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
+        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), 
+        				with(any(ConstructorParameters.class)),
+        				with(any(FieldParameters[].class)), 
+        				with(any(MethodParameters[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
                                                                         
