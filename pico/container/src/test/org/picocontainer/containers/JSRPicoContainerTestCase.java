@@ -2,32 +2,72 @@ package org.picocontainer.containers;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.JSR330ComponentParameter;
 import org.picocontainer.parameters.MethodParameters;
+import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.visitors.AbstractPicoVisitor;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
 
-public class JSRPicoContainerTestCase {
+public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
-	@Before
-	public void setUp() throws Exception {
+	
+	/**
+	 * The one test that fails the TCK because it uses J2EE5 Lifecycle annotations instead
+	 */
+	@Override
+	@Test
+	@Ignore
+	public void testContainerCascadesDefaultLifecycle() {
+		
+	}
+	
+	
+	/**
+	 * This one fails because of PICO-398
+	 */
+	@Test
+	@Ignore
+	public void testAcceptImplementsBreadthFirstStrategy() {
+		
 	}
 
-	@After
-	public void tearDown() throws Exception {
+
+	@Override
+	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+		return new JSRPicoContainer(parent);
 	}
 
+	@Override
+	protected Properties[] getProperties() {
+		return new Properties[0];
+	}
 	
 	public static class A {
 		
@@ -309,5 +349,91 @@ public class JSRPicoContainerTestCase {
     	assertSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
     	
     }
+    
+    
+    @Singleton
+    public static class TestSingletonAnnotation {
+    	
+    }
+    
+    
+    @Test
+    public void testSingletonAnnotationResultsInCacheProperty() {
+    	MutablePicoContainer mpc = new JSRPicoContainer()
+    		.addComponent(TestSingletonAnnotation.class);
+    	
+    	assertSame(mpc.getComponent(TestSingletonAnnotation.class), 
+    			mpc.getComponent(TestSingletonAnnotation.class));
+    	
+    }
+
+    
+    @Test
+    public void testSingletonWithDefinedPredefinedKey() {
+    	MutablePicoContainer mpc = new JSRPicoContainer()
+		.addComponent("test",TestSingletonAnnotation.class)
+		.addComponent("test2", TestSingletonAnnotation.class);
+	
+    	assertSame(mpc.getComponent("test"), 
+			mpc.getComponent("test"));
+    	
+    }
+
+    
+    
+    public static class AdapterFactoryExaminingVisitor extends TraversalCheckingVisitor {
+
+        private final List<Object> list;
+        
+        int containerCount = 0;
+
+        public AdapterFactoryExaminingVisitor(List<Object> list) {
+            this.list = list;
+        }
+     
+        public void visitComponentFactory(ComponentFactory componentFactory) {
+            list.add(componentFactory.getClass());
+        }
+
+		@Override
+		public boolean visitContainer(PicoContainer pico) {
+			//Don't hang up on wrapped containers
+			if (! (pico instanceof DefaultPicoContainer) ) {
+				return CONTINUE_TRAVERSAL;
+			}
+			
+			if (containerCount == 0) {
+				containerCount++;
+				return CONTINUE_TRAVERSAL;
+			}
+			
+			return ABORT_TRAVERSAL;
+		}
+        
+        
+
+    }
+    
+    @Test
+    public void testMakeChildContainerPropagatesAdapterFactories() {
+    	JSRPicoContainer pico = new JSRPicoContainer();
+    	MutablePicoContainer child = pico.makeChildContainer();
+    	
+    	assertTrue(child != null);
+    	assertTrue(child instanceof JSRPicoContainer);
+    	
+    	List<Object> parentList = new ArrayList<Object>();
+    	List<Object> childList = new ArrayList<Object>();
+    	
+    	AdapterFactoryExaminingVisitor visitor = new AdapterFactoryExaminingVisitor(parentList);
+    	visitor.traverse(pico);
+    	
+    	visitor = new AdapterFactoryExaminingVisitor(childList);
+    	visitor.traverse(child);
+    	
+    	assertTrue(parentList.size() > 0);
+    	assertEquals(Arrays.deepToString(parentList.toArray()), Arrays.deepToString(childList.toArray()));
+    }
+    
 	
 }

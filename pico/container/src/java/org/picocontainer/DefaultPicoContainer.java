@@ -1113,6 +1113,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
         componentFactory.accept(visitor); // will cascade through behaviors
+        
+        
         final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>(getComponentAdapters());
         for (ComponentAdapter<?> componentAdapter : componentAdapters) {
             componentAdapter.accept(visitor);

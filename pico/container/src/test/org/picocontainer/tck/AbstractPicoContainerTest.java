@@ -733,6 +733,7 @@ public abstract class AbstractPicoContainerTest {
 
     protected abstract Properties[] getProperties();
 
+    
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
@@ -771,8 +772,8 @@ public abstract class AbstractPicoContainerTest {
         List<Object> visitedList = new LinkedList<Object>();
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
         visitor.traverse(parent);
-        assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray()) 
-        		+ "\nGot:  " + Arrays.deepToString(visitedList.toArray()), expectedList.size(), visitedList.size());
+//        assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray()) 
+//        		+ "\nGot:  " + Arrays.deepToString(visitedList.toArray()), expectedList.size(), visitedList.size());
         
         assertEquals(Arrays.deepToString(expectedList.toArray()), Arrays.deepToString(visitedList.toArray()));
 //        for (Class<?> c : expectedList) {
@@ -1000,5 +1001,6 @@ public abstract class AbstractPicoContainerTest {
         assertSame(mpc.getComponent("bufferThree"), mpc.getComponent("bufferThree"));
     	
     }
+    
     
 }

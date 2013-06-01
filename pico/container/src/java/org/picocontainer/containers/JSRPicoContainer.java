@@ -5,7 +5,10 @@ import java.lang.annotation.Annotation;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
+import javax.inject.Singleton;
 
+import org.junit.Test;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -32,7 +35,6 @@ import org.picocontainer.parameters.MethodParameters;
  */
 @SuppressWarnings("serial")
 public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
-	
 
 	/**
 	 * Wraps a {@link org.picocontainer.DefaultPicoContainer DefaultPicoContainer} with Opt-in caching
@@ -41,6 +43,9 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		this(new NullComponentMonitor());
 	}
 	
+	public JSRPicoContainer(PicoContainer parent) {
+		this(parent, new NullComponentMonitor());
+	}
 	
 	public JSRPicoContainer(ComponentMonitor monitor) {
 		this(null, monitor);
@@ -58,6 +63,9 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		super(delegate);
 	}
 	
+	/**
+	 * Necessary adapter to fit MutablePicoContainer interface.
+	 */
 	@Override
 	public JSRPicoContainer addComponent(Object implOrInstance) {
 		Object key = determineKey(implOrInstance);
@@ -67,7 +75,10 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	}
 	
 	/**
-	 * Overrides 
+	 * Method that determines the key of the object by examining the implementation for
+	 * JSR 330 annotations.  If none are found,the implementation's class name is used
+	 * as the key.
+	 * 
 	 * @param implOrInstance
 	 * @param parameters
 	 * @return
@@ -76,6 +87,21 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		Object key = determineKey(implOrInstance);
 		
 		addComponent(key, implOrInstance, parameters);
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @param implOrInstance
+	 * @param constructorParams
+	 * @param fieldParams
+	 * @param methodParams
+	 * @return
+	 */
+	public JSRPicoContainer addComponent(Object implOrInstance, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+		Object key = determineKey(implOrInstance);
+		
+		addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
 		return this;
 	}
 
@@ -89,6 +115,9 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * @return the object's determined key. 
 	 */
 	protected Object determineKey(Object implOrInstance) {
+		if (implOrInstance == null) {
+			throw new NullPointerException("implOrInstance");
+		}
 		
 		Class<?> instanceClass =  (implOrInstance instanceof Class) ? (Class)implOrInstance : implOrInstance.getClass();
 		
@@ -131,16 +160,6 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	}
 	
 	
-	/**
-	 * Covariant return override;
-	 */
-	public JSRPicoContainer addComponent(Object key,
-            Object implOrInstance,
-            Parameter... parameters) throws PicoCompositionException {
-		 super.addComponent(key, implOrInstance,parameters);
-		 return this;
-	}
-
 	@Override
 	public MutablePicoContainer makeChildContainer() {
 		MutablePicoContainer childDelegate = getDelegate().makeChildContainer();
@@ -153,5 +172,49 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 		super.addProvider(key, provider);
 		return this;
 	}
+	
+	protected void applyInstanceAnnotations(Class<?> objectImplementation) {
+		if (objectImplementation.isAnnotationPresent(Singleton.class)) {
+			as(Characteristics.CACHE);
+		}
+	}
+
+	/**
+	 * Covariant return override;
+	 */
+	public JSRPicoContainer addComponent(Object key,
+            Object implOrInstance,
+            Parameter... parameters) throws PicoCompositionException {
+		if (key == null) {
+			throw new NullPointerException("key");
+		}
+		
+		if (implOrInstance == null) {
+			throw new NullPointerException("implOrInstance");
+		}
+		
+		applyInstanceAnnotations( implOrInstance instanceof Class ? (Class<?>)implOrInstance : implOrInstance.getClass() );
+		super.addComponent(key, implOrInstance, parameters);
+		return this;
+	}
+	
+	
+
+
+
+	@Override
+	public MutablePicoContainer addComponent(Object key, Object implOrInstance,
+			ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+		if (implOrInstance == null) {
+			throw new NullPointerException("implOrInstance");
+		}
+		
+		applyInstanceAnnotations( implOrInstance instanceof Class ? (Class<?>)implOrInstance : implOrInstance.getClass() );
+
+		super.addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
+		return this;
+	}
+	
+	
 	
 }

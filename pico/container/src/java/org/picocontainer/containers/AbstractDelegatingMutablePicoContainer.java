@@ -115,9 +115,10 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		//
 	    MutablePicoContainer resultingDelegate = getDelegate().as(properties);
 	    
-	    OneRegistrationSwappingInvocationHandler tempInvocationHandler = new OneRegistrationSwappingInvocationHandler(this);
-	    this.swapDelegate(resultingDelegate);
-	    return (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {MutablePicoContainer.class}, tempInvocationHandler);
+	    OneRegistrationSwappingInvocationHandler tempInvocationHandler = new OneRegistrationSwappingInvocationHandler(this, resultingDelegate);
+	    MutablePicoContainer proxiedDelegate =   (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {MutablePicoContainer.class}, tempInvocationHandler);
+	    this.swapDelegate(proxiedDelegate);
+	    return proxiedDelegate;
 	}
 	
 	public void dispose() {
@@ -176,15 +177,18 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		
 		private MutablePicoContainer oldDelegate;
 
-		public OneRegistrationSwappingInvocationHandler(AbstractDelegatingMutablePicoContainer owner) {
+		private MutablePicoContainer oneShotPico;
+
+		public OneRegistrationSwappingInvocationHandler(AbstractDelegatingMutablePicoContainer owner, MutablePicoContainer oneShotPico) {
 			this.owner = owner;
+			this.oneShotPico = oneShotPico;
 			oldDelegate = owner.getDelegate();
 		}
 
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			//Invoke delegate no matter what.  No problem there.
 			try {
-				Object result =  method.invoke(owner.getDelegate(), args);
+				Object result =  method.invoke(oneShotPico, args);
 				String methodName = method.getName();
 				
 				//If the method is one of the addComponent() methods, then swap the delegate back to the

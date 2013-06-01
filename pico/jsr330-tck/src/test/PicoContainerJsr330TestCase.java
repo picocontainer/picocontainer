@@ -68,7 +68,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 
 		public Seat get() {
 	        try {
-	            return (Seat)pico.getComponent("theDriversSeat");
+	            return (Seat)pico.getComponent("plainSeat");
 	        } catch (Exception e) {
 	            throw new RuntimeException(e);
 	        }
@@ -123,7 +123,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 	public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
 		//        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching(), 
 		//                new Jsr330Injection());
-    	final MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer(new Caching(), new AdaptingInjection()));
+    	final MutablePicoContainer pico = new JSRPicoContainer();
     	
     	DriverSeatProvider driversSeatProvider = new DriverSeatProvider(pico);
     	PlainTireProvider plainTireProvider = new PlainTireProvider(pico);
@@ -132,7 +132,6 @@ public class PicoContainerJsr330TestCase extends TestCase {
     	EngineProvider engineProvider = new EngineProvider(pico);
     	
         pico.addComponent(Car.class, Convertible.class)
-                //.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(DriversSeat.class, DriversSeat.class, Parameter.DEFAULT, new NullComponentMonitor(), false, Drivers.class))
                 .addComponent(FuelTank.class)
                 .addComponent(Seatbelt.class)
                 .addComponent(Cupholder.class, Cupholder.class)
