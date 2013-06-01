@@ -12,14 +12,12 @@ package org.picocontainer.injectors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Named;
@@ -32,14 +30,11 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.containers.JSRPicoContainer;
-import org.picocontainer.parameters.AccessibleObjectParameterSet;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.JSR330ComponentParameter;
 import org.picocontainer.parameters.MethodParameters;
-
-import com.thoughtworks.xstream.annotations.Annotations;
 
 /**
  * A {@link org.picocontainer.InjectionType} for Guice-style annotated methods.
