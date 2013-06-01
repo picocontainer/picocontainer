@@ -97,7 +97,6 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
-            //return componentAdapter;
         }
 
         componentAdapter = methodAnnotatedInjectionAdapter(impl);
@@ -105,7 +104,6 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
-            //return componentAdapter;
         }
 
         componentAdapter = setterInjectionAdapter(componentProps);
@@ -113,7 +111,6 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
-//            return componentAdapter;
         }
 
         componentAdapter = methodInjectionAdapter(componentProps);
@@ -121,7 +118,6 @@ public class AdaptingInjection extends AbstractInjectionType {
         if (componentAdapter != null) {
         	injectors.add(componentAdapter);
         	componentAdapter = null;
-//            return componentAdapter;
         }
 
         

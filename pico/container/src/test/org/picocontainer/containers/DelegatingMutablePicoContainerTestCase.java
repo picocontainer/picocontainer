@@ -25,12 +25,15 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
 public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new MyDelegatingMutablePicoContainer(new PicoBuilder(parent).withCaching().withLifecycle().build());
+        return new MyDelegatingMutablePicoContainer(new PicoBuilder(parent)
+        			.withCaching()
+        			.withLifecycle()
+        			.build());
     }
 
-    protected Properties[] getProperties() {
-        return new Properties[] { Characteristics.NO_CACHE, Characteristics.NO_HIDE_IMPL};
-    }
+	protected Properties[] getProperties() {
+		return new Properties[] {Characteristics.CACHE};
+	}
 
     @SuppressWarnings("serial")
 	private static class MyDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {

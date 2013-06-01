@@ -22,6 +22,11 @@ import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
 import javax.inject.Provider;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Properties;
 
 /**
@@ -104,8 +109,15 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 	}
 
 	public MutablePicoContainer as(Properties... properties) {
-	    getDelegate().as(properties);
-	    return this;
+		//
+		//DefaultMutablePicoContainer.as() returns a different container instance
+		//For as() to work, we need to swap to the new container.
+		//
+	    MutablePicoContainer resultingDelegate = getDelegate().as(properties);
+	    
+	    OneRegistrationSwappingInvocationHandler tempInvocationHandler = new OneRegistrationSwappingInvocationHandler(this);
+	    this.swapDelegate(resultingDelegate);
+	    return (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {MutablePicoContainer.class}, tempInvocationHandler);
 	}
 	
 	public void dispose() {
@@ -148,5 +160,57 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         getDelegate().changeMonitor(monitor);
     }
 
-    
+	
+	protected MutablePicoContainer swapDelegate(PicoContainer newDelegate) {
+		return (MutablePicoContainer)super.swapDelegate(newDelegate);
+	}
+	
+	/**
+	 * Allows invocation of addComponent(*) once and then reverts the delegate back to the old instance.
+	 * @author Michael Rimov
+	 *
+	 */
+	public static class OneRegistrationSwappingInvocationHandler implements InvocationHandler {
+		
+		private AbstractDelegatingMutablePicoContainer owner;
+		
+		private MutablePicoContainer oldDelegate;
+
+		public OneRegistrationSwappingInvocationHandler(AbstractDelegatingMutablePicoContainer owner) {
+			this.owner = owner;
+			oldDelegate = owner.getDelegate();
+		}
+
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			//Invoke delegate no matter what.  No problem there.
+			try {
+				Object result =  method.invoke(owner.getDelegate(), args);
+				String methodName = method.getName();
+				
+				//If the method is one of the addComponent() methods, then swap the delegate back to the
+				//old value.
+				if (methodName.startsWith("addComponent") || methodName.startsWith("addAdapter") || methodName.startsWith("addProvider")) {
+					owner.swapDelegate(oldDelegate);
+				}
+				
+				return result;
+			} catch(InvocationTargetException e) {
+				Throwable nestedException = e.getTargetException();
+				if (nestedException instanceof RuntimeException) {
+					throw nestedException;
+				}
+				
+				//Otherwise
+				throw new PicoCompositionException("Error in proxy", e);
+			} catch (Throwable e) {
+				//Gotta catch to avoid endless loops :(
+				if (e instanceof RuntimeException) {
+					throw e;
+				}
+				//Make sure we don't have checked exceptions propagating up for some reason
+				throw new PicoCompositionException("Error in proxy", e);
+			}
+		}
+		
+	}
 }

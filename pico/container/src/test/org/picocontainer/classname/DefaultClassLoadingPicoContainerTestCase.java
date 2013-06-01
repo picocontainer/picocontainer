@@ -42,11 +42,11 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
 
 	
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(parent, new Caching()));
+        return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(parent));
     }
 
     protected Properties[] getProperties() {
-        return new Properties[] { Characteristics.NONE};
+        return new Properties[0];
     }
 
     @Test public void testNamedChildContainerIsAccessible()  {
@@ -113,15 +113,12 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     	pico.currentMonitor();    	
     }
 
+    @Override
     protected void addContainers(List expectedList) {
         expectedList.add(DefaultClassLoadingPicoContainer.class);
         expectedList.add(DefaultPicoContainer.class);
     }
 
-
-    protected void addDefaultComponentFactories(List expectedList) {
-        expectedList.add(Caching.class);
-    }
 
     @Test()
     public void visitingClassesSiblingToAClassWithRegexSubsetWorksWithRecursive() {

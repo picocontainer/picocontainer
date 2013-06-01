@@ -11,6 +11,7 @@ package org.picocontainer;
 
 import com.googlecode.jtype.Generic;
 import org.junit.Test;
+import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;

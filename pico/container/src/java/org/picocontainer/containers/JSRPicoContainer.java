@@ -6,22 +6,54 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.injectors.ProviderAdapter;
+import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
 /**
- * This class requires the JSR330 JAR to be in the classpath upon load.
+ * This class requires the JSR330 JAR to be in the classpath upon load.  It provides automatic
+ * key generation based on {@link javax.inject.Named Named} and {@link javax.inject.Qualifier Qualifier} annotations.  It
+ * handles JSR compliant {@link javax.inject.Provider Provider} classes, and supports turning
+ * on caching for {@link javax.inject.Singleton Singleton} marked classes.
  * @author Michael Rimov
  *
  */
 @SuppressWarnings("serial")
 public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
+	
 
+	/**
+	 * Wraps a {@link org.picocontainer.DefaultPicoContainer DefaultPicoContainer} with Opt-in caching
+	 */
+	public JSRPicoContainer() {
+		this(new NullComponentMonitor());
+	}
+	
+	
+	public JSRPicoContainer(ComponentMonitor monitor) {
+		this(null, monitor);
+	}
+	
+	public JSRPicoContainer(PicoContainer parent, ComponentMonitor monitor) {
+		super(new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(monitor), monitor, new OptInCaching(), new AdaptingBehavior()));
+	}
+
+	/**
+	 * Allows you to wrap automatic-key generation and 
+	 * @param delegate
+	 */
 	public JSRPicoContainer(MutablePicoContainer delegate) {
 		super(delegate);
 	}

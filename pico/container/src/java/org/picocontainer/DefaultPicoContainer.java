@@ -1288,7 +1288,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
 
         private final Properties properties;
-
+        
+        
         public AsPropertiesPicoContainer(final Properties... props) {
             super(DefaultPicoContainer.this);
             properties = (Properties) containerProperties.clone();
@@ -1302,7 +1303,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         @Override
-        @SuppressWarnings("unused")
         public MutablePicoContainer as(Properties... props) {
             throw new PicoCompositionException("Syntax 'as(FOO).as(BAR)' not allowed, do 'as(FOO, BAR)' instead");
         }

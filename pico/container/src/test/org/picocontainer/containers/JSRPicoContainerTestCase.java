@@ -292,5 +292,22 @@ public class JSRPicoContainerTestCase {
 		assertEquals("Arg 1", test.fieldArg);
 		assertEquals("Arg 2", test.methodarg);
     }
+    
+    @Test
+    public void testCachingIsTurnedOffByDefault() {
+    	MutablePicoContainer mpc = new JSRPicoContainer();
+    	mpc.addComponent(Provider1.class);
+    	
+    	assertNotSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
+    }
+    
+    @Test
+    public void testYouMayOptInCachingWithDefaultContainer() {
+    	MutablePicoContainer mpc = new JSRPicoContainer();
+    	mpc.as(Characteristics.CACHE).addComponent(Provider1.class);
+    	
+    	assertSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
+    	
+    }
 	
 }

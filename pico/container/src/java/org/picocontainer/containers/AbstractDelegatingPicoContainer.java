@@ -131,6 +131,20 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 	public PicoContainer getDelegate() {
 		return delegate;
 	}
+	
+	/**
+	 * Allows for swapping of delegate object to allow for temp proxies.
+	 * @param newDelegate
+	 * @return the old delegate instance.
+	 */
+	protected PicoContainer swapDelegate(PicoContainer newDelegate) {
+		if (newDelegate == null) {
+			throw new NullPointerException("newDelegate");
+		}
+		PicoContainer oldDelegate = delegate;
+		this.delegate = newDelegate;
+		return oldDelegate;
+	}
 
 	public PicoContainer getParent() {
 		return delegate.getParent();

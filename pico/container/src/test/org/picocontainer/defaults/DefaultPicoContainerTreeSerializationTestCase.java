@@ -25,6 +25,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 

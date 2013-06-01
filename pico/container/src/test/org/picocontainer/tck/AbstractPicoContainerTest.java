@@ -29,6 +29,7 @@ import org.picocontainer.Startable;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -38,6 +39,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.BasicComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.DefaultConstructorParameter;
 import org.picocontainer.parameters.NullParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -180,7 +182,8 @@ public abstract class AbstractPicoContainerTest {
         }
     }
 
-    @Test public void testExternallyInstantiatedObjectsCanBeRegisteredAndLookedUp() throws PicoException {
+    @SuppressWarnings("rawtypes")
+	@Test public void testExternallyInstantiatedObjectsCanBeRegisteredAndLookedUp() throws PicoException {
         MutablePicoContainer pico = createPicoContainer(null);
         final HashMap map = new HashMap();
         pico.as(getProperties()).addComponent(Map.class, map);
@@ -770,10 +773,12 @@ public abstract class AbstractPicoContainerTest {
         visitor.traverse(parent);
         assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray()) 
         		+ "\nGot:  " + Arrays.deepToString(visitedList.toArray()), expectedList.size(), visitedList.size());
-        for (Class c : expectedList) {
-            assertTrue(visitedList.remove(c));
-        }
-        assertEquals(0, visitedList.size());
+        
+        assertEquals(Arrays.deepToString(expectedList.toArray()), Arrays.deepToString(visitedList.toArray()));
+//        for (Class<?> c : expectedList) {
+//            assertTrue(visitedList.remove(c));
+//        }
+//        assertEquals(0, visitedList.size());
     }
     
     /**
@@ -973,5 +978,27 @@ public abstract class AbstractPicoContainerTest {
         assertEquals(42, result.value);
     }
     
+    
+    /**
+     * Not all containers might allow caching/nocache, but 
+     * we need to verify that it is getting properly processed.
+     */
+    @Test
+    public void testAsPropagatesForExactlyOneInvocation() {
+        MutablePicoContainer mpc = createPicoContainer(null);
+        mpc.change(Characteristics.CACHE);
+        
+        mpc
+        	.as(Characteristics.CACHE).addComponent("bufferTwo", StringBuffer.class, DefaultConstructorParameter.INSTANCE)
+        	.as(Characteristics.NO_CACHE).addComponent("bufferOne", StringBuffer.class, DefaultConstructorParameter.INSTANCE)
+        	.addComponent("bufferThree", StringBuffer.class, DefaultConstructorParameter.INSTANCE);
+        
+        assertNotSame(mpc.getComponent("bufferOne"), mpc.getComponent("bufferOne"));
+        assertSame(mpc.getComponent("bufferTwo"), mpc.getComponent("bufferTwo"));
+        
+        //Default behavior is caching.
+        assertSame(mpc.getComponent("bufferThree"), mpc.getComponent("bufferThree"));
+    	
+    }
     
 }
