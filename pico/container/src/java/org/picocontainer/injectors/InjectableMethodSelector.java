@@ -132,10 +132,22 @@ public class InjectableMethodSelector {
 	private boolean alreadyAnalyzedChildClassMethod(Class<?> baseClass, Method eachMethod,
 			HashMap<String, Set<Method>> allMethodsAnalyzed) {
 		
+    	/**
+    	 * Private methods can't be overridden.
+    	 */
+    	if (Modifier.isPrivate(eachMethod.getModifiers())) {
+    		return false;
+    	}
+		
+		
 		Set<Method> methodsByName = allMethodsAnalyzed.get(eachMethod.getName());
 		if (methodsByName == null) {
 			methodsByName = new HashSet<Method>();
-			allMethodsAnalyzed.put(eachMethod.getName(), methodsByName);
+			allMethodsAnalyzed.put(eachMethod.getName() 
+					+ "." 
+					+ Arrays.deepToString(eachMethod.getParameterTypes()), 
+					
+					methodsByName);
 		}
 		
 
@@ -154,7 +166,6 @@ public class InjectableMethodSelector {
 	
 	
     private boolean isStillViableGivenOverrides(Class<?> originalType, Method method, HashMap<String, Set<Method>> allMethodsAnalyzed) {
-    	
     	
     	if (Modifier.isPublic(method.getModifiers()) || isPackagePrivate(method)) {
     		if (alreadyAnalyzedChildClassMethod(originalType, method, allMethodsAnalyzed)) {

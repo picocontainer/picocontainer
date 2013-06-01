@@ -170,8 +170,49 @@ public class InjectableMethodSelectorTestCase {
 		assertFalse("Got " + Arrays.deepToString(methods.toArray()) ,methods.contains(doSomething));
 		assertTrue("Got " + Arrays.deepToString(methods.toArray()), methods.contains(doSomethingElse));
 		assertFalse("Got " + Arrays.deepToString(methods.toArray()), methods.contains(dontInject));
-    	
     }
+	
+	
+	public static class PrivateBase1 {
+		
+		public boolean injected = false;
+		
+		@Inject
+		private void doSomething() {
+			injected = true;
+		}
+	}
+	
+	
+	public static class PrivateChild1 extends PrivateBase1 {
+		
+		//See if the system thinks its an override.
+		public void doSomething() {
+			
+		}
+	}
+	
+	
+	@Test
+	public void testPrivateInjectionMethodsAreInjected() {
+		InjectableMethodSelector selector = new InjectableMethodSelector();
+		List<Method> methods = selector.retreiveAllInjectableMethods(PrivateBase1.class);
+		
+		assertEquals(1, methods.size());
+		assertTrue(PrivateBase1.class.equals(methods.get(0).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(0).getName());
+	}
+	
+	
+	@Test
+	public void testPrivateInjectionMethodsCannotBeOverridden() {
+		InjectableMethodSelector selector = new InjectableMethodSelector();
+		List<Method> methods = selector.retreiveAllInjectableMethods(PrivateChild1.class);
+		assertEquals(1, methods.size());
+		assertTrue(PrivateBase1.class.equals(methods.get(0).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(0).getName());
+		
+	}
 	
 	
 	
