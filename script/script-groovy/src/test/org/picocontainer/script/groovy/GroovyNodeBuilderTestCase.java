@@ -29,7 +29,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -40,6 +39,9 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
@@ -346,7 +348,15 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         final A a = new A();
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
         mockery.checking(new Expectations() {{
-        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
+        	one(componentFactory).createComponentAdapter(
+        			with(any(ComponentMonitor.class)),
+        			with(any(LifecycleStrategy.class)), 
+        			with(any(Properties.class)), 
+        			with(same(A.class)), 
+        			with(same(A.class)), 
+        			with(any(ConstructorParameters.class)), 
+        			with(any(FieldParameters[].class)), 
+        			with(any(MethodParameters[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
         PicoContainer pico = buildContainer(script, null, componentFactory);
