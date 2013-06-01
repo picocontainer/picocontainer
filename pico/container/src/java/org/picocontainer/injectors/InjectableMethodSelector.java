@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class InjectableMethodSelector {
 	
 	private Class<Annotation>[] annotation;
 
-
+	
 	@SuppressWarnings("unchecked")
 	public InjectableMethodSelector(Class<? extends Annotation>... searchingAnnotation) {
 		//this.annotation = searchingAnnotation;
@@ -38,7 +40,7 @@ public class InjectableMethodSelector {
 
 	public List<Method> retreiveAllInjectableMethods(Class<?> type) {
 
-        HashMap<String, Set<Method>> allMethodsAnalyzed = new HashMap<String,Set<Method>>();
+        Map<String, List<Method>> allMethodsAnalyzed = new HashMap<String, List<Method>>();
         List<Method> methodz = new ArrayList<Method>();
         recursiveCheckInjectorMethods(type, type, methodz, allMethodsAnalyzed);
         return methodz;
@@ -46,7 +48,10 @@ public class InjectableMethodSelector {
 	}
 	
 	
-    protected void recursiveCheckInjectorMethods(Class<?> originalType, Class<?> type, List<Method> receiver, HashMap<String, Set<Method>> allMethodsAnalyzed) {
+    protected void recursiveCheckInjectorMethods(Class<?> originalType, 
+    			Class<?> type, List<Method> receiver, 
+    			Map<String, List<Method>> allMethodsAnalyzed) {
+    	
     	//Ignore interfaces for this.
     	if (originalType.isInterface()) {
     		return;
@@ -59,7 +64,7 @@ public class InjectableMethodSelector {
     	
 
     	for (Method eachMethod : type.getDeclaredMethods()) {
-    		if(alreadyAnalyzedChildClassMethod(originalType, eachMethod, allMethodsAnalyzed)) {
+    		if(isChildClassMethodOverridingCurrentMethod(eachMethod, allMethodsAnalyzed)) {
     			//This method was defined in a child class, what the child class says, goes.
     			continue;
     		} 
@@ -76,15 +81,19 @@ public class InjectableMethodSelector {
     }
 
     
-    private void addToMethodsAnalyzed(HashMap<String, Set<Method>> allMethodsAnalyzed, Method eachMethod) {
-    	if (!allMethodsAnalyzed.containsKey(eachMethod.getName())) {
-    		allMethodsAnalyzed.put(eachMethod.getName(), new HashSet<Method>());
-    	} 
-		
-    	allMethodsAnalyzed.get(eachMethod.getName()).add(eachMethod);
+    private void addToMethodsAnalyzed(Map<String, List<Method>> allMethodsAnalyzed, Method eachMethod) {
+    	final String signature = getMethodSignature(eachMethod);
+    	List<Method> methodsWithThisSignature = allMethodsAnalyzed.get(signature);
+    	if (methodsWithThisSignature == null) {
+    		methodsWithThisSignature = new LinkedList<Method>();
+    		allMethodsAnalyzed.put(signature, methodsWithThisSignature);
+    	}
+    	
+    	//Bottom of the hierarchy methods should be last in the list.
+    	methodsWithThisSignature.add(0,eachMethod);
 	}
     
-    protected final boolean isInjectorMethod(Class<?> originalType, Method method, HashMap<String, Set<Method>> allMethodsAnalyzed) {
+    protected final boolean isInjectorMethod(Class<?> originalType, Method method, Map<String, List<Method>> allMethodsAnalyzed) {
     	
     	boolean returnResult = false;
         for (Class<? extends Annotation> injectionAnnotation : annotation) {
@@ -94,86 +103,89 @@ public class InjectableMethodSelector {
         }
         
         if (returnResult) {
-        	returnResult = isStillViableGivenOverrides(originalType, method, allMethodsAnalyzed);
+        	returnResult = isStillViableGivenOverrides(method, allMethodsAnalyzed);
         }
         
         return returnResult;
     }
     
-    
-    /**
-     * Returns a declared child member of the same times or null if there is no
-     * child member declared the same way.
-     * @param childClass
-     * @param examiningMethod
-     * @return
-     */
-    private Method getChildMethodIfDeclared(Class<?> childClass, Method examiningMethod) {
-    	if (childClass.equals(examiningMethod.getDeclaringClass())) {
-    		return null;
-    	}
-    	
-    	try {
-			Method m = childClass.getDeclaredMethod(examiningMethod.getName(), examiningMethod.getParameterTypes());
-			return m;
-		} catch (NoSuchMethodException e) {
-			return getChildMethodIfDeclared(childClass.getSuperclass(), examiningMethod);
-		}
-    }
 
     /**
+     * Returns a string showing the method signature.
+     * @param eachMethod
+     * @return
+     */
+    private String getMethodSignature(Method eachMethod) {
+    	//At this point going to ignore return type since covarient return types (I think) would
+    	//qualify as the same method.
+    	return eachMethod.getName() + "(" + Arrays.deepToString(eachMethod.getParameterTypes()) + ")";
+    }
+    
+    /**
      * Returns true if a child method has been already declared with this signature.  
-     * @param baseClass
      * @param eachMethod
      * @param allMethodsAnalyzed
      * @return true if the child method has already been found, ignore the new one, the child
      * one overrides.
      */
-	private boolean alreadyAnalyzedChildClassMethod(Class<?> baseClass, Method eachMethod,
-			HashMap<String, Set<Method>> allMethodsAnalyzed) {
+	private boolean isChildClassMethodOverridingCurrentMethod(Method currentMethod, Map<String, List<Method>> allMethodsAnalyzed) {
 		
     	/**
     	 * Private methods can't be overridden.
     	 */
-    	if (Modifier.isPrivate(eachMethod.getModifiers())) {
+    	if (Modifier.isPrivate(currentMethod.getModifiers())) {
     		return false;
     	}
 		
-		
-		Set<Method> methodsByName = allMethodsAnalyzed.get(eachMethod.getName());
-		if (methodsByName == null) {
-			methodsByName = new HashSet<Method>();
-			allMethodsAnalyzed.put(eachMethod.getName() 
-					+ "." 
-					+ Arrays.deepToString(eachMethod.getParameterTypes()), 
-					
-					methodsByName);
-		}
-		
+    	
+    	if (allMethodsAnalyzed.containsKey(getMethodSignature(currentMethod))) {
+    		
+    		//Go through the list of ones to potentially show that we haven't already analyzed it.
+    		for (Method eachMethod : allMethodsAnalyzed.get(getMethodSignature(currentMethod))) {
+    			
+    			//We don't count private methods.
+    			if (Modifier.isPrivate(eachMethod.getModifiers())) {
+    				continue;
+    			}
+    			
+    			if (this.isPackagePrivate(eachMethod) && isClassDefinitionsInDifferentPackages(currentMethod, eachMethod)) {
+    				continue;
+    			}
+    			
+    			return true;
+    		}
 
-		if (methodsByName.contains(eachMethod)) {
-			return true;
-		}
-				
-		Method m = getChildMethodIfDeclared(baseClass, eachMethod);
-		if (m != null) {
-			return true;
-		}
-		
-
-		return false;
+    		//If we went through all the methods and none met the overriding criteria 
+    		//Then there is no child class method overriding this one.
+    	}
+    	
+    	return false;
 	}
 	
 	
-    private boolean isStillViableGivenOverrides(Class<?> originalType, Method method, HashMap<String, Set<Method>> allMethodsAnalyzed) {
+	/**
+	 * Compares method's class' defining packages and returns true if the packages are different.
+	 * @param currentMethod
+	 * @param eachMethod
+	 * @return
+	 */
+    private boolean isClassDefinitionsInDifferentPackages(Method currentMethod, Method eachMethod) {
+    	Package currentMethodPackage = currentMethod.getDeclaringClass().getPackage();
+    	Package testMethodPackage = eachMethod.getDeclaringClass().getPackage();
+
+    	return !(currentMethodPackage.getName().equals(testMethodPackage.getName()));
+    
+    }
+
+
+	private boolean isStillViableGivenOverrides(Method method, Map<String, List<Method>> allMethodsAnalyzed) {
     	
     	if (Modifier.isPublic(method.getModifiers()) || isPackagePrivate(method)) {
-    		if (alreadyAnalyzedChildClassMethod(originalType, method, allMethodsAnalyzed)) {
+    		if (isChildClassMethodOverridingCurrentMethod(method, allMethodsAnalyzed)) {
     			return false;
     		}
     		
     	}
-    	
     	
     	return true;
     }

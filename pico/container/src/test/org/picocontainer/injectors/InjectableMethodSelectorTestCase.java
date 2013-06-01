@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.Test;
+import org.picocontainer.injectors.packageseparatetests.PackagePrivateDerivedTest1;
 
 public class InjectableMethodSelectorTestCase {
 	
@@ -175,21 +176,15 @@ public class InjectableMethodSelectorTestCase {
 	
 	public static class PrivateBase1 {
 		
-		public boolean injected = false;
-		
 		@Inject
-		private void doSomething() {
-			injected = true;
-		}
+		private void doSomething() {}
 	}
 	
 	
 	public static class PrivateChild1 extends PrivateBase1 {
 		
 		//See if the system thinks its an override.
-		public void doSomething() {
-			
-		}
+		public void doSomething() {}
 	}
 	
 	
@@ -214,6 +209,57 @@ public class InjectableMethodSelectorTestCase {
 		
 	}
 	
+	
+	public static class OverloadingBase {
+		
+		
+		@Inject
+		public void doSomething() {
+		}
+		
+	}
+	
+	public static class OverloadingChild extends OverloadingBase {
+		
+		@Inject
+		public void doSomething(String value) {
+			
+		}
+	}
+	
+	
+	@Test
+	public void testOverloadingMethodsDontMaskParentPublicInjectionsWithDifferentArgs() {
+		@SuppressWarnings("unchecked")
+		InjectableMethodSelector selector = new InjectableMethodSelector();
+		List<Method> methods = selector.retreiveAllInjectableMethods(OverloadingChild.class);
+		assertEquals(2, methods.size());
+		assertTrue(OverloadingChild.class.equals(methods.get(0).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(0).getName());
+		
+		assertTrue(OverloadingBase.class.equals(methods.get(1).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(1).getName());
+	}
+	
+	
+	public static class PackagePrivateBase1 {
+		@Inject
+		void doSomething() {}
+	}
+	
+
+	@Test
+	public void testOverloadingFromPackagePrivateToPrivateOutsidePackageGetsBothTypesOfMethodsInjected() {
+		@SuppressWarnings("unchecked")
+		InjectableMethodSelector selector = new InjectableMethodSelector();
+		List<Method> methods = selector.retreiveAllInjectableMethods(PackagePrivateDerivedTest1.class);
+		assertEquals("Got " + Arrays.deepToString(methods.toArray()), 2, methods.size());
+		assertTrue(PackagePrivateDerivedTest1.class.equals(methods.get(0).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(0).getName());
+		
+		assertTrue(PackagePrivateBase1.class.equals(methods.get(1).getDeclaringClass()));
+		assertEquals("doSomething", methods.get(1).getName());
+	}
 	
 	
 }
