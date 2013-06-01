@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -155,6 +156,10 @@ public class MethodInjection extends AbstractInjectionType {
             HashMap<String, Set<Method>> allMethodsAnalyzed = new HashMap<String,Set<Method>>();
             List<Method> methodz = new ArrayList<Method>();
             recursiveCheckInjectorMethods(toIntrospect, toIntrospect, methodz, allMethodsAnalyzed);
+            
+            //Inject in JSR330 compliant order.
+            Collections.sort(methodz, new JSRAccessibleObjectOrderComparator());
+            
             return methodz;
         }
         

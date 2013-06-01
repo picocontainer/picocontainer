@@ -16,12 +16,17 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.containers.SomeQualifier;
+import org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Named;
 
@@ -245,5 +250,52 @@ public class AnnotatedFieldInjectorTestCase {
     	assertTrue(z3.getD3() instanceof D3);
     }
     
+    
+    public static class OrderBase {
+    	@Inject
+    	public static String something;
+    	
+    	@Inject
+    	public String somethingElse;
+    }
+    
+    public static class OrderChild extends OrderBase {
+    	
+    	@Inject
+    	public static String somethingChild;
+    	
+    	@Inject
+    	public String somethingElseChild;
+    }
+    
+    @Test
+    public void testBaseClassStaticsInjectedFirst() throws NoSuchFieldException {
+    	
+    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
+    	
+    	@SuppressWarnings("unchecked")
+    	AnnotatedFieldInjector<OrderChild> adapter = new AnnotatedFieldInjector<OrderChild>(OrderChild.class, OrderChild.class, null, new NullComponentMonitor(), false, false, Inject.class);
+    	assertNotNull(adapter);
+    	
+    	Field somethingField = OrderBase.class.getField("something");
+    	Field somethingElseField = OrderBase.class.getField("somethingElse");
+    	Field somethingChild = OrderChild.class.getField("somethingChild");
+    	Field somethingElseChild = OrderChild.class.getField("somethingElseChild");
+    	
+    	
+    	//Force initialization of injection members
+    	OrderChild child = adapter.getComponentInstance(pico, null);
+    	assertNotNull(child);
+    	
+    	List<AccessibleObject> givenOrder = adapter.getInjectionMembers();
+    	
+    	assertEquals(4, givenOrder.size());
+    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingField, givenOrder.get(0));
+    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseField, givenOrder.get(1));
+    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingChild, givenOrder.get(2));
+    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseChild, givenOrder.get(3));
+    	
+    	
+    }
     
 }

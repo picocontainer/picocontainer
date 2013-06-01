@@ -20,6 +20,7 @@ import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -107,16 +108,36 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
                 for (final Field field : fields) {
                     if (isAnnotatedForInjection(field)) {
                         injectionMembers.add(field);
-                        typeList.add(box(field.getGenericType()));
-                        bindingIds.add(getBinding(field));
                     }
                 }
                 drillInto = drillInto.getSuperclass();
             }
+
+            //Sort for injection.
+            Collections.sort(injectionMembers, new JSRAccessibleObjectOrderComparator());
+            for (AccessibleObject eachMember : injectionMembers) {
+            	Field field = (Field)eachMember;
+                typeList.add(box(field.getGenericType()));
+                bindingIds.add(getBinding(field));
+
+            }
+            
             injectionTypes = typeList.toArray(new Type[0]);
             bindings = bindingIds.toArray(new Annotation[0]);
+            
         }
 
+        /**
+         * Sorry, can't figure out how else to test injection member order without
+         * this function or some other ugly hack to get at the private data structure.
+         * At least I made it read only?  :D  -MR 
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+		public List<AccessibleObject> getInjectionMembers() {
+        	return injectionMembers != null ? Collections.unmodifiableList(injectionMembers) : Collections.EMPTY_LIST;
+        }
+        
         private Annotation getBinding(Field field) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {

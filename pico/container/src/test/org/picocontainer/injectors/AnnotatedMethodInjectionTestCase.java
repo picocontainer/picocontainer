@@ -15,6 +15,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.Method;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,6 +28,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.containers.SomeQualifier;
+import org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector;
+import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.OrderChild;
+import org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
@@ -135,6 +140,81 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     	assertEquals("This is B test", instance.b);
     	assertEquals("This is C test", instance.c);
     	
+    }
+    
+    
+    public static class OrderBase {
+    	
+    	protected static boolean oneInvoked = false;
+    	
+    	protected static boolean twoInvoked = false;
+    	
+
+    	@Inject
+    	public static void one() {
+    		assertFalse(oneInvoked);
+    		assertFalse(twoInvoked);
+    		
+    		oneInvoked = true;
+    	}
+
+    	@Inject
+    	public void two() {
+    		assertTrue(oneInvoked);   		
+    		assertFalse(twoInvoked);
+    		
+    		twoInvoked = true;
+    	};
+    }
+    
+    
+    public static class OrderDerived extends OrderBase {
+    	
+    	protected static boolean threeInvoked = false;
+    	
+    	protected static boolean fourInvoked = false;
+    	
+    	@Inject
+    	public static void three() {
+    		assertTrue(oneInvoked);
+    		assertTrue(twoInvoked);
+    		assertFalse(threeInvoked);
+    		assertFalse(fourInvoked);
+    		threeInvoked = true;
+    		
+    	}
+
+    	@Inject
+    	public void four() {
+    		assertTrue(oneInvoked);
+    		assertTrue(twoInvoked);
+    		assertTrue(threeInvoked);
+    		assertFalse(fourInvoked);
+    		fourInvoked = true;
+    		
+    	}
+    	
+    	public static void reset() {
+    		oneInvoked = false;
+    		twoInvoked = false;
+    		threeInvoked = false;
+    		fourInvoked = false;
+    	}
+    }
+    
+    
+    @Test
+    public void testBaseClassAndStaticsInjectedFirst() throws NoSuchMethodException {
+    	OrderDerived.reset();
+
+    	AnnotatedMethodInjector<OrderDerived> adapter = new AnnotatedMethodInjector<OrderDerived>(OrderDerived.class, OrderDerived.class, null, new NullComponentMonitor(), false, false, Inject.class);
+    	OrderDerived derived = adapter.getComponentInstance(null, null);
+    	assertTrue(OrderDerived.oneInvoked);
+    	assertTrue(OrderDerived.twoInvoked);
+    	assertTrue(OrderDerived.threeInvoked);
+    	assertTrue(OrderDerived.fourInvoked);
+    
+    	OrderDerived.reset();
     }
     
 }
