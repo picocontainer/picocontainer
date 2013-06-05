@@ -278,6 +278,15 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 		return null;
 	}
 
+    /**
+     * Providers don't decorate component instances.
+     */
+	@SuppressWarnings("rawtypes")
+	public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, Object instance, Class superclassPortion) {
+		return null;
+	}
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -288,5 +297,6 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 		
 		return null;
 	}
+
 
 }

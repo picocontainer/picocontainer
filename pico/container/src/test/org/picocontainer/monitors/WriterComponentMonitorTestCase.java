@@ -12,6 +12,7 @@ package org.picocontainer.monitors;
 import static org.junit.Assert.assertEquals;
 import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
@@ -81,7 +82,7 @@ public class WriterComponentMonitorTestCase  {
     @Test public void testShouldTraceInvoking() {
         monitor.invoking(null, null, method, this, new Object[0]);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKING,
-                                                   methodToString(method), this) +NL,  out.toString());
+                                                   memberToString(method), this) +NL,  out.toString());
     }
 
     @Test public void testShouldTraceInvoked() {
@@ -94,7 +95,7 @@ public class WriterComponentMonitorTestCase  {
     @Test public void testShouldTraceInvocatiationFailed() {
         monitor.invocationFailed(method, this, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INVOCATION_FAILED,
-                                                   methodToString(method), this, "doh") +NL,  out.toString());
+        		memberToString(method), this, "doh") +NL,  out.toString());
     }
 
     @SuppressWarnings("unchecked")

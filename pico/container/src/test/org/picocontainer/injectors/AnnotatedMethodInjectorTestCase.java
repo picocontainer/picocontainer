@@ -10,6 +10,7 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter.NOTHING;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -19,6 +20,7 @@ import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.A3;
 import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.B3;
 import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.C3;
 import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.Z3;
+import org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
@@ -31,6 +33,7 @@ import javax.inject.Named;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AnnotatedMethodInjectorTestCase  {
 
@@ -249,6 +252,63 @@ public class AnnotatedMethodInjectorTestCase  {
         PrivateMethodInjectionTest result = picoContainer.getComponent(PrivateMethodInjectionTest.class);
         assertNotNull(result);
         assertTrue(result.injected);
+    }
+    
+    
+    public static class DecorationTestBase {
+    	
+    	public boolean baseInjected = false;
+    	
+		@javax.inject.Inject
+    	public void injectBase() {
+    		baseInjected = true;
+    	}
+    	
+    }
+    
+    public static class DecorationTestDerived extends DecorationTestBase {
+    	
+    	public boolean childInjected = false;
+
+		@javax.inject.Inject
+    	public void injectChild() {
+    		childInjected  = true;
+    	}
+    }
+    
+	@Test
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void testPartialDecorationOnBaseClassDoesntPropagateToChildren() {
+    	DefaultPicoContainer pico = new DefaultPicoContainer();
+    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class, 
+    				DecorationTestDerived.class, null, new NullComponentMonitor(), 
+    				false, false, javax.inject.Inject.class);
+    	
+    	DecorationTestDerived derived = new DecorationTestDerived();
+    	
+    	injector.partiallyDecorateComponentInstance(pico, NOTHING.class, derived, DecorationTestBase.class);
+    	
+    	assertTrue(derived.baseInjected);
+    	assertFalse(derived.childInjected);
+    }
+    
+    
+    
+    @Test
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void testPartialDecorationOnChildClassDoesntPropagateToParent() {
+    	DefaultPicoContainer pico = new DefaultPicoContainer();
+    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class, 
+    				DecorationTestDerived.class, null, new NullComponentMonitor(), 
+    				false, false, javax.inject.Inject.class);
+    	
+    	DecorationTestDerived derived = new DecorationTestDerived();
+    	
+    	injector.partiallyDecorateComponentInstance(pico, NOTHING.class, derived, DecorationTestDerived.class);
+    	
+    	assertFalse(derived.baseInjected);
+    	assertTrue(derived.childInjected);
+    
     }
 
 }

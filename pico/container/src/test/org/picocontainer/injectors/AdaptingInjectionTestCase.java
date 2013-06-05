@@ -239,6 +239,8 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 		
     	
     }
+    
+
 
 
 }

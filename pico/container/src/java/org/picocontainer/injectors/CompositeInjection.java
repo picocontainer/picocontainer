@@ -25,6 +25,9 @@ import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -76,28 +79,82 @@ public class CompositeInjection extends AbstractInjectionType {
         @Override
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
 	            T instance = null;
-	            for (Injector<T> injector : injectors) {
-	                if (instance == null) {
-	                    instance = injector.getComponentInstance(container, NOTHING.class);
-	                } else {
-	                    injector.decorateComponentInstance(container, into, instance);
-	                }
+	            
+	            for (Class<?> eachSuperClass : this.getListOfSupertypesToDecorate(getComponentImplementation())) {
+		            for (Injector<T> injector : injectors) {
+		                if (instance == null) {
+		                    instance = injector.getComponentInstance(container, NOTHING.class);
+		                } else {
+		                    injector.partiallyDecorateComponentInstance(container, into, instance, eachSuperClass);
+		                }
+		            }
 	            }
 	            return (T) instance;
         }
 
+        protected Class<?>[] getListOfSupertypesToDecorate(Class<?> startClass) {
+        	if (startClass == null) {
+        		throw new NullPointerException("startClass");
+        	}
+        	
+        	List<Class<?>> result = new ArrayList<Class<?>>();
+        	
+        	Class<?> current = startClass;
+        	while (!Object.class.getName().equals(current.getName())) {
+        		result.add(current);
+        		current = current.getSuperclass();
+        	}
+
+        	//Needed for: org.picocontainer.injectors.AdaptingInjectionTestCase.testSingleUsecanBeInstantiatedByDefaultComponentAdapter()
+        	if (result.size() == 0) {
+        		result.add(Object.class);
+        	}
+        	
+        	//Start with base class, not derived class.
+        	Collections.reverse(result);
+        	
+        	return result.toArray(new Class[result.size()]);
+        }        
+        
 
         /**
          * @return the object returned is the result of the last of the injectors delegated to
          */
+//        @Override
+//        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+//            Object result = null;
+//            for (Injector<T> injector : injectors) {
+//                result = injector.decorateComponentInstance(container, into, instance);
+//            }
+//            return result;
+//        }
+        
+        /**
+         * Performs a set of partial injections starting at the base class and working its
+         * way down.
+         * <p>{@inheritDoc}</p>
+         * @return the object returned is the result of the last of the injectors delegated to
+         */
         @Override
         public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
-            Object result = null;
+        	Object result = null;
+        	for (Class<?> eachSuperClass : this.getListOfSupertypesToDecorate(instance.getClass())) {
+        		result = partiallyDecorateComponentInstance(container, into, instance, eachSuperClass);	
+        	}
+        	 
+        	return result;
+
+        }
+        
+		public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance,
+				Class<?> classFilter) {
+			Object result = null;
+        	
             for (Injector<T> injector : injectors) {
-                result = injector.decorateComponentInstance(container, into, instance);
+            	result = injector.partiallyDecorateComponentInstance(container, into, instance, classFilter);
             }
             return result;
-        }
+		}          
 
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {

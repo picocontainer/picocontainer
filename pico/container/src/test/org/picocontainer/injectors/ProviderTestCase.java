@@ -200,6 +200,7 @@ public class ProviderTestCase {
         dpc.addComponent(NeedsChocolate.class);
         dpc.addComponent(CocaoBeans.class);
         dpc.addComponent(String.class, "Cadbury's"); // the only string in the set of components
+        
         NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
         assertNotNull(needsChocolate);
         assertNotNull(needsChocolate.choc);

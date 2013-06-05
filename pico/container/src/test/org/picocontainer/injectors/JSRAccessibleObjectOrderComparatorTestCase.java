@@ -2,12 +2,20 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.injectors.packageseparatetests.PackageSeparateDerivedTestModel;
 
 public class JSRAccessibleObjectOrderComparatorTestCase {
 	
@@ -101,7 +109,8 @@ public class JSRAccessibleObjectOrderComparatorTestCase {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testMixingDifferentAccessibleObjectTypesCausesIllegalArgumentException() {
-		comparator.compare(oneField, oneMethod);
+		Constructor<?> defaultConstructor = Derived.class.getConstructors()[0];
+		comparator.compare(oneField, defaultConstructor);
 	}
 	
 	@Test
@@ -135,7 +144,42 @@ public class JSRAccessibleObjectOrderComparatorTestCase {
 		//Fields in reverse order to double-check logic.
 		assertEquals(1, comparator.compare(fiveField, fourField));
 		assertEquals(1, comparator.compare(fiveMethod, fourMethod));
+	}
+	
+	@Test
+	public void testPackagePrivacyStillDoesntAffectOrdering() throws NoSuchMethodException, SecurityException, NoSuchFieldException {
+		Method baseTestSomething = PackageSeparateBaseTestModel.class.getDeclaredMethod("testSomething");
+		Method baseTestSomethingElse = PackageSeparateBaseTestModel.class.getDeclaredMethod("testSomethingElse");
 		
+		Method derivedInjectSomething = PackageSeparateDerivedTestModel.class.getDeclaredMethod("injectSomething");
+		Method derivedTestSomethingElse = PackageSeparateDerivedTestModel.class.getDeclaredMethod("testSomethingElse");
+		
+		Field baseAValue = PackageSeparateBaseTestModel.class.getDeclaredField("aValue");
+		Field derivedAValue = PackageSeparateDerivedTestModel.class.getDeclaredField("aValue");
+		
+		assertEquals(-1, comparator.compare(baseTestSomething, derivedInjectSomething));
+		assertEquals(-1, comparator.compare(baseTestSomethingElse, derivedTestSomethingElse));
+		assertEquals(-1, comparator.compare(baseTestSomething, derivedTestSomethingElse));
+		assertEquals(-1, comparator.compare(baseAValue, derivedAValue));
+		assertEquals(1, comparator.compare(baseTestSomething, baseTestSomethingElse));
+		
+		List<AccessibleObject> allMembers = new ArrayList<AccessibleObject>();
+		allMembers.add(baseTestSomething);
+		allMembers.add(baseTestSomethingElse);
+		allMembers.add(derivedInjectSomething);
+		allMembers.add(derivedTestSomethingElse);
+		allMembers.add(baseAValue);
+		allMembers.add(derivedAValue);
+		
+		Collections.sort(allMembers, comparator);
+		
+		assertSame(Arrays.deepToString(allMembers.toArray()),baseAValue, allMembers.get(0));
+		assertSame(Arrays.deepToString(allMembers.toArray()),baseTestSomethingElse, allMembers.get(1));
+		assertSame(Arrays.deepToString(allMembers.toArray()),baseTestSomething, allMembers.get(2));
+		
+		assertSame(Arrays.deepToString(allMembers.toArray()),derivedAValue, allMembers.get(3));
+		assertSame(Arrays.deepToString(allMembers.toArray()), derivedTestSomethingElse, allMembers.get(4));
+		assertSame(Arrays.deepToString(allMembers.toArray()),derivedInjectSomething, allMembers.get(5));
 	}
 
 }

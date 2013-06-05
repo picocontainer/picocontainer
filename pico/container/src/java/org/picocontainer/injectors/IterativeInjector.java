@@ -40,6 +40,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private static final Object[] NONE = new Object[0];
     
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
+    
     protected volatile transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
@@ -298,20 +299,31 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         final Constructor<?> constructor = getConstructor();
-        if (instantiationGuard == null) {
-            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-                public T run(Object instance) {
-                    final ParameterToAccessibleObjectPair[] matchingParameters = getMatchingParameterListForMembers(guardedContainer);
-                    Object componentInstance = makeInstance(container, constructor, currentMonitor());
-                    return  decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer, into);
-                }
-            };
+        boolean iInstantiated = false;
+        T result;
+        try {
+	        if (instantiationGuard == null) {
+	        	iInstantiated = true;
+	            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                public T run(Object instance) {
+	                    final ParameterToAccessibleObjectPair[] matchingParameters = getMatchingParameterListForMembers(guardedContainer);
+	                    Object componentInstance = makeInstance(container, constructor, currentMonitor());
+	                    return  decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer, into, null);
+	                }
+	            };
+	        }
+	        instantiationGuard.setGuardedContainer(container);
+	        result = instantiationGuard.observe(getComponentImplementation(), null);
+        } finally {
+	        if (iInstantiated) {
+	        	instantiationGuard.remove();
+	        	instantiationGuard = null;
+	        }
         }
-        instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation(), null);
+        return result;
     }
 
-    private T decorateComponentInstance(ParameterToAccessibleObjectPair[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into) {
+    private T decorateComponentInstance(ParameterToAccessibleObjectPair[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into, Class<?> partialDecorationFilter) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
         Object lastReturn = null;
@@ -319,6 +331,12 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             for (int i = 0; i < matchingParameters.length; i++) {
             	if (matchingParameters[i] != null) {
             		member = matchingParameters[i].getAccessibleObject();
+            	}
+            	
+            	
+            	//Skip it, we're only doing a partial injection
+            	if (partialDecorationFilter != null && !partialDecorationFilter.equals( ((Member)member).getDeclaringClass() )) {
+            		continue;
             	}
             	
                 if (matchingParameters[i] != null && matchingParameters[i].isResolved()) {
@@ -379,36 +397,65 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     @Override
     public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
-        if (instantiationGuard == null) {
-            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-                public T run(final Object inst) {
-                    final ParameterToAccessibleObjectPair[] matchingParameters = getMatchingParameterListForMembers(guardedContainer);
-                    return decorateComponentInstance(matchingParameters, currentMonitor(), inst, container, guardedContainer, into);
-                }
-            };
-        }
-        instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation(), instance);
+    	return partiallyDecorateComponentInstance(container, into, instance, null);
     }
+    
+    
+    @Override
+    public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance, final Class<?> superclassPortion) {
+    	boolean iInstantiated = false;
+    	T result;
+    	try {
+	        if (instantiationGuard == null) {
+	        	iInstantiated = true;
+	            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                public T run(final Object inst) {
+	                    final ParameterToAccessibleObjectPair[] matchingParameters = getMatchingParameterListForMembers(guardedContainer);
+	                    return decorateComponentInstance(matchingParameters, currentMonitor(), inst, container, guardedContainer, into, superclassPortion);
+	                }
+	            };
+	        }
+        	instantiationGuard.setGuardedContainer(container);
+        	result =  instantiationGuard.observe(getComponentImplementation(), instance);
+    	} finally {
+	        if (iInstantiated) {
+	        	instantiationGuard.remove();
+	        	instantiationGuard = null;
+	        }
+    	}
+        return result;
+    }
+    
+    
 
     protected abstract Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject) throws IllegalAccessException, InvocationTargetException;
 
-    @Override
+	@Override
+    @SuppressWarnings("unchecked")
     public void verify(final PicoContainer container) throws PicoCompositionException {
-        if (verifyingGuard == null) {
-            verifyingGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-                public T run(Object inst) {
-                    final ParameterToAccessibleObjectPair[] currentParameters = getMatchingParameterListForMembers(guardedContainer);
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].getAccessibleObjectParameters().getParams()[0].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    makeParameterNameImpl(currentParameters[i].getAccessibleObject()), useNames(), bindings[i]);
-                    }
-                    return null;
-                }
-            };
-        }
-        verifyingGuard.setGuardedContainer(container);
-        verifyingGuard.observe(getComponentImplementation(), null);
+    	boolean i_Instantiated = false;
+    	try {
+	        if (verifyingGuard == null) {
+	        	i_Instantiated = true;
+	            verifyingGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                public T run(Object inst) {
+	                    final ParameterToAccessibleObjectPair[] currentParameters = getMatchingParameterListForMembers(guardedContainer);
+	                    for (int i = 0; i < currentParameters.length; i++) {
+	                        currentParameters[i].getAccessibleObjectParameters().getParams()[0].verify(container, IterativeInjector.this, injectionTypes[i],
+	                                                    makeParameterNameImpl(currentParameters[i].getAccessibleObject()), useNames(), bindings[i]);
+	                    }
+	                    return null;
+	                }
+	            };
+	        }
+	        verifyingGuard.setGuardedContainer(container);
+	        verifyingGuard.observe(getComponentImplementation(), null);
+    	} finally {
+	        if (i_Instantiated) {
+	        	verifyingGuard.remove();
+	        	verifyingGuard = null;
+	        }
+    	}
     }
 
     protected void initializeInjectionMembersAndTypeLists() {

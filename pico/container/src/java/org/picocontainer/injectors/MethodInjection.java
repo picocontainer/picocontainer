@@ -216,40 +216,51 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         @Override
-        public T getComponentInstance(final PicoContainer container, final @SuppressWarnings("unused") Type into) throws PicoCompositionException {
-            if (instantiationGuard == null) {
-                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-                    @Override
-                    @SuppressWarnings("synthetic-access")
-                    public T run(Object instance) {
-                        List<Method> methods = getInjectorMethods();
-                        T inst = null;
-                        ComponentMonitor monitor = currentMonitor();
-                        Method lastMethod = null;
-                        try {
-                            monitor.instantiating(container, MethodInjector.this, null);
-                            long startTime = System.currentTimeMillis();
-                            Object[] methodParameters = null;
-                            inst = getComponentImplementation().newInstance();
-                            for (Method method : methods) {
-                                lastMethod = method;
-                                methodParameters = getMemberArguments(guardedContainer, method, into);
-                                invokeMethod(method, methodParameters, inst, container);
-                            }
-                            monitor.instantiated(container, MethodInjector.this,
-                                                          null, inst, methodParameters, System.currentTimeMillis() - startTime);
-                            return inst;
-                        } catch (InstantiationException e) {
-                            return caughtInstantiationException(monitor, null, e, container);
-                        } catch (IllegalAccessException e) {
-                            return caughtIllegalAccessException(monitor, lastMethod, inst, e);
-
-                        }
-                    }
-                };
-            }
-            instantiationGuard.setGuardedContainer(container);
-            return (T) instantiationGuard.observe(getComponentImplementation(), null);
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        	boolean i_Instantiated = false;
+        	T result;
+        	try {
+	            if (instantiationGuard == null) {
+	            	i_Instantiated = true;
+	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                    @Override
+	                    @SuppressWarnings("synthetic-access")
+	                    public T run(Object instance) {
+	                        List<Method> methods = getInjectorMethods();
+	                        T inst = null;
+	                        ComponentMonitor monitor = currentMonitor();
+	                        Method lastMethod = null;
+	                        try {
+	                            monitor.instantiating(container, MethodInjector.this, null);
+	                            long startTime = System.currentTimeMillis();
+	                            Object[] methodParameters = null;
+	                            inst = getComponentImplementation().newInstance();
+	                            for (Method method : methods) {
+	                                lastMethod = method;
+	                                methodParameters = getMemberArguments(guardedContainer, method, into);
+	                                invokeMethod(method, methodParameters, inst, container);
+	                            }
+	                            monitor.instantiated(container, MethodInjector.this,
+	                                                          null, inst, methodParameters, System.currentTimeMillis() - startTime);
+	                            return inst;
+	                        } catch (InstantiationException e) {
+	                            return caughtInstantiationException(monitor, null, e, container);
+	                        } catch (IllegalAccessException e) {
+	                            return caughtIllegalAccessException(monitor, lastMethod, inst, e);
+	
+	                        }
+	                    }
+	                };
+	            }
+	            instantiationGuard.setGuardedContainer(container);
+	            result =  (T) instantiationGuard.observe(getComponentImplementation(), null);
+        	} finally {
+	            if (i_Instantiated) {
+	            	instantiationGuard.remove();
+	            	instantiationGuard = null;
+	            }
+        	}
+            return result;
         }
 
         protected Object[] getMemberArguments(PicoContainer container, final Method method, Type into) {
@@ -258,28 +269,66 @@ public class MethodInjection extends AbstractInjectionType {
 
         @Override
         public Object decorateComponentInstance(final PicoContainer container, @SuppressWarnings("unused") final Type into, final T instance) {
-            if (instantiationGuard == null) {
-                instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
-                    @Override
-                    @SuppressWarnings("synthetic-access")
-                    public Object run(Object inst) {
-                        List<Method> methods = getInjectorMethods();
-                        Object lastReturn = null;
-                        for (Method method : methods) {
-                            if (method.getDeclaringClass().isAssignableFrom(inst.getClass())) {
-                                Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
-                                lastReturn = invokeMethod(method, methodParameters, (T) inst, container);
-                            }
-                        }
-                        return lastReturn;
-                    }
-                };
-            }
-            instantiationGuard.setGuardedContainer(container);
-            Object o = instantiationGuard.observe(getComponentImplementation(), instance);
-            return o;
+        	return partiallyDecorateComponentInstance(container, into, instance, null);
         }
+        
 
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance,
+				final Class<?> injectionTypeFilter) {
+			boolean iInstantiated = false; 
+			Object o;
+			try {
+	            if (instantiationGuard == null) {
+	            	iInstantiated = true;
+	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<Object>() {
+	                    @Override
+	                    @SuppressWarnings("synthetic-access")
+	                    public Object run(Object inst) {
+	                        List<Method> methods = getInjectorMethods();
+	                        Object lastReturn = null;
+	                        for (Method method : methods) {
+	                        	Class<?> methodClass = method.getDeclaringClass();
+	                        	Class<?> filterClass = injectionTypeFilter;
+	                        	if (!allowedMethodBasedOnFilter(filterClass, method)) {
+	                        		continue;
+	                        	}
+	                        	
+	                            if (methodClass.isAssignableFrom(inst.getClass())) {
+	                                Object[] methodParameters = getMemberArguments(guardedContainer, method, into);
+	                                lastReturn = invokeMethod(method, methodParameters, (T) inst, container);
+	                            }
+	                        }
+	                        return lastReturn;
+	                    }
+	
+	                };
+	            }
+	            instantiationGuard.setGuardedContainer(container);
+	            o = instantiationGuard.observe(getComponentImplementation(), instance);
+			} finally {
+	            if (iInstantiated) {
+	            	instantiationGuard.remove();
+	            	instantiationGuard = null;
+	            }
+			}
+            
+            return o;		
+        }        
+
+		/**
+		 * Method injection filter sometimes decorates based on one or two specific methods.  
+		 * Filtering isn't appropriate for those cases, but it is needed for JSR injection.
+		 * @param injectionTypeFilter
+		 * @param method
+		 * @return
+		 */
+		protected boolean allowedMethodBasedOnFilter(Class<?> injectionTypeFilter, Method method) {
+			return true;
+		}
+		
         private Object invokeMethod(Method method, Object[] methodParameters, T instance, PicoContainer container) {
             try {
                 Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, methodParameters);
@@ -314,33 +363,43 @@ public class MethodInjection extends AbstractInjectionType {
 
 
 		@Override
+		@SuppressWarnings("unchecked")
         public void verify(final PicoContainer container) throws PicoCompositionException {
-            if (verifyingGuard == null) {
-                verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
-                    @Override
-                    public Object run(Object inst) {
-                        final List<Method> methods = getInjectorMethods();
-                        for (Method method : methods) {
-                        	
-                            final Class[] parameterTypes = method.getParameterTypes();
-                            
-                            AccessibleObjectParameterSet paramsForMethod = getParameterToUseForObject(method, parameters);
-                            
-                            
-                            final Parameter[] currentParameters = paramsForMethod != null ? paramsForMethod.getParams() : createDefaultParameters(parameterTypes.length);
-                            for (int i = 0; i < currentParameters.length; i++) {
-                                currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
-                                        new ParameterNameBinding(getParanamer(), method, i), useNames(),
-                                        getBindings(method.getParameterAnnotations())[i]);
-                            }
-
-                        }
-                        return null;
-                    }
-                };
-            }
-            verifyingGuard.setGuardedContainer(container);
-            verifyingGuard.observe(getComponentImplementation(), null);
+			boolean i_created = false;
+			try {
+	            if (verifyingGuard == null) {
+	            	i_created = true;
+	                verifyingGuard = new ThreadLocalCyclicDependencyGuard<Void>() {
+	                    @Override
+	                    public Void run(Object inst) {
+	                        final List<Method> methods = getInjectorMethods();
+	                        for (Method method : methods) {
+	                        	
+	                            final Class[] parameterTypes = method.getParameterTypes();
+	                            
+	                            AccessibleObjectParameterSet paramsForMethod = getParameterToUseForObject(method, parameters);
+	                            
+	                            
+	                            final Parameter[] currentParameters = paramsForMethod != null ? paramsForMethod.getParams() : createDefaultParameters(parameterTypes.length);
+	                            for (int i = 0; i < currentParameters.length; i++) {
+	                                currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
+	                                        new ParameterNameBinding(getParanamer(), method, i), useNames(),
+	                                        getBindings(method.getParameterAnnotations())[i]);
+	                            }
+	
+	                        }
+	                        return null;
+	                    }
+	                };
+	            }
+	            verifyingGuard.setGuardedContainer(container);
+	            verifyingGuard.observe(getComponentImplementation(), null);
+			} finally {
+	            if (i_created) {
+	            	verifyingGuard.remove();
+	            	verifyingGuard = null;
+	            }
+			}
         }
 		
 
@@ -364,6 +423,8 @@ public class MethodInjection extends AbstractInjectionType {
             }
             return false;
         }
+
+
 
     }
 }

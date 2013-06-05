@@ -422,47 +422,57 @@ public class ConstructorInjection extends AbstractInjectionType {
 
         @Override
         public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-            if (instantiationGuard == null) {
-                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-                    @Override
-                    @SuppressWarnings("synthetic-access")
-                    public T run(Object instance) {
-                        CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
-                        ComponentMonitor monitor = currentMonitor();
-                        Constructor<T> ctor = ctorAndAdapters.getConstructor();
-                        try {
-                            Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
-                            ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);
-                            if(ctor == null) {
-                                throw new NullPointerException("Component Monitor " + monitor
-                                                + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
-                            }
-                            long startTime = System.currentTimeMillis();
-                            changeAccessToModifierifNeeded(ctor);
-                            T inst = newInstance(ctor, ctorParameters);
-                            monitor.instantiated(container, ConstructorInjector.this,
-                                    ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
-                            return inst;
-                        } catch (InvocationTargetException e) {
-                            monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
-                            if (e.getTargetException() instanceof RuntimeException) {
-                                throw (RuntimeException) e.getTargetException();
-                            } else if (e.getTargetException() instanceof Error) {
-                                throw (Error) e.getTargetException();
-                            }
-                            throw new PicoCompositionException(e.getTargetException());
-                        } catch (InstantiationException e) {
-                            return caughtInstantiationException(monitor, ctor, e, container);
-                        } catch (IllegalAccessException e) {
-                            return caughtIllegalAccessException(monitor, ctor, e, container);
-
-                        }
-                    }
-                };
-            }
-            instantiationGuard.setGuardedContainer(container);
-            T inst = instantiationGuard.observe(getComponentImplementation(), null);
-            decorate(inst, container);
+        	boolean i_Instantiated = false;
+        	T inst;
+        	try {
+	            if (instantiationGuard == null) {
+	            	i_Instantiated = true;
+	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                    @Override
+	                    @SuppressWarnings("synthetic-access")
+	                    public T run(Object instance) {
+	                        CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
+	                        ComponentMonitor monitor = currentMonitor();
+	                        Constructor<T> ctor = ctorAndAdapters.getConstructor();
+	                        try {
+	                            Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
+	                            ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);
+	                            if(ctor == null) {
+	                                throw new NullPointerException("Component Monitor " + monitor
+	                                                + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
+	                            }
+	                            long startTime = System.currentTimeMillis();
+	                            changeAccessToModifierifNeeded(ctor);
+	                            T inst = newInstance(ctor, ctorParameters);
+	                            monitor.instantiated(container, ConstructorInjector.this,
+	                                    ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
+	                            return inst;
+	                        } catch (InvocationTargetException e) {
+	                            monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
+	                            if (e.getTargetException() instanceof RuntimeException) {
+	                                throw (RuntimeException) e.getTargetException();
+	                            } else if (e.getTargetException() instanceof Error) {
+	                                throw (Error) e.getTargetException();
+	                            }
+	                            throw new PicoCompositionException(e.getTargetException());
+	                        } catch (InstantiationException e) {
+	                            return caughtInstantiationException(monitor, ctor, e, container);
+	                        } catch (IllegalAccessException e) {
+	                            return caughtIllegalAccessException(monitor, ctor, e, container);
+	
+	                        }
+	                    }
+	                };
+	            }
+	            instantiationGuard.setGuardedContainer(container);
+	            inst = instantiationGuard.observe(getComponentImplementation(), null);
+	            decorate(inst, container);
+        	} finally {
+	            if (i_Instantiated) {
+	            	instantiationGuard.remove();
+	            	instantiationGuard = null;
+	            }
+        	}
             return inst;
         }
 
@@ -523,30 +533,39 @@ public class ConstructorInjection extends AbstractInjectionType {
 		@Override
         @SuppressWarnings({ "unchecked", "rawtypes" })
         public void verify(final PicoContainer container) throws PicoCompositionException {
-            if (verifyingGuard == null) {
-                verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
-                    @Override
-                    public Object run(Object inst) {
-                        final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
-                        final Class[] parameterTypes = constructor.getParameterTypes();
-//                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
-                        
-    	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
-    	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
-                        
-                        
-                        for (int i = 0; i < currentParameters.length; i++) {
-                            currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-                                new ParameterNameBinding(getParanamer(),  constructor, i),
-                                    useNames(), getBindings(constructor.getParameterAnnotations())[i]);
-                        }
-                        return null;
-                    }
-                };
-            }
-            verifyingGuard.setGuardedContainer(container);
-            verifyingGuard.observe(getComponentImplementation(), null);
-        }
+			boolean i_instantiated = false;
+			try {
+	            if (verifyingGuard == null) {
+	            	i_instantiated = true;
+	                verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
+	                    @Override
+	                    public Object run(Object inst) {
+	                        final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
+	                        final Class[] parameterTypes = constructor.getParameterTypes();
+	                        
+	    	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
+	    	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
+	                        
+	                        
+	                        for (int i = 0; i < currentParameters.length; i++) {
+	                            currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
+	                                new ParameterNameBinding(getParanamer(),  constructor, i),
+	                                    useNames(), getBindings(constructor.getParameterAnnotations())[i]);
+	                        }
+	                        return null;
+	                    }
+	                };
+	            }
+	            verifyingGuard.setGuardedContainer(container);
+	            verifyingGuard.observe(getComponentImplementation(), null);
+	            
+			} finally {
+	            if (i_instantiated) {
+	            	verifyingGuard.remove();
+	            	verifyingGuard = null;
+	            }
+			}
+	      }
 
         @Override
         public String getDescriptor() {

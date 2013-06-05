@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentMonitor;
 
@@ -82,11 +83,20 @@ public final class ComponentMonitorHelper  {
         return sb.toString();
     }
 
+    public static String getDeclaringTypeString(Member m) {
+    	if (m == null) {
+    		return " null ";
+    	}
+    	
+    	
+    	return m.getDeclaringClass().getName();
+    }
+    
     public static String memberToString(Member m) {
         if (m instanceof Field) {
-            return toString((Field) m);
+            return getDeclaringTypeString(m) + "." +  toString((Field) m);
         } else {
-            return methodToString((Method) m);
+            return getDeclaringTypeString(m) + "." +  methodToString((Method) m);
         }
     }
 

@@ -13,6 +13,8 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class AbstractInjectionType implements InjectionType, Serializable {
@@ -23,6 +25,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
     public final void accept(PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
     }
+
 
     protected <T> ComponentAdapter<T> wrapLifeCycle(final Injector<T> injector, LifecycleStrategy lifecycle) {
         if (lifecycle instanceof NullLifecycleStrategy) {
@@ -114,5 +117,10 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
             return delegate.decorateComponentInstance(container, into, instance);
         }
+
+		public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance,
+				Class<?> superclassPortion) {
+			return delegate.partiallyDecorateComponentInstance(container, into, instance, superclassPortion);
+		}
     }
 }

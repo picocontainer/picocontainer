@@ -144,6 +144,10 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return null;
     }
 
+    public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance, Class<?> superclassPortion) {
+        return null;
+    }
+
     public void verify(PicoContainer container) {
     }
 

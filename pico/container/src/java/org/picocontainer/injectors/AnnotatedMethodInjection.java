@@ -221,6 +221,17 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
 			}
 			return null;
 		}
+
+
+
+		@Override
+		protected boolean allowedMethodBasedOnFilter(Class<?> injectionTypeFilter, Method method) {
+			if (injectionTypeFilter != null && ! injectionTypeFilter.equals(method.getDeclaringClass())) {
+				return false;
+			}
+			
+			return true;
+		}
 		
     }
 }

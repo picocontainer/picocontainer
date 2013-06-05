@@ -12,6 +12,8 @@ package org.picocontainer.injectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -26,6 +28,8 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.Apple;
+import org.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.AppleImpl1;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.containers.SomeQualifier;
 import org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector;
@@ -215,6 +219,46 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     	assertTrue(OrderDerived.fourInvoked);
     
     	OrderDerived.reset();
+    }
+    
+    
+    public static class StaticOneTime {
+    	
+    	public static Apple injectedApple;
+    	
+    	public Apple injectedApple2;
+    	
+    	@Inject
+    	public static void injectApple(Apple a) {
+    		injectedApple = a;
+    	}
+    	
+    	@Inject
+    	public void injectAnotherApple(Apple a) {
+    		injectedApple2 = a;
+    	}
+    }
+    
+    @Test
+    public void testStaticsAreOnlyInjectedOneTime() {
+    	JSRPicoContainer pico = new JSRPicoContainer()
+    			.addComponent(StaticOneTime.class)
+    			.addComponent(Apple.class, AppleImpl1.class);
+    	
+    	StaticOneTime instance1 = pico.getComponent(StaticOneTime.class);
+    	Apple static1 = StaticOneTime.injectedApple;
+    	Apple nonStatic1 = instance1.injectedApple2;
+    	
+    	StaticOneTime instance2 = pico.getComponent(StaticOneTime.class);
+    	
+    	Apple static2 = StaticOneTime.injectedApple;
+    	Apple nonStatic2 = instance2.injectedApple2;
+    	
+    	assertNotSame(instance1, instance2);
+    	assertNotSame(nonStatic1, nonStatic2);
+    	
+    	//The important part :)
+    	assertSame(static1, static2);
     }
     
 }

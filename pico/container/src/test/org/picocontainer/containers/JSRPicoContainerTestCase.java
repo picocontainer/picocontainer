@@ -1,6 +1,12 @@
 package org.picocontainer.containers;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,27 +18,20 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.JSR330ComponentParameter;
 import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.tck.AbstractPicoContainerTest;
-import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
@@ -436,4 +435,51 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     }
     
 	
+    public static class InjectionOrder2Parent {
+    	
+    	public static boolean injectSomethingCalled = false;
+    	
+		public static String injectedValue;
+    	
+    	@Inject
+    	public static void injectSomthing(String injectedValue) {
+    		InjectionOrder2Parent.injectedValue = injectedValue;
+			assertFalse(InjectionOrder2Child.isInjected());
+    		injectSomethingCalled = true;
+    	}
+    }
+    
+    
+    public static class InjectionOrder2Child extends InjectionOrder2Parent {
+    	@Inject
+    	private static String something = null;
+    	
+    	public static boolean isInjected() {
+    		return something != null;
+    	}
+    	
+    	
+    	@Inject
+    	public void injectSomethingElse() {
+    		assertNotNull(something);
+    		assertNotNull(InjectionOrder2Parent.injectedValue);
+    		assertTrue(InjectionOrder2Parent.injectSomethingCalled);
+    	}
+    }
+    
+    @Test
+    public void testParentStaticJSRMethodsAreInjectedBeforeChildJSRFields() {
+    	JSRPicoContainer pico = new JSRPicoContainer();
+    	
+    	pico.addComponent("Test", "This is a test")
+    		.addComponent(InjectionOrder2Child.class);
+    	
+    	
+    	InjectionOrder2Child child = pico.getComponent(InjectionOrder2Child.class);
+    	assertNotNull(child);
+    	
+    	assertNotNull(InjectionOrder2Parent.injectedValue);
+    	assertTrue(InjectionOrder2Child.isInjected());
+    	
+    }    
 }

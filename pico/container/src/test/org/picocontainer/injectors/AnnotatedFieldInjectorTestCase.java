@@ -10,6 +10,7 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter.NOTHING;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -32,7 +33,9 @@ import javax.inject.Named;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -257,6 +260,10 @@ public class AnnotatedFieldInjectorTestCase {
     	
     	@Inject
     	public String somethingElse;
+    	
+    	public static void reset() {
+    		something = null;
+    	}
     }
     
     public static class OrderChild extends OrderBase {
@@ -266,6 +273,12 @@ public class AnnotatedFieldInjectorTestCase {
     	
     	@Inject
     	public String somethingElseChild;
+    	
+    	
+    	public static void reset() {
+    		somethingChild = null;
+    		OrderBase.reset();
+    	}
     }
     
     @Test
@@ -294,8 +307,87 @@ public class AnnotatedFieldInjectorTestCase {
     	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseField, givenOrder.get(1));
     	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingChild, givenOrder.get(2));
     	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseChild, givenOrder.get(3));
+    }
+    
+    
+    @Test
+    public void testPartialDecorationOnBaseClassDoesntPropagateToChildren() {
+    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
+    	
+    	OrderChild child = new OrderChild();
+    	OrderChild.reset();
+    	
+    	@SuppressWarnings("unchecked")
+    	AnnotatedFieldInjector<OrderChild> adapter = new AnnotatedFieldInjector<OrderChild>(OrderChild.class, OrderChild.class, null, new NullComponentMonitor(), false, false, Inject.class);
+    	assertNotNull(adapter);
+    	
+    	adapter.partiallyDecorateComponentInstance(pico, NOTHING.class, child, OrderBase.class);
+    	
+    	assertNull(OrderChild.somethingChild);
+    	assertNull(child.somethingElseChild);
+    	assertEquals("Testing", child.something);
+    	assertEquals("Testing", child.somethingElse);
+    }
+    
+    @Test
+    public void testPartialDecorationOnChildClassDoesntPropagateToParent() {
+    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
+    	
+    	OrderChild child = new OrderChild();
+    	OrderChild.reset();
+
+    	assertNull(OrderChild.somethingChild);
+    	assertNull(OrderBase.something);
+    	
+    	@SuppressWarnings("unchecked")
+    	AnnotatedFieldInjector<OrderChild> adapter = new AnnotatedFieldInjector<OrderChild>(OrderChild.class, OrderChild.class, null, new NullComponentMonitor(), false, false, Inject.class);
+    	assertNotNull(adapter);
+    	
+    	adapter.partiallyDecorateComponentInstance(pico, NOTHING.class, child, OrderChild.class);
+    	
+    	assertNull(OrderBase.something);
+    	assertNull(child.somethingElse);
+    	assertEquals("Testing", OrderChild.somethingChild);
+    	assertEquals("Testing", child.somethingElseChild);
+    	OrderChild.reset();
+    	
+    }
+    
+    
+    public static class Multi {
+    	
+    }
+    
+    public static class Single {
+    	
+    	@Inject
+    	public static Multi oneValue;
+    
+    	@Inject
+    	public Multi manyValues;
+    	
+    }
+    
+    @Test
+    public void staticMembersAreOnlyInjectedOneTimeUponFirstInitialization() {
+    	JSRPicoContainer pico = new JSRPicoContainer()
+    			.addComponent(Multi.class)
+    			.addComponent(Single.class);
+    	
+    	Single singleOne = pico.getComponent(Single.class);
+    	Multi staticOne = Single.oneValue;
+    	Multi manyOne = singleOne.manyValues;
     	
     	
+    	Single singleTwo = pico.getComponent(Single.class);
+    	Multi staticTwo = Single.oneValue;
+    	Multi manyTwo = singleTwo.manyValues;
+    	
+    	assertNotSame(singleOne, singleTwo);
+    	assertNotSame(manyOne, manyTwo);
+    	
+    	//The important part :)
+    	assertSame(staticOne, staticTwo);
     }
     
 }

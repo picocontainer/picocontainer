@@ -274,6 +274,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
         return null;
     }
+    
+    public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance, Class<?> superclassPortion) {
+    	return null;
+    }
 
     @Override
 	public void accept(final PicoVisitor visitor) {

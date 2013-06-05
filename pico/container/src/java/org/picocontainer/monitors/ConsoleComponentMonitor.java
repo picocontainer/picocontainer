@@ -116,8 +116,8 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
                         Member member,
                         Object instance,
                         long duration,
-                        Object retVal, Object[] args) {
-        out.println(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
+                        Object retVal, Object... args) {
+        out.println(format(ComponentMonitorHelper.INVOKED, memberToString(member), instance, duration));
         delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
@@ -130,7 +130,7 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
                                           ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
-        out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, memberToString(method), instance, cause.getMessage()));
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 

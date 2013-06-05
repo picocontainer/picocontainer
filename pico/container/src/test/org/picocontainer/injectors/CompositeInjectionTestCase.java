@@ -9,6 +9,7 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,6 +17,7 @@ import java.io.StringWriter;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentAdapter.NOTHING;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
@@ -25,6 +27,7 @@ import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.injectors.CompositeInjection.CompositeInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.WriterComponentMonitor;
 
@@ -201,5 +204,91 @@ public class CompositeInjectionTestCase {
         }
     }
     
+    public static class CompositeOrderBase {
+    	
+    	@Inject
+    	public static String one = null;
+    
+    	protected boolean injectSomethingCalled = false;
+
+    	protected static boolean staticInjectSomethingCalled = false;
+    	
+    	@Inject
+    	public static void injectSomethingStatic() {
+    		staticInjectSomethingCalled = true;
+    	}
+    	
+    	@Inject
+    	public void injectSomething() {
+    		injectSomethingCalled = true;
+    		assertNotNull(one);
+    		assertNull(CompositeOrderDerived.two);
+    	}
+    	
+    }
+    
+    public static class CompositeOrderDerived extends CompositeOrderBase {
+    	
+    	@Inject
+    	public static String two = null;
+
+    	public boolean injectSomethingElseCalled = false;
+    	
+    	@Inject
+    	public static void injectSomethingElseStatic() {
+    		assertTrue("Base class static needs to be called before subtype static", CompositeOrderBase.staticInjectSomethingCalled);
+    	}
+    	
+    	@Inject
+    	public void injectSomethingElse() {
+    		injectSomethingElseCalled = true;
+    		assertNotNull(CompositeOrderBase.one);
+    		assertTrue(injectSomethingCalled);
+    		assertNotNull(two);
+    	}
+    }
+    
+    
+    @Test
+    public void testParentFieldsAndMethodsAreInjectedBeforeSubtypeFieldsAndMethods() {
+    	CompositeOrderBase.one = null;
+    	CompositeOrderDerived.two = null;
+    	
+    	DefaultPicoContainer container = new DefaultPicoContainer(new AdaptingInjection());
+    	
+    	container.addComponent(CompositeOrderDerived.class)
+    			.addComponent(String.class, "Testing");
+    	
+    	CompositeOrderDerived derived = container.getComponent(CompositeOrderDerived.class);
+    	assertNotNull(derived);
+    	checkFields(derived);
+    }
+
+    
+	private void checkFields(CompositeOrderDerived derived) {
+		assertTrue(derived.injectSomethingCalled);
+    	assertTrue(derived.injectSomethingElseCalled);
+    	assertEquals("Testing", CompositeOrderBase.one);
+    	assertEquals("Testing", CompositeOrderDerived.two);
+	}
+    
+	@Test
+    @SuppressWarnings("rawtypes")
+    public void testDecorationOfInstantatedInstanceAlsoReceivesProperInstantiationOrdering() {
+    	CompositeOrderBase.one = null;
+    	CompositeOrderDerived.two = null;
+    	
+    	DefaultPicoContainer container = new DefaultPicoContainer(new AdaptingInjection());
+    	
+    	container.addComponent(CompositeOrderDerived.class)
+    			.addComponent(String.class, "Testing");
+    	
+    	CompositeInjector adapter = container.getComponentAdapter(CompositeOrderDerived.class).findAdapterOfType(CompositeInjector.class);
+    	assertNotNull(adapter);
+    	
+    	CompositeOrderDerived instance = new CompositeOrderDerived();
+    	adapter.decorateComponentInstance(container, NOTHING.class, instance);
+    	checkFields(instance);
+    }
     
 }
