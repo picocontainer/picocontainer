@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId><version>2.4-debug</version>
+            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId><version>${paranamer-version}-debug</version>
         </dependency>
         <dependency>
             <groupId>asm</groupId><artifactId>asm</artifactId>

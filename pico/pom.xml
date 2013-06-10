@@ -34,6 +34,9 @@
 		<developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
 		<url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>
 	</scm>
+  <properties>
+      <paranamer-version>2.5.3</paranamer-version>
+  </properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -65,13 +68,6 @@
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject-tck</artifactId>
 				<version>1</version>
-			</dependency>
-			<!-- For parameter name leverage -->
-			<dependency>
-				<groupId>com.thoughtworks.paranamer</groupId>
-				<artifactId>paranamer</artifactId>
-				<version>2.5</version>
-				<optional>true</optional>
 			</dependency>
 			<!-- For proxy -->
 			<dependency>

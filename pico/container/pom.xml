@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId>
+            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId><version>${paranamer-version}</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId><version>1</version>
