@@ -115,19 +115,7 @@ public class CompositeInjection extends AbstractInjectionType {
         	
         	return result.toArray(new Class[result.size()]);
         }        
-        
 
-        /**
-         * @return the object returned is the result of the last of the injectors delegated to
-         */
-//        @Override
-//        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
-//            Object result = null;
-//            for (Injector<T> injector : injectors) {
-//                result = injector.decorateComponentInstance(container, into, instance);
-//            }
-//            return result;
-//        }
         
         /**
          * Performs a set of partial injections starting at the base class and working its

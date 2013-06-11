@@ -171,6 +171,10 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
 		}
 		
        
+		/**
+		 * If a default ComponentParameter() is being used for a particular argument for the given method, then 
+		 * this function may substitute what would normally be resolved based on JSR-330 annotations.
+		 */
 		protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, AccessibleObject member) {
 			Method targetMethod = (Method)member;
 			Annotation[][] allAnnotations = targetMethod.getParameterAnnotations();

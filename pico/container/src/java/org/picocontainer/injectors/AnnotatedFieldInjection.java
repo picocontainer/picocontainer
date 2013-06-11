@@ -138,7 +138,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
         	return injectionMembers != null ? Collections.unmodifiableList(injectionMembers) : Collections.EMPTY_LIST;
         }
         
-        private Annotation getBinding(Field field) {
+        public static Annotation getBinding(Field field) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().isAnnotationPresent(Bind.class)) {

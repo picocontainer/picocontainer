@@ -125,7 +125,7 @@ public class SetterInjection extends AbstractInjectionType {
                               final Class impl,
                               ComponentMonitor monitor, String prefix, boolean useNames, String notThisOneThough,
                               boolean optional, MethodParameters... parameters) throws  NotConcreteRegistrationException {
-            super(key, impl, monitor, useNames, parameters);
+            super(key, impl, monitor, useNames, null, parameters);
             this.prefix = prefix;
             this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";
             this.optional = optional;

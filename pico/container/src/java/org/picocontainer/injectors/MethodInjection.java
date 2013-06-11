@@ -91,7 +91,7 @@ public class MethodInjection extends AbstractInjectionType {
             boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
             
             if (injectionMethod.getDeclaringClass().isAssignableFrom(impl)) {
-                return wrapLifeCycle(monitor.newInjector(new SpecificReflectionMethodInjector(key, impl, monitor, injectionMethod, useNames, requireConsumptionOfAllParameters, methodParams)), lifecycle);
+                return wrapLifeCycle(monitor.newInjector(new SpecificMethodInjector(key, impl, monitor, useNames, requireConsumptionOfAllParameters, methodParams, injectionMethod)), lifecycle);
             } else {
                 throw new PicoCompositionException("method [" + injectionMethod + "] not on impl " + impl.getName());
             }
@@ -111,7 +111,7 @@ public class MethodInjection extends AbstractInjectionType {
      * @author Mauro Talevi
      */
     public static class MethodInjector<T> extends MultiArgMemberInjector<T> {
-        private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
+        private transient ThreadLocalCyclicDependencyGuard<Object> instantiationGuard;
         private final String methodNamePrefix;
 
         /**
@@ -215,17 +215,18 @@ public class MethodInjection extends AbstractInjectionType {
             return method.getName().startsWith(methodNamePrefix);
         }
 
-        @Override
+		@Override
+        @SuppressWarnings("unchecked")
         public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         	boolean i_Instantiated = false;
         	T result;
         	try {
 	            if (instantiationGuard == null) {
 	            	i_Instantiated = true;
-	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<Object>() {
 	                    @Override
 	                    @SuppressWarnings("synthetic-access")
-	                    public T run(Object instance) {
+	                    public Object run(Object instance) {
 	                        List<Method> methods = getInjectorMethods();
 	                        T inst = null;
 	                        ComponentMonitor monitor = currentMonitor();
@@ -268,7 +269,7 @@ public class MethodInjection extends AbstractInjectionType {
         }
 
         @Override
-        public Object decorateComponentInstance(final PicoContainer container, @SuppressWarnings("unused") final Type into, final T instance) {
+        public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
         	return partiallyDecorateComponentInstance(container, into, instance, null);
         }
         
@@ -329,7 +330,7 @@ public class MethodInjection extends AbstractInjectionType {
 			return true;
 		}
 		
-        private Object invokeMethod(Method method, Object[] methodParameters, T instance, PicoContainer container) {
+        Object invokeMethod(Method method, Object[] methodParameters, T instance, PicoContainer container) {
             try {
                 Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, methodParameters);
                 if (rv == ComponentMonitor.KEEP) {

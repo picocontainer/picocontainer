@@ -40,6 +40,7 @@ public final class Characteristics {
     private static final String _ENABLE_CIRCULAR = "enable-circular";
     private static final String _GUARD = "guard";
     private static final String _EMJECTION = "emjection_enabled";
+    private static final String _STATIC_INJECTION = "static-injection";
 
     /**
      * Since properties use strings, we supply String constants for Boolean conditions.
@@ -67,6 +68,18 @@ public final class Characteristics {
      * Turns on Method Injection.
      */
     public static final Properties METHOD_INJECTION = immutable(_INJECTION, _METHOD);
+    
+    
+    /**
+     * Turn on static injection.
+     */
+    public static final Properties STATIC_INJECTION = immutable(_STATIC_INJECTION, TRUE);
+    
+    /**
+     * Turn off static injection.
+     */
+    public static final Properties NO_STATIC_INJECTION = immutable(_STATIC_INJECTION, FALSE);
+    
 
     /**
      * Turns off Caching of component instances.  (Often referred to in other circles
@@ -198,7 +211,6 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
-        @SuppressWarnings("unused")
         public Object remove(Object o) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
@@ -207,7 +219,6 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
-        @SuppressWarnings("unused")
         public synchronized Object setProperty(String string, String string1) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
@@ -239,7 +250,6 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
 		@Override
-		@SuppressWarnings("unused")
 		public synchronized void putAll(Map<? extends Object, ? extends Object> t) {
             throw new UnsupportedOperationException("immutable properties are read only");
 		}

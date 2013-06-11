@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * Copyright (C) 2003-2011 PicoContainer Committers. All rights reserved.    *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *****************************************************************************/
 package org.picocontainer.injectors;
 
 import java.lang.annotation.Annotation;
@@ -50,22 +57,24 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
 	private boolean requireConsumptionOfAllParameters;
     
-    
-    
-    /**
+
+
+	/**
      * Constructs a IterativeInjector
      *
      * @param key            the search key for this implementation
      * @param impl the concrete implementation
      * @param monitor                 the component monitor used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
+     * @param staticsInitializedReferenceSet (Optional) A data structure that keeps track of
+     * 		static intializations.  If null, then static members will not be injected.
      * @param parameters              the parameters to use for the initialization
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public IterativeInjector(final Object key, final Class<?> impl, ComponentMonitor monitor, boolean useNames,
-                             AccessibleObjectParameterSet... parameters) throws  NotConcreteRegistrationException {
+                             StaticsInitializedReferenceSet staticsInitializedReferenceSet, AccessibleObjectParameterSet... parameters) throws  NotConcreteRegistrationException {
         this(key, impl, monitor, useNames, true, parameters);
     }
     
@@ -149,7 +158,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
     
 
-    private ParameterToAccessibleObjectPair[] getMatchingParameterListForMembers(PicoContainer container) throws PicoCompositionException {
+    ParameterToAccessibleObjectPair[] getMatchingParameterListForMembers(PicoContainer container) throws PicoCompositionException {
         if (initialized == false) {
         	synchronized(this) {
         		if (initialized == false) {
@@ -323,7 +332,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return result;
     }
 
-    private T decorateComponentInstance(ParameterToAccessibleObjectPair[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into, Class<?> partialDecorationFilter) {
+    T decorateComponentInstance(ParameterToAccessibleObjectPair[] matchingParameters, ComponentMonitor monitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer, Type into, Class<?> partialDecorationFilter) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
         Object lastReturn = null;

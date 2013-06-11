@@ -406,6 +406,33 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         return parameterType;
     }
 
+
+	/**
+	 * Retured true if all fields are static members, throws 
+	 * @param showsIsStaticInjection 
+	 * @param fieldsToInject list of fields/methods to be injected
+	 * @return true if all members are static
+	 * @throws PicoCompositionException if fieldsToInject has a mix of static and non static
+	 * members.
+	 */
+	protected boolean isStaticInjection(Member... fieldsToInject) {
+		Boolean isStaticFields = null;
+    	for (Member eachField : fieldsToInject) {
+    		if (Modifier.isStatic(eachField.getModifiers())) {
+    			if (isStaticFields != null && !isStaticFields.booleanValue()) {
+    				throw new PicoCompositionException("Please make SpecificFieldInjector inject either all non static fields or all non static fields");
+    			}
+    			isStaticFields = Boolean.TRUE;
+    		} else {
+    			if (isStaticFields != null && isStaticFields.booleanValue()) {
+    				throw new PicoCompositionException("Please make SpecificFieldInjector inject either all non static fields or all non static fields");
+    			}
+    			isStaticFields = Boolean.FALSE;
+    		}
+    	}
+		return isStaticFields != null ? isStaticFields : Boolean.FALSE;
+	}	    
+    
     /**
      * Abstract utility class to detect recursion cycles.
      * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}.
