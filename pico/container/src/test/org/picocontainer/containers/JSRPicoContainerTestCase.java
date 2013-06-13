@@ -303,6 +303,12 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	
     @Test
     public void testStaticMethodsAndFieldsCanHandleAnnotationBinding() {
+    	StaticProviderTest.one = null;
+    	StaticProviderTest.two = null;
+    	StaticProviderTest.three = null;
+    	StaticProviderTest.four = null;
+    	StaticProviderTest.five = null;
+    	
     	MutablePicoContainer mpc = new JSRPicoContainer()
     					.as(Characteristics.STATIC_INJECTION).addComponent(StaticProviderTest.class)
     					.addProvider(new CProvider())
@@ -326,6 +332,12 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	
     @Test
     public void testShowStaticInjectionIsTurnedOffByDefault() {
+    	StaticProviderTest.one = null;
+    	StaticProviderTest.two = null;
+    	StaticProviderTest.three = null;
+    	StaticProviderTest.four = null;
+    	StaticProviderTest.five = null;
+    	
     	MutablePicoContainer mpc = new JSRPicoContainer()
     	//No as(Characteristics.STATIC_INJECTION)
 		.addComponent(StaticProviderTest.class)
@@ -398,6 +410,9 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	
     @Test
     public void testStaticMethodAndFieldParametersGetAppropriateParametersWhenMixedWithProviders() {
+    	
+    	ProviderTestFour.injectMethodCalled = false;
+    	ProviderTestFour.anotherValue = null;
     	
 		MutablePicoContainer mpc = new JSRPicoContainer();
 		 mpc.as(Characteristics.STATIC_INJECTION).addComponent(ProviderTestFour.class, ProviderTestFour.class)  //The Test

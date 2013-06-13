@@ -16,8 +16,9 @@
 		<module>container</module>
 		<module>container-debug</module>
 		<module>tck</module>
+		<!-- JSR-330 isn't dependent on gems -->
+		<module>jsr330-tck</module> 
 		<module>gems</module>
-		<module>jsr330-tck</module>
 	</modules>
 	<organization>
 		<name>Codehaus</name>
@@ -35,7 +36,7 @@
 		<url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>
 	</scm>
   <properties>
-      <paranamer-version>2.5.2</paranamer-version>
+      <paranamer-version>2.5.1</paranamer-version>
   </properties>
 	<dependencyManagement>
 		<dependencies>

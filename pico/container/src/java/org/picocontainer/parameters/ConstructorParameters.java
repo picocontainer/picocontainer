@@ -17,7 +17,7 @@ public class ConstructorParameters extends AccessibleObjectParameterSet {
 	/**
 	 * Reference this in your constructor parameters if you wish the no-arg constructor to be used.
 	 */
-	public static final ConstructorParameters NO_ARG_CONSTRUCTOR = new ConstructorParameters(DefaultConstructorParameter.INSTANCE);
+	public static final ConstructorParameters NO_ARG_CONSTRUCTOR = new ConstructorParameters(new Parameter[0]);
 	
 	
 	/**

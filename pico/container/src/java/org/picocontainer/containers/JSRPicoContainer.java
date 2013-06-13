@@ -7,7 +7,6 @@ import javax.inject.Provider;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
