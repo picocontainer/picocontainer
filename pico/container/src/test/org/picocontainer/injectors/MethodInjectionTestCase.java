@@ -87,7 +87,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("SpecificReflectionMethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("SpecificReflectionMethodInjector[org.picocontainer.injectors.MethodInjectionTestCase$Foo.inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaMethodDefViaInterface() {
@@ -101,7 +101,7 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.num);
         ComponentAdapter<?> adapter = pico.getComponentAdapter(Foo.class);
         String foo2 = adapter.toString();
-        assertEquals("SpecificReflectionMethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", foo2);
+        assertEquals("SpecificReflectionMethodInjector[org.picocontainer.injectors.MethodInjectionTestCase$IFoo.inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", foo2);
     }
 
 

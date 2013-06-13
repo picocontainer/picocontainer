@@ -64,6 +64,14 @@ public class InjectableMethodSelector {
     	
 
     	for (Method eachMethod : type.getDeclaredMethods()) {
+    		
+    		//We're not dealing with statics here.
+        	if (Modifier.isStatic(eachMethod.getModifiers())) {
+        		continue;
+        	}
+
+    		
+    		
     		if(isChildClassMethodOverridingCurrentMethod(eachMethod, allMethodsAnalyzed)) {
     			//This method was defined in a child class, what the child class says, goes.
     			continue;

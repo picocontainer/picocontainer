@@ -30,6 +30,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
@@ -157,73 +158,13 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
 
 		@Override
 		protected void makeAccessibleIfDesired(final Method method) {
-			if (Modifier.isPublic(method.getModifiers())) {
-				return;
-			}
-			AccessController.doPrivileged(new PrivilegedAction<Void>() {
-
-				public Void run() {
-					method.setAccessible(true);
-					return null;
-				}
-				
-			});
+            AnnotationInjectionUtils.setMemberAccessible(method);
 		}
-		
-       
-		/**
-		 * If a default ComponentParameter() is being used for a particular argument for the given method, then 
-		 * this function may substitute what would normally be resolved based on JSR-330 annotations.
-		 */
-		protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, AccessibleObject member) {
-			Method targetMethod = (Method)member;
-			Annotation[][] allAnnotations = targetMethod.getParameterAnnotations();
-			
-			if (currentParameters.length != allAnnotations.length) {
-				throw new PicoCompositionException("Internal error, parameter lengths, not the same as the annotation lengths");
-			}
-			
-			//Make this function side-effect free.
-			Parameter[] returnValue = Arrays.copyOf(currentParameters, currentParameters.length);
-			
-			
-			for (int i = 0; i < returnValue.length; i++) {
-				//Allow composition scripts to override annotations 
-				//See comment in org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector.getParameterToUseForObject(AccessibleObject, AccessibleObjectParameterSet...)
-				//for possible issues with this.
-				if (returnValue[i] != ComponentParameter.DEFAULT && returnValue[i] != JSR330ComponentParameter.DEFAULT) {
-					continue;
-				}
-				
-				Named namedAnnotation = getNamedAnnotation(allAnnotations[i]);
-        		if (namedAnnotation != null) {
-        			returnValue[i] = new ComponentParameter(namedAnnotation.value());
-        		} else {
-            		Annotation qualifier = JSRPicoContainer.getQualifier(allAnnotations[i]);
-            		if (qualifier != null) {
-            			returnValue[i] = new ComponentParameter(qualifier.annotationType().getName());
-            		}
-        		}
 
-        		//Otherwise don't modify it.
-			}
-			
-			return returnValue;
-		}
 		
 		@Override
 		protected Parameter constructDefaultComponentParameter() {
 			return JSR330ComponentParameter.DEFAULT;
-		}
-
-
-		private Named getNamedAnnotation(Annotation[] annotations) {
-			for (Annotation eachAnnotation : annotations) {
-				if (eachAnnotation.annotationType().equals(Named.class)) {
-					return (Named) eachAnnotation;
-				}
-			}
-			return null;
 		}
 
 
@@ -236,6 +177,13 @@ public class AnnotatedMethodInjection extends AbstractInjectionType {
 			
 			return true;
 		}
+		
+		@Override
+	    protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, AccessibleObject member) {
+	    	return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
+	    }		
+
+
 		
     }
 }

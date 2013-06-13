@@ -197,7 +197,8 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 					owner.swapDelegate(oldDelegate);
 				}
 				
-				return result;
+				//Swap back to the original owner now
+				return owner;
 			} catch(InvocationTargetException e) {
 				Throwable nestedException = e.getTargetException();
 				if (nestedException instanceof RuntimeException) {

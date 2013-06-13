@@ -48,7 +48,7 @@ public class SpecificMethodInjectorTestCase {
 	@Test(expected=PicoCompositionException.class)
 	public void testCallingInjectStaticsWithNonStaticFieldsThrowsCompositionException() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, injectSomethingElse);
-		adapter.injectStatics(null, null);
+		adapter.injectStatics(null, null, null);
 	}
 	
 	
@@ -61,7 +61,7 @@ public class SpecificMethodInjectorTestCase {
 	@Test
 	public void testStaticMethodInjection() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, staticInjectMethod);
-		adapter.injectStatics(null, null);
+		adapter.injectStatics(null, null, null);
 
 		assertEquals(1, TestModel.staticInjectCount);
 	}
@@ -74,8 +74,17 @@ public class SpecificMethodInjectorTestCase {
 		
 		assertEquals(0, TestModel.staticInjectCount);
 		assertEquals(1, model.injectCount);
+	}
+	
+	@Test
+	public void testStaticInjectionWithReferenceHandlerMakesSureStaticsAreOnlyinitializedOnce() {
+		StaticsInitializedReferenceSet referenceSet = new StaticsInitializedReferenceSet();
+		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, staticInjectMethod);
+		adapter.injectStatics(null, null, referenceSet);
+		assertEquals(1, TestModel.staticInjectCount);
 
-		
+		adapter.injectStatics(null, null, referenceSet);
+		assertEquals(1, TestModel.staticInjectCount);
 	}
 
 	

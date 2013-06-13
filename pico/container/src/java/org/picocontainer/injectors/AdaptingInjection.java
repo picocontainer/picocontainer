@@ -21,8 +21,10 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.InjectionType;
 import org.picocontainer.LifecycleStrategy;
@@ -127,15 +129,27 @@ public class AdaptingInjection extends AbstractInjectionType {
         }
         
         injectors.add(defaultInjectionAdapter(componentProps));
+        
+        
 
         Collections.reverse(injectors);
         //return defaultInjectionAdapter(componentProps, monitor, lifecycle, key, impl, parameters);
         InjectionType[] aArray = injectors.toArray(new InjectionType[injectors.size()]);
-        ComponentAdapter<T> result =  new CompositeInjection(aArray)
-        	.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
+        
+
+        //Wrap the static injection behavior.
+        ComponentFactory caf = new CompositeInjection(aArray);
+        
+        ComponentAdapter<T> result =  caf
+        	.createComponentAdapter(monitor, lifecycle, 
+        			componentProps, key, impl, 
+        			constructorParams, fieldParams, methodParams);
+        
+        
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS);
         return result;
     }
+
 
 	/**
 	 * Quick
@@ -184,7 +198,6 @@ public class AdaptingInjection extends AbstractInjectionType {
 	}
 
 
-
 	private void throwCompositionException(final Class<?> impl, AccessibleObjectParameterSet eachParam) {
 		throw new PicoCompositionException("Cannot locate field or method '" 
 					+ eachParam.getName() 
@@ -196,6 +209,7 @@ public class AdaptingInjection extends AbstractInjectionType {
 
 
 
+	
 	private  <T> InjectionType defaultInjectionAdapter(Properties componentProps) {
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CDI);
         return constructorInjection;

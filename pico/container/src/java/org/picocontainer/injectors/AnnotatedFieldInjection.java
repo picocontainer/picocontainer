@@ -16,6 +16,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -106,6 +107,10 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             while (drillInto != Object.class) {
                 final Field[] fields = getFields(drillInto);
                 for (final Field field : fields) {
+                	if (Modifier.isStatic(field.getModifiers())) {
+                		continue;
+                	}
+                	
                     if (isAnnotatedForInjection(field)) {
                         injectionMembers.add(field);
                     }
@@ -184,56 +189,18 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
                 throws IllegalAccessException, InvocationTargetException {
             final Field field = (Field) member;
             
-            AccessController.doPrivileged(new PrivilegedAction<Void>() {
-				public Void run() {
-		            field.setAccessible(true);
-		            return null;
-				}
-            });
+            AnnotationInjectionUtils.setMemberAccessible(member);
             
             field.set(componentInstance, toInject);
             return null;
         }
         
-        /**
-         * Allows swapping of parameter to a component parameter specified by {@linkplain javax.inject.Named} annotations
-         * or different JSR330-based qualifiers
-         * <p>{@inheritDoc}</p>
-         */
-        @Override
-        protected AccessibleObjectParameterSet getParameterToUseForObject(final AccessibleObject targetInjectionMember, final AccessibleObjectParameterSet... currentParameter) {
-        	if (currentParameter == null || currentParameter.length == 0) {
-        		return null;
-        	}
-        	
-        	//Field injection only handles one parameter per accessible object.
-        	AccessibleObjectParameterSet targetParameter = currentParameter[0];
-        	
-        	//Allow composition script operator to override what's in code.  
-        	//TODO:  Is this a good idea?  @Named is a horrible way to lock in the code, so this provides
-        	//flexibility if you're stuck with code you can't change.... but it might
-        	//make for some wild bugs where maintenance programmers only see the @Named annotation
-        	//and look no further.  -MR
-			Field targetField = (Field)targetInjectionMember;
-        	if (targetParameter.getParams()[0] == ComponentParameter.DEFAULT || targetParameter.getParams()[0] == JSR330ComponentParameter.DEFAULT) {
-        		if (targetInjectionMember.isAnnotationPresent(Named.class)) {
-        			Named annotation = targetInjectionMember.getAnnotation(Named.class);
-        					
-        			ComponentParameter newParameter = new ComponentParameter(annotation.value());
-        			return new AccessibleObjectParameterSet(targetField.getDeclaringClass(), targetField.getName(), newParameter);
-        		}
-        		
-        		Annotation qualifier = JSRPicoContainer.getQualifier(targetInjectionMember.getAnnotations());
-        		if (qualifier != null) {
-        			ComponentParameter newParameter = new ComponentParameter(qualifier.annotationType().getName());
-        			return new AccessibleObjectParameterSet(targetField.getDeclaringClass(), targetField.getName(), newParameter);
-        		}
-        		
-        	}
-        	
-        	return targetParameter;
-    	}        
         
+
+		@Override
+		protected Parameter[] interceptParametersToUse(Parameter[] currentParameters, AccessibleObject member) {
+			return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
+		}        
 
         @Override
         public String getDescriptor() {
@@ -256,5 +223,6 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
         protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
             return instance;
         }
+
     }
 }

@@ -69,11 +69,7 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
         List<Object> result = new ArrayList<Object>(parameterTypes.length);
         AccessibleObjectParameterSet objectParameterSet = this.getParameterToUseForObject(member, parameters);
         
-        Parameter[] currentParameters = objectParameterSet != null? objectParameterSet.getParams() : null;
-        currentParameters = currentParameters != null ? currentParameters : createDefaultParameters(parameterTypes.length);
-
-        currentParameters = interceptParametersToUse(currentParameters, member);
-        
+        Parameter[] currentParameters = objectParameterSet.getParams();
         
         for (int i = 0; i < currentParameters.length; i++) {
             try {

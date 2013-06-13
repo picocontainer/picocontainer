@@ -37,7 +37,7 @@ public class SpecificFieldInjectorTestCase {
 		MutablePicoContainer pico = new DefaultPicoContainer().addComponent(String.class,"Testing");
 		
 		SpecificFieldInjector<TestInjection> adapter = new SpecificFieldInjector<TestInjection>(TestInjection.class, TestInjection.class, somethingField);
-		adapter.injectStatics(pico, null);
+		adapter.injectStatics(pico, null, null);
 		
 		assertEquals("Testing", TestInjection.something);
 	}
@@ -63,7 +63,7 @@ public class SpecificFieldInjectorTestCase {
 	@Test(expected=PicoCompositionException.class)
 	public void testCallingInjectStaticsWithNonStaticFieldsThrowsCompositionException() {
 		SpecificFieldInjector<TestInjection> adapter = new SpecificFieldInjector<TestInjection>(TestInjection.class, TestInjection.class, somethingElseField);
-		adapter.injectStatics(null, null);
+		adapter.injectStatics(null, null, null);
 	}
 	
 	
@@ -72,4 +72,23 @@ public class SpecificFieldInjectorTestCase {
 		SpecificFieldInjector<TestInjection> adapter = new SpecificFieldInjector<TestInjection>(TestInjection.class, TestInjection.class, somethingField);
 		adapter.getComponentInstance(null, null);
 	}	
+	
+	@Test
+	public void testStaticInjectionWithReferenceHandlerMakesSureStaticsAreOnlyinitializedOnce() {
+		//Do a dummy initialization to prove that
+		//we're setting at least once.
+		TestInjection.something = "Do-Da";
+		MutablePicoContainer pico = new DefaultPicoContainer().addComponent(String.class,"Testing");
+		StaticsInitializedReferenceSet referenceSet = new StaticsInitializedReferenceSet();
+		SpecificFieldInjector<TestInjection> adapter = new SpecificFieldInjector<TestInjection>(TestInjection.class, TestInjection.class, somethingField);
+
+		adapter.injectStatics(pico, null, referenceSet);
+		assertEquals("Testing", TestInjection.something);
+		
+		//Injection shouldn't overwrite this since its been initialized once already.
+		TestInjection.something = "Do-Da";
+		
+		adapter.injectStatics(pico, null, referenceSet);
+		assertEquals("Do-Da", TestInjection.something);
+	}
 }

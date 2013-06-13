@@ -538,7 +538,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
         Properties tmpProperties = (Properties) properties.clone();
-        AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
+        removeGenericPropertiesThatWeDontCareAbout(tmpProperties);
+        
+        
         if (AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof Behavior) {
             MutablePicoContainer container = addAdapterInternal(((Behavior) componentFactory).addComponentAdapter(
                     monitor,
@@ -650,7 +652,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                     key,
                     (Class<?>) implOrInstance,
                     new ConstructorParameters(tweakedParameters), fieldParameters, methodParameters);
-            AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
+            removeGenericPropertiesThatWeDontCareAbout(tmpProperties);
             throwIfPropertiesLeft(tmpProperties);
             if (lifecycleState.isStarted()) {
                 addAdapterIfStartable(adapter);
@@ -667,6 +669,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return addAdapter(adapter, properties);
         }
     }
+
+	private void removeGenericPropertiesThatWeDontCareAbout(Properties tmpProperties) {
+		AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
+        AbstractBehavior.removePropertiesIfPresent(tmpProperties, Characteristics.STATIC_INJECTION);
+	}
     
     
 

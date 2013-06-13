@@ -1,20 +1,26 @@
+/*****************************************************************************
+ * Copyright (C) 2003-2011 PicoContainer Committers. All rights reserved.    *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
+
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector.ThreadLocalCyclicDependencyGuard;
-import org.picocontainer.injectors.MethodInjection.MethodInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.JSR330ComponentParameter;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Injection will happen through a specific single reflection method for the component.
@@ -26,6 +32,7 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
     private final List<Method> injectionMethods;
 	private boolean isStaticInjection;
     private transient ThreadLocalCyclicDependencyGuard<Object> instantiationGuard;
+	private StaticsInitializedReferenceSet initializedReferenceSet;
 
     
     /**
@@ -66,14 +73,15 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
     public String getDescriptor() {
         StringBuilder mthds = new StringBuilder();
         for (Method method : injectionMethods) {
-            mthds.append(",").append(method.getName());
+            mthds.append(",").append(method.getDeclaringClass().getName()).append(".").append(method.getName());
         }
-        return "SpecificReflectionMethodInjector[" + mthds.substring(1) + "]-";
+        return "SpecificReflectionMethodInjector" + (isStaticInjection ? "_static_" : "") + "[" +  mthds.substring(1) + "]-";
     }
 
 
 
-	public void injectStatics(final PicoContainer container, final Type into) {
+	public void injectStatics(final PicoContainer container, final Type into, StaticsInitializedReferenceSet initializedReferenceSet) {
+		this.initializedReferenceSet = initializedReferenceSet;
 		if (!isStaticInjection) {
 			throw new PicoCompositionException(Arrays.deepToString(injectionMethods.toArray()) + " are non static fields, injectStatics should not be called.");
 		}
@@ -114,6 +122,46 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
 		}
 		
 		return super.getComponentInstance(container, into);
+	}
+
+	@Override
+	Object invokeMethod(Method method, Object[] methodParameters, T instance, PicoContainer container) {
+		AnnotationInjectionUtils.setMemberAccessible(method);
+        if (initializedReferenceSet != null) {
+        	//Static injection = threading issues
+        	//have to lock at the method's class level
+            synchronized(method.getDeclaringClass()) {
+        		if (!this.initializedReferenceSet.isMemberAlreadyInitialized(method)) {
+        			Object result = super.invokeMethod(method, methodParameters, instance, container);
+        			initializedReferenceSet.markMemberInitialized(method);
+        			return result;
+        		}
+        	}
+            //Already initialized statics -- skipping.
+            return null;
+        }  else {
+            return super.invokeMethod(method, methodParameters, instance, container);        	
+        }
+
 	}	
+	
+	
+	/**
+	 * Allows for annotation-based key swapping.
+	 */
+	@Override
+	protected Parameter[] interceptParametersToUse(Parameter[] currentParameters, AccessibleObject member) {
+		return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
+	}	
+	
+	
+    /**
+     * Allows Different swapping of types.
+     * @return
+     */
+    @Override
+    protected Parameter constructDefaultComponentParameter() {
+    	return JSR330ComponentParameter.DEFAULT;
+    }
 	
 }

@@ -68,6 +68,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.inject.Provider;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -1002,5 +1004,32 @@ public abstract class AbstractPicoContainerTest {
     	
     }
     
+	
+	@Test
+	public void testStaticInjectionMethodAsDefaultCharacteristicDoesntThrowExceptionOnNormalRegistration() {
+		
+		MutablePicoContainer mpc = createPicoContainer(null);
+		mpc.change(Characteristics.STATIC_INJECTION);
+		
+		
+		ComponentAdapter<?> ca = new InstanceAdapter(Object.class, new Object());
+		mpc.addAdapter(ca);
+		
+		assertNotNull(mpc.getComponent(Object.class));
+	}    
+	
+	
+	@Test
+	public void testAsReturnsToNormalPicoContainerAfterOneAddComponentInvocation() {
+		MutablePicoContainer mpc = createPicoContainer(null);
+		
+		MutablePicoContainer afterAs = mpc.as(Characteristics.STATIC_INJECTION);
+		
+		MutablePicoContainer afterAddComponent = afterAs.addComponent("bufferTwo", StringBuffer.class, DefaultConstructorParameter.INSTANCE);
+		
+		assertSame(mpc, afterAddComponent);
+	}
+	
+
     
 }

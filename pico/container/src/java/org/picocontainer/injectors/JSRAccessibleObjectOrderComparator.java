@@ -1,3 +1,11 @@
+/*****************************************************************************
+ * Copyright (C) 2003-2011 PicoContainer Committers. All rights reserved.    *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
 package org.picocontainer.injectors;
 
 import java.lang.reflect.AccessibleObject;
@@ -18,7 +26,7 @@ import org.picocontainer.PicoCompositionException;
  * 	<li>Base Class Accessible Objects come first</li>
  *  <li>Static AccessibleObjects are used first before non static accessible objects if they'r ein the same class</li>
  * </ol>
- * @author Mike
+ * @author Michael Rimov
  *
  */
 public class JSRAccessibleObjectOrderComparator implements Comparator<AccessibleObject> {
@@ -61,6 +69,13 @@ public class JSRAccessibleObjectOrderComparator implements Comparator<Accessible
 	}
 	
 
+	/**
+	 * In JSR-330, if they're in the same class, fields are injected
+	 * before methods.
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
 	private int compareFieldMethodOrder(Class<?> o1, Class<?> o2) {
 		if (Field.class.isAssignableFrom(o1) && Method.class.isAssignableFrom(o2)) {
 			return -1;
@@ -75,6 +90,11 @@ public class JSRAccessibleObjectOrderComparator implements Comparator<Accessible
 	}
 
 
+	/**
+	 * Currently this comparator only handles fields and methods.
+	 * @param type
+	 * @return
+	 */
 	private boolean isComparableOrderType(Class<?> type) {
 		if (Field.class.isAssignableFrom(type) || Method.class.isAssignableFrom(type)) {
 			return true;
@@ -84,6 +104,13 @@ public class JSRAccessibleObjectOrderComparator implements Comparator<Accessible
 	}
 
 
+	/**
+	 * Computes a number that represents the # of classes between the owning class
+	 * of the member being checked and java.lang.Object.  Further away gets a 
+	 * higher score.
+	 * @param ao
+	 * @return
+	 */
 	private int getDistanceToJavaLangObject(AccessibleObject ao) {
 		Class<?> currentType = getDeclaringClass(ao);
 		int count = 0;
@@ -98,28 +125,22 @@ public class JSRAccessibleObjectOrderComparator implements Comparator<Accessible
 
 	
 	private Class<?> getDeclaringClass(AccessibleObject ao) {
-		if (ao instanceof Field) {
-			return ((Field)ao).getDeclaringClass();
-		} else if (ao instanceof Constructor) {
-			return ((Constructor)ao).getDeclaringClass();
-		} else if (ao instanceof Method) {
-			return ((Method)ao).getDeclaringClass();
+		if (ao instanceof Member) {
+			return ((Member)ao).getDeclaringClass();
 		}
 		
-		throw new PicoCompositionException(ao.getClass() + " does not appear to be a field, method, or constructor");
+		throw new PicoCompositionException(ao.getClass() + " does not appear to be a field, method, " +
+				"or constructor (or anything that implements Member interface)");
 		
 	}
 	
 	private int getModifiers(AccessibleObject ao) {
-		if (ao instanceof Field) {
-			return ((Field)ao).getModifiers();
-		} else if (ao instanceof Constructor) {
-			return ((Constructor)ao).getModifiers();
-		} else if (ao instanceof Method) {
-			return ((Method)ao).getModifiers();
+		if (ao instanceof Member) {
+			return ((Member)ao).getModifiers();
 		}
 		
-		throw new PicoCompositionException(ao.getClass() + " does not appear to be a field, method, or constructor");
+		throw new PicoCompositionException(ao.getClass() + " does not appear to be a field, method, " +
+				"or constructor (or anything that implements the Member interface)");
 	}
 	
 	private int compareStatics(AccessibleObject o1, AccessibleObject o2) {

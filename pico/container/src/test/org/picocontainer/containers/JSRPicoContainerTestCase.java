@@ -97,6 +97,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 		assertNull(mpc.getComponentAdapter(C.class));
 		assertNotNull(mpc.getComponentAdapter(SomeQualifier.class.getName()));
 	}
+
 	
 	
 	
@@ -230,18 +231,13 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	@Test
 	public void testConstructorInjectionAndMixedProviders() {
 		
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSRPicoContainer();
 	
 		
 		 mpc
 		  						//Mix of normal components and Providers
 		 	.addComponent(A.class)
-			.addComponent(ProviderTestTwo.class, ProviderTestTwo.class, 
-						new JSR330ComponentParameter(), 
-						new JSR330ComponentParameter(), 
-						new JSR330ComponentParameter(), 
-						new JSR330ComponentParameter(),
-						new JSR330ComponentParameter())  //The Test
+			.addComponent(ProviderTestTwo.class, ProviderTestTwo.class)  //The Test
 			.addProvider("test",  new RegistrationTypeProvider1())	//Manual key name "test"
 			.addProvider(new RegistrationTypeProvider2()) //@Named "test2"
 			.addProvider(new CProvider())  //@SomeQualifier 
@@ -252,6 +248,99 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 		assertTrue(testObject != null);
 	}
 	
+	
+	@Named("test2")
+	public static class NamedCProvider implements Provider<C> {
+
+		public C get() {
+			return new C();
+		}
+		
+	}
+	
+	
+	public static class StaticProviderTest {
+		
+		@Inject
+		@Named("test2")
+		public static C one;
+		
+		@Inject
+		@SomeQualifier
+		private static C two;
+		
+		public static C three;
+		
+		public static C four;
+		
+		
+		/**
+		 * Test resolution of no qualifier
+		 */
+		@Inject
+		public static C five;
+		
+		@Inject
+		@Named("test2")
+		public static void injectThree(C value) {
+			three = value;
+		}
+		
+		
+
+		/**
+		 * Test resolution of no qualifier -- means we're using JSR330 Componentparameters 
+		 * instead of normal default component parameters.
+		 * @param value
+		 */
+		@Inject
+		private static void injectFour(C value) {
+			four = value;
+		}
+		
+	}
+	
+	
+    @Test
+    public void testStaticMethodsAndFieldsCanHandleAnnotationBinding() {
+    	MutablePicoContainer mpc = new JSRPicoContainer()
+    					.as(Characteristics.STATIC_INJECTION).addComponent(StaticProviderTest.class)
+    					.addProvider(new CProvider())
+    					.addProvider(new NamedCProvider())
+    					.addProvider(new C2Provider()); //No Qualifier: In case of ambiguity, this is the one that's chosen.
+    					
+    	
+    	StaticProviderTest test = mpc.getComponent(StaticProviderTest.class);
+    	assertNotNull(test);
+    	assertNotNull(StaticProviderTest.one);
+    	assertNotNull(StaticProviderTest.two);
+    	assertNotNull(StaticProviderTest.three);
+    	assertNotNull(StaticProviderTest.four);
+    	assertNotNull(StaticProviderTest.five);
+    	
+    	assertNotSame(StaticProviderTest.one, StaticProviderTest.two);
+    	assertNotSame(StaticProviderTest.three, StaticProviderTest.four);
+    	assertNotSame(StaticProviderTest.one, StaticProviderTest.five);
+    	
+    }
+	
+    @Test
+    public void testShowStaticInjectionIsTurnedOffByDefault() {
+    	MutablePicoContainer mpc = new JSRPicoContainer()
+    	//No as(Characteristics.STATIC_INJECTION)
+		.addComponent(StaticProviderTest.class)
+		.addProvider(new CProvider())
+		.addProvider(new RegistrationTypeProvider2());
+
+		StaticProviderTest test = mpc.getComponent(StaticProviderTest.class);
+		assertNotNull(test);
+		assertNull(StaticProviderTest.one);
+		assertNull(StaticProviderTest.two);
+		assertNull(StaticProviderTest.three);
+		assertNull(StaticProviderTest.four);
+    	
+    }
+    
 	
 	public static class ProvderTestThree {
 		public ProvderTestThree(Provider<C> arg) {
@@ -290,6 +379,44 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 		 assertNotNull(testThree);
 
 	}
+	
+	
+	public static class ProviderTestFour {
+		
+		public static boolean injectMethodCalled;
+		
+		@Inject
+		public static void inject(Provider<C> arg) {
+			assertNotNull(arg);
+			injectMethodCalled = true;
+		}
+		
+		@Inject
+		public static Provider<C> anotherValue;
+	}
+	
+	
+    @Test
+    public void testStaticMethodAndFieldParametersGetAppropriateParametersWhenMixedWithProviders() {
+    	
+		MutablePicoContainer mpc = new JSRPicoContainer();
+		 mpc.as(Characteristics.STATIC_INJECTION).addComponent(ProviderTestFour.class, ProviderTestFour.class)  //The Test
+		.addProvider(new ThreeCProvider())  //No Qualifier
+		.addProvider(new ThreeAProvider()) //No Qualifier  Generic type provided should short it out
+		;
+	 
+
+		 ProviderTestFour testFour = mpc.getComponent(ProviderTestFour.class);
+		 assertNotNull(testFour);
+		 
+		 assertTrue(ProviderTestFour.injectMethodCalled);
+		 assertNotNull(ProviderTestFour.anotherValue);
+		 
+		 assertTrue(ProviderTestFour.anotherValue.get() instanceof C);
+    
+    }
+    
+
 
 	
 	public static class ParameterTest {
@@ -348,6 +475,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	assertSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
     	
     }
+
     
     
     @Singleton
@@ -472,7 +600,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	JSRPicoContainer pico = new JSRPicoContainer();
     	
     	pico.addComponent("Test", "This is a test")
-    		.addComponent(InjectionOrder2Child.class);
+    		.as(Characteristics.STATIC_INJECTION).addComponent(InjectionOrder2Child.class);
     	
     	
     	InjectionOrder2Child child = pico.getComponent(InjectionOrder2Child.class);
@@ -482,4 +610,6 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	assertTrue(InjectionOrder2Child.isInjected());
     	
     }    
+    
+    
 }

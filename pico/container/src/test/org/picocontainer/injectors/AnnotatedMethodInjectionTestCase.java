@@ -126,7 +126,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     }
     
     @Test
-    public void testAnnationsOnParametersForMethodInjection() {
+    public void testAnnotationsOnParametersForMethodInjection() {
     	
     	MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
     	
@@ -149,22 +149,13 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     
     public static class OrderBase {
     	
-    	protected static boolean oneInvoked = false;
-    	
+   	
     	protected static boolean twoInvoked = false;
     	
 
-    	@Inject
-    	public static void one() {
-    		assertFalse(oneInvoked);
-    		assertFalse(twoInvoked);
-    		
-    		oneInvoked = true;
-    	}
-
+   
     	@Inject
     	public void two() {
-    		assertTrue(oneInvoked);   		
     		assertFalse(twoInvoked);
     		
     		twoInvoked = true;
@@ -174,48 +165,32 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     
     public static class OrderDerived extends OrderBase {
     	
-    	protected static boolean threeInvoked = false;
     	
     	protected static boolean fourInvoked = false;
     	
-    	@Inject
-    	public static void three() {
-    		assertTrue(oneInvoked);
-    		assertTrue(twoInvoked);
-    		assertFalse(threeInvoked);
-    		assertFalse(fourInvoked);
-    		threeInvoked = true;
-    		
-    	}
-
+   
     	@Inject
     	public void four() {
-    		assertTrue(oneInvoked);
     		assertTrue(twoInvoked);
-    		assertTrue(threeInvoked);
     		assertFalse(fourInvoked);
     		fourInvoked = true;
     		
     	}
     	
     	public static void reset() {
-    		oneInvoked = false;
     		twoInvoked = false;
-    		threeInvoked = false;
     		fourInvoked = false;
     	}
     }
     
     
     @Test
-    public void testBaseClassAndStaticsInjectedFirst() throws NoSuchMethodException {
+    public void testBaseClassInjectedFirst() throws NoSuchMethodException {
     	OrderDerived.reset();
 
     	AnnotatedMethodInjector<OrderDerived> adapter = new AnnotatedMethodInjector<OrderDerived>(OrderDerived.class, OrderDerived.class, null, new NullComponentMonitor(), false, false, Inject.class);
     	OrderDerived derived = adapter.getComponentInstance(null, null);
-    	assertTrue(OrderDerived.oneInvoked);
     	assertTrue(OrderDerived.twoInvoked);
-    	assertTrue(OrderDerived.threeInvoked);
     	assertTrue(OrderDerived.fourInvoked);
     
     	OrderDerived.reset();

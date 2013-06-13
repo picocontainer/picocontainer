@@ -19,6 +19,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.injectors.ProviderAdapter;
+import org.picocontainer.injectors.StaticsInitializedReferenceSet;
 import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstructorParameters;
@@ -44,15 +45,15 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	}
 	
 	public JSRPicoContainer(PicoContainer parent) {
-		this(parent, new NullComponentMonitor());
+		this(parent, new NullComponentMonitor(), new StaticsInitializedReferenceSet());
 	}
 	
 	public JSRPicoContainer(ComponentMonitor monitor) {
-		this(null, monitor);
+		this(null, monitor, new StaticsInitializedReferenceSet());
 	}
 	
-	public JSRPicoContainer(PicoContainer parent, ComponentMonitor monitor) {
-		super(new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(monitor), monitor, new OptInCaching(), new AdaptingBehavior()));
+	public JSRPicoContainer(PicoContainer parent, ComponentMonitor monitor, StaticsInitializedReferenceSet referenceSet) {
+		super(new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(monitor), monitor, new OptInCaching(), new AdaptingBehavior(referenceSet)));
 	}
 
 	/**

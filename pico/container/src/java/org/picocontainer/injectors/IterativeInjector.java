@@ -202,15 +202,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private Set<AccessibleObjectParameterSet> matchParameters(PicoContainer container, List<Object> matchingParameterList, AccessibleObjectParameterSet... assignedParameters) {
     	
         Set<AccessibleObjectParameterSet> unmatchedParameters = new HashSet<AccessibleObjectParameterSet>();
-        //final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes.length);
-
-       
-        
-        /*for (int i = 0; i < currentParameters.length; i++) {
-            if (!matchParameter(container, matchingParameterList, currentParameters[i])) {
-                unmatchedParameters.add(i);
-            }
-        }*/
         
         for (AccessibleObject eachObject : injectionMembers) {
         	AccessibleObjectParameterSet currentParameter =   getParameterToUseForObject(eachObject, assignedParameters);

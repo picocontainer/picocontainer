@@ -280,35 +280,7 @@ public class AnnotatedFieldInjectorTestCase {
     		OrderBase.reset();
     	}
     }
-    
-    @Test
-    public void testBaseClassStaticsInjectedFirst() throws NoSuchFieldException {
-    	
-    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
-    	
-    	@SuppressWarnings("unchecked")
-    	AnnotatedFieldInjector<OrderChild> adapter = new AnnotatedFieldInjector<OrderChild>(OrderChild.class, OrderChild.class, null, new NullComponentMonitor(), false, false, Inject.class);
-    	assertNotNull(adapter);
-    	
-    	Field somethingField = OrderBase.class.getField("something");
-    	Field somethingElseField = OrderBase.class.getField("somethingElse");
-    	Field somethingChild = OrderChild.class.getField("somethingChild");
-    	Field somethingElseChild = OrderChild.class.getField("somethingElseChild");
-    	
-    	
-    	//Force initialization of injection members
-    	OrderChild child = adapter.getComponentInstance(pico, null);
-    	assertNotNull(child);
-    	
-    	List<AccessibleObject> givenOrder = adapter.getInjectionMembers();
-    	
-    	assertEquals(4, givenOrder.size());
-    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingField, givenOrder.get(0));
-    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseField, givenOrder.get(1));
-    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingChild, givenOrder.get(2));
-    	assertEquals("Got order: " + Arrays.deepToString(givenOrder.toArray()),somethingElseChild, givenOrder.get(3));
-    }
-    
+
     
     @Test
     public void testPartialDecorationOnBaseClassDoesntPropagateToChildren() {
@@ -325,7 +297,8 @@ public class AnnotatedFieldInjectorTestCase {
     	
     	assertNull(OrderChild.somethingChild);
     	assertNull(child.somethingElseChild);
-    	assertEquals("Testing", child.something);
+    	//Won't get injected here since its a static
+    	//assertEquals("Testing", child.something);
     	assertEquals("Testing", child.somethingElse);
     }
     
@@ -347,7 +320,9 @@ public class AnnotatedFieldInjectorTestCase {
     	
     	assertNull(OrderBase.something);
     	assertNull(child.somethingElse);
-    	assertEquals("Testing", OrderChild.somethingChild);
+    	
+    	//Won't inject here since its a static
+    	//assertEquals("Testing", OrderChild.somethingChild);
     	assertEquals("Testing", child.somethingElseChild);
     	OrderChild.reset();
     	

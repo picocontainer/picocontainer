@@ -1,6 +1,11 @@
-/**
- * 
- */
+/*****************************************************************************
+ * Copyright (C) 2003-2011 PicoContainer Committers. All rights reserved.    *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
 package org.picocontainer.injectors;
 
 import java.lang.annotation.Annotation;
@@ -9,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.security.AccessController;
@@ -19,10 +25,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.AccessibleObjectParameterSet;
 import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.JSR330ComponentParameter;
 
 /**
  * Takes specific Fields obtained through reflection and injects them.  Private fields are ok (as per JSR-330), as
@@ -41,29 +50,36 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
 
     /**
+     * Ugly hack to pass the initialized reference set to the inject method
+     * without affecting base class signatures.
+     * @todo figure out something better.
+     */
+	private transient StaticsInitializedReferenceSet initializedReferenceSet;
+
+    /**
      * Simple testing constructor.
      * @param key
      * @param impl
      * @param fieldsToInject
      */
     public SpecificFieldInjector(Object key, Class<T> impl, Field... fieldsToInject) {
-    	this(key, impl, null, new NullComponentMonitor(), false, true, fieldsToInject);
+    	this(key, impl, new NullComponentMonitor(), false, true, null, fieldsToInject);
     }
     
     /**
      * Usual constructor invoked during runtime.
      * @param key
      * @param impl
-     * @param parameters
      * @param monitor
-     * @param useNames
      * @param requireConsumptionOfAllParameters
+     * @param parameters
      * @param fieldsToInject
      */
-	public SpecificFieldInjector(Object key, Class<T> impl, FieldParameters[] parameters, ComponentMonitor monitor,
-            boolean useNames, boolean requireConsumptionOfAllParameters, Field... fieldsToInject) {
+	public SpecificFieldInjector(Object key, Class<T> impl, ComponentMonitor monitor, boolean useNames,
+            boolean requireConsumptionOfAllParameters, FieldParameters[] parameters, Field... fieldsToInject) {
 		
-		super(key, impl, monitor, useNames, requireConsumptionOfAllParameters, parameters);
+		/* todo: can't use fields with paranamer */
+		super(key, impl, monitor, false, requireConsumptionOfAllParameters, parameters);
 		this.fieldsToInject = fieldsToInject;
 
 
@@ -73,31 +89,35 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
 
 	
 	
-	public void injectStatics(final PicoContainer container, final Type into) {
+	public void injectStatics(final PicoContainer container, final Type into, StaticsInitializedReferenceSet initializedReferenceSet) {
+		this.initializedReferenceSet = initializedReferenceSet;
 		if (!isStaticInjection) {
 			throw new PicoCompositionException(Arrays.deepToString(fieldsToInject) + " are non static fields, injectStatics should not be called.");
 		}
 		
-        final Constructor<?> constructor = getConstructor();
         boolean iInstantiated = false;
-        T result;
         try {
 	        if (instantiationGuard == null) {
 	        	iInstantiated = true;
 	            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
 	                public T run(Object instance) {
 	                    final ParameterToAccessibleObjectPair[] matchingParameters = getMatchingParameterListForMembers(guardedContainer);
+	                    
+	                    //Funky call where the instance we're decorating 
+	                    //happens to be null for static injection.
 	                    return  decorateComponentInstance(matchingParameters, currentMonitor(), null, container, guardedContainer, into, null);
 	                }
 	            };
 	        }
 	        instantiationGuard.setGuardedContainer(container);
-	        result = instantiationGuard.observe(getComponentImplementation(), null);
+	        instantiationGuard.observe(getComponentImplementation(), null);
         } finally {
 	        if (iInstantiated) {
 	        	instantiationGuard.remove();
 	        	instantiationGuard = null;
 	        }
+	        
+	        this.initializedReferenceSet = null;
         }
 	}
 
@@ -135,18 +155,36 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
 	@Override
 	protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
 			throws IllegalAccessException, InvocationTargetException {
+		
         final Field field = (Field) member;
+
+        if (initializedReferenceSet != null) {
+        	//Were doing static initialization.  Need locking on
+        	//the class level.
+            synchronized(field.getDeclaringClass()) {
+        		if (!this.initializedReferenceSet.isMemberAlreadyInitialized((Member)member)) {
+        			doInjection(member, componentInstance, toInject, field);
+        			initializedReferenceSet.markMemberInitialized((Member)member);
+        		}
+            }
+        } else {
+        	doInjection(member, componentInstance, toInject, field);
+        }
         
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+        return null;
+     }
+
+	private void doInjection(AccessibleObject member, Object componentInstance, Object toInject, final Field field)
+			throws IllegalAccessException {
+	    AccessController.doPrivileged(new PrivilegedAction<Void>() {
 			public Void run() {
 	            field.setAccessible(true);
 	            return null;
 			}
-        });
-        
-        field.set(componentInstance, toInject);
-        return null;
-     }
+	    });
+	    
+	    field.set(componentInstance, toInject);
+	}
 
 	@Override
 	public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
@@ -156,5 +194,32 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
 		
 		return super.getComponentInstance(container, into);
 	}
+
+	@Override
+	public String getDescriptor() {
+		
+        StringBuilder fields = new StringBuilder();
+        for (Field eachField : fieldsToInject) {
+            fields.append(",").append(eachField.getDeclaringClass().getName()).append(".").append(eachField.getName());
+        }
+        return "SpecificReflectionFieldInjector " + (isStaticInjection ? " static " : "") + "[" +  fields.substring(1) + "]-";
+	}
+	
+	
+    /**
+     * Allows Different swapping of types.
+     * @return
+     */
+    @Override
+    protected Parameter constructDefaultComponentParameter() {
+    	return JSR330ComponentParameter.DEFAULT;
+    }
+
+	@Override
+	protected Parameter[] interceptParametersToUse(Parameter[] currentParameters, AccessibleObject member) {
+		return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
+	}
+          
+
 
 }

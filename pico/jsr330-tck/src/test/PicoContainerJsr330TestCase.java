@@ -27,8 +27,10 @@ import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
 import org.picocontainer.injectors.Jsr330ConstructorInjection;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.JSR330ComponentParameter;
+import static org.picocontainer.Characteristics.*;
 
 public class PicoContainerJsr330TestCase extends TestCase {
 
@@ -121,9 +123,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 	
 	
 	public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
-		//        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching(), 
-		//                new Jsr330Injection());
-    	final MutablePicoContainer pico = new JSRPicoContainer();
+    	final MutablePicoContainer pico = new JSRPicoContainer(new ConsoleComponentMonitor());
     	
     	DriverSeatProvider driversSeatProvider = new DriverSeatProvider(pico);
     	PlainTireProvider plainTireProvider = new PlainTireProvider(pico);
@@ -131,6 +131,8 @@ public class PicoContainerJsr330TestCase extends TestCase {
     	PlainSeatProvider plainSeatProvider = new PlainSeatProvider(pico);
     	EngineProvider engineProvider = new EngineProvider(pico);
     	
+    	//Allow static injection on all classes since the JSR TCK requires it heavily
+    	pico.change(STATIC_INJECTION);
         pico.addComponent(Car.class, Convertible.class)
                 .addComponent(FuelTank.class)
                 .addComponent(Seatbelt.class)

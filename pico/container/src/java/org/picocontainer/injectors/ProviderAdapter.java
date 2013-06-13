@@ -28,6 +28,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
  * the component type intended to be provided.  The method can accept parameters that PicoContainer
  * will satisfy.
  */
+@SuppressWarnings("rawtypes")
 public class ProviderAdapter implements org.picocontainer.Injector, Provider, LifecycleStrategy {
 
     private static Method AT_INJECT_GET = javax.inject.Provider.class.getDeclaredMethods()[0];    

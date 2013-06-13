@@ -35,7 +35,7 @@
 		<url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>
 	</scm>
   <properties>
-      <paranamer-version>2.5.3</paranamer-version>
+      <paranamer-version>2.5.2</paranamer-version>
   </properties>
 	<dependencyManagement>
 		<dependencies>

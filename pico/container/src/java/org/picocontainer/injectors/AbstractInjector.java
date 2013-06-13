@@ -114,6 +114,27 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         }
     }
     
+    protected Parameter[] createDefaultParameters(AccessibleObject member) {
+    	int length = 0;
+    	if (member instanceof Constructor) {
+    		length = ((Constructor<?>)member).getParameterTypes().length;
+    	} else if (member instanceof Field) {
+    		length = 1;
+    	} else if (member instanceof Method) {
+    		length = ((Method)member).getParameterTypes().length;
+    	} else {
+    		throwUnknownAccessibleObjectType(member);    		
+    	}
+    	
+    	return createDefaultParameters(length);
+    	
+    }
+
+
+	public static void throwUnknownAccessibleObjectType(AccessibleObject member) {
+		throw new IllegalArgumentException("Object " + member + " doesn't appear to be a constructor, a field, or a method.  Don't know how to proceed.");
+	}
+    
     /**
      * Create default parameters for the given types.
      *
@@ -145,25 +166,23 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @return
      */
     protected AccessibleObjectParameterSet constructAccessibleObjectParameterSet(AccessibleObject object, Parameter... params) {
-    	Parameter[] paramsToUse = params;
-    	if (paramsToUse == null || paramsToUse.length == 0) {
-    		paramsToUse = createDefaultParamsBasedOnTypeOfAccessibleObject(object);
-    	}
-    	
     	if (object instanceof Constructor) {
-    		return new ConstructorParameters(paramsToUse);
+    		return new ConstructorParameters(params);
     	} else if (object instanceof Field) {
-    		return new FieldParameters( ((Field)object).getDeclaringClass(),  ((Field) object).getName(), paramsToUse);
+    		return new FieldParameters( ((Field)object).getDeclaringClass(),  ((Field) object).getName(), params);
     	} else if (object instanceof Method) {
-    		return new MethodParameters( ((Method)object).getDeclaringClass(),  ((Method) object).getName(), paramsToUse);    		
-    	} 
-    	throw new IllegalArgumentException("Object " + object + " doesn't appear to be a constructor, a field, or a method.  Don't know how to proceed.");
+    		return new MethodParameters( ((Method)object).getDeclaringClass(),  ((Method) object).getName(), params);    		
+    	}  else {
+    		throwUnknownAccessibleObjectType(object);
+    		//Never gets here
+    		return null;
+    	}
     }
 
     
     
     @SuppressWarnings("rawtypes")
-	private Parameter[] createDefaultParamsBasedOnTypeOfAccessibleObject(AccessibleObject object) {
+	protected Parameter[] createDefaultParamsBasedOnTypeOfAccessibleObject(AccessibleObject object) {
     	if (object instanceof Constructor) {
     		return createDefaultParameters( ((Constructor)object).getParameterTypes().length );
     	}
@@ -176,41 +195,62 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     		return createDefaultParameters( ((Method)object).getParameterTypes().length );
     	}
 
-    	throw new IllegalArgumentException("Object " + object + " doesn't appear to be a constructor, a field, or a method.  Don't know how to proceed.");
+    	throwUnknownAccessibleObjectType(object);
+		//Never gets here
+		return null;
+
     }
 
+    
+    /**
+     * Allow modifications of the parameters to use for a target member.
+     * @param currentParameters
+     * @param member
+     * @return
+     */
+    protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, AccessibleObject member) {
+    	return currentParameters;
+    }
 
 	/**
      * @param targetInjectionMember
      * @param assignedParameters
      * @return null if no parameter set for the given accessible object has been defined.
      */
-    protected AccessibleObjectParameterSet getParameterToUseForObject(AccessibleObject targetInjectionMember, AccessibleObjectParameterSet... assignedParameters) {
+    protected final AccessibleObjectParameterSet getParameterToUseForObject(AccessibleObject targetInjectionMember, AccessibleObjectParameterSet... assignedParameters) {
     	if (assignedParameters == null || assignedParameters.length == 0) {
-    		return null;
+        	Parameter[] paramsToUse = this.createDefaultParameters(targetInjectionMember);
+        	paramsToUse = this.interceptParametersToUse(paramsToUse, targetInjectionMember);
+    		return this.constructAccessibleObjectParameterSet(targetInjectionMember, paramsToUse);
     	}
     	
     	
-    	for (AccessibleObjectParameterSet eachParameter : assignedParameters) {
+    	for (AccessibleObjectParameterSet eachParameterSet : assignedParameters) {
     		
     		//if a target type is defined then we have to match against it. 
     		//This allows injection into private members of base classes of the same name
     		//as the subclasses.
-    		Class<?> targetType = eachParameter.getTargetType();
+    		Class<?> targetType = eachParameterSet.getTargetType();
     		if (targetType != null && !targetType.equals(getAccessibleObjectDefiningType(targetInjectionMember))) {
     			continue;
     		}
     		
-    		if (eachParameter.getName().equals(getAccessibleObjectName(targetInjectionMember))) {
-    			return eachParameter;
+    		if (eachParameterSet.getName().equals(getAccessibleObjectName(targetInjectionMember))) {
+    			//Allow parmeter substitution
+            	Parameter[] paramsToUse = this.interceptParametersToUse(eachParameterSet.getParams(), targetInjectionMember);
+    			return constructAccessibleObjectParameterSet(targetInjectionMember, paramsToUse);
     		}
     	}
     	
-    	return null;
+    	Parameter[] paramsToUse = this.createDefaultParameters(targetInjectionMember);
+    	paramsToUse = this.interceptParametersToUse(paramsToUse, targetInjectionMember);
+		return this.constructAccessibleObjectParameterSet(targetInjectionMember, paramsToUse);
 	}
 
-    
-    /**
+ 
+
+
+	/**
      * Retrieves the enclosing class of the accessible object. (Constructor, Method, and Field all 
      * supply the method "getDeclaringClass()", yet it isn't supplied in the AccessibleObject base class.
      * @param targetAccessibleObject
