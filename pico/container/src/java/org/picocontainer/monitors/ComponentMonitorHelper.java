@@ -67,9 +67,10 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String methodToString(Member member) {
-        StringBuffer sb = new StringBuffer(member.getName());
+    	StringBuilder sb = new StringBuilder(member.getName());
+    	    	
         if (member instanceof Method) {
-            Class[] params = ((Method) member).getParameterTypes();
+            Class<?>[] params = ((Method) member).getParameterTypes();
             sb.append("(");
             for (int i = 0; i < params.length; i++) {
                 String s = params[i].getName();
