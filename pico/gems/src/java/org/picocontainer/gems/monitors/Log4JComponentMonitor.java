@@ -192,7 +192,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                         Object retVal, Object[] args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
+            logger.debug(format(ComponentMonitorHelper.INVOKED, memberToString(member), instance, duration));
         }
         delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
@@ -213,7 +213,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                                           final RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, memberToString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }

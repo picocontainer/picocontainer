@@ -213,7 +213,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKED,
-					methodToString(member), instance, duration));
+					memberToString(member), instance, duration));
 		}
 		delegate.invoked(container, componentAdapter, member, instance,
 				duration, retVal, args);

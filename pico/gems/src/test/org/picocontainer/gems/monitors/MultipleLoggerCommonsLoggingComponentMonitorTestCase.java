@@ -28,7 +28,7 @@ public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends Compon
     }
 
     @Override
-	protected Constructor getConstructor() {
+	protected Constructor<?> getConstructor() {
         return String.class.getConstructors()[0];
     }
 

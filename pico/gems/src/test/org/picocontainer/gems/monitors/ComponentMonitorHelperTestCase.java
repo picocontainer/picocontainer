@@ -28,7 +28,7 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 /**
@@ -51,7 +51,7 @@ public abstract class ComponentMonitorHelperTestCase {
 
     protected abstract ComponentMonitor makeComponentMonitor();
     
-    protected abstract Constructor getConstructor() throws NoSuchMethodException;
+    protected abstract Constructor<?> getConstructor() throws NoSuchMethodException;
 
     protected abstract Method getMethod() throws NoSuchMethodException;
     
@@ -61,12 +61,16 @@ public abstract class ComponentMonitorHelperTestCase {
     	ForTestSakeAppender.CONTENT = "";
     }
 
-    @Test public void testShouldTraceInstantiating() throws IOException {
+	@Test
+    @SuppressWarnings("unchecked")
+	public void testShouldTraceInstantiating() throws IOException {
         monitor.instantiating(null, null, constructor);
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
     }
 
-    @Test public void testShouldTraceInstantiatedWithInjected() throws IOException {
+    @Test 
+    @SuppressWarnings("unchecked")
+    public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         monitor.instantiated(null, null, constructor, instantiated, injected, 543);
@@ -75,24 +79,26 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
 
-    @Test public void testShouldTraceInstantiationFailed() throws IOException {
+    @Test 
+    @SuppressWarnings("unchecked")
+    public void testShouldTraceInstantiationFailed() throws IOException {
         monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), "doh"));
     }
 
     @Test public void testShouldTraceInvoking() throws IOException {
         monitor.invoking(null, null, method, this, new Object[] {"1","2"});
-        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, methodToString(method), this));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, memberToString(method), this));
     }
 
     @Test public void testShouldTraceInvoked() throws IOException {
         monitor.invoked(null, null, method, this, 543, "3", new Object[] {"1","2"});
-        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), this, (long) 543));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, memberToString(method), this, (long) 543));
     }
 
     @Test public void testShouldTraceInvocatiationFailed() throws IOException {
         monitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, methodToString(method), this, "doh"));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(method), this, "doh"));
     }
 
     @Test public void testShouldTraceNoComponent() throws IOException {

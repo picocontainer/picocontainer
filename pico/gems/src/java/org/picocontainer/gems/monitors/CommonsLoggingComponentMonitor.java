@@ -187,7 +187,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                         final Object retVal, final Object[] args) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, memberToString(member), instance, duration));
         }
         delegate.invoked(container, componentAdapter, member, instance,  duration, retVal, args);
     }
