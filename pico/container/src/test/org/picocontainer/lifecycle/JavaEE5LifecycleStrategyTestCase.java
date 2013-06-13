@@ -130,5 +130,36 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.dispose();
         assertEquals("subPost3()subPre3()pre()", pico.getComponent(StringBuilder.class).toString());
     }    
+    
+    
+    
+    public static class PrivateMethodAnnotations {
+    	private StringBuilder sb;
+
+		public PrivateMethodAnnotations(StringBuilder sb) {
+			this.sb = sb;
+    		
+    	}
+		
+        @PostConstruct
+        private void post() {
+            sb.append("post()");
+        }
+
+        @PreDestroy
+        private void pre() {
+            sb.append("pre()");
+        }		
+    }
+    
+    
+    @Test
+    public void testPrivateMethodInvocationWithJavaeelifecycle(){
+        pico.removeComponent(ProPostAnnotationJava5Startable.class);
+        pico.addComponent(PrivateMethodAnnotations.class);
+        pico.start();
+        pico.dispose();
+        assertEquals("post()pre()", pico.getComponent(StringBuilder.class).toString());
+    }       
 
 }

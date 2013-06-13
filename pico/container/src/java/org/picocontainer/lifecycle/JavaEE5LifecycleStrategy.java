@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.injectors.AnnotationInjectionUtils;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.PostConstruct;
@@ -69,6 +70,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
                 try {
                     long str = System.currentTimeMillis();
                     currentMonitor().invoking(null, null, method, component, new Object[0]);
+                    AnnotationInjectionUtils.setMemberAccessible(method);
                     method.invoke(component);
                     doneAlready.add(signature);
                     currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str, null, new Object[0]);
