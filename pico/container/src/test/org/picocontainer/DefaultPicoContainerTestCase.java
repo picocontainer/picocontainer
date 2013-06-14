@@ -10,6 +10,8 @@
 package org.picocontainer;
 
 import com.googlecode.jtype.Generic;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Caching;
@@ -30,11 +32,15 @@ import org.picocontainer.testmodel.Touchable;
 
 import javax.inject.Provider;
 import java.awt.Color;
+import java.io.File;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -930,6 +936,53 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     }
     
     
+    /**
+     * @todo Total Wish list:  Would be nice to be able to completely operate independent of JSR-330's jar.
+     */
+    @Test
+    @Ignore
+    public void testDefaultPicoContainerWillFunctionWithoutJavaxInjectInItsClasspath() throws Exception {
+    	File srcPath = new File("target/classes");
+    	assertTrue(srcPath.exists());
+    	
+    	
+    	URLClassLoader cl = new URLClassLoader(new URL[] {srcPath.toURI().toURL()}, System.class.getClassLoader());
+
+    	try {
+	    	try {
+		    	cl.loadClass("javax.inject.Inject");
+		    	fail("javax.inject.Inject is still in the classpath");
+	    	} catch (ClassNotFoundException e) {
+	    		//a-ok
+	    		assertNotNull(e.getMessage());
+	    	}
+	    	
+	    	
+	    	Class<?> defaultPico = cl.loadClass("org.picocontainer.containers.JSRPicoContainer");
+	    	
+	    	Method addComponent = defaultPico.getMethod("addComponent", Object.class);
+	    	Method getComponent = defaultPico.getMethod("getComponent", Object.class);
+	    	
+	    	//Will use 
+	    	Object picoInstance = defaultPico.newInstance();
+	    
+	    	Object picoResult = addComponent.invoke(picoInstance, StringBuilder.class);
+	    	assertNotNull(picoResult);
+	    	
+	    	StringBuilder result = (StringBuilder) getComponent.invoke(picoInstance, StringBuilder.class);
+	    	
+	    	assertNotNull(result);
+    	} finally {
+    		try {
+				Method closeMethod = cl.getClass().getMethod("close");
+				closeMethod.invoke(cl);
+			} catch (Exception e) {
+				//ignore, close doesn't exist.
+			}
+    	}
+    	
+    	
+    }    
     
 
 }

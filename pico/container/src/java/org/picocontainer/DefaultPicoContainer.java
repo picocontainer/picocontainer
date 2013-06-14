@@ -1384,6 +1384,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         public void changeMonitor(ComponentMonitor monitor) {
             DefaultPicoContainer.this.changeMonitor(monitor);
         }
+        
+        public void start() {
+        	throw new PicoCompositionException("Cannot have  .as().start()  Register a component or delete the as() statement");
+        }
+
+        public void stop() {
+        	throw new PicoCompositionException("Cannot have  .as().stop()  Register a component or delete the as() statement");
+        }
+        
+        public void dispose() {
+        	throw new PicoCompositionException("Cannot have  .as().dispose()  Register a component or delete the as() statement");
+        }        
     }
 
 }

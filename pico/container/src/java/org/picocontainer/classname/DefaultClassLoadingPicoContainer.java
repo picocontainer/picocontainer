@@ -10,8 +10,11 @@ package org.picocontainer.classname;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.CodeSource;
 import java.security.Permissions;
@@ -84,7 +87,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     private final transient List<ClassPathElement> classPathElements = new ArrayList<ClassPathElement>();
     private final transient ClassLoader parentClassLoader;
 
-    private transient ClassLoader componentClassLoader;
+    private transient URLClassLoader componentClassLoader;
     private transient boolean componentClassLoaderLocked;
 
     protected final Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
@@ -174,6 +177,27 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     	
     }
 
+	@Override
+	public void dispose() {
+    	try {
+        	if (componentClassLoader != null) {
+    				Method closeMethod = CustomPermissionsURLClassLoader.class.getMethod("close");
+    				closeMethod.invoke(componentClassLoader);
+        	}
+    	} catch (NoSuchMethodException e) {
+			//Ignore -- if we're on NoSuchMethodExceptionjust means we're not on JDK 1.7 for deployment.
+		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw  (RuntimeException)e;
+			}
+			throw new RuntimeException("Error disposing " + this, e);
+		} finally {
+			componentClassLoader = null;
+			getDelegate().dispose();
+		}
+	}
+
+    
     public ComponentMonitor currentMonitor() {
     	MutablePicoContainer picoDelegate = getDelegate();
     	while (picoDelegate != null) {
@@ -322,8 +346,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     public ClassLoader getComponentClassLoader() {
         if (componentClassLoader == null) {
             componentClassLoaderLocked = true;
-            componentClassLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                public ClassLoader run() {
+            componentClassLoader = AccessController.doPrivileged(new PrivilegedAction<URLClassLoader>() {
+                public URLClassLoader run() {
                     return new CustomPermissionsURLClassLoader(getURLs(classPathElements), makePermissions(),
                             parentClassLoader);
                 }
@@ -374,6 +398,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return urls;
     }
 
+    
+    
     private static String getClassName(String primitiveOrClass) {
         String fromMap = primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
@@ -580,15 +606,15 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public void start() {
-            //This implementation does nothing on lifecycle triggers.          
+        	throw new PicoCompositionException("Cannot have  .as().start()  Register a component or delete the as() statement");
         }
 
         public void stop() {
-            //This implementation does nothing on lifecycle triggers.          
+        	throw new PicoCompositionException("Cannot have  .as().stop()  Register a component or delete the as() statement");
         }
-
+        
         public void dispose() {
-            //This implementation does nothing on lifecycle triggers.          
+        	throw new PicoCompositionException("Cannot have  .as().dispose()  Register a component or delete the as() statement");
         }
 
         public void setName(String name) {
@@ -740,5 +766,6 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     public static class CannotListClassesInAJarException extends PicoException {
 
     }
+
 
 }

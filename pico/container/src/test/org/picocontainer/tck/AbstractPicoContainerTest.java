@@ -1012,7 +1012,7 @@ public abstract class AbstractPicoContainerTest {
 		mpc.change(Characteristics.STATIC_INJECTION);
 		
 		
-		ComponentAdapter<?> ca = new InstanceAdapter(Object.class, new Object());
+		ComponentAdapter<?> ca = new InstanceAdapter<Object>(Object.class, new Object());
 		mpc.addAdapter(ca);
 		
 		assertNotNull(mpc.getComponent(Object.class));
@@ -1030,6 +1030,25 @@ public abstract class AbstractPicoContainerTest {
 		assertSame(mpc, afterAddComponent);
 	}
 	
+	
+	@Test(expected=PicoCompositionException.class)
+	public void testAsCannotBeFollowedByAStartLifecycleCall() {
+		MutablePicoContainer mpc = createPicoContainer(null);
+			mpc.as(Characteristics.NO_CACHE).start();
+	}
+	
+	
+	@Test(expected=PicoCompositionException.class)
+	public void testAsCannotBeFollowedByAStopLifecycleCall() {
+		MutablePicoContainer mpc = createPicoContainer(null);
+		mpc.as(Characteristics.NO_CACHE).stop();		
+	}
+	
+	@Test(expected=PicoCompositionException.class)
+	public void testAsCannotBeFollowedByADisposeLifecycleCall() {
+		MutablePicoContainer mpc = createPicoContainer(null);
+		mpc.as(Characteristics.NO_CACHE).dispose();
+	}
 
     
 }
