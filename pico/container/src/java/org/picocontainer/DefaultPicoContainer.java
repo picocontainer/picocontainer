@@ -1302,12 +1302,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         public AsPropertiesPicoContainer(final Properties... props) {
             super(DefaultPicoContainer.this);
             properties = (Properties) containerProperties.clone();
-            for (Properties c : props) {
-                Enumeration<?> e = c.propertyNames();
-                while (e.hasMoreElements()) {
-                    String s = (String) e.nextElement();
-                    properties.setProperty(s, c.getProperty(s));
-                }
+            
+            for (Properties eachProperty : props) {
+            	properties.putAll(eachProperty);
             }
         }
 
