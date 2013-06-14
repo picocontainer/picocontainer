@@ -126,7 +126,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                          "$parent.addComponent('foo', java.lang.String, [].to_java(Parameter))\n" +
                          "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +  
                          "pico = DefaultPicoContainer.new($parent)\n" +
-                         "pico.addComponent(org.picocontainer.script.testmodel.A)\n"  +
+                         "pico.addComponent(org.picocontainer.script.testmodel.A.java_class)\n"  +
                          "pico"
                         );
 
@@ -636,8 +636,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testWithParentClassPathPropagatesWithNoParentContainer() throws IOException {
         File testCompJar = TestHelper.getTestCompJarFile();
-
-        URLClassLoader classLoader = new URLClassLoader(new URL[]{testCompJar.toURL()},
+        assertTrue(testCompJar.exists());
+        
+        URLClassLoader classLoader = new URLClassLoader(new URL[]{testCompJar.toURI().toURL()},
                                                         this.getClass().getClassLoader());
         Class<?> testComp = null;
 

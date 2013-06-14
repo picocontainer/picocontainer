@@ -47,10 +47,10 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 			throws MalformedURLException, ClassNotFoundException {
 		Reader script = new StringReader("" +
         		"from org.picocontainer import *;\n" +
-        		"from org.picocontainer.parameters import ComponentParameter;\n" +
+        		"from org.picocontainer.parameters import *;\n" +
         		"import TestComp;\n" +
                 "pico = PicoBuilder().withLifecycle().withCaching().build();\n" +
-				"pico.addComponent(\"TestComp\",TestComp, Parameter.ZERO);\n"
+				"pico.addComponent(\"TestComp\",TestComp, DefaultConstructorParameter.INSTANCE);\n"
 			);
         File testCompJar = TestHelper.getTestCompJarFile();
         assertTrue(testCompJar.isFile());
@@ -84,12 +84,12 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
-                "from org.picocontainer import Parameter\n"+
+                "from org.picocontainer.parameters import DefaultConstructorParameter\n"+
                 "pico = DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.addComponent(WebServerImpl)\n" +
-                "pico.addComponent('wayOfPassingSomethingToTestEnv', child.getComponent(WebServerImpl), Parameter.DEFAULT)");
+                "pico.addComponent('wayOfPassingSomethingToTestEnv', child.getComponent(WebServerImpl), DefaultConstructorParameter.INSTANCE)");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull((WebServerImpl) pico.getComponent("wayOfPassingSomethingToTestEnv"));
     }

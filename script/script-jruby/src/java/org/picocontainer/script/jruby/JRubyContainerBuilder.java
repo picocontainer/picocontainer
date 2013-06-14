@@ -17,6 +17,7 @@ import java.util.Collections;
 import org.jruby.Ruby;
 import org.jruby.RubyInstanceConfig;
 import org.jruby.exceptions.RaiseException;
+import org.jruby.internal.runtime.GlobalVariable.Scope;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.picocontainer.DefaultPicoContainer;
@@ -39,7 +40,9 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
  */
 public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	public static final String MARKUP_EXCEPTION_PREFIX = "scriptedbuilder: ";
-
+	
+	public static final String MARKUP_EXCEPTION_RUNTIME_ERROR = "(RuntimeError) ";
+	
 	private final String script;
 	
 	public JRubyContainerBuilder(Reader script, ClassLoader classLoader) {
@@ -83,11 +86,11 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
         }
 
 		RubyInstanceConfig rubyConfig = new RubyInstanceConfig();
-		rubyConfig.setLoader(this.getClassLoader());
+		
 		Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST, rubyConfig);
 		ruby.getLoadService().require("org/picocontainer/script/jruby/scriptedbuilder");
-		ruby.defineReadonlyVariable("$parent", JavaEmbedUtils.javaToRuby(ruby, parentContainer));
-		ruby.defineReadonlyVariable("$assembly_scope", JavaEmbedUtils.javaToRuby(ruby, assemblyScope));
+		ruby.defineReadonlyVariable("$parent", JavaEmbedUtils.javaToRuby(ruby, parentContainer), Scope.GLOBAL);
+		ruby.defineReadonlyVariable("$assembly_scope", JavaEmbedUtils.javaToRuby(ruby, assemblyScope), Scope.GLOBAL);
 		
 		try {
 			
@@ -98,17 +101,14 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 			if (re.getCause() instanceof ScriptedPicoContainerMarkupException) {
 				throw (ScriptedPicoContainerMarkupException) re.getCause();
 			}
-			Object errorMessage = JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
-			if (errorMessage instanceof String) {
-				String message = (String) JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
-				if (message.startsWith(MARKUP_EXCEPTION_PREFIX)) {
-					throw new ScriptedPicoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
-				} else {
-					throw new PicoCompositionException(message, re);
-				}
+			
+			String message = re.getMessage();
+			if (message.startsWith(MARKUP_EXCEPTION_RUNTIME_ERROR + MARKUP_EXCEPTION_PREFIX)) {
+				throw new ScriptedPicoContainerMarkupException(message.substring((MARKUP_EXCEPTION_RUNTIME_ERROR + MARKUP_EXCEPTION_PREFIX).length()));
 			} else {
-				throw new PicoCompositionException(errorMessage.toString(), re);
+				throw new PicoCompositionException(message, re);
 			}
+			
 		} finally {
 			JavaEmbedUtils.terminate(ruby);
 		}

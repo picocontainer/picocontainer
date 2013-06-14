@@ -21,8 +21,8 @@ module Scripted
   ConstantParameter = org.picocontainer.parameters.ConstantParameter
   JRubyContainerBuilder = org.picocontainer.script.jruby.JRubyContainerBuilder
   ClassPathElementHelper = org.picocontainer.script.util.ClassPathElementHelper
-  ComponentElementHelper = org.picocontainer.script.util.ComponentElementHelper  
-  include_class 'org.picocontainer.script.util.ContainerElementHelper'
+  ComponentElementHelper = org.picocontainer.script.jruby.JRubyComponentElementHelper  
+  java_import 'org.picocontainer.script.util.ContainerElementHelper'
 
   MARKUP_EXCEPTION_PREFIX = JRubyContainerBuilder::MARKUP_EXCEPTION_PREFIX
 

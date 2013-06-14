@@ -12,7 +12,7 @@
             <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.beanshell</groupId><artifactId>bsh</artifactId><version>2.0b4</version>
+            <groupId>org.beanshell</groupId><artifactId>bsh</artifactId><version>2.0b5</version>
             <exclusions>
                 <exclusion>
                     <groupId>tonic</groupId><artifactId>jarjar</artifactId>
