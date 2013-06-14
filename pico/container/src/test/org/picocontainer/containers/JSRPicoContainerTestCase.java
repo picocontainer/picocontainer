@@ -1,6 +1,7 @@
 package org.picocontainer.containers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
@@ -8,11 +9,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +27,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.BeanParameters;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
@@ -632,5 +630,90 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     }    
     
  
+	public static class Injected {
+		
+	}
+	
+	public static class TheInjectee {
+		
+		@Inject
+		@Named("donotuse")
+		public Injected fieldInjection;
+		
+		private Injected setterInjection;
+
+		private Injected methodInjection;
+
+		private final Injected constructorInjection;
+
+		@Inject
+		public TheInjectee(
+				@Named("donotuse")
+				Injected constructorInjection) {
+			this.constructorInjection = constructorInjection;
+			
+		}
+
+
+		public Injected getSetterInjection() {
+			return setterInjection;
+		}
+
+		@Inject
+		public void setSetterInjection(@Named("donotuse") Injected setterInjection) {
+			this.setterInjection = setterInjection;
+		}
+		
+		
+		@Inject
+		public void inject(@Named("donotuse") Injected methodInjection) {
+			this.methodInjection = methodInjection;
+		}
+		
+		public Injected getMethodInjection() {
+			return methodInjection;
+		}
+
+		public Injected getConstructorInjection() {
+			return constructorInjection;
+		}
+		
+	}
+	
+	
+	@Test
+	public void testSpecificParametersOverridesNamedAnnotations() {
+		Injected a = new Injected();
+		Injected b = new Injected();
+		Injected c = new Injected();
+		Injected d = new Injected();
+		Injected donotuse = new Injected();
+		
+		MutablePicoContainer mpc = createPicoContainer(null)
+				.addComponent("a", a)
+				.addComponent("b", b)
+				.addComponent("c", c)
+				.addComponent("d", d)
+				.addComponent("donotuse", donotuse)
+				.addComponent(TheInjectee.class, TheInjectee.class,
+							new ConstructorParameters(new ComponentParameter("a")),
+							new FieldParameters[] {
+									new FieldParameters("fieldInjection", new ComponentParameter("b"))
+							},
+							new MethodParameters[] {
+									new MethodParameters("inject", new ComponentParameter("c")),
+									new BeanParameters("setterInjection", new ComponentParameter("d"))
+							});
+		
+		
+		
+		TheInjectee result = mpc.getComponent(TheInjectee.class);
+		assertNotNull(result);
+		
+		assertSame(a, result.getConstructorInjection());
+		assertSame(c, result.getMethodInjection());
+		assertSame(d, result.getSetterInjection());
+	}
+    
     
 }
