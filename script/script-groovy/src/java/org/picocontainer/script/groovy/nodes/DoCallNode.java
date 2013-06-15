@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Handles 'doCall' nodes.
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

@@ -8,13 +8,13 @@
  *****************************************************************************/
 package org.picocontainer.gems.injectors;
 
+import java.lang.reflect.Type;
+import java.util.logging.Logger;
+
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.FactoryInjector;
 import org.picocontainer.injectors.InjectInto;
-
-import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 /**
  * This will Inject a Java-Logging Logger for the injectee's class name

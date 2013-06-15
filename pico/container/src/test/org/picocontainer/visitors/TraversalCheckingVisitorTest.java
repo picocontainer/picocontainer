@@ -7,6 +7,14 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,14 +33,6 @@ import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ConstructorParameters;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Michael Rimov
@@ -77,7 +77,8 @@ public class TraversalCheckingVisitorTest {
         knownAdapters.add(childAdapter);
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
-            public void visitComponentAdapter(ComponentAdapter adapter) {
+            @Override
+			public void visitComponentAdapter(final ComponentAdapter adapter) {
                 super.visitComponentAdapter(adapter); //Calls checkTraversal for us.
                 allAdapters.add(adapter);
             }
@@ -100,7 +101,8 @@ public class TraversalCheckingVisitorTest {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())));
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
-            public void visitComponentFactory(ComponentFactory factory) {
+            @Override
+			public void visitComponentFactory(final ComponentFactory factory) {
                 super.visitComponentFactory(factory); //Calls checkTraversal for us.
                 allFactories.add(factory);
             }
@@ -119,7 +121,8 @@ public class TraversalCheckingVisitorTest {
         final int expectedNumberOfContainers = 2;
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
-            public boolean visitContainer(PicoContainer pico) {
+            @Override
+			public boolean visitContainer(final PicoContainer pico) {
                 super.visitContainer(pico); //Calls checkTraversal for us.
                 allContainers.add(pico);
                 return CONTINUE_TRAVERSAL;
@@ -148,7 +151,8 @@ public class TraversalCheckingVisitorTest {
         final List allParameters = new ArrayList();
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
-            public void visitParameter(Parameter param) {
+            @Override
+			public void visitParameter(final Parameter param) {
                 super.visitParameter(param); //Calls checkTraversal for us.
                 allParameters.add(param);
             }
@@ -166,4 +170,4 @@ public class TraversalCheckingVisitorTest {
                 null, null, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class)).intValue());
     }
 
-}    
+}

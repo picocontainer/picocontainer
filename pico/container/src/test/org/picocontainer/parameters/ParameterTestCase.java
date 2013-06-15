@@ -9,7 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import junit.framework.TestCase;
+
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -22,13 +29,6 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.visitors.VerifyingVisitor;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -87,7 +87,7 @@ public final class ParameterTestCase {
                                                                                                                           NameBinding.NULL);
         assertNull(ComponentParameter.DEFAULT.resolve(picoContainer, adapter, null, TestCase.class, pn, false, null).resolveInstance(ComponentAdapter.NOTHING.class));
     }
-	
+
 	@Test public void testComponentParameterResolvesPrimitiveType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).getComponentAdapter("glarch");

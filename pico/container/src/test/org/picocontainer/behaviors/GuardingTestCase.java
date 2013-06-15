@@ -12,13 +12,12 @@ package org.picocontainer.behaviors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.GUARD;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import static org.picocontainer.Characteristics.GUARD;
-
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.CompositeInjection;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -31,7 +30,8 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
  */
 public class GuardingTestCase extends AbstractComponentFactoryTest {
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new Guarding().wrap(new ConstructorInjection());
     }
 
@@ -86,7 +86,7 @@ public class GuardingTestCase extends AbstractComponentFactoryTest {
         pico.as(GUARD).addComponent("foo", String.class);
         ComponentAdapter fooAdapter = pico.getComponentAdapter("foo");
         assertEquals(Guarding.Guarded.class, fooAdapter.getClass());
-        assertEquals("Got " + fooAdapter.getDelegate().getClass().getName(), 
+        assertEquals("Got " + fooAdapter.getDelegate().getClass().getName(),
         		CompositeInjection.CompositeInjector.class, fooAdapter.getDelegate().getClass());
         try {
             String foo = (String) pico.getComponent("foo");

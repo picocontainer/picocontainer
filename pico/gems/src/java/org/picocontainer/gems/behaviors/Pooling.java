@@ -9,6 +9,28 @@
  *****************************************************************************/
 package org.picocontainer.gems.behaviors;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.gems.GemsCharacteristics;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
+
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
@@ -16,18 +38,6 @@ import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.nullobject.Null;
 import com.thoughtworks.proxy.toys.pool.Pool;
 import com.thoughtworks.proxy.toys.pool.SerializationMode;
-import org.picocontainer.*;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.gems.GemsCharacteristics;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 @SuppressWarnings("serial")
 public class Pooling extends AbstractBehavior {
@@ -43,14 +53,14 @@ public class Pooling extends AbstractBehavior {
     }
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
             throws PicoCompositionException {
         ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
         	return delegate;
-		} 
-        
+		}
+
         AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.POOL);
         Pooled<T> behavior = new Pooled<T>(delegate, poolContext);
         //TODO
@@ -64,8 +74,8 @@ public class Pooling extends AbstractBehavior {
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_POOL)) {
         	return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
-		} 
-    	
+		}
+
         AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.POOL);
     	return monitor.changedBehavior(new Pooled<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter), poolContext));
     }
@@ -283,7 +293,7 @@ public class Pooling extends AbstractBehavior {
 
         }
 
-        private Resetter<T> makeResetted(Context context) {
+        private Resetter<T> makeResetted(final Context context) {
             final Resetter<T> resetter = context.getResetter();
             return delegateHasLifecylce ? new LifecycleResetter<T>(this, resetter) : resetter;
         }
@@ -312,7 +322,9 @@ public class Pooling extends AbstractBehavior {
         @Override
         public T getComponentInstance(final PicoContainer container, final Type into) {
             if (delegateHasLifecylce) {
-                if (disposed) throw new IllegalStateException("Already disposed");
+                if (disposed) {
+					throw new IllegalStateException("Already disposed");
+				}
             }
             T componentInstance;
             long now = System.currentTimeMillis();
@@ -407,8 +419,12 @@ public class Pooling extends AbstractBehavior {
         @Override
         public void start(final PicoContainer container) {
             if (delegateHasLifecylce) {
-                if (started) throw new IllegalStateException("Already started");
-                if (disposed) throw new IllegalStateException("Already disposed");
+                if (started) {
+					throw new IllegalStateException("Already started");
+				}
+                if (disposed) {
+					throw new IllegalStateException("Already disposed");
+				}
                 for (Object component : components) {
                     start(component);
                 }
@@ -428,8 +444,12 @@ public class Pooling extends AbstractBehavior {
         @Override
         public void stop(final PicoContainer container) {
             if (delegateHasLifecylce) {
-                if (!started) throw new IllegalStateException("Not started yet");
-                if (disposed) throw new IllegalStateException("Already disposed");
+                if (!started) {
+					throw new IllegalStateException("Not started yet");
+				}
+                if (disposed) {
+					throw new IllegalStateException("Already disposed");
+				}
                 for (Object component : components) {
                     stop(component);
                 }
@@ -447,8 +467,12 @@ public class Pooling extends AbstractBehavior {
         @Override
         public void dispose(final PicoContainer container) {
             if (delegateHasLifecylce) {
-                if (started) throw new IllegalStateException("Not stopped yet");
-                if (disposed) throw new IllegalStateException("Already disposed");
+                if (started) {
+					throw new IllegalStateException("Not stopped yet");
+				}
+                if (disposed) {
+					throw new IllegalStateException("Already disposed");
+				}
                 disposed = true;
                 for (Object component : components) {
                     dispose(component);

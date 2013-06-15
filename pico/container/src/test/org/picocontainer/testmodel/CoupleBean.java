@@ -17,7 +17,7 @@ public final class CoupleBean {
     private final PersonBean personA;
     private final PersonBean personB;
 
-    public CoupleBean(PersonBean a, PersonBean b) {
+    public CoupleBean(final PersonBean a, final PersonBean b) {
         this.personA = a;
         this.personB = b;
     }

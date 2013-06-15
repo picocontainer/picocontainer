@@ -10,8 +10,6 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.groovy.GroovyCompilationException;
-import org.picocontainer.script.groovy.GroovyContainerBuilder;
 
 /**
  *
@@ -42,7 +40,7 @@ public class GroovyCompilationExceptionTestCase extends AbstractScriptedContaine
         }
     }
 
-    private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
+    private PicoContainer buildContainer(final Reader script, final PicoContainer parent, final Object scope) {
         return buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
     }
 

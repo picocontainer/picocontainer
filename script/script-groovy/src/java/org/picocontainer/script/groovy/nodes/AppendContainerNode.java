@@ -3,15 +3,15 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * Sometimes it is worthwhile to split apart node building into functions. For
@@ -42,7 +42,7 @@ import org.picocontainer.classname.ClassLoadingPicoContainer;
  * }
  * </pre></code>
  * </p>
- * 
+ *
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
@@ -67,7 +67,7 @@ public class AppendContainerNode extends AbstractBuilderNode {
 
     /**
      * Returns the container passed in as the &quot;container&quot; attribute.
-     * 
+     *
      * @param current the current Object, unused.
      * @param attributes the Map of attributes, which must have the container
      *            attribute defined.

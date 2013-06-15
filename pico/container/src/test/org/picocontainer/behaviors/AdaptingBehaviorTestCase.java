@@ -9,7 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import com.thoughtworks.xstream.XStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -17,20 +27,10 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.CompositeInjection;
-import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import com.thoughtworks.xstream.XStream;
 
 @SuppressWarnings("serial")
 public class AdaptingBehaviorTestCase {
@@ -73,7 +73,7 @@ public class AdaptingBehaviorTestCase {
 
         public MyHashMap2() {
         }
-        public void setFoo(String foo) {
+        public void setFoo(final String foo) {
             this.foo = foo;
         }
     }
@@ -195,7 +195,7 @@ public class AdaptingBehaviorTestCase {
         assertEquals("Cached:Hidden:Synchronized:Instance-interface java.util.Map",ca.toString());
     }
 
-    public void mergeInto(Properties p, Properties into) {
+    public void mergeInto(final Properties p, final Properties into) {
         Enumeration e = p.propertyNames();
         while (e.hasMoreElements()) {
             String s = (String)e.nextElement();

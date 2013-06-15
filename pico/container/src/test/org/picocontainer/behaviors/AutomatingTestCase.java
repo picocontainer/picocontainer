@@ -9,6 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.Characteristics.AUTOMATIC;
+import static org.picocontainer.behaviors.Behaviors.automatic;
+import static org.picocontainer.behaviors.Behaviors.caching;
+
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -17,19 +23,13 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.picocontainer.Characteristics.AUTOMATIC;
-import static org.picocontainer.behaviors.Behaviors.automatic;
-import static org.picocontainer.behaviors.Behaviors.caching;
-
 public class AutomatingTestCase {
 
     private static String MESSAGE =
         "Foo was instantiated, even though it was not required to be given it was not depended on by anything looked up";
 
     public static class Foo {
-        public Foo(StringBuilder sb) {
+        public Foo(final StringBuilder sb) {
             sb.append(MESSAGE);
         }
     }

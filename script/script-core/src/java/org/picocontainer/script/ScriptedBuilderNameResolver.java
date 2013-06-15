@@ -17,7 +17,7 @@ import java.util.Map;
  * name. Typical default resolution is for Groovy, BeanShell, JavaScript,
  * Jython, and XML script names. However, you can register/replace your own
  * builder implementations by using the registerBuilder() function.
- * 
+ *
  * @author Michael Rimov
  */
 public class ScriptedBuilderNameResolver {
@@ -28,14 +28,14 @@ public class ScriptedBuilderNameResolver {
     public static final String JYTHON = ".py";
     public static final String XML = ".xml";
     public static final String RUBY = ".rb";
-    
+
     public static final String DEFAULT_GROOVY_BUILDER = "org.picocontainer.script.groovy.GroovyContainerBuilder";
     public static final String DEFAULT_BEANSHELL_BUILDER = "org.picocontainer.script.bsh.BeanShellContainerBuilder";
     public static final String DEFAULT_JAVASCRIPT_BUILDER = "org.picocontainer.script.rhino.JavascriptContainerBuilder";
     public static final String DEFAULT_XML_BUILDER = "org.picocontainer.script.xml.XMLContainerBuilder";
     public static final String DEFAULT_JYTHON_BUILDER = "org.picocontainer.script.jython.JythonContainerBuilder";
     public static final String DEFAULT_RUBY_BUILDER = "org.picocontainer.script.jruby.JRubyContainerBuilder";
-    
+
     private final Map<String, String> extensionToBuilders = new HashMap<String, String>();
 
     public ScriptedBuilderNameResolver() {
@@ -44,36 +44,36 @@ public class ScriptedBuilderNameResolver {
 
     /**
      * Returns the classname of the ScriptedContainerBuilder from the file.
-     * 
+     *
      * @param compositionFile the composition File
      * @return The builder class name
      */
-    public String getBuilderClassName(File compositionFile) {
+    public String getBuilderClassName(final File compositionFile) {
         String language = getExtension(compositionFile.getAbsolutePath());
         return getBuilderClassName(language);
     }
 
     /**
      * Returns the classname of the ScriptedContainerBuilder from the URL.
-     * 
+     *
      * @param compositionURL the composition URL
      * @return The builder class name
      */
-    public String getBuilderClassName(URL compositionURL) {
+    public String getBuilderClassName(final URL compositionURL) {
         String language = getExtension(compositionURL.getFile());
         return getBuilderClassName(language);
     }
 
     /**
      * Retrieve the classname of the builder to use given the provided
-     * extension.  Example: 
+     * extension.  Example:
      * <pre>
      * ScriptedContainerBuilderFactory factory = new ScriptedContainerBuilderFactory(.....);
      * String groovyBuilderName = factory.getBuilderClassName(&quot;.groovy&quot;);
      * assert &quot;org.picocontainer.script.groovy.GroovyContainerBuilder&quot;.equals(groovyBuilderName);
      * </pre>
-     * 
-     * @param extension the extension 
+     *
+     * @param extension the extension
      * @return The builder class name
      * @throws UnsupportedScriptTypeException
      */
@@ -106,7 +106,7 @@ public class ScriptedBuilderNameResolver {
     /**
      * Registers/replaces a new handler for a given extension. Allows for
      * customizable behavior in the various builders or the possibility to
-     * dynamically add handlers for new file types. Example: 
+     * dynamically add handlers for new file types. Example:
      * <pre>
      * ScriptedContainerBuilderFactory factory = new ScriptedContainerBuilderFactory(...)
      * factory.registerBuilder(&quot;.groovy&quot;, &quot;org.picocontainer.script.groovy.GroovyContainerBuilder&quot;);
@@ -117,7 +117,7 @@ public class ScriptedBuilderNameResolver {
      * The internal code now requires synchronization of the builder extension
      * map since who knows what is using it when a new builder is registered.
      * </p>
-     * 
+     *
      * @param extension String the extension to register under.
      * @param className String the classname to use for the given extension.
      */
@@ -127,14 +127,14 @@ public class ScriptedBuilderNameResolver {
 
     /**
      * Returns a list of all supported extensions.
-     * 
+     *
      * @return A String[] of extensions including the period in the name.
      */
     public synchronized String[] getAllSupportedExtensions() {
         return extensionToBuilders.keySet().toArray(new String[extensionToBuilders.size()]);
     }
 
-    private String getExtension(String fileName) {
+    private String getExtension(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 

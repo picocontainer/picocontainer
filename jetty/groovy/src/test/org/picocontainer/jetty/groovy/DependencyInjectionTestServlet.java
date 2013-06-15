@@ -13,11 +13,12 @@ public class DependencyInjectionTestServlet extends HttpServlet {
     private String foo;
     private ServletConfig servletConfig;
 
-    public DependencyInjectionTestServlet(String name) {
+    public DependencyInjectionTestServlet(final String name) {
         this.name = name;
     }
-        
-    public void init(ServletConfig servletConfig) throws ServletException {
+
+    @Override
+	public void init(final ServletConfig servletConfig) throws ServletException {
         this.servletConfig = servletConfig;
         String initParameter = servletConfig.getInitParameter("foo");
         if (initParameter!= null) {
@@ -25,7 +26,8 @@ public class DependencyInjectionTestServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         String message = name;
         if (request.getAttribute("foo2") != null) {
@@ -37,11 +39,12 @@ public class DependencyInjectionTestServlet extends HttpServlet {
         response.getWriter().write(text);
     }
 
-    public void destroy() {
+    @Override
+	public void destroy() {
     }
 
-    // used when handling this servlet directly rather than letting Jetty instantiate it.    
-    public void setFoo(String foo) {
+    // used when handling this servlet directly rather than letting Jetty instantiate it.
+    public void setFoo(final String foo) {
         this.foo = foo;
     }
 }

@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script;
 
@@ -18,15 +18,15 @@ import org.picocontainer.PicoException;
 @SuppressWarnings("serial")
 public class BuilderClassNotFoundException extends PicoException {
 
-    public BuilderClassNotFoundException(String message) {
+    public BuilderClassNotFoundException(final String message) {
         super(message);
     }
 
-    public BuilderClassNotFoundException(Throwable cause) {
+    public BuilderClassNotFoundException(final Throwable cause) {
         super(cause);
     }
 
-    public BuilderClassNotFoundException(String message, Throwable cause) {
+    public BuilderClassNotFoundException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

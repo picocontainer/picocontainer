@@ -42,7 +42,7 @@ public class ConstraintIntegrationTestCase {
     MutablePicoContainer container;
 
     @Before
-    public void setUp() throws Exception {       
+    public void setUp() throws Exception {
         container = new DefaultPicoContainer(new Caching());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DependsOnTouchable.class);

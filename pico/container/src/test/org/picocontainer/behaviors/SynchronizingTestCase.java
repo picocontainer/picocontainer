@@ -25,23 +25,23 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
 public class SynchronizingTestCase extends AbstractComponentFactoryTest {
 
 	private final ComponentFactory synchronizing = new Synchronizing().wrap(new AdaptingInjection());
-	
+
 
 	@Override
 	protected ComponentFactory createComponentFactory() {
-		return synchronizing;		
+		return synchronizing;
 	}
-	
+
 	@Test
 	public void testPicoContainerPropertiesIntegration() {
 		MutablePicoContainer mpc = new PicoBuilder().withBehaviors(new Synchronizing()).build();
 		mpc.as(SYNCHRONIZE).addComponent("a", "This is a test");
 		mpc.as(NO_SYNCHRONIZE).addComponent("b","This is a test");
-		
+
 		assertNotNull(mpc.getComponentAdapter("a").findAdapterOfType(Synchronizing.Synchronized.class));
 		assertNull(mpc.getComponentAdapter("b").findAdapterOfType(Synchronizing.Synchronized.class));
 	}
-	
-	
+
+
 
 }

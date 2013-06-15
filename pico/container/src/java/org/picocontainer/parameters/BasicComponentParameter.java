@@ -9,7 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import com.googlecode.jtype.Generic;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Provider;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Converters;
 import org.picocontainer.Converting;
@@ -19,19 +28,11 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
 import org.picocontainer.injectors.ProviderAdapter;
 
-import javax.inject.Provider;
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.googlecode.jtype.Generic;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -52,16 +53,16 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     /** <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor. */
     public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();
 
-    private Object key;
+    private final Object key;
 
 
-    
+
     /**
      * Expect a parameter matching a component of a specific key.
      *
      * @param key the key of the desired addComponent
      */
-    public BasicComponentParameter(Object key) {
+    public BasicComponentParameter(final Object key) {
         this.key = key;
     }
 
@@ -69,7 +70,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     public BasicComponentParameter() {
     	this(null);
     }
-    
+
     /**
      * Check whether the given Parameter can be satisfied by the container.
      *
@@ -82,18 +83,18 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     public Resolver resolve(final PicoContainer container,
                             final ComponentAdapter<?> forAdapter,
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
-                            NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-    	
+                            final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) {
+
     	Generic<?> resolvedClassType = null;
         // TODO take this out for Pico3
         if (notAClass(expectedType) && notAJsr330Provider(expectedType)) {
         	if (expectedType instanceof ParameterizedType) {
-        		resolvedClassType = Generic.get((ParameterizedType)expectedType);
+        		resolvedClassType = Generic.get(expectedType);
         	} else {
         		return new Parameter.NotResolved();
         	}
         } else if (expectedType instanceof ParameterizedType) {
-            resolvedClassType = Generic.get((ParameterizedType) expectedType);
+            resolvedClassType = Generic.get(expectedType);
         } else {
         	resolvedClassType = Generic.get((Class<?>) expectedType);
         }
@@ -111,12 +112,12 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             public boolean isResolved() {
                 return componentAdapter != null;
             }
-            public Object resolveInstance(Type into) {
+            public Object resolveInstance(final Type into) {
             	final Generic<?> targetType = targetClassType;
                 if (componentAdapter == null) {
                     return null;
                 }
-                
+
                 if (componentAdapter.findAdapterOfType(DefaultPicoContainer.LateInstance.class) != null) {
                     return convert(getConverters(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
@@ -128,7 +129,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 } else if(componentAdapter.findAdapterOfType(ProviderAdapter.class) != null && (targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
                 	//Target requires Provideradapter
                 	ProviderAdapter providerAdapter = componentAdapter.findAdapterOfType(ProviderAdapter.class);
-                	return providerAdapter.getProvider();                	
+                	return providerAdapter.getProvider();
                 } else {
                     return convert(getConverters(container), container.getComponentInto(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
@@ -140,41 +141,41 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         };
     }
 
-    private boolean notAJsr330Provider(Type expectedType) {
+    private boolean notAJsr330Provider(final Type expectedType) {
         return !(expectedType instanceof ParameterizedType
                 && ((ParameterizedType) expectedType).getRawType() == Provider.class);
     }
 
-    private boolean notAClass(Type expectedType) {
+    private boolean notAClass(final Type expectedType) {
         return !(expectedType instanceof Class);
     }
 
-    private Converters getConverters(PicoContainer container) {
+    private Converters getConverters(final PicoContainer container) {
         return container instanceof Converting ? ((Converting) container).getConverters() : null;
     }
 
-    private static InjectInto makeInjectInto(ComponentAdapter<?> forAdapter) {
+    private static InjectInto makeInjectInto(final ComponentAdapter<?> forAdapter) {
         return new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey());
     }
 
-    private static Object convert(Converters converters, Object obj, Type expectedType) {
+    private static Object convert(final Converters converters, Object obj, final Type expectedType) {
         if (obj instanceof String && expectedType != String.class) {
             obj = converters.convert((String) obj, expectedType);
         }
         return obj;
     }
 
-    public void verify(PicoContainer container,
-                       ComponentAdapter<?> forAdapter,
-                       Type expectedType,
-                       NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+    public void verify(final PicoContainer container,
+                       final ComponentAdapter<?> forAdapter,
+                       final Type expectedType,
+                       final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) {
         final ComponentAdapter<?> componentAdapter =
             resolveAdapter(container, forAdapter, Generic.get((Class<?>) expectedType), expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
             final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
             throw new AbstractInjector.UnsatisfiableDependenciesException(
-                    forAdapter.getComponentImplementation().getName() 
+                    forAdapter.getComponentImplementation().getName()
                     + " has unsatisfied dependencies: " + set + " from " + container);
         }
         componentAdapter.verify(container);
@@ -190,17 +191,17 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     }
 
     @SuppressWarnings("unchecked")
-	protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
-                                                   ComponentAdapter<?> adapter,
-                                                   Generic<T> expectedType,
-                                                   NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-    
+	protected <T> ComponentAdapter<T> resolveAdapter(final PicoContainer container,
+                                                   final ComponentAdapter<?> adapter,
+                                                   final Generic<T> expectedType,
+                                                   final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) {
+
     	Generic<T> type = expectedType;
         if (JTypeHelper.isPrimitive(type)) {
             type = convertToPrimitiveType(type);
         }
 
-        
+
         ComponentAdapter<T> result = null;
         if (key != null) {
             // key tells us where to look so we follow
@@ -209,16 +210,16 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             result = container.getComponentAdapter(type, NameBinding.NULL);
         } else {
             Object excludeKey = adapter.getComponentKey();
-            ComponentAdapter<?> byKey = container.getComponentAdapter((Object)type);
+            ComponentAdapter<?> byKey = container.getComponentAdapter(type);
             if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 result = typeComponentAdapter(byKey);
             }
 
             if (result == null && useNames) {
                 ComponentAdapter<?> found = container.getComponentAdapter(expectedNameBinding.getName());
-                
-                
-                
+
+
+
                 if ((found != null) && isCompatible(type, found, container) && found != adapter) {
                     result = (ComponentAdapter<T>) found;
                 }
@@ -251,7 +252,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         return result;
     }
 
-    protected <T> boolean isCompatible(Generic<T> type, ComponentAdapter<?> testValue, PicoContainer container) {
+    protected <T> boolean isCompatible(final Generic<T> type, final ComponentAdapter<?> testValue, final PicoContainer container) {
     	Class<?> componentImplementation = testValue.getComponentImplementation();
     	//Normal happy path.
     	boolean compatible = JTypeHelper.isAssignableFrom(type, testValue.getComponentImplementation());
@@ -260,8 +261,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             if ((componentImplementation == String.class && getConverters(container).canConvert(type.getType()))) {
             	compatible = true;
             }
-            
-            //javax.inject.Provider -- have to compare the return type of the provider to 
+
+            //javax.inject.Provider -- have to compare the return type of the provider to
             //the desired type instead.
             if (compatible == false) {
 	            if (testValue.findAdapterOfType(ProviderAdapter.class) != null) {
@@ -270,20 +271,20 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 	            }
             }
     	}
-    	
+
     	return compatible;
     }
-    
+
     /**
      * Allow and adapter to pick an adapter if there is more than one found
      * @param expectedType the expected type of the adapter.
      * @param found the list of found component adapters that fit the type.
      * @return null if you still don't find an adapter, otherwise, the <em>one</em> adapter you want to use.
      */
-    protected <T> ComponentAdapter<T> sortThroughTooManyAdapters(Generic<T> expectedType, List<ComponentAdapter<T>> found) {
+    protected <T> ComponentAdapter<T> sortThroughTooManyAdapters(final Generic<T> expectedType, final List<ComponentAdapter<T>> found) {
     	return null;
     }
-    
+
 	@SuppressWarnings("unchecked")
 	private <T> Generic<T> convertToPrimitiveType(Generic<T> type) {
 		String expectedTypeName = type.toString();
@@ -308,12 +309,12 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 	}
 
     @SuppressWarnings({ "unchecked" })
-    private static <T> ComponentAdapter<T> typeComponentAdapter(ComponentAdapter<?> componentAdapter) {
+    private static <T> ComponentAdapter<T> typeComponentAdapter(final ComponentAdapter<?> componentAdapter) {
         return (ComponentAdapter<T>)componentAdapter;
     }
 
-    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, Generic<T> expectedType,
-                                                            NameBinding expectedNameBinding, Annotation binding) {
+    private <T> ComponentAdapter<T> noMatchingAdaptersFound(final PicoContainer container, final Generic<T> expectedType,
+                                                            final NameBinding expectedNameBinding, final Annotation binding) {
         if (container.getParent() != null) {
             if (binding != null) {
                 return container.getParent().getComponentAdapter(expectedType, binding.getClass());
@@ -325,7 +326,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
     }
 
-    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(Generic<T> expectedType, List<ComponentAdapter<T>> found) {
+    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(final Generic<T> expectedType, final List<ComponentAdapter<T>> found) {
         Class[] foundClasses = new Class[found.size()];
         for (int i = 0; i < foundClasses.length; i++) {
             foundClasses[i] = found.get(i).getComponentImplementation();
@@ -334,7 +335,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         return exception;
     }
 
-    private <T> void removeExcludedAdapterIfApplicable(Object excludeKey, List<ComponentAdapter<T>> found) {
+    private <T> void removeExcludedAdapterIfApplicable(final Object excludeKey, final List<ComponentAdapter<T>> found) {
         ComponentAdapter exclude = null;
         for (ComponentAdapter work : found) {
             if (work.getComponentKey().equals(excludeKey)) {
@@ -349,5 +350,5 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     	return key != null;
     }
 
-    
+
 }

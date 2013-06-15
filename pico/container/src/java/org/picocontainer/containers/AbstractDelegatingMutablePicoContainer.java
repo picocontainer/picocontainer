@@ -9,25 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import javax.inject.Provider;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Properties;
 
 /**
  * abstract base class for delegating to mutable containers
@@ -36,97 +33,97 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDelegatingPicoContainer implements MutablePicoContainer {
 
-    public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
+    public AbstractDelegatingMutablePicoContainer(final MutablePicoContainer delegate) {
 		super(delegate);
 	}
 
-    public <T> BindWithOrTo<T> bind(Class<T> type) {
+    public <T> BindWithOrTo<T> bind(final Class<T> type) {
         return getDelegate().bind(type);
     }
 
-	public MutablePicoContainer addComponent(Object key,
-                                             Object implOrInstance,
-                                             Parameter... parameters) throws PicoCompositionException {
+	public MutablePicoContainer addComponent(final Object key,
+                                             final Object implOrInstance,
+                                             final Parameter... parameters) throws PicoCompositionException {
         getDelegate().addComponent(key, implOrInstance, parameters);
         return this;
     }
 
-    public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {
+    public MutablePicoContainer addComponent(final Object implOrInstance) throws PicoCompositionException {
 	     getDelegate().addComponent(implOrInstance);
 	     return this;
     }
 
-    
 
-	public MutablePicoContainer addComponent(Object key, Object implOrInstance,
-			ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+
+	public MutablePicoContainer addComponent(final Object key, final Object implOrInstance,
+			final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
 		getDelegate().addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
 		return this;
 	}
-	
-    
-    public MutablePicoContainer addConfig(String name, Object val) {
+
+
+    public MutablePicoContainer addConfig(final String name, final Object val) {
         getDelegate().addConfig(name, val);
         return this;
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
+    public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
         getDelegate().addAdapter(componentAdapter);
         return this;
     }
 
-    public MutablePicoContainer addProvider(javax.inject.Provider<?> provider) {
+    public MutablePicoContainer addProvider(final javax.inject.Provider<?> provider) {
         getDelegate().addProvider(provider);
         return this;
     }
-    
-    public MutablePicoContainer addProvider(Object key, javax.inject.Provider<?> provider) {
+
+    public MutablePicoContainer addProvider(final Object key, final javax.inject.Provider<?> provider) {
     	getDelegate().addProvider(key, provider);
     	return this;
     }
 
 
-    public <T> ComponentAdapter<T> removeComponent(Object key) {
+    public <T> ComponentAdapter<T> removeComponent(final Object key) {
         return getDelegate().removeComponent(key);
     }
 
-    public <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance) {
+    public <T> ComponentAdapter<T> removeComponentByInstance(final T componentInstance) {
         return getDelegate().removeComponentByInstance(componentInstance);
     }
 
-    public MutablePicoContainer addChildContainer(PicoContainer child) {
+    public MutablePicoContainer addChildContainer(final PicoContainer child) {
         getDelegate().addChildContainer(child);
         return this;
     }
 
-    public boolean removeChildContainer(PicoContainer child) {
+    public boolean removeChildContainer(final PicoContainer child) {
         return getDelegate().removeChildContainer(child);
     }
 
-	public MutablePicoContainer change(Properties... properties) {
+	public MutablePicoContainer change(final Properties... properties) {
 	    getDelegate().change(properties);
 	    return this;
 	}
 
-	public MutablePicoContainer as(Properties... properties) {
+	public MutablePicoContainer as(final Properties... properties) {
 		//
 		//DefaultMutablePicoContainer.as() returns a different container instance
 		//For as() to work, we need to swap to the new container.
 		//
 	    MutablePicoContainer resultingDelegate = getDelegate().as(properties);
-	    
+
 	    OneRegistrationSwappingInvocationHandler tempInvocationHandler = new OneRegistrationSwappingInvocationHandler(this, resultingDelegate);
 	    MutablePicoContainer proxiedDelegate =   (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {MutablePicoContainer.class}, tempInvocationHandler);
 	    this.swapDelegate(proxiedDelegate);
 	    return proxiedDelegate;
 	}
-	
+
 	public void dispose() {
 		getDelegate().dispose();
 	}
 
 	abstract public MutablePicoContainer makeChildContainer();
-	
+
 	public void start() {
 		getDelegate().start();
 	}
@@ -135,68 +132,70 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		getDelegate().stop();
 	}
 
+	@Override
 	public MutablePicoContainer getDelegate() {
 		return (MutablePicoContainer) super.getDelegate();
 	}
 
-    public void setName(String name) {
+    public void setName(final String name) {
         getDelegate().setName(name);
     }
 
-    public void setLifecycleState(LifecycleState lifecycleState) {
+    public void setLifecycleState(final LifecycleState lifecycleState) {
         getDelegate().setLifecycleState(lifecycleState);
     }
-    
+
     /** {@inheritDoc} **/
     public LifecycleState getLifecycleState() {
         return getDelegate().getLifecycleState();
     }
-    
+
     /** {@inheritDoc} **/
     public String getName() {
         return getDelegate().getName();
     }
 
-    public void changeMonitor(ComponentMonitor monitor) {
+    public void changeMonitor(final ComponentMonitor monitor) {
         getDelegate().changeMonitor(monitor);
     }
 
-	
-	protected MutablePicoContainer swapDelegate(PicoContainer newDelegate) {
+
+	@Override
+	protected MutablePicoContainer swapDelegate(final PicoContainer newDelegate) {
 		return (MutablePicoContainer)super.swapDelegate(newDelegate);
 	}
-	
+
 	/**
 	 * Allows invocation of addComponent(*) once and then reverts the delegate back to the old instance.
 	 * @author Michael Rimov
 	 *
 	 */
 	public static class OneRegistrationSwappingInvocationHandler implements InvocationHandler {
-		
-		private AbstractDelegatingMutablePicoContainer owner;
-		
-		private MutablePicoContainer oldDelegate;
 
-		private MutablePicoContainer oneShotPico;
+		private final AbstractDelegatingMutablePicoContainer owner;
 
-		public OneRegistrationSwappingInvocationHandler(AbstractDelegatingMutablePicoContainer owner, MutablePicoContainer oneShotPico) {
+		private final MutablePicoContainer oldDelegate;
+
+		private final MutablePicoContainer oneShotPico;
+
+		public OneRegistrationSwappingInvocationHandler(final AbstractDelegatingMutablePicoContainer owner, final MutablePicoContainer oneShotPico) {
 			this.owner = owner;
 			this.oneShotPico = oneShotPico;
 			oldDelegate = owner.getDelegate();
 		}
 
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 			//Invoke delegate no matter what.  No problem there.
 			try {
 				Object result =  method.invoke(oneShotPico, args);
 				String methodName = method.getName();
-				
+
 				//If the method is one of the addComponent() methods, then swap the delegate back to the
 				//old value.
 				if (methodName.startsWith("addComponent") || methodName.startsWith("addAdapter") || methodName.startsWith("addProvider")) {
 					owner.swapDelegate(oldDelegate);
 				}
-				
+
 				//Swap back to the original owner now
 				return owner;
 			} catch(InvocationTargetException e) {
@@ -204,7 +203,7 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 				if (nestedException instanceof RuntimeException) {
 					throw nestedException;
 				}
-				
+
 				//Otherwise
 				throw new PicoCompositionException("Error in proxy", e);
 			} catch (Throwable e) {
@@ -216,6 +215,6 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 				throw new PicoCompositionException("Error in proxy", e);
 			}
 		}
-		
+
 	}
 }

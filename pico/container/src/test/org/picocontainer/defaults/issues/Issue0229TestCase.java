@@ -17,7 +17,7 @@ import org.picocontainer.visitors.VerifyingVisitor;
 
 
 public class Issue0229TestCase {
-    
+
     public static class MockRunnable implements Runnable {
         public void run() {
         }
@@ -31,10 +31,10 @@ public class Issue0229TestCase {
     public static class MockRunner {
         private final Runnable[] _runners;
 
-        public MockRunner(Runnable[] runnables) {
+        public MockRunner(final Runnable[] runnables) {
             _runners = runnables;
         }
-        
+
         public Runnable[] getRunners() {
             return _runners;
         }

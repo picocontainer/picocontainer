@@ -16,19 +16,19 @@ import org.picocontainer.PicoContainer;
  * be used.
  */
 public class ComposingMonitor extends AbstractComponentMonitor {
-    private Composer[] composers;
+    private final Composer[] composers;
 
-    public ComposingMonitor(ComponentMonitor delegate, Composer... composers) {
+    public ComposingMonitor(final ComponentMonitor delegate, final Composer... composers) {
         super(delegate);
         this.composers = composers;
     }
 
-    public ComposingMonitor(Composer... composers) {
+    public ComposingMonitor(final Composer... composers) {
         this.composers = composers;
     }
 
     @Override
-    public Object noComponentFound(MutablePicoContainer container, Object key) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         for (Composer composer : composers) {
             Object retVal = composer.compose(container, key);
             if (retVal != null) {

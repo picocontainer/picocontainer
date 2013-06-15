@@ -60,7 +60,7 @@ import org.picocontainer.script.testmodel.X;
  */
 @RunWith(JMock.class)
 public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
     private static final String ASSEMBLY_SCOPE = "SOME_SCOPE";
 
     @Test public void testInstantiateBasicScriptable() throws PicoCompositionException {
@@ -210,41 +210,41 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public static class NeedsString{
         public final String foo;
-        public NeedsString(String foo) {
+        public NeedsString(final String foo) {
             this.foo = foo;
         }
     }
-    
+
     public static class ParameterTestingObject {
-    	
+
     	public final String constructedString;
-    	
+
     	public ParameterTestingObject() {
     		constructedString = null;
     	}
-    	
-    	public ParameterTestingObject(String parameterString) {
+
+    	public ParameterTestingObject(final String parameterString) {
     		this.constructedString = parameterString;
     	}
-    	
+
     }
-    
+
     @Test
     public void canHandleZeroParameterArguments() {
         Reader script = new StringReader("" +
-        		"import org.picocontainer.*\n\n" + 
+        		"import org.picocontainer.*\n\n" +
                 "scripted = builder.container {\n" +
-                "    component(instance:'This is a test')\n" + 
+                "    component(instance:'This is a test')\n" +
                 "    component(key: 'ConstructedAuto', class: org.picocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject)\n" +
                 "    component(key: 'ZeroParameter', class: org.picocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject, parameters: Parameter.ZERO)\n" +
-                "}");    	
+                "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         assertNotNull(pico.getComponent(String.class));
-        
+
         ParameterTestingObject testObject = (ParameterTestingObject)pico.getComponent("ConstructedAuto");
         assertEquals("This is a test", testObject.constructedString);
-        
+
         testObject = (ParameterTestingObject)pico.getComponent("ZeroParameter");
         assertNull(testObject.constructedString);
     }
@@ -350,12 +350,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         mockery.checking(new Expectations() {{
         	one(componentFactory).createComponentAdapter(
         			with(any(ComponentMonitor.class)),
-        			with(any(LifecycleStrategy.class)), 
-        			with(any(Properties.class)), 
-        			with(same(A.class)), 
-        			with(same(A.class)), 
-        			with(any(ConstructorParameters.class)), 
-        			with(any(FieldParameters[].class)), 
+        			with(any(LifecycleStrategy.class)),
+        			with(any(Properties.class)),
+        			with(same(A.class)),
+        			with(same(A.class)),
+        			with(any(ConstructorParameters.class)),
+        			with(any(FieldParameters[].class)),
         			with(any(MethodParameters[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
@@ -581,7 +581,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter<String> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);        
+        ComponentAdapter<String> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
         assertNotNull("ComponentAdapter should be originally defined by parent" , componentAdapter.findAdapterOfType(SetterInjection.SetterInjector.class));
     }
 
@@ -813,7 +813,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertEquals("org.picocontainer.behaviors.Caching$Cached", one);
     }
 
-    private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
+    private PicoContainer buildContainer(final Reader script, final PicoContainer parent, final Object scope) {
         return buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
     }
 

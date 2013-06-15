@@ -32,37 +32,37 @@ import org.picocontainer.gems.util.DelegateMethod;
  * <p>
  * Enter DelegateMethodAdapter:
  * </p>
- * 
+ *
  * <pre>
  * //Assumed Variables: request == HttpServletRequest.
  * //Typical PicoContainer
  * MutablePicoContainer pico = new PicoBuilder().withLifecycle().withCaching()
  * 		.build();
- * 
+ *
  * //Create a delegate method that will invoke HttpServletRequest.getSession(true) when invoke() is called.
  * DelegateMethod delegateMethod = new DelegateMethod(HttpServletRequest.class,
  * 		&quot;getSession&quot;, true);
- * 
- * //Create the Adapter wrapping the delegate method.  
+ *
+ * //Create the Adapter wrapping the delegate method.
  * DelegateMethodAdapter methodAdapter = new DelegateMethodAdapter(
  * 		HttpSession.class, request, delegateMethod);
  * pico.addAdapter(methodAdapter);
- * 
+ *
  * //If only executing this code, the HttpSession should not be created yet.
  * assertNull(request.getSession(false));
- * 
+ *
  * //Will get the session object by having the delegate method call HttpServletRequest.getSession(true)
  * HttpSession session = pico.getComponent(HttpSession.class);
  * assertNotNull(session);
- * 
+ *
  * //Should demonstrate that the session has now been created.
  * assertNotNull(request.getSession(false));
  * </pre>
- * 
+ *
  * <p>
  * With an adapter like this, you can write classes like:
  * </p>
- * 
+ *
  * <pre>
  * public class SessionUser {
  * 	public SessionUser(HttpSession session) {
@@ -70,12 +70,12 @@ import org.picocontainer.gems.util.DelegateMethod;
  * 	}
  * }
  * </pre>
- * 
+ *
  * <p>
  * With impunity, and are guaranteed that the session would not be created
  * unless the SessionUser object was constructed.
  * </p>
- * 
+ *
  * @author Michael Rimov
  */
 public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
@@ -137,7 +137,7 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.picocontainer.ComponentAdapter#getDescriptor()
 	 */
 	public String getDescriptor() {

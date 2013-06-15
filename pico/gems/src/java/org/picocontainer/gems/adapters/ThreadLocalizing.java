@@ -10,10 +10,12 @@
 
 package org.picocontainer.gems.adapters;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ReflectionUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Properties;
+import java.util.Set;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -28,11 +30,10 @@ import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.ThreadLocalReference;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Properties;
-import java.util.Set;
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 
 /**
@@ -118,7 +119,7 @@ public final class ThreadLocalizing extends AbstractBehavior {
 
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-            final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+            final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         if (ensureThreadLocal) {
             return new ThreadLocalized<T>(super.createComponentAdapter(
                     monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), proxyFactory);

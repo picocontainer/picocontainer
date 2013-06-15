@@ -9,31 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.junit.Test;
-import org.picocontainer.ComponentAdapter.NOTHING;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoBuilder;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.A3;
-import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.B3;
-import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.C3;
-import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.Z3;
-import org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.inject.Named;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter.NOTHING;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class AnnotatedMethodInjectorTestCase  {
 
@@ -42,7 +33,7 @@ public class AnnotatedMethodInjectorTestCase  {
         private Wind wind;
 
         @Inject
-        public void windyWind(Wind wind) {
+        public void windyWind(final Wind wind) {
             this.wind = wind;
         }
     }
@@ -54,12 +45,12 @@ public class AnnotatedMethodInjectorTestCase  {
         protected Wind wind3;
 
         @Inject
-        public void windyWind(Wind wind) {
+        public void windyWind(final Wind wind) {
             this.wind = wind;
         }
 
         @Inject
-        public void windyWindToTheMax(Wind wind2, Wind wind3) {
+        public void windyWindToTheMax(final Wind wind2, final Wind wind3) {
             this.wind2 = wind2;
             this.wind3 = wind3;
         }
@@ -70,7 +61,7 @@ public class AnnotatedMethodInjectorTestCase  {
         private Wind wind4;
 
         @Inject
-        public void inCaseNotEnoughWind(Wind wind4) {
+        public void inCaseNotEnoughWind(final Wind wind4) {
             this.wind4 = wind4;
         }
 
@@ -80,7 +71,7 @@ public class AnnotatedMethodInjectorTestCase  {
 
         private Wind wind;
 
-        public void setWind(Wind wind) {
+        public void setWind(final Wind wind) {
             this.wind = wind;
         }
     }
@@ -91,7 +82,7 @@ public class AnnotatedMethodInjectorTestCase  {
     @Test public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjection.SetterInjector(SetterBurp.class, SetterBurp.class, new NullComponentMonitor(), "set", false, "", false, null 
+        pico.addAdapter(new SetterInjection.SetterInjector(SetterBurp.class, SetterBurp.class, new NullComponentMonitor(), "set", false, "", false, null
         ));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
@@ -142,12 +133,12 @@ public class AnnotatedMethodInjectorTestCase  {
     public static class AnotherAnnotatedBurp {
         private Wind wind;
         @AlternativeInject
-        public void windyWind(Wind wind) {
+        public void windyWind(final Wind wind) {
             this.wind = wind;
         }
     }
 
-    
+
     @Test public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjection.AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, null,
@@ -159,115 +150,115 @@ public class AnnotatedMethodInjectorTestCase  {
         assertNotNull(burp.wind);
     }
 
-    
+
     public static class PackageTestParent {
     	boolean injected = false;
     	boolean otherInjected = false;
-    	
+
     	@Inject
-    	void doSomething(String something) {
+    	void doSomething(final String something) {
     		injected = true;
     	}
-    	
+
     	@Inject
-    	void doSomethingElse(String somethingElse) {
+    	void doSomethingElse(final String somethingElse) {
     		otherInjected = true;
     	}
     }
-    
+
     public static class PackageTestChild extends PackageTestParent {
     	@Override
-    	void doSomething(String something) {
+    	void doSomething(final String something) {
     		injected = true;
     	}
     }
-    
+
     @Test
     public void testPackagePrivateChildCanIgnoreInjectionIfOverridingAnnotationOmitted() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection());
     	picoContainer.addComponent(String.class, "Test")
     				.addComponent(PackageTestChild.class);
-    	
+
     	System.out.println(picoContainer.getComponentAdapter(PackageTestChild.class).toString());
 
     	PackageTestChild testChild = picoContainer.getComponent(PackageTestChild.class);
     	assertNotNull(testChild);
     	assertTrue(testChild.otherInjected);
     	assertFalse(testChild.injected);
-    	
+
     }
-    
+
     public static class PublicTestParent {
     	boolean injected = false;
     	boolean otherInjected = false;
-    	
+
     	@Inject
-    	public void doSomething(String something) {
+    	public void doSomething(final String something) {
     		injected = true;
     	}
-    	
+
     	@Inject
-    	public void doSomethingElse(String somethingElse) {
+    	public void doSomethingElse(final String somethingElse) {
     		otherInjected = true;
     	}
     }
-    
+
     public static class PublicTestChild extends PublicTestParent {
     	@Override
-    	public void doSomething(String something) {
+    	public void doSomething(final String something) {
     		injected = true;
     	}
     }
-    
-    
+
+
     @Test
     public void testPublicInheritedChildCanIgnoreInjectionIfOvrridingAnnoationOmitted() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection());
     	picoContainer.addComponent(String.class, "Test")
 				.addComponent(PublicTestChild.class);
-		
+
 		System.out.println(picoContainer.getComponentAdapter(PublicTestChild.class).toString());
-		
+
 		PublicTestChild testChild = picoContainer.getComponent(PublicTestChild.class);
 		assertNotNull(testChild);
 		assertTrue(testChild.otherInjected);
 		assertFalse(testChild.injected);
     }
-    
-    
+
+
     public static class PrivateMethodInjectionTest {
     	public boolean injected;
-    	
+
     	@Inject
     	private void doSomething() {
     		injected = true;
     	}
     }
-    
+
     @Test
     public void testInjectionWorksOnPrivateMethodsToo() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer(new AnnotatedMethodInjection())
         		.addComponent(PrivateMethodInjectionTest.class);
-        
+
         PrivateMethodInjectionTest result = picoContainer.getComponent(PrivateMethodInjectionTest.class);
         assertNotNull(result);
         assertTrue(result.injected);
     }
-    
-    
+
+
     public static class DecorationTestBase {
-    	
+
     	public boolean baseInjected = false;
-    	
+
 		@javax.inject.Inject
     	public void injectBase() {
     		baseInjected = true;
     	}
-    	
+
     }
-    
+
     public static class DecorationTestDerived extends DecorationTestBase {
-    	
+
     	public boolean childInjected = false;
 
 		@javax.inject.Inject
@@ -275,40 +266,40 @@ public class AnnotatedMethodInjectorTestCase  {
     		childInjected  = true;
     	}
     }
-    
+
 	@Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testPartialDecorationOnBaseClassDoesntPropagateToChildren() {
     	DefaultPicoContainer pico = new DefaultPicoContainer();
-    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class, 
-    				DecorationTestDerived.class, null, new NullComponentMonitor(), 
+    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class,
+    				DecorationTestDerived.class, null, new NullComponentMonitor(),
     				false, false, javax.inject.Inject.class);
-    	
+
     	DecorationTestDerived derived = new DecorationTestDerived();
-    	
+
     	injector.partiallyDecorateComponentInstance(pico, NOTHING.class, derived, DecorationTestBase.class);
-    	
+
     	assertTrue(derived.baseInjected);
     	assertFalse(derived.childInjected);
     }
-    
-    
-    
+
+
+
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testPartialDecorationOnChildClassDoesntPropagateToParent() {
     	DefaultPicoContainer pico = new DefaultPicoContainer();
-    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class, 
-    				DecorationTestDerived.class, null, new NullComponentMonitor(), 
+    	AnnotatedMethodInjector injector = new AnnotatedMethodInjector(DecorationTestDerived.class,
+    				DecorationTestDerived.class, null, new NullComponentMonitor(),
     				false, false, javax.inject.Inject.class);
-    	
+
     	DecorationTestDerived derived = new DecorationTestDerived();
-    	
+
     	injector.partiallyDecorateComponentInstance(pico, NOTHING.class, derived, DecorationTestDerived.class);
-    	
+
     	assertFalse(derived.baseInjected);
     	assertTrue(derived.childInjected);
-    
+
     }
 
 }

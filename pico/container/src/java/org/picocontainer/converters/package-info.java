@@ -1,6 +1,6 @@
 /**
- * 
- * Individual String to Type converters, that PicoContainer may use to convert 
+ *
+ * Individual String to Type converters, that PicoContainer may use to convert
  * types where required. Of Note:
  * <ul>
  *     <li>Primitive and boxed equivalent converters</li>

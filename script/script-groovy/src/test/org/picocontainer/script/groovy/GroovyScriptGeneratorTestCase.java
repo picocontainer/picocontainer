@@ -10,8 +10,6 @@ import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.groovy.GroovyContainerBuilder;
-import org.picocontainer.script.groovy.GroovyScriptGenerator;
 
 /**
  * @author Aslak Helles&oslash;y

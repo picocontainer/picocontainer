@@ -18,40 +18,40 @@ import org.junit.Test;
  */
 public class SetterIntrospectorTestCase {
     public static class TestBean {
-        public void setPublicMethod(int i) {
+        public void setPublicMethod(final int i) {
         }
 
-        public void setPublicMETHODAgain(int i) {
+        public void setPublicMETHODAgain(final int i) {
         }
 
-        public void setMOOky(int i) {
+        public void setMOOky(final int i) {
         }
 
-        public void setFOOBAR(int i) {
+        public void setFOOBAR(final int i) {
         }
 
-        public void set(int i) {
+        public void set(final int i) {
         }
 
-        public void sets(int i) {
+        public void sets(final int i) {
         }
 
-        public void fooBar(int i) {
+        public void fooBar(final int i) {
         }
 
-        public void setX(int i) {
+        public void setX(final int i) {
         }
 
-        public static void setStaticMethod(int i) {
+        public static void setStaticMethod(final int i) {
         }
 
         public static void setMany() {
         }
 
-        protected void setProtectedMethod(int i) {
+        protected void setProtectedMethod(final int i) {
         }
 
-        private void setPrivateMethod(int i) {
+        private void setPrivateMethod(final int i) {
         }
     }
 

@@ -98,7 +98,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Caching.Cached<TestAdapter> ca = (Caching.Cached<TestAdapter>) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
 
-        assertNotNull((TestAdapter)ca.getDelegate());
+        assertNotNull(ca.getDelegate());
     }
 
     @Test public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {
@@ -127,76 +127,76 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
-    
+
     // do not know how to extract parameters off adapter....
     @Test public void testThatDependencyUsesClassAsKey() {
         Reader script = new StringReader("" +
-        "<container>" +                                          
+        "<container>" +
         "   <implementation class='java.lang.String'/>" +
         "   <implementation key='foo' class='org.picocontainer.script.xml.TestBean'>" +
         "       <dependency class='java.lang.String'/>" +
-        "   </implementation>" + 
+        "   </implementation>" +
         "</container>"
        );
-        
+
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,
                 null);
         ComponentAdapter<?> componentAdapter = pico.getComponentAdapter("foo");
         AbstractBehavior.AbstractChangedBehavior<?> adapter = (AbstractBehavior.AbstractChangedBehavior<?>) componentAdapter;
         assertNotNull(adapter);
     }
-    
-    
+
+
     @Test public void testDefaultContsructorRegistration() throws Exception {
-        
+
         Reader script = new StringReader(
-        "<container>" + 
+        "<container>" +
         "   <implementation class='org.picocontainer.script.xml.TestBean' constructor='default'/>" +
-        "   <instance>" + 
-        "       <string>blurge</string>" + 
-        "   </instance>" + 
+        "   <instance>" +
+        "       <string>blurge</string>" +
+        "   </instance>" +
         "</container>"
         );
-        
-        
+
+
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
         TestBean bean = pico.getComponent(TestBean.class);
         assertEquals("default",bean.getConstructorCalled());
     }
-    
-    
+
+
     @Test
     public void testInheritanceOfBehaviorsFromParentContainer() {
     	Reader comparison = new StringReader("" +
         		"<container inheritBehaviors=\"false\">\n" +
                 "  <implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>"
-        	);    	
+        	);
 
     	MutablePicoContainer parent = new PicoBuilder().withLocking().build();
     	PicoContainer comparisonPico = buildContainer(new XStreamContainerBuilder(comparison, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	//Verify not locking by default
     	//assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));
     	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
-    	
+
     	//Verify parent caching propagates to child.
     	Reader script = new StringReader("" +
     		"<container inheritBehaviors=\"true\">\n" +
             "  <implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
             "</container>"
     	);
-    	
+
     	parent = new PicoBuilder().withLocking().build();
     	PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
-    	
+
     	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
     }
-    
+
     @Test
     public void testParameterZero() {
-    	Reader script = new StringReader("" + 
+    	Reader script = new StringReader("" +
                 "<container>\n" +
-	    			"<implementation key='java.util.List' class='java.util.ArrayList'> \n" +	
+	    			"<implementation key='java.util.List' class='java.util.ArrayList'> \n" +
 	    			"    <parameter-zero/>\n" +
 	    			"</implementation> \n" +
 	    			"<implementation key='java.util.Set' class='java.util.HashSet'> \n" +
@@ -204,11 +204,11 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 	    			"</implementation>\n" +
                 "</container>\n"
     	);
-    	PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");    	
+    	PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
     	assertNotNull(pico.getComponent(java.util.List.class));
     	assertNotNull(pico.getComponent(java.util.Set.class));
     }
-    
-    
+
+
 }
 

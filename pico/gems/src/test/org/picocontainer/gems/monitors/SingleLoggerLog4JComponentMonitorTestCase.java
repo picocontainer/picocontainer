@@ -7,9 +7,9 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.io.IOException;
 
 import org.picocontainer.ComponentMonitor;
 
@@ -41,6 +41,6 @@ public class SingleLoggerLog4JComponentMonitorTestCase extends ComponentMonitorH
 
     @Override
 	public void testShouldTraceNoComponent() throws IOException {
-        super.testShouldTraceNoComponent();    
+        super.testShouldTraceNoComponent();
     }
 }

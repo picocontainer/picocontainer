@@ -10,6 +10,11 @@
 
 package org.picocontainer.monitors;
 
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
 import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -18,77 +23,72 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoLifecycleException;
 
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
 /**
- * A {@link ComponentMonitor} which does nothing. 
- * 
+ * A {@link ComponentMonitor} which does nothing.
+ *
  * @author Paul Hammant
  * @author Obie Fernandez
  */
 @SuppressWarnings("serial")
 public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
-    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor) {
+    public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                                     final Constructor<T> constructor) {
         return constructor;
     }
 
-    public <T> void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter<T> componentAdapter,
-                                    Constructor<T> constructor,
-                                    Exception e) {
+    public <T> void instantiationFailed(final PicoContainer container,
+                                    final ComponentAdapter<T> componentAdapter,
+                                    final Constructor<T> constructor,
+                                    final Exception e) {
     }
 
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T>  componentAdapter,
-                             Constructor<T>  constructor,
-                             Object instantiated,
-                             Object[] injected,
-                             long duration) {
+    public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T>  componentAdapter,
+                             final Constructor<T>  constructor,
+                             final Object instantiated,
+                             final Object[] injected,
+                             final long duration) {
     }
 
-    public Object invoking(PicoContainer container,
-                           ComponentAdapter<?> componentAdapter,
-                           Member member,
-                           Object instance, Object... args) {
+    public Object invoking(final PicoContainer container,
+                           final ComponentAdapter<?> componentAdapter,
+                           final Member member,
+                           final Object instance, final Object... args) {
         return KEEP;
     }
 
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Member member,
-                        Object instance,
-                        long duration, Object retVal, Object[] args) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Member member,
+                        final Object instance,
+                        final long duration, final Object retVal, final Object[] args) {
     }
 
-    public void invocationFailed(Member member, Object instance, Exception e) {
+    public void invocationFailed(final Member member, final Object instance, final Exception e) {
     }
 
-    public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter<?> componentAdapter, Method method,
-                                          Object instance,
-                                          RuntimeException cause) {
+    public void lifecycleInvocationFailed(final MutablePicoContainer container,
+                                          final ComponentAdapter<?> componentAdapter, final Method method,
+                                          final Object instance,
+                                          final RuntimeException cause) {
         if (cause instanceof PicoLifecycleException) {
             throw cause;
         }
         throw new PicoLifecycleException(method, instance, cause);
     }
 
-    public Object noComponentFound(MutablePicoContainer container, Object key) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         return null;
     }
 
-    public Injector newInjector(Injector injector) {
+    public Injector newInjector(final Injector injector) {
         return injector;
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return changedBehavior;
     }
-    
+
 
 }

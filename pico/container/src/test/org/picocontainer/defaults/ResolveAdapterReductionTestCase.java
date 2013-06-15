@@ -9,7 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import com.googlecode.jtype.Generic;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.lang.annotation.Annotation;
+
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -22,12 +27,7 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.Touchable;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import com.googlecode.jtype.Generic;
 
 /**
  * @author Paul Hammant
@@ -90,7 +90,7 @@ public class ResolveAdapterReductionTestCase {
     public static class One {
         private final Two two;
 
-        public One(Two two) {
+        public One(final Two two) {
             this.two = two;
         }
     }
@@ -105,19 +105,19 @@ public class ResolveAdapterReductionTestCase {
         private final String string;
         private final Integer integer;
 
-        public Three(Two two, String string, Integer integer) {
+        public Three(final Two two, final String string, final Integer integer) {
             this.two = two;
             this.string = string;
             this.integer = integer;
         }
 
-        public Three(Two two, String string) {
+        public Three(final Two two, final String string) {
             this.two = two;
             this.string = string;
             integer = null;
         }
 
-        public Three(Two two) {
+        public Three(final Two two) {
             this.two = two;
             string = null;
             integer = null;
@@ -127,18 +127,20 @@ public class ResolveAdapterReductionTestCase {
     @SuppressWarnings({"serial", "rawtypes", "unchecked"})
 	private class CountingConstructorInjector extends ConstructorInjection.ConstructorInjector {
 
-		public CountingConstructorInjector(Class<?> key, Class<?> impl) {
+		public CountingConstructorInjector(final Class<?> key, final Class<?> impl) {
             super(key, impl);
         }
 
-        protected CtorAndAdapters getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
+        @Override
+		protected CtorAndAdapters getGreediestSatisfiableConstructor(final PicoContainer container) throws PicoCompositionException {
             CtorAndAdapters adapters = super.getGreediestSatisfiableConstructor(container);
             parms = adapters.getParameters();
             injecteeAdapters = adapters.getInjecteeAdapters();
             return adapters;
         }
 
-        protected Parameter[] createDefaultParameters(int length) {
+        @Override
+		protected Parameter[] createDefaultParameters(final int length) {
             Parameter[] componentParameters = new Parameter[length];
             for (int i = 0; i < length; i++) {
                 componentParameters[i] = new CountingComponentParameter();
@@ -151,15 +153,18 @@ public class ResolveAdapterReductionTestCase {
 
     @SuppressWarnings("serial")
 	private class CountingComponentParameter extends ComponentParameter {
-        public int hashCode() {
+        @Override
+		public int hashCode() {
             return ResolveAdapterReductionTestCase.super.hashCode();
         }
 
-        public boolean equals(Object o) {
+        @Override
+		public boolean equals(final Object o) {
             return true;
         }
 
-        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter<?> adapter, Generic<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        @Override
+		protected <T> ComponentAdapter<T> resolveAdapter(final PicoContainer container, final ComponentAdapter<?> adapter, final Generic<T> expectedType, final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) {
             if (expectedType.getType() == Two.class || expectedType.getType() == Touchable.class) {
                 resolveAdapterCalls++;
             }

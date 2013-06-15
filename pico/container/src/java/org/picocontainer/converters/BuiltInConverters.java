@@ -1,13 +1,14 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converters;
-
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.picocontainer.Converters;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * Provides some built-in converters used by {@link DefaultPicoContainer}. It
@@ -37,21 +38,21 @@ public class BuiltInConverters implements Converters, Serializable {
         addConverter(new UrlConverter(), URL.class);
     }
 
-    private void addMultiTypeConverter(Converter<?> converter, Class<?>... types) {
+    private void addMultiTypeConverter(final Converter<?> converter, final Class<?>... types) {
         for (Class<?> type : types) {
             addConverter(converter, type);
         }
     }
 
-    protected void addConverter(Converter<?> converter, Class<?> key) {
+    protected void addConverter(final Converter<?> converter, final Class<?> key) {
         converters.put(key, converter);
     }
 
-    public boolean canConvert(Type type) {
+    public boolean canConvert(final Type type) {
         return converters.containsKey(type);
     }
 
-    public Object convert(String paramValue, Type type) {
+    public Object convert(final String paramValue, final Type type) {
         Converter<?> converter = converters.get(type);
         if (converter == null) {
             return null;

@@ -31,8 +31,8 @@ import org.picocontainer.PicoVisitor;
 @RunWith(JMock.class)
 public final class AndOrNotTestCase  {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     final ComponentAdapter adapter = mockery.mock(ComponentAdapter.class);
     final PicoVisitor      visitor =  mockery.mock(PicoVisitor.class);
 
@@ -50,22 +50,22 @@ public final class AndOrNotTestCase  {
         	will(returnValue(true)); inSequence(sequence);
         	one(c3).evaluate(with(same(adapter)));
         	will(returnValue(true)); inSequence(sequence);
-        }});        
+        }});
 
         assertTrue(c.evaluate(adapter));
     }
-    
+
     @Test public void testAndAllChildrenAreVisitedBreadthFirst() {
         final Constraint c = new And(c1, c2, c3);
-        
+
         final Sequence sequence = mockery.sequence("contraints");
         mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
         	one(c2).accept(with(same(visitor))); inSequence(sequence);
         	one(c3).accept(with(same(visitor))); inSequence(sequence);
-        }});        
-        
+        }});
+
         c.accept(visitor);
     }
 
@@ -80,7 +80,7 @@ public final class AndOrNotTestCase  {
         	will(returnValue(true)); inSequence(sequence);
         	one(c3).evaluate(with(same(adapter)));
         	will(returnValue(true)); inSequence(sequence);
-        }});        
+        }});
 
         assertTrue(c.evaluate(adapter));
     }
@@ -95,8 +95,8 @@ public final class AndOrNotTestCase  {
         	one(c2).evaluate(with(same(adapter)));
         	will(returnValue(false)); inSequence(sequence);
         	never(c3).evaluate(with(same(adapter)));
-        }});        
-        
+        }});
+
         assertFalse(c.evaluate(adapter));
     }
 
@@ -111,22 +111,22 @@ public final class AndOrNotTestCase  {
         	will(returnValue(false)); inSequence(sequence);
         	one(c3).evaluate(with(same(adapter)));
         	will(returnValue(false)); inSequence(sequence);
-        }});        
+        }});
 
         assertFalse(c.evaluate(adapter));
     }
-    
+
     @Test public void testOrAllChildrenAreVisitedBreadthFirst() {
         final Constraint c = new Or(c1, c2, c3);
-        
+
         final Sequence sequence = mockery.sequence("contraints");
         mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
         	one(c2).accept(with(same(visitor))); inSequence(sequence);
         	one(c3).accept(with(same(visitor))); inSequence(sequence);
-        }});        
-        
+        }});
+
         c.accept(visitor);
     }
 
@@ -140,20 +140,20 @@ public final class AndOrNotTestCase  {
         	one(c2).evaluate(with(same(adapter)));
         	will(returnValue(false)); inSequence(sequence);
         	never(c3).evaluate(with(same(adapter)));
-        }});        
+        }});
 
         assertTrue(c.evaluate(adapter));
     }
-    
+
     @Test public void testNotChildIdVisitedBreadthFirst() {
         final Constraint c = new Not(c1);
-        
+
         final Sequence sequence = mockery.sequence("contraints");
         mockery.checking(new Expectations() {{
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(with(same(visitor))); inSequence(sequence);
-        }});        
-        
+        }});
+
         c.accept(visitor);
     }
 }

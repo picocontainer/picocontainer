@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.classname;
 
@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * ClassPathElement denotes an element in a classpath allowing to grant permissions.
- * 
+ *
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
@@ -25,12 +25,12 @@ public class ClassPathElement implements Serializable {
     private final URL url;
     private Permissions permissionCollection;
     private final List<Permission> permissions = new ArrayList<Permission>();
-    
-    public ClassPathElement(URL url) {
+
+    public ClassPathElement(final URL url) {
         this.url = url;
     }
 
-    public Permission grantPermission(Permission permission) {
+    public Permission grantPermission(final Permission permission) {
         if (permission == null) {
             throw new NullPointerException();
         }
@@ -52,7 +52,8 @@ public class ClassPathElement implements Serializable {
         return permissionCollection;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "[" + System.identityHashCode(this) + " " + url + " " + permissions.size() +"]";
     }
 

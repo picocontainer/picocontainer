@@ -18,18 +18,18 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 /**
- * traverse pico container and expose components to JNDI on 
+ * traverse pico container and expose components to JNDI on
  * sight of JNDIExposed
  * @author Konstantin Pribluda
  */
 public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 
 	private PicoContainer container;
-	
+
 	/**
 	 * in case component adapter is JNDIExposed, poke it gently and
-	 * it will create component and register it to JNDI if not already 
-	 * done. 
+	 * it will create component and register it to JNDI if not already
+	 * done.
 	 */
 	@Override
 	public void visitComponentAdapter(final ComponentAdapter componentAdapter)

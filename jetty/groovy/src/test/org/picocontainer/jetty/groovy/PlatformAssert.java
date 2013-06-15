@@ -9,19 +9,19 @@ public class PlatformAssert {
      * @param expected
      * @param result
      */
-    public static void assertSameExceptCarriageReturns(String expected, String result) {
+    public static void assertSameExceptCarriageReturns(final String expected, final String result) {
     	if (expected == null && result == null) {
 			return;
 		}
-		
+
 		if ( (expected != null && result == null) || (expected == null && result != null) ) {
 			//That way we get a nice error message.
-			assertEquals(expected,result);    		
+			assertEquals(expected,result);
 		}
-		
+
     	StringBuilder expectedWithoutCarriageReturns = new StringBuilder(expected.length());
     	StringBuilder resultWithoutCarriageReturns = new StringBuilder(result.length());
-    	
+
     	for (int i = 0; i < expected.length(); i++) {
     		char aChar = expected.charAt(i);
     		if (aChar == '\n' || aChar == '\r') {
@@ -29,7 +29,7 @@ public class PlatformAssert {
     		}
     		expectedWithoutCarriageReturns.append(aChar);
     	}
-    	
+
     	for (int i = 0; i < result.length(); i++) {
     		char aChar = result.charAt(i);
     		if (aChar == '\n' || aChar == '\r') {
@@ -37,7 +37,7 @@ public class PlatformAssert {
     		}
     		resultWithoutCarriageReturns.append(aChar);
     	}
-    	
+
     	assertEquals(expectedWithoutCarriageReturns.toString(), resultWithoutCarriageReturns.toString());
     }
 

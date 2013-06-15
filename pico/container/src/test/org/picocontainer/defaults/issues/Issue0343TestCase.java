@@ -1,13 +1,14 @@
 package org.picocontainer.defaults.issues;
 
-import com.googlecode.jtype.Generic;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import com.googlecode.jtype.Generic;
 
 public class Issue0343TestCase {
 
@@ -36,7 +37,7 @@ public class Issue0343TestCase {
     public static class GenericBowl {
         List<Fish> fishes;
 
-        public GenericBowl(List<Fish> fishes) {
+        public GenericBowl(final List<Fish> fishes) {
             this.fishes = fishes;
         }
     }

@@ -24,11 +24,11 @@ public class TransientPicoContainer extends DefaultPicoContainer {
         super(null, new NullLifecycleStrategy(), new NullComponentMonitor(), new Caching().wrap(new ConstructorInjection()));
     }
 
-    public TransientPicoContainer(PicoContainer parent) {
+    public TransientPicoContainer(final PicoContainer parent) {
         super(parent, new NullLifecycleStrategy(), new NullComponentMonitor(), new Caching().wrap(new ConstructorInjection()));
     }
-    
-    public TransientPicoContainer(ComponentFactory componentFactory, PicoContainer parent) {
+
+    public TransientPicoContainer(final ComponentFactory componentFactory, final PicoContainer parent) {
         super(parent, new NullLifecycleStrategy(), new NullComponentMonitor(), componentFactory);
     }
 }

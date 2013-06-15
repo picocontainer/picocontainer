@@ -39,8 +39,8 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
 @RunWith(JMock.class)
 public class AbstractComponentMonitorTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate() {
         try {
             new AbstractComponentMonitor(null);
@@ -106,30 +106,30 @@ public class AbstractComponentMonitorTestCase {
         final DefaultPicoContainer child = new DefaultPicoContainer(parent, new AbstractComponentMonitor(monitor));
         final Constructor needsACoupleOfThings = NeedsACoupleOfThings.class.getConstructors()[0];
         final Matcher<Long> durationIsGreaterThanOrEqualToZero = new BaseMatcher<Long>() {
-			public boolean matches(Object item) {
+			public boolean matches(final Object item) {
                 Long duration = (Long)item;
                 return 0 <= duration;
 			}
 
-			public void describeTo(Description description) {
+			public void describeTo(final Description description) {
 				description.appendText("The endTime wasn't after the startTime");
 			}
         };
         final Matcher<Object> isANACOTThatWozCreated = new BaseMatcher<Object>() {
-			public boolean matches(Object item) {
+			public boolean matches(final Object item) {
                 return item instanceof NeedsACoupleOfThings;
 			}
 
-			public void describeTo(Description description) {
+			public void describeTo(final Description description) {
 				description.appendText("Should have been a NeedsACoupleOfThings");
 			}
         };
         final Matcher<Object[]> collectionAndStringWereInjected = new BaseMatcher<Object[]>() {
-			public boolean matches(Object item) {
+			public boolean matches(final Object item) {
 				 Object[] args = (Object[]) item;
 				 return args.length == 2 && args[0] == ourIntendedInjectee0 && args[1] == ourIntendedInjectee1;
 			}
-			public void describeTo(Description description) {
+			public void describeTo(final Description description) {
 				description.appendText("Should have injected our intended vector and string");
 			}
         };
@@ -147,7 +147,7 @@ public class AbstractComponentMonitorTestCase {
     }
 
     public static class NeedsACoupleOfThings {
-        public NeedsACoupleOfThings(Collection collection, String string) {
+        public NeedsACoupleOfThings(final Collection collection, final String string) {
         }
     }
 

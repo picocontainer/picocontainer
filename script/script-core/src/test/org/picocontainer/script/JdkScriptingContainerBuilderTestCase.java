@@ -18,9 +18,9 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
-import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
 import org.picocontainer.script.testmodel.WebServerConfig;
+import org.picocontainer.script.testmodel.X;
 
 /**
  * Most of these tests were copied from the JavascriptContainerBuilder.
@@ -88,7 +88,7 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
 
         Object childComponent = pico.getComponent("wayOfPassingSomethingToTestEnv");
 
-        
+
 
         ClassLoader classLoader1 = parentComponent.getClass().getClassLoader();
         ClassLoader classLoader2 = childComponent.getClass().getClassLoader();
@@ -125,7 +125,7 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
     }
 
     @Test public void testContainerCanBeBuiltWithParent() {
-        Reader script = new StringReader("" +        	
+        Reader script = new StringReader("" +
                 "importPackage(Packages.org.picocontainer.classname) \n" +
                 "var pico = new DefaultClassLoadingPicoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
@@ -134,10 +134,10 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
     }
-    
-    
+
+
     @Test public void testAutoStartingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
@@ -146,12 +146,12 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
         PicoContainer pico = buildContainer(new JdkScriptingContainerBuilder("js",script, getClass().getClassLoader()), parent, "SOME_SCOPE") ;
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
@@ -161,8 +161,8 @@ public class JdkScriptingContainerBuilderTestCase extends AbstractScriptedContai
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
 
 

@@ -12,7 +12,7 @@ import org.picocontainer.PicoException;
 /**
  * Thrown when a given script type extension has no corresponding builder. The
  * message will also indicate all supported builders.
- * 
+ *
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,7 @@ public class UnsupportedScriptTypeException extends PicoException {
 
     private final String[] allSupportedFileExtensions;
 
-    public UnsupportedScriptTypeException(String specifiedFileExtension, String[] allSupportedFileExtensions) {
+    public UnsupportedScriptTypeException(final String specifiedFileExtension, final String[] allSupportedFileExtensions) {
         super();
         this.specifiedFileExtension = specifiedFileExtension;
         this.allSupportedFileExtensions = allSupportedFileExtensions;
@@ -30,7 +30,7 @@ public class UnsupportedScriptTypeException extends PicoException {
 
     /**
      * Builds the exception message from the fields
-     * 
+     *
      * @return The exception message
      */
     private String buildExceptionMessage() {

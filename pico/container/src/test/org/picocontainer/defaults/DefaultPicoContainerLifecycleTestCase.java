@@ -39,8 +39,8 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
@@ -58,8 +58,8 @@ import org.picocontainer.testmodel.RecordingLifecycle.Two;
 @RunWith(JMock.class)
 public class DefaultPicoContainerLifecycleTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -308,23 +308,23 @@ public class DefaultPicoContainerLifecycleTestCase {
     @Test public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentFactory()
         throws Exception {
         LifecycleStrategy strategy = new LifecycleStrategy() {
-            public void start(Object component) {
+            public void start(final Object component) {
                 ((StringBuffer)component).append("start>");
             }
 
-            public void stop(Object component) {
+            public void stop(final Object component) {
                 ((StringBuffer)component).append("stop>");
             }
 
-            public void dispose(Object component) {
+            public void dispose(final Object component) {
                 ((StringBuffer)component).append("dispose>");
             }
 
-            public boolean hasLifecycle(Class type) {
+            public boolean hasLifecycle(final Class type) {
                 return true;
             }
 
-            public boolean isLazy(ComponentAdapter<?> adapter) {
+            public boolean isLazy(final ComponentAdapter<?> adapter) {
                 return false;
             }
         };
@@ -345,23 +345,23 @@ public class DefaultPicoContainerLifecycleTestCase {
         throws Exception
     {
         LifecycleStrategy strategy = new LifecycleStrategy() {
-            public void start(Object component) {
+            public void start(final Object component) {
                 ((StringBuffer)component).append("start>");
             }
 
-            public void stop(Object component) {
+            public void stop(final Object component) {
                 ((StringBuffer)component).append("stop>");
             }
 
-            public void dispose(Object component) {
+            public void dispose(final Object component) {
                 ((StringBuffer)component).append("dispose>");
             }
 
-            public boolean hasLifecycle(Class type) {
+            public boolean hasLifecycle(final Class type) {
                 return true;
             }
 
-            public boolean isLazy(ComponentAdapter<?> adapter) {
+            public boolean isLazy(final ComponentAdapter<?> adapter) {
                 return false;
             }
         };
@@ -388,7 +388,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
         }});
- 
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -451,7 +451,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             will(throwException(new RuntimeException("I also do not want to start myself")));
             one(s3).stop();
         }});
-        
+
         LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(new NullComponentMonitor());
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
@@ -483,7 +483,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             will(throwException(new RuntimeException("I do not want to start myself")));
          // s2 does not expect stop().
         }});
-        
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -508,7 +508,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             will(throwException(new RuntimeException("I do not want to start myself")));
          // s2 does not expect stop().
         }});
-        
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -536,7 +536,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             one(s1).start();
             one(s1).stop();
         }});
-        
+
         child.addComponent(s1);
 
         child.start();

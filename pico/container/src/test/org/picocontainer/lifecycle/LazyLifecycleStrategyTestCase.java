@@ -1,12 +1,16 @@
 package org.picocontainer.lifecycle;
 
 import static org.junit.Assert.assertEquals;
+import static org.picocontainer.Characteristics.CACHE;
+
 import org.junit.Test;
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Disposable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Startable;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import static org.picocontainer.Characteristics.CACHE;
 
 public class LazyLifecycleStrategyTestCase {
 
@@ -15,7 +19,7 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(ComponentAdapter<?> adapter) {
+            public boolean isLazy(final ComponentAdapter<?> adapter) {
                 return true;
             }
         });
@@ -37,14 +41,14 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(ComponentAdapter<?> adapter) {
+            public boolean isLazy(final ComponentAdapter<?> adapter) {
                 return true;
             }
         });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
-        assertEquals("", sb.toString()); 
+        assertEquals("", sb.toString());
         pico.stop();
         assertEquals("", sb.toString());
         pico.dispose();
@@ -56,7 +60,7 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(ComponentAdapter<?> adapter) {
+            public boolean isLazy(final ComponentAdapter<?> adapter) {
                 return adapter.getComponentImplementation() == MyStartableComp.class;
             }
         });
@@ -75,9 +79,9 @@ public class LazyLifecycleStrategyTestCase {
     }
 
     public static class MyStartableComp implements Startable, Disposable {
-        private StringBuilder sb;
+        private final StringBuilder sb;
 
-        public MyStartableComp(StringBuilder sb) {
+        public MyStartableComp(final StringBuilder sb) {
             this.sb = sb;
         }
 
@@ -95,9 +99,9 @@ public class LazyLifecycleStrategyTestCase {
     }
 
     public static class MyDifferentStartableComp implements Startable, Disposable {
-        private StringBuilder sb;
+        private final StringBuilder sb;
 
-        public MyDifferentStartableComp(StringBuilder sb) {
+        public MyDifferentStartableComp(final StringBuilder sb) {
             this.sb = sb;
         }
 

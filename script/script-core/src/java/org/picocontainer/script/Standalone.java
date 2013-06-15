@@ -59,11 +59,11 @@ public class Standalone {
         return options;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(final String[] args) throws IOException, ClassNotFoundException {
 		new Standalone(args);
     }
 
-    public Standalone(String[] args) throws IOException, ClassNotFoundException {
+    public Standalone(final String[] args) throws IOException, ClassNotFoundException {
         File defaultCompositionFile = new File(DEFAULT_COMPOSITION_FILE);
         CommandLine cl = null;
         Options options = createOptions();
@@ -141,18 +141,18 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(URL composition, final boolean quiet, boolean nowait) throws ClassNotFoundException {
+    private static void buildAndStartContainer(final URL composition, final boolean quiet, final boolean nowait) throws ClassNotFoundException {
         final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
         buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
     }
 
-    private static void buildAndStartContainer(File composition, boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
+    private static void buildAndStartContainer(final File composition, final boolean quiet, final boolean nowait) throws IOException, ClassNotFoundException {
         final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
         buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
     }
 
 
-    private static void buildContainer(final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, boolean nowait, final boolean quiet) {
+    private static void buildContainer(final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, final boolean nowait, final boolean quiet) {
         PicoContainer container = scriptedContainerBuilderFactory.getContainerBuilder().buildContainer(null, null, true);
 
         if (nowait == false) {
@@ -186,12 +186,12 @@ public class Standalone {
     }
 
 
-    static CommandLine getCommandLine(String[] args, Options options) throws ParseException {
+    static CommandLine getCommandLine(final String[] args, final Options options) throws ParseException {
         CommandLineParser parser = new PosixParser();
         return parser.parse(options, args);
     }
 
-    private static void printUsage(Options options) {
+    private static void printUsage(final Options options) {
         final String lineSeparator = System.getProperty("line.separator");
 
         final StringBuffer usage = new StringBuffer();

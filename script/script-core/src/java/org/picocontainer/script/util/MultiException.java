@@ -13,7 +13,7 @@ import java.util.List;
  * Constructs an exception that can be used to collect multiple exceptions and
  * displays then all in the error message.  This is mainly useful in a batch transaction
  * environment where you wish to perform multiple operations even if one operation failed.
- * 
+ *
  * @author Michael Rimov
  */
 public class MultiException extends RuntimeException {
@@ -30,25 +30,25 @@ public class MultiException extends RuntimeException {
         super(operationDescription);
     }
 
-    
-    
+
+
     /**
      * Adds an exception
-     * 
+     *
      * @param error Throwable
      */
     public MultiException addException(final String context, final Throwable error) {
     	errors.add(new ExceptionPair(context != null ? context : "", error));
     	return this;
     }
-    
+
     public MultiException addException(final Throwable error) {
     	return this.addException("", error);
     }
 
     /**
      * Retrieves the number of exceptions that have been added.
-     * 
+     *
      * @return int
      */
     public int getErrorCount() {
@@ -58,7 +58,7 @@ public class MultiException extends RuntimeException {
     /**
      * Returns a message with all collected exceptions and their appropriate
      * stack traces.
-     * 
+     *
      * @return Message with all exceptions and their stack traces printed.
      */
     @Override
@@ -84,7 +84,7 @@ public class MultiException extends RuntimeException {
     /**
      * Retrieves a list of all exceptions thrown without printing the stack
      * traces as well.
-     * 
+     *
      * @return Message with all exceptions printed.
      */
     public String getMessageWithoutStackTrace() {
@@ -108,7 +108,7 @@ public class MultiException extends RuntimeException {
     public String toString() {
         return "CollectingException with error list of size: " + errors.size() + "\n Errors: " + getMessage();
     }
-    
+
     public List<Throwable> getNestedExceptions() {
     	ArrayList<Throwable> returnErrors = new ArrayList<Throwable>(errors.size());
     	for (ExceptionPair eachPair : errors) {
@@ -119,15 +119,15 @@ public class MultiException extends RuntimeException {
 
     @SuppressWarnings("serial")
 	private static class ExceptionPair implements Serializable{
-    	
+
     	final String subOperation;
     	final Throwable exception;
-    	
-    	ExceptionPair(String subOperation, Throwable exception) {
+
+    	ExceptionPair(final String subOperation, final Throwable exception) {
 			this.subOperation = subOperation;
 			this.exception = exception;
-    		
+
     	}
-    	
+
     }
 }

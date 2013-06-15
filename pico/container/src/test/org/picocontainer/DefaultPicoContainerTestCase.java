@@ -9,28 +9,15 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import com.googlecode.jtype.Generic;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.CDI;
+import static org.picocontainer.Characteristics.SDI;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-import org.picocontainer.tck.AbstractPicoContainerTest;
-import org.picocontainer.testmodel.DecoratedTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-
-import javax.inject.Provider;
 import java.awt.Color;
 import java.io.File;
 import java.io.Serializable;
@@ -50,14 +37,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.Characteristics.CDI;
-import static org.picocontainer.Characteristics.SDI;
+import javax.inject.Provider;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
+import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+
+import com.googlecode.jtype.Generic;
 
 /**
  * @author Aslak Helles&oslashp;y
@@ -68,10 +68,12 @@ import static org.picocontainer.Characteristics.SDI;
 @SuppressWarnings("serial")
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTest {
 
-	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+	@Override
+	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
 		return new DefaultPicoContainer(parent);
 	}
 
+	@Override
 	protected Properties[] getProperties() {
 		return new Properties[0];
 	}
@@ -134,13 +136,13 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertEquals(ArrayList.class, pico
 				.getComponent((Class) ArrayList.class).getClass());
 	}
-	
-	
+
+
 	/*
 	 * When pico tries to resolve DecoratedTouchable it find as dependency
 	 * itself and SimpleTouchable. Problem is basically the same as above. Pico
 	 * should not consider self as solution.
-	 * 
+	 *
 	 * JS fixed it (PICO-222 ) KP
 	 */
 	@Test public void testUnambiguouSelfDependency() {
@@ -165,7 +167,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	}
 
 	public static class Thingie {
-		public Thingie(List c) {
+		public Thingie(final List c) {
 			assertNotNull(c);
 		}
 	}
@@ -190,7 +192,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static final class TransientComponent {
 		private final Service service;
 
-		public TransientComponent(Service service) {
+		public TransientComponent(final Service service) {
 			this.service = service;
 		}
 	}
@@ -212,7 +214,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	}
 
 	public static class DependsOnCollection {
-		public DependsOnCollection(Collection c) {
+		public DependsOnCollection(final Collection c) {
 		}
 	}
 
@@ -264,9 +266,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		final StringBuffer sb = new StringBuffer();
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new NullComponentMonitor() {
-					public Object invoking(PicoContainer container,
-                                           ComponentAdapter componentAdapter, Member member,
-                                           Object instance, Object... args) {
+					@Override
+					public Object invoking(final PicoContainer container,
+                                           final ComponentAdapter componentAdapter, final Member member,
+                                           final Object instance, final Object... args) {
 						sb.append(member.toString());
                         return null;
                     }
@@ -320,7 +323,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		final String s = writer1.toString();
 		assertTrue("writer not empty", s.length() > 0);
 		StringWriter writer2 = new StringWriter();
-		
+
 		ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
 		pico.changeMonitor(monitor2);
 		pico.addComponent("t2", SimpleTouchable.class);
@@ -389,23 +392,23 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	private static final class ComponentFactoryWithNoMonitor implements ComponentFactory {
 		private final ComponentAdapter adapter;
 
-		public ComponentFactoryWithNoMonitor(ComponentAdapter adapter) {
+		public ComponentFactoryWithNoMonitor(final ComponentAdapter adapter) {
 			this.adapter = adapter;
 		}
 
 		public ComponentAdapter createComponentAdapter(
-				ComponentMonitor monitor,
-				LifecycleStrategy lifecycle,
-				Properties componentProps, Object key,
-				Class impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
+				final ComponentMonitor monitor,
+				final LifecycleStrategy lifecycle,
+				final Properties componentProps, final Object key,
+				final Class impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
 				throws PicoCompositionException {
 			return adapter;
 		}
 
-        public void verify(PicoContainer container) {
+        public void verify(final PicoContainer container) {
         }
 
-        public void accept(PicoVisitor visitor) {
+        public void accept(final PicoVisitor visitor) {
             visitor.visitComponentFactory(this);
         }
     }
@@ -414,7 +417,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			ComponentAdapter {
 		private final Object instance;
 
-		public ComponentAdapterWithNoMonitor(Object instance) {
+		public ComponentAdapterWithNoMonitor(final Object instance) {
 			this.instance = instance;
 		}
 
@@ -426,23 +429,23 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			return instance.getClass();
 		}
 
-        public Object getComponentInstance(PicoContainer container, Type into)
+        public Object getComponentInstance(final PicoContainer container, final Type into)
 				throws PicoCompositionException {
 			return instance;
 		}
 
-		public void verify(PicoContainer container)
+		public void verify(final PicoContainer container)
 				throws PicoCompositionException {
 		}
 
-		public void accept(PicoVisitor visitor) {
+		public void accept(final PicoVisitor visitor) {
         }
 
 		public ComponentAdapter getDelegate() {
 			return null;
 		}
 
-		public ComponentAdapter findAdapterOfType(Class adapterType) {
+		public ComponentAdapter findAdapterOfType(final Class adapterType) {
 			return null;
 		}
 
@@ -464,11 +467,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     @Test public void testMakeChildContainerPassesMonitorFromParentToChild() {
         final StringBuilder sb = new StringBuilder();
         ComponentMonitor cm = new NullComponentMonitor() {
-            public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                              Constructor<T> constructor,
-                              Object instantiated,
-                              Object[] injected,
-                              long duration) {
+            @Override
+			public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                              final Constructor<T> constructor,
+                              final Object instantiated,
+                              final Object[] injected,
+                              final long duration) {
                 sb.append(instantiated.getClass().getName()).append(",");
             }
 
@@ -511,21 +515,21 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	}
 
 	public static class FailingLifecycleStrategy implements LifecycleStrategy {
-		public void start(Object component) {
+		public void start(final Object component) {
 			throw new RuntimeException("foo");
 		}
 
-		public void stop(Object component) {
+		public void stop(final Object component) {
 		}
 
-		public void dispose(Object component) {
+		public void dispose(final Object component) {
 		}
 
-		public boolean hasLifecycle(Class type) {
+		public boolean hasLifecycle(final Class type) {
 			return true;
 		}
 
-        public boolean isLazy(ComponentAdapter<?> adapter) {
+        public boolean isLazy(final ComponentAdapter<?> adapter) {
             return false;
         }
     }
@@ -552,7 +556,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static class WrappingA implements A {
 		private final A wrapped;
 
-		public WrappingA(A wrapped) {
+		public WrappingA(final A wrapped) {
 			this.wrapped = wrapped;
 		}
 	}
@@ -642,7 +646,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static class NeedsTwo {
 		private final int two;
 
-		public NeedsTwo(Integer two) {
+		public NeedsTwo(final Integer two) {
 			this.two = two;
 		}
 	}
@@ -653,7 +657,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static class CdiTurtle {
 		public final Horse horse;
 
-		public CdiTurtle(Horse horse) {
+		public CdiTurtle(final Horse horse) {
 			this.horse = horse;
 		}
 	}
@@ -661,7 +665,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static class SdiDonkey {
 		public Horse horse;
 
-		public void setHorse(Horse horse) {
+		public void setHorse(final Horse horse) {
 			this.horse = horse;
 		}
 	}
@@ -669,7 +673,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	public static class SdiRabbit {
 		public Horse horse;
 
-		public void setHorse(Horse horse) {
+		public void setHorse(final Horse horse) {
 			this.horse = horse;
 		}
 	}
@@ -724,7 +728,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertions(donkey, rabbit, turtle);
 	}
 
-	private void assertions(SdiDonkey donkey, SdiRabbit rabbit, CdiTurtle turtle) {
+	private void assertions(final SdiDonkey donkey, final SdiRabbit rabbit, final CdiTurtle turtle) {
 		assertNotNull(rabbit);
 		assertNotNull(donkey);
 		assertNotNull(turtle);
@@ -781,7 +785,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public static class NeedsString {
         String string;
 
-        public NeedsString(String string) {
+        public NeedsString(final String string) {
             this.string = string;
         }
     }
@@ -792,8 +796,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
         DefaultPicoContainer container = new DefaultPicoContainer(
                 new NullComponentMonitor() {
-                    public Object noComponentFound(
-                            MutablePicoContainer container, Object key) {
+                    @Override
+					public Object noComponentFound(
+                            final MutablePicoContainer container, final Object key) {
                         missingKey[0] = (Class) key;
                         return "foo";
                     }
@@ -824,23 +829,23 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		container.addComponent("foo bar");
 		assertEquals(1, container.getComponentAdapters().size());
 	}
-	
+
     public static class ConstantParameterTestClass {
-    	public ConstantParameterTestClass(Class<String> type) {
+    	public ConstantParameterTestClass(final Class<String> type) {
     		assert type != null;
     	}
     }
-    
-    
+
+
     @Test
     public void testConstantParameterReferenceClass() {
     	MutablePicoContainer container = createPicoContainer(null);
     	container.addComponent(ConstantParameterTestClass.class, ConstantParameterTestClass.class, new ConstantParameter(String.class));
-    	
+
     	assertNotNull(container.getComponent(ConstantParameterTestClass.class));
-    	
+
     }
-	
+
 
     @Test public void canInterceptImplementationViaNewInjectionFactoryMethodOnMonitor() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MyNullComponentMonitor());
@@ -852,10 +857,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     @SuppressWarnings({"serial", "unchecked"})
     private static class MyNullComponentMonitor extends NullComponentMonitor {
-		public Injector newInjector(Injector injector) {
+		@Override
+		public Injector newInjector(final Injector injector) {
             if (injector.getComponentKey() == List.class) {
                 return new AbstractInjector(List.class, ArrayList.class, MyNullComponentMonitor.this, false) {
-                    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+                    @Override
+					public Object getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");
                         return list;
@@ -866,7 +873,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             }
         }
 
-        public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+        @Override
+		public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
             return changedBehavior;
         }
     }
@@ -888,8 +896,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     }
 
     public static class NeedsColorProvider {
-        private Provider<Color> colorProvider;
-        public NeedsColorProvider(Provider<Color> colorProvider) {
+        private final Provider<Color> colorProvider;
+        public NeedsColorProvider(final Provider<Color> colorProvider) {
             this.colorProvider = colorProvider;
         }
     }
@@ -904,16 +912,16 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         pico
         	.addProvider(provider)
         	.addComponent(NeedsColorProvider.class);
-        
+
         NeedsColorProvider ncp = pico.getComponent(NeedsColorProvider.class);
         assertSame(provider, ncp.colorProvider);
         assertSame(Color.red, ncp.colorProvider.get());
     }
-    
-    
+
+
     public static class NeedsColorProviderTwo {
     	public Color color;
-    	public NeedsColorProviderTwo(Color theColor) {
+    	public NeedsColorProviderTwo(final Color theColor) {
     		color = theColor;
     	}
     }
@@ -925,17 +933,18 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 return Color.green;
             }
         };
-        
+
         pico.addProvider(provider).addComponent(NeedsColorProviderTwo.class);
         NeedsColorProviderTwo ncp = pico.getComponent(NeedsColorProviderTwo.class);
         assertEquals(Color.green, ncp.color);
     }
-    
-    @Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
+
+    @Override
+	@Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
         super.testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage();
     }
-    
-    
+
+
     /**
      * @todo Total Wish list:  Would be nice to be able to completely operate independent of JSR-330's jar.
      */
@@ -944,8 +953,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testDefaultPicoContainerWillFunctionWithoutJavaxInjectInItsClasspath() throws Exception {
     	File srcPath = new File("target/classes");
     	assertTrue(srcPath.exists());
-    	
-    	
+
+
     	URLClassLoader cl = new URLClassLoader(new URL[] {srcPath.toURI().toURL()}, System.class.getClassLoader());
 
     	try {
@@ -956,21 +965,21 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	    		//a-ok
 	    		assertNotNull(e.getMessage());
 	    	}
-	    	
-	    	
+
+
 	    	Class<?> defaultPico = cl.loadClass("org.picocontainer.containers.JSRPicoContainer");
-	    	
+
 	    	Method addComponent = defaultPico.getMethod("addComponent", Object.class);
 	    	Method getComponent = defaultPico.getMethod("getComponent", Object.class);
-	    	
-	    	//Will use 
+
+	    	//Will use
 	    	Object picoInstance = defaultPico.newInstance();
-	    
+
 	    	Object picoResult = addComponent.invoke(picoInstance, StringBuilder.class);
 	    	assertNotNull(picoResult);
-	    	
+
 	    	StringBuilder result = (StringBuilder) getComponent.invoke(picoInstance, StringBuilder.class);
-	    	
+
 	    	assertNotNull(result);
     	} finally {
     		try {
@@ -980,9 +989,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 				//ignore, close doesn't exist.
 			}
     	}
-    	
-    	
-    }    
-    
+
+
+    }
+
 
 }

@@ -103,7 +103,7 @@ public class DelegateMethodTestCase {
 		}
 
 	}
-	
+
 	@Test
 	public void testPrimitivesAreAllowedViaAutoboxing() {
 		DelegateMethod<DelegatePrimitiveTest, Boolean> method1 =
@@ -111,7 +111,7 @@ public class DelegateMethodTestCase {
 
 		DelegatePrimitiveTest dt = new DelegatePrimitiveTest();
 		assertTrue( method1.invoke(dt) );
-		
+
 		DelegateMethod<DelegatePrimitiveTest, Byte> method2 =
 			new DelegateMethod<DelegatePrimitiveTest, Byte>(DelegatePrimitiveTest.class, "getSomething", (byte)1);
 		assertTrue(((byte)1) == method2.invoke(dt));
@@ -140,26 +140,26 @@ public class DelegateMethodTestCase {
 			new DelegateMethod<DelegatePrimitiveTest, Character>(DelegatePrimitiveTest.class, "getSomething", 'c');
 		assertTrue('c' == method8.invoke(dt));
 
-		
-		
+
+
 	}
-	
+
 	public static class DelegatePrimitiveTest {
-		public byte getSomething(byte aValue) {return aValue;}
+		public byte getSomething(final byte aValue) {return aValue;}
 
-		public short getSomething(short aValue) {return aValue;}
-	
-		public int getSomething(int aValue) {return aValue;}
+		public short getSomething(final short aValue) {return aValue;}
 
-		public long getSomething(long aValue) {return aValue;}
+		public int getSomething(final int aValue) {return aValue;}
 
-		public float getSomething(float aValue) {return aValue;}
+		public long getSomething(final long aValue) {return aValue;}
 
-		public double getSomething(double aValue) {return aValue;}
+		public float getSomething(final float aValue) {return aValue;}
 
-		public boolean getSomething(boolean aValue) {return aValue;}
+		public double getSomething(final double aValue) {return aValue;}
 
-		public char getSomething(char aValue) {return aValue;}
+		public boolean getSomething(final boolean aValue) {return aValue;}
+
+		public char getSomething(final char aValue) {return aValue;}
 	};
 
 }

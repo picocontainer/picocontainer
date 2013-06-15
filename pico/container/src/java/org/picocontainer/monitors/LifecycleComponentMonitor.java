@@ -9,6 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.monitors;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -18,17 +25,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoLifecycleException;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
  * and rethrows them on demand after the failures.
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  */
@@ -39,10 +39,10 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
 	 * Delegate for chained component monitors.
 	 */
     private final ComponentMonitor delegate;
-    
+
     private final List<RuntimeException> lifecycleFailures = new ArrayList<RuntimeException>();
 
-    public LifecycleComponentMonitor(ComponentMonitor delegate) {
+    public LifecycleComponentMonitor(final ComponentMonitor delegate) {
         this.delegate = delegate;
     }
 
@@ -50,49 +50,49 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         this(new NullComponentMonitor());
     }
 
-    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor) {
+    public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                                     final Constructor<T> constructor) {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] parameters,
-                             long duration) {
+    public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] parameters,
+                             final long duration) {
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public <T> void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter<T> componentAdapter,
-                                    Constructor<T> constructor,
-                                    Exception cause) {
+    public <T> void instantiationFailed(final PicoContainer container,
+                                    final ComponentAdapter<T> componentAdapter,
+                                    final Constructor<T> constructor,
+                                    final Exception cause) {
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
-    public Object invoking(PicoContainer container,
-                           ComponentAdapter<?> componentAdapter,
-                           Member member,
-                           Object instance, Object... args) {
+    public Object invoking(final PicoContainer container,
+                           final ComponentAdapter<?> componentAdapter,
+                           final Member member,
+                           final Object instance, final Object... args) {
         return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Member member,
-                        Object instance,
-                        long duration, Object retVal, Object[] args) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Member member,
+                        final Object instance,
+                        final long duration, final Object retVal, final Object[] args) {
         delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
-    public void invocationFailed(Member member, Object instance, Exception cause) {
+    public void invocationFailed(final Member member, final Object instance, final Exception cause) {
         delegate.invocationFailed(member, instance, cause);
     }
 
-    public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter<?> componentAdapter, Method method,
-                                          Object instance,
-                                          RuntimeException cause) {
+    public void lifecycleInvocationFailed(final MutablePicoContainer container,
+                                          final ComponentAdapter<?> componentAdapter, final Method method,
+                                          final Object instance,
+                                          final RuntimeException cause) {
         lifecycleFailures.add(cause);
         try {
             delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
@@ -101,16 +101,16 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         }
     }
 
-    public Object noComponentFound(MutablePicoContainer container, Object key) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         return delegate.noComponentFound(container, key);
     }
 
-    public Injector newInjector(Injector injector) {
+    public Injector newInjector(final Injector injector) {
         return delegate.newInjector(injector);
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
 
@@ -122,20 +122,21 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     /**
      * Subclass of {@link PicoException} that is thrown when the collected
      * lifecycle failures need to be be collectively rethrown.
-     * 
+     *
      * @author Paul Hammant
      * @author Mauro Talevi
      */
     public final class LifecycleFailuresException extends PicoException {
 
-  		
+
 		private final List<RuntimeException> lifecycleFailures;
 
-        public LifecycleFailuresException(List<RuntimeException> lifecycleFailures) {
+        public LifecycleFailuresException(final List<RuntimeException> lifecycleFailures) {
             this.lifecycleFailures = lifecycleFailures;
         }
 
-        public String getMessage() {
+        @Override
+		public String getMessage() {
             StringBuffer message = new StringBuffer();
             for (Object lifecycleFailure : lifecycleFailures) {
                 Exception failure = (Exception)lifecycleFailure;

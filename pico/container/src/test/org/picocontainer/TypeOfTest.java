@@ -1,6 +1,8 @@
 package org.picocontainer;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertNotSame;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -8,9 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertSame;
-import static org.junit.Assert.assertNotSame;
+import org.junit.Test;
 
 public class TypeOfTest {
 
@@ -36,7 +36,7 @@ public class TypeOfTest {
     public void typeOflooksGoodInAMethodDeclaration() {
         StringBuffer sb = new StringBuffer();
         Set<List<Color>> setOfListOfColors = getComponent(new TypeOf<List<Color>>(){}, sb);
-        assertEquals("java.util.List<java.awt.Color>", sb.toString());        
+        assertEquals("java.util.List<java.awt.Color>", sb.toString());
         List<Color> reds = new ArrayList<Color>();
         reds.add(Color.red);
         reds.add(Color.orange);
@@ -44,7 +44,7 @@ public class TypeOfTest {
     }
 
     /* Symbolic of Pico's future/shortly getComponent(..) */
-    public static <T> Set<T> getComponent(TypeOf<T> foos, StringBuffer sb) {
+    public static <T> Set<T> getComponent(final TypeOf<T> foos, final StringBuffer sb) {
         sb.append(foos.getType().toString());
         return new HashSet<T>();
     }
@@ -60,7 +60,7 @@ public class TypeOfTest {
     }
 
     /* Symbolic of Pico's existing getComponent(..) */
-    public static <T> Set<T> getComponent(Class<T> foos, StringBuffer sb) {
+    public static <T> Set<T> getComponent(final Class<T> foos, final StringBuffer sb) {
         // and can delegate
         return getComponent(TypeOf.fromClass(foos), sb);
     }

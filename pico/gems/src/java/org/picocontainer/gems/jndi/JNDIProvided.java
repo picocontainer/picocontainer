@@ -20,9 +20,9 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
 /**
- * Represents dependency provided via JNDI. This dependency is not 
- * to be managed by container at all, so there is no lifecycle, no 
- * monitoring etc. 
+ * Represents dependency provided via JNDI. This dependency is not
+ * to be managed by container at all, so there is no lifecycle, no
+ * monitoring etc.
  * @author Konstantin Pribluda
  *
  */
@@ -33,9 +33,9 @@ public class JNDIProvided<T> implements ComponentAdapter<T>, Serializable {
     private JNDIObjectReference<T> jndiReference;
     private Class<T> type;
     private Object componentKey;
-	
+
 	Object key;
-	
+
 	/**
 	 * Create adapter with specified key and reference
 	 * @param key component key
@@ -47,31 +47,31 @@ public class JNDIProvided<T> implements ComponentAdapter<T>, Serializable {
 		this.jndiReference = reference;
         this.type = type;
 	}
-	
+
 	/**
-	 * create adapter with JNDI reference. referenced object class will be 
+	 * create adapter with JNDI reference. referenced object class will be
 	 * takes as key
 	 * @param reference JNDI reference storing component
      * @param type the type that the JNDIObjectReference will return.
 	 */
-	public JNDIProvided(final JNDIObjectReference<T> reference, Class<T> type) {
+	public JNDIProvided(final JNDIObjectReference<T> reference, final Class<T> type) {
 		this(reference.get().getClass(),reference, type);
 	}
-	
+
 	/**
 	 * Create adapter based on JNDI name. I leave this unchecked because
 	 * type is really not known at this time
 	 * @param jndiName name to be used
      * @param type the type that the JNDIObjectReference will return.
-	 * @throws NamingException will be thrown if something goes 
+	 * @throws NamingException will be thrown if something goes
 	 * wrong in JNDI
 	 */
 	@SuppressWarnings("unchecked")
-	public JNDIProvided(final String jndiName, Class<T> type) throws NamingException {
+	public JNDIProvided(final String jndiName, final Class<T> type) throws NamingException {
 		this(new JNDIObjectReference(jndiName), type);
 	}
-	
-	public Object getComponentKey() {	
+
+	public Object getComponentKey() {
 		return key;
 	}
 

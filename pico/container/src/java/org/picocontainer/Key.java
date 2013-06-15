@@ -19,7 +19,7 @@ public class Key<T> implements Serializable {
 	private final Class<T> type;
     private final Class<? extends Annotation> annotation;
 
-    public Key(Class<T> type, Class<? extends Annotation> annotation) {
+    public Key(final Class<T> type, final Class<? extends Annotation> annotation) {
         this.type = type;
         this.annotation = annotation;
     }
@@ -32,30 +32,41 @@ public class Key<T> implements Serializable {
         return annotation;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return type.getName() + ":" + annotation.getName();
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    @Override
+	public boolean equals(final Object o) {
+        if (this == o) {
+			return true;
+		}
+        if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
         Key<?> key = (Key<?>)o;
 
-        if (!annotation.equals(key.annotation)) return false;
-        if (!type.equals(key.type)) return false;
+        if (!annotation.equals(key.annotation)) {
+			return false;
+		}
+        if (!type.equals(key.type)) {
+			return false;
+		}
 
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         int result;
         result = type.hashCode();
         result = 31 * result + annotation.hashCode();
         return result;
     }
 
-    public static <T> Key<T> annotatedKey(Class<T> type, Class<? extends Annotation> annotation) {
+    public static <T> Key<T> annotatedKey(final Class<T> type, final Class<? extends Annotation> annotation) {
         return new Key<T>(type, annotation);
     }
 

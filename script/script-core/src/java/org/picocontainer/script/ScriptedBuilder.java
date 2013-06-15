@@ -34,17 +34,17 @@ public final class ScriptedBuilder {
     private Class<? extends ClassLoadingPicoContainer> scriptClass = DefaultClassLoadingPicoContainer.class;
     private final PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
-    private List<URL> urls = new ArrayList<URL>();
+    private final List<URL> urls = new ArrayList<URL>();
 
-    public ScriptedBuilder(PicoContainer parentcontainer, InjectionType injectionType) {
+    public ScriptedBuilder(final PicoContainer parentcontainer, final InjectionType injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
     }
 
-    public ScriptedBuilder(PicoContainer parentcontainer) {
+    public ScriptedBuilder(final PicoContainer parentcontainer) {
         picoBuilder = new PicoBuilder(parentcontainer);
     }
 
-    public ScriptedBuilder(InjectionType injectionType) {
+    public ScriptedBuilder(final InjectionType injectionType) {
         picoBuilder = new PicoBuilder(injectionType);
     }
 
@@ -79,7 +79,7 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withMonitor(Class<? extends ComponentMonitor> clazz) {
+    public ScriptedBuilder withMonitor(final Class<? extends ComponentMonitor> clazz) {
         picoBuilder.withMonitor(clazz);
         return this;
     }
@@ -89,12 +89,12 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withComponentFactory(ComponentFactory componentFactory) {
+    public ScriptedBuilder withComponentFactory(final ComponentFactory componentFactory) {
         picoBuilder.withComponentFactory(componentFactory);
         return this;
     }
 
-    public ScriptedBuilder withBehaviors(Behavior... factories) {
+    public ScriptedBuilder withBehaviors(final Behavior... factories) {
         picoBuilder.withBehaviors(factories);
         return this;
     }
@@ -124,34 +124,34 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder implementedBy(Class<? extends ClassLoadingPicoContainer> scriptedContainerClass) {
+    public ScriptedBuilder implementedBy(final Class<? extends ClassLoadingPicoContainer> scriptedContainerClass) {
         scriptClass = scriptedContainerClass;
         return this;
     }
 
-    public ScriptedBuilder implementedBy(String scriptedContainerClass) {
+    public ScriptedBuilder implementedBy(final String scriptedContainerClass) {
         scriptClass = loadClass(scriptedContainerClass, ClassLoadingPicoContainer.class);
         return this;
     }
 
-    public ScriptedBuilder picoImplementedBy(Class<? extends MutablePicoContainer> picoContainerClass) {
+    public ScriptedBuilder picoImplementedBy(final Class<? extends MutablePicoContainer> picoContainerClass) {
         picoBuilder.implementedBy(picoContainerClass);
         return this;
     }
 
-    public ScriptedBuilder withClassLoader(ClassLoader usingClassloader) {
+    public ScriptedBuilder withClassLoader(final ClassLoader usingClassloader) {
         this.classLoader = usingClassloader;
         return this;
     }
 
-    public ScriptedBuilder withComponentFactory(String componentFactoryName) {
+    public ScriptedBuilder withComponentFactory(final String componentFactoryName) {
         if (componentFactoryName != null && !componentFactoryName.equals("")) {
             picoBuilder.withComponentFactory(loadClass(componentFactoryName, ComponentFactory.class));
         }
         return this;
     }
 
-    private <T> Class<? extends T> loadClass(String className, Class<T> asClass) {
+    private <T> Class<? extends T> loadClass(final String className, final Class<T> asClass) {
         try {
             return classLoader.loadClass(className).asSubclass(asClass);
         } catch (ClassNotFoundException e) {
@@ -159,14 +159,14 @@ public final class ScriptedBuilder {
         }
     }
 
-    public ScriptedBuilder withMonitor(String monitorName) {
+    public ScriptedBuilder withMonitor(final String monitorName) {
         if (monitorName != null && !monitorName.equals("")) {
             picoBuilder.withMonitor(loadClass(monitorName, ComponentMonitor.class));
         }
         return this;
     }
 
-    public ScriptedBuilder addClassLoaderURL(URL url) {
+    public ScriptedBuilder addClassLoaderURL(final URL url) {
         urls.add(url);
         return this;
     }

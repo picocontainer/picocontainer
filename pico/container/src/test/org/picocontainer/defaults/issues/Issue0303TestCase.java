@@ -7,26 +7,26 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import java.lang.reflect.Method;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Startable;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.Startable;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.junit.Test;
-
-import java.lang.reflect.Method;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 @SuppressWarnings("serial")
 public class Issue0303TestCase {
-    
+
 	public static class SwallowingComponentMonitor extends NullComponentMonitor {
 		@Override
-		public void lifecycleInvocationFailed(MutablePicoContainer container,
-				ComponentAdapter<?> componentAdapter, Method method, Object instance,
-				RuntimeException cause) {
+		public void lifecycleInvocationFailed(final MutablePicoContainer container,
+				final ComponentAdapter<?> componentAdapter, final Method method, final Object instance,
+				final RuntimeException cause) {
 			// swallow it
 		}
 	}

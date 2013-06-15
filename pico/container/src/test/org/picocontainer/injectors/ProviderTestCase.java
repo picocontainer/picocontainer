@@ -8,6 +8,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
@@ -20,13 +25,8 @@ import org.picocontainer.behaviors.ThreadCaching;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 public class ProviderTestCase {
-    
+
     @Test
     public void provideMethodCanParticipateInInjection() {
         DefaultPicoContainer dpc = new DefaultPicoContainer();
@@ -98,15 +98,15 @@ public class ProviderTestCase {
     }
 
     public static class Chocolate {
-        private boolean milky;
+        private final boolean milky;
         private final CocaoBeans cocaoBeans;
         private final String name;
 
-        public Chocolate(String name) {
+        public Chocolate(final String name) {
             this(true, new CocaoBeans(), name);
         }
 
-        public Chocolate(boolean milky, CocaoBeans cocaoBeans, String name) {
+        public Chocolate(final boolean milky, final CocaoBeans cocaoBeans, final String name) {
             this.milky = milky;
             this.cocaoBeans = cocaoBeans;
             this.name = name;
@@ -115,10 +115,10 @@ public class ProviderTestCase {
 
     public static class Chocolatier extends ProviderAdapter {
         private final boolean milky;
-        public Chocolatier(boolean milky) {
+        public Chocolatier(final boolean milky) {
             this.milky = milky;
         }
-        public Chocolate provide(CocaoBeans cocaoBeans, String name) {
+        public Chocolate provide(final CocaoBeans cocaoBeans, final String name) {
             return new Chocolate(milky, cocaoBeans, name);
         }
         @Override
@@ -132,14 +132,15 @@ public class ProviderTestCase {
             super(true);
         }
 
-        public Chocolate provide(@Nullable CocaoBeans cocaoBeans, @Nullable String name) {
+        @Override
+		public Chocolate provide(@Nullable final CocaoBeans cocaoBeans, @Nullable final String name) {
             return super.provide(cocaoBeans, name);
         }
     }
 
     public static class NeedsChocolate {
-        private Chocolate choc;
-        public NeedsChocolate(Chocolate choc) {
+        private final Chocolate choc;
+        public NeedsChocolate(final Chocolate choc) {
             this.choc = choc;
         }
     }
@@ -185,7 +186,7 @@ public class ProviderTestCase {
         }
     }
     public static class ProviderWithTooManyProvideMethods extends ProviderAdapter {
-        public String provide(String str) {
+        public String provide(final String str) {
             return null;
         }
         public Integer provide() {
@@ -200,7 +201,7 @@ public class ProviderTestCase {
         dpc.addComponent(NeedsChocolate.class);
         dpc.addComponent(CocaoBeans.class);
         dpc.addComponent(String.class, "Cadbury's"); // the only string in the set of components
-        
+
         NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
         assertNotNull(needsChocolate);
         assertNotNull(needsChocolate.choc);
@@ -211,10 +212,10 @@ public class ProviderTestCase {
 
     public static class Chocolatier2 implements Provider {
         private final boolean milky;
-        public Chocolatier2(boolean milky) {
+        public Chocolatier2(final boolean milky) {
             this.milky = milky;
         }
-        public Chocolate provide(CocaoBeans cocaoBeans, String name) {
+        public Chocolate provide(final CocaoBeans cocaoBeans, final String name) {
             return new Chocolate(milky, cocaoBeans, name);
         }
     }
@@ -243,12 +244,12 @@ public class ProviderTestCase {
         private final String key;
         private final String value;
 
-        public StubHttpRequest(String key, String value) {
+        public StubHttpRequest(final String key, final String value) {
             this.key = key;
             this.value = value;
         }
 
-        public String getParameter(String name) {
+        public String getParameter(final String name) {
             return name.equals(key) ? value : null;
         }
     }
@@ -257,20 +258,21 @@ public class ProviderTestCase {
         private final Class clazz;
         private final String paramName;
 
-        public ExampleRequestReader(Class clazz, String paramName) {
+        public ExampleRequestReader(final Class clazz, final String paramName) {
             this.clazz = clazz;
             this.paramName = paramName;
         }
 
-        public Class getComponentImplementation() {
+        @Override
+		public Class getComponentImplementation() {
             return clazz;
         }
 
-        public Object provide(StubHttpRequest req) {
+        public Object provide(final StubHttpRequest req) {
             try {
             	return clazz.getConstructor(String.class).newInstance(req.getParameter(paramName));
             } catch (Exception e) {
-                throw new RuntimeException(e);  
+                throw new RuntimeException(e);
             }
         }
     }
@@ -295,13 +297,13 @@ public class ProviderTestCase {
     }
 
     public class ComponentProvider implements Provider {
-        private StringBuilder sb;
+        private final StringBuilder sb;
 
-        public ComponentProvider(StringBuilder sb) {
+        public ComponentProvider(final StringBuilder sb) {
             this.sb = sb;
         }
 
-        public Component provide(Configuration config) {
+        public Component provide(final Configuration config) {
             return new ComponentImpl(sb, config.getHost(), config.getPort());
         }
     }
@@ -334,9 +336,9 @@ public class ProviderTestCase {
 
     public static class ComponentImpl implements Component {
 
-        private StringBuilder sb;
+        private final StringBuilder sb;
 
-        public ComponentImpl(StringBuilder sb, String host, int port) {
+        public ComponentImpl(final StringBuilder sb, final String host, final int port) {
             this.sb = sb.append("@");
         }
 

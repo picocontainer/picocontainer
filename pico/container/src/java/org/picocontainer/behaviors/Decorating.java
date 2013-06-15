@@ -10,6 +10,9 @@
 
 package org.picocontainer.behaviors;
 
+import java.lang.reflect.Type;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Decorator;
@@ -20,9 +23,6 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.Type;
-import java.util.Properties;
-
 /**
  * Behavior for Decorating. This factory will create {@link org.picocontainer.behaviors.Decorating.Decorated} that will
  * allow you to decorate what you like on the component instance that has been created
@@ -31,9 +31,10 @@ import java.util.Properties;
  */
 public abstract class Decorating extends AbstractBehavior implements Decorator {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                   Properties componentProps, final Object key,
-                                                   final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                   final Properties componentProps, final Object key,
+                                                   final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         return monitor.changedBehavior(new Decorated<T>(super.createComponentAdapter(monitor, lifecycle,
                 componentProps,key, impl, constructorParams, fieldParams, methodParams), this));
     }
@@ -42,12 +43,13 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
     public static class Decorated<T> extends AbstractChangedBehavior<T> {
         private final Decorator decorator;
 
-        public Decorated(ComponentAdapter<T> delegate, Decorator decorator) {
+        public Decorated(final ComponentAdapter<T> delegate, final Decorator decorator) {
             super(delegate);
             this.decorator = decorator;
         }
 
-        public T getComponentInstance(final PicoContainer container, Type into)
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into)
                 throws PicoCompositionException {
             T instance = super.getComponentInstance(container, into);
             decorator.decorate(instance);

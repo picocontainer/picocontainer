@@ -10,21 +10,26 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.*;
-import org.picocontainer.Injector;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 
 /**
@@ -40,7 +45,7 @@ public class SetterInjection extends AbstractInjectionType {
     private boolean optional;
     private String notThisOneThough;
 
-    public SetterInjection(String prefix) {
+    public SetterInjection(final String prefix) {
         this.prefix = prefix;
     }
 
@@ -53,14 +58,14 @@ public class SetterInjection extends AbstractInjectionType {
      * @param prefix the prefix like 'set'
      * @param notThisOneThough to exclude, like 'setMetaClass' for Groovy
      */
-    public SetterInjection(String prefix, String notThisOneThough) {
+    public SetterInjection(final String prefix, final String notThisOneThough) {
         this(prefix);
         this.notThisOneThough = notThisOneThough;
     }
 
     /**
      * Create a {@link SetterInjector}.
-     * 
+     *
      * @param monitor
      * @param lifecycle
      * @param componentProps
@@ -69,8 +74,8 @@ public class SetterInjection extends AbstractInjectionType {
      * @return Returns a new {@link SetterInjector}.
      * @throws PicoCompositionException if dependencies cannot be solved
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                           Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                           final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         SetterInjector<T> setterInjector = new SetterInjector<T>(key, impl, monitor, prefix, useNames,
                 notThisOneThough != null ? notThisOneThough : "", optional, methodParams);
@@ -123,26 +128,27 @@ public class SetterInjection extends AbstractInjectionType {
          */
         public SetterInjector(final Object key,
                               final Class impl,
-                              ComponentMonitor monitor, String prefix, boolean useNames, String notThisOneThough,
-                              boolean optional, MethodParameters... parameters) throws  NotConcreteRegistrationException {
+                              final ComponentMonitor monitor, final String prefix, final boolean useNames, final String notThisOneThough,
+                              final boolean optional, final MethodParameters... parameters) throws  NotConcreteRegistrationException {
             super(key, impl, monitor, useNames, null, parameters);
             this.prefix = prefix;
             this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";
             this.optional = optional;
         }
 
-        protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
+        @Override
+		protected Object memberInvocationReturn(final Object lastReturn, final AccessibleObject member, final Object instance) {
             return member != null && ((Method)member).getReturnType()!=void.class ? lastReturn : instance;
         }
 
         @Override
-        protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+        protected Object injectIntoMember(final AccessibleObject member, final Object componentInstance, final Object toInject)
             throws IllegalAccessException, InvocationTargetException {
             return ((Method)member).invoke(componentInstance, toInject);
         }
 
         @Override
-        protected boolean isInjectorMethod(Method method) {
+        protected boolean isInjectorMethod(final Method method) {
             String methodName = method.getName();
             return methodName.length() >= getInjectorPrefix().length() + 1 // long enough
                     && methodName.startsWith(getInjectorPrefix())
@@ -151,7 +157,7 @@ public class SetterInjection extends AbstractInjectionType {
         }
 
         @Override
-        protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers) {
+        protected void unsatisfiedDependencies(final PicoContainer container, final Set<Type> unsatisfiableDependencyTypes, final List<AccessibleObject> unsatisfiableDependencyMembers) {
             if (!optional) {
                 throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName() + " has unsatisfied dependencies " + unsatisfiableDependencyTypes
                         + " for members " + unsatisfiableDependencyMembers + " from " + container);
@@ -168,25 +174,25 @@ public class SetterInjection extends AbstractInjectionType {
         }
 
 		@Override
-		protected boolean isAccessibleObjectEqualToParameterTarget(AccessibleObject testObject,
-				Parameter currentParameter) {
+		protected boolean isAccessibleObjectEqualToParameterTarget(final AccessibleObject testObject,
+				final Parameter currentParameter) {
 			if (currentParameter.getTargetName() == null) {
 				return false;
 			}
-			
+
 			if (!(testObject instanceof Method)) {
 				throw new PicoCompositionException(testObject + " must be a method to use setter injection");
 			}
-			
+
 			String targetProperty = currentParameter.getTargetName();
-			
+
 			//Convert to setter name.
 			String testProperty = "set" + Character.toUpperCase(targetProperty.charAt(0));
 			if (targetProperty.length() > 0) {
 				testProperty = testProperty + targetProperty.substring(1);
 			}
-			
-			Method targetMethod = (Method)testObject;			
+
+			Method targetMethod = (Method)testObject;
 			return targetMethod.getName().equals(testProperty);
 		}
 

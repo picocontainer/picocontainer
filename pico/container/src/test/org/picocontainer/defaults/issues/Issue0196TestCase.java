@@ -22,7 +22,7 @@ public class Issue0196TestCase {
         }
     }
     public static class DescriptorDep {
-        public DescriptorDep(Descriptor.DescriptorData[] datas) {
+        public DescriptorDep(final Descriptor.DescriptorData[] datas) {
             Assert.assertEquals(3, datas.length);
             Assert.assertNull(datas[0]);
             Assert.assertNull(datas[1]);

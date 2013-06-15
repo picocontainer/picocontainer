@@ -7,6 +7,14 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.CACHE;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.io.Serializable;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -20,24 +28,16 @@ import org.picocontainer.Startable;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.io.Serializable;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.Characteristics.CACHE;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
 /**
- * 
+ *
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
 @RunWith(JMock.class)
 public class StartableLifecycleStrategyTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private StartableLifecycleStrategy startableLifecycle;
 
     @Before
@@ -62,20 +62,20 @@ public class StartableLifecycleStrategyTestCase {
         startableLifecycle.stop(serializable);
         startableLifecycle.dispose(serializable);
     }
-    
-    private Object mockComponent(boolean startable, boolean disposeable) {
+
+    private Object mockComponent(final boolean startable, final boolean disposeable) {
         if (startable) {
         	 final Startable mock = mockery.mock(Startable.class);
         	 mockery.checking(new Expectations() {{
-                 one(mock).start(); 
-                 one(mock).stop(); 
+                 one(mock).start();
+                 one(mock).stop();
              }});
         	 return mock;
         }
         if (disposeable) {
        	 final Disposable mock = mockery.mock(Disposable.class);
     	 mockery.checking(new Expectations() {{
-             one(mock).dispose(); 
+             one(mock).dispose();
          }});
     	 return mock;
         }

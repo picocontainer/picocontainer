@@ -9,48 +9,49 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import com.googlecode.jtype.Generic;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+
+import com.googlecode.jtype.Generic;
+
 /**
  * CommandLineArgumentsPicoContainer configured itself from array of strings
  * which are most likely coming in as command line arguments
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
-    public CommandLinePicoContainer(char separator, String... arguments) {
+    public CommandLinePicoContainer(final char separator, final String... arguments) {
     	this(separator, (PicoContainer) null, arguments);
     }
 
-    public CommandLinePicoContainer(char separator, PicoContainer parent, String... arguments) {
+    public CommandLinePicoContainer(final char separator, final PicoContainer parent, final String... arguments) {
     	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
-    public CommandLinePicoContainer(char separator, StringReader argumentsProps) throws IOException {
+    public CommandLinePicoContainer(final char separator, final StringReader argumentsProps) throws IOException {
         this(separator, argumentsProps, new String[0]);
     }
-    
-    public CommandLinePicoContainer(char separator, StringReader argumentProperties, String... arguments) throws IOException{
+
+    public CommandLinePicoContainer(final char separator, final StringReader argumentProperties, final String... arguments) throws IOException{
     	this(separator, argumentProperties, null, arguments);
     }
 
-    public CommandLinePicoContainer(char separator, StringReader argumentProperties, PicoContainer parent, String... arguments)
+    public CommandLinePicoContainer(final char separator, final StringReader argumentProperties, final PicoContainer parent, final String... arguments)
         throws IOException {
     	super(new DefaultPicoContainer(parent));
-    	
+
         LineNumberReader lnr = new LineNumberReader(argumentProperties);
         String line = lnr.readLine();
         while (line != null) {
@@ -61,43 +62,48 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
             processArgument(argument, separator);
         }
     }
-    
-    public CommandLinePicoContainer(String... arguments) {
+
+    public CommandLinePicoContainer(final String... arguments) {
         this('=', arguments);
     }
 
-    public CommandLinePicoContainer(PicoContainer parent, String... arguments) {
+    public CommandLinePicoContainer(final PicoContainer parent, final String... arguments) {
     	this('=', parent, arguments);
     }
 
-    private void addConfig(String key, Object val) {
+    private void addConfig(final String key, final Object val) {
         if (getDelegate().getComponentInto(key, ComponentAdapter.NOTHING.class) != null) {
             getDelegate().removeComponent(key);
         }
         getDelegate().addConfig(key, val);
     }
 
-    public <T> T getComponentInto(Class<T> componentType, Type into) {
+    @Override
+	public <T> T getComponentInto(final Class<T> componentType, final Type into) {
         return null;
     }
 
-    public <T> T getComponentInto(Generic<T> componentType, Type into) {
+    @Override
+	public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
         return null;
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
+    @Override
+	public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
         return null;
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+    @Override
+	public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
         return null;
     }
 
-    public PicoContainer getParent() {
+    @Override
+	public PicoContainer getParent() {
         return new EmptyPicoContainer();
     }
 
-    private void processArgument(String argument, char separator) {
+    private void processArgument(final String argument, final char separator) {
         String[] kvs = argument.split(Character.valueOf(separator).toString());
         if (kvs.length == 2) {
             addConfig(kvs[0], kvs[1]);
@@ -108,19 +114,20 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
                 "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
         }
     }
-    
-    public MutablePicoContainer getDelegate() {
+
+    @Override
+	public MutablePicoContainer getDelegate() {
     	return (MutablePicoContainer) super.getDelegate();
     }
 
-    public void setName(String s) {
-        ((MutablePicoContainer)getDelegate()).setName(s);
+    public void setName(final String s) {
+        getDelegate().setName(s);
     }
-    
+
 
     @Override
     public String toString() {
         return "[CommandLine]:" + super.getDelegate().toString();
-    }    
+    }
 
 }

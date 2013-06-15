@@ -1,13 +1,13 @@
 package org.picocontainer.lifecycle;
 
-import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.Startable;
 
 public class BuiltInStartableComponent implements Startable, Disposable {
 
     StringBuilder sb;
 
-    public BuiltInStartableComponent(StringBuilder sb) {
+    public BuiltInStartableComponent(final StringBuilder sb) {
         this.sb = sb;
     }
 

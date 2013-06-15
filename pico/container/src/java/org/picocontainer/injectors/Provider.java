@@ -16,5 +16,5 @@ package org.picocontainer.injectors;
  * will satisfy.
  */
 public interface Provider {
-    
+
 }

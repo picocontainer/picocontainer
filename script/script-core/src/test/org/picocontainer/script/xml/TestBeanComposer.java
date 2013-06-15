@@ -14,7 +14,7 @@ public final class TestBeanComposer {
     private final TestBean bean1;
     private final TestBean bean2;
 
-    public TestBeanComposer(TestBean bean1, TestBean bean2) {
+    public TestBeanComposer(final TestBean bean1, final TestBean bean2) {
         this.bean1 = bean1;
         this.bean2 = bean2;
     }

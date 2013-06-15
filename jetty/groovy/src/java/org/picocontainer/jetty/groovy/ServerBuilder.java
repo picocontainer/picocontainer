@@ -13,21 +13,22 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.jetty.PicoJettyServer;
 import org.picocontainer.jetty.PicoWebAppContext;
-import org.picocontainer.MutablePicoContainer;
 
 public class ServerBuilder extends NodeBuilder {
     private final PicoJettyServer server;
     private final MutablePicoContainer parentContainer;
 
-    public ServerBuilder(PicoJettyServer server, MutablePicoContainer parentContainer) {
+    public ServerBuilder(final PicoJettyServer server, final MutablePicoContainer parentContainer) {
         this.server = server;
         this.parentContainer = parentContainer;
     }
 
-    protected Object createNode(Object name, Map map) {
+    @Override
+	protected Object createNode(final Object name, final Map map) {
         if (name.equals("context")) {
             return createContext(map);
         } else if (name.equals("blockingChannelConnector")) {
@@ -38,12 +39,12 @@ public class ServerBuilder extends NodeBuilder {
         return null;
     }
 
-    protected Object createBlockingChannelConnector(Map map) {
+    protected Object createBlockingChannelConnector(final Map map) {
         int port = (Integer)map.remove("port");
         return server.createServerConnector((String) map.remove("host"), port);
     }
 
-    protected Object createContext(Map map) {
+    protected Object createContext(final Map map) {
         boolean sessions = false;
         if (map.containsKey("sessions")) {
             sessions = Boolean.valueOf((String)map.remove("sessions"));
@@ -52,7 +53,7 @@ public class ServerBuilder extends NodeBuilder {
         return new ContextBuilder(parentContainer, context);
     }
 
-    protected Object createXmlWebApplication(Map map) {
+    protected Object createXmlWebApplication(final Map map) {
         PicoWebAppContext context = server.addWebApplication((String) map.remove("path"), (String) map.remove("warfile"));
         return new WarFileBuilder(parentContainer, context);
     }

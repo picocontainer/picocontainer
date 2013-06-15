@@ -8,15 +8,15 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 /**
  * @author Paul Hammant
@@ -26,7 +26,7 @@ public class NamedMethodInjectionTestCase {
     public static class Bean {
         private String something;
 
-        public void setSomething(String blah) {
+        public void setSomething(final String blah) {
             this.something = blah;
         }
     }
@@ -53,13 +53,13 @@ public class NamedMethodInjectionTestCase {
         private String databaseName;
         private String user;
 
-        public void setServerName(String a0) { 
+        public void setServerName(final String a0) {
             this.serverName = a0;
         }
-        public void setDatabaseName(String a0) {
+        public void setDatabaseName(final String a0) {
             this.databaseName = a0;
         }
-        public void setUser(String a0) {
+        public void setUser(final String a0) {
             this.user = a0;
         }
     }

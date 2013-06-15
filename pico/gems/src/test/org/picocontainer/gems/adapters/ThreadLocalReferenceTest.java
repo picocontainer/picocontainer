@@ -23,7 +23,7 @@ import org.picocontainer.references.ThreadLocalReference;
 
 /**
  * Unit test for ThreadLocalReference
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 public final class ThreadLocalReferenceTest {
@@ -41,7 +41,7 @@ public final class ThreadLocalReferenceTest {
 
         /**
          * Construct an instance.
-         * 
+         *
          * @param reference
          */
         public RunIt(final ObjectReference reference) {
@@ -68,7 +68,7 @@ public final class ThreadLocalReferenceTest {
 
     /**
      * Test working ThreadLocalReference
-     * 
+     *
      * @throws InterruptedException
      */
     @Test public void testThreadLocalReference() throws InterruptedException {

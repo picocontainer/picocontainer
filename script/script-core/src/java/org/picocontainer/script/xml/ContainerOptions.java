@@ -24,29 +24,29 @@ import org.w3c.dom.Element;
  *
  */
 public class ContainerOptions {
-	
+
     private final Element rootElement;
 
-	public ContainerOptions(Element rootElement) {
+	public ContainerOptions(final Element rootElement) {
 		this.rootElement = rootElement;
 	}
-	
-	
+
+
 	public boolean isInheritParentBehaviors() {
         return boolValue(rootElement.getAttribute(INHERIT_BEHAVIORS_ATTRIBUTE), false);
-		
+
 	}
-	
+
 	public boolean isCaching() {
 		return boolValue(rootElement.getAttribute(CACHING_ATTRIBUTE), true);
 	}
-	
+
 	public String getMonitorName() {
 		return rootElement.getAttribute(COMPONENT_MONITOR);
 	}
-	
+
 	public String getComponentFactoryName() {
-		return rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);		
+		return rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);
 	}
-	
+
 }

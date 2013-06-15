@@ -20,10 +20,10 @@ public class SystemPropertiesPicoContainer extends PropertiesPicoContainer {
 	public SystemPropertiesPicoContainer() {
 		this(null);
 	}
-	public SystemPropertiesPicoContainer(PicoContainer parent) {
+	public SystemPropertiesPicoContainer(final PicoContainer parent) {
 		super(System.getProperties(),parent);
 	}
-	
+
     @Override
     public String toString() {
         return "[SysProps]:" + super.getDelegate().toString();

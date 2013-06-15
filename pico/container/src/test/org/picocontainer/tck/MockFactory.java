@@ -15,10 +15,10 @@ import org.jmock.lib.CamelCaseNamingScheme;
 public class MockFactory {
 
 	/**
-	 * Returns a Mockery instance with a counting naming scheme. 
+	 * Returns a Mockery instance with a counting naming scheme.
 	 * From jMock 2.4, default behaviour does not allow more than one mock with same name.
-	 * This can be over-restrictive. A workaround is to append a counting integer. 
-	 * 
+	 * This can be over-restrictive. A workaround is to append a counting integer.
+	 *
 	 * @return A Mockery instance
 	 */
 	public static Mockery mockeryWithCountingNamingScheme() {
@@ -27,7 +27,8 @@ public class MockFactory {
 				setNamingScheme(new CamelCaseNamingScheme() {
 					private int count;
 
-					public String defaultNameFor(Class<?> typeToMock) {
+					@Override
+					public String defaultNameFor(final Class<?> typeToMock) {
 						count++;
 						return super.defaultNameFor(typeToMock) + count;
 					}

@@ -33,11 +33,11 @@ import org.w3c.dom.NodeList;
  * @author Mauro Talevi
  */
 public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory {
-    
+
     private static final String NAME_ATTRIBUTE = "name";
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) {
+    public Object makeInstance(final PicoContainer pico, final Element element, final ClassLoader classLoader) {
         String className = element.getNodeName();
         Object instance;
 
@@ -56,12 +56,12 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         return instance;
     }
 
-    private ComponentAdapter<?> createComponentAdapter(String className, ClassLoader classLoader)  {
+    private ComponentAdapter<?> createComponentAdapter(final String className, final ClassLoader classLoader)  {
         Class<?> implementation = loadClass(classLoader, className);
         ComponentFactory factory = new AdaptingInjection();
-        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation, 
- 
-        		//Adapting injection will now support simultanous constructor 
+        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation,
+
+        		//Adapting injection will now support simultanous constructor
         		//and other types of injection (since 3.0)
         		//Must provide empty parameter array to use the default constructor.
         		//
@@ -76,13 +76,13 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         }
     }
 
-    private java.util.Properties createProperties(NodeList nodes) {
+    private java.util.Properties createProperties(final NodeList nodes) {
         java.util.Properties properties = new java.util.Properties();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node n = nodes.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 String name = n.getNodeName();
-                
+
                 //Provide for a new 'name' attribute in properties.
                 if (n.hasAttributes()) {
                     String mappedName = n.getAttributes().getNamedItem(NAME_ATTRIBUTE).getNodeValue();

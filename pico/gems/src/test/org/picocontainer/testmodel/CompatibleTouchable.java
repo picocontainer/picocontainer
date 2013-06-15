@@ -15,12 +15,12 @@ import java.io.Serializable;
 
 /**
  * Method compatible Touchable.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
 public class CompatibleTouchable implements Serializable {
-	
+
 	private boolean wasTouched;
 
     public void touch() {

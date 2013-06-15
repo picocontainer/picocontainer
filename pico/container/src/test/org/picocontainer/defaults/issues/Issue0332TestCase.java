@@ -1,17 +1,18 @@
 package org.picocontainer.defaults.issues;
 
-import com.googlecode.jtype.Generic;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import com.googlecode.jtype.Generic;
 
 public class Issue0332TestCase {
 
@@ -21,7 +22,7 @@ public class Issue0332TestCase {
     public static class Searcher {
     	private final List<String> searchPath;
 
-    	public Searcher(List<String> searchPath) {
+    	public Searcher(final List<String> searchPath) {
     		this.searchPath = searchPath;
     	}
 
@@ -29,7 +30,7 @@ public class Issue0332TestCase {
     		return searchPath;
     	}
     }
-    
+
 
     /**
      * TODO Revisit this for Pico 3.
@@ -46,7 +47,7 @@ public class Issue0332TestCase {
     	conflictingList.add(1);
     	conflictingList.add(2);
     	pico.addComponent("conflict", conflictingList);
-    	
+
     	pico.addComponent("searchPath",searchPath)
     		.addComponent(Searcher.class);
 
@@ -54,7 +55,7 @@ public class Issue0332TestCase {
     	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
     }
 
-    @Test 
+    @Test
     public void canInstantiateExplicitCollectionWithComponentParameter() {
     	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
     	List<String> searchPath = new ArrayList<String>();

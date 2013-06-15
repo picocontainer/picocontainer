@@ -10,18 +10,18 @@
 
 package org.picocontainer.behaviors;
 
+import java.util.Properties;
+
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.SimpleReference;
-import org.picocontainer.LifecycleStrategy;
-
-import java.util.Properties;
 
 /**
  * factory class creating cached behaviours
@@ -32,8 +32,9 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class Caching extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-			Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+			final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
 		if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
 			return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 		}
@@ -43,8 +44,9 @@ public class Caching extends AbstractBehavior {
        );
 	}
 
-	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-			Properties componentProps, ComponentAdapter<T> adapter) {
+	@Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+			final Properties componentProps, final ComponentAdapter<T> adapter) {
 		if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
 			return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
 		}
@@ -72,15 +74,16 @@ public class Caching extends AbstractBehavior {
     @SuppressWarnings("serial")
     public static class Cached<T> extends Storing.Stored<T> {
 
-        public Cached(ComponentAdapter<T> delegate) {
+        public Cached(final ComponentAdapter<T> delegate) {
             this(delegate, new SimpleReference<Instance<T>>());
         }
 
-        public Cached(ComponentAdapter<T> delegate, ObjectReference<Instance<T>> instanceReference) {
+        public Cached(final ComponentAdapter<T> delegate, final ObjectReference<Instance<T>> instanceReference) {
             super(delegate, instanceReference);
         }
 
-        public String getDescriptor() {
+        @Override
+		public String getDescriptor() {
             return "Cached" + getLifecycleDescriptor();
         }
     }

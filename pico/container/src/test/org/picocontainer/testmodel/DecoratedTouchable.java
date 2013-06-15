@@ -15,7 +15,7 @@ package org.picocontainer.testmodel;
 public class DecoratedTouchable implements Touchable {
     private final Touchable delegate;
 
-    public DecoratedTouchable(Touchable delegate) {
+    public DecoratedTouchable(final Touchable delegate) {
         this.delegate = delegate;
     }
 

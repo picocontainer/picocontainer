@@ -10,17 +10,6 @@
 package org.picocontainer.behaviors;
 
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Characteristics;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.File;
@@ -35,26 +24,39 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
+
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
  * {@link PropertyApplicator} instances.
- * 
+ *
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
 public final class PropertyApplying extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-            LifecycleStrategy lifecycle, Properties componentProps, Object key,
-            Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+            final LifecycleStrategy lifecycle, final Properties componentProps, final Object key,
+            final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         ComponentAdapter<T> decoratedAdapter =
                 super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return monitor.changedBehavior(new PropertyApplicator<T>(decoratedAdapter));
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-            LifecycleStrategy lifecycle, Properties componentProps, ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
+            final LifecycleStrategy lifecycle, final Properties componentProps, final ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING);
         return monitor.changedBehavior(new PropertyApplicator<T>(
                 super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
@@ -90,7 +92,7 @@ public final class PropertyApplying extends AbstractBehavior {
          * @param delegate the wrapped {@link org.picocontainer.ComponentAdapter}
          * @throws org.picocontainer.PicoCompositionException {@inheritDoc}
          */
-        public PropertyApplicator(ComponentAdapter<T> delegate) throws PicoCompositionException {
+        public PropertyApplicator(final ComponentAdapter<T> delegate) throws PicoCompositionException {
             super(delegate);
         }
 
@@ -104,7 +106,8 @@ public final class PropertyApplying extends AbstractBehavior {
          *                                     {@inheritDoc}
          * @see #setProperties(java.util.Map)
          */
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             final T componentInstance = super.getComponentInstance(container, into);
             if (setters == null) {
                 setters = getSetters(getComponentImplementation());
@@ -139,7 +142,7 @@ public final class PropertyApplying extends AbstractBehavior {
             return "PropertyApplied";
         }
 
-        private Map<String, Method> getSetters(Class<?> clazz) {
+        private Map<String, Method> getSetters(final Class<?> clazz) {
             Map<String, Method> result = new HashMap<String, Method>();
             Method[] methods = getMethods(clazz);
             for (Method method : methods) {
@@ -159,7 +162,7 @@ public final class PropertyApplying extends AbstractBehavior {
         }
 
 
-        private String getPropertyName(Method method) {
+        private String getPropertyName(final Method method) {
             final String name = method.getName();
             String result = name.substring(3);
             if(result.length() > 1 && !Character.isUpperCase(result.charAt(1))) {
@@ -170,14 +173,14 @@ public final class PropertyApplying extends AbstractBehavior {
             return result;
         }
 
-        private boolean isSetter(Method method) {
+        private boolean isSetter(final Method method) {
             final String name = method.getName();
             return name.length() > 3 &&
                     name.startsWith("set") &&
                     method.getParameterTypes().length == 1;
         }
 
-        private Object convertType(PicoContainer container, Method setter, String propertyValue) {
+        private Object convertType(final PicoContainer container, final Method setter, final String propertyValue) {
             if (propertyValue == null) {
                 return null;
             }
@@ -213,7 +216,7 @@ public final class PropertyApplying extends AbstractBehavior {
          * @param classLoader used to load a class if typeName is "class" or "java.lang.Class" (ignored otherwise)
          * @return instantiated object or null if the type was unknown/unsupported
          */
-        public static Object convert(String typeName, String value, ClassLoader classLoader) {
+        public static Object convert(final String typeName, final String value, final ClassLoader classLoader) {
             if (typeName.equals(Boolean.class.getName()) || typeName.equals(boolean.class.getName())) {
                 return Boolean.valueOf(value);
             } else if (typeName.equals(Byte.class.getName()) || typeName.equals(byte.class.getName())) {
@@ -253,7 +256,7 @@ public final class PropertyApplying extends AbstractBehavior {
             return null;
         }
 
-        private static Class<?> loadClass(ClassLoader classLoader, String typeName) {
+        private static Class<?> loadClass(final ClassLoader classLoader, final String typeName) {
             try {
                 return classLoader.loadClass(typeName);
             } catch (ClassNotFoundException e) {
@@ -267,7 +270,7 @@ public final class PropertyApplying extends AbstractBehavior {
          *
          * @param properties bean properties
          */
-        public void setProperties(Map<String, String> properties) {
+        public void setProperties(final Map<String, String> properties) {
             this.properties = properties;
         }
 
@@ -286,7 +289,7 @@ public final class PropertyApplying extends AbstractBehavior {
          * @param container
          */
         private Object getSetterParameter(final String propertyName, final Object propertyValue,
-            final Object componentInstance, PicoContainer container) {
+            final Object componentInstance, final PicoContainer container) {
 
             if (propertyValue == null) {
                 return null;
@@ -322,7 +325,7 @@ public final class PropertyApplying extends AbstractBehavior {
             return convertedValue;
         }
 
-        public void setProperty(String name, String value) {
+        public void setProperty(final String name, final String value) {
             if (properties == null) {
                 properties = new HashMap<String, String>();
             }

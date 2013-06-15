@@ -31,8 +31,8 @@ import org.picocontainer.visitors.VerifyingVisitor;
 @RunWith(JMock.class)
 public class PicoVisitorTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testVisitorThatMustBeInvokedUsingTraverse() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         try {
@@ -46,7 +46,7 @@ public class PicoVisitorTestCase {
     public static class UnusualNode {
         boolean visited;
 
-        public void accept(PicoVisitor visit) {
+        public void accept(final PicoVisitor visit) {
             visited = true;
         }
     }

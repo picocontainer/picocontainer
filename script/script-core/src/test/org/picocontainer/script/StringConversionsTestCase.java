@@ -59,7 +59,7 @@ public final class StringConversionsTestCase {
     @SuppressWarnings("unchecked")
     @Test public void testCustomConversionsCanBeRegistered() {
         converter.register(File.class, new StringConversions.StringConverter() {
-            public Object convert(String in) {
+            public Object convert(final String in) {
                 return new File(in);
             }
         });

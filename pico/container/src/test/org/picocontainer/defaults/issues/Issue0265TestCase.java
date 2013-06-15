@@ -36,7 +36,7 @@ import org.picocontainer.injectors.AbstractInjector;
 @RunWith(JMock.class)
 public class Issue0265TestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
     @Test public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
         final Method start = Startable.class.getMethod("start");
@@ -51,15 +51,15 @@ public class Issue0265TestCase {
             will(returnParameterAction(0));
             one(monitor1).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
             will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
-            one(monitor1).instantiated(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)), 
+            one(monitor1).instantiated(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)),
             		with(any(Object.class)), with(any(Object[].class)), with(any(Long.class)));
-            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)), with(any(Object[].class)));
-            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)), with(any(Long.class)), with(same(null)), with(any(Object[].class)));
-            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)),
             		with(any(Object.class)), with(any(Object[].class)));
-            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)),
             		with(any(Object.class)), with(any(Long.class)), with(same(null)), with(any(Object[].class)));
         }});
         pico.as(Characteristics.CACHE).addComponent(DefaultPicoContainerTestCase.MyStartable.class);
@@ -71,35 +71,35 @@ public class Issue0265TestCase {
         mockery.checking(new Expectations() {{
             one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)), with(any(Object[].class)));
-            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)), with(any(Long.class)), with(same(null)), with(any(Object[].class)));
-            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)),
             		with(any(Object.class)), with(any(Object[].class)));
-            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)),
             		with(any(Object.class)), with(any(Long.class)), with(same(null)), with(any(Object[].class)));
         }});
         pico.start();
         pico.stop();
     }
 
-    public static Action returnParameterAction(int param) {
+    public static Action returnParameterAction(final int param) {
         return new ReturnParameterAction(param);
     }
 
     public static class ReturnParameterAction implements Action {
         private final int parameter;
 
-        public ReturnParameterAction(int parameter) {
+        public ReturnParameterAction(final int parameter) {
             this.parameter = parameter;
         }
 
-        public void describeTo(Description description) {
+        public void describeTo(final Description description) {
             description.appendText("returns param[")
                     .appendValue(parameter)
                     .appendText("]");
         }
 
-        public Object invoke(Invocation invocation) {
+        public Object invoke(final Invocation invocation) {
             return invocation.getParameter(parameter);
         }
     }

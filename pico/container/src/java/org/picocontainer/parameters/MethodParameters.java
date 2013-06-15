@@ -5,7 +5,7 @@ import org.picocontainer.Parameter;
 @SuppressWarnings("serial")
 public class MethodParameters extends AccessibleObjectParameterSet {
 
-	public MethodParameters(String name, Parameter... params) {
+	public MethodParameters(final String name, final Parameter... params) {
 		super(name, params);
 	}
 
@@ -15,7 +15,7 @@ public class MethodParameters extends AccessibleObjectParameterSet {
 	 * @param name
 	 * @param params
 	 */
-	public MethodParameters(Class<?> targetType, String name, Parameter... params) {
+	public MethodParameters(final Class<?> targetType, final String name, final Parameter... params) {
 		super(targetType, name, params);
 	}
 

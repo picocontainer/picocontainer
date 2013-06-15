@@ -8,15 +8,14 @@
 package org.picocontainer.visitors;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.visitors.AbstractPicoVisitor;
 
 
 /**
  * Concrete implementation of Visitor which simply checks traversals.
- * This can be a useful class for other Visitor implementations to extend, 
+ * This can be a useful class for other Visitor implementations to extend,
  * as it provides a default implementation in case you one is only interested
  * in one PicoVisitor type.  Example:
  *
@@ -41,23 +40,23 @@ public class TraversalCheckingVisitor
         extends AbstractPicoVisitor {
 
 	/** {@inheritDoc} **/
-    public boolean visitContainer(PicoContainer pico) {
+    public boolean visitContainer(final PicoContainer pico) {
         checkTraversal();
         return CONTINUE_TRAVERSAL;
     }
 
 	/** {@inheritDoc} **/
-    public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
+    public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
         checkTraversal();
     }
 
 	/** {@inheritDoc} **/
-    public void visitComponentFactory(ComponentFactory componentFactory) {
+    public void visitComponentFactory(final ComponentFactory componentFactory) {
         checkTraversal();
     }
 
 	/** {@inheritDoc} **/
-    public void visitParameter(Parameter parameter) {
+    public void visitParameter(final Parameter parameter) {
         checkTraversal();
     }
 

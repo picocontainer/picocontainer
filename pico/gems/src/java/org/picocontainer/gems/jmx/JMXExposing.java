@@ -10,6 +10,12 @@
 
 package org.picocontainer.gems.jmx;
 
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
@@ -18,6 +24,9 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Caching;
@@ -25,15 +34,6 @@ import org.picocontainer.gems.GemsCharacteristics;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 
 /**
@@ -43,7 +43,7 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class JMXExposing extends AbstractBehavior {
 
-	
+
 	private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
 
@@ -54,8 +54,8 @@ public class JMXExposing extends AbstractBehavior {
     public JMXExposing() {
     	this(ManagementFactory.getPlatformMBeanServer());
     }
-    
-    
+
+
     /**
      * Construct a JMXExposingComponentFactory.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
@@ -86,7 +86,7 @@ public class JMXExposing extends AbstractBehavior {
             throws NullPointerException {
         this(mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
-    
+
 
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
@@ -95,13 +95,13 @@ public class JMXExposing extends AbstractBehavior {
      */
     @Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-            final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+            final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 monitor, lifecycle,
                 componentProps, key, impl, constructorParams, fieldParams, methodParams);
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_JMX)) {
-            return delegateAdapter;            
-        } else {        	
+            return delegateAdapter;
+        } else {
         	AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.JMX);
             return monitor.changedBehavior(new JMXExposed<T>(delegateAdapter, mBeanServer, providers));
         }

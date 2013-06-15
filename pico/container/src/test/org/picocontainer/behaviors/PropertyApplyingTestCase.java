@@ -48,13 +48,13 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     public static class Foo {
         public String message;
 
-        public void setMessage(String message) {
+        public void setMessage(final String message) {
             this.message = message;
         }
     }
 
     public static class Failing {
-        public void setMessage(String message) {
+        public void setMessage(final String message) {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
@@ -79,51 +79,51 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         public Class class_;
         public String string_;
 
-        public void setClass_(Class class_) {
+        public void setClass_(final Class class_) {
             this.class_ = class_;
         }
 
-        public void setString_(String string_) {
+        public void setString_(final String string_) {
             this.string_ = string_;
         }
 
-        public void setBoolean_(boolean boolean_) {
+        public void setBoolean_(final boolean boolean_) {
             this.boolean_ = boolean_;
         }
 
-        public void setByte_(byte byte_) {
+        public void setByte_(final byte byte_) {
             this.byte_ = byte_;
         }
 
-        public void setChar_(char char_) {
+        public void setChar_(final char char_) {
             this.char_ = char_;
         }
 
-        public void setDouble_(double double_) {
+        public void setDouble_(final double double_) {
             this.double_ = double_;
         }
 
-        public void setFloat_(float float_) {
+        public void setFloat_(final float float_) {
             this.float_ = float_;
         }
 
-        public void setInt_(int int_) {
+        public void setInt_(final int int_) {
             this.int_ = int_;
         }
 
-        public void setLong_(long long_) {
+        public void setLong_(final long long_) {
             this.long_ = long_;
         }
 
-        public void setShort_(short short_) {
+        public void setShort_(final short short_) {
             this.short_ = short_;
         }
 
-        public void setFile_(File file_) {
+        public void setFile_(final File file_) {
             this.file_ = file_;
         }
 
-        public void setUrl_(URL url_) {
+        public void setUrl_(final URL url_) {
             this.url_ = url_;
         }
     }
@@ -131,7 +131,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     public static class A {
         private B b;
 
-        public void setB(B b) {
+        public void setB(final B b) {
             this.b = b;
         }
     }
@@ -155,7 +155,8 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new PropertyApplying().wrap(new AdaptingInjection());
     }
 
@@ -219,7 +220,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         assertNotNull(componentAdapter.getDelegate());
     }
 
-    private ComponentAdapter createAdapterCallingSetMessage(Class impl) {
+    private ComponentAdapter createAdapterCallingSetMessage(final Class impl) {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         Map properties = new HashMap();
@@ -352,11 +353,11 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     /** todo Is this test duplicated elsewhere?  --MR */
     @Test public void testSetBeanPropertiesWithWrongNumberOfParametersThrowsPicoInitializationException() {
         Object testBean = new Object() {
-            public void setMultiValues(String val1, String Val2) {
+            public void setMultiValues(final String val1, final String Val2) {
                 throw new IllegalStateException("Setter should never have been called");
             }
 
-            public void setSomeString(String val1) {
+            public void setSomeString(final String val1) {
                 throw new IllegalStateException("Setter should never have been called");
             }
         };

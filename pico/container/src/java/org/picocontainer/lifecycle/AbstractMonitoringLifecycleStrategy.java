@@ -52,7 +52,7 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
         return monitor;
     }
 
-    public boolean isLazy(ComponentAdapter<?> adapter) {
+    public boolean isLazy(final ComponentAdapter<?> adapter) {
         return false;
     }
 

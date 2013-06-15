@@ -8,11 +8,11 @@ import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
 
-import org.junit.After;
-import org.junit.Test;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.IO;
+import org.junit.After;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
 public class DependencyInjectionFilterTestCase {

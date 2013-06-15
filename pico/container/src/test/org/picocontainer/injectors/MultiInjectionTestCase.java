@@ -10,7 +10,6 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -29,11 +28,11 @@ public class MultiInjectionTestCase {
         private final Bar bar;
         private Baz baz;
 
-        public Foo(Bar bar) {
+        public Foo(final Bar bar) {
             this.bar = bar;
         }
 
-        public void setBaz(Baz baz) {
+        public void setBaz(final Baz baz) {
             this.baz = baz;
         }
     }
@@ -42,11 +41,11 @@ public class MultiInjectionTestCase {
         private final Bar bar;
         private Baz baz;
 
-        public Foo2(Bar bar) {
+        public Foo2(final Bar bar) {
             this.bar = bar;
         }
 
-        public void injectBaz(Baz baz) {
+        public void injectBaz(final Baz baz) {
             this.baz = baz;
         }
     }
@@ -55,12 +54,12 @@ public class MultiInjectionTestCase {
         private final Bar bar;
         private Baz baz;
 
-        public Foo3(Bar bar) {
+        public Foo3(final Bar bar) {
             this.bar = bar;
         }
 
         @Inject
-        public void fjshdfkjhsdkfjh(Baz baz) {
+        public void fjshdfkjhsdkfjh(final Baz baz) {
             this.baz = baz;
         }
     }

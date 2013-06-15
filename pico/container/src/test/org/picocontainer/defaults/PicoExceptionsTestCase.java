@@ -9,24 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.junit.Test;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoException;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoException;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
  * Unit tests for the several PicoException classes.

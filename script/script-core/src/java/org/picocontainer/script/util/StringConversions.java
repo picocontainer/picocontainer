@@ -24,7 +24,7 @@ public class StringConversions {
     }
 
     public static class InvalidConversionException extends PicoCompositionException {
-        public InvalidConversionException(String message) {
+        public InvalidConversionException(final String message) {
         super(message);
     }
 }
@@ -33,25 +33,25 @@ public class StringConversions {
 
     public StringConversions() {
         register(String.class, new StringConverter<String>() {
-            public String convert(String in) {
+            public String convert(final String in) {
                 return in;
             }
         });
 
         register(Integer.class, new StringConverter<Integer>() {
-            public Integer convert(String in) {
+            public Integer convert(final String in) {
                 return in == null ? 0 : Integer.valueOf(in);
             }
         });
 
         register(Long.class, new StringConverter<Long>() {
-            public Long convert(String in) {
+            public Long convert(final String in) {
                 return in == null ? (long) 0 : Long.valueOf(in);
             }
         });
 
         register(Boolean.class, new StringConverter<Boolean>() {
-            public Boolean convert(String in) {
+            public Boolean convert(final String in) {
                 if (in == null || in.length() == 0) {
                     return Boolean.FALSE;
                 }
@@ -61,7 +61,7 @@ public class StringConversions {
         });
     }
 
-    public Object convertTo(Class<?> desiredClass, String inputString) {
+    public Object convertTo(final Class<?> desiredClass, final String inputString) {
         StringConverter<?> converter = converters.get(desiredClass);
         if (converter == null) {
             throw new InvalidConversionException("Cannot convert to type " + desiredClass.getName());
@@ -69,7 +69,7 @@ public class StringConversions {
         return converter.convert(inputString);
     }
 
-    public void register(Class<?> type, StringConverter<?> converter) {
+    public void register(final Class<?> type, final StringConverter<?> converter) {
         converters.put(type, converter);
     }
 }

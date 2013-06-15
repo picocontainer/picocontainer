@@ -50,12 +50,12 @@ public class TypedFieldInjection extends AbstractInjectionType {
 
     private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";
 
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycle,
-                                                   Properties componentProps,
-                                                   Object key,
-                                                   Class<T> impl,
-                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                   final LifecycleStrategy lifecycle,
+                                                   final Properties componentProps,
+                                                   final Object key,
+                                                   final Class<T> impl,
+                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
         String fieldTypes = (String) componentProps.remove(INJECTION_FIELD_TYPES);
         if (fieldTypes == null) {
@@ -65,10 +65,10 @@ public class TypedFieldInjection extends AbstractInjectionType {
         )), lifecycle);
     }
 
-    public static Properties injectionFieldTypes(String... fieldTypes) {
+    public static Properties injectionFieldTypes(final String... fieldTypes) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < fieldTypes.length; i++) {
-            sb.append(" ").append(fieldTypes[i]);
+        for (String fieldType : fieldTypes) {
+            sb.append(" ").append(fieldType);
         }
         return immutable(INJECTION_FIELD_TYPES, sb.toString().trim());
     }
@@ -81,12 +81,12 @@ public class TypedFieldInjection extends AbstractInjectionType {
 
         private final List<String> classes;
 
-        public TypedFieldInjector(Object key,
-                                  Class<?> impl,
-                                  ComponentMonitor monitor, 
-                                  String classNames,
-                                  boolean requireUseOfallParameters,
-                                  FieldParameters... parameters) {
+        public TypedFieldInjector(final Object key,
+                                  final Class<?> impl,
+                                  final ComponentMonitor monitor,
+                                  final String classNames,
+                                  final boolean requireUseOfallParameters,
+                                  final FieldParameters... parameters) {
             super(key, impl, monitor, true, requireUseOfallParameters, parameters);
             this.classes = Arrays.asList(classNames.trim().split(" "));
         }
@@ -108,7 +108,7 @@ public class TypedFieldInjection extends AbstractInjectionType {
             bindings = bindingIds.toArray(new Annotation[0]);
         }
 
-        private Annotation getBinding(Field field) {
+        private Annotation getBinding(final Field field) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().isAnnotationPresent(Bind.class)) {
@@ -118,7 +118,7 @@ public class TypedFieldInjection extends AbstractInjectionType {
             return null;
         }
 
-        protected boolean isTypedForInjection(Field field) {
+        protected boolean isTypedForInjection(final Field field) {
             return classes.contains(field.getType().getName());
         }
 
@@ -131,7 +131,8 @@ public class TypedFieldInjection extends AbstractInjectionType {
         }
 
 
-        protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+        @Override
+		protected Object injectIntoMember(final AccessibleObject member, final Object componentInstance, final Object toInject)
             throws IllegalAccessException, InvocationTargetException {
             Field field = (Field) member;
             field.setAccessible(true);
@@ -153,7 +154,8 @@ public class TypedFieldInjection extends AbstractInjectionType {
             };
         }
 
-        protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
+        @Override
+		protected Object memberInvocationReturn(final Object lastReturn, final AccessibleObject member, final Object instance) {
             return instance;
         }
 

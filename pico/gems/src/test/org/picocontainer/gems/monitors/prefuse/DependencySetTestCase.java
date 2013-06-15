@@ -10,10 +10,10 @@ public class DependencySetTestCase {
 
     @Test public void testShouldNotAddDuplicates() throws Exception {
         ComponentDependencyListener mockListener = new ComponentDependencyListener() {
-            public void addDependency(Dependency dependency) {
+            public void addDependency(final Dependency dependency) {
              callCount++;
-            }    
-        };       
+            }
+        };
         DependencySet set = new DependencySet(mockListener);
         Dependency dependency = new Dependency(Object.class, String.class);
         set.addDependency(dependency);

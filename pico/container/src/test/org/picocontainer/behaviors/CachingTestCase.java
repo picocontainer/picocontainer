@@ -30,7 +30,8 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
  */
 public class CachingTestCase extends AbstractComponentFactoryTest {
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new Caching().wrap(new ConstructorInjection());
     }
 
@@ -84,7 +85,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.NO_CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(InstanceAdapter.class, foo.getClass());
-    }    
+    }
 
 
 }

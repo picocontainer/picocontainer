@@ -67,8 +67,8 @@ import org.picocontainer.script.testmodel.X;
  */
 @RunWith(JMock.class)
 public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
 	private static final String ASSEMBLY_SCOPE = "SOME_SCOPE";
 
 
@@ -115,16 +115,16 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     /**
      * Note the awkward usage of an empty parameter array, this is because JRuby cannot
      * handle varargs like Java allows.  See
-     * <a href="http://jira.codehaus.org/browse/JRUBY-3383">http://jira.codehaus.org/browse/JRUBY-3383</a> 
+     * <a href="http://jira.codehaus.org/browse/JRUBY-3383">http://jira.codehaus.org/browse/JRUBY-3383</a>
      * for more information.
-     * 
+     *
      */
     @Test
     public void testBuildingWithPicoSyntax() {
         Reader script = new StringReader(
         		         "Parameter = org.picocontainer.Parameter \n" +
                          "$parent.addComponent('foo', java.lang.String, [].to_java(Parameter))\n" +
-                         "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +  
+                         "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +
                          "pico = DefaultPicoContainer.new($parent)\n" +
                          "pico.addComponent(org.picocontainer.script.testmodel.A.java_class)\n"  +
                          "pico"
@@ -139,7 +139,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNotNull(pico.getComponent("foo"));
     }
 
-    @Test 
+    @Test
     public void testContainerBuiltWithMultipleComponentInstances() {
         Reader script = new StringReader(
                                          "container {\n" +
@@ -262,16 +262,16 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         final A a = new A();
-        
+
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
         mockery.checking(new Expectations() {{
-        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), 
+        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)),
         				with(any(ConstructorParameters.class)),
-        				with(any(FieldParameters[].class)), 
+        				with(any(FieldParameters[].class)),
         				with(any(MethodParameters[].class)));
             will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
-                                                                        
+
         PicoContainer pico = buildContainer(script, null, componentFactory);
         assertSame(a, pico.getComponent(A.class));
     }
@@ -396,21 +396,21 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", X.componentRecorder);
     }
-    
+
     @Test public void testParameterZero() {
-    	Reader script = new StringReader("" + 
+    	Reader script = new StringReader("" +
     			"container{\n" +
     			"	component(:class => java.util.ArrayList, :parameters => zero)\n" +
     			"	component(:class => java.util.HashSet, :parameters => zero)\n" +
-    			"}\n" 
+    			"}\n"
     	);
-    	
+
     	PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
     	assertNotNull(pico.getComponent(ArrayList.class));
     	assertNotNull(pico.getComponent(HashSet.class));
     }
-    
-    
+
+
 
     @Test public void testBuildContainerWithParentAttribute() {
         DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
@@ -479,9 +479,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         PicoContainer pico = buildContainer(script, parent, new SomeAssemblyScope());
         assertNotNull(pico.getComponent(B.class));
     }
-    
+
 	@Test public void testAutoStartingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "A = org.picocontainer.script.testmodel.A\n" +
                 "container(:parent => $parent) {\n" +
@@ -491,12 +491,12 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         PicoContainer pico = buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "A = org.picocontainer.script.testmodel.A\n" +
                 "container(:parent => $parent) {\n" +
@@ -507,10 +507,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
-    
+
 
     @Test
     public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
@@ -637,7 +637,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testWithParentClassPathPropagatesWithNoParentContainer() throws IOException {
         File testCompJar = TestHelper.getTestCompJarFile();
         assertTrue(testCompJar.exists());
-        
+
         URLClassLoader classLoader = new URLClassLoader(new URL[]{testCompJar.toURI().toURL()},
                                                         this.getClass().getClassLoader());
         Class<?> testComp = null;
@@ -668,32 +668,32 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                 "container(:parent => $parent) {\n" +
                 "       component(:class => \"TestComp\")\n" +
                 "}\n");
-	
-	    
-	
+
+
+
 	    File testCompJar = TestHelper.getTestCompJarFile();
 	    assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
 	    URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURI().toURL()}, this.getClass().getClassLoader());
 	    Class<?> testComp = null;
 	    PicoContainer parent = new DefaultPicoContainer();
-	
+
 	    try {
 	        testComp = classLoader.loadClass("TestComp");
 	    } catch (ClassNotFoundException ex) {
 	        ex.printStackTrace();
 	        fail("Unable to load test component from the jar using a url classloader");
 	    }
-	
+
 	    PicoContainer pico = buildContainer(new JRubyContainerBuilder(script, classLoader), parent, "SOME_SCOPE");
 	    assertNotNull(pico);
 	    Object testCompInstance = pico.getComponent("TestComp");
 	    assertNotNull(testCompInstance);
 	    assertEquals(testComp.getName(),testCompInstance.getClass().getName());
-	
-	}
-    
 
-    private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
+	}
+
+
+    private PicoContainer buildContainer(final Reader script, final PicoContainer parent, final Object scope) {
         return buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
     }
 }

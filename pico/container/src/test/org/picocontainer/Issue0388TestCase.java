@@ -4,22 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.AnnotatedFieldInjection;
-import org.picocontainer.injectors.CompositeInjection;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.MultiInjection;
-import org.picocontainer.injectors.SetterInjection;
 
 public class Issue0388TestCase {
 
 	@Test
 	 public void testComponentCanUseConstructorAndAtInjectWithoutAnInitMethod() {
-		
-		
+
+
 	        final MutablePicoContainer pico = new DefaultPicoContainer();
 	        pico.addComponent(Carrot.class)
 	        	.addComponent(Cheese.class)
@@ -51,7 +43,7 @@ public class Issue0388TestCase {
 	        @Inject
 	        private Carrot veg;
 
-	        public Mixer(Cheese cheese) {
+	        public Mixer(final Cheese cheese) {
 	            this.cheese = cheese;
 	        }
 
@@ -60,7 +52,7 @@ public class Issue0388TestCase {
 	        }
 	    }
 
-	    private static String simpleClassNameOrNull(Object o) {
+	    private static String simpleClassNameOrNull(final Object o) {
 	        return o == null ? null : o.getClass().getSimpleName().toLowerCase();
 	    }
 

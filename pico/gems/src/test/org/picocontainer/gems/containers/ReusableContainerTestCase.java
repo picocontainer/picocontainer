@@ -64,9 +64,9 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		Storing.Stored<HashSet> setValue = listCa.findAdapterOfType(Storing.Stored.class);
 		assertNotNull(setValue);
 		assertNull(setValue.getStoredObject());
-	
+
 	}
-	
+
 	@Test public void testStopRemovesInstanceRegistrations() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		pico.addComponent(List.class, new ArrayList());
@@ -75,19 +75,19 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		assertNotNull(pico.getComponentAdapter(List.class));
 		assertNotNull(pico.getComponentAdapter(HashSet.class));
 		pico.stop();
-		
+
 		assertNull(pico.getComponentAdapter(List.class));
 		assertNull(pico.getComponentAdapter(HashSet.class));
 	}
-	
+
 	@Override
     @Test public void testContainerCascadesDefaultLifecycle() {
 		//FIXME: This test is a problematic test case because for this object, Stop EXPLICITLY removes
 		//instances.
     }
-	
+
 	private static final int ITERATIONS = 5000;
-	
+
 	@Test public void testPerformanceTestReusablePico() {
 		long startTime = System.currentTimeMillis();
 		MutablePicoContainer pico = new PicoBuilder()
@@ -99,7 +99,7 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 			pico.addComponent("TestKey", "This is a test")
 				.addComponent("TestAnother", "This is a test");
 
-			pico.start();			
+			pico.start();
 			assertNotNull(pico.getComponent("TestKey"));
 			assertNotNull(pico.getComponent(RuntimeException.class));
 			assertNotNull(pico.getComponent(IllegalArgumentException.class));
@@ -107,9 +107,9 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 			assertNotNull(pico.getComponent(NoSuchFieldError.class));
 			pico.stop();
 		}
-		
+
 		pico.dispose();
-		
+
 		long endTime = System.currentTimeMillis();
 		System.out.println("Completed iterations using ReusablePicoContainer.  Time: " + (endTime - startTime) + "m.s.");
 	}
@@ -150,7 +150,7 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
                 .addComponent("TestAnother", "This is a test");
 
 			pico.start();
-			
+
 			assertNotNull(pico.getComponent("TestKey"));
 			assertNotNull(pico.getComponent(RuntimeException.class));
 			assertNotNull(pico.getComponent(IllegalArgumentException.class));
@@ -159,7 +159,7 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 			pico.stop();
 			pico.dispose();
 		}
-		
+
 		long endTime = System.currentTimeMillis();
 		System.out.println("Completed iterations using DefaultPicoContainer.  Time: " + (endTime - startTime) + "m.s.");
 	}

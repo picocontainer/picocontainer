@@ -1,7 +1,8 @@
 package org.picocontainer.defaults.issues;
 
-import org.junit.Test;import static org.junit.Assert.assertFalse;import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertSame;
 
+import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.injectors.ConstructorInjection;

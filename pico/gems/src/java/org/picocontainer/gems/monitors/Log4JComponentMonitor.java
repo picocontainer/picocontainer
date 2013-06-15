@@ -10,6 +10,19 @@
 
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -21,20 +34,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 
 /**
@@ -53,7 +52,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 	 * Log4j Logger.
 	 */
     private transient Logger logger;
-    
+
     /**
      * Delegate Monitor.
      */
@@ -66,9 +65,9 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      */
     public Log4JComponentMonitor() {
         delegate = new NullComponentMonitor();
-        
+
     }
-    
+
     /**
      * Creates a Log4JComponentMonitor with a given Logger instance class.
      * The class name is used to retrieve the Logger instance.
@@ -175,7 +174,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     public Object invoking(final PicoContainer container,
                          final ComponentAdapter<?> componentAdapter,
                          final Member member,
-                         final Object instance, Object... args) {
+                         final Object instance, final Object... args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -184,12 +183,12 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Member member,
-                        Object instance,
-                        long duration,
-                        Object retVal, Object[] args) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Member member,
+                        final Object instance,
+                        final long duration,
+                        final Object retVal, final Object[] args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKED, memberToString(member), instance, duration));
@@ -234,18 +233,18 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
 
     protected synchronized Logger getLogger(final Member member) {
         if (logger != null) {
             return logger;
-        } 
+        }
         return LogManager.getLogger(member.getDeclaringClass());
     }
 
-    
+
     /**
      * Serializes the monitor.
      * @param oos object output stream.
@@ -257,10 +256,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     		oos.writeBoolean(true);
     		oos.writeUTF(logger.getName());
     	} else {
-    		oos.writeBoolean(false);    			
+    		oos.writeBoolean(false);
     	}
     }
-    
+
     /**
      * Manually creates a new logger instance if it was defined earlier.
      * @param ois

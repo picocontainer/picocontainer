@@ -31,31 +31,31 @@ public abstract class AbstractMultipleConstructorTest {
     public static final class Multi {
         public final String message;
 
-        public Multi(One one, Two two, Three three) {
+        public Multi(final One one, final Two two, final Three three) {
             message = "one two three";
         }
 
-        public Multi(One one, Two two) {
+        public Multi(final One one, final Two two) {
             message = "one two";
         }
 
-        public Multi(Two two, One one) {
+        public Multi(final Two two, final One one) {
             message = "two one";
         }
 
-        public Multi(Two two, Three three) {
+        public Multi(final Two two, final Three three) {
             message = "two three";
         }
 
-        public Multi(Three three, One one) {
+        public Multi(final Three three, final One one) {
             message = "three one";
         }
 
-        public Multi(One one, String string) {
+        public Multi(final One one, final String string) {
             message = "one string";
         }
 
-        public Multi(One one, int i) {
+        public Multi(final One one, final int i) {
             message = "one int";
         }
 

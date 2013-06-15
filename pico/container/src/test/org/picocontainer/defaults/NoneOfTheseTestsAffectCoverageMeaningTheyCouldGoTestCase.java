@@ -138,7 +138,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {
     public static class Dino implements Animal {
         final String food;
 
-        public Dino(String food) {
+        public Dino(final String food) {
             this.food = food;
         }
 
@@ -148,19 +148,19 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {
     }
 
     public static class Dino2 extends Dino {
-        public Dino2(int number) {
+        public Dino2(final int number) {
             super(String.valueOf(number));
         }
     }
 
     public static class Dino3 extends Dino {
-        public Dino3(String a, String b) {
+        public Dino3(final String a, final String b) {
             super(a + b);
         }
     }
 
     public static class Dino4 extends Dino {
-        public Dino4(String a, int n, String b, Touchable Touchable) {
+        public Dino4(final String a, final int n, final String b, final Touchable Touchable) {
             super(a + n + b + " " + Touchable.getClass().getName());
         }
     }

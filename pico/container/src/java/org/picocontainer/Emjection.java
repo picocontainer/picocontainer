@@ -1,23 +1,23 @@
 package org.picocontainer;
 
+import java.lang.reflect.Field;
+
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
-
-import java.lang.reflect.Field;
 
 public class Emjection {
 
     private PicoContainer pico;
 
-    public void setPico(ImmutablePicoContainer container) {
+    public void setPico(final ImmutablePicoContainer container) {
         if (pico != null) {
             throw new PicoCompositionException("Emjection can only be setup once per component");
         }
         pico = container;
     }
 
-    public static <T> T neu(Class<T> type, Emjection emjection, Object... args) {
+    public static <T> T neu(final Class<T> type, final Emjection emjection, final Object... args) {
         if (emjection.pico == null) {
             throw new PicoCompositionException("blah");
         }
@@ -34,7 +34,7 @@ public class Emjection {
         return inst;
     }
 
-    private static <T> void setPico(Object inst, PicoContainer container) {
+    private static <T> void setPico(final Object inst, final PicoContainer container) {
         try {
             Field field = inst.getClass().getDeclaredField("emjection");
             field.setAccessible(true);
@@ -47,7 +47,7 @@ public class Emjection {
         }
     }
 
-    public static void setupEmjection(Object inst, PicoContainer container) {
+    public static void setupEmjection(final Object inst, final PicoContainer container) {
             setPico(inst, container);
     }
 

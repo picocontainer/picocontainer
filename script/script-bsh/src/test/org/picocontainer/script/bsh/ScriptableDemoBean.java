@@ -17,11 +17,11 @@ public class ScriptableDemoBean {
     public Object key;
     public Object whatever;
 
-    public void rememberMyKey(Object key) {
+    public void rememberMyKey(final Object key) {
         this.key = key;
     }
 
-    public void setWhatever(Object whatever) {
+    public void setWhatever(final Object whatever) {
         this.whatever = whatever;
     }
 }

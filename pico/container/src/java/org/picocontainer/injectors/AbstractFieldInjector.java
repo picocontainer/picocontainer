@@ -25,7 +25,7 @@ import org.picocontainer.parameters.FieldParameters;
 public abstract class AbstractFieldInjector<T> extends IterativeInjector<T> {
 
 	public AbstractFieldInjector(final Object componentKey, final Class<?> componentImplementation,
-			final ComponentMonitor monitor, final boolean useNames, boolean requireConsumptionOfallParameters, final FieldParameters... parameters)
+			final ComponentMonitor monitor, final boolean useNames, final boolean requireConsumptionOfallParameters, final FieldParameters... parameters)
 			throws NotConcreteRegistrationException {
 		super(componentKey, componentImplementation, monitor, useNames, requireConsumptionOfallParameters, parameters);
 	}
@@ -50,20 +50,20 @@ public abstract class AbstractFieldInjector<T> extends IterativeInjector<T> {
 		final String container1 = container.toString();
 		throw new UnsatisfiableDependenciesException(sb.toString() + "] from " + container1);
 	}
-	
+
 
 	@Override
-	protected boolean isAccessibleObjectEqualToParameterTarget(AccessibleObject testObject,
-			Parameter currentParameter) {
+	protected boolean isAccessibleObjectEqualToParameterTarget(final AccessibleObject testObject,
+			final Parameter currentParameter) {
 		if (currentParameter.getTargetName() == null) {
 			return false;
-		}		
-		
+		}
+
 		if (!(testObject instanceof Field)) {
 			throw new PicoCompositionException(testObject + " must be a field to use setter injection");
 		}
-		
-		Field testField = (Field)testObject;			
+
+		Field testField = (Field)testObject;
 		return testField.getName().equals(currentParameter.getTargetName());
 	}
 }

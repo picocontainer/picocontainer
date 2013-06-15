@@ -17,7 +17,7 @@ import org.picocontainer.PicoContainer;
 /**
  * immutable pico container constructed from properties.
  * intendet to be used with config parameter
- * 
+ *
  * @author Konstantin Pribluda
  *
  */
@@ -29,8 +29,8 @@ public class PropertiesPicoContainer extends AbstractDelegatingPicoContainer {
 	 * @param properties
 	 * @param parent
 	 */
-	public PropertiesPicoContainer(Properties properties, PicoContainer parent) {
-		super(new DefaultPicoContainer(parent));		
+	public PropertiesPicoContainer(final Properties properties, final PicoContainer parent) {
+		super(new DefaultPicoContainer(parent));
 		// populate container from properties
 		for(Object key: properties.keySet()) {
 			((MutablePicoContainer)getDelegate()).addComponent(key,properties.get(key));
@@ -41,17 +41,17 @@ public class PropertiesPicoContainer extends AbstractDelegatingPicoContainer {
 	 * construct without a parent
 	 * @param properties
 	 */
-	public PropertiesPicoContainer(Properties properties) {
+	public PropertiesPicoContainer(final Properties properties) {
 		this(properties,null);
 	}
 
-    public void setName(String s) {
+    public void setName(final String s) {
         ((MutablePicoContainer)getDelegate()).setName(s);
     }
-    
+
     @Override
     public String toString() {
         return "[Properties]:" + super.getDelegate().toString();
-    }    
+    }
 
 }

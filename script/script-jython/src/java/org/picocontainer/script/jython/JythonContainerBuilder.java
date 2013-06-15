@@ -17,7 +17,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.python.core.Py;
-import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
 /**
@@ -35,15 +34,16 @@ import org.python.util.PythonInterpreter;
  */
 public class JythonContainerBuilder extends ScriptedContainerBuilder {
 
-    public JythonContainerBuilder(Reader script, ClassLoader classLoader) {
+    public JythonContainerBuilder(final Reader script, final ClassLoader classLoader) {
     	super(script,classLoader);
     }
 
-    public JythonContainerBuilder(URL script, ClassLoader classLoader) {
+    public JythonContainerBuilder(final URL script, final ClassLoader classLoader) {
         super(script, classLoader);
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    @Override
+	protected PicoContainer createContainerFromScript(final PicoContainer parentContainer, final Object assemblyScope) {
     	ClassLoader  oldClassLoader = Thread.currentThread().getContextClassLoader();
     	ClassLoader pyClassLoader = Py.getSystemState().getClassLoader();
         try {
@@ -51,11 +51,11 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
         	Py.getSystemState().setClassLoader(getClassLoader());
 
             PythonInterpreter interpreter = new PythonInterpreter();
-            
+
             interpreter.set("parent", parentContainer);
             interpreter.set("assemblyScope", assemblyScope);
             interpreter.execfile(getScriptInputStream(), "picocontainer.py");
-            return (PicoContainer) interpreter.get("pico", PicoContainer.class);
+            return interpreter.get("pico", PicoContainer.class);
         } catch (IOException e) {
             throw new ScriptedPicoContainerMarkupException(e);
         } finally {

@@ -11,23 +11,23 @@ package org.picocontainer.gems.monitors;
 
 import java.lang.reflect.Constructor;
 
-import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
  * Understands how to capture component dependency information from
  * picocontainer.
- * 
+ *
  * @author Peter Barry
  * @author Kent R. Spillner
  */
 @SuppressWarnings("serial")
 public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
-	
-	
+
+
 	private final ComponentDependencyListener listener;
 
     public ComponentDependencyMonitor(final ComponentDependencyListener listener) {
@@ -56,7 +56,7 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
     /**
      * Understands which other classes are required to instantiate a component.
-     * 
+     *
      * @author Peter Barry
      * @author Kent R. Spillner
      */

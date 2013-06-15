@@ -8,10 +8,11 @@
 
 package org.picocontainer.gems.constraints;
 
-import com.googlecode.jtype.Generic;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.parameters.CollectionComponentParameter;
+
+import com.googlecode.jtype.Generic;
 
 /**
  * Constraint that collects/aggregates dependencies to as many components

@@ -1,6 +1,11 @@
 package org.picocontainer.parameters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +15,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter.Resolver;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 public class NullParameterTestCase {
-	
-	private NullParameter instance; 
+
+	private NullParameter instance;
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,10 +38,10 @@ public class NullParameterTestCase {
 		final List<Parameter> parametersVisited = new ArrayList<Parameter>();
 		TraversalCheckingVisitor visitor = new TraversalCheckingVisitor() {
 			@Override
-			public void visitParameter(Parameter parameter) {
+			public void visitParameter(final Parameter parameter) {
 				parametersVisited.add(parameter);
 			}
-			
+
 		};
 		instance.accept(visitor);
 		assertEquals(1, parametersVisited.size());
@@ -47,11 +52,11 @@ public class NullParameterTestCase {
 	public void testResolve() {
 		//Doesn't realy matter what's passed in, it'll get the same result :)
 		Resolver result = instance.resolve(null, null, null, String.class, null, false, null);
-		
+
 		assertNotNull(result);
 		assertTrue(result.isResolved());
 		assertNull(result.resolveInstance(ComponentAdapter.NOTHING.class));
-		
+
 		result = instance.resolve(null, null, null, Void.TYPE, null, false, null);
 		assertNotNull(result);
 		assertFalse(result.isResolved());
@@ -60,9 +65,9 @@ public class NullParameterTestCase {
 	@Test
 	public void testVerify() {
 		instance.verify(null, null, String.class, null, false, null);
-		
+
 		try {
-			
+
 			instance.verify(null, null, Integer.TYPE, null, false, null);
 			fail("Should have thrown PicoCompositionException  when verifying primitive types");
 		} catch (PicoCompositionException ex) {

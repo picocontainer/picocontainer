@@ -10,12 +10,12 @@
 package org.picocontainer.gems.util;
 
 
-import java.util.Properties;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
- * constructable properties. 
+ * constructable properties.
  *
  * @author Konstantin Pribluda
  */
@@ -33,19 +33,19 @@ public class ConstructableProperties extends Properties {
         load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));
     }
     /**
-     * 
+     *
      * @param resource resource name
      * @param defaults default properties
      * @throws IOException can be thrown if something goes wrong
      */
     public ConstructableProperties(final String resource, final Properties defaults) throws IOException {
         super(defaults);
-        load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));   
+        load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));
     }
-    
+
     /**
      * create properties from input stream
-     * @param stream to read from 
+     * @param stream to read from
      * @throws IOException can be thrown by properties objkect
      */
     public ConstructableProperties(final InputStream stream) throws IOException {
@@ -54,7 +54,7 @@ public class ConstructableProperties extends Properties {
     }
     /**
      * create from inpiut stream with default properties
-     * @param stream to read from 
+     * @param stream to read from
      * @param defaults default properties
      * @throws IOException can be thrown by properties object
      */

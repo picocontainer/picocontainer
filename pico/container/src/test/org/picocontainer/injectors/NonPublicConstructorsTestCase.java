@@ -8,16 +8,13 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static junit.framework.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.injectors.ConstructorInjection.ConstructorInjector;
-import org.picocontainer.monitors.NullComponentMonitor;
-
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 public final class NonPublicConstructorsTestCase {
 

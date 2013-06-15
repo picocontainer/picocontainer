@@ -10,12 +10,11 @@
 
 package org.picocontainer.monitors;
 
-import org.picocontainer.ChangedBehavior;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Injector;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -23,15 +22,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
- * A {@link ComponentMonitor} which writes to a {@link Writer}. 
- * 
+ * A {@link ComponentMonitor} which writes to a {@link Writer}.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
@@ -41,79 +41,79 @@ public class WriterComponentMonitor implements ComponentMonitor {
     private final PrintWriter out;
     private final ComponentMonitor delegate;
 
-    public WriterComponentMonitor(Writer out) {
+    public WriterComponentMonitor(final Writer out) {
         this(out, new NullComponentMonitor());
     }
 
-    public WriterComponentMonitor(Writer out, ComponentMonitor delegate) {
+    public WriterComponentMonitor(final Writer out, final ComponentMonitor delegate) {
         this.out = new PrintWriter(out);
         this.delegate = delegate;
     }
 
-    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor) {
+    public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                                     final Constructor<T> constructor) {
         out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] injected,
-                             long duration) {
+    public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] injected,
+                             final long duration) {
         out.println(format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(injected)));
         delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public <T> void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter<T> componentAdapter,
-                                    Constructor<T> constructor,
-                                    Exception cause) {
+    public <T> void instantiationFailed(final PicoContainer container,
+                                    final ComponentAdapter<T> componentAdapter,
+                                    final Constructor<T> constructor,
+                                    final Exception cause) {
         out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()));
         delegate.instantiationFailed(container, null, constructor, cause);
     }
 
-    public Object invoking(PicoContainer container,
-                           ComponentAdapter<?> componentAdapter,
-                           Member member,
-                           Object instance, Object... args) {
+    public Object invoking(final PicoContainer container,
+                           final ComponentAdapter<?> componentAdapter,
+                           final Member member,
+                           final Object instance, final Object... args) {
         out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Member member,
-                        Object instance,
-                        long duration, Object retVal, Object[] args) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Member member,
+                        final Object instance,
+                        final long duration, final Object retVal, final Object[] args) {
         out.println(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
         delegate.invoked(container, componentAdapter, member, instance, duration, retVal, args);
     }
 
-    public void invocationFailed(Member member, Object instance, Exception cause) {
+    public void invocationFailed(final Member member, final Object instance, final Exception cause) {
         out.println(format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()));
         delegate.invocationFailed(member, instance, cause);
     }
 
-    public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter<?> componentAdapter, Method method,
-                                          Object instance,
-                                          RuntimeException cause) {
+    public void lifecycleInvocationFailed(final MutablePicoContainer container,
+                                          final ComponentAdapter<?> componentAdapter, final Method method,
+                                          final Object instance,
+                                          final RuntimeException cause) {
         out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public Object noComponentFound(MutablePicoContainer container, Object key) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object key) {
         out.println(format(ComponentMonitorHelper.NO_COMPONENT, key));
         return delegate.noComponentFound(container, key);
     }
 
-    public Injector newInjector(Injector injector) {
+    public Injector newInjector(final Injector injector) {
         return delegate.newInjector(injector);
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
 

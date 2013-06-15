@@ -1,44 +1,42 @@
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.containers.JSRPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection.ConstructorInjector;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.JSR330ComponentParameter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 
 import javax.inject.Named;
+
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
+import org.picocontainer.containers.JSRPicoContainer;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.JSR330ComponentParameter;
 
 @SuppressWarnings("serial")
 public class Jsr330ConstructorInjection extends ConstructorInjection {
 
 	@Override
-	protected <T> ConstructorInjector<T> newConstructorInjector(ComponentMonitor monitor, Object key, Class<T> impl,
-			boolean useNames, ConstructorParameters parameters) {
+	protected <T> ConstructorInjector<T> newConstructorInjector(final ComponentMonitor monitor, final Object key, final Class<T> impl,
+			final boolean useNames, final ConstructorParameters parameters) {
 		return new ConstructorInjectorWithForcedPublicCtors<T>(rememberChosenConstructor, monitor, useNames, key, impl,
 				parameters);
 	}
 
 	public static class ConstructorInjectorWithForcedPublicCtors<T> extends ConstructorInjector<T> {
-		public ConstructorInjectorWithForcedPublicCtors(boolean rememberChosenConstructor, ComponentMonitor monitor,
-				boolean useNames, Object key, Class<T> impl, ConstructorParameters parameters)
+		public ConstructorInjectorWithForcedPublicCtors(final boolean rememberChosenConstructor, final ComponentMonitor monitor,
+				final boolean useNames, final Object key, final Class<T> impl, final ConstructorParameters parameters)
 				throws NotConcreteRegistrationException {
 			super(monitor, useNames, rememberChosenConstructor, key, impl, parameters);
 		}
 
 		@Override
-		protected boolean hasApplicableConstructorModifiers(int modifiers) {
+		protected boolean hasApplicableConstructorModifiers(final int modifiers) {
 			return true;
 		}
 
 		@Override
-		protected void changeAccessToModifierifNeeded(Constructor<T> ctor) {
+		protected void changeAccessToModifierifNeeded(final Constructor<T> ctor) {
 			if ((ctor.getModifiers() & Modifier.PUBLIC) == 0) {
 				ctor.setAccessible(true);
 			}
@@ -52,8 +50,8 @@ public class Jsr330ConstructorInjection extends ConstructorInjection {
 		 * instead. If not it uses the superclass default behavior.
 		 */
 		@Override
-		protected Parameter getParameterToUse(Constructor<?> constructorToExamine, int constructorParameterIndex,
-				Parameter parameter) {
+		protected Parameter getParameterToUse(final Constructor<?> constructorToExamine, final int constructorParameterIndex,
+				final Parameter parameter) {
 			if (isDefaultParameter(parameter)) {
 
 				// Search for Named class
@@ -75,7 +73,7 @@ public class Jsr330ConstructorInjection extends ConstructorInjection {
 			return super.getParameterToUse(constructorToExamine, constructorParameterIndex, parameter);
 		}
 
-		private boolean isDefaultParameter(Parameter parameter) {
+		private boolean isDefaultParameter(final Parameter parameter) {
 			if (parameter == ComponentParameter.DEFAULT || parameter == JSR330ComponentParameter.DEFAULT) {
 				return true;
 			}

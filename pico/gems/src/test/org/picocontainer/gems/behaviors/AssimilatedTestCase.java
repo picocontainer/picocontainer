@@ -10,7 +10,15 @@
 
 package org.picocontainer.gems.behaviors;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -26,14 +34,7 @@ import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 
 /**
@@ -65,7 +66,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Caching.Cached<CompatibleTouchable>(
                 new ConstructorInjection.ConstructorInjector<CompatibleTouchable>("Touchy", CompatibleTouchable.class));
         mpc.addAdapter(new Assimilating.Assimilated(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter.getComponentInstance(mpc, null);
+        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc, null);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
@@ -112,7 +113,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     /**
      * Test fail-fast for components without matching methods.
-     * @throws NoSuchMethodException 
+     * @throws NoSuchMethodException
      */
     @Test public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
         final Method touch = Touchable.class.getMethod("touch", (Class[])null);

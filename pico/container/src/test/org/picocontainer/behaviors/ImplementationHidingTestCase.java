@@ -10,6 +10,9 @@
 package org.picocontainer.behaviors;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -22,9 +25,6 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
@@ -85,7 +85,8 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
     private final ComponentFactory implementationHidingComponentFactory =
         new ImplementationHiding().wrap(new AdaptingInjection());
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return implementationHidingComponentFactory;
     }
 
@@ -96,7 +97,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
     public static class NeedsStringBuilderImpl implements NeedsStringBuilder {
         StringBuilder sb;
 
-        public NeedsStringBuilderImpl(StringBuilder sb) {
+        public NeedsStringBuilderImpl(final StringBuilder sb) {
             this.sb = sb;
             sb.append("<init>");
         }
@@ -108,7 +109,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
 
         NeedsStringBuilder nsb;
 
-        public NeedsNeedsStringBuilder(NeedsStringBuilder nsb) {
+        public NeedsNeedsStringBuilder(final NeedsStringBuilder nsb) {
             this.nsb = nsb;
         }
         public void foo() {
@@ -148,7 +149,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
         cachingTestBody("<init>foo()foo()", new ImplementationHiding());
     }
 
-    private void cachingTestBody(String expectation, ComponentFactory compFactory) {
+    private void cachingTestBody(final String expectation, final ComponentFactory compFactory) {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.addComponent(StringBuilder.class);
         DefaultPicoContainer pico =

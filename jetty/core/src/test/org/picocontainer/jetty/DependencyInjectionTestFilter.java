@@ -15,11 +15,11 @@ public class DependencyInjectionTestFilter implements Filter {
     private final Integer integer;
     private String foo;
 
-    public DependencyInjectionTestFilter(Integer integer) {
+    public DependencyInjectionTestFilter(final Integer integer) {
         this.integer = integer;
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         String servletPath = req.getServletPath();
         if (servletPath.equals("/foo2")) {
@@ -29,7 +29,7 @@ public class DependencyInjectionTestFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(final FilterConfig filterConfig) throws ServletException {
         String initParameter = filterConfig.getInitParameter("foo");
         if (initParameter!= null) {
             foo = initParameter;
@@ -40,7 +40,7 @@ public class DependencyInjectionTestFilter implements Filter {
     }
 
     // used when handling this filter directly rather than letting Jetty instantiate it.
-    public void setFoo(String foo) {
+    public void setFoo(final String foo) {
         this.foo = foo;
     }
 }

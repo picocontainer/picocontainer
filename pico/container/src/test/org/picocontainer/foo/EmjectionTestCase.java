@@ -1,16 +1,15 @@
 package org.picocontainer.foo;
 
-import org.junit.Test;
-import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Emjection;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Caching;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertNotSame;
 import static org.picocontainer.Characteristics.EMJECTION_ENABLED;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Emjection;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Caching;
 
 public class EmjectionTestCase {
 
@@ -50,11 +49,11 @@ public class EmjectionTestCase {
     public static class Zoo {
         private final Emjection emjection = new Emjection();
 
-        private Giraffe giraffe;
-        private Antelope antelope;
-        private StringBuilder sb;
+        private final Giraffe giraffe;
+        private final Antelope antelope;
+        private final StringBuilder sb;
 
-        public Zoo(Giraffe giraffe, Antelope antelope, StringBuilder sb) {
+        public Zoo(final Giraffe giraffe, final Antelope antelope, final StringBuilder sb) {
             this.giraffe = giraffe;
             this.antelope = antelope;
             this.sb = sb;
@@ -77,7 +76,7 @@ public class EmjectionTestCase {
             zoo.headCount();
         }
 
-        <T> T neu(Class<T> type, Object... args) {
+        <T> T neu(final Class<T> type, final Object... args) {
             return Emjection.neu(type, emjection, args);
         }
 

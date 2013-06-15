@@ -9,14 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class NamedFieldInjectorTestCase {
@@ -30,10 +29,10 @@ public class NamedFieldInjectorTestCase {
         private String wing2;
     }
 
-    
+
     public static class Monoplane {
         private String wing1;
-    }    
+    }
 
     public static class PogoStick {
     }

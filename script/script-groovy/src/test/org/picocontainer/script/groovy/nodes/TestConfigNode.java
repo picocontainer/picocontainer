@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.groovy.nodes.ConfigNode;
 
 /**
  * test capabilities of config node
@@ -22,11 +21,11 @@ import org.picocontainer.script.groovy.nodes.ConfigNode;
 public class TestConfigNode {
 
 	ConfigNode node;
-	
+
 	@Before public void setUp() throws Exception {
 		node = new ConfigNode();
 	}
-	
+
 	/**
 	 * node shall accept only predefined parameters
 	 *
@@ -39,10 +38,10 @@ public class TestConfigNode {
 		} catch(ScriptedPicoContainerMarkupException ex) {
 			// that's anticipated
 		}
-		
-		
+
+
 	}
-	
+
 	@Test public void testThatWrongParametersAreRefused() {
 		// no parameters are bombed
 		Map map = new HashMap();
@@ -55,7 +54,7 @@ public class TestConfigNode {
 			// that's anticipated
 		}
 	}
-	
+
 	@Test public void testThatCorrectParametersAreAcepted() {
 		// no parameters are bombed
 		Map map = new HashMap();
@@ -63,15 +62,15 @@ public class TestConfigNode {
 		map.put("value","glarch");
 		node.validateScriptedAttributes(map);
 	}
-	
-	
+
+
 	@Test public void testThatAttributesAreDelegatedProperly() {
 		Map map = new HashMap();
 		map.put("key","glam");
-		map.put("value","glarch");	
-		DefaultPicoContainer container = new DefaultPicoContainer();	
+		map.put("value","glarch");
+		DefaultPicoContainer container = new DefaultPicoContainer();
 		node.createNewNode(container,map);
-		
+
 		assertEquals("glarch",container.getComponent("glam"));
 
 	}

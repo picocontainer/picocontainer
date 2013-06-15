@@ -7,24 +7,29 @@ public class MyStartableLifecycleStrategy extends StartableLifecycleStrategy {
             super(new NullComponentMonitor());
         }
 
-        protected String getStopMethodName() {
+        @Override
+		protected String getStopMethodName() {
             return "sstop";
         }
 
-        protected String getStartMethodName() {
+        @Override
+		protected String getStartMethodName() {
             return "sstart";
         }
 
-        protected String getDisposeMethodName() {
+        @Override
+		protected String getDisposeMethodName() {
             return "ddispose";
         }
 
 
-        protected Class getStartableInterface() {
+        @Override
+		protected Class getStartableInterface() {
             return ThirdPartyStartable.class;
         }
 
-        protected Class getDisposableInterface() {
+        @Override
+		protected Class getDisposableInterface() {
             return ThirdPartyStartable.class;
         }
     }

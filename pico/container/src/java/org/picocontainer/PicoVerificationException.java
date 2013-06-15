@@ -23,7 +23,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class PicoVerificationException extends PicoException {
-	
+
 	/**
      * The exceptions that caused this one.
      */
@@ -31,7 +31,7 @@ public class PicoVerificationException extends PicoException {
 
     /**
      * Construct a new exception with a list of exceptions that caused this one.
-     * 
+     *
      * @param nestedExceptions the exceptions that caused this one.
      */
     public PicoVerificationException(final List<? extends Throwable> nestedExceptions) {
@@ -40,7 +40,7 @@ public class PicoVerificationException extends PicoException {
 
     /**
      * Retrieve the list of exceptions that caused this one.
-     * 
+     *
      * @return the list of exceptions that caused this one.
      */
     public List<Throwable> getNestedExceptions() {
@@ -50,11 +50,12 @@ public class PicoVerificationException extends PicoException {
     /**
      * Return a string listing of all the messages associated with the exceptions that caused
      * this one.
-     * 
+     *
      * @return a string listing of all the messages associated with the exceptions that caused
      *               this one.
      */
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return nestedExceptions.toString();
     }
 }

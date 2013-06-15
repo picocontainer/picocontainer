@@ -23,7 +23,7 @@ import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
 /**
- * TODO: decide where to get JNDI name as we do not have 
+ * TODO: decide where to get JNDI name as we do not have
  * implementation here. ? Property
  * @author Konstantin Pribluda
  *
@@ -34,7 +34,7 @@ public class JNDIProviding implements ComponentFactory {
 			final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final Object key,
-			final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
+			final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
 			throws PicoCompositionException {
 		return null;
 	}

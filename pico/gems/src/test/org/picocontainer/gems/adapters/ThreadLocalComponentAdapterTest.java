@@ -10,16 +10,26 @@
 package org.picocontainer.gems.adapters;
 
 
-import org.picocontainer.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.util.*;
-
-import static org.junit.Assert.*;
 
 
 

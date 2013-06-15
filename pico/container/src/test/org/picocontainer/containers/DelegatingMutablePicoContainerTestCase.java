@@ -15,7 +15,6 @@ import java.util.Properties;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
@@ -24,48 +23,52 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
 
 public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTest {
 
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+    @Override
+	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
         return new MyDelegatingMutablePicoContainer(new PicoBuilder(parent)
         			.withCaching()
         			.withLifecycle()
         			.build());
     }
 
+	@Override
 	protected Properties[] getProperties() {
 		return new Properties[] {Characteristics.CACHE};
 	}
 
     @SuppressWarnings("serial")
 	private static class MyDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
-        public MyDelegatingMutablePicoContainer(MutablePicoContainer parent) {
+        public MyDelegatingMutablePicoContainer(final MutablePicoContainer parent) {
             super(parent);
         }
 
-        public MutablePicoContainer makeChildContainer() {
+        @Override
+		public MutablePicoContainer makeChildContainer() {
             return new MyDelegatingMutablePicoContainer(this);
         }
     }
 
 
     public static class A {
-    	
+
     }
-    
+
     public static class B {
-    	
+
     }
-    
+
     @Test
     public void testAddComponentReturnsOutermostContainer() {
     	MutablePicoContainer outer = createPicoContainer(null);
-    	
+
     	MutablePicoContainer resultOfAddComponents = outer.addComponent(A.class)
     													  .addComponent(B.class);
     	assertTrue(resultOfAddComponents == outer);
     }
-    
-    
-    @Test public void testAcceptImplementsBreadthFirstStrategy() {
+
+
+    @Override
+	@Test public void testAcceptImplementsBreadthFirstStrategy() {
     	//Ignore this one.
     }
 }

@@ -65,7 +65,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjection.ConstructorInjector.class, foo.getClass());
     }
-    
+
     @Test
     public void testAddAdapterUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
@@ -128,6 +128,6 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         assertEquals(true, elephant.bboolean(true, true));
         assertEquals(true, elephant.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
     }
-    
+
 
 }

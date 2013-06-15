@@ -20,28 +20,28 @@ import org.junit.Test;
  *
  */
 public class MultiExceptionTestCase {
-    
+
     /**
-     * 
+     *
      */
     private static final String COLLECTING_MESSAGE = "Collecting Message";
 
     /**
-     * 
+     *
      */
     private static final String TEST_STRING_1 = "Test String 1";
 
     /**
-     * 
+     *
      */
     private static final String TEST_STRING_2 = "Test String 2";
 
     private final Throwable throwable1 = new Throwable(TEST_STRING_1);
-    
+
     private final Throwable throwable2 = new IllegalArgumentException(TEST_STRING_2);
-    
+
     private MultiException ex;
-    
+
     private MultiException empty;
 
     /**
@@ -63,7 +63,7 @@ public class MultiExceptionTestCase {
         ex = null;
         empty = null;
     }
-    
+
     @Test
     public void testErrorCount() {
         assertEquals(2, ex.getErrorCount());
@@ -78,8 +78,8 @@ public class MultiExceptionTestCase {
         String emptyString = empty.toString();
         assertNotNull(emptyString);
         assertTrue(emptyString.contains("0"));
-        
-        String toString = ex.toString();        
+
+        String toString = ex.toString();
         assertNotNull(toString);
         assertTrue(toString.contains(Integer.toString(ex.getErrorCount())));
         assertTrue(toString.contains(COLLECTING_MESSAGE));
@@ -112,7 +112,7 @@ public class MultiExceptionTestCase {
         String emptyMessage = empty.getMessageWithoutStackTrace();
         assertNotNull(emptyMessage);
         assertTrue(emptyMessage.contains("null"));
-        
+
         String message = ex.getMessageWithoutStackTrace();
         assertNotNull(message);
         assertFalse(message.contains(this.getClass().getName()));  //Tests for stack trace.
@@ -120,15 +120,15 @@ public class MultiExceptionTestCase {
         assertTrue(message.contains(TEST_STRING_1));
         assertTrue(message.contains(TEST_STRING_2));
     }
-    
+
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
     	Throwable exceptionOne = new OutOfMemoryError();
     	Throwable exceptionTwo = new IllegalArgumentException();
-    	
+
     	MultiException exception = new MultiException();
     	exception.addException(exceptionOne).addException(exceptionTwo);
-    	
+
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	ObjectOutputStream oos = new ObjectOutputStream(bos);
     	oos.writeObject(exception);
@@ -136,12 +136,12 @@ public class MultiExceptionTestCase {
 
     	ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
     	ObjectInputStream ois = new ObjectInputStream(bis);
-    	
+
     	MultiException deserialized = (MultiException) ois.readObject();
     	assertNotNull(deserialized);
     	//OutOfMemoryError shouldn't be serializable
     	assertEquals(2, deserialized.getErrorCount());
-    	
+
     }
 
 }

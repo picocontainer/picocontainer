@@ -18,7 +18,7 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
  * <pre>
  * config(key:'foo',value:'bar')
  * </pre>
- * 
+ *
  * @author k.pribluda
  */
 @SuppressWarnings("serial")
@@ -39,7 +39,7 @@ public class ConfigNode extends AbstractBuilderNode {
         super(NODE_NAME);
     }
 
-    public Object createNewNode(Object current, Map<String, Object> attributes) {
+    public Object createNewNode(final Object current, final Map<String, Object> attributes) {
         validateScriptedAttributes(attributes);
         ((MutablePicoContainer) current).addConfig((String) attributes.get(KEY), attributes.get(VALUE));
         return null;
@@ -48,7 +48,8 @@ public class ConfigNode extends AbstractBuilderNode {
     /**
      * ansure that node has proper attributes
      */
-    public void validateScriptedAttributes(Map<String, Object> specifiedAttributes)
+    @Override
+	public void validateScriptedAttributes(final Map<String, Object> specifiedAttributes)
             throws ScriptedPicoContainerMarkupException {
         if (specifiedAttributes.size() != 2 || !isAttribute(specifiedAttributes, KEY)
                 || !isAttribute(specifiedAttributes, VALUE)) {

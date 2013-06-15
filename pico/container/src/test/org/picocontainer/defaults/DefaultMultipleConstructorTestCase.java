@@ -18,15 +18,17 @@ import org.picocontainer.tck.AbstractMultipleConstructorTest;
  * @author Aslak Helles&oslash;y
  */
 public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstructorTest {
-    protected MutablePicoContainer createPicoContainer() {
+    @Override
+	protected MutablePicoContainer createPicoContainer() {
         return new DefaultPicoContainer();
     }
-    
+
     // Eclipse need at least *one* fixture as direct class member ...
     @Test public void testEclipseDummy() {
     }
 
-    @Test
+    @Override
+	@Test
     public void testMultiWithSatisfyingDependencyAndParametersWorks() {
         super.testMultiWithSatisfyingDependencyAndParametersWorks();
     }

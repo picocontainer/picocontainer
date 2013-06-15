@@ -10,10 +10,13 @@
 
 package org.picocontainer.gems.behaviors;
 
+import java.lang.reflect.Type;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.gems.GemsCharacteristics;
@@ -21,13 +24,10 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.Type;
-import java.util.Properties;
-
 
 /**
  * Hides implementation.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @see HotSwappable
@@ -37,13 +37,13 @@ public class HotSwapping extends AbstractBehavior {
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                 final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+                                 final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, constructorParams, fieldParams, methodParams);
 
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.NO_HOT_SWAP)) {
         	return delegateAdapter;
-		} 
+		}
 
 		AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.HOT_SWAP);
         return monitor.changedBehavior(new HotSwappable<T>(delegateAdapter));
@@ -57,9 +57,9 @@ public class HotSwapping extends AbstractBehavior {
                     lifecycle,
                     componentProps,
                     adapter);
-		} 
+		}
 
-    	
+
 		AbstractBehavior.removePropertiesIfPresent(componentProps, GemsCharacteristics.HOT_SWAP);
     	return monitor.changedBehavior(new HotSwappable<T>(super.addComponentAdapter(monitor,
                                                                  lifecycle,

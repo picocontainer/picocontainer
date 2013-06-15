@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider
  * vendors, but the types of objects that can be constructed are limited. See
  * XStream's <a href="http://xstream.codehaus.org/faq.html">FAQ</a> for details
  * on the differences between PureJava and Advanced mode.
- * 
+ *
  * @author Mauro Talevi
  */
 public class PureJavaXStreamComponentInstanceFactory extends XStreamComponentInstanceFactory {

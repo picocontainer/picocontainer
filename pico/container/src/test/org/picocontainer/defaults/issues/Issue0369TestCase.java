@@ -1,16 +1,16 @@
 package org.picocontainer.defaults.issues;
 
-import org.junit.Test;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
+import static junit.framework.Assert.assertSame;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertSame;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
 public class Issue0369TestCase {
 
@@ -23,7 +23,7 @@ public class Issue0369TestCase {
 
     public class MyAdapter implements ComponentAdapter<List> {
 
-        private Class<? extends List> implementationclass = ArrayList.class;
+        private final Class<? extends List> implementationclass = ArrayList.class;
 
         public Class<? extends List> getComponentImplementation() {
             return implementationclass;
@@ -33,15 +33,15 @@ public class Issue0369TestCase {
             return null;
         }
 
-        public List getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public List getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return null;
         }
 
-        public void verify(PicoContainer container) throws PicoCompositionException {
+        public void verify(final PicoContainer container) throws PicoCompositionException {
 
         }
 
-        public void accept(PicoVisitor visitor) {
+        public void accept(final PicoVisitor visitor) {
 
         }
 
@@ -49,7 +49,7 @@ public class Issue0369TestCase {
             return null;
         }
 
-        public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+        public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
             return null;
         }
 

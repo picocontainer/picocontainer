@@ -9,7 +9,10 @@
 
 package org.picocontainer.gems;
 
-import com.thoughtworks.xstream.XStream;
+import static org.junit.Assert.assertEquals;
+import static org.picocontainer.gems.PicoGemsBuilder.ASM_IMPL_HIDING;
+import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -23,15 +26,13 @@ import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import static org.junit.Assert.assertEquals;
-import static org.picocontainer.gems.PicoGemsBuilder.ASM_IMPL_HIDING;
-import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
+import com.thoughtworks.xstream.XStream;
 
 public class PicoGemsBuilderTestCase {
 
     private XStream xs;
-    private NullLifecycleStrategy lifecycle = new NullLifecycleStrategy();
-    private EmptyPicoContainer parent = new EmptyPicoContainer();
+    private final NullLifecycleStrategy lifecycle = new NullLifecycleStrategy();
+    private final EmptyPicoContainer parent = new EmptyPicoContainer();
 
     @Before
     public void setUp() throws Exception {

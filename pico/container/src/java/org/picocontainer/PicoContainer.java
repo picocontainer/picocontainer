@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import com.googlecode.jtype.Generic;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
+
+import com.googlecode.jtype.Generic;
 
 /**
  * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only
@@ -105,7 +105,7 @@ public interface PicoContainer {
      * @param nameBinding the name binding to use. May be {@link org.picocontainer.NameBinding.NULL NameBinding.NULL}
      * 			if name binding is not going to be used to resolve the component adapter.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key. 
+     *         registered for the specified key.
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding);
 
@@ -118,7 +118,7 @@ public interface PicoContainer {
      * @param nameBinding the name binding to use. May be {@link org.picocontainer.NameBinding.NULL NameBinding.NULL}
      * 			if name binding is not going to be used to resolve the component adapter.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key. 
+     *         registered for the specified key.
      */
     <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding);
 
@@ -153,7 +153,7 @@ public interface PicoContainer {
      *         the specified type. Changes to this collection will not be reflected in the container itself.
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType);
-    
+
     <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType);
 
     /**

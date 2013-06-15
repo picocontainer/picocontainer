@@ -10,6 +10,16 @@
 
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.picocontainer.ChangedBehavior;
@@ -21,16 +31,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
-
 
 /**
  * A {@link ComponentMonitor} which writes to a Commons Logging {@link Log Log} instance.
@@ -40,7 +40,7 @@ import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
  * <p>Commons Logging does <em>not</em> guarantee Serialization.  It is supported when using Log4j
  * as a back end, but you should write a test case to determine if your particular logger implementation
  * is supported if you plan on serializing this ComponentMonitor.</p>
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  */
@@ -52,8 +52,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 	 * Commons Logger.
 	 */
 	private Log log;
-	
-   
+
+
 	/**
 	 * Delegate for component monitor chains.
 	 */
@@ -71,7 +71,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance class.
      * The class name is used to retrieve the Log instance.
-     * 
+     *
      * @param logClass the class of the Log
      */
     public CommonsLoggingComponentMonitor(final Class<?> logClass) {
@@ -81,7 +81,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance name. It uses the
      * {@link LogFactory LogFactory} to create the Log instance.
-     * 
+     *
      * @param logName the name of the Log
      */
     public CommonsLoggingComponentMonitor(final String logName) {
@@ -94,7 +94,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      */
     public CommonsLoggingComponentMonitor(final Log log) {
         this();
-        this.log = log;        
+        this.log = log;
     }
 
     /**
@@ -228,7 +228,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
 
@@ -240,9 +240,9 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     protected synchronized Log getLog(final Member member) {
         if (log != null) {
             return log;
-        } 
+        }
         return LogFactory.getLog(member.getDeclaringClass());
     }
 
-    
+
 }

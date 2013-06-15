@@ -34,18 +34,18 @@ public class ComponentAdapterTestCase {
 
     @SuppressWarnings("serial")
 	private static class TestAdapter<T> extends AbstractAdapter<T> {
-    	
-        TestAdapter(Object key, Class<T> impl, ComponentMonitor monitor) {
+
+        TestAdapter(final Object key, final Class<T> impl, final ComponentMonitor monitor) {
             super(key, impl, monitor);
         }
-        TestAdapter(Object key, Class<T> impl) {
+        TestAdapter(final Object key, final Class<T> impl) {
             super(key, impl);
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return null;
         }
-        public void verify(PicoContainer container) throws PicoVerificationException {
+        public void verify(final PicoContainer container) throws PicoVerificationException {
         }
 
         public String getDescriptor() {
@@ -55,47 +55,52 @@ public class ComponentAdapterTestCase {
 
     @SuppressWarnings("serial")
 	private static class TestMonitoringComponentAdapter<T> extends AbstractAdapter<T> {
-        TestMonitoringComponentAdapter(ComponentMonitor monitor) {
+        TestMonitoringComponentAdapter(final ComponentMonitor monitor) {
             super(null, null, monitor);
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return null;
         }
-        public void verify(PicoContainer container) throws PicoVerificationException {
+        public void verify(final PicoContainer container) throws PicoVerificationException {
         }
-        public Object getComponentKey() {
+        @Override
+		public Object getComponentKey() {
             return null;
         }
-        public Class<T> getComponentImplementation() {
+        @Override
+		public Class<T> getComponentImplementation() {
             return null;
         }
-        public void accept(PicoVisitor visitor) {
+        @Override
+		public void accept(final PicoVisitor visitor) {
         }
 
         public String getDescriptor() {
             return null;
         }
     }
-    
+
     @SuppressWarnings("serial")
 	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
-        TestInstantiatingAdapter(Object key, Class<T> impl, Parameter... parameters) {
+        TestInstantiatingAdapter(final Object key, final Class<T> impl, final Parameter... parameters) {
             super(key, impl, new NullComponentMonitor(), false, new ConstructorParameters(parameters));
         }
         @Override
-        public void verify(PicoContainer container) throws PicoCompositionException {
+        public void verify(final PicoContainer container) throws PicoCompositionException {
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return null;
         }
 
-        public String getDescriptor() {
+        @Override
+		public String getDescriptor() {
             return null;
         }
     }
-    
+
     @Test public void testComponentImplementationMayNotBeNull() {
         try {
             new TestAdapter<Object>("Key", null);
@@ -139,7 +144,7 @@ public class ComponentAdapterTestCase {
             assertTrue(e.getMessage().endsWith(" is null"));
         }
     }
-    
+
     @Test public void testStringRepresentation() {
         ComponentAdapter<Integer> componentAdapter = new TestAdapter<Integer>("Key", Integer.class);
         assertEquals(TestAdapter.class.getName() + ":Key", componentAdapter.toString());

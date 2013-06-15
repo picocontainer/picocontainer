@@ -16,8 +16,8 @@ import java.util.Properties;
 import org.junit.Test;
 
 /**
- * test capabilities of constructable properties 
- * @author Konstantin Pribluda 
+ * test capabilities of constructable properties
+ * @author Konstantin Pribluda
  */
 public class ConstructablePropertiesTest {
 

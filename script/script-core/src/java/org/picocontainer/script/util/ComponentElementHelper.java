@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.util;
 
@@ -17,7 +17,7 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 public class ComponentElementHelper {
 
-    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object classValue, ClassLoadingPicoContainer current, Object instance, Properties[] properties) {
+    public static Object makeComponent(final Object classNamekey, Object key, final Parameter[] parameters, final Object classValue, final ClassLoadingPicoContainer current, final Object instance, final Properties[] properties) {
         ClassLoadingPicoContainer container = current;
         if (properties.length != 0) {
             container = (ClassLoadingPicoContainer) current.as(properties);
@@ -42,11 +42,11 @@ public class ComponentElementHelper {
         }
     }
 
-    public static Object makeComponent(Object classNameKey,
-                                       Object key,
-                                       Parameter[] parameters,
-                                       Object classValue,
-                                       ClassLoadingPicoContainer container, Object instance) {
+    public static Object makeComponent(final Object classNameKey,
+                                       final Object key,
+                                       final Parameter[] parameters,
+                                       final Object classValue,
+                                       final ClassLoadingPicoContainer container, final Object instance) {
         return makeComponent(classNameKey, key, parameters, classValue, container, instance, new Properties[0]);
     }
 }

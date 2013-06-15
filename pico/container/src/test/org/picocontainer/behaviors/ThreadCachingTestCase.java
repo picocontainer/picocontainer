@@ -26,7 +26,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 public class ThreadCachingTestCase {
 
     public static class Foo {
-        public Foo(StringBuilder sb) {
+        public Foo(final StringBuilder sb) {
             sb.append("<Foo");
         }
     }
@@ -36,7 +36,7 @@ public class ThreadCachingTestCase {
         public Baz() {
         }
 
-        public void setStringBuilder(StringBuilder sb) {
+        public void setStringBuilder(final StringBuilder sb) {
                 sb.append("<Baz");
         }
 
@@ -46,14 +46,14 @@ public class ThreadCachingTestCase {
 
         private static int CTR;
 
-        private int inst;
+        private final int inst;
 
-        public Qux(StringBuilder sb) {
+        public Qux(final StringBuilder sb) {
                 inst = CTR;
                 CTR++;
                 sb.append("!").append(inst).append(" ");
         }
-        public void setStringBuilder(StringBuilder sb) {
+        public void setStringBuilder(final StringBuilder sb) {
                 sb.append("<").append(inst).append(" ");
         }
 
@@ -65,7 +65,7 @@ public class ThreadCachingTestCase {
 
     public static class Bar {
         private final Foo foo;
-        public Bar(StringBuilder sb, Foo foo) {
+        public Bar(final StringBuilder sb, final Foo foo) {
             this.foo = foo;
             sb.append("<Bar");
         }
@@ -121,7 +121,8 @@ public class ThreadCachingTestCase {
         foos[0] = child.getComponent(Foo.class);
 
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 foos[1] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);
             }
@@ -152,7 +153,7 @@ public class ThreadCachingTestCase {
         final DefaultPicoContainer child = new DefaultPicoContainer(parent, new NullLifecycleStrategy(),
         		new ThreadCaching().wrap(new CompositeInjection(new ConstructorInjection(), new SetterInjection())));
 
-        
+
         parent.addComponent(StringBuilder.class);
         child.addComponent(Qux.class);
 
@@ -160,22 +161,23 @@ public class ThreadCachingTestCase {
         quxs[0] = child.getComponent(Qux.class);
 
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 quxs[1] = child.getComponent(Qux.class);
                 quxs[3] = child.getComponent(Qux.class);
             }
         };
-        
+
         thread.start();
-        
+
         synchronized(this) {
         	thread.join();
         }
-        
-        
+
+
         assertFalse(thread.isAlive());
-        
-        
+
+
         quxs[2] = child.getComponent(Qux.class);
 
         assertNotNull(quxs[0]);
@@ -207,7 +209,8 @@ public class ThreadCachingTestCase {
         foos[0] = child.getComponent(Foo.class);
 
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 foos[1] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);
             }
@@ -249,7 +252,8 @@ public class ThreadCachingTestCase {
         bars[0] = requestScope.getComponent(Bar.class);
 
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 foos[1] = sessionScope.getComponent(Foo.class);
                 bars[1] = requestScope.getComponent(Bar.class);
                 foos[3] = sessionScope.getComponent(Foo.class);

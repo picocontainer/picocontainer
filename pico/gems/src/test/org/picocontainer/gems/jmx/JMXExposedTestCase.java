@@ -42,8 +42,8 @@ import org.picocontainer.monitors.NullComponentMonitor;
  */
 public class JMXExposedTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private final MBeanServer mBeanServer = mockery. mock(MBeanServer.class);
 
     @Test public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
@@ -53,7 +53,7 @@ public class JMXExposedTestCase {
         mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         }});
-        
+
         assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
     }
 
@@ -65,7 +65,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	one(mBeanServer).unregisterMBean(with(any(ObjectName.class)));
         }});
-        
+
         assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
         componentAdapter.dispose(person);
     }
@@ -101,7 +101,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});
-        
+
         try {
             assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");
@@ -120,7 +120,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});
-        
+
         try {
             assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");
@@ -140,7 +140,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         	will(throwException(exception));
         }});
-        
+
         try {
             assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");

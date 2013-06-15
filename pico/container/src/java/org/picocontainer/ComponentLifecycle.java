@@ -9,7 +9,7 @@
 package org.picocontainer;
 
 /**
- * 
+ *
  *
  */
 public interface ComponentLifecycle<T> {

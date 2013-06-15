@@ -3,19 +3,18 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.classname;
 
+import java.net.URL;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.classname.ClassPathElement;
-
-import java.net.URL;
 
 /**
  * A ClassLoadingPicoContainer extends PicoContainer with classloader juggling capability
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
@@ -23,7 +22,7 @@ public interface ClassLoadingPicoContainer extends MutablePicoContainer {
 
     /**
      * Adds a new URL that will be used in classloading
-     * 
+     *
      * @param url url of the jar to find components in.
      * @return ClassPathElement to add permissions to (subject to security
      *         policy)
@@ -32,14 +31,14 @@ public interface ClassLoadingPicoContainer extends MutablePicoContainer {
 
     /**
      * Returns class loader that is the aggregate of the URLs added.
-     * 
+     *
      * @return A ClassLoader
      */
     ClassLoader getComponentClassLoader();
 
     /**
      * Make a child container with a given name
-     * 
+     *
      * @param name the container name
      * @return The ScriptedPicoContainer
      */
@@ -47,7 +46,7 @@ public interface ClassLoadingPicoContainer extends MutablePicoContainer {
 
     /**
      * Addes a child container with a given name
-     * 
+     *
      * @param name the container name
      * @param child the child PicoContainer
      */

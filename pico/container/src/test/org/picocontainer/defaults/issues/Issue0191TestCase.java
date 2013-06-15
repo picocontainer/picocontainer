@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-
-import static org.junit.Assert.fail;
 
 public final class Issue0191TestCase {
 
@@ -34,8 +34,9 @@ public final class Issue0191TestCase {
             Bowl bowl = pico.getComponent(Bowl.class);
             fail("Should have barfed here with UnsatisfiableDependenciesException");
             Fish[] fishes = bowl.getFishes();
-            for(int i = 0 ; i < fishes.length ; i++)
-                System.out.println("fish["+i+"]="+fishes[i]);
+            for(int i = 0 ; i < fishes.length ; i++) {
+				System.out.println("fish["+i+"]="+fishes[i]);
+			}
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expected, well except that there is supposed to be a different bug here.
         }
@@ -46,7 +47,7 @@ public final class Issue0191TestCase {
     {
         private final Fish[] fishes;
         private final Cod[] cods;
-        public Bowl(Fish[] fishes, Cod[] cods)
+        public Bowl(final Fish[] fishes, final Cod[] cods)
         {
             this.fishes = fishes;
             this.cods = cods;
@@ -71,7 +72,8 @@ public final class Issue0191TestCase {
         final int instanceNum ;
         public Cod() { instanceNum = codCount++ ; }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return "Cod #" + instanceNum ;
         }
     }
@@ -81,7 +83,8 @@ public final class Issue0191TestCase {
         final int instanceNum ;
         public Shark() { instanceNum = sharkCount++ ; }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return "Shark #" + instanceNum ;
         }
     }

@@ -27,8 +27,8 @@ import org.picocontainer.PicoLifecycleException;
 @RunWith(JMock.class)
 public class NullComponentMonitorTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testItAll() throws NoSuchMethodException {
 
         NullComponentMonitor ncm = new NullComponentMonitor();

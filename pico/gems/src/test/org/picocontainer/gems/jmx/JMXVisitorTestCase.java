@@ -51,13 +51,13 @@ import org.picocontainer.parameters.ConstantParameter;
  */
 @RunWith(JMock.class)
 public class JMXVisitorTestCase  {
-	
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private MutablePicoContainer picoContainer;
-    private MBeanServer mBeanServer =  mockery.mock(MBeanServer.class);
-    private DynamicMBeanProvider dynamicMBeanProvider = mockery.mock(DynamicMBeanProvider.class);
-    private DynamicMBean dynamicMBean = mockery.mock(DynamicMBean.class);
+    private final MBeanServer mBeanServer =  mockery.mock(MBeanServer.class);
+    private final DynamicMBeanProvider dynamicMBeanProvider = mockery.mock(DynamicMBeanProvider.class);
+    private final DynamicMBean dynamicMBean = mockery.mock(DynamicMBean.class);
 
     @Before
     public void setUp() throws Exception {
@@ -75,9 +75,9 @@ public class JMXVisitorTestCase  {
     /**
      * Test visit with registration.
      * @throws MalformedObjectNameException
-     * @throws NotCompliantMBeanException 
-     * @throws MBeanRegistrationException 
-     * @throws InstanceAlreadyExistsException 
+     * @throws NotCompliantMBeanException
+     * @throws MBeanRegistrationException
+     * @throws InstanceAlreadyExistsException
      */
     @Test public void testVisitWithRegistration() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(1);
@@ -105,9 +105,9 @@ public class JMXVisitorTestCase  {
      * Test the trial of multiple providers and ensure, that the first provider delivering a JMXRegistrationInfo is
      * used.
      * @throws MalformedObjectNameException
-     * @throws NotCompliantMBeanException 
-     * @throws MBeanRegistrationException 
-     * @throws InstanceAlreadyExistsException 
+     * @throws NotCompliantMBeanException
+     * @throws MBeanRegistrationException
+     * @throws InstanceAlreadyExistsException
      */
     @Test public void testVisitWithMultipleProviders() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(2);
@@ -146,7 +146,7 @@ public class JMXVisitorTestCase  {
         	one(dynamicMBeanProvider).provide(with(same(child)), with(same(componentAdapter)));
         	will(returnValue(null));
         }});
-        
+
         jmxVisitor.traverse(picoContainer);
     }
 
@@ -192,9 +192,9 @@ public class JMXVisitorTestCase  {
     /**
      * Test failing registration.
      * @throws MalformedObjectNameException
-     * @throws NotCompliantMBeanException 
-     * @throws MBeanRegistrationException 
-     * @throws InstanceAlreadyExistsException 
+     * @throws NotCompliantMBeanException
+     * @throws MBeanRegistrationException
+     * @throws InstanceAlreadyExistsException
      */
     @Test public void testFailingMBeanRegistration() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(1);

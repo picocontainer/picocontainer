@@ -8,6 +8,12 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -15,7 +21,6 @@ import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.InjectionType;
 import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
@@ -24,15 +29,9 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
 /**
  * A Composite of other types on InjectionFactories - pass them into the varargs constructor.
- * 
+ *
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
@@ -40,18 +39,18 @@ public class CompositeInjection extends AbstractInjectionType {
 
     private final InjectionType[] injectionTypes;
 
-    public CompositeInjection(InjectionType... injectionTypes) {
+    public CompositeInjection(final InjectionType... injectionTypes) {
         this.injectionTypes = injectionTypes;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                          LifecycleStrategy lifecycle,
-                                                          Properties componentProps,
-                                                          Object key,
-                                                          Class<T> impl,
-                                                          ConstructorParameters constructorParams, 
-                                                          FieldParameters[] fieldParams, 
-                                                          MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                          final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps,
+                                                          final Object key,
+                                                          final Class<T> impl,
+                                                          final ConstructorParameters constructorParams,
+                                                          final FieldParameters[] fieldParams,
+                                                          final MethodParameters[] methodParams) throws PicoCompositionException {
 
         @SuppressWarnings("unchecked")
 		Injector<T>[] injectors = new Injector[injectionTypes.length];
@@ -70,16 +69,16 @@ public class CompositeInjection extends AbstractInjectionType {
 
         private final Injector<T>[] injectors;
 
-        public CompositeInjector(Object key, Class<?> impl, ComponentMonitor monitor,
-                                 boolean useNames, Injector<T>... injectors) {
+        public CompositeInjector(final Object key, final Class<?> impl, final ComponentMonitor monitor,
+                                 final boolean useNames, final Injector<T>... injectors) {
             super(key, impl, monitor, useNames);
             this.injectors = injectors;
         }
 
         @Override
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
 	            T instance = null;
-	            
+
 	            for (Class<?> eachSuperClass : this.getListOfSupertypesToDecorate(getComponentImplementation())) {
 		            for (Injector<T> injector : injectors) {
 		                if (instance == null) {
@@ -89,16 +88,16 @@ public class CompositeInjection extends AbstractInjectionType {
 		                }
 		            }
 	            }
-	            return (T) instance;
+	            return instance;
         }
 
-        protected Class<?>[] getListOfSupertypesToDecorate(Class<?> startClass) {
+        protected Class<?>[] getListOfSupertypesToDecorate(final Class<?> startClass) {
         	if (startClass == null) {
         		throw new NullPointerException("startClass");
         	}
-        	
+
         	List<Class<?>> result = new ArrayList<Class<?>>();
-        	
+
         	Class<?> current = startClass;
         	while (!Object.class.getName().equals(current.getName())) {
         		result.add(current);
@@ -109,14 +108,14 @@ public class CompositeInjection extends AbstractInjectionType {
         	if (result.size() == 0) {
         		result.add(Object.class);
         	}
-        	
+
         	//Start with base class, not derived class.
         	Collections.reverse(result);
-        	
-        	return result.toArray(new Class[result.size()]);
-        }        
 
-        
+        	return result.toArray(new Class[result.size()]);
+        }
+
+
         /**
          * Performs a set of partial injections starting at the base class and working its
          * way down.
@@ -124,35 +123,36 @@ public class CompositeInjection extends AbstractInjectionType {
          * @return the object returned is the result of the last of the injectors delegated to
          */
         @Override
-        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
         	Object result = null;
         	for (Class<?> eachSuperClass : this.getListOfSupertypesToDecorate(instance.getClass())) {
-        		result = partiallyDecorateComponentInstance(container, into, instance, eachSuperClass);	
+        		result = partiallyDecorateComponentInstance(container, into, instance, eachSuperClass);
         	}
-        	 
+
         	return result;
 
         }
-        
-		public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance,
-				Class<?> classFilter) {
+
+		@Override
+		public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance,
+				final Class<?> classFilter) {
 			Object result = null;
-        	
+
             for (Injector<T> injector : injectors) {
             	result = injector.partiallyDecorateComponentInstance(container, into, instance, classFilter);
             }
             return result;
-		}          
+		}
 
         @Override
-        public void verify(PicoContainer container) throws PicoCompositionException {
+        public void verify(final PicoContainer container) throws PicoCompositionException {
             for (Injector<T> injector : injectors) {
                 injector.verify(container);
             }
         }
 
         @Override
-        public final void accept(PicoVisitor visitor) {
+        public final void accept(final PicoVisitor visitor) {
             super.accept(visitor);
             for (Injector<T> injector : injectors) {
                 injector.accept(visitor);
@@ -165,16 +165,16 @@ public class CompositeInjection extends AbstractInjectionType {
             for (Injector<T> injector : injectors) {
                 sb.append(injector.getDescriptor());
             }
-            
+
             if (sb.charAt(sb.length() - 1) == '-') {
-            	sb.deleteCharAt(sb.length()-1); // remove last dash	
+            	sb.deleteCharAt(sb.length()-1); // remove last dash
             }
-                        
+
             return sb.toString().replace("-", "+") + ")-";
         }
 
 		@Override
-		public void changeMonitor(ComponentMonitor monitor) {
+		public void changeMonitor(final ComponentMonitor monitor) {
 			super.changeMonitor(monitor);
 			for (Injector<?> eachInjector : injectors) {
 				if (eachInjector instanceof ComponentMonitorStrategy) {

@@ -19,11 +19,11 @@ public class BeanShellScriptCompositionException
     extends PicoCompositionException
 {
 
-    BeanShellScriptCompositionException(String message) {
+    BeanShellScriptCompositionException(final String message) {
         super(message);
     }
 
-    BeanShellScriptCompositionException(Throwable cause) {
+    BeanShellScriptCompositionException(final Throwable cause) {
         this("BeanShellScriptCompositionException: " + cause.getClass().getName() + " "
                 + cause.getMessage());
     }

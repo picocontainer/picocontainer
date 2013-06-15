@@ -32,10 +32,10 @@ import org.picocontainer.PicoContainer;
  * <p>
  * Currently, JDK 1.6 scripting engine does not specify running scripts within
  * custom classloaders.  (The ScriptEngineManager classloader constructor
- * is only for finding ScriptEngines, not running scripts). 
+ * is only for finding ScriptEngines, not running scripts).
  * </p>
- * <p>Some script engines (such as Groovy) 
- * will work with the current Thread's context class loader.  So this class sets the 
+ * <p>Some script engines (such as Groovy)
+ * will work with the current Thread's context class loader.  So this class sets the
  * context classloader before executing the script.
  * </p>
  * @author Michael Rimov, Centerline Computers, Inc.
@@ -45,7 +45,7 @@ import org.picocontainer.PicoContainer;
 public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 
 	private final String engineName;
-	
+
 	/**
 	 * Constructs a scripting engine based on the engine's short name.
 	 * @param scriptEngineShortName the &quot;short name&quot; of the scripting
@@ -73,13 +73,13 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 		ScriptEngine engine = null;
 		final ScriptEngineManager mgr = new ScriptEngineManager();
 			final ClassLoader oldClassLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-				
+
 				public ClassLoader run() {
 					return Thread.currentThread().getContextClassLoader();
 				}});
 			final ClassLoader newClassLoader = this.getClassLoader();
 			try {
-				if (applyCustomClassLoader()) { 
+				if (applyCustomClassLoader()) {
 					AccessController.doPrivileged(new PrivilegedAction<Void>() {
 						public Void run() {
 							Thread.currentThread().setContextClassLoader(newClassLoader);
@@ -102,17 +102,17 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 								+ Arrays.toString(eachFactory.getNames().toArray())
 								+ "'\n");
 					}
-		
+
 					throw new PicoCompositionException(message.toString());
 				}
-		
+
 				final Bindings bindings = engine.createBindings();
 				bindings.put("parent", parentContainer);
 				bindings.put("assemblyScope", assemblyScope);
 				applyOtherBindings(bindings);
-	
+
 				reader = this.getScriptReader();
-				
+
 				PicoContainer result = (PicoContainer) engine.eval(reader, bindings);
 				if (result == null) {
 					result = (PicoContainer) bindings.get("pico");
@@ -146,9 +146,9 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 							Thread.currentThread().setContextClassLoader(oldClassLoader);
 							return null;
 						}});
-					
+
 				}
-				
+
 				if (reader != null) {
 					try {
 						reader.close();
@@ -156,20 +156,20 @@ public class JdkScriptingContainerBuilder extends ScriptedContainerBuilder {
 						// Ignore
 					}
 				}
-				
+
 			}
-				
+
 	}
 	/**
 	 * Allows other bindings to be managed by the descendent implementations.
 	 * Examples would be servlet requests/responses, JNDI contexts, etc.
-	 * 
+	 *
 	 * @param bindings
 	 */
 	protected void applyOtherBindings(final Bindings bindings) {
 
 	}
-	
+
 	/**
 	 * Override for situations where Thread.setContextClassLoader() simply
 	 * cannot be called (in OSGi containerss, for example)

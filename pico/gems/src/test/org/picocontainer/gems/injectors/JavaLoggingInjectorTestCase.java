@@ -1,15 +1,16 @@
 package org.picocontainer.gems.injectors;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
 import static junit.framework.Assert.assertNotNull;
 
 import java.util.logging.Logger;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+
 public class JavaLoggingInjectorTestCase {
 
     public static class Foo {
-        private Logger logger;
+        private final Logger logger;
         public Foo(final Logger logger) {
             this.logger = logger;
         }

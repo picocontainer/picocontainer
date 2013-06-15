@@ -1,5 +1,8 @@
 package org.picocontainer.injectors;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -11,23 +14,18 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("serial")
 public abstract class AbstractInjectionType implements InjectionType, Serializable {
 
-    public void verify(PicoContainer container) {
+    public void verify(final PicoContainer container) {
     }
 
-    public final void accept(PicoVisitor visitor) {
+    public final void accept(final PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
     }
 
 
-    protected <T> ComponentAdapter<T> wrapLifeCycle(final Injector<T> injector, LifecycleStrategy lifecycle) {
+    protected <T> ComponentAdapter<T> wrapLifeCycle(final Injector<T> injector, final LifecycleStrategy lifecycle) {
         if (lifecycle instanceof NullLifecycleStrategy) {
             return injector;
         } else {
@@ -39,7 +37,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         private final Injector<T> delegate;
         private final LifecycleStrategy lifecycle;
 
-        public LifecycleAdapter(Injector<T> delegate, LifecycleStrategy lifecycle) {
+        public LifecycleAdapter(final Injector<T> delegate, final LifecycleStrategy lifecycle) {
             this.delegate = delegate;
             this.lifecycle = lifecycle;
         }
@@ -52,15 +50,15 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return delegate.getComponentImplementation();
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return delegate.getComponentInstance(container, into);
         }
 
-        public void verify(PicoContainer container) throws PicoCompositionException {
+        public void verify(final PicoContainer container) throws PicoCompositionException {
             delegate.verify(container);
         }
 
-        public void accept(PicoVisitor visitor) {
+        public void accept(final PicoVisitor visitor) {
             delegate.accept(visitor);
         }
 
@@ -69,7 +67,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         @SuppressWarnings("rawtypes")
-		public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+		public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
             return delegate.findAdapterOfType(adapterType);
         }
 
@@ -77,31 +75,32 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return "LifecycleAdapter";
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return getDescriptor() + ":" + delegate.toString();
         }
 
-        public void start(Object component) {
+        public void start(final Object component) {
             lifecycle.start(component);
         }
 
-        public void stop(Object component) {
+        public void stop(final Object component) {
             lifecycle.stop(component);
         }
 
-        public void dispose(Object component) {
+        public void dispose(final Object component) {
             lifecycle.dispose(component);
         }
 
-        public boolean hasLifecycle(Class<?> type) {
+        public boolean hasLifecycle(final Class<?> type) {
             return lifecycle.hasLifecycle(type);
         }
 
-        public boolean isLazy(ComponentAdapter<?> adapter) {
+        public boolean isLazy(final ComponentAdapter<?> adapter) {
             return lifecycle.isLazy(adapter);
         }
 
-        public void changeMonitor(ComponentMonitor monitor) {
+        public void changeMonitor(final ComponentMonitor monitor) {
             if (delegate instanceof ComponentMonitorStrategy) {
                 ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
             }
@@ -114,12 +113,12 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return null;
         }
 
-        public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
             return delegate.decorateComponentInstance(container, into, instance);
         }
 
-		public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance,
-				Class<?> superclassPortion) {
+		public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance,
+				final Class<?> superclassPortion) {
 			return delegate.partiallyDecorateComponentInstance(container, into, instance, superclassPortion);
 		}
     }

@@ -21,29 +21,29 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
 
     private final LifecycleStrategy[] alternateStrategies;
 
-    public CompositeLifecycleStrategy(LifecycleStrategy... alternateStrategies) {
+    public CompositeLifecycleStrategy(final LifecycleStrategy... alternateStrategies) {
         this.alternateStrategies = alternateStrategies;
     }
 
-    public void start(Object component) {
+    public void start(final Object component) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
     		lifecycle.start(component);
         }
     }
 
-    public void stop(Object component) {
+    public void stop(final Object component) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
     		lifecycle.stop(component);
         }
     }
 
-    public void dispose(Object component) {
+    public void dispose(final Object component) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
             lifecycle.dispose(component);
         }
     }
 
-    public boolean hasLifecycle(Class<?> type) {
+    public boolean hasLifecycle(final Class<?> type) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
             if (lifecycle.hasLifecycle(type)) {
                 return true;
@@ -52,7 +52,7 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
         return false;
     }
 
-    public boolean isLazy(ComponentAdapter<?> adapter) {
+    public boolean isLazy(final ComponentAdapter<?> adapter) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
             if (lifecycle.isLazy(adapter)) {
                 return true;

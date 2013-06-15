@@ -8,6 +8,12 @@
 
 package org.picocontainer.gems.constraints;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -29,12 +35,6 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
 /**
  * Test some <code>Constraint</code>s.
  *
@@ -45,12 +45,12 @@ import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 @RunWith(JMock.class)
 public class ConstraintsTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
 	private MutablePicoContainer container;
 
 	@Before
-    public void setUp() throws Exception {        
+    public void setUp() throws Exception {
         container = new DefaultPicoContainer(new Caching());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DecoratedTouchable.class);
@@ -81,7 +81,7 @@ public class ConstraintsTestCase {
         container.addComponent(5, SimpleTouchable.class);
         container.addComponent(Boolean.TRUE, SimpleTouchable.class);
         Touchable t = (Touchable) container.getComponent(Boolean.TRUE);
-        
+
         Constraint c = new IsKeyType(Boolean.class);
 
         assertSame(t, c.resolve(container,
@@ -103,7 +103,7 @@ public class ConstraintsTestCase {
     }
 
     @Test public void testFindCandidateConstraintsExcludingOneImplementation() {
-        Constraint c = 
+        Constraint c =
             new CollectionConstraint(
                 new And(new IsType(Touchable.class),
                 new Not(new IsType(DecoratedTouchable.class))));
@@ -115,7 +115,7 @@ public class ConstraintsTestCase {
             assertFalse(touchable instanceof DecoratedTouchable);
         }
     }
-    
+
     @Test public void testCollectionChildIdVisitedBreadthFirst() {
         final Constraint c1  = mockery.mock(Constraint.class, "constraint 1");
         final Constraint c = new CollectionConstraint(c1);
@@ -125,7 +125,7 @@ public class ConstraintsTestCase {
         	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
         	one(c1).accept(visitor);  inSequence(sequence);
         }});
-        
+
         c.accept(visitor);
     }
 }

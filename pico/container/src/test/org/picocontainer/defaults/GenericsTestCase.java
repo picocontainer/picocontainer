@@ -15,7 +15,7 @@ import org.junit.Test;
  * Uncomment all the tests in this class (as well as the obvious places in
  * ConstructorInjectionComponentAdapter) in order to run with generics support
  * Requires JDK 1.5 with generics enabled.
- * 
+ *
  * @author Aslak Helles&oslash;y
  */
 public class GenericsTestCase {

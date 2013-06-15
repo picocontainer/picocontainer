@@ -19,10 +19,9 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.script.groovy.nodes.AppendContainerNode;
 
 /**
  * Tests node marking and exceptions

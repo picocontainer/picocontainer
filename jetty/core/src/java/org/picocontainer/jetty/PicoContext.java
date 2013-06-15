@@ -32,33 +32,33 @@ public class PicoContext {
 
 
     public static final EnumSet<DispatcherType> DEFAULT_DISPATCH =  EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
-    
-    public PicoContext(ServletContextHandler context, PicoContainer parentContainer, boolean withSessionHandler) {
+
+    public PicoContext(final ServletContextHandler context, final PicoContainer parentContainer, final boolean withSessionHandler) {
         this.context = context;
         this.parentContainer = parentContainer;
     }
 
-    public ServletHolder addServletWithMapping(Class<? extends Servlet> servletClass, String pathMapping) {
+    public ServletHolder addServletWithMapping(final Class<? extends Servlet> servletClass, final String pathMapping) {
     	ServletHolder holder = new ServletHolder(servletClass);
         context.addServlet(holder, pathMapping);
         return holder;
     }
 
-    public Servlet addServletWithMapping(Servlet servlet, String pathMapping) {
+    public Servlet addServletWithMapping(final Servlet servlet, final String pathMapping) {
         ServletHolder holder = new ServletHolder(servlet);
         context.addServlet(holder, pathMapping);
         return servlet;
     }
 
-    public FilterHolder addFilterWithMapping(Class<? extends Filter> filterClass, String pathMapping, EnumSet<DispatcherType> dispatchers) {
+    public FilterHolder addFilterWithMapping(final Class<? extends Filter> filterClass, final String pathMapping, final EnumSet<DispatcherType> dispatchers) {
     	FilterHolder filterHolder = new FilterHolder(filterClass);
         context.addFilter(filterHolder, pathMapping,dispatchers);
-        
-        
+
+
         return filterHolder;
     }
 
-    public FilterHolder addFilterWithMappings(Class<? extends Filter> filterClass, String[] pathMappings, EnumSet<DispatcherType> dispatchers) {
+    public FilterHolder addFilterWithMappings(final Class<? extends Filter> filterClass, final String[] pathMappings, final EnumSet<DispatcherType> dispatchers) {
     	FilterHolder filterHolder = new FilterHolder(filterClass);
         for (String pathMapping : pathMappings) {
             context.addFilter(filterHolder, pathMapping, dispatchers);
@@ -66,45 +66,45 @@ public class PicoContext {
         return filterHolder;
     }
 
-    public Filter addFilterWithMapping(Filter filter, String pathMapping, EnumSet<DispatcherType> dispatchers) {
+    public Filter addFilterWithMapping(final Filter filter, final String pathMapping, final EnumSet<DispatcherType> dispatchers) {
         context.addFilter(new FilterHolder(filter), pathMapping, dispatchers);
         return filter;
     }
 
-    public void addInitParam(String param, String value) {
+    public void addInitParam(final String param, final String value) {
     	context.setInitParameter(param, value);
     }
 
 
-    public EventListener addListener(Class<?> listenerClass) {
+    public EventListener addListener(final Class<?> listenerClass) {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
         child.addComponent(EventListener.class, listenerClass);
         EventListener instance = child.getComponent(EventListener.class);
         return addListener(instance);
     }
 
-    public EventListener addListener(EventListener listener) {
+    public EventListener addListener(final EventListener listener) {
         context.addEventListener(listener);
         return listener;
     }
 
 
-    public void setStaticContext(String absolutePath) {
+    public void setStaticContext(final String absolutePath) {
         context.addServlet(DefaultServlet.class.getName(), "/");
         context.setResourceBase(absolutePath);
     }
 
-    public void setStaticContext(String absolutePath, String welcomePage) {
+    public void setStaticContext(final String absolutePath, final String welcomePage) {
         context.addServlet(DefaultServlet.class.getName(), "/");
         context.setResourceBase(absolutePath);
         context.setWelcomeFiles(new String[]{welcomePage});
     }
 
-    public void setVirtualHosts(String... virtualhosts) {
+    public void setVirtualHosts(final String... virtualhosts) {
         context.setVirtualHosts(virtualhosts);
     }
 
-    public void addVirtualHost(String virtualhost) {
+    public void addVirtualHost(final String virtualhost) {
         String[] virtualHosts = context.getVirtualHosts();
         if (virtualHosts == null) {
             setVirtualHosts(virtualhost);
@@ -118,7 +118,7 @@ public class PicoContext {
 
 
 
-    public void setDefaultHandling(final String absolutePath, String scratchDir, String pageSuffix) {
+    public void setDefaultHandling(final String absolutePath, final String scratchDir, final String pageSuffix) {
         context.setResourceBase(absolutePath);
         ServletHolder jspHolder = new ServletHolder();
         jspHolder.setName("jsp");
@@ -139,7 +139,7 @@ public class PicoContext {
         addErrorHandler(new ErrorPageErrorHandler());
     }
 
-    public void addErrorHandler(ErrorHandler handler) {
+    public void addErrorHandler(final ErrorHandler handler) {
         context.setErrorHandler(handler);
     }
 

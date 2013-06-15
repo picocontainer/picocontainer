@@ -1,5 +1,14 @@
 package org.picocontainer.adapters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.Key.annotatedKey;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -11,15 +20,6 @@ import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.SetterInjection;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.picocontainer.Key.annotatedKey;
 
 /** @author Paul Hammant */
 public class TypedBindingAnnotationTestCase  {
@@ -33,7 +33,7 @@ public class TypedBindingAnnotationTestCase  {
         assertGettingOfAppleOneWorks(mpc);
     }
 
-    private void assertGettingOfAppleOneWorks(MutablePicoContainer mpc) {
+    private void assertGettingOfAppleOneWorks(final MutablePicoContainer mpc) {
         try {
             mpc.getComponent(Apple.class);
             Assert.fail("should have barfed");
@@ -52,7 +52,7 @@ public class TypedBindingAnnotationTestCase  {
         assertGettingOfAppleOneWorks(mpc);
     }
 
-    private void assertFourMemberApplesAreRight(FruitBasket fb) {
+    private void assertFourMemberApplesAreRight(final FruitBasket fb) {
         assertNotNull(fb);
         assertEquals(fb.bramley.getX(), 1);
         assertEquals(fb.cox.getX(), 2);
@@ -78,11 +78,11 @@ public class TypedBindingAnnotationTestCase  {
 
     }
 
-    private void addFiveComponents(MutablePicoContainer mpc) {
+    private void addFiveComponents(final MutablePicoContainer mpc) {
         addFiveComponents(mpc, FruitBasket.class);
     }
 
-    private void addFiveComponents(MutablePicoContainer mpc, Class clazz) {
+    private void addFiveComponents(final MutablePicoContainer mpc, final Class clazz) {
         mpc.addComponent(clazz);
         mpc.addComponent(annotatedKey(Apple.class, Bramley.class), AppleImpl1.class);
         mpc.addComponent(annotatedKey(Apple.class, Cox.class), AppleImpl2.class);
@@ -139,7 +139,7 @@ public class TypedBindingAnnotationTestCase  {
 
     public static class FruitBasketViaConstructor extends FruitBasket {
         // used in testBindingAnnotationsWithConstructorInjection()
-        public FruitBasketViaConstructor(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+        public FruitBasketViaConstructor(@Bramley final Apple bramley, @Cox final Apple cox, @Granny final Apple granny, @Braeburn final Apple braeburn) {
             foo(bramley, cox, granny, braeburn);
         }
 
@@ -159,26 +159,26 @@ public class TypedBindingAnnotationTestCase  {
 
 
         // used in testBindingAnnotationsWithMethodInjection()
-        public void foo(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+        public void foo(@Bramley final Apple bramley, @Cox final Apple cox, @Granny final Apple granny, @Braeburn final Apple braeburn) {
             this.bramley = bramley;
             this.cox = cox;
             this.granny = granny;
             this.braeburn = braeburn;
         }
 
-        public void setOne(@Bramley Apple bramley) {
+        public void setOne(@Bramley final Apple bramley) {
             this.bramley = bramley;
         }
 
-        public void setTwo(@Cox Apple cox) {
+        public void setTwo(@Cox final Apple cox) {
             this.cox = cox;
         }
 
-        public void setThree(@Granny Apple granny) {
+        public void setThree(@Granny final Apple granny) {
             this.granny = granny;
         }
 
-        public void setFour(@Braeburn Apple braeburn) {
+        public void setFour(@Braeburn final Apple braeburn) {
             this.braeburn = braeburn;
         }
     }

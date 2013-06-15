@@ -9,18 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.picocontainer.injectors.ParameterNameBinding;
 
-import com.thoughtworks.paranamer.DefaultParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
-
-import java.lang.reflect.Method;
+import com.thoughtworks.paranamer.DefaultParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 
 public class ParanamerPicoContainerTestCase {
 
@@ -31,10 +31,10 @@ public class ParanamerPicoContainerTestCase {
     }
 
 
-    public void methodToFind(String name) {
+    public void methodToFind(final String name) {
 		assert name != null;
 	}
-    
+
 
     @Test
     public void

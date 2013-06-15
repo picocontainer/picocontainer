@@ -1,5 +1,16 @@
 package org.picocontainer.containers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Key.annotatedKey;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.annotations.Bind;
@@ -7,26 +18,15 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.Key.annotatedKey;
-
 public class TieringPicoContainerTestCase {
-    
+
     public static class Couch {
     }
 
     public static class TiredPerson {
-        private Couch couchToSitOn;
+        private final Couch couchToSitOn;
 
-        public TiredPerson(Couch couchToSitOn) {
+        public TiredPerson(final Couch couchToSitOn) {
             this.couchToSitOn = couchToSitOn;
         }
     }
@@ -63,18 +63,18 @@ public class TieringPicoContainerTestCase {
     }
 
     public static class Doctor {
-        private TiredPerson tiredPerson;
+        private final TiredPerson tiredPerson;
 
-        public Doctor(TiredPerson tiredPerson) {
+        public Doctor(final TiredPerson tiredPerson) {
             this.tiredPerson = tiredPerson;
         }
     }
 
     public static class TiredDoctor {
-        private Couch couchToSitOn;
+        private final Couch couchToSitOn;
         private final TiredPerson tiredPerson;
 
-        public TiredDoctor(Couch couchToSitOn, TiredPerson tiredPerson) {
+        public TiredDoctor(final Couch couchToSitOn, final TiredPerson tiredPerson) {
             this.couchToSitOn = couchToSitOn;
             this.tiredPerson = tiredPerson;
         }
@@ -108,7 +108,7 @@ public class TieringPicoContainerTestCase {
     public static @interface Grouchy {}
 
     public static class GrouchyTiredPerson extends TiredPerson {
-        public GrouchyTiredPerson(Couch couchToSitOn) {
+        public GrouchyTiredPerson(final Couch couchToSitOn) {
             super(couchToSitOn);
         }
     }
@@ -119,7 +119,7 @@ public class TieringPicoContainerTestCase {
     public static @interface Polite {}
 
     public static class PoliteTiredPerson extends TiredPerson {
-        public PoliteTiredPerson(Couch couchToSitOn) {
+        public PoliteTiredPerson(final Couch couchToSitOn) {
             super(couchToSitOn);
         }
     }
@@ -127,7 +127,7 @@ public class TieringPicoContainerTestCase {
     public static class DiscerningDoctor {
         private final TiredPerson tiredPerson;
 
-        public DiscerningDoctor(@Polite TiredPerson tiredPerson) {
+        public DiscerningDoctor(@Polite final TiredPerson tiredPerson) {
             this.tiredPerson = tiredPerson;
         }
     }

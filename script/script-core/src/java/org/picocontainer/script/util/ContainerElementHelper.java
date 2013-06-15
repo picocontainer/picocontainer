@@ -21,13 +21,13 @@ import org.picocontainer.containers.EmptyPicoContainer;
 
 /**
  * Helper for ScriptedPicoContainer
- * 
+ *
  * @author Paul Hammant
  */
 public class ContainerElementHelper {
 
     public static ClassLoadingPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory,
-            PicoContainer parent, ClassLoader classLoader) {
+            PicoContainer parent, final ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
         }
@@ -38,7 +38,7 @@ public class ContainerElementHelper {
 
     }
 
-    public static void debug(List<?> arg0, Map<?,?> arg1) {
+    public static void debug(final List<?> arg0, final Map<?,?> arg1) {
         System.out.println("-->debug " + arg0.size() + " " + arg1.size());
         for (int i = 0; i < arg0.size(); i++) {
             Object o = arg0.get(i);

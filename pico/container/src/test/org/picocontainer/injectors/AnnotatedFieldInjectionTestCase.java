@@ -9,22 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import org.junit.Test;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
 
 public class AnnotatedFieldInjectionTestCase {
 
@@ -34,23 +35,23 @@ public class AnnotatedFieldInjectionTestCase {
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(), new Properties(), Map.class, HashMap.class, null, null, null);
-        
+
         XStream xs = new XStream();
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
-            public boolean canConvert(Class aClass) {
+            public boolean canConvert(final Class aClass) {
                 return aClass.getName().equals("org.picocontainer.monitors.ConsoleComponentMonitor") ||
                        aClass.getName().equals("org.picocontainer.lifecycle.ReflectionLifecycleStrategy");
 
             }
 
-            public void marshal(Object object,
-                                HierarchicalStreamWriter hierarchicalStreamWriter,
-                                MarshallingContext marshallingContext) {
+            public void marshal(final Object object,
+                                final HierarchicalStreamWriter hierarchicalStreamWriter,
+                                final MarshallingContext marshallingContext) {
             }
 
-            public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
-                                    UnmarshallingContext unmarshallingContext) {
+            public Object unmarshal(final HierarchicalStreamReader hierarchicalStreamReader,
+                                    final UnmarshallingContext unmarshallingContext) {
                 return null;
             }
         });
@@ -62,7 +63,7 @@ public class AnnotatedFieldInjectionTestCase {
                      "  <impl>java.util.HashMap</impl>\n" +
                      "  <monitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
                      "  <useNames>false</useNames>\n" +
-                     "  <requireConsumptionOfAllParameters>true</requireConsumptionOfAllParameters>\n" + 
+                     "  <requireConsumptionOfAllParameters>true</requireConsumptionOfAllParameters>\n" +
                      "  <injectionAnnotations>\n" +
                      "    <java-class>javax.inject.Inject</java-class>\n" +
                      "    <java-class>org.picocontainer.annotations.Inject</java-class>\n" +

@@ -7,10 +7,9 @@ import java.io.FilePermission;
 import java.net.URL;
 
 import org.junit.Test;
-import org.picocontainer.classname.ClassPathElement;
 
 /**
- * 
+ *
  * @author Mauro Talevi
  */
 public class ClassPathElementTestCase {

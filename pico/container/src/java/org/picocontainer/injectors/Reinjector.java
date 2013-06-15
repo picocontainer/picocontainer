@@ -8,7 +8,12 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import com.googlecode.jtype.Generic;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -19,19 +24,14 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Properties;
+import com.googlecode.jtype.Generic;
 
 /**
  * A Reinjector allows methods on pre-instantiated classes to be invoked,
  * with appropriately scoped parameters.
  */
 public class Reinjector {
-    
+
     private final PicoContainer parent;
     private final ComponentMonitor monitor;
     private static NullLifecycleStrategy NO_LIFECYCLE = new NullLifecycleStrategy();
@@ -42,7 +42,7 @@ public class Reinjector {
      * With this constructor, a NullComponentMonitor is used.
      * @param parentContainer the parent container
      */
-    public Reinjector(PicoContainer parentContainer) {
+    public Reinjector(final PicoContainer parentContainer) {
         this(parentContainer, parentContainer instanceof ComponentMonitorStrategy
                 ? ((ComponentMonitorStrategy) parentContainer).currentMonitor()
                 : new NullComponentMonitor());
@@ -53,7 +53,7 @@ public class Reinjector {
      * @param parentContainer the parent container
      * @param monitor the monitor to use for 'instantiating' events
      */
-    public Reinjector(PicoContainer parentContainer, ComponentMonitor monitor) {
+    public Reinjector(final PicoContainer parentContainer, final ComponentMonitor monitor) {
         this.parent = parentContainer;
         this.monitor = monitor;
     }
@@ -64,7 +64,7 @@ public class Reinjector {
      * @param reinjectionMethod the reflection method to use for injection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Method reinjectionMethod) {
+    public Object reinject(final Class<?> key, final Method reinjectionMethod) {
         return reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(reinjectionMethod));
     }
 
@@ -74,7 +74,7 @@ public class Reinjector {
      * @param reinjectionMethodEnum the enum for the reflection method to use for injection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Enum reinjectionMethodEnum) {
+    public Object reinject(final Class<?> key, final Enum reinjectionMethodEnum) {
         return reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
     }
 
@@ -105,7 +105,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, InjectionType reinjectionType) {
+    public Object reinject(final Class<?> key, final InjectionType reinjectionType) {
         Object o = reinject(key, key, parent.getComponentInto(Generic.get( key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
         return o;
     }
@@ -117,7 +117,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return
      */
-    public Object reinject(Class<?> key, Class<?> impl, InjectionType reinjectionType) {
+    public Object reinject(final Class<?> key, final Class<?> impl, final InjectionType reinjectionType) {
         return reinject(key, impl, parent.getComponentInto(key, ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
     }
 
@@ -129,7 +129,7 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Class<?> key, Class<?> implementation, Object instance, InjectionType reinjectionType) {
+    public Object reinject(final Class<?> key, final Class<?> implementation, final Object instance, final InjectionType reinjectionType) {
         return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionType);
     }
 
@@ -142,11 +142,11 @@ public class Reinjector {
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
-    public Object reinject(Object key, Class<?> implementation, Object instance, Properties properties,
-                           InjectionType reinjectionType, MethodParameters... methodParams) {
+    public Object reinject(final Object key, final Class<?> implementation, final Object instance, final Properties properties,
+                           final InjectionType reinjectionType, final MethodParameters... methodParams) {
         Reinjection reinjection = new Reinjection(reinjectionType, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
-                monitor, NO_LIFECYCLE, properties, key, implementation, null, null, 
+                monitor, NO_LIFECYCLE, properties, key, implementation, null, null,
                 (methodParams != null && methodParams.length > 0) ? methodParams : null);
         return injector.decorateComponentInstance(parent, ComponentAdapter.NOTHING.class, instance);
     }

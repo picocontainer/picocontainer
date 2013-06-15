@@ -8,19 +8,19 @@
  *****************************************************************************/
 package org.picocontainer.references;
 
-import org.picocontainer.ObjectReference;
-
 import java.util.Map;
 
+import org.picocontainer.ObjectReference;
+
 /**
- * Gets and sets references on a map stored in Thread Local  
+ * Gets and sets references on a map stored in Thread Local
  * @author Paul Hammant
  */
 public class ThreadLocalMapObjectReference<T> implements ObjectReference<T> {
     private final ThreadLocal<Map<Object, T>> threadLocal;
     private final Object key;
 
-    public ThreadLocalMapObjectReference(ThreadLocal<Map<Object, T>> threadLocal, Object key) {
+    public ThreadLocalMapObjectReference(final ThreadLocal<Map<Object, T>> threadLocal, final Object key) {
         this.threadLocal = threadLocal;
         this.key = key;
     }
@@ -31,7 +31,7 @@ public class ThreadLocalMapObjectReference<T> implements ObjectReference<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void set(T item) {
+    public void set(final T item) {
         threadLocal.get().put(key, item) ;
 
     }

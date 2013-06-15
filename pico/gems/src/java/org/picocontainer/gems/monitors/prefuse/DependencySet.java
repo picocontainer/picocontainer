@@ -16,7 +16,7 @@ import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
 
 /**
  * Understands non-duplicated dependencies.
- * 
+ *
  * @author Peter Barry
  * @author Kent R. Spillner
  */

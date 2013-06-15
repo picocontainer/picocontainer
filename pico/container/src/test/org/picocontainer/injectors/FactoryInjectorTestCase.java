@@ -8,19 +8,19 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+
+import java.lang.reflect.Type;
+import java.util.Map;
+
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Inject;
-
-import java.lang.reflect.Type;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 
 public class FactoryInjectorTestCase {
 
@@ -38,13 +38,13 @@ public class FactoryInjectorTestCase {
     }
 
     public static class BrendansLogger {
-        private String canonicalName;
+        private final String canonicalName;
 
-        public BrendansLogger(String canonicalName) {
+        public BrendansLogger(final String canonicalName) {
             this.canonicalName = canonicalName;
         }
 
-        public static BrendansLogger getLogger(String canonicalName) {
+        public static BrendansLogger getLogger(final String canonicalName) {
             return new BrendansLogger(canonicalName);
         }
     }
@@ -52,7 +52,7 @@ public class FactoryInjectorTestCase {
     public static class BrendansComponent {
         BrendansLogger logger;
 
-        public BrendansComponent(BrendansLogger logger) {
+        public BrendansComponent(final BrendansLogger logger) {
             this.logger = logger;
         }
     }
@@ -60,7 +60,7 @@ public class FactoryInjectorTestCase {
     public static class BrendansLoggerInjector extends FactoryInjector<BrendansLogger> {
 
         @Override
-        public BrendansLogger getComponentInstance(PicoContainer arg0, final Type arg1)
+        public BrendansLogger getComponentInstance(final PicoContainer arg0, final Type arg1)
                 throws PicoCompositionException {
             return BrendansLogger.getLogger(arg1.getClass().getCanonicalName());
         }
@@ -71,7 +71,7 @@ public class FactoryInjectorTestCase {
     public static class Turnip2 {
         Swede swede;
         private final String foo;
-        public Turnip2(String foo, Swede swede) {
+        public Turnip2(final String foo, final Swede swede) {
             this.foo = foo;
             assertNotNull(swede);
             this.swede = swede;
@@ -82,7 +82,7 @@ public class FactoryInjectorTestCase {
 
         public String getFoo() {
             return foo;
-        }                     
+        }
     }
 
     public static class Turnip {
@@ -90,7 +90,7 @@ public class FactoryInjectorTestCase {
         Swede swede;
         private final String foo;
 
-        public Turnip(String foo) {
+        public Turnip(final String foo) {
             this.foo = foo;
         }
 
@@ -122,9 +122,11 @@ public class FactoryInjectorTestCase {
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
         container.addAdapter(new FactoryInjector<Swede>() {
-            public Swede getComponentInstance(PicoContainer container, final Type into) {
+            @Override
+			public Swede getComponentInstance(final PicoContainer container, final Type into) {
                 return new Swede() {
-                    public String toString() {
+                    @Override
+					public String toString() {
                         return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
@@ -143,9 +145,11 @@ public class FactoryInjectorTestCase {
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
         container.addAdapter(new FactoryInjector<Swede>(Swede.class) {
-            public Swede getComponentInstance(PicoContainer container, final Type into) {
+            @Override
+			public Swede getComponentInstance(final PicoContainer container, final Type into) {
                 return new Swede() {
-                    public String toString() {
+                    @Override
+					public String toString() {
                         return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
@@ -164,9 +168,11 @@ public class FactoryInjectorTestCase {
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
         container.addAdapter(new FactoryInjector<Swede>(Swede.class) {
-            public Swede getComponentInstance(PicoContainer container, final Type into) {
+            @Override
+			public Swede getComponentInstance(final PicoContainer container, final Type into) {
                 return new Swede() {
-                    public String toString() {
+                    @Override
+					public String toString() {
                         return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
@@ -207,10 +213,12 @@ public class FactoryInjectorTestCase {
     }
 
     private static class SwedeFactoryInjector extends FactoryInjector<Swede> {
-        public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+        @Override
+		public Swede getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
-                public String toString() {
+                @Override
+				public String toString() {
                     return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                 }
             };
@@ -222,10 +230,12 @@ public class FactoryInjectorTestCase {
             super(Swede.class);
         }
 
-        public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+        @Override
+		public Swede getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
-                public String toString() {
+                @Override
+				public String toString() {
                     return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                 }
             };
@@ -234,13 +244,14 @@ public class FactoryInjectorTestCase {
 
     private abstract class Footle<T> {
         private class ServiceConnectionInjector extends FactoryInjector<T> {
-            public T getComponentInstance(PicoContainer container, Type into) {
+            @Override
+			public T getComponentInstance(final PicoContainer container, final Type into) {
                 System.out.println("**** injector called for " + into);
                 return null;
             }
         }
 
-        private void addAdapter(MutablePicoContainer mpc) {
+        private void addAdapter(final MutablePicoContainer mpc) {
             mpc.addAdapter(new ServiceConnectionInjector());
         }
     }
@@ -249,9 +260,9 @@ public class FactoryInjectorTestCase {
         String leafColor();
     }
     public static class OakTree implements Tree {
-        private String leafColor;
+        private final String leafColor;
 
-        public OakTree(String leafColor) {
+        public OakTree(final String leafColor) {
             this.leafColor = leafColor;
         }
 
@@ -276,9 +287,11 @@ public class FactoryInjectorTestCase {
 
     private static class KeyAwareSwedeFactoryInjector extends FactoryInjector<Swede> {
 
-    	public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+    	@Override
+		public Swede getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return new Swede() {
-                public String toString() {
+                @Override
+				public String toString() {
                     InjectInto intoType = (InjectInto) into;
                     return "Swede for " + intoType.getIntoClass().getName() + " " + intoType.getIntoKey();
                 }
@@ -300,6 +313,6 @@ public class FactoryInjectorTestCase {
         assertNotSame(turnip1, turnip2);
         assertNotSame(turnip1.getSwede(), turnip2.getSwede());
         assertEquals("Swede for " + Turnip.class.getName() + " turnip1", turnip1.getSwede().toString());
-        assertEquals("Swede for " + Turnip.class.getName() + " turnip2", turnip2.getSwede().toString());        
+        assertEquals("Swede for " + Turnip.class.getName() + " turnip2", turnip2.getSwede().toString());
     }
 }

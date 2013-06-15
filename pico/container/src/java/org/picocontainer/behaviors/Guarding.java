@@ -10,18 +10,18 @@
 
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
+import java.lang.reflect.Type;
+import java.util.Properties;
+
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.lang.reflect.Type;
-import java.util.Properties;
 
 /**
  * factory class creating guard behaviour
@@ -31,8 +31,9 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class Guarding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-            Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+            final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, constructorParams, fieldParams, methodParams);
@@ -44,8 +45,9 @@ public class Guarding extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-            Properties componentProps, ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+            final Properties componentProps, final ComponentAdapter<T> adapter) {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         if (guard == null) {
@@ -65,12 +67,13 @@ public class Guarding extends AbstractBehavior {
     public static class Guarded<T> extends AbstractChangedBehavior<T> {
         private final String guard;
 
-        public Guarded(ComponentAdapter<T> delegate, String guard) {
+        public Guarded(final ComponentAdapter<T> delegate, final String guard) {
             super(delegate);
             this.guard = guard;
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             container.getComponentInto(guard, into);
             return super.getComponentInstance(container, into);
         }

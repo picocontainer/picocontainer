@@ -11,7 +11,7 @@ package org.picocontainer.gems.adapters;
  *****************************************************************************/
 /**
  * Interface for a static factory wrapper used by the {@link StaticFactoryAdapter}.
- * 
+ *
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  */

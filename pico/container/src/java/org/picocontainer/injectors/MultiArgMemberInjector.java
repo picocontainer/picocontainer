@@ -23,7 +23,6 @@ import org.picocontainer.Parameter.Resolver;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
-import org.picocontainer.injectors.AbstractInjector.AmbiguousComponentResolutionException;
 import org.picocontainer.parameters.AccessibleObjectParameterSet;
 
 import com.thoughtworks.paranamer.AdaptiveParanamer;
@@ -35,22 +34,22 @@ import com.thoughtworks.paranamer.Paranamer;
  * Injection will happen in a member with multiple arguments on the component.
  * Member can be either Constructor or Method of course. See subclasses.
  *
- * @author Paul Hammant 
- * 
+ * @author Paul Hammant
+ *
  */
 @SuppressWarnings("serial")
 public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     private transient Paranamer paranamer;
-    
-	private boolean useAllParameters;
 
-    public MultiArgMemberInjector(Object key,
-                                Class<T> impl,
-                                AccessibleObjectParameterSet[] parameters,
-                                ComponentMonitor monitor,
-                                boolean useNames,
-                                boolean useAllParameters
+	private final boolean useAllParameters;
+
+    public MultiArgMemberInjector(final Object key,
+                                final Class<T> impl,
+                                final AccessibleObjectParameterSet[] parameters,
+                                final ComponentMonitor monitor,
+                                final boolean useNames,
+                                final boolean useAllParameters
                                 ) {
         super(key, impl, monitor, useNames, parameters);
 		this.useAllParameters = useAllParameters;
@@ -63,14 +62,14 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
         return paranamer;
     }
 
-    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings, Type into) {
+    protected Object[] getMemberArguments(final PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings, final Type into) {
         boxParameters(parameterTypes);
         //Object[] result = new Object[parameterTypes.length];
         List<Object> result = new ArrayList<Object>(parameterTypes.length);
         AccessibleObjectParameterSet objectParameterSet = this.getParameterToUseForObject(member, parameters);
-        
+
         Parameter[] currentParameters = objectParameterSet.getParams();
-        
+
         for (int i = 0; i < currentParameters.length; i++) {
             try {
 				Object parameterResult = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null, into);
@@ -87,29 +86,30 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
         return result.toArray();
     }
-    
+
 
 	/**
 	 * Allow injector-based substitution of the parameters defined in the composition script
 	 */
-	protected Parameter[] interceptParametersToUse(Parameter[] currentParameters, AccessibleObject member) {
+	@Override
+	protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, final AccessibleObject member) {
 		return currentParameters;
 	}
 
-	protected void boxParameters(Type[] parameterTypes) {
+	protected void boxParameters(final Type[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
         }
     }
 
-    protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding,
-                                  Parameter currentParameter, ComponentAdapter<?> injecteeAdapter, Type into) {
-    	
-    	
-    	
+    protected Object getParameter(final PicoContainer container, final AccessibleObject member, final int i, final Type parameterType, final Annotation binding,
+                                  final Parameter currentParameter, final ComponentAdapter<?> injecteeAdapter, final Type into) {
+
+
+
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);
         Resolver resolver = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding);
-        
+
         if (!resolver.isResolved()) {
         	if (!this.useAllParameters) {
         		return Parameter.NULL_RESULT;
@@ -118,21 +118,21 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
         Object result = resolver.resolveInstance(into);
         nullCheck(member, i, expectedNameBinding, result);
-        
+
         return result;
     }
 
     /**
-     * Throws an exception if the &quot;resolved&quot; parameter is null <em>unless</em> 
+     * Throws an exception if the &quot;resolved&quot; parameter is null <em>unless</em>
      * {@link #useAllParameters} is set to false.
-     * 
+     *
      * @param member
      * @param i
      * @param expectedNameBinding
      * @param result
      */
     @SuppressWarnings("synthetic-access")
-    protected void nullCheck(AccessibleObject member, int i, ParameterNameBinding expectedNameBinding, Object result) {
+    protected void nullCheck(final AccessibleObject member, final int i, final ParameterNameBinding expectedNameBinding, final Object result) {
 
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
@@ -141,17 +141,17 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     /**
      * Checks to see if a null parameter is allowed in the given
-     * constructor/field/method.  The default version allows null 
+     * constructor/field/method.  The default version allows null
      * if the target object is not a primitive type.
      * @param member constructor method or field
      * @param i parameter #.
      * @return true if the null parameter might be allowed.
      */
-    protected boolean isNullParamAllowed(AccessibleObject member, int i) {
+    protected boolean isNullParamAllowed(final AccessibleObject member, final int i) {
         return !(isPrimitiveArgument(member, i));
     }
 
-    protected Annotation[] getBindings(Annotation[][] annotationss) {
+    protected Annotation[] getBindings(final Annotation[][] annotationss) {
         Annotation[] retVal = new Annotation[annotationss.length];
         for (int i = 0; i < annotationss.length; i++) {
             Annotation[] annotations = annotationss[i];
@@ -167,7 +167,7 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     public static class ParameterCannotBeNullException extends PicoCompositionException {
         private final String name;
-        private ParameterCannotBeNullException(int ix, AccessibleObject member, String name) {
+        private ParameterCannotBeNullException(final int ix, final AccessibleObject member, final String name) {
             super("Parameter " + ix + " of '" + member + "' named '" + name + "' cannot be null");
             this.name = name;
         }

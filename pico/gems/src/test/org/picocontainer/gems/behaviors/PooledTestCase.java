@@ -4,23 +4,35 @@
  */
 package org.picocontainer.gems.behaviors;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.pool.Poolable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.*;
+import org.picocontainer.ChangedBehavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.*;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.pool.Poolable;
 
 
 /**

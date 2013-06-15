@@ -25,8 +25,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Caching;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 
@@ -36,14 +34,16 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
  */
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTest {
 
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+    @Override
+	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
         return new DefaultPicoContainer(parent);
     }
 
-    protected Properties[] getProperties() {
+    @Override
+	protected Properties[] getProperties() {
         return new Properties[0];
     }
-    
+
     @Test public void testContainerIsDeserializableWithParent() throws PicoException,
                                                                  IOException, ClassNotFoundException {
 

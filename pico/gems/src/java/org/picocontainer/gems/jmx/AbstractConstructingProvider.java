@@ -10,13 +10,13 @@
 
 package org.picocontainer.gems.jmx;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
 
 /**

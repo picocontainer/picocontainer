@@ -1,15 +1,15 @@
 package org.picocontainer.defaults.issues;
 
-import org.junit.Test;import static org.junit.Assert.assertFalse;import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.Provider;
 import org.picocontainer.injectors.ProviderAdapter;
 
 public class Issue0357TestCase {
-    
+
     public static class SimpleFoo {
 		public SimpleFoo() throws Exception {
 			throw new Exception("deliberate");

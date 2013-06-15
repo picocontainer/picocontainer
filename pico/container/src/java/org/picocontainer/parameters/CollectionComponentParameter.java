@@ -44,7 +44,7 @@ import com.googlecode.jtype.Generic;
  * The collection will contain all components of a special type and additionally
  * the type of the key may be specified. In case of a map, the map's keys are
  * the one of the component adapter.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
@@ -76,7 +76,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
 	/**
 	 * Expect an {@link Array}of an appropriate type as parameter.
-	 * 
+	 *
 	 * @param emptyCollection
 	 *            <code>true</code> if an empty array also is a valid dependency
 	 *            resolution.
@@ -88,7 +88,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	/**
 	 * Expect any of the collection types {@link Array},{@link Collection}or
 	 * {@link Map}as parameter.
-	 * 
+	 *
 	 * @param componentValueType
 	 *            the type of the components (ignored in case of an Array)
 	 * @param emptyCollection
@@ -101,7 +101,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	/**
 	 * Expect any of the collection types {@link Array},{@link Collection}or
 	 * {@link Map}as parameter.
-	 * 
+	 *
 	 * @param keyType
 	 *            the type of the component's key
 	 * @param componentValueType
@@ -122,7 +122,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	 * is one of the collection types {@link Array},{@link Collection}or
 	 * {@link Map}. An empty collection is only a valid resolution, if the
 	 * <code>emptyCollection</code> flag was set.
-	 * 
+	 *
 	 * @param container
 	 *            {@inheritDoc}
 	 * @param injecteeAdapter
@@ -186,7 +186,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
 		throw new IllegalArgumentException("Unable to get collection type from " + expectedType);
 	}
-	
+
 	   private Class getGenericArrayBaseType(final Type expectedType) {
 	        if (expectedType instanceof Class) {
 	            Class type = (Class) expectedType;
@@ -198,7 +198,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	        }
 
 	        throw new IllegalArgumentException("Unable to get collection type from " + expectedType);
-	    }	
+	    }
 
 	/**
 	 * Verify a successful dependency resolution of the parameter for the
@@ -206,7 +206,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	 * the collection types {@link Array}, {@link Collection}or {@link Map}. An
 	 * empty collection is only a valid resolution, if the
 	 * <code>emptyCollection</code> flag was set.
-	 * 
+	 *
 	 * @param container
 	 *            {@inheritDoc}
 	 * @param adapter
@@ -245,7 +245,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
 	/**
 	 * Visit the current {@link Parameter}.
-	 * 
+	 *
 	 * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
 	 */
 	public void accept(final PicoVisitor visitor) {
@@ -255,7 +255,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 	/**
 	 * Evaluate whether the given component adapter will be part of the
 	 * collective type.
-	 * 
+	 *
 	 * @param adapter
 	 *            a <code>ComponentAdapter</code> value
 	 * @return <code>true</code> if the adapter takes part
@@ -266,7 +266,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 
 	/**
 	 * Collect the matching ComponentAdapter instances.
-	 * 
+	 *
 	 * @param container
 	 *            container to use for dependency resolution
 	 * @param adapter
@@ -319,7 +319,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
 			return getValueType((ParameterizedType) collectionType);
 		} else if (collectionType instanceof GenericArrayType) {
             GenericArrayType genericArrayType = (GenericArrayType) collectionType;
-            
+
             return Generic.get(getGenericArrayBaseType(genericArrayType.getGenericComponentType()));
         }
 		throw new IllegalArgumentException("Unable to determine collection type from " + collectionType);

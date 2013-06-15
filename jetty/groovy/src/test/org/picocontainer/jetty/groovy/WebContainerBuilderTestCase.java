@@ -21,9 +21,9 @@ import java.io.StringReader;
 import java.net.ConnectException;
 import java.net.URL;
 
+import org.eclipse.jetty.util.IO;
 import org.junit.After;
 import org.junit.Test;
-import org.eclipse.jetty.util.IO;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
@@ -108,7 +108,7 @@ public final class WebContainerBuilderTestCase {
         assertPageIsHostedWithContents(script, "hello Fred<null>", "http://localhost:8080/bar/foo");
     }
 
-    
+
     @Test public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
@@ -189,7 +189,7 @@ public final class WebContainerBuilderTestCase {
 
 		String absolutePath = testWar.getParentFile().getAbsolutePath();
 		absolutePath = absolutePath.replace('\\', '/');
-        
+
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -224,7 +224,7 @@ public final class WebContainerBuilderTestCase {
 
         String absolutePath = testWar.getParentFile().getAbsolutePath();
         absolutePath = absolutePath.replace('\\', '/');
-        
+
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -252,10 +252,10 @@ public final class WebContainerBuilderTestCase {
 
     }
 
-    private void assertPageIsHostedWithContents(Reader script, String message, String url) throws InterruptedException, IOException {
+    private void assertPageIsHostedWithContents(final Reader script, final String message, final String url) throws InterruptedException, IOException {
         pico = (MutablePicoContainer) buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);
-        
+
         //Thread.sleep(2 * 1000);
         String actual;
         try {
@@ -269,7 +269,7 @@ public final class WebContainerBuilderTestCase {
         PlatformAssert.assertSameExceptCarriageReturns(message, actual);
     }
 
-    private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
+    private PicoContainer buildContainer(final Reader script, final PicoContainer parent, final Object scope) {
         return new GroovyContainerBuilder(script, getClass().getClassLoader()).buildContainer(parent, scope, true);
     }
 }

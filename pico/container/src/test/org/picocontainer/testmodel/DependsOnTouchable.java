@@ -21,7 +21,7 @@ import junit.framework.Assert;
 public class DependsOnTouchable implements Serializable {
     public final Touchable touchable;
 
-    public DependsOnTouchable(Touchable touchable) {
+    public DependsOnTouchable(final Touchable touchable) {
         Assert.assertNotNull("Touchable cannot be passed in as null", touchable);
         touchable.touch();
         this.touchable = touchable;

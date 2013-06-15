@@ -9,22 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Characteristics;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Properties;
+
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -33,8 +33,9 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                    Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                    final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
 
         removePropertiesIfPresent(componentProps, Characteristics.ENABLE_CIRCULAR);
 
@@ -48,8 +49,9 @@ public class ImplementationHiding extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                Properties componentProps, ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return adapter;
         }
@@ -79,11 +81,12 @@ public class ImplementationHiding extends AbstractBehavior {
          * Creates an ImplementationHidingComponentAdapter with a delegate
          * @param delegate the component adapter to which this adapter delegates
          */
-        public HiddenImplementation(ComponentAdapter<T> delegate) {
+        public HiddenImplementation(final ComponentAdapter<T> delegate) {
             super(delegate);
         }
 
-        public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
 
             ComponentAdapter<T> delegate = getDelegate();
             Object key = delegate.getComponentKey();
@@ -106,7 +109,7 @@ public class ImplementationHiding extends AbstractBehavior {
 
 
         @SuppressWarnings("unchecked")
-        protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+        protected T createProxy(final Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
             final PicoContainer container1 = container;
             return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
                 private final PicoContainer container = container1;
@@ -124,7 +127,7 @@ public class ImplementationHiding extends AbstractBehavior {
                 }
             });        }
 
-        protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
+        protected Object invokeMethod(final Object componentInstance, final Method method, final Object[] args, final PicoContainer container) throws Throwable {
             ComponentMonitor monitor = currentMonitor();
             try {
                 monitor.invoking(container, this, method, componentInstance, args);
@@ -139,7 +142,7 @@ public class ImplementationHiding extends AbstractBehavior {
             }
         }
 
-        private void verifyInterfacesOnly(Class<?>[] classes) {
+        private void verifyInterfacesOnly(final Class<?>[] classes) {
             for (Class<?> clazz : classes) {
                 if (!clazz.isInterface()) {
                     throw new PicoCompositionException(

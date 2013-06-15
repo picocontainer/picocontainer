@@ -20,9 +20,9 @@ import org.junit.Test;
  * Test the CyclicDependecy.
  */
 public final class ThreadLocalCyclicDependencyGuardTestCase {
-      
+
     private final Runnable[] runner = new Runnable[3];
-    
+
     class ThreadLocalRunner implements Runnable {
         public AbstractInjector.CyclicDependencyException exception;
         private final Blocker blocker;
@@ -31,7 +31,8 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
         public ThreadLocalRunner() {
             this.blocker = new Blocker();
             this.guard = new AbstractInjector.ThreadLocalCyclicDependencyGuard() {
-                public Object run(Object instance) {
+                @Override
+				public Object run(final Object instance) {
                     try {
                         blocker.block();
                     } catch (InterruptedException e) {
@@ -81,12 +82,12 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
             aRacer.join();
         }
     }
-    
+
     @Test public void testCyclicDependencyWithThreadSafeGuard() throws InterruptedException {
         for(int i = 0; i < runner.length; ++i) {
             runner[i] = new ThreadLocalRunner();
         }
-        
+
         initTest(runner);
 
         for (Runnable aRunner : runner) {

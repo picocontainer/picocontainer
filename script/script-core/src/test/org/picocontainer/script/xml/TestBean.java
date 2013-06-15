@@ -13,15 +13,15 @@ public final class TestBean {
     private int foo;
     private String bar;
     private final String constructorCalled;
-    
+
     public TestBean() {
         constructorCalled="default";
     }
-    
-    public TestBean(String greedy) {
+
+    public TestBean(final String greedy) {
          constructorCalled="greedy";
     }
-    
+
     public String getConstructorCalled() {
         return constructorCalled;
     }
@@ -33,11 +33,11 @@ public final class TestBean {
         return bar;
     }
 
-    public void setFoo(int foo) {
+    public void setFoo(final int foo) {
         this.foo = foo;
     }
 
-    public void setBar(String bar) {
+    public void setBar(final String bar) {
         this.bar = bar;
     }
 }

@@ -15,13 +15,13 @@ import org.picocontainer.PicoContainer;
  */
 public abstract class AbstractScriptedContainerBuilderTestCase {
 
-    protected PicoContainer buildContainer(ContainerBuilder builder, PicoContainer parentContainer,
-            Object assemblyScope) {
+    protected PicoContainer buildContainer(final ContainerBuilder builder, final PicoContainer parentContainer,
+            final Object assemblyScope) {
         return buildContainer(builder, parentContainer, assemblyScope, true);
     }
 
-    protected PicoContainer buildContainer(ContainerBuilder builder, PicoContainer parentContainer,
-            Object assemblyScope, boolean addChildToParent) {
+    protected PicoContainer buildContainer(final ContainerBuilder builder, final PicoContainer parentContainer,
+            final Object assemblyScope, final boolean addChildToParent) {
         return builder.buildContainer(parentContainer, assemblyScope, addChildToParent);
     }
 

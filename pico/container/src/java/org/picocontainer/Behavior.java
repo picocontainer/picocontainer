@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  * Extends ComponentFactory to provide factory methods for Behaviors
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  */

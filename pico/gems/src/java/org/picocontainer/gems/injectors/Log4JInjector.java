@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.picocontainer.gems.injectors;
 
+import java.lang.reflect.Type;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.FactoryInjector;
 import org.picocontainer.injectors.InjectInto;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.apache.log4j.Logger;
-import org.apache.log4j.LogManager;
-
-import java.lang.reflect.Type;
 
 /**
  * This will Inject a Log4J Logger for the injectee's class name

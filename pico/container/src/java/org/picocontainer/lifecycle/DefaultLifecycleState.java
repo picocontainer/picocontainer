@@ -7,9 +7,9 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import org.picocontainer.PicoCompositionException;
-
 import java.io.Serializable;
+
+import org.picocontainer.PicoCompositionException;
 
 /**
  * Bean-like implementation of LifecycleState.
@@ -57,19 +57,19 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void starting(String containerName) {
+    public void starting(final String containerName) {
 		if (isConstructed() || isStopped()) {
             state = STARTED;
 			return;
 		}
-	    throw new IllegalStateException("Cannot start container '" 
+	    throw new IllegalStateException("Cannot start container '"
 	    		+ containerName
 	    		+ "'.  Current container state was: " + state);
     }
 
 
     /** {@inheritDoc} **/
-    public void stopping(String containerName) {
+    public void stopping(final String containerName) {
         if (!(isStarted())) {
             throw new IllegalStateException("Cannot stop container '"
             		+ containerName
@@ -88,9 +88,9 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void disposing(String containerName) {
+    public void disposing(final String containerName) {
         if (!(isStopped() || isConstructed())) {
-            throw new IllegalStateException("Cannot dispose container '" 
+            throw new IllegalStateException("Cannot dispose container '"
             		+ containerName
             		+ "'.  Current lifecycle state is: " + state);
         }
@@ -102,7 +102,7 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
         state = DISPOSED;
     }
 
-    
+
     /** {@inheritDoc} **/
 	public boolean isDisposed() {
 		return state == DISPOSED;

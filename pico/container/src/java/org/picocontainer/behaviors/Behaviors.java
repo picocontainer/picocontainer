@@ -9,15 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ChangedBehavior;
 import org.picocontainer.Behavior;
+import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Decorator;
 import org.picocontainer.ObjectReference;
 
 /**
  * Static collection of factory methods for different BehaviourFactory implementations.
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  */
@@ -29,7 +29,7 @@ public class Behaviors {
     private Behaviors() {
         // no-op
     }
-    
+
     public static Behavior implementationHiding() {
         return new ImplementationHiding();
     }
@@ -54,15 +54,15 @@ public class Behaviors {
         return new Automating();
     }
 
-    public static <T> ChangedBehavior<T> cached(ComponentAdapter<T> delegate) {
+    public static <T> ChangedBehavior<T> cached(final ComponentAdapter<T> delegate) {
         return new Caching.Cached<T>(delegate);
     }
 
-    public static <T> ChangedBehavior<T> cached(ComponentAdapter<T> delegate, ObjectReference instanceReference) {
+    public static <T> ChangedBehavior<T> cached(final ComponentAdapter<T> delegate, final ObjectReference instanceReference) {
         return new Caching.Cached<T>(delegate, instanceReference);
     }
 
-    public static <T> ChangedBehavior<T> decorated(ComponentAdapter<T> delegate, Decorator decorator) {
+    public static <T> ChangedBehavior<T> decorated(final ComponentAdapter<T> delegate, final Decorator decorator) {
         return new Decorating.Decorated<T>(delegate, decorator);
     }
 }

@@ -13,8 +13,8 @@ import java.io.Serializable;
 import org.picocontainer.ObjectReference;
 
 /**
- * Simple instance implementation of ObjectReference. 
- * 
+ * Simple instance implementation of ObjectReference.
+ *
  * @author Aslak Helles&oslash;y
  * @author Konstantin Pribluda
  */
@@ -31,7 +31,7 @@ public class SimpleReference<T> implements ObjectReference<T>,
 		return instance;
 	}
 
-	public void set(T item) {
+	public void set(final T item) {
 		this.instance = item;
 	}
 }

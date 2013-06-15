@@ -23,9 +23,9 @@ import org.picocontainer.PicoCompositionException;
 
 /**
  * object reference to store and retrieve objects from JNDI
- * 
+ *
  * @author ko5tik
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable{
@@ -99,7 +99,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 
 	/**
 	 * name of this reference
-	 * 
+	 *
 	 * @return
 	 */
 	public String getName() {
@@ -110,7 +110,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	 * here we try to capture (eventual) deserealisation of this reference by
 	 * some container (notably JBoss)  and restore context as initial context
 	 * I hope this will be sufficient for most puproses
-	 * 
+	 *
 	 * @param in
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -123,8 +123,8 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 		}
 		in.defaultReadObject();
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return "(" + getName() + ")";

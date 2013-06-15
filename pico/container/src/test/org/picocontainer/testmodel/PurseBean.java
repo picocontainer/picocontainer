@@ -14,7 +14,7 @@ public class PurseBean {
     public PersonBean getOwner() {
         return owner;
     }
-    public void setOwner(PersonBean owner) {
+    public void setOwner(final PersonBean owner) {
         this.owner = owner;
     }
 }

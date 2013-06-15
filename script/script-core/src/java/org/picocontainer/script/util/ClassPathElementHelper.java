@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.util;
 
@@ -21,7 +21,7 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 public class ClassPathElementHelper {
     public static final String HTTP = "http://";
 
-    public static ClassPathElement addClassPathElement(final String path, ClassLoadingPicoContainer container) {
+    public static ClassPathElement addClassPathElement(final String path, final ClassLoadingPicoContainer container) {
         URL pathURL;
         try {
             if (path.toLowerCase().startsWith(HTTP)) {

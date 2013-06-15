@@ -8,11 +8,11 @@
  *****************************************************************************/
 package org.picocontainer.references;
 
-import org.picocontainer.ObjectReference;
-
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import org.picocontainer.ObjectReference;
 
 /**
  * Gets and sets references on Thread Local
@@ -22,11 +22,17 @@ import java.io.ObjectInputStream;
 public class ThreadLocalReference<T> extends ThreadLocal<T> implements ObjectReference<T>, Serializable {
 
     private void writeObject(final ObjectOutputStream out) {
-        if(out != null); // eliminate warning because of unused parameter
+        if(out != null)
+		 {
+			; // eliminate warning because of unused parameter
+		}
     }
 
     private void readObject(final ObjectInputStream in) {
-        if(in != null); // eliminate warning because of unused parameter
+        if(in != null)
+		 {
+			; // eliminate warning because of unused parameter
+		}
     }
 
 }

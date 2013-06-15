@@ -9,7 +9,19 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import com.thoughtworks.xstream.XStream;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.behaviors.Behaviors.synchronizing;
+import static org.picocontainer.injectors.Injectors.SDI;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
@@ -37,27 +49,16 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implementationHiding;
-import static org.picocontainer.behaviors.Behaviors.synchronizing;
-import static org.picocontainer.injectors.Injectors.SDI;
+import com.thoughtworks.xstream.XStream;
 
 @SuppressWarnings("serial")
 public class PicoBuilderTestCase {
 
     private XStream xs;
-    private EmptyPicoContainer parent = new EmptyPicoContainer();
-    private NullLifecycleStrategy lifecycle = new NullLifecycleStrategy();
-    private NullComponentMonitor ncm = new NullComponentMonitor();
-    private AdaptingInjection ai = new AdaptingInjection();
+    private final EmptyPicoContainer parent = new EmptyPicoContainer();
+    private final NullLifecycleStrategy lifecycle = new NullLifecycleStrategy();
+    private final NullComponentMonitor ncm = new NullComponentMonitor();
+    private final AdaptingInjection ai = new AdaptingInjection();
 
     @Before
     public void setUp() throws Exception {
@@ -196,7 +197,7 @@ public class PicoBuilderTestCase {
 
         MutablePicoContainer parentExpected = new PicoBuilder().build();
         MutablePicoContainer expected = new DefaultPicoContainer(parentExpected, lifecycle, ncm, ai);
-        parentExpected.addChildContainer(expected); 
+        parentExpected.addChildContainer(expected);
 
         assertEquals(toXml(expected), toXml(actual));
         boolean b = parent.removeChildContainer(actual);
@@ -307,22 +308,22 @@ public class PicoBuilderTestCase {
     public static class CustomComponentFactory implements ComponentFactory {
 
         @SuppressWarnings({ "UnusedDeclaration" })
-        public CustomComponentFactory(SomeContainerDependency someDependency) {
+        public CustomComponentFactory(final SomeContainerDependency someDependency) {
         }
 
-        public ComponentAdapter createComponentAdapter(ComponentMonitor monitor,
-                                                       LifecycleStrategy lifecycle,
-                                                       Properties componentProps,
-                                                       Object key,
-                                                       Class impl,
-                                                       ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        public ComponentAdapter createComponentAdapter(final ComponentMonitor monitor,
+                                                       final LifecycleStrategy lifecycle,
+                                                       final Properties componentProps,
+                                                       final Object key,
+                                                       final Class impl,
+                                                       final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
             return null;
         }
 
-        public void verify(PicoContainer container) {
+        public void verify(final PicoContainer container) {
         }
 
-        public void accept(PicoVisitor visitor) {
+        public void accept(final PicoVisitor visitor) {
             visitor.visitComponentFactory(this);
         }
     }
@@ -333,31 +334,31 @@ public class PicoBuilderTestCase {
         Object expected = new TestPicoContainer(ai, ncm, lifecycle, parent);
         assertEquals(toXml(expected), toXml(actual));
     }
-    
-    
+
+
     @Test
     public void testMultipleUsesAreSupported() {
         PicoBuilder picoBuilder = new PicoBuilder().withCaching().withLifecycle();
         MutablePicoContainer pico = picoBuilder.build();
-        
+
         pico.addComponent(Map.class, HashMap.class);
         assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Caching.Cached.class));
-        
+
         pico = picoBuilder.build();
         pico.addComponent(Map.class, HashMap.class);
         assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Caching.Cached.class));
-        
-        
-    }    
+
+
+    }
 
 
     public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycle, PicoContainer parent) {
+        public TestPicoContainer(final ComponentFactory componentFactory, final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final PicoContainer parent) {
             super(parent, lifecycle, monitor, componentFactory);
         }
     }
 
-    private String toXml(Object expected) {
+    private String toXml(final Object expected) {
         return xs.toXML(expected);
     }
 

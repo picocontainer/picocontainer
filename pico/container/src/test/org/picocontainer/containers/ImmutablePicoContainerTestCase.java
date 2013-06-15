@@ -35,8 +35,8 @@ import org.picocontainer.injectors.AdaptingInjection;
 @RunWith(JMock.class)
 public class ImmutablePicoContainerTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testImmutingOfNullBarfs() {
         try {
             new ImmutablePicoContainer(null);
@@ -73,7 +73,7 @@ public class ImmutablePicoContainerTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         assertEquals(pico.hashCode(), new ImmutablePicoContainer(pico).hashCode());
     }
-    
+
     @Test public void testDoesNotEqualsToNull() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         PicoContainer ipc = new ImmutablePicoContainer(pico);

@@ -3,20 +3,20 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.codehaus.groovy.runtime.InvokerHelper;
 
 /**
  * Creates on-the-spot Javabeans configurations and registers the result with
  * the container @link MutablePicoContainer#addComponent}.
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -44,7 +44,7 @@ public class BeanNode extends AbstractBuilderNode {
         super(NODE_NAME);
     }
 
-    public Object createNewNode(Object current,  Map<String, Object> attributes) {
+    public Object createNewNode(final Object current,  final Map<String, Object> attributes) {
         Object bean = createBean(attributes);
         ((MutablePicoContainer) current).addComponent(bean);
         return bean;
@@ -86,7 +86,8 @@ public class BeanNode extends AbstractBuilderNode {
      * @param specifiedAttributes Map
      * @throws ScriptedPicoContainerMarkupException
      */
-    public void validateScriptedAttributes(Map<String, Object> specifiedAttributes) throws ScriptedPicoContainerMarkupException {
+    @Override
+	public void validateScriptedAttributes(final Map<String, Object> specifiedAttributes) throws ScriptedPicoContainerMarkupException {
         if (!specifiedAttributes.containsKey(BEAN_CLASS)) {
             throw new ScriptedPicoContainerMarkupException("Attribute " + BEAN_CLASS + " is required.");
         }

@@ -7,8 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
-import java.util.Map;
 import java.security.Permission;
+import java.util.Map;
 
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -25,7 +25,7 @@ public class GrantNode extends AbstractBuilderNode {
         super(NODE_NAME);
     }
 
-    public Object createNewNode(Object current, Map<String, Object> attributes) {
+    public Object createNewNode(final Object current, final Map<String, Object> attributes) {
 
         Permission permission = (Permission) attributes.remove("class");
         if (!(current instanceof ClassPathElement)) {

@@ -24,14 +24,14 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 public class StoringTestCase {
 
     public static class Foo {
-        public Foo(StringBuilder sb) {
+        public Foo(final StringBuilder sb) {
             sb.append("<Foo");
         }
     }
 
     public static class Bar {
         private final Foo foo;
-        public Bar(StringBuilder sb, Foo foo) {
+        public Bar(final StringBuilder sb, final Foo foo) {
             this.foo = foo;
             sb.append("<Bar");
         }
@@ -73,7 +73,8 @@ public class StoringTestCase {
         foos[0] = child.getComponent(Foo.class);
 
         Thread thread = new Thread("other") {
-            public void run() {
+            @Override
+			public void run() {
                 sizes[0] = storing.getCacheSize();
                 foos[1] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);
@@ -118,7 +119,8 @@ public class StoringTestCase {
         bars[0] = requestScope.getComponent(Bar.class);
 
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 foos[1] = sessionScope.getComponent(Foo.class);
                 bars[1] = requestScope.getComponent(Bar.class);
                 foos[3] = sessionScope.getComponent(Foo.class);
@@ -156,7 +158,8 @@ public class StoringTestCase {
 
         final Storing.StoreWrapper[] tmpMap = new Storing.StoreWrapper[1];
         Thread thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 foos[0] = child.getComponent(Foo.class);
                 foos[1] = child.getComponent(Foo.class);
                 tmpMap[0] = storeCaching.getCacheForThread();
@@ -166,7 +169,8 @@ public class StoringTestCase {
         thread.start();
         sleepALittle();
         thread = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 storeCaching.putCacheForThread(tmpMap[0]);
                 foos[2] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);

@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.junit.Test;
 
 public class FooTestCase {
 
@@ -33,10 +33,10 @@ public class FooTestCase {
     }
 
     public static class HelloFilter implements Filter {
-        public void init(FilterConfig filterConfig) throws ServletException {
+        public void init(final FilterConfig filterConfig) throws ServletException {
         }
 
-        public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
             req.setAttribute("foo", "true");
             chain.doFilter(req, resp);
         }
@@ -47,7 +47,8 @@ public class FooTestCase {
 
     @SuppressWarnings("serial")
 	public static class HelloServlet extends HttpServlet {
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        @Override
+		protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println("<h1>Hello SimpleServlet "+request.getAttribute("foo")+"</h1>");

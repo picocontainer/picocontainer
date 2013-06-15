@@ -10,11 +10,11 @@
 
 package org.picocontainer;
 
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.parameters.DefaultConstructorParameter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.DefaultConstructorParameter;
 
 /**
  * This class provides control over the arguments that will be passed to a constructor. It can be used for finer control over
@@ -46,16 +46,16 @@ public interface Parameter {
 	 */
 	@Deprecated
     Parameter[] ZERO =  new Parameter[] {DefaultConstructorParameter.INSTANCE};
-    
-    
+
+
     /**
-     * Internally used to specify auto-wiring of the components. 
+     * Internally used to specify auto-wiring of the components.
      */
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
-    
+
     Object NULL_RESULT = new Object();
-    
-    
+
+
     /**
      * Check if the Parameter can satisfy the expected type using the container.
      *
@@ -76,11 +76,11 @@ public interface Parameter {
 
 	/**
 	 * @todo REMOVE ME
-	 * 
+	 *
 	 * @return
 	 */
-	String getTargetName();    
-    
+	String getTargetName();
+
     /**
      * Verify that the Parameter can satisfy the expected type using the container
      *
@@ -139,7 +139,7 @@ public interface Parameter {
             return false;
         }
 
-        public Object resolveInstance(Type into) {
+        public Object resolveInstance(final Type into) {
             return null;
         }
 
@@ -154,7 +154,7 @@ public interface Parameter {
     public abstract static class DelegateResolver implements Resolver {
         private final Resolver delegate;
 
-        public DelegateResolver(Resolver delegate) {
+        public DelegateResolver(final Resolver delegate) {
             this.delegate = delegate;
         }
 
@@ -162,7 +162,7 @@ public interface Parameter {
             return delegate.isResolved();
         }
 
-        public Object resolveInstance(Type into) {
+        public Object resolveInstance(final Type into) {
             return delegate.resolveInstance(into);
         }
 
@@ -180,7 +180,7 @@ public interface Parameter {
         private final Object value;
         private final ComponentAdapter<?> adapter;
 
-        public ValueResolver(boolean resolvable, Object value, ComponentAdapter<?> adapter) {
+        public ValueResolver(final boolean resolvable, final Object value, final ComponentAdapter<?> adapter) {
             this.resolvable = resolvable;
             this.value = value;
             this.adapter = adapter;
@@ -190,7 +190,7 @@ public interface Parameter {
             return resolvable;
         }
 
-        public Object resolveInstance(Type into) {
+        public Object resolveInstance(final Type into) {
             return value;
         }
 

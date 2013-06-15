@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.picocontainer.script;
 
@@ -13,7 +13,7 @@ import org.picocontainer.PicoContainer;
  */
 public class NoOpPostBuildContainerAction implements PostBuildContainerAction {
 
-	/** 
+	/**
 	 * No-op Implementation
 	 * @param mpc Constructed container.
 	 */

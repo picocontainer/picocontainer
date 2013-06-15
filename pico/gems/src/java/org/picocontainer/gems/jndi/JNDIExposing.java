@@ -26,9 +26,9 @@ import org.picocontainer.parameters.MethodParameters;
 
 /**
  * produce JNDI exposing behaviour
- * 
+ *
  * @author Konstantin Pribluda
- * 
+ *
  * @param <T>
  */
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public class JNDIExposing extends AbstractBehavior {
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-			final Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+			final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
 		// TODO Auto-generated method stub
 		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 		try {

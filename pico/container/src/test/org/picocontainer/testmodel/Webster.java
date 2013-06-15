@@ -16,7 +16,7 @@ import java.util.List;
  * @author Aslak Hellesoy
  */
 public class Webster implements Dictionary, Thesaurus {
-    public Webster(List list) {
+    public Webster(final List list) {
         list.add("webster created");
     }
 }

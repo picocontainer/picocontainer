@@ -32,7 +32,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
         assertProcessWithDependencies(script);
     }
 
-    private void assertProcessWithDependencies(Reader script) {
+    private void assertProcessWithDependencies(final Reader script) {
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico);
         Process process = pico.getComponent(Process.class);
@@ -43,10 +43,10 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
         assertNotNull(process.getServiceB().getService2());
     }
 
-    private PicoContainer buildContainer(Reader script) {
+    private PicoContainer buildContainer(final Reader script) {
         return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
     }
-    
+
     public static class Process {
         private ServiceA serviceA;
 
@@ -60,7 +60,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
             return serviceA;
         }
 
-        public void setServiceA(ServiceA serviceA) {
+        public void setServiceA(final ServiceA serviceA) {
             this.serviceA = serviceA;
         }
 
@@ -68,7 +68,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
             return serviceB;
         }
 
-        public void setServiceB(ServiceB serviceB) {
+        public void setServiceB(final ServiceB serviceB) {
             this.serviceB = serviceB;
         }
     }
@@ -104,9 +104,9 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
         public Service1 getService1() {
             return service1;
         }
-        public void setService1(Service1 service1) {
+        public void setService1(final Service1 service1) {
             this.service1 = service1;
-        }        
+        }
     }
 
     public static class ServiceBImpl implements ServiceB {
@@ -116,10 +116,9 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
         public Service2 getService2() {
             return service2;
         }
-        public void setService2(Service2 service2) {
+        public void setService2(final Service2 service2) {
             this.service2 = service2;
-        }        
+        }
     }
 }
 
-   

@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author Mauro Talevi
  */
 public class ScriptedBuilderNameResolverTestCase {
-    private ScriptedBuilderNameResolver scriptBuilderResolver = new ScriptedBuilderNameResolver();
+    private final ScriptedBuilderNameResolver scriptBuilderResolver = new ScriptedBuilderNameResolver();
 
     @Test
     public void testGetAllSupportedExtensions() {

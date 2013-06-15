@@ -1,6 +1,7 @@
 package org.picocontainer.containers;
 
-import com.googlecode.jtype.Generic;
+import java.lang.annotation.Annotation;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -12,7 +13,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AdaptingInjection;
 
-import java.lang.annotation.Annotation;
+import com.googlecode.jtype.Generic;
 
 @SuppressWarnings("serial")
 public class TieringPicoContainer extends DefaultPicoContainer {
@@ -112,11 +113,13 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         super();
     }
 
-    public PicoContainer getParent() {
+    @Override
+	public PicoContainer getParent() {
         return new TieringGuard(super.getParent());
     }
 
-    public MutablePicoContainer makeChildContainer() {
+    @Override
+	public MutablePicoContainer makeChildContainer() {
         return new TieringPicoContainer(super.componentFactory, super.lifecycle, this, super.monitor);
     }
 
@@ -124,16 +127,18 @@ public class TieringPicoContainer extends DefaultPicoContainer {
 
         private static final AskingParentForComponent askingParentForComponent = new AskingParentForComponent();
 
-        public TieringGuard(PicoContainer parent) {
+        public TieringGuard(final PicoContainer parent) {
             super(parent);
         }
 
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
+        @Override
+		public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding nameBinding) {
             return getComponentAdapter(Generic.get(componentType), nameBinding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding) {
+        @Override
+		public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding nameBinding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -154,11 +159,13 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             askingParentForComponent.set(Boolean.TRUE);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        @Override
+		public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
             return getComponentAdapter(Generic.get(componentType), binding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
+        @Override
+		public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -183,7 +190,8 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             return askingParentForComponent.get() == Boolean.FALSE;
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object key) {
+        @Override
+		public ComponentAdapter<?> getComponentAdapter(final Object key) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -201,7 +209,8 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         }
     }
     private static class AskingParentForComponent extends ThreadLocal {
-        protected Object initialValue() {
+        @Override
+		protected Object initialValue() {
             return Boolean.FALSE;
         }
     }

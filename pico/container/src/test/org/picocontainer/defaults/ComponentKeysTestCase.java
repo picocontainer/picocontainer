@@ -25,7 +25,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Aslak Helles&oslash;y
  */
 public class ComponentKeysTestCase {
-	
+
     @Test public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("default", SimpleTouchable.class);

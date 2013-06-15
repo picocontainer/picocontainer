@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -31,19 +30,18 @@ import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
-import org.picocontainer.script.testmodel.WebServerImpl;
+import org.picocontainer.script.testmodel.X;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
- 
-	
+
+
 	@Test
-	public void testExecutionWithinCustomClassLoader() 
+	public void testExecutionWithinCustomClassLoader()
 			throws MalformedURLException, ClassNotFoundException {
 		Reader script = new StringReader("" +
         		"from org.picocontainer import *;\n" +
@@ -55,16 +53,16 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         File testCompJar = TestHelper.getTestCompJarFile();
         assertTrue(testCompJar.isFile());
         URL compJarURL = testCompJar.toURI().toURL();
-        final URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, 
+        final URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL},
         		getClass().getClassLoader());
         assertNotNull(cl.loadClass("TestComp"));
-        
+
         ContainerBuilder containerBuilder = new JythonContainerBuilder(script, cl);
-        
+
         PicoContainer pico = buildContainer(containerBuilder, null, null);
         assertNotNull(pico.getComponent("TestComp"));
         assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
-		
+
 	}
 
 	@Test public void testDependenciesAreSatisfiable() {
@@ -91,7 +89,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "child.addComponent(WebServerImpl)\n" +
                 "pico.addComponent('wayOfPassingSomethingToTestEnv', child.getComponent(WebServerImpl), DefaultConstructorParameter.INSTANCE)");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-        assertNotNull((WebServerImpl) pico.getComponent("wayOfPassingSomethingToTestEnv"));
+        assertNotNull(pico.getComponent("wayOfPassingSomethingToTestEnv"));
     }
 
     @Test(expected=UnsatisfiableDependenciesException.class)
@@ -99,7 +97,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         Reader script = new StringReader("" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer.classname import *\n" +
-                "from org.picocontainer.script import *\n" +      
+                "from org.picocontainer.script import *\n" +
                 "pico = DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
@@ -117,9 +115,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         //pico.getParent() is immutable
         assertNotSame(parent, pico.getParent());
     }
-    
+
 	@Test public void testAutoStartingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.classname import *\n" +
@@ -132,27 +130,27 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
     				new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is immutable
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
 	@Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer.classname import *\n" +
-                "from org.picocontainer.script import *\n" +                
+                "from org.picocontainer.script import *\n" +
                 "pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
-        ContainerBuilder containerBuilder = new JythonContainerBuilder(script, 
+        ContainerBuilder containerBuilder = new JythonContainerBuilder(script,
         		getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
 
 }

@@ -10,19 +10,19 @@
 
 package org.picocontainer.parameters;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
-
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
 
 
 /**
@@ -39,18 +39,18 @@ import java.lang.annotation.Annotation;
 public class ConstantParameter extends AbstractParameter implements Parameter, Serializable {
 
     private final Object value;
-    
-    
-    public ConstantParameter(Object value) {
+
+
+    public ConstantParameter(final Object value) {
 		this.value = value;
-        
+
     }
 
-    public Resolver resolve(PicoContainer container, ComponentAdapter<?> forAdapter,
-                            ComponentAdapter<?> injecteeAdapter, final Type expectedType, NameBinding expectedNameBinding,
-                            boolean useNames, Annotation binding) {
+    public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
+                            final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
+                            final boolean useNames, final Annotation binding) {
         if (expectedType instanceof Class) {
-            return new Parameter.ValueResolver(isAssignable((Class<?>) expectedType), value, null);
+            return new Parameter.ValueResolver(isAssignable(expectedType), value, null);
         } else if (expectedType instanceof ParameterizedType) {
         	return new Parameter.ValueResolver(isAssignable(((ParameterizedType)expectedType).getRawType()), value, null);
         }
@@ -62,9 +62,9 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
      *
      * @see Parameter#verify(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,java.lang.reflect.Type,org.picocontainer.NameBinding,boolean,java.lang.annotation.Annotation)
      */
-    public void verify(PicoContainer container, ComponentAdapter<?> adapter,
-                       Type expectedType, NameBinding expectedNameBinding,
-                       boolean useNames, Annotation binding) throws PicoException {
+    public void verify(final PicoContainer container, final ComponentAdapter<?> adapter,
+                       final Type expectedType, final NameBinding expectedNameBinding,
+                       final boolean useNames, final Annotation binding) throws PicoException {
         if (!isAssignable(expectedType)) {
             throw new PicoCompositionException(
                 expectedType + " is not assignable from " +
@@ -72,7 +72,7 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         }
     }
 
-    protected boolean isAssignable(Type expectedType) {
+    protected boolean isAssignable(final Type expectedType) {
         if (expectedType instanceof Class) {
             Class<?> expectedClass = (Class<?>) expectedType;
             if (checkPrimitive(expectedClass) || expectedClass.isInstance(value)) {
@@ -91,7 +91,7 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         visitor.visitParameter(this);
     }
 
-    private boolean checkPrimitive(Class<?> expectedType) {
+    private boolean checkPrimitive(final Class<?> expectedType) {
         try {
             if (expectedType.isPrimitive()) {
                 final Field field = value.getClass().getField("TYPE");
@@ -106,7 +106,7 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
         return false;
     }
 
-	
+
 	public Object getValue() {
 		return value;
 	}

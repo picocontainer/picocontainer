@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 /**
  * A component monitor is responsible for monitoring the component instantiation
  * and method invocation.
- * 
+ *
  * @author Paul Hammant
  * @author Obie Fernandez
  * @author Aslak Helles&oslash;y
@@ -59,7 +59,7 @@ public interface ComponentMonitor {
 
     /**
      * Event thrown if the component instantiation failed using the given constructor
-     * 
+     *
      * @param container
      * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent
@@ -72,7 +72,7 @@ public interface ComponentMonitor {
 
     /**
      * Event thrown as the component method is being invoked on the given instance
-     * 
+     *
      * @param container
      * @param componentAdapter
      * @param member
@@ -84,7 +84,7 @@ public interface ComponentMonitor {
 
     /**
      * Event thrown after the component method has been invoked on the given instance
-     * 
+     *
      * @param container
      * @param componentAdapter
      * @param member
@@ -101,7 +101,7 @@ public interface ComponentMonitor {
 
     /**
      * Event thrown if the component method invocation failed on the given instance
-     * 
+     *
      * @param member
      * @param instance the component instance
      * @param cause the Exception detailing the cause of the failure
@@ -109,7 +109,7 @@ public interface ComponentMonitor {
     void invocationFailed(Member member, Object instance, Exception cause);
 
     /**
-     * Event thrown if a lifecycle method invocation - start, stop or dispose - 
+     * Event thrown if a lifecycle method invocation - start, stop or dispose -
      * failed on the given instance
      *
      * @param container

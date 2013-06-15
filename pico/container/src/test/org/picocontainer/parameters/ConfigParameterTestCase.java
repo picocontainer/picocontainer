@@ -1,5 +1,13 @@
 package org.picocontainer.parameters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.io.File;
+import java.util.List;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -9,19 +17,11 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.NullCA;
 
-import java.io.File;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 /**
  * test that config parameter does the right job
- * 
+ *
  * @author Konstantin Pribluda
- * 
+ *
  */
 public class ConfigParameterTestCase {
 
@@ -65,7 +65,7 @@ public class ConfigParameterTestCase {
 
 	/**
 	 * shall resolve as ddifferent classes
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test public void testThatResolvedSuccessfully() throws Exception {
@@ -82,7 +82,7 @@ public class ConfigParameterTestCase {
 
 	/**
 	 * shall bomb properly if no suitable converter found
-	 * 
+	 *
 	 */
 	@Test public void testThatUnavailableConverterProducesCorrectException() {
 		MutablePicoContainer container = new DefaultPicoContainer();
@@ -100,7 +100,7 @@ public class ConfigParameterTestCase {
         assertNull(foo);
 
     }
-	
+
 	@Test public void testComponentInstantiation() {
 		DefaultPicoContainer properties = new DefaultPicoContainer();
 		properties.addComponent("numericProperty", "239");
@@ -116,12 +116,12 @@ public class ConfigParameterTestCase {
 						new ComponentParameter("stringProperty"),
 						// resolves as double
 						new ComponentParameter("doubleProperty")
-					
+
 				);
-		
-		
+
+
 		ExternallyConfiguredComponent component = (ExternallyConfiguredComponent) container.getComponent("configured");
-		
+
 		assertNotNull(component);
 		assertEquals(239,component.getLongValue());
 		assertEquals("foo.bar",component.getStringParameter());
@@ -140,7 +140,7 @@ public class ConfigParameterTestCase {
         container.as(Characteristics.USE_NAMES).addComponent(ExternallyConfiguredComponent.class);
 
         ExternallyConfiguredComponent component = container.getComponent(ExternallyConfiguredComponent.class);
-		
+
         assertNotNull(component);
         assertEquals(239,component.getLongValue());
         assertEquals("foo.bar",component.getStringParameter());
@@ -152,7 +152,7 @@ public class ConfigParameterTestCase {
 
 	/**
 	 * test component to show automatic conversion
-	 * 
+	 *
 	 * @author ko5tik
 	 */
 
@@ -165,7 +165,7 @@ public class ConfigParameterTestCase {
 
 		double doubleParameter;
 
-		public ExternallyConfiguredComponent(long longValue, String stringParameter, File fileParameter, double doubleParameter) {
+		public ExternallyConfiguredComponent(final long longValue, final String stringParameter, final File fileParameter, final double doubleParameter) {
 			super();
 			this.longValue = longValue;
 			this.stringParameter = stringParameter;
@@ -189,19 +189,19 @@ public class ConfigParameterTestCase {
 			return stringParameter;
 		}
 
-		public void setDoubleParameter(double doubleParameter) {
+		public void setDoubleParameter(final double doubleParameter) {
 			this.doubleParameter = doubleParameter;
 		}
 
-		public void setFileParameter(File fileParameter) {
+		public void setFileParameter(final File fileParameter) {
 			this.fileParameter = fileParameter;
 		}
 
-		public void setLongValue(long longValue) {
+		public void setLongValue(final long longValue) {
 			this.longValue = longValue;
 		}
 
-		public void setStringParameter(String stringParameter) {
+		public void setStringParameter(final String stringParameter) {
 			this.stringParameter = stringParameter;
 		}
 

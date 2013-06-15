@@ -7,21 +7,21 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.PicoException;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
+
 /**
- * Abstract PicoVisitor implementation. A generic traverse method is implemented, that 
- * accepts any object with a method named &quot;accept&quot;, that takes a 
- * {@link PicoVisitor}  as argument and and invokes it. Additionally it provides the 
+ * Abstract PicoVisitor implementation. A generic traverse method is implemented, that
+ * accepts any object with a method named &quot;accept&quot;, that takes a
+ * {@link PicoVisitor}  as argument and and invokes it. Additionally it provides the
  * {@link #checkTraversal()} method, that throws a {@link PicoVisitorTraversalException},
  * if currently no traversal is running.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
@@ -86,7 +86,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
          *
          * @param visitor The visitor casing the exception.
          */
-        public PicoVisitorTraversalException(PicoVisitor visitor) {
+        public PicoVisitorTraversalException(final PicoVisitor visitor) {
             super("Traversal for PicoVisitor of type " + visitor.getClass().getName() + " must start with the visitor's traverse method");
         }
     }

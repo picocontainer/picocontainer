@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.PicoContainer;
+import java.lang.reflect.Type;
+
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.adapters.AbstractAdapter;
-
-import java.lang.reflect.Type;
 
 
 /**
@@ -25,8 +25,8 @@ import java.lang.reflect.Type;
  */
 @SuppressWarnings("serial")
 public final class StaticFactoryAdapter<T> extends AbstractAdapter<T> {
-    
-	
+
+
 	private final StaticFactory<T> staticFactory;
 
     /**

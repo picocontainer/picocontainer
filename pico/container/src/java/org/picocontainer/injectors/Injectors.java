@@ -9,9 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.InjectionType;
-
 import java.lang.annotation.Annotation;
+
+import org.picocontainer.InjectionType;
 
 public class Injectors {
 
@@ -19,7 +19,7 @@ public class Injectors {
         return new AdaptingInjection();
     }
 
-    public static InjectionType annotatedMethodDI(Class<? extends Annotation> injectionAnnotation) {
+    public static InjectionType annotatedMethodDI(final Class<? extends Annotation> injectionAnnotation) {
         return new AnnotatedMethodInjection(injectionAnnotation, false);
     }
 
@@ -43,7 +43,7 @@ public class Injectors {
         return new AnnotatedMethodInjection();
     }
 
-    public static InjectionType annotatedFieldDI(Class<? extends Annotation> injectionAnnotation) {
+    public static InjectionType annotatedFieldDI(final Class<? extends Annotation> injectionAnnotation) {
         return new AnnotatedFieldInjection(injectionAnnotation);
     }
 

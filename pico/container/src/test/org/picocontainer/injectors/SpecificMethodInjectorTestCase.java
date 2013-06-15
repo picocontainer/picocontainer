@@ -1,6 +1,7 @@
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.lang.reflect.Method;
 
@@ -8,30 +9,29 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.SpecificFieldInjectorTestCase.TestInjection;
 
 public class SpecificMethodInjectorTestCase {
-	
+
 	public static class TestModel {
-		
+
 		public static int staticInjectCount;
-		
+
 		public int injectCount;
-		
+
 		public static void injectSomething() {
 			staticInjectCount++;
 		}
-		
+
 		public void injectSomethingElse() {
 			injectCount++;
 		}
-		
+
 	}
 
 	private Method staticInjectMethod = null;
-	
+
 	private Method injectSomethingElse = null;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		TestModel.staticInjectCount = 0;
@@ -44,20 +44,20 @@ public class SpecificMethodInjectorTestCase {
 		TestModel.staticInjectCount = 0;
 	}
 
-	
+
 	@Test(expected=PicoCompositionException.class)
 	public void testCallingInjectStaticsWithNonStaticFieldsThrowsCompositionException() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, injectSomethingElse);
 		adapter.injectStatics(null, null, null);
 	}
-	
-	
+
+
 	@Test(expected=PicoCompositionException.class)
 	public void testCallingGetComponetInstanceWithStaticFieldsThrowsCompositionException() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, staticInjectMethod);
 		adapter.getComponentInstance(null, null);
-	}	
-	
+	}
+
 	@Test
 	public void testStaticMethodInjection() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, staticInjectMethod);
@@ -65,17 +65,17 @@ public class SpecificMethodInjectorTestCase {
 
 		assertEquals(1, TestModel.staticInjectCount);
 	}
-	
+
 	@Test
 	public void testNormalMethodInjection() {
 		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, injectSomethingElse);
 		TestModel model = adapter.getComponentInstance(null, null);
 		assertNotNull(model);
-		
+
 		assertEquals(0, TestModel.staticInjectCount);
 		assertEquals(1, model.injectCount);
 	}
-	
+
 	@Test
 	public void testStaticInjectionWithReferenceHandlerMakesSureStaticsAreOnlyinitializedOnce() {
 		StaticsInitializedReferenceSet referenceSet = new StaticsInitializedReferenceSet();
@@ -87,5 +87,5 @@ public class SpecificMethodInjectorTestCase {
 		assertEquals(1, TestModel.staticInjectCount);
 	}
 
-	
+
 }

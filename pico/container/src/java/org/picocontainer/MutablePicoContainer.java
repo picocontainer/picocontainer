@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.lang.annotation.Annotation;
+import java.util.Properties;
+
 import org.picocontainer.injectors.Provider;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.lang.annotation.Annotation;
-import java.util.Properties;
 
 /**
  * This is the core interface used for registration of components with a container. It is possible to register
@@ -82,20 +82,20 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     MutablePicoContainer addComponent(Object key,
                                       Object implOrInstance,
                                       Parameter... constructorParameters);
-    
+
     /**
      * Longhand method for adding components when multiple injection is used
      * @param key the object key.  Most often either a string or a Class.
      * @param implOrInstance the component's implementation class.
-     * @param constructorParams Parameters for the constructor of the object may be 
+     * @param constructorParams Parameters for the constructor of the object may be
      * 	zero length by using {@linkplain org.picocontainer.parameters.ConstructorParameters.NO_ARG_CONSTRUCTOR}
      * @param fieldParams an array of field parameters to override Picocontainer's Autowiring capabilities.
      * @param methodParams an array of method parameters to override PicoContainer's autowiring capabilities.
      * @return <code>this</code> to allow for method chaining.
      */
-    MutablePicoContainer addComponent(Object key, Object implOrInstance, 
-    			ConstructorParameters constructorParams, 
-    			FieldParameters[] fieldParams, 
+    MutablePicoContainer addComponent(Object key, Object implOrInstance,
+    			ConstructorParameters constructorParams,
+    			FieldParameters[] fieldParams,
     			MethodParameters[] methodParams);
 
     /**
@@ -122,8 +122,8 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Register a component via a ComponentAdapter. Use this if you need fine grained control over what
-     * ComponentAdapter to use for a specific component.  The adapter will be wrapped in whatever behaviors that the 
-     * the container has been set up with.  If you want to bypass that behavior for the adapter you are adding, 
+     * ComponentAdapter to use for a specific component.  The adapter will be wrapped in whatever behaviors that the
+     * the container has been set up with.  If you want to bypass that behavior for the adapter you are adding,
      * you should use Characteristics.NONE like so pico.as(Characteristics.NONE).addAdapter(...)
      *
      * @param componentAdapter the adapter
@@ -140,7 +140,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @return the same instance of the PicoContainer to allow for method chaining.
      */
     MutablePicoContainer addProvider(javax.inject.Provider<?> provider);
-    
+
     /**
      * Adds a {@linkplain javax.inject.Provider} with a particular key to the container.
      * @param key if you use this, its usually a string value.
@@ -172,7 +172,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * and identical behaviors as well.
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.
      * Lifecycle events will be cascaded from parent to child
-     * as a consequence of this.  
+     * as a consequence of this.
      * <p>Note that for long-lived parent containers, you need to unregister child containers
      * made with this call before disposing or you will leak memory.  <em>(Experience
      * speaking here! )</em></p>
@@ -187,7 +187,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *   MutablePicoContainer parent = new PicoBuilder().withCaching().withLifecycle().build();
      *   MutablePicoContainer child = parent.makeChildContainer();
      *   parent.removeChildContainer(child); //Remove the bi-directional references.
-     *   child = null; 
+     *   child = null;
      * </pre>
      * @return the new child container.
      */
@@ -248,15 +248,15 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @since 2.8
      */
     void setLifecycleState(LifecycleState lifecycleState);
-    
+
     /**
      * Retrieve the name set (if any).
      * @return Retrieve the arbitrary name of the container set by calling {@link #setName(String) setName}.
      * @since 2.10.2
      */
     String getName();
-    
-    
+
+
     /**
      * Allow querying of the current lifecycle state of a MutablePicoContainer.
      * @return the current Lifecycle State.
@@ -272,5 +272,5 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     void changeMonitor(final ComponentMonitor monitor);
 
-    
+
 }

@@ -45,57 +45,57 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     @SuppressWarnings("unchecked")
     private class TestPicoContainer implements PicoContainer {
-        public Object getComponent(Object key) {
+        public Object getComponent(final Object key) {
             return null;
         }
 
-        public <T> T getComponent(Class<T> componentType) {
+        public <T> T getComponent(final Class<T> componentType) {
             return null;
         }
 
-        public <T> T getComponent(Generic<T> componentType) {
+        public <T> T getComponent(final Generic<T> componentType) {
             return null;
         }
 
-		public <T> T getComponent(Class<T> componentType,
-				Class<? extends Annotation> binding, Type into) {
+		public <T> T getComponent(final Class<T> componentType,
+				final Class<? extends Annotation> binding, final Type into) {
 			return null;
 		}
 
-		public <T> T getComponent(Class<T> componentType,
-				Class<? extends Annotation> binding) {
+		public <T> T getComponent(final Class<T> componentType,
+				final Class<? extends Annotation> binding) {
 			return null;
 		}
 
 		public <T> ComponentAdapter<T> getComponentAdapter(
-				Class<T> componentType, Class<? extends Annotation> binding) {
+				final Class<T> componentType, final Class<? extends Annotation> binding) {
 			return null;
 		}
 
 		public <T> ComponentAdapter<T> getComponentAdapter(
-				Generic<T> componentType, Class<? extends Annotation> binding) {
+				final Generic<T> componentType, final Class<? extends Annotation> binding) {
 			return null;
 		}
 
 		public <T> List<ComponentAdapter<T>> getComponentAdapters(
-				Class<T> componentType, Class<? extends Annotation> binding) {
+				final Class<T> componentType, final Class<? extends Annotation> binding) {
 			return null;
 		}
 
 		public <T> List<ComponentAdapter<T>> getComponentAdapters(
-				Generic<T> componentType, Class<? extends Annotation> binding) {
+				final Generic<T> componentType, final Class<? extends Annotation> binding) {
 			return null;
 		}
 
-		public Object getComponentInto(Object keyOrType, Type into) {
+		public Object getComponentInto(final Object keyOrType, final Type into) {
 			return null;
 		}
 
-		public <T> T getComponentInto(Class<T> componentType, Type into) {
+		public <T> T getComponentInto(final Class<T> componentType, final Type into) {
 			return null;
 		}
 
-		public <T> T getComponentInto(Generic<T> componentType, Type into) {
+		public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
 			return null;
 		}
 
@@ -107,34 +107,34 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object key) {
+        public ComponentAdapter<?> getComponentAdapter(final Object key) {
             return null;
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding nameBinding) {
             return null;
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding componentNameBinding) {
-            return null;  
+        public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding componentNameBinding) {
+            return null;
         }
 
         public Collection<ComponentAdapter<?>> getComponentAdapters() {
             return null;
         }
 
-        public <T> List<T> getComponents(Class<T> type) throws PicoException {
+        public <T> List<T> getComponents(final Class<T> type) throws PicoException {
             return null;
         }
 
-        public void accept(PicoVisitor containerVisitor) {
+        public void accept(final PicoVisitor containerVisitor) {
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
             return null;
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
             return null;
         }
     }

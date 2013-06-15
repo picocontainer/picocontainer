@@ -15,8 +15,6 @@ import java.net.URL;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.DefiningClassLoader;
-import org.mozilla.javascript.GeneratedClassLoader;
 import org.mozilla.javascript.ImporterTopLevel;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.RhinoException;
@@ -40,20 +38,21 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
  */
 public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
 
-    public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
+    public JavascriptContainerBuilder(final Reader script, final ClassLoader classLoader) {
     	super(script,classLoader);
     }
 
 
-    public JavascriptContainerBuilder(URL script, ClassLoader classLoader) {
+    public JavascriptContainerBuilder(final URL script, final ClassLoader classLoader) {
     	super(script,classLoader);
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    @Override
+	protected PicoContainer createContainerFromScript(final PicoContainer parentContainer, final Object assemblyScope) {
         final ClassLoader loader = getClassLoader();
-        ContextFactory contextFactory = new ContextFactory();       
+        ContextFactory contextFactory = new ContextFactory();
         contextFactory.initApplicationClassLoader(loader);
-        
+
         Context cx = contextFactory.enterContext();
 
         try {

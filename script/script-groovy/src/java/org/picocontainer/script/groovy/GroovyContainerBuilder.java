@@ -13,6 +13,11 @@ import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyObject;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.net.URL;
+
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.DefaultPicoContainer;
@@ -24,16 +29,11 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URL;
-
 /**
  * {@inheritDoc}
  * The groovy script has to return an instance of {@link org.picocontainer.classname.ClassLoadingPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
- * container. 
+ * container.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -42,17 +42,18 @@ import java.net.URL;
 public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     private Class<?> scriptClass;
 
-    public GroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
+    public GroovyContainerBuilder(final Reader script, final ClassLoader classLoader) {
     	super(script,classLoader);
     	createGroovyClass();
     }
 
-    public GroovyContainerBuilder(final URL script, ClassLoader classLoader) {
+    public GroovyContainerBuilder(final URL script, final ClassLoader classLoader) {
         super(script, classLoader);
         createGroovyClass();
     }
-    
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+
+    @Override
+	protected PicoContainer createContainerFromScript(PicoContainer parentContainer, final Object assemblyScope) {
 
         Binding binding = new Binding();
         if (parentContainer == null) {
@@ -79,7 +80,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
      * method to support the other scripting languages.
      * @param binding the binding
      */
-    protected void handleBinding(Binding binding) {
+    protected void handleBinding(final Binding binding) {
         // does nothing but adds flexibility for children
     }
 
@@ -109,7 +110,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
      * @param binding Binding
      * @return PicoContainer
      */
-    private PicoContainer runGroovyScript(Binding binding) {
+    private PicoContainer runGroovyScript(final Binding binding) {
         Script script = createGroovyScript(binding);
 
         Object result = script.run();
@@ -133,7 +134,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
     }
 
-    private Script createGroovyScript(Binding binding) {
+    private Script createGroovyScript(final Binding binding) {
         return  InvokerHelper.createScript(scriptClass, binding);
     }
 }

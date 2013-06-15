@@ -2,7 +2,7 @@ package org.picocontainer.lifecycle;
 
 public class ThirdPartyStartableComponent implements ThirdPartyStartable {
     StringBuilder sb;
-    public ThirdPartyStartableComponent(StringBuilder sb) {
+    public ThirdPartyStartableComponent(final StringBuilder sb) {
         this.sb = sb;
     }
 

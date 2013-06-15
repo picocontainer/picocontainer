@@ -21,15 +21,15 @@ import org.picocontainer.PicoException;
 @SuppressWarnings("serial")
 public class ScriptedPicoContainerMarkupException extends PicoException {
 
-    public ScriptedPicoContainerMarkupException(String message) {
+    public ScriptedPicoContainerMarkupException(final String message) {
         super(message);
     }
 
-    public ScriptedPicoContainerMarkupException(String message, Throwable e) {
+    public ScriptedPicoContainerMarkupException(final String message, final Throwable e) {
         super(message, e);
     }
 
-    public ScriptedPicoContainerMarkupException(Throwable e) {
+    public ScriptedPicoContainerMarkupException(final Throwable e) {
         super(e);
     }
 }

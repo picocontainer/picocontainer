@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
-import org.picocontainer.*;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import org.jmock.Expectations;
@@ -20,6 +19,11 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -30,8 +34,8 @@ import org.picocontainer.testmodel.Touchable;
 @RunWith(JMock.class)
 public class CachedTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
         Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false, false, false));
@@ -91,7 +95,7 @@ public class CachedTestCase {
         Caching.Cached adapter = new Caching.Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
-        adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);        
+        adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.dispose(pico);
         try {
             adapter.stop(pico);

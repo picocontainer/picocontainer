@@ -9,13 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.*;
-
-import org.junit.*;
-import org.picocontainer.*;
-import org.picocontainer.behaviors.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Type;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
 
 public class IntoTypeTestCase {
 
@@ -41,9 +45,9 @@ public class IntoTypeTestCase {
 
     public static class Bob {
 
-        private Alice alice;
+        private final Alice alice;
 
-        public Bob(Alice alice) {
+        public Bob(final Alice alice) {
             System.out.println("Bob gets an Alice: " + alice);
             this.alice = alice;
         }
@@ -57,7 +61,7 @@ public class IntoTypeTestCase {
 
     public static class AliceFactory extends FactoryInjector<Alice> {
         @Override
-        public Alice getComponentInstance(PicoContainer container, Type into) {
+        public Alice getComponentInstance(final PicoContainer container, final Type into) {
             // System.out.println("Manufacturing an Alice for " + ((InjectInto) into).getIntoClass());
             if (Bob.class.isAssignableFrom(((InjectInto) into).getIntoClass())) {
                 return new AliceImpl();

@@ -37,8 +37,8 @@ import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 @RunWith(JMock.class)
 public class ComponentKeyConventionMBeanInfoProviderTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private MutablePicoContainer pico;
     private MBeanInfoProvider mBeanProvider;
 

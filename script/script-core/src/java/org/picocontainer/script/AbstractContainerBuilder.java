@@ -21,15 +21,15 @@ import org.picocontainer.script.util.MultiException;
  * @author Mauro Talevi
  */
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
-	
+
 	private PostBuildContainerAction postBuildAction = new StartContainerPostBuildContainerAction();
 
     public AbstractContainerBuilder() {
     	super();
     }
 
-    public final PicoContainer buildContainer(PicoContainer parentContainer, Object assemblyScope,
-            boolean addChildToParent) {
+    public final PicoContainer buildContainer(final PicoContainer parentContainer, final Object assemblyScope,
+            final boolean addChildToParent) {
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
@@ -45,7 +45,7 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
                 }
             }
         }
-        
+
         container = postBuildAction.onNewContainer(container);
 
         return container;
@@ -54,7 +54,7 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
     /**
      * Removes the container from the parent if possible.
      */
-    public void killContainer(PicoContainer container) {
+    public void killContainer(final PicoContainer container) {
     	MultiException ex = new MultiException("killContainer(" + container + ")");
         try {
 			if (container instanceof Startable) {
@@ -71,8 +71,8 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
 		} catch (Exception e) {
 			ex.addException(e);
 		}
-    	
-    	
+
+
         PicoContainer parent = container.getParent();
         if (parent != null && parent instanceof MutablePicoContainer) {
             // see comment in buildContainer
@@ -84,22 +84,22 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
 				ex.addException(e);
 			}
         }
-        
+
         if (ex.getErrorCount() > 0) {
         	throw ex;
         }
     }
 
     protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
-    
-    
+
+
     /**
      * Allows you to set the post container build actions.  (After script is executed,
      * before container is returned).
      * @param action the action to perform, may not be null.
      * @return <em>this</em> to allow for method chaining.
      */
-    public AbstractContainerBuilder setPostBuildAction(PostBuildContainerAction action) {
+    public AbstractContainerBuilder setPostBuildAction(final PostBuildContainerAction action) {
     	if (action == null) {
     		throw new NullPointerException("action -- if you want no action taken, use " + NoOpPostBuildContainerAction.class.getName());
     	}

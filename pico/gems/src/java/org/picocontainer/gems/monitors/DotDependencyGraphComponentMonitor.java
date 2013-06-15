@@ -25,7 +25,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
 @SuppressWarnings("serial")
 public final class DotDependencyGraphComponentMonitor extends AbstractComponentMonitor implements ComponentMonitor {
 
-	
+
 	final List<Instantiation> allInstantiated = new ArrayList<Instantiation>();
 
     public DotDependencyGraphComponentMonitor(final ComponentMonitor delegate) {
@@ -117,7 +117,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         final Object instantiated;
         final Object[] injected;
         final long duration;
-        
+
         public Instantiation(final Constructor<?> constructor, final Object instantiated, final Object[] injected, final long duration) {
             this.constructor = constructor;
             this.instantiated = instantiated;

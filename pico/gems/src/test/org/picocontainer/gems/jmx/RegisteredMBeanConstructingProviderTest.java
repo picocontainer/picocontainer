@@ -39,14 +39,14 @@ import org.picocontainer.testmodel.Touchable;
 @RunWith(JMock.class)
 public class RegisteredMBeanConstructingProviderTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private ObjectName objectName;
-    private DynamicMBeanFactory dynamicMBeanFactory = mockery.mock(DynamicMBeanFactory.class);
+    private final DynamicMBeanFactory dynamicMBeanFactory = mockery.mock(DynamicMBeanFactory.class);
 
     @Before
-    public void setUp() throws Exception {       
-        objectName = new ObjectName(":type=JUnit");      
+    public void setUp() throws Exception {
+        objectName = new ObjectName(":type=JUnit");
     }
 
     @Test public void testRegisterWithoutComponentKey() {

@@ -7,15 +7,15 @@
  *****************************************************************************/
 package org.picocontainer.composers;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.monitors.ComposingMonitor;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.ComposingMonitor;
 
 /**
  * Subsets components in a container, the keys for which match a regular expression.
@@ -25,7 +25,7 @@ public class RegexComposer implements ComposingMonitor.Composer {
     private final Pattern pattern;
     private final String forNamedComponent;
 
-    public RegexComposer(String pattern, String forNamedComponent) {
+    public RegexComposer(final String pattern, final String forNamedComponent) {
         this.pattern = Pattern.compile(pattern);
         this.forNamedComponent = forNamedComponent;
     }
@@ -35,7 +35,7 @@ public class RegexComposer implements ComposingMonitor.Composer {
         forNamedComponent = null;
     }
 
-    public Object compose(PicoContainer container, Object key) {
+    public Object compose(final PicoContainer container, final Object key) {
         if (key instanceof String
                 && (forNamedComponent == null || forNamedComponent.equals(key))) {
             Pattern pat = null;

@@ -13,7 +13,7 @@ public class TestHelper {
         File base = new File(TestHelper.class.getProtectionDomain().getCodeSource().getLocation().getFile()).getParentFile().getParentFile();
 
         File coreJettyBase = new File(base.getParent() + File.separator + "core");
-        
+
         File warfile = new File(coreJettyBase,"src" + File.separator + "test" + File.separator + "testwar.war");
 
         if (!warfile.exists()) {

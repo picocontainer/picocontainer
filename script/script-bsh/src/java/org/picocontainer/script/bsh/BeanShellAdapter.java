@@ -69,7 +69,7 @@ public class BeanShellAdapter extends AbstractAdapter {
         this(key, impl, parameters, BeanShellAdapter.class.getClassLoader());
     }
 
-    public Object getComponentInstance(PicoContainer pico, Type into)
+    public Object getComponentInstance(final PicoContainer pico, final Type into)
             throws PicoCompositionException
     {
 
@@ -109,7 +109,7 @@ public class BeanShellAdapter extends AbstractAdapter {
         return instance;
     }
 
-    public void verify(PicoContainer pico) {
+    public void verify(final PicoContainer pico) {
     }
 
     public String getDescriptor() {

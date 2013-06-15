@@ -27,7 +27,7 @@ import org.picocontainer.tck.MockFactory;
 @RunWith(JMock.class)
 public class LifecycleContainerBuilderTestCase {
 
-    private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+    private final Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
 
     @Test
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
@@ -57,16 +57,16 @@ public class LifecycleContainerBuilderTestCase {
 
         private final Startable childStartable;
 
-        public LifecycleContainerBuilder(Startable childStartable) {
+        public LifecycleContainerBuilder(final Startable childStartable) {
             this.childStartable = childStartable;
         }
 
         @Override
-        protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+        protected MutablePicoContainer createContainer(final PicoContainer parentContainer, final Object assemblyScope) {
             MutablePicoContainer container = (MutablePicoContainer) super.createContainer(parentContainer, assemblyScope);
             container.addComponent(childStartable);
             return container;
         }
-        
+
     }
 }

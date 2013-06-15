@@ -42,11 +42,11 @@ import prefuse.visual.VisualItem;
 /**
  * Demo application showcasing the use of AggregateItems to visualize groupings
  * of nodes with in a graph visualization.
- * 
+ *
  * This class uses the AggregateLayout class to compute bounding polygons for
  * each aggregate and the AggregateDragControl to enable drags of both nodes and
  * node aggregates.
- * 
+ *
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
 @SuppressWarnings("serial")
@@ -225,13 +225,15 @@ final class AggregateLayout extends Layout {
         AggregateTable aggr = (AggregateTable) m_vis.getGroup(m_group);
         // do we have any to process?
         int num = aggr.getTupleCount();
-        if (num == 0)
-            return;
+        if (num == 0) {
+			return;
+		}
 
         // update buffers
         int maxsz = 0;
-        for (Iterator aggrs = aggr.tuples(); aggrs.hasNext();)
-            maxsz = Math.max(maxsz, 4 * 2 * ((AggregateItem) aggrs.next()).getAggregateSize());
+        for (Iterator aggrs = aggr.tuples(); aggrs.hasNext();) {
+			maxsz = Math.max(maxsz, 4 * 2 * ((AggregateItem) aggrs.next()).getAggregateSize());
+		}
         if (m_pts == null || maxsz > m_pts.length) {
             m_pts = new double[maxsz];
         }
@@ -242,8 +244,9 @@ final class AggregateLayout extends Layout {
             AggregateItem aitem = (AggregateItem) aggrs.next();
 
             int idx = 0;
-            if (aitem.getAggregateSize() == 0)
-                continue;
+            if (aitem.getAggregateSize() == 0) {
+				continue;
+			}
             VisualItem item;
             Iterator iter = aitem.items();
             while (iter.hasNext()) {
@@ -254,22 +257,25 @@ final class AggregateLayout extends Layout {
                 }
             }
             // if no aggregates are visible, do nothing
-            if (idx == 0)
-                continue;
+            if (idx == 0) {
+				continue;
+			}
 
             // compute convex hull
             double[] nhull = GraphicsLib.convexHull(m_pts, idx);
 
             // prepare viz attribute array
             float[] fhull = (float[]) aitem.get(VisualItem.POLYGON);
-            if (fhull == null || fhull.length < nhull.length)
-                fhull = new float[nhull.length];
-            else if (fhull.length > nhull.length)
-                fhull[nhull.length] = Float.NaN;
+            if (fhull == null || fhull.length < nhull.length) {
+				fhull = new float[nhull.length];
+			} else if (fhull.length > nhull.length) {
+				fhull[nhull.length] = Float.NaN;
+			}
 
             // copy hull values
-            for (int j = 0; j < nhull.length; j++)
-                fhull[j] = (float) nhull[j];
+            for (int j = 0; j < nhull.length; j++) {
+				fhull[j] = (float) nhull[j];
+			}
             aitem.set(VisualItem.POLYGON, fhull);
             aitem.setValidated(false); // force invalidation
         }
@@ -320,8 +326,9 @@ final class AggregateDragControl extends ControlAdapter {
         Display d = (Display) e.getSource();
         d.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         activeItem = item;
-        if (!(item instanceof AggregateItem))
-            setFixed(item, true);
+        if (!(item instanceof AggregateItem)) {
+			setFixed(item, true);
+		}
     }
 
     /**
@@ -344,13 +351,15 @@ final class AggregateDragControl extends ControlAdapter {
      */
     @Override
 	public void itemPressed(final VisualItem item, final MouseEvent e) {
-        if (!SwingUtilities.isLeftMouseButton(e))
-            return;
+        if (!SwingUtilities.isLeftMouseButton(e)) {
+			return;
+		}
         dragged = false;
         Display d = (Display) e.getComponent();
         d.getAbsoluteCoordinate(e.getPoint(), down);
-        if (item instanceof AggregateItem)
-            setFixed(item, true);
+        if (item instanceof AggregateItem) {
+			setFixed(item, true);
+		}
     }
 
     /**
@@ -359,8 +368,9 @@ final class AggregateDragControl extends ControlAdapter {
      */
     @Override
 	public void itemReleased(final VisualItem item, final MouseEvent e) {
-        if (!SwingUtilities.isLeftMouseButton(e))
-            return;
+        if (!SwingUtilities.isLeftMouseButton(e)) {
+			return;
+		}
         if (dragged) {
             activeItem = null;
             setFixed(item, false);
@@ -374,8 +384,9 @@ final class AggregateDragControl extends ControlAdapter {
      */
     @Override
 	public void itemDragged(final VisualItem item, final MouseEvent e) {
-        if (!SwingUtilities.isLeftMouseButton(e))
-            return;
+        if (!SwingUtilities.isLeftMouseButton(e)) {
+			return;
+		}
         dragged = true;
         Display d = (Display) e.getComponent();
         d.getAbsoluteCoordinate(e.getPoint(), temp);

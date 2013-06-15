@@ -17,8 +17,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Method;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,26 +30,23 @@ import org.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.Apple;
 import org.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.AppleImpl1;
 import org.picocontainer.containers.JSRPicoContainer;
 import org.picocontainer.containers.SomeQualifier;
-import org.picocontainer.injectors.AnnotatedFieldInjection.AnnotatedFieldInjector;
-import org.picocontainer.injectors.AnnotatedFieldInjectorTestCase.OrderChild;
 import org.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
-import org.picocontainer.testmodel.NullLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
  * @author J&ouml;rg Schaible
  */
 public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTest {
-	
+
+	@Override
 	@Before
     public void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new AnnotatedMethodInjection();
     }
 
@@ -65,7 +60,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
     }
@@ -76,7 +71,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         public NamedBeanWithPossibleDefault() {
         }
 
-        public NamedBeanWithPossibleDefault(String name) {
+        public NamedBeanWithPossibleDefault(final String name) {
             setName(name);
             byDefault = true;
         }
@@ -87,7 +82,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     }
 
     public static class NoBean extends NamedBean {
-        public NoBean(String name) {
+        public NoBean(final String name) {
             setName(name);
         }
     }
@@ -108,132 +103,132 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         } catch (PicoCompositionException e) {
         }
     }
-    
-    
+
+
     public static class DoSomething {
-    	
+
     	public String a;
     	public String b;
     	public String c;
 
 		@Inject
-    	public void injectSomething(String a, @Named("b") String b, @SomeQualifier String c) {
+    	public void injectSomething(final String a, @Named("b") final String b, @SomeQualifier final String c) {
 			this.a = a;
 			this.b = b;
 			this.c = c;
     	}
-    	
+
     }
-    
+
     @Test
     public void testAnnotationsOnParametersForMethodInjection() {
-    	
+
     	MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
-    	
+
     	pico
     		.addComponent(String.class, "This is A test")
     		.addComponent("b", "This is B test")
     		.addComponent(SomeQualifier.class.getName(), "This is C test")
     		.addComponent(DoSomething.class);
-    	
-    	
+
+
     	DoSomething instance = pico.getComponent(DoSomething.class);
     	assertNotNull(instance);
-    	
+
     	assertEquals("This is A test", instance.a);
     	assertEquals("This is B test", instance.b);
     	assertEquals("This is C test", instance.c);
-    	
-    }
-    
-    
-    public static class OrderBase {
-    	
-   	
-    	protected static boolean twoInvoked = false;
-    	
 
-   
+    }
+
+
+    public static class OrderBase {
+
+
+    	protected static boolean twoInvoked = false;
+
+
+
     	@Inject
     	public void two() {
     		assertFalse(twoInvoked);
-    		
+
     		twoInvoked = true;
     	};
     }
-    
-    
+
+
     public static class OrderDerived extends OrderBase {
-    	
-    	
+
+
     	protected static boolean fourInvoked = false;
-    	
-   
+
+
     	@Inject
     	public void four() {
     		assertTrue(twoInvoked);
     		assertFalse(fourInvoked);
     		fourInvoked = true;
-    		
+
     	}
-    	
+
     	public static void reset() {
     		twoInvoked = false;
     		fourInvoked = false;
     	}
     }
-    
-    
+
+
     @Test
     public void testBaseClassInjectedFirst() throws NoSuchMethodException {
     	OrderDerived.reset();
 
     	AnnotatedMethodInjector<OrderDerived> adapter = new AnnotatedMethodInjector<OrderDerived>(OrderDerived.class, OrderDerived.class, null, new NullComponentMonitor(), false, false, Inject.class);
     	OrderDerived derived = adapter.getComponentInstance(null, null);
-    	assertTrue(OrderDerived.twoInvoked);
+    	assertTrue(OrderBase.twoInvoked);
     	assertTrue(OrderDerived.fourInvoked);
-    
+
     	OrderDerived.reset();
     }
-    
-    
+
+
     public static class StaticOneTime {
-    	
+
     	public static Apple injectedApple;
-    	
+
     	public Apple injectedApple2;
-    	
+
     	@Inject
-    	public static void injectApple(Apple a) {
+    	public static void injectApple(final Apple a) {
     		injectedApple = a;
     	}
-    	
+
     	@Inject
-    	public void injectAnotherApple(Apple a) {
+    	public void injectAnotherApple(final Apple a) {
     		injectedApple2 = a;
     	}
     }
-    
+
     @Test
     public void testStaticsAreOnlyInjectedOneTime() {
     	JSRPicoContainer pico = new JSRPicoContainer()
     			.addComponent(StaticOneTime.class)
     			.addComponent(Apple.class, AppleImpl1.class);
-    	
+
     	StaticOneTime instance1 = pico.getComponent(StaticOneTime.class);
     	Apple static1 = StaticOneTime.injectedApple;
     	Apple nonStatic1 = instance1.injectedApple2;
-    	
+
     	StaticOneTime instance2 = pico.getComponent(StaticOneTime.class);
-    	
+
     	Apple static2 = StaticOneTime.injectedApple;
     	Apple nonStatic2 = instance2.injectedApple2;
-    	
+
     	assertNotSame(instance1, instance2);
     	assertNotSame(nonStatic1, nonStatic2);
-    	
+
     	//The important part :)
     	assertSame(static1, static2);
     }
-    
+
 }

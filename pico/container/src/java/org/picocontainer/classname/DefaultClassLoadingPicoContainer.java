@@ -3,14 +3,13 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.classname;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -92,40 +91,40 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     protected final Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
 
-    public DefaultClassLoadingPicoContainer(ClassLoader classLoader, ComponentFactory componentFactory, PicoContainer parent) {
+    public DefaultClassLoadingPicoContainer(final ClassLoader classLoader, final ComponentFactory componentFactory, final PicoContainer parent) {
         super(new DefaultPicoContainer(parent, componentFactory));
         parentClassLoader = classLoader;
     }
 
-    public DefaultClassLoadingPicoContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
+    public DefaultClassLoadingPicoContainer(final ClassLoader classLoader, final MutablePicoContainer delegate) {
         super(delegate);
         parentClassLoader = classLoader;
 
     }
 
-    public DefaultClassLoadingPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor monitor) {
+    public DefaultClassLoadingPicoContainer(final ClassLoader classLoader, final PicoContainer parent, final ComponentMonitor monitor) {
         super(new DefaultPicoContainer(parent, new Caching()));
         parentClassLoader = classLoader;
         ((ComponentMonitorStrategy) getDelegate()).changeMonitor(monitor);
     }
 
-    public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory) {
+    public DefaultClassLoadingPicoContainer(final ComponentFactory componentFactory) {
         super(new DefaultPicoContainer((PicoContainer) null, componentFactory));
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
-    
-    public DefaultClassLoadingPicoContainer(PicoContainer parent) {
+
+    public DefaultClassLoadingPicoContainer(final PicoContainer parent) {
         super(new DefaultPicoContainer(parent));
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
-    public DefaultClassLoadingPicoContainer(MutablePicoContainer delegate) {
+    public DefaultClassLoadingPicoContainer(final MutablePicoContainer delegate) {
         super(delegate);
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
-    public DefaultClassLoadingPicoContainer(ClassLoader classLoader) {
+    public DefaultClassLoadingPicoContainer(final ClassLoader classLoader) {
         super(new DefaultPicoContainer());
         parentClassLoader = classLoader;
     }
@@ -135,8 +134,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
-    public DefaultClassLoadingPicoContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycle,
-            PicoContainer parent, ClassLoader cl, ComponentMonitor monitor) {
+    public DefaultClassLoadingPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycle,
+            final PicoContainer parent, final ClassLoader cl, final ComponentMonitor monitor) {
 
         super(new DefaultPicoContainer(parent, lifecycle, monitor, componentFactory));
         parentClassLoader = (cl != null) ? cl : DefaultClassLoadingPicoContainer.class.getClassLoader();
@@ -156,25 +155,26 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
      * @throws IllegalStateException if no delegate can be found that implements ComponentMonitorStrategy.
      * @param monitor the monitor to swap.
      */
-    public void changeMonitor(ComponentMonitor monitor) {
-    	
+    @Override
+	public void changeMonitor(final ComponentMonitor monitor) {
+
     	MutablePicoContainer picoDelegate = getDelegate();
     	while (picoDelegate != null) {
     		if (picoDelegate instanceof ComponentMonitorStrategy) {
     			((ComponentMonitorStrategy)picoDelegate).changeMonitor(monitor);
     			return;
     		}
-    		
+
     		if (picoDelegate instanceof AbstractDelegatingMutablePicoContainer) {
     			picoDelegate = ((AbstractDelegatingMutablePicoContainer)picoDelegate).getDelegate();
     		} else {
     			break;
     		}
     	}
-    	
+
     	throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");
-    	
-    	
+
+
     }
 
 	@Override
@@ -197,30 +197,31 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 		}
 	}
 
-    
+
     public ComponentMonitor currentMonitor() {
     	MutablePicoContainer picoDelegate = getDelegate();
     	while (picoDelegate != null) {
     		if (picoDelegate instanceof ComponentMonitorStrategy) {
     			return ((ComponentMonitorStrategy)picoDelegate).currentMonitor();
     		}
-    		
+
     		if (picoDelegate instanceof AbstractDelegatingMutablePicoContainer) {
     			picoDelegate = ((AbstractDelegatingMutablePicoContainer)picoDelegate).getDelegate();
     		} else {
     			break;
     		}
     	}
-    	
+
     	throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");
     }
 
     @Override
-    public final Object getComponent(Object keyOrType) {
+    public final Object getComponent(final Object keyOrType) {
         return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
     }
 
-    public final Object getComponentInto(Object keyOrType, Type into) {
+    @Override
+	public final Object getComponentInto(Object keyOrType, final Type into) {
 
         if (keyOrType instanceof ClassName) {
             keyOrType = loadClass((ClassName) keyOrType);
@@ -251,7 +252,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
     }
 
-    private Object getComponentInstanceFromChildren(Object key, Type into) {
+    private Object getComponentInstanceFromChildren(final Object key, final Type into) {
         String keyPath = key.toString();
         int ix = keyPath.indexOf('/');
         if (ix != -1) {
@@ -266,7 +267,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return null;
     }
 
-    public final MutablePicoContainer makeChildContainer() {
+    @Override
+	public final MutablePicoContainer makeChildContainer() {
         return makeChildContainer("containers" + namedChildContainers.size());
     }
 
@@ -278,7 +280,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
      * @param name the name of the child container
      * @return The child MutablePicoContainer
      */
-    public ClassLoadingPicoContainer makeChildContainer(String name) {
+    public ClassLoadingPicoContainer makeChildContainer(final String name) {
         DefaultClassLoadingPicoContainer child = createChildContainer();
         MutablePicoContainer parentDelegate = getDelegate();
         parentDelegate.removeChildContainer(child.getDelegate());
@@ -287,7 +289,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return child;
     }
 
-    public boolean removeChildContainer(PicoContainer child) {
+    @Override
+	public boolean removeChildContainer(final PicoContainer child) {
         boolean result = getDelegate().removeChildContainer(child);
         Iterator<Map.Entry<String, PicoContainer>> children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
@@ -304,7 +307,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return namedChildContainers;
     }
 
-    public ClassPathElement addClassLoaderURL(URL url) {
+    public ClassPathElement addClassLoaderURL(final URL url) {
         if (componentClassLoaderLocked) {
             throw new IllegalStateException("ClassLoader URLs cannot be added once this instance is locked");
         }
@@ -314,7 +317,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return classPathElement;
     }
 
-    public MutablePicoContainer addComponent(Object implOrInstance) {
+    @Override
+	public MutablePicoContainer addComponent(final Object implOrInstance) {
         if (implOrInstance instanceof ClassName) {
             super.addComponent(loadClass((ClassName) implOrInstance));
         } else {
@@ -323,8 +327,9 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return this;
     }
 
-    public MutablePicoContainer addComponent(Object key, Object implOrInstance,
-            Parameter... parameters) {
+    @Override
+	public MutablePicoContainer addComponent(final Object key, final Object implOrInstance,
+            final Parameter... parameters) {
         super.addComponent(classNameToClassIfApplicable(key),
                 classNameToClassIfApplicable(implOrInstance), parameters);
         return this;
@@ -337,7 +342,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return key;
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
+    @Override
+	public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
         super.addAdapter(componentAdapter);
         return this;
     }
@@ -356,13 +362,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return componentClassLoader;
     }
 
-    public MutablePicoContainer addChildContainer(PicoContainer child) {
+    @Override
+	public MutablePicoContainer addChildContainer(final PicoContainer child) {
         getDelegate().addChildContainer(child);
         namedChildContainers.put("containers" + namedChildContainers.size(), child);
         return this;
     }
 
-    public ClassLoadingPicoContainer addChildContainer(String name, PicoContainer child) {
+    public ClassLoadingPicoContainer addChildContainer(final String name, final PicoContainer child) {
 
         super.addChildContainer(child);
 
@@ -390,7 +397,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return permissionsMap;
     }
 
-    private URL[] getURLs(List<ClassPathElement> classPathElemelements) {
+    private URL[] getURLs(final List<ClassPathElement> classPathElemelements) {
         final URL[] urls = new URL[classPathElemelements.size()];
         for (int i = 0; i < urls.length; i++) {
             urls[i] = (classPathElemelements.get(i)).getUrl();
@@ -398,14 +405,15 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return urls;
     }
 
-    
-    
-    private static String getClassName(String primitiveOrClass) {
+
+
+    private static String getClassName(final String primitiveOrClass) {
         String fromMap = primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
     }
 
-    public ComponentAdapter<?> getComponentAdapter(Object key) {
+    @Override
+	public ComponentAdapter<?> getComponentAdapter(final Object key) {
         Object key2 = key;
         if (key instanceof ClassName) {
             key2 = loadClass((ClassName) key);
@@ -413,23 +421,25 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return super.getComponentAdapter(key2);
     }
 
-    public MutablePicoContainer change(Properties... properties) {
+    @Override
+	public MutablePicoContainer change(final Properties... properties) {
         super.change(properties);
         return this;
     }
 
-    public MutablePicoContainer as(Properties... properties) {
+    @Override
+	public MutablePicoContainer as(final Properties... properties) {
         return new AsPropertiesPicoContainer(properties);
     }
 
     private class AsPropertiesPicoContainer implements ClassLoadingPicoContainer {
-        private MutablePicoContainer delegate;
+        private final MutablePicoContainer delegate;
 
-        public AsPropertiesPicoContainer(Properties... props) {
+        public AsPropertiesPicoContainer(final Properties... props) {
             delegate = DefaultClassLoadingPicoContainer.this.getDelegate().as(props);
         }
 
-        public ClassPathElement addClassLoaderURL(URL url) {
+        public ClassPathElement addClassLoaderURL(final URL url) {
             return DefaultClassLoadingPicoContainer.this.addClassLoaderURL(url);
         }
 
@@ -437,61 +447,61 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getComponentClassLoader();
         }
 
-        public ClassLoadingPicoContainer makeChildContainer(String name) {
+        public ClassLoadingPicoContainer makeChildContainer(final String name) {
             return DefaultClassLoadingPicoContainer.this.makeChildContainer(name);
         }
 
-        public ClassLoadingPicoContainer addChildContainer(String name, PicoContainer child) {
+        public ClassLoadingPicoContainer addChildContainer(final String name, final PicoContainer child) {
             return (ClassLoadingPicoContainer) DefaultClassLoadingPicoContainer.this.addChildContainer(child);
         }
 
-        public <T> BindWithOrTo<T> bind(Class<T> type) {
+        public <T> BindWithOrTo<T> bind(final Class<T> type) {
             return new DefaultPicoContainer.DpcBindWithOrTo<T>(DefaultClassLoadingPicoContainer.this, type);
         }
 
-        public MutablePicoContainer addComponent(Object key, Object implOrInstance,
-                Parameter... parameters) {
+        public MutablePicoContainer addComponent(final Object key, final Object implOrInstance,
+                final Parameter... parameters) {
             delegate.addComponent(classNameToClassIfApplicable(key),
                     classNameToClassIfApplicable(implOrInstance), parameters);
             return DefaultClassLoadingPicoContainer.this;
         }
-        
-        public MutablePicoContainer addComponent(Object key, Object implOrInstance, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+
+        public MutablePicoContainer addComponent(final Object key, final Object implOrInstance, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
             delegate.addComponent(classNameToClassIfApplicable(key),
                     classNameToClassIfApplicable(implOrInstance), constructorParams, fieldParams, methodParams);
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public MutablePicoContainer addComponent(Object implOrInstance) {
+        public MutablePicoContainer addComponent(final Object implOrInstance) {
             delegate.addComponent(classNameToClassIfApplicable(implOrInstance));
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public MutablePicoContainer addConfig(String name, Object val) {
+        public MutablePicoContainer addConfig(final String name, final Object val) {
             delegate.addConfig(name, val);
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) {
+        public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
             delegate.addAdapter(componentAdapter);
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public MutablePicoContainer addProvider(Provider<?> provider) {
+        public MutablePicoContainer addProvider(final Provider<?> provider) {
             delegate.addProvider(provider);
             return DefaultClassLoadingPicoContainer.this;
         }
-        
-        public MutablePicoContainer addProvider(Object key, Provider<?> provider) {
+
+        public MutablePicoContainer addProvider(final Object key, final Provider<?> provider) {
         	delegate.addProvider(key, provider);
         	return DefaultClassLoadingPicoContainer.this;
         }
 
-        public ComponentAdapter removeComponent(Object key) {
+        public ComponentAdapter removeComponent(final Object key) {
             return delegate.removeComponent(key);
         }
 
-        public ComponentAdapter removeComponentByInstance(Object componentInstance) {
+        public ComponentAdapter removeComponentByInstance(final Object componentInstance) {
             return delegate.removeComponentByInstance(componentInstance);
         }
 
@@ -499,51 +509,51 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.makeChildContainer();
         }
 
-        public MutablePicoContainer addChildContainer(PicoContainer child) {
+        public MutablePicoContainer addChildContainer(final PicoContainer child) {
             return DefaultClassLoadingPicoContainer.this.addChildContainer(child);
         }
 
-        public boolean removeChildContainer(PicoContainer child) {
+        public boolean removeChildContainer(final PicoContainer child) {
             return DefaultClassLoadingPicoContainer.this.removeChildContainer(child);
         }
 
-        public MutablePicoContainer change(Properties... properties) {
+        public MutablePicoContainer change(final Properties... properties) {
             return DefaultClassLoadingPicoContainer.this.change(properties);
         }
 
-        public MutablePicoContainer as(Properties... properties) {
+        public MutablePicoContainer as(final Properties... properties) {
             return new AsPropertiesPicoContainer(properties);
         }
 
-        public Object getComponent(Object keyOrType) {
+        public Object getComponent(final Object keyOrType) {
             return getComponentInto(keyOrType, ComponentAdapter.NOTHING.class);
         }
 
-        public Object getComponentInto(Object keyOrType, Type into) {
+        public Object getComponentInto(final Object keyOrType, final Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponentInto(keyOrType, into);
         }
 
-        public <T> T getComponent(Class<T> componentType) {
+        public <T> T getComponent(final Class<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponent(Generic.get(componentType));
         }
 
-        public <T> T getComponent(Generic<T> componentType) {
+        public <T> T getComponent(final Generic<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponent(componentType);
         }
 
-        public <T> T getComponentInto(Class<T> componentType, Type into) {
+        public <T> T getComponentInto(final Class<T> componentType, final Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponentInto(componentType, into);
         }
 
-        public <T> T getComponentInto(Generic<T> componentType, Type into) {
+        public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponentInto(componentType, into);
         }
 
-        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
+        public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding, final Type into) {
             return DefaultClassLoadingPicoContainer.this.getComponent(componentType, binding, into);
         }
 
-        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponent(componentType, binding);
         }
 
@@ -555,23 +565,23 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getParent();
         }
 
-        public ComponentAdapter<?> getComponentAdapter(Object key) {
+        public ComponentAdapter<?> getComponentAdapter(final Object key) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(key);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(Generic.get(componentType), componentNameBinding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding componentNameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding componentNameBinding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentType, componentNameBinding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(Generic.get(componentType), binding);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapter(componentType, binding);
         }
 
@@ -579,29 +589,29 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters();
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(Generic.get(componentType));
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(componentType);
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType,
-                Class<? extends Annotation> binding) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType,
+                final Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(Generic.get(componentType), binding);
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType,
-                Class<? extends Annotation> binding) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType,
+                final Class<? extends Annotation> binding) {
             return DefaultClassLoadingPicoContainer.this.getComponentAdapters(componentType, binding);
         }
 
-        public <T> List<T> getComponents(Class<T> componentType) {
+        public <T> List<T> getComponents(final Class<T> componentType) {
             return DefaultClassLoadingPicoContainer.this.getComponents(componentType);
         }
 
-        public void accept(PicoVisitor visitor) {
+        public void accept(final PicoVisitor visitor) {
             DefaultClassLoadingPicoContainer.this.accept(visitor);
         }
 
@@ -612,23 +622,23 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         public void stop() {
         	throw new PicoCompositionException("Cannot have  .as().stop()  Register a component or delete the as() statement");
         }
-        
+
         public void dispose() {
         	throw new PicoCompositionException("Cannot have  .as().dispose()  Register a component or delete the as() statement");
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             DefaultClassLoadingPicoContainer.this.setName(name);
         }
 
-        public void setLifecycleState(LifecycleState lifecycleState) {
+        public void setLifecycleState(final LifecycleState lifecycleState) {
             DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
         }
 
         public Converters getConverter() {
             return DefaultClassLoadingPicoContainer.this.getConverters();
         }
-        
+
         /**
          * {@inheritDoc}
          * @see org.picocontainer.MutablePicoContainer#getLifecycleState()
@@ -645,7 +655,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getName();
         }
 
-        public void changeMonitor(ComponentMonitor monitor) {
+        public void changeMonitor(final ComponentMonitor monitor) {
             DefaultClassLoadingPicoContainer.this.changeMonitor(monitor);
         }
 
@@ -653,13 +663,13 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     }
 
-    public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
+    public int visit(final ClassName thisClassesPackage, final String regex, final boolean recursive, final ClassNameVisitor classNameVisitor) {
         Class clazz = loadClass(thisClassesPackage);
         /* File Seperator of '\\' can cause bogus results in Windows -- So we keep it to forward slash since Windows
-         * can handle it.  
+         * can handle it.
          * -MR
          */
-        String pkgName = clazz.getPackage().getName().replace(".", "/");  
+        String pkgName = clazz.getPackage().getName().replace(".", "/");
         CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
         if(codeSource == null) {
             throw new CannotListClassesInAJarException();
@@ -669,7 +679,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         String fileName = codeSourceRoot + '/' + pkgName;
         File file = new File(fileName);
         Pattern compiledPattern = Pattern.compile(regex);
-        
+
         if (file.exists()) {
             if (file.isFile()) {
                 file = file.getParentFile();
@@ -680,13 +690,13 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
     }
 
-    public int visit(String pkgName, String codeSourceRoot, Pattern compiledPattern, boolean recursive, ClassNameVisitor classNameVisitor) {
+    public int visit(final String pkgName, final String codeSourceRoot, final Pattern compiledPattern, final boolean recursive, final ClassNameVisitor classNameVisitor) {
         int found = 0;
         ZipFile zip = null;
         try {
             zip = new ZipFile(new File(codeSourceRoot));
             for (Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements();) {
-                ZipEntry entry = (ZipEntry) e.nextElement();
+                ZipEntry entry = e.nextElement();
                 String entryName = entry.getName();
                 if (entryName.startsWith(pkgName) && entryName.endsWith(".class")) {
                     String name =  entryName.substring(pkgName.length()+1);
@@ -705,7 +715,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         	try {
 	        	if (zip != null) {
 	        		zip.close();
-	        	} 
+	        	}
         	} catch (IOException e) {
         		e.printStackTrace();
         	}
@@ -714,11 +724,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
 
-    private int visit(String pkgName, Pattern pattern, ClassNameVisitor classNameVisitor, int foundSoFar, String fileName, String absolutePath) {
+    private int visit(final String pkgName, final Pattern pattern, final ClassNameVisitor classNameVisitor, int foundSoFar, String fileName, final String absolutePath) {
         boolean matches = pattern.matcher(fileName).matches();
         if (matches) {
             if (absolutePath != null) {
-                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));                
+                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));
                 fileName = fqn.substring(0, fqn.indexOf(".class")).replace('/', '.');;
             } else {
                 fileName = fileName.substring(0, fileName.indexOf(".class"));
@@ -728,14 +738,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
         return foundSoFar;
     }
-    
 
-    public int visit(File pkgDir, String pkgName, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
+
+    public int visit(final File pkgDir, final String pkgName, final String regex, final boolean recursive, final ClassNameVisitor classNameVisitor) {
         Pattern pattern = Pattern.compile(regex);
         return visit(pkgDir, pkgName, pattern, recursive, classNameVisitor);
     }
 
-    public int visit(File pkgDir, String pkgName, Pattern pattern, boolean recursive, ClassNameVisitor classNameVisitor) {
+    public int visit(final File pkgDir, final String pkgName, final Pattern pattern, final boolean recursive, final ClassNameVisitor classNameVisitor) {
         int found = 0;
         File files[] = pkgDir.listFiles();
         if(files != null) {

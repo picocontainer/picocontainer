@@ -1,9 +1,7 @@
 package org.picocontainer.parameters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class BeanParametersTestCase {
@@ -14,10 +12,10 @@ public class BeanParametersTestCase {
 		BeanParameters param = new BeanParameters("test");
 		assertEquals("setTest", param.getName());
 	}
-	
+
 	public void testSetterConversionIfPropertyIsOneCharacterLong() {
 		BeanParameters param = new BeanParameters("i");
-		assertEquals("setI", param.getName());		
+		assertEquals("setI", param.getName());
 	}
 
 }

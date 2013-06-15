@@ -9,6 +9,20 @@
 
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
 import org.hamcrest.Description;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -30,24 +44,10 @@ import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
 @RunWith(JMock.class)
 public class ReinjectionTestCase extends AbstractComponentFactoryTest {
 
-    private Mockery mockery = mockeryWithCountingNamingScheme();
+    private final Mockery mockery = mockeryWithCountingNamingScheme();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(value={ElementType.METHOD, ElementType.FIELD})
@@ -63,20 +63,20 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     }
 
     public static class NeedsShoe implements INeedsShoe {
-        private Shoe bar;
+        private final Shoe bar;
         private String string;
 
-        public NeedsShoe(Shoe bar) {
+        public NeedsShoe(final Shoe bar) {
             this.bar = bar;
         }
 
         @Hurrah
-        public int doIt(String s) {
+        public int doIt(final String s) {
             this.string = s;
             return Integer.parseInt(s) / 2;
         }
 
-        public int doInt(int s) {
+        public int doInt(final int s) {
             this.string = "i="+ s;
             return s/2;
         }
@@ -92,7 +92,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
             doIt("doIt", String.class);
             private Method method;
 
-            M(String s, Class... paramTypes) {
+            M(final String s, final Class... paramTypes) {
                 try {
                     method = NeedsShoe.class.getMethod(s, paramTypes);
                 } catch (NoSuchMethodException e) {
@@ -125,12 +125,12 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     @Test public void testCachedComponentCanBeMethodNameReinjectedByATransientChildContainer() {
         cachedComponentCanBeReinjectedByATransientChildContainer(new MethodInjection("doIt"));
     }
-    
+
     @Test public void testCachedComponentCanBeAnnotatedMethodReinjectedByATransientChildContainer() {
         cachedComponentCanBeReinjectedByATransientChildContainer(new AnnotatedMethodInjection(Hurrah.class, false));
     }
 
-    private void cachedComponentCanBeReinjectedByATransientChildContainer(AbstractInjectionType methodInjection) {
+    private void cachedComponentCanBeReinjectedByATransientChildContainer(final AbstractInjectionType methodInjection) {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(INeedsShoe.class, NeedsShoe.class);
         parent.addComponent(Shoe.class);
@@ -227,20 +227,20 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     public static class ReturnParameterAction implements Action {
         private final int parameter;
 
-        public ReturnParameterAction(int parameter) {
+        public ReturnParameterAction(final int parameter) {
             this.parameter = parameter;
         }
 
-        public void describeTo(Description description) {
+        public void describeTo(final Description description) {
             // describe it
         }
 
-        public Object invoke(Invocation invocation) {
+        public Object invoke(final Invocation invocation) {
             return invocation.getParameter(parameter);
         }
     }
 
-    private void cachedComponentCanBeReinjectedByATransientReinjector(AbstractInjectionType methodInjection) {
+    private void cachedComponentCanBeReinjectedByATransientReinjector(final AbstractInjectionType methodInjection) {
         final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.setName("parent");
         parent.addComponent(INeedsShoe.class, NeedsShoe.class);
@@ -310,7 +310,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         parent.addComponent("12");
 
         final ComponentMonitor cm = new NullComponentMonitor() {
-            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+            @Override
+			public Object invoking(final PicoContainer container, final ComponentAdapter<?> componentAdapter, final Member member, final Object instance, final Object[] args) {
                 return 4444;
             }
         };
@@ -327,7 +328,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         parent.addComponent("12");
 
         final ComponentMonitor cm = new NullComponentMonitor() {
-            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args) {
+            @Override
+			public Object invoking(final PicoContainer container, final ComponentAdapter<?> componentAdapter, final Member member, final Object instance, final Object... args) {
                 return ComponentMonitor.KEEP;
             }
         };
@@ -344,7 +346,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         parent.addComponent("12");
 
         final ComponentMonitor cm = new NullComponentMonitor() {
-            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+            @Override
+			public Object invoking(final PicoContainer container, final ComponentAdapter<?> componentAdapter, final Member member, final Object instance, final Object[] args) {
                 return null;
             }
         };
@@ -355,11 +358,13 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
 
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new Reinjection(new MethodInjection(DOIT_METHOD), new EmptyPicoContainer());
     }
 
-    @Test
+    @Override
+	@Test
     public void testRegisterComponent() throws PicoCompositionException {
         try {
             super.testRegisterComponent();
@@ -369,7 +374,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    @Test
+    @Override
+	@Test
     public void testUnregisterComponent() throws PicoCompositionException {
         try {
             super.testUnregisterComponent();
@@ -379,7 +385,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    @Test
+    @Override
+	@Test
     public void testEquals() throws PicoCompositionException {
         try {
             super.testEquals();

@@ -21,37 +21,37 @@ import java.util.Set;
 public class StaticsInitializedReferenceSet {
 
 	private Set<Member> referenceSet = null;
-	
-	
-	public synchronized boolean isMemberAlreadyInitialized(Member member) {
+
+
+	public synchronized boolean isMemberAlreadyInitialized(final Member member) {
 		if (member == null) {
 			throw new NullPointerException("member");
 		}
 		return getReferenceSet().contains(member);
 	}
-	
-	public synchronized void markMemberInitialized(Member member) {
-		
+
+	public synchronized void markMemberInitialized(final Member member) {
+
 		if (member == null) {
 			throw new NullPointerException("member");
 		}
-		
+
 		if (!Modifier.isStatic(member.getModifiers())) {
 			throw new IllegalArgumentException("Members should only be marked if they are static");
 		}
-		
+
 		getReferenceSet().add(member);
 	}
-	
+
 	protected Set<Member> getReferenceSet() {
 		if (referenceSet == null) {
 			referenceSet = new HashSet<Member>();
 		}
-		
+
 		return referenceSet;
-		
+
 	}
-	
+
 	public synchronized void dispose() {
 		referenceSet = null;
 	}

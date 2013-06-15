@@ -7,18 +7,18 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.injectors.AnnotationInjectionUtils;
-
-import javax.annotation.PreDestroy;
-import javax.annotation.PostConstruct;
 
 /**
  * Java EE 5 has some annotations PreDestroy and PostConstruct that map to start() and dispose() in our world
@@ -52,11 +52,11 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         doLifecycleMethod(component, PreDestroy.class, false);
     }
 
-    private void doLifecycleMethod(final Object component, Class<? extends Annotation> annotation, boolean superFirst) {
+    private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final boolean superFirst) {
     	doLifecycleMethod(component, annotation, component.getClass(), superFirst, new HashSet<String>());
     }
 
-    private void doLifecycleMethod(Object component, Class<? extends Annotation> annotation, Class<? extends Object> clazz, boolean superFirst, Set<String> doneAlready) {
+    private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final Class<? extends Object> clazz, final boolean superFirst, final Set<String> doneAlready) {
         Class<?> parent = clazz.getSuperclass();
         if (superFirst && parent != Object.class) {
             doLifecycleMethod(component, annotation, parent, superFirst, doneAlready);
@@ -65,7 +65,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             String signature = signature(method);
-            
+
             if (method.isAnnotationPresent(annotation) && !doneAlready.contains(signature)) {
                 try {
                     long str = System.currentTimeMillis();
@@ -81,13 +81,13 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
                 }
             }
         }
-        
+
         if (!superFirst && parent != Object.class) {
             doLifecycleMethod(component, annotation, parent, superFirst, doneAlready);
-        }        
+        }
     }
 
-    private static String signature(Method method) {
+    private static String signature(final Method method) {
         StringBuilder sb = new StringBuilder(method.getName());
         Class<?>[] pt = method.getParameterTypes();
         for (Class<?> objectClass : pt) {
@@ -100,8 +100,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
      */
     public boolean hasLifecycle(final Class<?> type) {
         Method[] methods = type.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
+        for (Method method : methods) {
             if (method.isAnnotationPresent(PreDestroy.class) || method.isAnnotationPresent(PostConstruct.class)) {
                 return true;
             }

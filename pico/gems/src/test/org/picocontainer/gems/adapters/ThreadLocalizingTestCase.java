@@ -24,19 +24,18 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.DefaultConstructorParameter;
 
 
 /**
  * Test ThreadLocalizing.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalizingTestCase {
 
     /**
      * Test creation of a CA ensuring ThreadLocal-behaviour.
-     * 
+     *
      * @throws InterruptedException
      */
     @Test public void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
@@ -63,7 +62,7 @@ public class ThreadLocalizingTestCase {
 
     /**
      * Test creation of a CA failing ThreadLocal-behaviour.
-     * 
+     *
      * @throws InterruptedException
      */
     @Test public void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
@@ -91,7 +90,7 @@ public class ThreadLocalizingTestCase {
 
     /**
      * Test creation of a CA with ThreadLocal-behaviour works if the thread ensures creation.
-     * 
+     *
      * @throws InterruptedException
      */
     @Test public void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {

@@ -10,12 +10,16 @@
 
 package org.picocontainer.injectors;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -34,22 +38,19 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.inject.Inject;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
     XStream xs;
 
-    @Before
+    @Override
+	@Before
     public void setUp() throws Exception {
         super.setUp();
         xs = new XStream();
@@ -61,26 +62,27 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         xs.alias("Constructor-Injection", Jsr330ConstructorInjection.ConstructorInjectorWithForcedPublicCtors.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
-            public boolean canConvert(Class aClass) {
+            public boolean canConvert(final Class aClass) {
                 return aClass.getName().equals("org.picocontainer.monitors.ConsoleComponentMonitor") ||
                        aClass.getName().equals("org.picocontainer.lifecycle.ReflectionLifecycleStrategy");
 
             }
 
-            public void marshal(Object object,
-                                HierarchicalStreamWriter hierarchicalStreamWriter,
-                                MarshallingContext marshallingContext) {
+            public void marshal(final Object object,
+                                final HierarchicalStreamWriter hierarchicalStreamWriter,
+                                final MarshallingContext marshallingContext) {
             }
 
-            public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
-                                    UnmarshallingContext unmarshallingContext) {
+            public Object unmarshal(final HierarchicalStreamReader hierarchicalStreamReader,
+                                    final UnmarshallingContext unmarshallingContext) {
                 return null;
             }
         });
 
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new AdaptingInjection();
     }
 
@@ -95,7 +97,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(comp);
-        assertTrue(comp instanceof SimpleTouchable);                               
+        assertTrue(comp instanceof SimpleTouchable);
     }
 
     @Test public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
@@ -142,7 +144,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         assertNotNull(ca);
         String foo = xs.toXML(ca).replace("\"", "");
         assertTrue("Got " + foo, foo.contains("<Annotated-Field-Injection>"));
-        
+
         assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedFieldInjector[javax.inject.@Inject,org.picocontainer.annotations.@Inject]"));
         assertTrue("Got " + ca.toString(), ca.toString().contains("org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter"));
     }
@@ -177,7 +179,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedMethodInjector[org.picocontainer.annotations.@Inject,javax.inject.@Inject]"));
         assertTrue("Got " + ca.toString(), ca.toString().contains("org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp"));
     }
-    
+
     @Test
     public void testFailedParameterNames() {
         ComponentFactory cf = createComponentFactory();
@@ -192,30 +194,30 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 			                                                null, null, null);
 		} catch (PicoCompositionException e) {
 			String message = e.getMessage();
-			
+
 			assertTrue("Got " + message, message.contains("test"));
 			assertFalse("Got " + message, message.contains("fred"));
 			assertTrue("Got " + message, message.contains(AnnotatedMethodInjectorTestCase.AnnotatedBurp.class.getName()));
 		}
-    	
+
     }
-    
-    
+
+
     /**
      * Both types of injection are present to trigger both times of component adapters
      */
     public static class InjectionOrderTest {
-    	
+
     	@Inject
     	private String something;
-    	
+
     	@Inject
     	public void injectSomething() {
-    		
+
     	}
-    	
+
     }
-    
+
     @Test
     public void testJSRFieldsAreInjectedBeforeJSRMethods() {
         ComponentFactory cf = createComponentFactory();
@@ -225,21 +227,21 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                 InjectionOrderTest.class,
                 InjectionOrderTest.class,
                 null, null, null);
-		
+
 		CompositeInjector<?> ci = ca.findAdapterOfType(CompositeInjector.class);
 		assertNotNull(ci);
-		
+
 		String result = ci.getDescriptor();
 		assertNotNull(result);
-		
+
 		int methodInjectionLocation = result.indexOf("AnnotatedMethodInjector");
 		int fieldInjectionLocation = result.indexOf("AnnotatedFieldInjector");
-		
+
 		assertTrue(fieldInjectionLocation < methodInjectionLocation);
-		
-    	
+
+
     }
-    
+
 
 
 

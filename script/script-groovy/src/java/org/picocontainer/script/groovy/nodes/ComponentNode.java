@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.picocontainer.Parameter;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.NodeBuilderDecorator;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.util.ComponentElementHelper;
 
 /**
  * Creates a component node
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -63,7 +63,7 @@ public class ComponentNode extends AbstractBuilderNode {
 
     private final NodeBuilderDecorator decorator;
 
-    public ComponentNode(NodeBuilderDecorator decorator) {
+    public ComponentNode(final NodeBuilderDecorator decorator) {
         super(NODE_NAME);
         this.decorator = decorator;
         // Supported attributes.
@@ -73,7 +73,7 @@ public class ComponentNode extends AbstractBuilderNode {
 
     /**
      * Execute the handler for the given node builder.
-     * 
+     *
      * @param current The current node.
      * @param attributes Map attributes specified in the groovy script for the
      *            builder node.
@@ -93,7 +93,7 @@ public class ComponentNode extends AbstractBuilderNode {
     }
 
     @SuppressWarnings("unchecked")
-    private static Parameter[] getParameters(Object params) {
+    private static Parameter[] getParameters(final Object params) {
         if (params == null) {
             return null;
         }
@@ -116,12 +116,12 @@ public class ComponentNode extends AbstractBuilderNode {
         return parameters;
     }
 
-    private static Parameter toParameter(Object obj) {
+    private static Parameter toParameter(final Object obj) {
         return obj instanceof Parameter ? (Parameter) obj : new ConstantParameter(obj);
     }
 
     @SuppressWarnings("unchecked")
-    private static Properties[] getProperties(Object props) {
+    private static Properties[] getProperties(final Object props) {
         if (props == null) {
             return new Properties[0];
         }

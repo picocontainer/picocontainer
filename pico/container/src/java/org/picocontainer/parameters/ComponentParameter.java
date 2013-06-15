@@ -9,7 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import com.googlecode.jtype.Generic;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
@@ -17,9 +20,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import com.googlecode.jtype.Generic;
 
 
 /**
@@ -30,7 +31,7 @@ import java.lang.reflect.Type;
  * about what other component to use in the constructor. Collecting parameter types are
  * supported for {@link java.lang.reflect.Array},{@link java.util.Collection}and
  * {@link java.util.Map}.
- * 
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -56,18 +57,18 @@ public class ComponentParameter
     public static final ComponentParameter ARRAY_ALLOW_EMPTY = new ComponentParameter(true);
 
     private final Parameter collectionParameter;
-    
-    
-    
+
+
+
     /**
      * Expect a parameter matching a component of a specific key.
-     * 
+     *
      * @param key the key of the desired addComponent
      */
-    public ComponentParameter(Object key) {
+    public ComponentParameter(final Object key) {
         this(key, null);
     }
-    
+
 
     /**
      * Expect any scalar parameter of the appropriate type or an {@link java.lang.reflect.Array}.
@@ -75,28 +76,28 @@ public class ComponentParameter
     public ComponentParameter() {
         this(false);
     }
-    
+
 
     /**
      * Expect any scalar parameter of the appropriate type or an {@link java.lang.reflect.Array}.
      * Resolve the parameter even if no compnoent is of the array's component type.
-     * 
+     *
      * @param emptyCollection <code>true</code> allows an Array to be empty
      */
-    public ComponentParameter(boolean emptyCollection) {
+    public ComponentParameter(final boolean emptyCollection) {
         this(null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
     }
-    
+
 
     /**
      * Expect any scalar parameter of the appropriate type or the collecting type
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
      * The components in the collection will be of the specified type.
-     * 
+     *
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
-    public ComponentParameter(Generic<?> componentValueType, boolean emptyCollection) {
+    public ComponentParameter(final Generic<?> componentValueType, final boolean emptyCollection) {
         this(null, new CollectionComponentParameter(componentValueType, emptyCollection));
     }
 
@@ -105,30 +106,31 @@ public class ComponentParameter
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
      * The components in the collection will be of the specified type and their adapter's key
      * must have a particular type.
-     * 
+     *
      * @param keyType the component adapter's key type
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      */
-    public ComponentParameter(Class<?> keyType, Generic<?> componentValueType, boolean emptyCollection) {
+    public ComponentParameter(final Class<?> keyType, final Generic<?> componentValueType, final boolean emptyCollection) {
         this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
     }
-    
+
 
     /**
      * Use this constructor if you are using CollectionComponentParameter
     * @param collectionParameter the collection component parameter used for finding matching components
      */
-    public ComponentParameter(Parameter mapDefiningParameter) {
+    public ComponentParameter(final Parameter mapDefiningParameter) {
     	this(null, mapDefiningParameter);
     }
 
-    private ComponentParameter(Object key, Parameter collectionParameter) {
+    private ComponentParameter(final Object key, final Parameter collectionParameter) {
         super(key);
         this.collectionParameter = collectionParameter;
     }
 
-    public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
+    @Override
+	public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
                             final boolean useNames, final Annotation binding) {
 
@@ -146,7 +148,7 @@ public class ComponentParameter
                 return superResolved;
             }
 
-            public Object resolveInstance(Type into) {
+            public Object resolveInstance(final Type into) {
                 Object result = null;
                 if (expectedType instanceof Class ||
                         (expectedType instanceof ParameterizedType
@@ -168,11 +170,12 @@ public class ComponentParameter
         };
     }
 
-    public void verify(PicoContainer container,
-                       ComponentAdapter<?> adapter,
-                       Type expectedType,
-                       NameBinding expectedNameBinding,
-                       boolean useNames, Annotation binding) {
+    @Override
+	public void verify(final PicoContainer container,
+                       final ComponentAdapter<?> adapter,
+                       final Type expectedType,
+                       final NameBinding expectedNameBinding,
+                       final boolean useNames, final Annotation binding) {
         try {
             super.verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
@@ -187,10 +190,11 @@ public class ComponentParameter
     /**
      * Accept the visitor for the current {@link Parameter}. If internally a
      * {@link CollectionComponentParameter}is used, it is visited also.
-     * 
+     *
      * @see BasicComponentParameter#accept(org.picocontainer.PicoVisitor)
      */
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         if (collectionParameter != null) {
             collectionParameter.accept(visitor);

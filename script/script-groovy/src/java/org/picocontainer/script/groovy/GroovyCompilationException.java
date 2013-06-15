@@ -18,19 +18,20 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * Thrown when a groovy compilation error occurs
- * 
+ *
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
 public final class GroovyCompilationException extends ScriptedPicoContainerMarkupException {
     private final CompilationFailedException compilationFailedException;
 
-    public GroovyCompilationException(String message, CompilationFailedException e) {
+    public GroovyCompilationException(final String message, final CompilationFailedException e) {
         super(message,e);
         this.compilationFailedException = e;
     }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         StringBuffer sb = new StringBuffer();
         sb.append(super.getMessage()).append("\n");
         List<?> errors = getErrors(compilationFailedException);
@@ -49,7 +50,7 @@ public final class GroovyCompilationException extends ScriptedPicoContainerMarku
      * @param e the CompilationFailedException
      * @return A List of errors
      */
-    private List<?> getErrors(CompilationFailedException e) {
+    private List<?> getErrors(final CompilationFailedException e) {
         ProcessingUnit unit = e.getUnit();
         if (unit != null) {
             ErrorCollector collector = unit.getErrorCollector();

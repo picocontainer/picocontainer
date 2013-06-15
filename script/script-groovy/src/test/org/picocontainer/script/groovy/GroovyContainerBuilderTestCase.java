@@ -31,6 +31,7 @@ import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.X;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -84,10 +85,10 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testBuildingWithAppendingNodes() {
         Reader script = new StringReader("" +
                 "def pico = builder.container(parent:parent) { \n" +
-                			"}\n" + 
-                			"\n" + 
+                			"}\n" +
+                			"\n" +
                 			"builder.append(container:pico) {" +
-                			"  component(key:String.class, instance:'foo')\n" + 
+                			"  component(key:String.class, instance:'foo')\n" +
                 			"}\n"
 		        + "");
 
@@ -133,18 +134,19 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 	 * Child SubclassGroovyContainerBuilder which adds additional bindings
 	 */
 	private class SubclassGroovyContainerBuilder extends GroovyContainerBuilder {
-		public SubclassGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
+		public SubclassGroovyContainerBuilder(final Reader script, final ClassLoader classLoader) {
 			super(script, classLoader);
 		}
 
-		protected void handleBinding(Binding binding) {
+		@Override
+		protected void handleBinding(final Binding binding) {
 			super.handleBinding(binding);
 
 			binding.setVariable("foo", "bar");
 		}
 
 	}
-	
+
 	@Test
 	public void testRunningGroovyScriptWithinCustomClassLoader() throws MalformedURLException, ClassNotFoundException {
 		Reader script = new StringReader("" +
@@ -156,15 +158,15 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         URL compJarURL = testCompJar.toURI().toURL();
         URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, getClass().getClassLoader());
         assertNotNull(cl.loadClass("TestComp"));
-        
+
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, cl), null, null);
         assertNotNull(pico.getComponent("TestComp"));
         assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());
 	}
-	
-	
+
+
 	@Test public void testAutoStar1tingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "def pico = builder.container(parent:parent) { \n" +
                 "  component(org.picocontainer.script.testmodel.A)\n" +
@@ -173,12 +175,12 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.testmodel.A\n" +
                 "def pico = builder.container(parent:parent) { \n" +
@@ -189,9 +191,9 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
-	
+
 
 }

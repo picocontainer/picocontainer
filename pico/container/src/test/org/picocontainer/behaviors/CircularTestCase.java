@@ -1,25 +1,25 @@
 package org.picocontainer.behaviors;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.picocontainer.DefaultPicoContainer;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
-import static junit.framework.Assert.assertEquals;
-
 public class CircularTestCase {
-    
+
     public static interface IFish {
         IWater getWater();
     }
     public static class Fish implements IFish {
         IWater water;
 
-        public void setWater(IWater water) {
+        public void setWater(final IWater water) {
             this.water = water;
         }
 
@@ -35,7 +35,7 @@ public class CircularTestCase {
     public static class Water implements IWater {
         IFish fish;
 
-        public void setFish(IFish fish) {
+        public void setFish(final IFish fish) {
             this.fish = fish;
         }
 

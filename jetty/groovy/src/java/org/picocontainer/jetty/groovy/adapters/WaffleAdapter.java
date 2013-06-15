@@ -4,10 +4,10 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.jetty.PicoContext;
 
 public class WaffleAdapter {
 
@@ -15,7 +15,7 @@ public class WaffleAdapter {
     private final MutablePicoContainer parentContainer;
     private final Map attributes;
 
-    public WaffleAdapter(PicoContext context, MutablePicoContainer parentContainer, Map attributes) {
+    public WaffleAdapter(final PicoContext context, final MutablePicoContainer parentContainer, final Map attributes) {
         this.context = context;
         this.parentContainer = parentContainer;
         this.attributes = attributes;

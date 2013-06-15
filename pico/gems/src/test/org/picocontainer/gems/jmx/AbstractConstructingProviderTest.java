@@ -44,8 +44,8 @@ import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 @RunWith(JMock.class)
 public class AbstractConstructingProviderTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private final ObjectNameFactory objectNameFactory = mockery.mock(ObjectNameFactory.class);
     private final DynamicMBeanFactory dynamicMBeanFactory = mockery.mock(DynamicMBeanFactory.class);
     private MBeanInfoProvider[] mBeanInfoProviders;
@@ -81,7 +81,7 @@ public class AbstractConstructingProviderTest {
     }
 
     @Before
-    public void setUp() throws Exception {        
+    public void setUp() throws Exception {
         objectName = new ObjectName(":type=JUnit");
         pico = new DefaultPicoContainer();
         mBeanInfoProviders = new MBeanInfoProvider[0];

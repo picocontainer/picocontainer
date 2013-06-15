@@ -9,31 +9,32 @@
 
 package org.picocontainer.jetty.groovy;
 
-import org.picocontainer.MutablePicoContainer;
+import groovy.util.NodeBuilder;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Servlet;
 
-import groovy.util.NodeBuilder;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.jetty.groovy.adapters.NodeBuilderAdapter;
 import org.picocontainer.jetty.groovy.adapters.WaffleAdapter;
-import java.util.EnumSet;
 
 public class ContextBuilder extends NodeBuilder {
     private final MutablePicoContainer parentContainer;
     private final PicoContext context;
 
-    public ContextBuilder(MutablePicoContainer parentContainer, PicoContext context) {
+    public ContextBuilder(final MutablePicoContainer parentContainer, final PicoContext context) {
         this.parentContainer = parentContainer;
         this.context = context;
     }
 
-    protected Object createNode(Object name, Map map) {
+    @Override
+	protected Object createNode(final Object name, final Map map) {
         if (name.equals("filter")) {
             return makeFilter(map);
         } else if (name.equals("servlet")) {
@@ -57,7 +58,7 @@ public class ContextBuilder extends NodeBuilder {
         return null;
     }
 
-    private void setStaticContent(Map map) {
+    private void setStaticContent(final Map map) {
 
         if (map.containsKey("welcomePage")) {
             context.setStaticContext((String)map.remove("path"), (String)map.remove("welcomePage"));
@@ -67,25 +68,25 @@ public class ContextBuilder extends NodeBuilder {
 
     }
 
-    private Object makeAdapter(Map map) {
+    private Object makeAdapter(final Map map) {
         return new NodeBuilderAdapter((String)map.remove("nodeBuilder"),
                                       context,
                                       parentContainer,
                                       map).getNodeBuilder();
     }
 
-    private Object makeListener(Map map) {
+    private Object makeListener(final Map map) {
         return context.addListener((Class)map.remove("class"));
     }
 
-    private Object addVirtualHost(Map map) {
+    private Object addVirtualHost(final Map map) {
         String virtualhost = (String) map.remove("name");
         context.addVirtualHost(virtualhost);
         return virtualhost;
     }
 
 
-    private Object makeServlet(Map map) {
+    private Object makeServlet(final Map map) {
 
         if (map.containsKey("class")) {
             ServletHolder servlet = context.addServletWithMapping((Class)map.remove("class"), (String)map
@@ -99,19 +100,19 @@ public class ContextBuilder extends NodeBuilder {
 
     }
 
-    private void makeInitParam(Map map) {
+    private void makeInitParam(final Map map) {
         String name = (String) map.remove("name");
         String value = (String) map.remove("value");
         context.addInitParam(name, value);
     }
 
-    private Object makeFilter(Map map) {
+    private Object makeFilter(final Map map) {
         FilterHolder filter = context.addFilterWithMappings((Class)map.remove("class"), getPaths(map),
                                                            extractDispatchers(map));
         return new FilterHolderBuilder(filter);
     }
 
-    private String[] getPaths(Map map) {
+    private String[] getPaths(final Map map) {
         String[] paths = {};
         String mapping = (String) map.remove("path");
         if (mapping != null) {
@@ -124,7 +125,7 @@ public class ContextBuilder extends NodeBuilder {
         return paths;
     }
 
-    private EnumSet<DispatcherType> extractDispatchers(Map map) {
+    private EnumSet<DispatcherType> extractDispatchers(final Map map) {
         Object dispatchers = map.remove("dispatchers");
         if (dispatchers != null) {
             return (EnumSet<DispatcherType>)dispatchers;

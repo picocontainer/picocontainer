@@ -10,13 +10,14 @@
 
 package org.picocontainer.containers;
 
-import com.googlecode.jtype.Generic;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import com.googlecode.jtype.Generic;
 
 /**
  * @author Mauro Talevi

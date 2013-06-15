@@ -9,6 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Test;
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
@@ -16,13 +27,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Thomas Heller
@@ -38,7 +42,7 @@ public class SynchronizedTestCase {
         public Blocker blocker;
         private final PicoContainer pico;
 
-        public Runner(PicoContainer pico) {
+        public Runner(final PicoContainer pico) {
             this.pico = pico;
         }
 
@@ -61,7 +65,7 @@ public class SynchronizedTestCase {
         }
     }
 
-    private void initTest(ComponentAdapter componentAdapter) throws InterruptedException {
+    private void initTest(final ComponentAdapter componentAdapter) throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(this);
         pico.addAdapter(componentAdapter);
@@ -70,7 +74,7 @@ public class SynchronizedTestCase {
         for(int i = 0; i < runner.length; ++i) {
             runner[i] = new Runner(pico);
         }
-        
+
         Thread racer[] = new Thread[runner.length];
         for(int i = 0; i < racer.length; ++i) {
             racer[i] =  new Thread(runner[i]);
@@ -109,14 +113,14 @@ public class SynchronizedTestCase {
         }
     }
 
-    protected ComponentAdapter makeComponentAdapter(ComponentAdapter componentAdapter) {
+    protected ComponentAdapter makeComponentAdapter(final ComponentAdapter componentAdapter) {
         return new Synchronizing.Synchronized(componentAdapter);
     }
 
     @Test public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(), 
-        		false, 
-        		"key", 
+        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(),
+        		false,
+        		"key",
         		Blocker.class, null));
         initTest(componentAdapter);
 

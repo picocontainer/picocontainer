@@ -26,7 +26,7 @@ public abstract class AbstractLazyInstantiationTest {
     protected abstract MutablePicoContainer createPicoContainer();
 
     public static class Kilroy {
-        public Kilroy(Havana havana) {
+        public Kilroy(final Havana havana) {
             havana.graffiti("Kilroy was here");
         }
     }
@@ -34,7 +34,7 @@ public abstract class AbstractLazyInstantiationTest {
     public static class Havana {
         public String paint = "Clean wall";
 
-        public void graffiti(String paint) {
+        public void graffiti(final String paint) {
             this.paint = paint;
         }
     }

@@ -1,11 +1,12 @@
 package org.picocontainer.defaults.issues;
 
-import org.junit.Test;import static org.junit.Assert.assertFalse;import static org.junit.Assert.assertEquals;
-
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.SetterInjection;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.SetterInjection;
 
 public class Issue0354TestCase {
 
@@ -45,14 +46,14 @@ public class Issue0354TestCase {
     public static class GenericBowl {
         List<Fish> fishes;
 
-        public void setFishes(List<Fish> fishes) {
+        public void setFishes(final List<Fish> fishes) {
             this.fishes = fishes;
         }
 
         public GenericBowl() {
         }
 
-        public GenericBowl(List<Fish> fishes) {
+        public GenericBowl(final List<Fish> fishes) {
             this.fishes = fishes;
         }
     }

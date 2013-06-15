@@ -10,8 +10,8 @@ package org.picocontainer.containers;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
 import java.util.List;
+import java.util.Properties;
 
 import junit.framework.AssertionFailedError;
 
@@ -31,32 +31,38 @@ import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTest;
  */
 public class ImplementationHidingWithDefaultPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTest {
 
-    protected MutablePicoContainer createImplementationHidingPicoContainer() {
+    @Override
+	protected MutablePicoContainer createImplementationHidingPicoContainer() {
         return createPicoContainer(null);
     }
 
-    protected Properties[] getProperties() {
+    @Override
+	protected Properties[] getProperties() {
         return new Properties[] {Characteristics.NO_CACHE, Characteristics.NO_HIDE_IMPL};
     }
 
     // TODO (PH) should IH do caching at all and CtorInjection instead of AdaptingInjection ?
 
-    protected void addDefaultComponentFactories(List expectedList) {
+    @Override
+	protected void addDefaultComponentFactories(final List expectedList) {
         expectedList.add(Caching.class);
         expectedList.add(ImplementationHiding.class);
         expectedList.add(ConstructorInjection.class);
     }
 
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+    @Override
+	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
         return new DefaultPicoContainer(parent, new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())));
     }
 
-    @Test
+    @Override
+	@Test
     public void testAggregatedVerificationException() {
-        super.testAggregatedVerificationException();    
+        super.testAggregatedVerificationException();
     }
 
-    @Test public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
+    @Override
+	@Test public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         // we're choosing a CAF for DPC, thus Caching (a default) not enabled.
         try {
             super.testSameInstanceCanBeUsedAsDifferentTypeWhenCaching();
@@ -67,7 +73,8 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
 
     }
 
-    @Test public void testAcceptImplementsBreadthFirstStrategy() {
+    @Override
+	@Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
 

@@ -24,18 +24,19 @@ import java.util.Map;
  * some of the classloaders, but not all.
  * It's not ordinarily used by PicoContainer, but is here because PicoContainer is common
  * to most classloader trees.
- * 
+ *
  * @author Paul Hammant
  */
 public class CustomPermissionsURLClassLoader extends URLClassLoader {
     private final Map<URL, Permissions> permissionsMap;
 
-    public CustomPermissionsURLClassLoader(URL[] urls, Map<URL, Permissions> permissionsMap, ClassLoader parent) {
+    public CustomPermissionsURLClassLoader(final URL[] urls, final Map<URL, Permissions> permissionsMap, final ClassLoader parent) {
         super(urls, parent);
         this.permissionsMap = permissionsMap;
     }
 
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
+    @Override
+	public Class<?> loadClass(final String name) throws ClassNotFoundException {
         try {
             return super.loadClass(name);
         } catch (ClassNotFoundException e) {
@@ -43,7 +44,8 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         }
     }
 
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
+    @Override
+	protected Class<?> findClass(final String name) throws ClassNotFoundException {
         try {
             return super.findClass(name);
         } catch (ClassNotFoundException e) {
@@ -51,7 +53,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         }
     }
 
-    private ClassNotFoundException decorateException(String name, ClassNotFoundException e) {
+    private ClassNotFoundException decorateException(final String name, final ClassNotFoundException e) {
         if (name.startsWith("class ")) {
             return new ClassNotFoundException("Class '" + name + "' is not a classInstance.getName(). " +
                     "It's a classInstance.toString(). The clue is that it starts with 'class ', no classname contains a space.");
@@ -71,7 +73,8 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         return new ClassNotFoundException(sb.append("]").toString(), e);
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         String result = CustomPermissionsURLClassLoader.class.getName() + " " + System.identityHashCode(this) + ":";
         URL[] urls = getURLs();
         for (URL url : urls) {
@@ -81,8 +84,9 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         return result;
     }
 
-    public PermissionCollection getPermissions(CodeSource codeSource) {
-        return (Permissions) permissionsMap.get(codeSource.getLocation());
+    @Override
+	public PermissionCollection getPermissions(final CodeSource codeSource) {
+        return permissionsMap.get(codeSource.getLocation());
     }
 
 }

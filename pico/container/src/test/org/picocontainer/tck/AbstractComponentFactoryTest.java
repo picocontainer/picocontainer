@@ -25,7 +25,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

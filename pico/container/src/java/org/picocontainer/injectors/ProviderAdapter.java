@@ -31,14 +31,14 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 @SuppressWarnings("rawtypes")
 public class ProviderAdapter implements org.picocontainer.Injector, Provider, LifecycleStrategy {
 
-    private static Method AT_INJECT_GET = javax.inject.Provider.class.getDeclaredMethods()[0];    
+    private static Method AT_INJECT_GET = javax.inject.Provider.class.getDeclaredMethods()[0];
 
     private final Object provider;
     private final Method provideMethod;
     private final Object key;
     private final Type providerReturnType;
     private Properties properties;
-    private LifecycleStrategy lifecycle;
+    private final LifecycleStrategy lifecycle;
 
     protected ProviderAdapter() {
         provider = this;
@@ -48,47 +48,47 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         setUseNames(useNames());
         this.lifecycle = new NullLifecycleStrategy();
     }
-    
-    public ProviderAdapter(Provider theProvider) {
+
+    public ProviderAdapter(final Provider theProvider) {
         this(null, theProvider);
     }
 
-    public ProviderAdapter(javax.inject.Provider<?> theProvider) {
+    public ProviderAdapter(final javax.inject.Provider<?> theProvider) {
     	this(null, theProvider);
     }
-    
-    
-    public ProviderAdapter(LifecycleStrategy lifecycle, Provider provider) {
+
+
+    public ProviderAdapter(final LifecycleStrategy lifecycle, final Provider provider) {
     	this(null, lifecycle, provider);
     }
-    
-    public ProviderAdapter(Object key, LifecycleStrategy lifecycle, Provider provider) {
-        this(lifecycle, key, (Object) provider, false);
+
+    public ProviderAdapter(final Object key, final LifecycleStrategy lifecycle, final Provider provider) {
+        this(lifecycle, key, provider, false);
     }
 
-    public ProviderAdapter(Object key, javax.inject.Provider<?>  provider) {
-        this(new NullLifecycleStrategy(), key, (Object) provider, false);
+    public ProviderAdapter(final Object key, final javax.inject.Provider<?>  provider) {
+        this(new NullLifecycleStrategy(), key, provider, false);
     }
 
 
-    public ProviderAdapter(javax.inject.Provider<?>  provider, boolean useNames) {
+    public ProviderAdapter(final javax.inject.Provider<?>  provider, final boolean useNames) {
     	this(null, provider, useNames);
     }
-    
-    public ProviderAdapter(Object key, javax.inject.Provider<?>  provider, boolean useNames) {
-        this(new NullLifecycleStrategy(), key, (Object) provider, useNames);
+
+    public ProviderAdapter(final Object key, final javax.inject.Provider<?>  provider, final boolean useNames) {
+        this(new NullLifecycleStrategy(), key, provider, useNames);
     }
 
-    
-    public ProviderAdapter(Object key, LifecycleStrategy lifecycle, javax.inject.Provider<?>  provider, boolean useNames) {
+
+    public ProviderAdapter(final Object key, final LifecycleStrategy lifecycle, final javax.inject.Provider<?>  provider, final boolean useNames) {
         this(lifecycle, key, provider, useNames);
     }
-    
-    public ProviderAdapter(LifecycleStrategy lifecycle, javax.inject.Provider<?>  provider, boolean useNames) {
+
+    public ProviderAdapter(final LifecycleStrategy lifecycle, final javax.inject.Provider<?>  provider, final boolean useNames) {
     	this((Object)null, lifecycle, provider, useNames);
     }
 
-    private ProviderAdapter(LifecycleStrategy lifecycle, Object providerKey, Object provider, boolean useNames) {
+    private ProviderAdapter(final LifecycleStrategy lifecycle, final Object providerKey, final Object provider, final boolean useNames) {
         this.lifecycle = lifecycle;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
@@ -102,7 +102,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     }
 
 
-    private void setUseNames(boolean useNames) {
+    private void setUseNames(final boolean useNames) {
         if (useNames) {
             properties = Characteristics.USE_NAMES;
         } else {
@@ -126,8 +126,8 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
             return (Class) key;
         }
    }
-    
-    
+
+
     /**
      * @throws ClassCastException if the provider isn't a javax.inject.Provider (the only time this method
      * is called in the codebase.)
@@ -136,7 +136,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 	public javax.inject.Provider<?> getProvider() {
     	return (javax.inject.Provider<?>) provider;
     }
-    
+
     /**
      * The return type that the provider creates.
      * @return
@@ -145,16 +145,16 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     	if (providerReturnType instanceof Class<?>) {
     		return (Class<?>)providerReturnType;
     	}
-    	
+
     	throw new PicoCompositionException("Unexpected condition, Provider Return type was not a class type, instead it was a : " + providerReturnType);
-    	
+
     }
-    
+
     public Class<?> getProviderImplementation() {
     	return provider.getClass();
     }
 
-    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+    public Object getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         if (provideMethod == AT_INJECT_GET) {
         	try {
 				return provideMethod.invoke(provider);
@@ -166,8 +166,8 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
             return new Reinjector(container).reinject(key, provider.getClass(), provider, properties, new MethodInjection(provideMethod));
         }
     }
-    
-    public static Type determineProviderReturnType(Object provider) {
+
+    public static Type determineProviderReturnType(final Object provider) {
         Method provideMethod = getProvideMethod(provider.getClass());
         Type key;
         if (provideMethod == AT_INJECT_GET) {
@@ -175,17 +175,17 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         	if (paramType instanceof Class<?>) {
         		key = paramType.getClass();
         	} else {
-        		key = ((ParameterizedType)paramType).getActualTypeArguments()[0];	
+        		key = ((ParameterizedType)paramType).getActualTypeArguments()[0];
         	}
-        	
+
         } else {
             key = provideMethod.getReturnType();
         }
-       
+
         return key;
     }
 
-    public static Method getProvideMethod(Class<?> clazz) {
+    public static Method getProvideMethod(final Class<?> clazz) {
         Method provideMethod = null;
         if (javax.inject.Provider.class.isAssignableFrom(clazz)) {
             return AT_INJECT_GET;
@@ -208,14 +208,14 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         return provideMethod;
     }
 
-    private static PicoCompositionException newProviderMethodException(String str) {
+    private static PicoCompositionException newProviderMethodException(final String str) {
         return new PicoCompositionException("There must be "+ str +" method named 'provide' in the AbstractProvider implementation");
     }
 
-    public void verify(PicoContainer container) throws PicoCompositionException {
+    public void verify(final PicoContainer container) throws PicoCompositionException {
     }
 
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
     	visitor.visitComponentAdapter(this);
     }
 
@@ -232,11 +232,11 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         return "ProviderAdapter";
     }
 
-    
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		
+
 		result.append(getClass().getName());
 		result.append("@");
 		result.append(System.identityHashCode(this));
@@ -247,35 +247,35 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 		result.append(" ; provided type = ");
 		result.append(providerReturnType);
 		result.append(" )");
-		
+
 		return result.toString();
 	}
-    
-    
-    public void start(Object component) {
+
+
+    public void start(final Object component) {
         lifecycle.start(component);
     }
 
-    public void stop(Object component) {
+    public void stop(final Object component) {
         lifecycle.stop(component);
     }
 
-    public void dispose(Object component) {
+    public void dispose(final Object component) {
         lifecycle.dispose(component);
     }
 
-    public boolean hasLifecycle(Class<?> type) {
+    public boolean hasLifecycle(final Class<?> type) {
         return lifecycle.hasLifecycle(type);
     }
 
-    public boolean isLazy(ComponentAdapter<?> adapter) {
+    public boolean isLazy(final ComponentAdapter<?> adapter) {
         return lifecycle.isLazy(adapter);
     }
 
     /**
      * Providers don't decorate component instances.
      */
-	public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
+	public Object decorateComponentInstance(final PicoContainer container, final Type into, final Object instance) {
 		return null;
 	}
 
@@ -283,7 +283,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
      * Providers don't decorate component instances.
      */
 	@SuppressWarnings("rawtypes")
-	public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, Object instance, Class superclassPortion) {
+	public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final Object instance, final Class superclassPortion) {
 		return null;
 	}
 
@@ -291,11 +291,11 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
 	/**
 	 * {@inheritDoc}
 	 */
-	public ComponentAdapter findAdapterOfType(Class adapterType) {
+	public ComponentAdapter findAdapterOfType(final Class adapterType) {
 		if (getClass().isAssignableFrom(adapterType)) {
 			return this;
 		}
-		
+
 		return null;
 	}
 

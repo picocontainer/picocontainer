@@ -7,10 +7,10 @@
  ******************************************************************************/
 package org.picocontainer.script.groovy;
 
+import java.util.Collection;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-
-import java.util.Collection;
 
 /**
  * This class can generate a Groovy script from a preconfigured container.
@@ -25,7 +25,7 @@ import java.util.Collection;
 public class GroovyScriptGenerator {
     // This implementation is ugly and naive. But it's all I need for now.
     // When there are more requirements (in the form of tests), we can improve this.
-    public String generateScript(MutablePicoContainer pico) {
+    public String generateScript(final MutablePicoContainer pico) {
         StringBuffer groovy = new StringBuffer();
         groovy.append("pico = new org.picocontainer.classname.DefaultClassLoadingPicoContainer()\n");
 

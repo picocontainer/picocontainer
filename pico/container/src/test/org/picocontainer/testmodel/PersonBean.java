@@ -11,7 +11,7 @@ package org.picocontainer.testmodel;
 
 public class PersonBean {
     private String name;
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
     public String getName() {

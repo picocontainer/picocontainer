@@ -43,7 +43,7 @@ public class XStreamComponentInstanceFactoryTestCase {
         runDeserializationTest(new PureJavaXStreamComponentInstanceFactory());
     }
 
-    public void runDeserializationTest(XMLComponentInstanceFactory factory) throws ParserConfigurationException, IOException, SAXException {
+    public void runDeserializationTest(final XMLComponentInstanceFactory factory) throws ParserConfigurationException, IOException, SAXException {
         StringReader sr = new StringReader("" +
                 "<org.picocontainer.script.xml.TestBean>" +
                 "<foo>10</foo>" +

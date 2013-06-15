@@ -24,13 +24,13 @@ import org.picocontainer.PicoContainer;
  * @author Mauro Talevi
  */
 public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder {
-    
+
     private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;
 
 
-    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
+    public ScriptedContainerBuilder(final Reader script, final ClassLoader classLoader) {
         super();
     	this.scriptReader = script;
         if (script == null) {
@@ -42,10 +42,10 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
             throw new NullPointerException("classLoader");
         }
     }
-    
-    public ScriptedContainerBuilder(URL script, ClassLoader classLoader) {
+
+    public ScriptedContainerBuilder(final URL script, final ClassLoader classLoader) {
         super();
-    	this.scriptReader = null;        
+    	this.scriptReader = null;
         this.scriptURL = script;
         if (script == null) {
             throw new NullPointerException("script");
@@ -57,7 +57,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     }
 
     @Override
-    protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected final PicoContainer createContainer(final PicoContainer parentContainer, final Object assemblyScope) {
         try {
             return createContainerFromScript(parentContainer, assemblyScope);
         } finally {
@@ -75,10 +75,10 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     protected final ClassLoader getClassLoader() {
         return classLoader;
     }
-    
+
     /**
      * Retrieves the script input stream, however, you should use {@link #getScriptReader() getScriptReader()}
-     * instead to prevent any encoding problems. 
+     * instead to prevent any encoding problems.
      * @return InputStream containing the data for the script.
      * @throws IOException
      */
@@ -107,7 +107,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
         return new InputStreamReader(scriptURL.openStream());
     }
-    
+
     protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
 }

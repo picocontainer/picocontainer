@@ -9,29 +9,30 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import java.io.Serializable;
+import java.util.Properties;
+
 import org.picocontainer.ChangedBehavior;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.io.Serializable;
-import java.util.Properties;
 
 @SuppressWarnings("serial")
 public class Automating extends AbstractBehavior implements Serializable {
 
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycle,
-                                                   Properties componentProps,
-                                                   Object key,
-                                                   Class<T> impl,
-                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                   final LifecycleStrategy lifecycle,
+                                                   final Properties componentProps,
+                                                   final Object key,
+                                                   final Class<T> impl,
+                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return monitor.changedBehavior(new Automated<T>(super.createComponentAdapter(monitor,
                                             lifecycle,
@@ -41,10 +42,11 @@ public class Automating extends AbstractBehavior implements Serializable {
                                             constructorParams, fieldParams, methodParams)));
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
-                                                ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
+                                                final LifecycleStrategy lifecycle,
+                                                final Properties componentProps,
+                                                final ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return monitor.changedBehavior(new Automated<T>(super.addComponentAdapter(monitor,
                                          lifecycle,
@@ -56,11 +58,12 @@ public class Automating extends AbstractBehavior implements Serializable {
     public static class Automated<T> extends AbstractChangedBehavior<T> implements ChangedBehavior<T>, Serializable {
 
 
-        public Automated(ComponentAdapter<T> delegate) {
+        public Automated(final ComponentAdapter<T> delegate) {
             super(delegate);
         }
 
-        public boolean hasLifecycle(Class<?> type) {
+        @Override
+		public boolean hasLifecycle(final Class<?> type) {
             return true;
         }
 

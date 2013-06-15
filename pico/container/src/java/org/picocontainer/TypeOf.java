@@ -34,13 +34,13 @@ public abstract class TypeOf<T> {
         return type.getActualTypeArguments()[0];
     }
 
-    public static <T> TypeOf<T> fromClass(Class<T> type) {
+    public static <T> TypeOf<T> fromClass(final Class<T> type) {
         TypeOf<T> typeOf = new ClassType<T>();
         typeOf.type = type;
         return typeOf;
     }
 
-    public static TypeOf fromParameterizedType(ParameterizedType parameterizedType) {
+    public static TypeOf fromParameterizedType(final ParameterizedType parameterizedType) {
         TypeOf typeOf = new Dummy();
         typeOf.type = parameterizedType.getRawType();
         return typeOf;
@@ -62,14 +62,14 @@ public abstract class TypeOf<T> {
         }
     }
 
-    public boolean isAssignableFrom(Class<?> aClass) {
+    public boolean isAssignableFrom(final Class<?> aClass) {
         if (type instanceof Class) {
             return ((Class) type).isAssignableFrom(aClass);
         }
         return false;
     }
 
-    public boolean isAssignableTo(Class aClass) {
+    public boolean isAssignableTo(final Class aClass) {
         if (type instanceof Class) {
             return aClass.isAssignableFrom((Class<?>) type);
         }
@@ -91,13 +91,19 @@ public abstract class TypeOf<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TypeOf)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+			return true;
+		}
+        if (!(o instanceof TypeOf)) {
+			return false;
+		}
 
         TypeOf typeOf = (TypeOf) o;
 
-        if (type != null ? !type.equals(typeOf.type) : typeOf.type != null) return false;
+        if (type != null ? !type.equals(typeOf.type) : typeOf.type != null) {
+			return false;
+		}
 
         return true;
     }

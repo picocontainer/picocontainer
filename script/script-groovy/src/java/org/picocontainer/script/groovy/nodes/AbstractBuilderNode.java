@@ -10,17 +10,16 @@ package org.picocontainer.script.groovy.nodes;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.picocontainer.script.groovy.BuilderNode;
-import java.util.Map;
-
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+import org.picocontainer.script.groovy.BuilderNode;
 
 /**
  * Abstract base class for custom nodes. Also provides basic services and
  * construction capabilities.
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -43,7 +42,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
      * Constructs a custom node builder. In derived classes you would typically
      * create a default constructor and call addPossibleParent()/addAttribute()
      * to customize the validation capabilities of the Node.
-     * 
+     *
      * @param nodeName the name of the node we're constructing.
      */
     public AbstractBuilderNode(final String nodeName) {
@@ -53,7 +52,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
 
     /**
      * Add an attribute to the list of ones supported by this node.
-     * 
+     *
      * @param name String the name of the attribute we support.
      * @return AbstractBuilderNode (this) to allow for method chaining.
      */
@@ -70,14 +69,15 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
         return Collections.unmodifiableSet(supportedAttributes);
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "BuilderNode: " + this.getClass().getName() + " (\"" + getNodeName() + "\")";
     }
 
     /**
      * Checks that an attribute actually exists in the attirbute map. (The key
      * exists and the value is non-null)
-     * 
+     *
      * @param attributes Map the current node's attributes.
      * @param key String the attribute key we're looking for.
      * @return boolean true if the attribute exists for the current node.
@@ -93,7 +93,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
      * against the names supported in the node type. It does not type checking
      * against the values passed in via the attributes.
      * </p>
-     * 
+     *
      * @param specifiedAttributes the attributes as passed in by the groovy
      *            script.
      * @throws ScriptedPicoContainerMarkupException if an attribute is specified
@@ -124,7 +124,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
     /**
      * Utility function that takes a set and converts it to a comma delimited
      * String with the format: key1, key2,.....
-     * 
+     *
      * @param set Set the set to convert. For each object in the set, its
      *            toString() is called.
      * @return String

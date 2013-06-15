@@ -41,94 +41,94 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	public JSRPicoContainer() {
 		this(new NullComponentMonitor());
 	}
-	
-	public JSRPicoContainer(PicoContainer parent) {
+
+	public JSRPicoContainer(final PicoContainer parent) {
 		this(parent, new NullComponentMonitor(), new StaticsInitializedReferenceSet());
 	}
-	
-	public JSRPicoContainer(ComponentMonitor monitor) {
+
+	public JSRPicoContainer(final ComponentMonitor monitor) {
 		this(null, monitor, new StaticsInitializedReferenceSet());
 	}
-	
-	public JSRPicoContainer(PicoContainer parent, ComponentMonitor monitor, StaticsInitializedReferenceSet referenceSet) {
+
+	public JSRPicoContainer(final PicoContainer parent, final ComponentMonitor monitor, final StaticsInitializedReferenceSet referenceSet) {
 		super(new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(monitor), monitor, new OptInCaching(), new AdaptingBehavior(referenceSet)));
 	}
 
 	/**
-	 * Allows you to wrap automatic-key generation and 
+	 * Allows you to wrap automatic-key generation and
 	 * @param delegate
 	 */
-	public JSRPicoContainer(MutablePicoContainer delegate) {
+	public JSRPicoContainer(final MutablePicoContainer delegate) {
 		super(delegate);
 	}
-	
+
 	/**
 	 * Necessary adapter to fit MutablePicoContainer interface.
 	 */
 	@Override
-	public JSRPicoContainer addComponent(Object implOrInstance) {
+	public JSRPicoContainer addComponent(final Object implOrInstance) {
 		Object key = determineKey(implOrInstance);
-		
+
 		addComponent(key, implOrInstance);
 		return this;
 	}
-	
+
 	/**
 	 * Method that determines the key of the object by examining the implementation for
 	 * JSR 330 annotations.  If none are found,the implementation's class name is used
 	 * as the key.
-	 * 
+	 *
 	 * @param implOrInstance
 	 * @param parameters
 	 * @return
 	 */
-	public JSRPicoContainer addComponent(Object implOrInstance, Parameter... parameters) {
+	public JSRPicoContainer addComponent(final Object implOrInstance, final Parameter... parameters) {
 		Object key = determineKey(implOrInstance);
-		
+
 		addComponent(key, implOrInstance, parameters);
 		return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param implOrInstance
 	 * @param constructorParams
 	 * @param fieldParams
 	 * @param methodParams
 	 * @return
 	 */
-	public JSRPicoContainer addComponent(Object implOrInstance, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+	public JSRPicoContainer addComponent(final Object implOrInstance, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
 		Object key = determineKey(implOrInstance);
-		
+
 		addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
 		return this;
 	}
 
-	
+
 
 	/**
 	 * Determines the key of the object.  It may have JSR 330 qualifiers or {@linkplain javax.inject.Named} annotations.
 	 * If none of these exist, the key is the object's class.
 	 * @param implOrInstance either an actual object instance or more often a class to be constructed and injection
 	 * by the container.
-	 * @return the object's determined key. 
+	 * @return the object's determined key.
 	 */
-	protected Object determineKey(Object implOrInstance) {
+	protected Object determineKey(final Object implOrInstance) {
 		if (implOrInstance == null) {
 			throw new NullPointerException("implOrInstance");
 		}
-		
+
 		Class<?> instanceClass =  (implOrInstance instanceof Class) ? (Class<?>)implOrInstance : implOrInstance.getClass();
-		
+
 		//Determine the key based on the provider's return type
 		Object key;
 		if (implOrInstance instanceof javax.inject.Provider || implOrInstance instanceof org.picocontainer.injectors.Provider) {
-			key = ProviderAdapter.determineProviderReturnType(implOrInstance);			
+			key = ProviderAdapter.determineProviderReturnType(implOrInstance);
 		} else {
 			key = instanceClass;
 		}
-		
-		//BUT, Named annotation or a Qualifier annotation will 
+
+		//BUT, Named annotation or a Qualifier annotation will
 		//override the normal value;
 		if (instanceClass.isAnnotationPresent(Named.class)) {
 			key = instanceClass.getAnnotation(Named.class).value();
@@ -138,7 +138,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 				key = qualifier.annotationType().getName();
 			}
 		}
-		
+
 		return key;
 	}
 
@@ -148,17 +148,17 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * @param attachedAnnotation
 	 * @return
 	 */
-	public static Annotation getQualifier(Annotation[] attachedAnnotation) {
+	public static Annotation getQualifier(final Annotation[] attachedAnnotation) {
 		for (Annotation eachAnnotation: attachedAnnotation) {
 			if (eachAnnotation.annotationType().isAnnotationPresent(Qualifier.class)) {
 				return eachAnnotation;
 			}
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	@Override
 	public MutablePicoContainer makeChildContainer() {
 		MutablePicoContainer childDelegate = getDelegate().makeChildContainer();
@@ -166,13 +166,13 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	}
 
 	@Override
-	public MutablePicoContainer addProvider(Provider<?> provider) {
+	public MutablePicoContainer addProvider(final Provider<?> provider) {
 		Object key = determineKey(provider);
 		super.addProvider(key, provider);
 		return this;
 	}
-	
-	protected void applyInstanceAnnotations(Class<?> objectImplementation) {
+
+	protected void applyInstanceAnnotations(final Class<?> objectImplementation) {
 		if (objectImplementation.isAnnotationPresent(Singleton.class)) {
 			as(Characteristics.CACHE);
 		}
@@ -181,39 +181,40 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	/**
 	 * Covariant return override;
 	 */
-	public JSRPicoContainer addComponent(Object key,
-            Object implOrInstance,
-            Parameter... parameters) throws PicoCompositionException {
+	@Override
+	public JSRPicoContainer addComponent(final Object key,
+            final Object implOrInstance,
+            final Parameter... parameters) throws PicoCompositionException {
 		if (key == null) {
 			throw new NullPointerException("key");
 		}
-		
+
 		if (implOrInstance == null) {
 			throw new NullPointerException("implOrInstance");
 		}
-		
+
 		applyInstanceAnnotations( implOrInstance instanceof Class ? (Class<?>)implOrInstance : implOrInstance.getClass() );
 		super.addComponent(key, implOrInstance, parameters);
 		return this;
 	}
-	
-	
+
+
 
 
 
 	@Override
-	public MutablePicoContainer addComponent(Object key, Object implOrInstance,
-			ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+	public MutablePicoContainer addComponent(final Object key, final Object implOrInstance,
+			final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
 		if (implOrInstance == null) {
 			throw new NullPointerException("implOrInstance");
 		}
-		
+
 		applyInstanceAnnotations( implOrInstance instanceof Class ? (Class<?>)implOrInstance : implOrInstance.getClass() );
 
 		super.addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
 		return this;
 	}
-	
-	
-	
+
+
+
 }

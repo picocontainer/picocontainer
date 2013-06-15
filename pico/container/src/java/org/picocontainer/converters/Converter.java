@@ -8,13 +8,13 @@
 package org.picocontainer.converters;
 
 /**
- * Interface for type converters. 
- * 
+ * Interface for type converters.
+ *
  * @author Paul Hammant
  * @author Michael Rimov
  */
 public interface Converter<T> {
-    
+
     /**
      * Performs a conversion between the given parameter value and the target type.
      * @param parameterValue the string value to convert.

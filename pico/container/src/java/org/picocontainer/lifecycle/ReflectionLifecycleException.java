@@ -10,16 +10,16 @@ package org.picocontainer.lifecycle;
 import org.picocontainer.PicoException;
 
 /**
- * Subclass of {@link PicoException} that is thrown when there is a problem 
+ * Subclass of {@link PicoException} that is thrown when there is a problem
  * invoking lifecycle methods via reflection.
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
 public class ReflectionLifecycleException extends PicoException {
 
-  
+
 	/**
      * Construct a new exception with the specified cause and the specified detail message.
      *
@@ -29,5 +29,5 @@ public class ReflectionLifecycleException extends PicoException {
     protected ReflectionLifecycleException(final String message, final Throwable cause) {
         super(message, cause);
     }
-    
+
 }

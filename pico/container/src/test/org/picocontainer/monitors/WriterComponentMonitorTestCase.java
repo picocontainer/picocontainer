@@ -40,7 +40,7 @@ import org.picocontainer.containers.TransientPicoContainer;
  */
 @SuppressWarnings("serial")
 public class WriterComponentMonitorTestCase  {
-	
+
     private Writer out;
     private ComponentMonitor monitor;
     private static final String NL = System.getProperty("line.separator");
@@ -104,12 +104,12 @@ public class WriterComponentMonitorTestCase  {
             monitor.lifecycleInvocationFailed(new TransientPicoContainer(),
                                                        new AbstractAdapter(Map.class, HashMap.class) {
 
-                                                           public Object getComponentInstance(PicoContainer container, Type into)
+                                                           public Object getComponentInstance(final PicoContainer container, final Type into)
                                                                throws PicoCompositionException {
                                                                return "x";
                                                            }
 
-                                                           public void verify(PicoContainer container)
+                                                           public void verify(final PicoContainer container)
                                                                throws PicoCompositionException{
                                                            }
 
@@ -130,7 +130,7 @@ public class WriterComponentMonitorTestCase  {
     }
 
     @Test public void testNoComponent() {
-        
+
         monitor.noComponentFound(new TransientPicoContainer(), "foo");
         Assert.assertEquals(format(ComponentMonitorHelper.NO_COMPONENT,
                                                    "foo") +NL,  out.toString());

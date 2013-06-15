@@ -15,11 +15,13 @@ import org.picocontainer.ComponentAdapter;
 /** @author Paul Hammant */
 public final class LockedTestCase extends SynchronizedTestCase {
 
-    protected ComponentAdapter makeComponentAdapter(ComponentAdapter componentAdapter) {
+    @Override
+	protected ComponentAdapter makeComponentAdapter(final ComponentAdapter componentAdapter) {
         return new Locking.Locked(componentAdapter);
     }
 
-    protected Behavior makeBehaviorFactory() {
+    @Override
+	protected Behavior makeBehaviorFactory() {
         return new Locking();
     }
 

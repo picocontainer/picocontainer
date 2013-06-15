@@ -11,18 +11,18 @@ package org.picocontainer.parameters;
 import org.picocontainer.Parameter;
 
 public abstract class AbstractParameter implements Parameter {
-	
+
 	public AbstractParameter() {
 
 	}
-	
+
 	/**
 	 * @todo REMOVE ME
-	 * 
+	 *
 	 * @return
 	 */
 	public String getTargetName() {
 		return null;
 	}
-	
+
 }

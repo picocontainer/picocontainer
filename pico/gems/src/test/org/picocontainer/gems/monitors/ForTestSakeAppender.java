@@ -28,11 +28,11 @@ public class ForTestSakeAppender implements Appender {
 
 	public void addFilter(final Filter filter) {
 	}
-	
+
 	public ForTestSakeAppender() {
 		CONTENT = "";
 	}
-	
+
 	/**
 	 * @see org.apache.log4j.Appender#getFilter()
 	 */

@@ -25,10 +25,10 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
 
     private final Server server;
     private final PicoContainer parentContainer;
-    
+
     private final HandlerList handlerList;
 
-    public PicoJettyServer(PicoContainer parentContainer) {
+    public PicoJettyServer(final PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
         server = new Server();
         //server.setHandler(new HandlerList());
@@ -36,11 +36,11 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         server.setHandler(handlerList);
     }
 
-    public PicoJettyServer(String host, int port, PicoContainer parentContainer) {
+    public PicoJettyServer(final String host, final int port, final PicoContainer parentContainer) {
         this(parentContainer);
         createServerConnector(host, port);
     }
-    public PicoJettyServer(String host, int port, PicoContainer parentContainer, int timeout) {
+    public PicoJettyServer(final String host, final int port, final PicoContainer parentContainer, final int timeout) {
         this(parentContainer);
         createServerConnector(host, port, timeout);
     }
@@ -54,15 +54,15 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
      * @deprecated
      */
     @Deprecated
-    public Connector createBlockingChannelConnector(String host, int port) {
+    public Connector createBlockingChannelConnector(final String host, final int port) {
     	return createServerConnector(host, port);
     }
-    
-    
-    public Connector createServerConnector(String host, int port) {
+
+
+    public Connector createServerConnector(final String host, final int port) {
         return createServerConnector(host, port, 10*1000);
     }
-    
+
     /**
      * Use {@link #createServerConnector(String, int, int)} instead.
      * @param host
@@ -72,11 +72,11 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
      * @deprecated
      */
     @Deprecated
-    public Connector createBlockingChannelConnector(String host, int port, int timeout) {
+    public Connector createBlockingChannelConnector(final String host, final int port, final int timeout) {
     	return this.createServerConnector(host, port, timeout);
     }
 
-    public Connector createServerConnector(String host, int port, int timeout) {
+    public Connector createServerConnector(final String host, final int port, final int timeout) {
     	ServerConnector connector = new ServerConnector(server);
         connector.setHost(host);
         connector.setPort(port);
@@ -85,7 +85,7 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         return connector;
     }
 
-    public PicoContext createContext(String contextPath, boolean withSessionHandler) {
+    public PicoContext createContext(final String contextPath, final boolean withSessionHandler) {
         ServletContextHandler context = new PicoServletContextHandler(parentContainer, server, contextPath, ServletContextHandler.SESSIONS);
         PicoContext picoContext =  new PicoContext(context, parentContainer, withSessionHandler);
         //?
@@ -94,7 +94,7 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
     }
 
 
-    public PicoWebAppContext addWebApplication(String contextPath, String warFile) {
+    public PicoWebAppContext addWebApplication(final String contextPath, final String warFile) {
         PicoWebAppContext wah = new PicoWebAppContext(parentContainer);
         wah.setContextPath(contextPath);
         wah.setExtractWAR(true);
@@ -123,7 +123,7 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         }
     }
 
-    public void addRequestLog(RequestLog requestLog) {
+    public void addRequestLog(final RequestLog requestLog) {
         RequestLogHandler requestLogHandler = new RequestLogHandler();
         requestLogHandler.setRequestLog(requestLog);
         handlerList.addHandler(requestLogHandler);

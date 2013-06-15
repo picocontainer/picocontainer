@@ -17,21 +17,21 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
  * possible in a builder. This interface provides the necessary validation and
  * interaction methods for the mediator node builder to figure out who should
  * handle what.
- * 
+ *
  * @author Michael Rimov
  */
 public interface BuilderNode {
 
     /**
      * Returns the name of the node, eg 'container' or 'component'.
-     * 
+     *
      * @return The node name
      */
     String getNodeName();
 
     /**
      * Returns the supported attribute names.
-     * 
+     *
      * @return The Set of supported attribute names.
      */
     Set<String> getSupportedAttributeNames();
@@ -39,7 +39,7 @@ public interface BuilderNode {
     /**
      * Validates a the attributes as supplied by the node builder against the
      * node's supported attributes.
-     * 
+     *
      * @param attributes the Map of scripted attributes
      * @throws ScriptedPicoContainerMarkupException
      */
@@ -47,7 +47,7 @@ public interface BuilderNode {
 
     /**
      * Creates a new node .
-     * 
+     *
      * @param current the current Object - may be <code>null</code> for no
      *            parent container.
      * @param attributes the Map of scripted attributes for the builder node -

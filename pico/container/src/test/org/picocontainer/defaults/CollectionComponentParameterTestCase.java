@@ -9,7 +9,25 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import com.googlecode.jtype.Generic;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -33,24 +51,7 @@ import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+import com.googlecode.jtype.Generic;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -61,7 +62,7 @@ import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 @RunWith(JMock.class)
 public class CollectionComponentParameterTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
 	@Test
 	public void testShouldInstantiateArrayOfStrings() {
@@ -79,7 +80,7 @@ public class CollectionComponentParameterTestCase {
                 one(pico).getComponentAdapters(
 						with(equal(Generic.get(String.class))));
 				will(returnValue(Arrays.asList(
-                        new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(), new NullComponentMonitor()), 
+                        new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(), new NullComponentMonitor()),
                         new InstanceAdapter("z", "World", new NullLifecycleStrategy(), new NullComponentMonitor()))));
 
                 one(pico).getComponentInto(with(equal("z")), with(equal(ComponentAdapter.NOTHING.class)));
@@ -104,12 +105,14 @@ public class CollectionComponentParameterTestCase {
 	}
 
 	static public class Cod implements Fish {
+		@Override
 		public String toString() {
 			return "Cod";
 		}
 	}
 
 	static public class Shark implements Fish {
+		@Override
 		public String toString() {
 			return "Shark";
 		}
@@ -119,7 +122,7 @@ public class CollectionComponentParameterTestCase {
 		private final Cod[] cods;
 		private final Fish[] fishes;
 
-		public Bowl(Cod cods[], Fish fishes[]) {
+		public Bowl(final Cod cods[], final Fish fishes[]) {
 			this.cods = cods;
 			this.fishes = fishes;
 		}
@@ -161,7 +164,7 @@ public class CollectionComponentParameterTestCase {
 		private final Cod[] cods;
 		private final Fish[] fishes;
 
-		public CollectedBowl(Collection<Cod> cods, Collection<Fish> fishes) {
+		public CollectedBowl(final Collection<Cod> cods, final Collection<Fish> fishes) {
 			this.cods = cods.toArray(new Cod[cods.size()]);
 			this.fishes = fishes.toArray(new Fish[fishes.size()]);
 		}
@@ -169,7 +172,7 @@ public class CollectionComponentParameterTestCase {
 
 	static public class GenericCollectedBowl extends CollectedBowl {
 
-		public GenericCollectedBowl(Collection<Cod> cods, Collection<Fish> fishes) {
+		public GenericCollectedBowl(final Collection<Cod> cods, final Collection<Fish> fishes) {
             super(cods, fishes);
         }
 	}
@@ -203,12 +206,12 @@ public class CollectionComponentParameterTestCase {
 		assertSame(cod, bowl.cods[0]);
 		assertNotSame(bowl.fishes[0], bowl.fishes[1]);
 	}
-	
-	
+
+
 	static public class MappedBowl {
 		private final Fish[] fishes;
 
-		public MappedBowl(Map map) {
+		public MappedBowl(final Map map) {
 			Collection collection = map.values();
 			this.fishes = (Fish[]) collection.toArray(new Fish[collection
 					.size()]);
@@ -228,7 +231,7 @@ public class CollectionComponentParameterTestCase {
 	}
 
 	public static class UngenericCollectionBowl {
-		public UngenericCollectionBowl(Collection fish) {
+		public UngenericCollectionBowl(final Collection fish) {
 		}
 	}
 
@@ -247,7 +250,7 @@ public class CollectionComponentParameterTestCase {
 	public static class AnotherGenericCollectionBowl {
 		private final String[] strings;
 
-		public AnotherGenericCollectionBowl(String[] strings) {
+		public AnotherGenericCollectionBowl(final String[] strings) {
 			this.strings = strings;
 		}
 
@@ -283,7 +286,7 @@ public class CollectionComponentParameterTestCase {
 	public static class TouchableObserver implements Touchable {
 		private final Touchable[] touchables;
 
-		public TouchableObserver(Touchable[] touchables) {
+		public TouchableObserver(final Touchable[] touchables) {
 			this.touchables = touchables;
 
 		}
@@ -330,7 +333,8 @@ public class CollectionComponentParameterTestCase {
 		mpc.addComponent(Shark.class);
 		mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
 				new CollectionComponentParameter(Generic.get(Cod.class), false) {
-					protected boolean evaluate(ComponentAdapter adapter) {
+					@Override
+					protected boolean evaluate(final ComponentAdapter adapter) {
 						return !"Tom".equals(adapter.getComponentKey());
 					}
 				}, new CollectionComponentParameter(Generic.get(Fish.class), false));
@@ -342,8 +346,8 @@ public class CollectionComponentParameterTestCase {
 	}
 
 	public static class DependsOnAll {
-		public DependsOnAll(Set set, SortedSet sortedSet,
-				Collection collection, List list, SortedMap sortedMap, Map map
+		public DependsOnAll(final Set set, final SortedSet sortedSet,
+				final Collection collection, final List list, final SortedMap sortedMap, final Map map
 		// , ConcurrentMap concurrentMap, Queue queue, BlockingQueue
 		// blockingQueue
 		) {
@@ -410,7 +414,7 @@ public class CollectionComponentParameterTestCase {
 	}
 
 	public static final class Truc {
-		public Truc(String[] s) {
+		public Truc(final String[] s) {
 			assertEquals("first", s[0]);
 			assertEquals("second", s[1]);
 			assertEquals("third", s[2]);
@@ -418,32 +422,32 @@ public class CollectionComponentParameterTestCase {
 			assertEquals("fifth", s[4]);
 		}
 	}
-	
+
 	public static interface GenericInterface<T> {
-		
+
 	}
-	
+
 	public static class GenericOne implements GenericInterface<String>{
-		
+
 	}
-	
+
 	public static class GenericReceiver {
 		public final GenericInterface<?>[] items;
 
-		public GenericReceiver(GenericInterface<?>[] items) {
+		public GenericReceiver(final GenericInterface<?>[] items) {
 			this.items = items;
-			
+
 		}
 	}
-	
+
 	@Test
 	public void testArraysWithGenericArguments() {
 		MutablePicoContainer pico = new PicoBuilder().withCaching().build();
-		
+
 		pico.addComponent("one", GenericOne.class)
 			.addComponent("two", GenericOne.class)
 			.addComponent(GenericReceiver.class, GenericReceiver.class, CollectionComponentParameter.ARRAY);
-		
+
 		GenericReceiver receiver = pico.getComponent(GenericReceiver.class);
 		assertEquals(2, receiver.items.length);
 	}

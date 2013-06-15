@@ -1,15 +1,17 @@
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import org.junit.Test;
-import org.picocontainer.*;
 import static org.picocontainer.injectors.Injector.constructor;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.tck.AbstractComponentAdapterTest;
-import org.picocontainer.testmodel.NullLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 
 /**
@@ -29,19 +31,19 @@ public class InjectorTestCase {
     final PicoVisitor parameterChecker = new AbstractPicoVisitor() {
 
 
-        public boolean visitContainer(PicoContainer pico) {
+        public boolean visitContainer(final PicoContainer pico) {
             return false;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
-        public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
+        public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
-        public void visitComponentFactory(ComponentFactory componentFactory) {
+        public void visitComponentFactory(final ComponentFactory componentFactory) {
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
-        public void visitParameter(Parameter parameter) {
+        public void visitParameter(final Parameter parameter) {
             assertSame(checked, parameter);
         }
     };

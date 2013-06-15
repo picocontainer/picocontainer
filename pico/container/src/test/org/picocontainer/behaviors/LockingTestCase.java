@@ -23,10 +23,10 @@ public class LockingTestCase extends AbstractComponentFactoryTest {
 		MutablePicoContainer mpc = new PicoBuilder().withBehaviors(new Locking()).build();
 		mpc.as(LOCK).addComponent("locked","It is locked");
 		mpc.as(NO_LOCK).addComponent("not locked", "It is not locked");
-		
+
 		assertNotNull(mpc.getComponentAdapter("locked").findAdapterOfType(Locking.Locked.class));
 		assertNull(mpc.getComponentAdapter("not locked").findAdapterOfType(Locking.Locked.class));
-		
+
 	}
 
 	@Override

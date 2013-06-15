@@ -176,7 +176,7 @@ public class ScriptedBuilderTestCase {
 
     @SuppressWarnings("serial")
 	public static class TestScriptedContainer extends DefaultClassLoadingPicoContainer {
-        public TestScriptedContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
+        public TestScriptedContainer(final ClassLoader classLoader, final MutablePicoContainer delegate) {
             super(classLoader, delegate);
         }
     }
@@ -189,7 +189,7 @@ public class ScriptedBuilderTestCase {
 
     @SuppressWarnings("serial")
 	public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(PicoContainer parent, LifecycleStrategy lifecycle, ComponentMonitor monitor, ComponentFactory componentFactory) {
+        public TestPicoContainer(final PicoContainer parent, final LifecycleStrategy lifecycle, final ComponentMonitor monitor, final ComponentFactory componentFactory) {
             super(parent, lifecycle, monitor, componentFactory);
         }
     }

@@ -14,26 +14,26 @@ import org.picocontainer.MutablePicoContainer;
 
 /**
  * Null-object implementation of NodeBuilderDecorator
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
 @SuppressWarnings({"rawtypes"})
 public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
-	public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
+	public ComponentFactory decorate(final ComponentFactory componentFactory, final Map attributes) {
         return componentFactory;
     }
 
-    public MutablePicoContainer decorate(MutablePicoContainer picoContainer) {
+    public MutablePicoContainer decorate(final MutablePicoContainer picoContainer) {
         return picoContainer;
     }
 
-    public Object createNode(Object name, Map attributes, Object parentElement) {
+    public Object createNode(final Object name, final Map attributes, final Object parentElement) {
         throw new ScriptedPicoContainerMarkupException("Don't know how to create a '" + name + "' child of a '"
                 + ((parentElement == null) ? "null" : parentElement.toString()) + "' element");
     }
 
-    public void rememberComponentKey(Map attributes) {
+    public void rememberComponentKey(final Map attributes) {
         //Does nothing.
     }
 }

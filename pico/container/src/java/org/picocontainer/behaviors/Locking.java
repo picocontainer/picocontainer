@@ -9,20 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import java.lang.reflect.Type;
+import java.util.Properties;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Characteristics;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.lang.reflect.Type;
-import java.util.Properties;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This behavior factory provides java.util.concurrent locks.  It is recommended to be used instead
@@ -34,24 +34,26 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Locking extends AbstractBehavior {
 
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                   Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
-    	
+	@Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                   final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
+
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
      	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
-        
+
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
         return monitor.changedBehavior(new Locked<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams)));
     }
 
     /** {@inheritDoc} **/
-	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                                Properties componentProps, ComponentAdapter<T> adapter) {
+	@Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_LOCK)) {
         	return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
-        }    	
-    	
+        }
+
         removePropertiesIfPresent(componentProps, Characteristics.LOCK);
         return monitor.changedBehavior(new Locked<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
     }
@@ -65,13 +67,14 @@ public class Locking extends AbstractBehavior {
         /**
          * Reentrant lock.
          */
-        private Lock lock = new ReentrantLock();
+        private final Lock lock = new ReentrantLock();
 
-        public Locked(ComponentAdapter<T> delegate) {
+        public Locked(final ComponentAdapter<T> delegate) {
             super(delegate);
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             T retVal = null;
             lock.lock();
             try {

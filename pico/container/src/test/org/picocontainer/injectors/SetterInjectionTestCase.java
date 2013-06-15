@@ -9,6 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
@@ -16,20 +22,19 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
-import static junit.framework.Assert.assertNull;
-import static org.junit.Assert.*;
-
 /**
  * @author J&ouml;rg Schaible
  */
 public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
-	
+
+	@Override
 	@Before
     public void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new SetterInjection();
     }
 
@@ -43,7 +48,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
     }
@@ -54,7 +59,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         public NamedBeanWithPossibleDefault() {
         }
 
-        public NamedBeanWithPossibleDefault(String name) {
+        public NamedBeanWithPossibleDefault(final String name) {
             setName(name);
             byDefault = true;
         }
@@ -65,7 +70,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
     }
 
     public static class NoBean extends NamedBean {
-        public NoBean(String name) {
+        public NoBean(final String name) {
             setName(name);
         }
     }
@@ -94,7 +99,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
             return name;
         }
 
-        public void initName(String name) {
+        public void initName(final String name) {
             this.name = name;
         }
     }
@@ -114,7 +119,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
             return name2;
         }
 
-        public void initName2(String name) {
+        public void initName2(final String name) {
             this.name2 = name;
         }
     }
@@ -152,11 +157,11 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
 
-        public void setNamedBean(NamedBean namedBean) {
+        public void setNamedBean(final NamedBean namedBean) {
             this.namedBean = namedBean;
         }
 

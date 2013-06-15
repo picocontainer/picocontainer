@@ -12,11 +12,11 @@ import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 @SuppressWarnings("serial")
 public class TestContainer extends DefaultClassLoadingPicoContainer {
 
-    public TestContainer(ComponentFactory componentFactory, PicoContainer parent) {
+    public TestContainer(final ComponentFactory componentFactory, final PicoContainer parent) {
         super(TestContainer.class.getClassLoader(), componentFactory, parent);
     }
 
-    public TestContainer(PicoContainer parent) {
+    public TestContainer(final PicoContainer parent) {
         super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(parent, new Caching()));
     }
 

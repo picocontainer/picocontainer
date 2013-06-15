@@ -9,6 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.picocontainer.Characteristics.USE_NAMES;
+
+import java.lang.reflect.Method;
+import java.util.Properties;
+
 import org.junit.Test;
 import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.picocontainer.Characteristics;
@@ -28,21 +43,6 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.Method;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.picocontainer.Characteristics.USE_NAMES;
-
 public class MethodInjectionTestCase {
 
     public static interface IFoo {
@@ -53,7 +53,7 @@ public class MethodInjectionTestCase {
         private Bar bar;
         private Integer num;
 
-        public void inject(Bar bar, Integer num) {
+        public void inject(final Bar bar, final Integer num) {
             this.bar = bar;
             this.num = num;
         }
@@ -142,7 +142,7 @@ public class MethodInjectionTestCase {
         private Bar bar;
         private Integer num;
 
-        public void inject(Bar bar, @Nullable Integer num) {
+        public void inject(final Bar bar, @Nullable final Integer num) {
             this.bar = bar;
             this.num = num;
         }
@@ -154,12 +154,12 @@ public class MethodInjectionTestCase {
         private Bar bar2;
         private Bar bar3;
 
-        public void inject(Bar bar, @Nullable Integer num) {
+        public void inject(final Bar bar, @Nullable final Integer num) {
             this.bar = bar;
             this.num = num;
         }
 
-        public void injectSomethingElse(Bar bar2, Bar bar3) {
+        public void injectSomethingElse(final Bar bar2, final Bar bar3) {
             this.bar2 = bar2;
             this.bar3 = bar3;
         }
@@ -188,7 +188,7 @@ public class MethodInjectionTestCase {
         assertTrue(foo3.num == null);
         ComponentAdapter<?> adapter = pico.getComponentAdapter(Foo3.class);
         String result = adapter.toString();
-        
+
         //Allow for undefined method return order.
         //This seems prevalent in JDK >= 1.7
         result = result.replace("[injectSomethingElse,inject]", "[inject,injectSomethingElse]");
@@ -221,25 +221,25 @@ public class MethodInjectionTestCase {
         assertEquals(123, (int)foo.num);
         assertEquals("MethodInjector[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
-    
+
 	@Test
 	public void testOnlyMethodParametersAreUsed() {
 		MethodInjection componentFactory = new MethodInjection();
-        
+
         MethodInjection.MethodInjector injector =  (MethodInjection.MethodInjector)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),
-        		new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, 
+        		new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
         		new ConstructorParameters(new ConstantParameter("Test")),
-        		new FieldParameters[] {new FieldParameters("joe", new ConstantParameter("Test"))}, 
+        		new FieldParameters[] {new FieldParameters("joe", new ConstantParameter("Test"))},
         		new MethodParameters[]{new MethodParameters("", new ConstantParameter("Value")) } );
-		
+
         assertTrue(injector.parameters.length == 1);
         assertEquals(1, injector.parameters.length);
         assertEquals(1, injector.parameters[0].getParams().length);
         assertEquals("Value",  ((ConstantParameter)injector.parameters[0].getParams()[0]).getValue());
-        
-        
+
+
 	}
-   
+
 
 }

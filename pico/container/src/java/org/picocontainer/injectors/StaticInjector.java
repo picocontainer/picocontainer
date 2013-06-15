@@ -19,7 +19,7 @@ import org.picocontainer.PicoContainer;
  *
  */
 public interface StaticInjector<T> extends Injector<T> {
-	
+
 	void injectStatics(final PicoContainer container, final Type into, StaticsInitializedReferenceSet initializedReferenceSet);
-	
+
 }

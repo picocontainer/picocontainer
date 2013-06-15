@@ -31,7 +31,8 @@ public class PicoLifecycleException extends PicoException {
         return instance;
     }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return "PicoLifecycleException: method '" + method + "', instance '"+ instance + ", " + super.getMessage();
     }
 

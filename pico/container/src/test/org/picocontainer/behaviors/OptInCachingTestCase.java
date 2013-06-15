@@ -30,7 +30,8 @@ import org.picocontainer.tck.AbstractComponentFactoryTest;
  */
 public class OptInCachingTestCase extends AbstractComponentFactoryTest {
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new OptInCaching().wrap(new ConstructorInjection());
     }
 

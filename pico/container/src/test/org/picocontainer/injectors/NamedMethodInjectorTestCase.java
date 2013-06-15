@@ -1,21 +1,19 @@
 package org.picocontainer.injectors;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.ConstructorParameters;
-
-import static junit.framework.Assert.fail;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class NamedMethodInjectorTestCase {
 
     public static class Windmill {
         private String wind;
-        public void setWind(String eeeeee) { // it is important to note here that 'eeeee' is not going to match any named comp
+        public void setWind(final String eeeeee) { // it is important to note here that 'eeeee' is not going to match any named comp
             this.wind = eeeeee;
         }
     }
@@ -23,7 +21,7 @@ public class NamedMethodInjectorTestCase {
     @Test
     public void shouldMatchBasedOnMethodNameIfComponentAvailableAndNonOptional() {
         final String expected = "use this one pico, its key matched the method name (ish)";
-        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, null 
+        NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), false, null
        );
         Windmill windmill = new DefaultPicoContainer()
                 .addAdapter(nmi)
@@ -35,7 +33,7 @@ public class NamedMethodInjectorTestCase {
         assertNotNull(windmill.wind);
         assertEquals(expected, windmill.wind);
     }
-    
+
     @Test
     public void shouldBeAmbigiousMultipleComponentAvailableOfRightTypeWithoutMatchingName() {
         NamedMethodInjection.NamedMethodInjector nmi = new NamedMethodInjection.NamedMethodInjector(Windmill.class, Windmill.class, new NullComponentMonitor(), null

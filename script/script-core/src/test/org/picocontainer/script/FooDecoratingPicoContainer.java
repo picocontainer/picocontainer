@@ -12,14 +12,16 @@ import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 @SuppressWarnings("serial")
 public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {
-    public FooDecoratingPicoContainer(MutablePicoContainer delegate) {
+    public FooDecoratingPicoContainer(final MutablePicoContainer delegate) {
         super(delegate);
     }
-    public MutablePicoContainer makeChildContainer() {
+    @Override
+	public MutablePicoContainer makeChildContainer() {
         return null;
     }
 
-    public MutablePicoContainer addComponent(Object key, Object implOrInstance, Parameter... parameters) throws PicoCompositionException {
+    @Override
+	public MutablePicoContainer addComponent(final Object key, final Object implOrInstance, final Parameter... parameters) throws PicoCompositionException {
         Assert.assertEquals(HashMap.class, implOrInstance);
         return super.addComponent(ArrayList.class, ArrayList.class, parameters);
     }

@@ -48,7 +48,7 @@ public final class And extends AbstractConstraint {
         }
         return true;
     }
-    
+
     @Override
 	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);

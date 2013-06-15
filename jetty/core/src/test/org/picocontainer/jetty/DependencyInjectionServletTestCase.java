@@ -14,10 +14,10 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Test;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.IO;
+import org.junit.After;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 

@@ -63,7 +63,7 @@ public class JspTestCase {
                 "</HTML>", IO.toString(url.openStream()));
         Thread.sleep(1000);
     }
-    
+
     @Test public void testCanInstantiateWebContainerContextAndMissingJspPageHandled() throws InterruptedException, IOException {
 
         File warFile = TestHelper.getTestWarFile();
@@ -94,10 +94,10 @@ public class JspTestCase {
 	            result = result + line + "\n";
 	            line = lnr.readLine();
 	        }
-	
+
 	        assertTrue(result.indexOf("Banzai") != -1);
 	        assertTrue(result.indexOf("HTTP/1.1 500") != -1);
-	
+
 	        Thread.sleep(1000);
 
         } finally {
@@ -106,7 +106,8 @@ public class JspTestCase {
 
     }
     private static class MyErrorHandler extends ErrorHandler {
-        protected void handleErrorPage(HttpServletRequest request, Writer writer, int code, String message)
+        @Override
+		protected void handleErrorPage(final HttpServletRequest request, final Writer writer, final int code, final String message)
             throws IOException
         {
             writer.write("<br>Banzai!<br><br>");

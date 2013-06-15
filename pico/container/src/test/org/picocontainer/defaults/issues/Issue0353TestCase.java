@@ -1,10 +1,12 @@
 package org.picocontainer.defaults.issues;
 
-import org.junit.Test;import static org.junit.Assert.assertFalse;
-import org.picocontainer.Startable;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentAdapter;
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Startable;
 import org.picocontainer.behaviors.Caching;
 
 public class Issue0353TestCase {

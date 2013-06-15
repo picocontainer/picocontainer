@@ -87,7 +87,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     public void start(final Object component) {
     	Method[] methods = init(component.getClass());
         invokeMethod(component, methods[START]);
-        
+
     }
 
 	/** {@inheritDoc} **/

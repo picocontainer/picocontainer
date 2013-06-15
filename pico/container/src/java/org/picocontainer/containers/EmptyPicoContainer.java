@@ -9,7 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import com.googlecode.jtype.Generic;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Converters;
 import org.picocontainer.Converting;
@@ -18,12 +24,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.converters.ConvertsNothing;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import com.googlecode.jtype.Generic;
 
 /**
  * Empty pico container serving as recoil damper in situations where you
@@ -35,35 +36,35 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
-    public Object getComponent(Object keyOrType) {
+    public Object getComponent(final Object keyOrType) {
         return null;
     }
 
-    public Object getComponentInto(Object keyOrType, Type into) {
+    public Object getComponentInto(final Object keyOrType, final Type into) {
         return null;
     }
 
-    public <T> T getComponent(Class<T> componentType) {
-        return null;
-    }    
-
-    public <T> T getComponent(Generic<T> componentType) {
+    public <T> T getComponent(final Class<T> componentType) {
         return null;
     }
 
-    public <T> T getComponentInto(Class<T> componentType, Type into) {
+    public <T> T getComponent(final Generic<T> componentType) {
         return null;
     }
 
-    public <T> T getComponentInto(Generic<T> componentType, Type into) {
+    public <T> T getComponentInto(final Class<T> componentType, final Type into) {
         return null;
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
+    public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
         return null;
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding, final Type into) {
+        return null;
+    }
+
+    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
         return null;
     }
 
@@ -75,23 +76,23 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return null;
     }
 
-    public ComponentAdapter<?> getComponentAdapter(Object key) {
+    public ComponentAdapter<?> getComponentAdapter(final Object key) {
         return null;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding nameBinding) {
         return null;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding nameBinding) {
         return null;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
         return null;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
         return null;
     }
 
@@ -99,31 +100,31 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return Collections.emptyList();
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
         return Collections.emptyList();
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
         return Collections.emptyList();
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType, final Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType, final Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 
     /**
-     * we do not have anything to do here. 
+     * we do not have anything to do here.
      */
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         //Does nothing.
     }
 
     /** {@inheritDoc} **/
-    public <T> List<T> getComponents(Class<T> componentType) {
+    public <T> List<T> getComponents(final Class<T> componentType) {
         return Collections.emptyList();
     }
 

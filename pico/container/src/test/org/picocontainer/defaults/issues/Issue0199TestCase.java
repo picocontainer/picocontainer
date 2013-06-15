@@ -23,11 +23,11 @@ import org.picocontainer.injectors.ConstructorInjection;
 public final class Issue0199TestCase {
 
     public static class A {
-        public A(C c) {}
+        public A(final C c) {}
     }
 
     public static class B {
-        public B(C c) {}
+        public B(final C c) {}
     }
 
     public static class C {}
@@ -38,13 +38,14 @@ public final class Issue0199TestCase {
         private Throwable throwable;
         private boolean finished;
 
-        Runner(String name, PicoContainer container, Object key) {
+        Runner(final String name, final PicoContainer container, final Object key) {
             super(name);
             this.container = container;
             this.key = key;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             try {
                 report("Started instantiating " + key.toString());
                 container.getComponent(key);
@@ -55,7 +56,7 @@ public final class Issue0199TestCase {
             }
         }
 
-        private void report(String messsage) {
+        private void report(final String messsage) {
             System.out.println(getName() + ": " + messsage);
         }
 

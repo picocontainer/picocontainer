@@ -77,7 +77,8 @@ public abstract class AbstractImplementationHidingPicoContainerTest extends Abst
         assertFalse(map instanceof HashMap);
     }
 
-    @Test public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
+    @Override
+	@Test public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
                                                                           IOException, ClassNotFoundException {
         try {
             super.testSerializedContainerCanRetrieveImplementation();
@@ -101,7 +102,7 @@ public abstract class AbstractImplementationHidingPicoContainerTest extends Abst
 
     public static class Burp implements ActionListener {
 
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             throw new RuntimeException("woohoo");
         }
     }

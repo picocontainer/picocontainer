@@ -17,7 +17,7 @@ import junit.framework.Assert;
  *         was FlintstoneImpl
  */
 public class DependsOnTwoComponents {
-    public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred) {
+    public DependsOnTwoComponents(final Touchable Touchable, final DependsOnTouchable fred) {
         Assert.assertNotNull("Touchable cannot be passed in as null", Touchable);
         Assert.assertNotNull("DependsOnTouchable cannot be passed in as null", fred);
     }

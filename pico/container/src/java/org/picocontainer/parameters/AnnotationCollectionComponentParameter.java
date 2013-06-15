@@ -9,28 +9,28 @@ import org.picocontainer.Parameter;
 import com.googlecode.jtype.Generic;
 
 /**
- * Will match all objects as parameters that have the given class-based annotation marker. 
+ * Will match all objects as parameters that have the given class-based annotation marker.
  * <h2>Example</h2>
  * Assuming the given classes:
  * <pre>
  * {@literal @Singleton}
  * class A {
- * 
+ *
  * }
- * 
+ *
  * {@literal @Singleton}
  * class B {
- * 
+ *
  * }
- * 
+ *
  * class C {
- * 
+ *
  * }
- * 
+ *
  * public class SingletonRegistry {
- * 
+ *
  * 		public Object[] allSingletons;
- * 
+ *
  * 		public SingletonRegistry(Object[] allSingletons) {
  * 			this.allSingletons = allSingletons;
  *      }
@@ -45,12 +45,12 @@ import com.googlecode.jtype.Generic;
  *     		.addClass(SingletonRegistry.class, SingletonRegistry.class,
  *           	//Collect all classes marked singleton.
  *        	 	new AnnotationCollectionParameter(Singleton.class);
- *     
+ *
  *     SingletonRegistry registry = pico.getComponent(SingletonRegistry.class);
  *     //Should have A &amp; B, but not C.
  *     assertEquals(2,registry.allSingletons.length);
  * </pre>
- * 
+ *
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
@@ -59,33 +59,33 @@ public class AnnotationCollectionComponentParameter extends CollectionComponentP
 
 	private final Class<? extends Annotation> annotationType;
 
-	public AnnotationCollectionComponentParameter(Class<? extends Annotation> annotationType) {
+	public AnnotationCollectionComponentParameter(final Class<? extends Annotation> annotationType) {
 		super();
 		this.annotationType = annotationType;
 	}
 
-	public AnnotationCollectionComponentParameter(Class<? extends Annotation> annotationType,boolean emptyCollection) {
+	public AnnotationCollectionComponentParameter(final Class<? extends Annotation> annotationType,final boolean emptyCollection) {
 		super(emptyCollection);
 		this.annotationType = annotationType;
-		
+
 	}
 
-	public AnnotationCollectionComponentParameter(Class<? extends Annotation> annotationType, Class<?> keyType,
-			Generic<?> componentValueType, boolean emptyCollection) {
+	public AnnotationCollectionComponentParameter(final Class<? extends Annotation> annotationType, final Class<?> keyType,
+			final Generic<?> componentValueType, final boolean emptyCollection) {
 		super(keyType, componentValueType, emptyCollection);
 		this.annotationType = annotationType;
 	}
 
-	public AnnotationCollectionComponentParameter(Class<? extends Annotation> annotationType, 
-			Generic<?> componentValueType, boolean emptyCollection) {
+	public AnnotationCollectionComponentParameter(final Class<? extends Annotation> annotationType,
+			final Generic<?> componentValueType, final boolean emptyCollection) {
 		super(componentValueType, emptyCollection);
 		this.annotationType = annotationType;
 	}
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected boolean evaluate(ComponentAdapter adapter) {
-		return (adapter != null 
+	protected boolean evaluate(final ComponentAdapter adapter) {
+		return (adapter != null
 				&& adapter.getComponentImplementation().isAnnotationPresent(annotationType));
 	}
 

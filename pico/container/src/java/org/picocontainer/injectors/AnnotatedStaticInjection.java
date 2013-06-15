@@ -10,7 +10,6 @@ package org.picocontainer.injectors;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -26,24 +25,21 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Storing;
-import org.picocontainer.behaviors.Caching.Cached;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-import org.picocontainer.references.SimpleReference;
 
 @SuppressWarnings("serial")
 public class AnnotatedStaticInjection extends AbstractBehavior {
-	
+
 	private final StaticsInitializedReferenceSet referenceSet;
 
 
 	public AnnotatedStaticInjection() {
 		this (new StaticsInitializedReferenceSet());
 	}
-	
-	public AnnotatedStaticInjection(StaticsInitializedReferenceSet referenceSet) {
+
+	public AnnotatedStaticInjection(final StaticsInitializedReferenceSet referenceSet) {
 		this.referenceSet = referenceSet;
 	}
 
@@ -51,53 +47,53 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-			Properties componentProps, Object key, Class<T> impl, ConstructorParameters constructorParams,
-			FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
-		
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+			final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams,
+			final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+
 		boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
 
 		ComponentAdapter<T> result = null;
 		boolean noStatic = removePropertiesIfPresent(componentProps, Characteristics.NO_STATIC_INJECTION);
-		
-		
+
+
 		//NO_STATIC_INJECTION takes precedence
 		if (removePropertiesIfPresent(componentProps, Characteristics.STATIC_INJECTION) && !noStatic) {
 	        result = monitor.changedBehavior(new StaticInjection<T>(referenceSet,
 	                super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams)
-	                , useNames, 
+	                , useNames,
 	                requireConsumptionOfAllParameters,
 	                fieldParams, methodParams));
-		} 
-		
+		}
+
 		if (result == null) {
 			//static injection wasn't specified
 			result = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
 		}
-		
+
 		return result;
 	}
-	
+
 	public class StaticInjection<T> extends AbstractChangedBehavior<T> {
 
 		private transient StaticsInitializedReferenceSet referenceSet;
-		
+
 
 		private boolean useNames;
 
-		private boolean consumeAllParameters;
+		private final boolean consumeAllParameters;
 
-		private FieldParameters[] fieldParams;
+		private final FieldParameters[] fieldParams;
 
-		private MethodParameters[] methodParams;
+		private final MethodParameters[] methodParams;
 
 
-		private List<StaticInjector<?>> wrappedInjectors;
-		
-	
+		private final List<StaticInjector<?>> wrappedInjectors;
 
-		public StaticInjection(StaticsInitializedReferenceSet referenceSet, ComponentAdapter<T> delegate, boolean usenames, boolean consumeAllParameters, FieldParameters fieldParams[], MethodParameters[] methodParams) {
+
+
+		public StaticInjection(final StaticsInitializedReferenceSet referenceSet, final ComponentAdapter<T> delegate, final boolean usenames, final boolean consumeAllParameters, final FieldParameters fieldParams[], final MethodParameters[] methodParams) {
 			super(delegate);
 			this.referenceSet = referenceSet;
 			this.useNames = usenames;
@@ -105,15 +101,15 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 			useNames = consumeAllParameters;
 			this.fieldParams = fieldParams;
 			this.methodParams = methodParams;
-			
+
 			wrappedInjectors = createListOfStaticInjectors(getComponentImplementation());
 		}
-		
-		private List<StaticInjector<?>> createListOfStaticInjectors(Class<?> componentImplementation) {
+
+		private List<StaticInjector<?>> createListOfStaticInjectors(final Class<?> componentImplementation) {
 			List<StaticInjector<?>> injectors = new ArrayList<StaticInjector<?>>();
 			Class<?> currentClass = componentImplementation;
 			Class<? extends Annotation> injectionAnnotation = AnnotatedMethodInjection.getInjectionAnnotation("javax.inject.Inject");
-			
+
 			while(!currentClass.equals(Object.class)) {
 				//
 				//Method first because we're going to reverse the entire collection
@@ -123,37 +119,37 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 				if (methodInjector != null) {
 					injectors.add(methodInjector);
 				}
-				
-				
+
+
 				StaticInjector<?> fieldInjector = constructStaticFieldInjections(injectionAnnotation, currentClass);
 				if (fieldInjector != null) {
 					injectors.add(fieldInjector);
 				}
 
-			
+
 				currentClass = currentClass.getSuperclass();
-			
+
 			}
-			
+
 
 			Collections.reverse(injectors);
 			return injectors;
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		private StaticInjector<?> constructStaticMethodInjections(Class<? extends Annotation> injectionAnnotation,
-				Class<?> currentClass) {
-			
+		private StaticInjector<?> constructStaticMethodInjections(final Class<? extends Annotation> injectionAnnotation,
+				final Class<?> currentClass) {
+
 			List<Method> methodsToInject = null;
 			for(Method eachMethod : currentClass.getDeclaredMethods()) {
 				if (!Modifier.isStatic(eachMethod.getModifiers())) {
 					continue;
 				}
-				
+
 				if (this.getReferenceSet().isMemberAlreadyInitialized(eachMethod)) {
 					continue;
 				}
-				
+
 				if (eachMethod.isAnnotationPresent(injectionAnnotation)) {
 					if (methodsToInject == null) {
 						methodsToInject = new ArrayList<Method>();
@@ -161,23 +157,23 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 					methodsToInject.add(eachMethod);
 				}
 			}
-			
+
 			if (methodsToInject == null || methodsToInject.size() == 0) {
 				return null;
 			}
-			
-			return new SpecificMethodInjector(this.getComponentKey(), 
-					this.getComponentImplementation(), 
-					currentMonitor(), 
-					this.useNames, 
-					this.consumeAllParameters, 
-					this.methodParams, 
+
+			return new SpecificMethodInjector(this.getComponentKey(),
+					this.getComponentImplementation(),
+					currentMonitor(),
+					this.useNames,
+					this.consumeAllParameters,
+					this.methodParams,
 					methodsToInject.toArray(new Method[methodsToInject.size()]));
 		}
 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		private StaticInjector<?> constructStaticFieldInjections(Class<? extends Annotation> injectionAnnotation,
-				Class<?> currentClass) {
+		private StaticInjector<?> constructStaticFieldInjections(final Class<? extends Annotation> injectionAnnotation,
+				final Class<?> currentClass) {
 			List<Field> fieldsToInject = null;
 			for(Field eachField : currentClass.getDeclaredFields()) {
 				if (!Modifier.isStatic(eachField.getModifiers())) {
@@ -187,7 +183,7 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 				if (this.getReferenceSet().isMemberAlreadyInitialized(eachField)) {
 					continue;
 				}
-				
+
 				if (eachField.isAnnotationPresent(injectionAnnotation)) {
 					if (fieldsToInject == null) {
 						fieldsToInject = new ArrayList<Field>();
@@ -195,23 +191,23 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 					fieldsToInject.add(eachField);
 				}
 			}
-			
+
 			if (fieldsToInject == null || fieldsToInject.size() == 0) {
 				return null;
 			}
-			return new SpecificFieldInjector(this.getComponentKey(), 
-					this.getComponentImplementation(), 
-					currentMonitor(), 
-					this.useNames, 
-					this.consumeAllParameters, 
-					this.fieldParams, 
+			return new SpecificFieldInjector(this.getComponentKey(),
+					this.getComponentImplementation(),
+					currentMonitor(),
+					this.useNames,
+					this.consumeAllParameters,
+					this.fieldParams,
 					fieldsToInject.toArray(new Field[fieldsToInject.size()]));
 		}
 
 		@Override
-		public T getComponentInstance(PicoContainer container, Type into) {
+		public T getComponentInstance(final PicoContainer container, final Type into) {
 			if (getReferenceSet() != null) {
-				
+
 				//The individual static injectors decide
 				//if a static member has already been injected or not.
 				for (StaticInjector<?> staticInjectors : wrappedInjectors) {
@@ -220,7 +216,7 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 			}
 			return super.getComponentInstance(container, into);
 		}
-		
+
 
 		public String getDescriptor() {
 			return "StaticAnnotationInjector";
@@ -236,6 +232,6 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
 			}
 			return referenceSet;
 		}
-		
+
 	}
 }

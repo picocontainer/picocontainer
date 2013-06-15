@@ -28,7 +28,7 @@ import org.picocontainer.parameters.MethodParameters;
 public class MultiInjection extends AbstractInjectionType {
     private final String setterPrefix;
 
-    public MultiInjection(String setterPrefix) {
+    public MultiInjection(final String setterPrefix) {
         this.setterPrefix = setterPrefix;
     }
 
@@ -36,12 +36,12 @@ public class MultiInjection extends AbstractInjectionType {
         this("set");
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                          LifecycleStrategy lifecycle,
-                                                          Properties componentProps,
-                                                          Object key,
-                                                          Class<T> impl,
-                                                          ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                          final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps,
+                                                          final Object key,
+                                                          final Class<T> impl,
+                                                          final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
         boolean requireConsumptionOfAllParameters = !(AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.ALLOW_UNUSED_PARAMETERS, false));
 
@@ -53,8 +53,8 @@ public class MultiInjection extends AbstractInjectionType {
     public static class MultiInjector<T> extends CompositeInjection.CompositeInjector<T> {
 
         @SuppressWarnings("unchecked")
-		public MultiInjector(Object key, Class<T> impl, ComponentMonitor monitor, String setterPrefix, boolean useNames, boolean useAllParameter,
-        		ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) {
+		public MultiInjector(final Object key, final Class<T> impl, final ComponentMonitor monitor, final String setterPrefix, final boolean useNames, final boolean useAllParameter,
+        		final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
             super(key, impl, monitor, useNames,
                     monitor.newInjector(new ConstructorInjection.ConstructorInjector<T>(monitor, useNames, key, impl, constructorParams)),
                     monitor.newInjector(new SetterInjection.SetterInjector<T>(key, impl, monitor, setterPrefix, useNames, "", false, methodParams)),
@@ -64,7 +64,8 @@ public class MultiInjection extends AbstractInjectionType {
 
         }
 
-        public String getDescriptor() {
+        @Override
+		public String getDescriptor() {
             return "MultiInjector";
         }
     }

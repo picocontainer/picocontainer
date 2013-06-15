@@ -16,7 +16,6 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class TypedFieldInjectorTestCase {
@@ -28,24 +27,24 @@ public class TypedFieldInjectorTestCase {
 
     public static class PogoStick {
     }
-    
+
     public static class Hulahoop {
-    }    
+    }
 
     @Test public void testFieldInjectionByTypeWhereMatch() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new TypedFieldInjection.TypedFieldInjector<Helicopter>(Helicopter.class, 
-        				Helicopter.class, 
-        				new NullComponentMonitor(), 
+        pico.addAdapter(new TypedFieldInjection.TypedFieldInjector<Helicopter>(Helicopter.class,
+        				Helicopter.class,
+        				new NullComponentMonitor(),
         				Integer.class.getName() + " "
-        				+ PogoStick.class.getName() 
+        				+ PogoStick.class.getName()
         				+ " " + Float.class.getName(), true) );
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
         assertNotNull(chopper.pogo);
     }
-    
+
 
 
     @Test public void testFieldInjectionByTypeWhereNoMatch() {

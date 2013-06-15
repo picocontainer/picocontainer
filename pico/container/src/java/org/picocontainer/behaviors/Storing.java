@@ -10,25 +10,25 @@
 
 package org.picocontainer.behaviors;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentLifecycle;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 import org.picocontainer.references.ThreadLocalMapObjectReference;
-
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.Properties;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collections;
 //import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -39,8 +39,9 @@ public class Storing extends AbstractBehavior {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps,
-                                       final Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T>  createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                       final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
@@ -52,8 +53,9 @@ public class Storing extends AbstractBehavior {
 
     }
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                                    Properties componentProps, final ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                    final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }
@@ -69,7 +71,7 @@ public class Storing extends AbstractBehavior {
         return wrappedMap;
     }
 
-    public void putCacheForThread(StoreWrapper wrappedMap) {
+    public void putCacheForThread(final StoreWrapper wrappedMap) {
         mapThreadLocalObjectReference.set(wrappedMap.wrapped);
     }
 
@@ -90,7 +92,8 @@ public class Storing extends AbstractBehavior {
     }
 
     public static class StoreThreadLocal<T> extends ThreadLocal<Map<Object, T>> implements Serializable {
-        protected Map<Object, T> initialValue() {
+        @Override
+		protected Map<Object, T> initialValue() {
             return new HashMap<Object, T>();
         }
     }
@@ -105,7 +108,7 @@ public class Storing extends AbstractBehavior {
         private final ObjectReference<Instance<T>> instanceReference;
         private final ComponentLifecycle lifecycleDelegate;
 
-        public Stored(ComponentAdapter<T> delegate, ObjectReference<Instance<T>> reference) {
+        public Stored(final ComponentAdapter<T> delegate, final ObjectReference<Instance<T>> reference) {
             super(delegate);
             instanceReference = reference;
             this.lifecycleDelegate = hasLifecycle(delegate)
@@ -118,7 +121,8 @@ public class Storing extends AbstractBehavior {
             }
         }
 
-        public boolean componentHasLifecycle() {
+        @Override
+		public boolean componentHasLifecycle() {
             return lifecycleDelegate.componentHasLifecycle();
         }
 
@@ -126,7 +130,8 @@ public class Storing extends AbstractBehavior {
          * Disposes the cached component instance
          * {@inheritDoc}
          */
-        public void dispose(PicoContainer container) {
+        @Override
+		public void dispose(final PicoContainer container) {
             lifecycleDelegate.dispose(container);
         }
 
@@ -159,7 +164,8 @@ public class Storing extends AbstractBehavior {
             }
         }
 
-        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             guardInstRef();
             T instance = instanceReference.get().instance;
             if (instance == null) {
@@ -181,7 +187,8 @@ public class Storing extends AbstractBehavior {
          * Starts the cached component instance
          * {@inheritDoc}
          */
-        public void start(PicoContainer container) {
+        @Override
+		public void start(final PicoContainer container) {
             lifecycleDelegate.start(container);
         }
 
@@ -189,17 +196,19 @@ public class Storing extends AbstractBehavior {
          * Stops the cached component instance
          * {@inheritDoc}
          */
-        public void stop(PicoContainer container) {
+        @Override
+		public void stop(final PicoContainer container) {
             lifecycleDelegate.stop(container);
         }
 
-        public boolean isStarted() {
+        @Override
+		public boolean isStarted() {
             return lifecycleDelegate.isStarted();
         }
 
         private class RealComponentLifecycle<T> implements ComponentLifecycle<T>, Serializable {
 
-            public void start(PicoContainer container) {
+            public void start(final PicoContainer container) {
                 guardInstRef();
                 guardAlreadyDisposed();
                 guardStartState(true, "already started");
@@ -208,7 +217,7 @@ public class Storing extends AbstractBehavior {
                 instanceReference.get().started = true;
             }
 
-            public void stop(PicoContainer container) {
+            public void stop(final PicoContainer container) {
                 guardInstRef();
                 guardAlreadyDisposed();
                 guardNotInstantiated();
@@ -218,7 +227,7 @@ public class Storing extends AbstractBehavior {
 
             }
 
-            public void dispose(PicoContainer container) {
+            public void dispose(final PicoContainer container) {
                 guardInstRef();
                 Instance<?> instance = instanceReference.get();
                 if (instance.instance != null) {
@@ -230,18 +239,21 @@ public class Storing extends AbstractBehavior {
 
 
             private void guardNotInstantiated() {
-                if (instanceReference.get().instance == null)
-                    throw new IllegalStateException("'" + getComponentKey() + "' not instantiated");
+                if (instanceReference.get().instance == null) {
+					throw new IllegalStateException("'" + getComponentKey() + "' not instantiated");
+				}
             }
 
-            private void guardStartState(boolean unexpectedStartState, String message) {
-                if (instanceReference.get().started == unexpectedStartState)
-                    throw new IllegalStateException("'" + getComponentKey() + "' " + message);
+            private void guardStartState(final boolean unexpectedStartState, final String message) {
+                if (instanceReference.get().started == unexpectedStartState) {
+					throw new IllegalStateException("'" + getComponentKey() + "' " + message);
+				}
             }
 
             private void guardAlreadyDisposed() {
-                if (instanceReference.get().disposed)
-                    throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+                if (instanceReference.get().disposed) {
+					throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+				}
             }
 
             public boolean componentHasLifecycle() {
@@ -255,13 +267,13 @@ public class Storing extends AbstractBehavior {
         }
 
         private static class NoComponentLifecycle<T> implements ComponentLifecycle<T>, Serializable {
-            public void start(PicoContainer container) {
+            public void start(final PicoContainer container) {
             }
 
-            public void stop(PicoContainer container) {
+            public void stop(final PicoContainer container) {
             }
 
-            public void dispose(PicoContainer container) {
+            public void dispose(final PicoContainer container) {
             }
 
             public boolean componentHasLifecycle() {
@@ -273,7 +285,7 @@ public class Storing extends AbstractBehavior {
             }
         }
 
-        private static boolean hasLifecycle(ComponentAdapter delegate) {
+        private static boolean hasLifecycle(final ComponentAdapter delegate) {
             return delegate instanceof LifecycleStrategy
                     && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
         }

@@ -32,7 +32,7 @@ public interface ComponentFactory {
 
     /**
      * Create a new component adapter based on the specified arguments.
-     * 
+     *
      * @param monitor the component monitor
      * @param lifecycle te lifecycle strategy
      * @param componentProps the component properties

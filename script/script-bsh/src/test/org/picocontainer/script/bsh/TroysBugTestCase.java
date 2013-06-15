@@ -48,24 +48,27 @@ public class TroysBugTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public static interface CustomStartable {
         void sstart();
-        void sstop(); 
+        void sstop();
     }
 
     @SuppressWarnings("serial")
 	public static class CustomLifecycleStrategy extends StartableLifecycleStrategy {
-        public CustomLifecycleStrategy(ComponentMonitor monitor) {
+        public CustomLifecycleStrategy(final ComponentMonitor monitor) {
             super(monitor);
         }
 
-        protected Class<?> getStartableInterface() {
+        @Override
+		protected Class<?> getStartableInterface() {
             return CustomStartable.class;
         }
 
-        protected String getStopMethodName() {
+        @Override
+		protected String getStopMethodName() {
             return "sstop";
         }
 
-        protected String getStartMethodName() {
+        @Override
+		protected String getStartMethodName() {
             return "sstart";
         }
     }

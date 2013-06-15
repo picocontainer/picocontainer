@@ -37,7 +37,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 @RunWith(JMock.class)
 public class DynamicMBeanComponentProviderTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
 	@Test public void testDynamicMBeansAreIdentified()
 			throws NotCompliantMBeanException {

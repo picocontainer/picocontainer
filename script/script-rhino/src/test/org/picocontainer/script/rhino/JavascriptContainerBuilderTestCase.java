@@ -34,9 +34,9 @@ import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.WebServer;
 import org.picocontainer.script.testmodel.WebServerConfig;
+import org.picocontainer.script.testmodel.X;
 
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -100,7 +100,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
         Object childComponent = pico.getComponent("wayOfPassingSomethingToTestEnv");
 
-        
+
 
         ClassLoader classLoader1 = parentComponent.getClass().getClassLoader();
         ClassLoader classLoader2 = childComponent.getClass().getClassLoader();
@@ -116,7 +116,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         ClassLoader loader = loader1.getParent();
         assertSame(parentComponent.getClass().getClassLoader(), loader);
     }
-    
+
     @Test
     public void testExecutionWithinCustomClassLoader() throws MalformedURLException, ClassNotFoundException {
         File testCompJar = TestHelper.getTestCompJarFile();
@@ -132,9 +132,9 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "importPackage(Packages.org.picocontainer.classname) \n" +
                 "\n" +
                 "var pico = new PicoBuilder().withCaching().withLifecycle().build();\n" +
-                "pico.addComponent('TestComp', Packages.TestComp);\n" 
+                "pico.addComponent('TestComp', Packages.TestComp);\n"
            );
-         
+
         JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, cl);
         PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
         assertNotNull(pico.getComponent("TestComp"));
@@ -161,7 +161,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     }
 
     @Test public void testContainerCanBeBuiltWithParent() {
-        Reader script = new StringReader("" +        	
+        Reader script = new StringReader("" +
                 "importPackage(Packages.org.picocontainer.classname) \n" +
                 "var pico = new DefaultClassLoadingPicoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
@@ -170,10 +170,10 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
     }
-    
-    
+
+
     @Test public void testAutoStartingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
@@ -184,12 +184,12 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         		, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
@@ -199,13 +199,13 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
-    
+
     @Test
     public void testApiJavascriptImpedenceMismatch() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
         		"importClass(Packages.org.picocontainer.NameBinding);\n\n" +
                 "var pico = parent.makeChildContainer() \n" +
@@ -214,8 +214,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
         ContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader()).setPostBuildAction(new NoOpPostBuildContainerAction());
-        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");   
+        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         assertNotNull(pico);
     }
-    
+
 }

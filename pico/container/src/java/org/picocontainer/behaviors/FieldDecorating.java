@@ -10,6 +10,10 @@
 
 package org.picocontainer.behaviors;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Decorator;
@@ -19,10 +23,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.Properties;
 
 
 /**
@@ -34,12 +34,13 @@ import java.util.Properties;
 public abstract class FieldDecorating extends AbstractBehavior implements Decorator {
     private final Class<?> fieldClass;
 
-    public FieldDecorating(Class<?> fieldClass) {
+    public FieldDecorating(final Class<?> fieldClass) {
         this.fieldClass = fieldClass;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties componentProps, final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(
+            final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
             throws PicoCompositionException {
         return monitor.changedBehavior(new FieldDecorated<T>(
                 super.createComponentAdapter(monitor, lifecycle, componentProps,
@@ -52,13 +53,14 @@ public abstract class FieldDecorating extends AbstractBehavior implements Decora
         private final Class<?> fieldClass;
         private final Decorator decorator;
 
-        public FieldDecorated(ComponentAdapter<T> delegate, Class<?> fieldClass, Decorator decorator) {
+        public FieldDecorated(final ComponentAdapter<T> delegate, final Class<?> fieldClass, final Decorator decorator) {
             super(delegate);
             this.fieldClass = fieldClass;
             this.decorator = decorator;
         }
 
-        public T getComponentInstance(final PicoContainer container, Type into)
+        @Override
+		public T getComponentInstance(final PicoContainer container, final Type into)
                 throws PicoCompositionException {
             T instance = super.getComponentInstance(container, into);
             Field[] fields = instance.getClass().getDeclaredFields();

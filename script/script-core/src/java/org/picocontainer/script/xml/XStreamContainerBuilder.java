@@ -30,7 +30,6 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -45,7 +44,7 @@ import com.thoughtworks.xstream.io.xml.DomReader;
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration
  * file.
- * 
+ *
  * @author Konstantin Pribluda
  */
 public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
@@ -64,24 +63,24 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
     /**
      * construct with just reader, use context classloader
-     * 
+     *
      * @param script
      */
-    public XStreamContainerBuilder(Reader script) {
+    public XStreamContainerBuilder(final Reader script) {
         this(script, Thread.currentThread().getContextClassLoader());
     }
 
     /**
      * construct with given script and specified classloader
-     * 
+     *
      * @param classLoader
      * @param script
      */
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader) {
+    public XStreamContainerBuilder(final Reader script, final ClassLoader classLoader) {
         this(script, classLoader, new DomDriver());
     }
 
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
+    public XStreamContainerBuilder(final Reader script, final ClassLoader classLoader, final HierarchicalStreamDriver driver) {
         super(script, classLoader);
         xsdriver = driver;
         InputSource inputSource = new InputSource(script);
@@ -97,7 +96,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         }
     }
 
-    public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
+    public XStreamContainerBuilder(final URL script, final ClassLoader classLoader, final HierarchicalStreamDriver driver) {
         super(script, classLoader);
         xsdriver = driver;
         try {
@@ -113,18 +112,18 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         }
     }
 
-    public void populateContainer(MutablePicoContainer container) {
+    public void populateContainer(final MutablePicoContainer container) {
         populateContainer(container, rootElement);
     }
 
     /**
      * just a convenience method, so we can work recursively with subcontainers
      * for whatever puproses we see cool.
-     * 
+     *
      * @param container
      * @param rootElement
      */
-    private void populateContainer(MutablePicoContainer container, Element rootElement) {
+    private void populateContainer(final MutablePicoContainer container, final Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -133,7 +132,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
             child = children.item(i);
             type = child.getNodeType();
 
-            if (type == Document.ELEMENT_NODE) {
+            if (type == Node.ELEMENT_NODE) {
                 name = child.getNodeName();
                 if (IMPLEMENTATION.equals(name)) {
                     try {
@@ -155,12 +154,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
     /**
      * process adapter node
-     * 
+     *
      * @param container
      * @param rootElement
      */
     @SuppressWarnings("unchecked")
-    protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
+    protected void insertAdapter(final MutablePicoContainer container, final Element rootElement) {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
         try {
@@ -183,12 +182,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
     /**
      * process implementation node
-     * 
+     *
      * @param container
      * @param rootElement
      * @throws ClassNotFoundException
      */
-    protected void insertImplementation(MutablePicoContainer container, Element rootElement)
+    protected void insertImplementation(final MutablePicoContainer container, final Element rootElement)
             throws ClassNotFoundException {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
@@ -206,7 +205,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         if ("default".equals(constructor)) {
         	parameterArray = Parameter.ZERO;
         }
-        
+
         NodeList children = rootElement.getChildNodes();
         if (children.getLength() > 0 || "default".equals(constructor)) {
             if (key == null || "".equals(key)) {
@@ -228,7 +227,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         }
     }
 
-	private Parameter[] getParameters(Element rootElement) throws ClassNotFoundException {
+	private Parameter[] getParameters(final Element rootElement) throws ClassNotFoundException {
 	    List<Parameter> parameters = new ArrayList<Parameter>();
 
         NodeList children = rootElement.getChildNodes();
@@ -240,7 +239,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
         for (int i = 0; i < children.getLength(); i++) {
             child = children.item(i);
-            if (child.getNodeType() == Document.ELEMENT_NODE) {
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
                 name = child.getNodeName();
                 // constant parameter. it does not have any attributes.
                 if (CONSTANT.equals(name)) {
@@ -271,22 +270,22 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
                     	if (!parameters.isEmpty()) {
                     		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes.");
                     	}
-                    	
+
                     	return Parameter.ZERO;
                 }
             }
         }
-        return (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
+        return parameters.toArray(new Parameter[parameters.size()]);
     }
 
     /**
      * process instance node. we get key from atributes (if any ) and leave
      * content to xstream. we allow only one child node inside. (first one wins )
-     * 
+     *
      * @param container
      * @param rootElement
      */
-    protected void insertInstance(MutablePicoContainer container, Element rootElement) {
+    protected void insertInstance(final MutablePicoContainer container, final Element rootElement) {
         String key = rootElement.getAttribute(KEY);
         Object result = parseElementChild(rootElement);
         if (result == null) {
@@ -303,23 +302,24 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
     /**
      * parse element child with xstream and provide object
-     * 
+     *
      * @return
      * @param rootElement
      */
-    protected Object parseElementChild(Element rootElement) {
+    protected Object parseElementChild(final Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         for (int i = 0; i < children.getLength(); i++) {
             child = children.item(i);
-            if (child.getNodeType() == Document.ELEMENT_NODE) {
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
                 return (new XStream(xsdriver)).unmarshal(new DomReader((Element) child));
             }
         }
         return null;
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    @Override
+	protected PicoContainer createContainerFromScript(final PicoContainer parentContainer, final Object assemblyScope) {
         try {
             // create ComponentInstanceFactory for the container
             MutablePicoContainer childContainer = createMutablePicoContainer(
@@ -331,23 +331,25 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         }
     }
 
-    private MutablePicoContainer createMutablePicoContainer(PicoContainer parentContainer, ContainerOptions containerOptions) throws PicoCompositionException {
+    private MutablePicoContainer createMutablePicoContainer(final PicoContainer parentContainer, final ContainerOptions containerOptions) throws PicoCompositionException {
     	boolean caching = containerOptions.isCaching();
     	boolean inherit = containerOptions.isInheritParentBehaviors();
     	String monitorName = containerOptions.getMonitorName();
     	String componentFactoryName = containerOptions.getComponentFactoryName();
-    	
+
     	if (inherit) {
     		if (!(parentContainer instanceof MutablePicoContainer)) {
     			throw new PicoCompositionException("For behavior inheritance to be used, the parent picocontainer must be of type MutablePicoContainer");
     		}
-    		
+
     		MutablePicoContainer parentPico = (MutablePicoContainer)parentContainer;
     		return parentPico.makeChildContainer();
     	}
-    	
+
     	ScriptedBuilder builder = new ScriptedBuilder(parentContainer);
-        if (caching) builder.withCaching();
+        if (caching) {
+			builder.withCaching();
+		}
         return builder
             .withClassLoader(getClassLoader())
             .withLifecycle()

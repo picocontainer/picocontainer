@@ -13,9 +13,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.reflect.Type;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -39,17 +39,17 @@ public final class UserQuestionTestCase {
     public static final class CheeseAdapter<T extends Cheese> extends AbstractAdapter<T> {
         private final Map<String,?> bla;
 
-        public CheeseAdapter(Object key, Class<T> impl, Map<String,?> cheeseMap) throws PicoCompositionException {
+        public CheeseAdapter(final Object key, final Class<T> impl, final Map<String,?> cheeseMap) throws PicoCompositionException {
             super(key, impl);
             this.bla = cheeseMap;
         }
 
         @SuppressWarnings("unchecked")
-        public T getComponentInstance(PicoContainer pico, Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer pico, final Type into) throws PicoCompositionException {
             return (T) bla.get("cheese");
         }
 
-        public void verify(PicoContainer pico) {
+        public void verify(final PicoContainer pico) {
         }
 
         public String getDescriptor() {
@@ -76,7 +76,7 @@ public final class UserQuestionTestCase {
     public static class Omelette {
         private final Cheese cheese;
 
-        public Omelette(Cheese cheese) {
+        public Omelette(final Cheese cheese) {
             this.cheese = cheese;
         }
 
@@ -125,7 +125,7 @@ public final class UserQuestionTestCase {
         private final Enabled enabled;
         private final Map map;
 
-        public Something(Disabled disabled, Enabled enabled, Map map) {
+        public Something(final Disabled disabled, final Enabled enabled, final Map map) {
             this.disabled = disabled;
             this.enabled = enabled;
             this.map = map;
@@ -143,7 +143,7 @@ public final class UserQuestionTestCase {
     public static class NeedsInterfaceX {
         private final InterfaceX interfaceX;
 
-        public NeedsInterfaceX(InterfaceX interfaceX) {
+        public NeedsInterfaceX(final InterfaceX interfaceX) {
             this.interfaceX = interfaceX;
         }
 
@@ -156,7 +156,7 @@ public final class UserQuestionTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         Map<String,String> map = new HashMap<String,String>();
         pico.addComponent(map);
-        // See class level javadoc in DefaultPicoContainer - about precedence. 
+        // See class level javadoc in DefaultPicoContainer - about precedence.
         pico.addComponent(InterfaceX.class, Something.class);
         pico.addComponent(Disabled.class);
         pico.addComponent(Enabled.class);
@@ -176,7 +176,7 @@ public final class UserQuestionTestCase {
     }
 
     public static class ABCImpl implements ABC {
-        public ABCImpl(DEF def) {
+        public ABCImpl(final DEF def) {
         }
     }
 
@@ -206,7 +206,7 @@ public final class UserQuestionTestCase {
     public static class NeedsFoo {
         private final Foo foo;
 
-        public NeedsFoo(Foo foo) {
+        public NeedsFoo(final Foo foo) {
             this.foo = foo;
         }
 
@@ -218,7 +218,7 @@ public final class UserQuestionTestCase {
     public static class NeedsBar {
         private final Bar bar;
 
-        public NeedsBar(Bar bar) {
+        public NeedsBar(final Bar bar) {
             this.bar = bar;
         }
 

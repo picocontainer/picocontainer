@@ -13,16 +13,16 @@ import org.picocontainer.PicoException;
 
 /**
  * Runtime Exception version of {@link java.lang.IllegalAccessException}.
- * 
+ *
  * @author Michael Rimov
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class IllegalAccessRuntimeException extends PicoException {
 
 
 	/**
-	 * 
+	 *
 	 */
 	public IllegalAccessRuntimeException() {
 		super();

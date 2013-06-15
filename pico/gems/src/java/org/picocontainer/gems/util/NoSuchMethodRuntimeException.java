@@ -13,7 +13,7 @@ import org.picocontainer.PicoException;
 
 /**
  * Runtime exception version of {@link java.lang.NoSuchMethodException}.
- * 
+ *
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
@@ -21,7 +21,7 @@ public class NoSuchMethodRuntimeException extends PicoException {
 
 
 	/**
-	 * 
+	 *
 	 */
 	public NoSuchMethodRuntimeException() {
 		super();

@@ -8,12 +8,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Injector;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -23,6 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Injector;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
 /**
  * <p>
@@ -42,12 +42,12 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         }
     }
 
-    public FactoryInjector(Class<T> key) {
+    public FactoryInjector(final Class<T> key) {
         this.key = key;
     }
 
     // from http://www.artima.com/weblogs/viewpost.jsp?thread=208860
-    public static Class<?> getClass(Type type) {
+    public static Class<?> getClass(final Type type) {
         if (type instanceof Class) {
             return (Class) type;
         } else if (type instanceof ParameterizedType) {
@@ -73,7 +73,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
    * @return a list of the raw classes for the actual type arguments.
    */
   public static <T> List<Class<?>> getTypeArguments(
-    Class<FactoryInjector> class1, Class<? extends Object> class2) {
+    final Class<FactoryInjector> class1, final Class<? extends Object> class2) {
     Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
     Type type = class2;
     // start walking up the inheritance hierarchy until we hit baseClass
@@ -126,7 +126,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return key;
     }
 
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
     }
 
@@ -134,34 +134,34 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return null;
     }
 
-    public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+    public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
         return null;
     }
 
     public abstract T getComponentInstance(PicoContainer container, Type into);
 
-    public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+    public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
         return null;
     }
 
-    public Object partiallyDecorateComponentInstance(PicoContainer container, Type into, T instance, Class<?> superclassPortion) {
+    public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance, final Class<?> superclassPortion) {
         return null;
     }
 
-    public void verify(PicoContainer container) {
+    public void verify(final PicoContainer container) {
     }
 
     public String getDescriptor() {
         return "FactoryInjector-";
     }
 
-    public void start(PicoContainer container) {
+    public void start(final PicoContainer container) {
     }
 
-    public void stop(PicoContainer container) {
+    public void stop(final PicoContainer container) {
     }
 
-    public void dispose(PicoContainer container) {
+    public void dispose(final PicoContainer container) {
     }
 
     public boolean componentHasLifecycle() {

@@ -9,6 +9,31 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import org.junit.Test;
 import org.picocontainer.ChangedBehavior;
 import org.picocontainer.Characteristics;
@@ -29,7 +54,6 @@ import org.picocontainer.Startable;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -49,35 +73,6 @@ import org.picocontainer.testmodel.WashableTouchable;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.inject.Provider;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
 @SuppressWarnings("serial")
@@ -169,7 +164,7 @@ public abstract class AbstractPicoContainerTest {
             fail("should need a Touchable");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             String message = e.getMessage().replace("org.picocontainer.testmodel.", "");
-            assertEquals("DependsOnTouchable has unsatisfied dependency 'interface Touchable' for constructor 'public DependsOnTouchable(Touchable)' from parent:1<|", message);        
+            assertEquals("DependsOnTouchable has unsatisfied dependency 'interface Touchable' for constructor 'public DependsOnTouchable(Touchable)' from parent:1<|", message);
         }
     }
 
@@ -216,7 +211,7 @@ public abstract class AbstractPicoContainerTest {
     }
 
     public static class ListAdder {
-        public ListAdder(Collection<String> list) {
+        public ListAdder(final Collection<String> list) {
             list.add("something");
         }
     }
@@ -264,7 +259,7 @@ public abstract class AbstractPicoContainerTest {
         assertCyclicDependencyThrowsCyclicDependencyException(createPicoContainer(null));
     }
 
-    private static void assertCyclicDependencyThrowsCyclicDependencyException(MutablePicoContainer pico) {
+    private static void assertCyclicDependencyThrowsCyclicDependencyException(final MutablePicoContainer pico) {
         pico.addComponent(ComponentB.class);
         pico.addComponent(ComponentD.class);
         pico.addComponent(ComponentE.class);
@@ -332,7 +327,7 @@ public abstract class AbstractPicoContainerTest {
     public static final class NeedsTouchable {
         public final Touchable touchable;
 
-        public NeedsTouchable(Touchable touchable) {
+        public NeedsTouchable(final Touchable touchable) {
             this.touchable = touchable;
         }
     }
@@ -340,7 +335,7 @@ public abstract class AbstractPicoContainerTest {
     public static final class NeedsWashable {
         public final Washable washable;
 
-        public NeedsWashable(Washable washable) {
+        public NeedsWashable(final Washable washable) {
             this.washable = washable;
         }
     }
@@ -373,7 +368,7 @@ public abstract class AbstractPicoContainerTest {
         public final String serverid;
         public final String path;
 
-        public JMSService(String serverid, String path) {
+        public JMSService(final String serverid, final String path) {
             this.serverid = serverid;
             this.path = path;
         }
@@ -392,7 +387,7 @@ public abstract class AbstractPicoContainerTest {
     public static class ComponentA {
         public final ComponentC c;
 
-        public ComponentA(ComponentB b, ComponentC c) {
+        public ComponentA(final ComponentB b, final ComponentC c) {
             this.c = c;
             assertNotNull(b);
             assertNotNull(c);
@@ -408,20 +403,20 @@ public abstract class AbstractPicoContainerTest {
     }
 
     public static class ComponentD {
-        public ComponentD(ComponentE e, ComponentB b) {
+        public ComponentD(final ComponentE e, final ComponentB b) {
             assertNotNull(e);
             assertNotNull(b);
         }
     }
 
     public static class ComponentE {
-        public ComponentE(ComponentD d) {
+        public ComponentE(final ComponentD d) {
             assertNotNull(d);
         }
     }
 
     public static class ComponentF {
-        public ComponentF(ComponentA a) {
+        public ComponentF(final ComponentA a) {
             assertNotNull(a);
         }
     }
@@ -451,7 +446,7 @@ public abstract class AbstractPicoContainerTest {
 //    }
 
     public static class ContainerDependency {
-        public ContainerDependency(PicoContainer container) {
+        public ContainerDependency(final PicoContainer container) {
             assertNotNull(container);
         }
     }
@@ -587,27 +582,27 @@ public abstract class AbstractPicoContainerTest {
         // should hand to each Behavior's start(..) at each appropriate node. See mail-list discussion.
     }
 
-    @SuppressWarnings("unused") 
+    @SuppressWarnings("unused")
     public static final class TestChangedBehavior extends AbstractBehavior.AbstractChangedBehavior implements ChangedBehavior {
 
         public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
 
-        public TestChangedBehavior(ComponentAdapter delegate) {
+        public TestChangedBehavior(final ComponentAdapter delegate) {
             super(delegate);
         }
 
         @Override
-        public void start(PicoContainer node) {
+        public void start(final PicoContainer node) {
             started.add(node);
         }
 
         @Override
-        public void stop(PicoContainer node) {
+        public void stop(final PicoContainer node) {
             //Does nothing.
         }
 
         @Override
-        public void dispose(PicoContainer node) {
+        public void dispose(final PicoContainer node) {
             //Does nothing.
         }
 
@@ -688,7 +683,7 @@ public abstract class AbstractPicoContainerTest {
     public static final class LifeCycleMonitoring implements Startable, Disposable {
         final StringBuffer sb;
 
-        public LifeCycleMonitoring(StringBuffer sb) {
+        public LifeCycleMonitoring(final StringBuffer sb) {
             this.sb = sb;
             sb.append("-instantiated");
         }
@@ -710,24 +705,24 @@ public abstract class AbstractPicoContainerTest {
 
         private final List<Object> list;
 
-        public RecordingStrategyVisitor(List<Object> list) {
+        public RecordingStrategyVisitor(final List<Object> list) {
             this.list = list;
         }
 
-        public boolean visitContainer(PicoContainer pico) {
+        public boolean visitContainer(final PicoContainer pico) {
             list.add(pico.getClass());
             return CONTINUE_TRAVERSAL;
         }
 
-        public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        public void visitComponentAdapter(final ComponentAdapter componentAdapter) {
             list.add(componentAdapter.getClass());
         }
 
-        public void visitComponentFactory(ComponentFactory componentFactory) {
+        public void visitComponentFactory(final ComponentFactory componentFactory) {
             list.add(componentFactory.getClass());
         }
 
-        public void visitParameter(Parameter parameter) {
+        public void visitParameter(final Parameter parameter) {
             list.add(parameter.getClass());
         }
 
@@ -735,7 +730,7 @@ public abstract class AbstractPicoContainerTest {
 
     protected abstract Properties[] getProperties();
 
-    
+
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
@@ -774,16 +769,16 @@ public abstract class AbstractPicoContainerTest {
         List<Object> visitedList = new LinkedList<Object>();
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
         visitor.traverse(parent);
-//        assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray()) 
+//        assertEquals("Expected: " + Arrays.deepToString(expectedList.toArray())
 //        		+ "\nGot:  " + Arrays.deepToString(visitedList.toArray()), expectedList.size(), visitedList.size());
-        
+
         assertEquals(Arrays.deepToString(expectedList.toArray()), Arrays.deepToString(visitedList.toArray()));
 //        for (Class<?> c : expectedList) {
 //            assertTrue(visitedList.remove(c));
 //        }
 //        assertEquals(0, visitedList.size());
     }
-    
+
     /**
      * Verifies that you can halt a container traversal.
      */
@@ -792,13 +787,13 @@ public abstract class AbstractPicoContainerTest {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         child.addComponent("This is a test");
-        
+
         TraversalCheckingVisitor parentComponentCountingVisitor = new TraversalCheckingVisitor() {
         	private int containerCount = 0;
-        	
+
 			@Override
-            @SuppressWarnings("unused") 
-			public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
+            @SuppressWarnings("unused")
+			public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
 				if (containerCount == 0) {
 					fail("Should have visited a container first");
 				}
@@ -806,26 +801,26 @@ public abstract class AbstractPicoContainerTest {
 			}
 
 			@Override
-	        @SuppressWarnings("unused") 
-			public boolean visitContainer(PicoContainer pico) {
+	        @SuppressWarnings("unused")
+			public boolean visitContainer(final PicoContainer pico) {
 				containerCount++;
 				if (containerCount > 1) {
 					return ABORT_TRAVERSAL;
 				}
-				
+
 				return CONTINUE_TRAVERSAL;
 			}
-        	
+
         };
-    	
-        parentComponentCountingVisitor.traverse(parent);        
+
+        parentComponentCountingVisitor.traverse(parent);
     }
 
-    protected void addContainers(List expectedList) {
+    protected void addContainers(final List expectedList) {
         expectedList.add(DefaultPicoContainer.class);
     }
-    
-    protected void addDefaultComponentFactories(List expectedList) {
+
+    protected void addDefaultComponentFactories(final List expectedList) {
         expectedList.add(AdaptingBehavior.class);
     }
 
@@ -869,7 +864,7 @@ public abstract class AbstractPicoContainerTest {
             //Do nothing.
         }
 
-        public NonGreedyClass(ComponentA component) {
+        public NonGreedyClass(final ComponentA component) {
             fail("Greedy Constructor should never have been called.  Instead got: " + component);
         }
 
@@ -888,17 +883,17 @@ public abstract class AbstractPicoContainerTest {
 
     public static class ConstantParameterTestService {
     	private final String arg;
-    	
-    	public ConstantParameterTestService(String arg) {
-			this.arg = arg;    		
+
+    	public ConstantParameterTestService(final String arg) {
+			this.arg = arg;
     	}
 
 		public String getArg() {
 			return arg;
 		}
     }
-    
-    
+
+
     /**
      * Currently failing
      */
@@ -906,15 +901,15 @@ public abstract class AbstractPicoContainerTest {
     public void testNullConstantParameter() {
     	MutablePicoContainer pico = createPicoContainer(null);
     	pico.addComponent(ConstantParameterTestService.class, ConstantParameterTestService.class, NullParameter.INSTANCE);
-    	ConstantParameterTestService service = (ConstantParameterTestService) pico.getComponent(ConstantParameterTestService.class);
+    	ConstantParameterTestService service = pico.getComponent(ConstantParameterTestService.class);
     	assertNotNull(service);
     	assertNull(service.getArg());
     }
-    
-    
+
+
     public static class PrimitiveConstructor {
         @SuppressWarnings("unused")
-        public PrimitiveConstructor(int number) {
+        public PrimitiveConstructor(final int number) {
             //does nothing.
         }
     }
@@ -923,31 +918,31 @@ public abstract class AbstractPicoContainerTest {
     public void testNullConstantParametersDoNotInjectOnPrimitives() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(PrimitiveConstructor.class, PrimitiveConstructor.class, NullParameter.INSTANCE);
-        
+
         //Should throw exception here.
         pico.getComponent(PrimitiveConstructor.class);
      }
 
-    
+
     @Test
     public void testNullValuesDoNotInject() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(ConstantParameterTestService.class, ConstantParameterTestService.class, new ConstantParameter(null));
         try {
-            ConstantParameterTestService service = (ConstantParameterTestService) pico.getComponent(ConstantParameterTestService.class);
+            ConstantParameterTestService service = pico.getComponent(ConstantParameterTestService.class);
             fail("Should have thrown unsatisfiable dependencies exception.  Instead got " + service + " as a return value");
         } catch (UnsatisfiableDependenciesException e) {
             assertNotNull(e.getMessage());
         }
     }
-    
+
     @Test
     public void testNullComponentsDoNotInject() {
         MutablePicoContainer pico = createPicoContainer(null)
             .addComponent(ComponentA.class)
             .addComponent(ComponentB.class);
-        
-        
+
+
         try {
             pico.addComponent(ComponentC.class, null);
             fail("Pico should not have been able to register null component instance");
@@ -956,99 +951,99 @@ public abstract class AbstractPicoContainerTest {
         }
     }
 
-    
+
     public static class ConverterSample {
         public final int value;
 
-        public ConverterSample(Integer value) {
+        public ConverterSample(final Integer value) {
             this.value = value;
         }
     }
-    
+
     @Test
-    public void testIntegrationWithConverters() {        
+    public void testIntegrationWithConverters() {
         MutablePicoContainer mpc = createPicoContainer(null);
         if (!(mpc instanceof Converting)) {
             System.out.println("Skipping 'testIntegrationWithConverters' " +
             		"because pico implementation is not Converting");
             return;
         }
-        
+
         mpc.addComponent("converterParameter", "42")
-            .addComponent(ConverterSample.class, ConverterSample.class, 
+            .addComponent(ConverterSample.class, ConverterSample.class,
                     new ComponentParameter("converterParameter"));
         ConverterSample result = mpc.getComponent(ConverterSample.class);
         assertEquals(42, result.value);
     }
-    
-    
+
+
     /**
-     * Not all containers might allow caching/nocache, but 
+     * Not all containers might allow caching/nocache, but
      * we need to verify that it is getting properly processed.
      */
     @Test
     public void testAsPropagatesForExactlyOneInvocation() {
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.change(Characteristics.CACHE);
-        
+
         mpc
         	.as(Characteristics.CACHE).addComponent("bufferTwo", StringBuffer.class, DefaultConstructorParameter.INSTANCE)
         	.as(Characteristics.NO_CACHE).addComponent("bufferOne", StringBuffer.class, DefaultConstructorParameter.INSTANCE)
         	.addComponent("bufferThree", StringBuffer.class, DefaultConstructorParameter.INSTANCE);
-        
+
         assertNotSame(mpc.getComponent("bufferOne"), mpc.getComponent("bufferOne"));
         assertSame(mpc.getComponent("bufferTwo"), mpc.getComponent("bufferTwo"));
-        
+
         //Default behavior is caching.
         assertSame(mpc.getComponent("bufferThree"), mpc.getComponent("bufferThree"));
-    	
+
     }
-    
-	
+
+
 	@Test
 	public void testStaticInjectionMethodAsDefaultCharacteristicDoesntThrowExceptionOnNormalRegistration() {
-		
+
 		MutablePicoContainer mpc = createPicoContainer(null);
 		mpc.change(Characteristics.STATIC_INJECTION);
-		
-		
+
+
 		ComponentAdapter<?> ca = new InstanceAdapter<Object>(Object.class, new Object());
 		mpc.addAdapter(ca);
-		
+
 		assertNotNull(mpc.getComponent(Object.class));
-	}    
-	
-	
+	}
+
+
 	@Test
 	public void testAsReturnsToNormalPicoContainerAfterOneAddComponentInvocation() {
 		MutablePicoContainer mpc = createPicoContainer(null);
-		
+
 		MutablePicoContainer afterAs = mpc.as(Characteristics.STATIC_INJECTION);
-		
+
 		MutablePicoContainer afterAddComponent = afterAs.addComponent("bufferTwo", StringBuffer.class, DefaultConstructorParameter.INSTANCE);
-		
+
 		assertSame(mpc, afterAddComponent);
 	}
-	
-	
+
+
 	@Test(expected=PicoCompositionException.class)
 	public void testAsCannotBeFollowedByAStartLifecycleCall() {
 		MutablePicoContainer mpc = createPicoContainer(null);
 			mpc.as(Characteristics.NO_CACHE).start();
 	}
-	
-	
+
+
 	@Test(expected=PicoCompositionException.class)
 	public void testAsCannotBeFollowedByAStopLifecycleCall() {
 		MutablePicoContainer mpc = createPicoContainer(null);
-		mpc.as(Characteristics.NO_CACHE).stop();		
+		mpc.as(Characteristics.NO_CACHE).stop();
 	}
-	
+
 	@Test(expected=PicoCompositionException.class)
 	public void testAsCannotBeFollowedByADisposeLifecycleCall() {
 		MutablePicoContainer mpc = createPicoContainer(null);
 		mpc.as(Characteristics.NO_CACHE).dispose();
 	}
 
-    
+
 }

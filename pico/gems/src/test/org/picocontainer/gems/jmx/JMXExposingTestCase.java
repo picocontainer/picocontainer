@@ -47,9 +47,9 @@ import org.picocontainer.monitors.NullComponentMonitor;
 @RunWith(JMock.class)
 public class JMXExposingTestCase  {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
-    private MBeanServer mBeanServer = mockery.mock(MBeanServer.class);
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
+    private final MBeanServer mBeanServer = mockery.mock(MBeanServer.class);
 
     @Test public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final JMXExposing componentFactory = new JMXExposing(
@@ -77,16 +77,16 @@ public class JMXExposingTestCase  {
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null,null));
     }
-    
+
     @Test
     public void testPicoContainerIntegration() throws Exception {
         final Behavior componentFactory = new JMXExposing(mBeanServer);
-        
+
         MutablePicoContainer pico = new PicoBuilder()
         				.withBehaviors(componentFactory)
         				.withConstructorInjection()
         				.withLifecycle().build();
-        
+
 
         pico.change(NO_JMX)
         	.addComponent(DynamicMBeanPerson.class) //No Register
@@ -94,16 +94,16 @@ public class JMXExposingTestCase  {
         	.addComponent(PersonMBean.class, DynamicMBeanPerson.class) //Register
         	.as(NO_JMX)
         	.addComponent("Test Person", DynamicMBeanPerson.class);  //No Register
-        
+
         mockery.checking(new Expectations() {{
         	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
         }});
-    	
+
         //Get instances to force registration.
         pico.getComponent(DynamicMBeanPerson.class);
         pico.getComponent(PersonMBean.class);
         pico.getComponent("Test Person");
-        
+
     }
 
     @Test public void testConstructorThrowsNPE() {

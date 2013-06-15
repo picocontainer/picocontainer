@@ -8,40 +8,40 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import java.lang.reflect.Type;
+import java.util.Properties;
+
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.InjectionType;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.lang.reflect.Type;
-import java.util.Properties;
-
 @SuppressWarnings("serial")
 public class Reinjection extends CompositeInjection {
 
-    public Reinjection(InjectionType reinjectionType, final PicoContainer parent) {
+    public Reinjection(final InjectionType reinjectionType, final PicoContainer parent) {
         super(new ReinjectionInjectionType(parent), reinjectionType);
     }
 
 	private static class ReinjectionInjector<T> extends AbstractInjector<T> {
         private final PicoContainer parent;
 
-        public ReinjectionInjector(Object key, Class<T> impl, ComponentMonitor monitor, PicoContainer parent,
-				boolean useNames, ConstructorParameters constructorParams, FieldParameters[] fieldParams,
-				MethodParameters[] methodParams) {
+        public ReinjectionInjector(final Object key, final Class<T> impl, final ComponentMonitor monitor, final PicoContainer parent,
+				final boolean useNames, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams,
+				final MethodParameters[] methodParams) {
             super(key, impl, monitor, useNames, methodParams);
             this.parent = parent;
 		}
 
-		public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+		@Override
+		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return (T) parent.getComponentInto(getComponentKey(), into);
         }
     }
@@ -49,12 +49,12 @@ public class Reinjection extends CompositeInjection {
 	private static class ReinjectionInjectionType extends AbstractInjectionType {
         private final PicoContainer parent;
 
-        public ReinjectionInjectionType(PicoContainer parent) {
+        public ReinjectionInjectionType(final PicoContainer parent) {
             this.parent = parent;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle,
-                Properties componentProps, final Object key, Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
             return new ReinjectionInjector<T>(key, impl, monitor, parent, useNames, constructorParams, fieldParams, methodParams);
         }

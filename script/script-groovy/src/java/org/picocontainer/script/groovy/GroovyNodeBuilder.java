@@ -38,7 +38,7 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
  * Builds node trees of PicoContainers and Pico components using GroovyMarkup.
  * <p>
  * Simple example usage in your groovy script:
- * 
+ *
  * <pre>
  * builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()
  * pico = builder.container(parent:parent) {
@@ -46,7 +46,7 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
  *   component(class:org.picocontainer.script.testmodel.WebServerImpl)
  * }
  * </pre>
- * 
+ *
  * </p>
  * <h4>Extending/Enhancing GroovyNodeBuilder</h4>
  * <p>
@@ -65,7 +65,7 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
  * behavior is currently the only way to replace the behavior of an existing
  * groovy node handler.
  * </p>
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -107,12 +107,12 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * Allows the composition of a <tt>{@link NodeBuilderDecorator}</tt> -- an
      * object that extends the capabilities of the <tt>GroovyNodeBuilder</tt>
      * with new tags, new capabilities, etc.
-     * 
+     *
      * @param decorator NodeBuilderDecorator
      * @param performAttributeValidation should be set to
      *            PERFORM_ATTRIBUTE_VALIDATION or SKIP_ATTRIBUTE_VALIDATION
      */
-    public GroovyNodeBuilder(NodeBuilderDecorator decorator, boolean performAttributeValidation) {
+    public GroovyNodeBuilder(final NodeBuilderDecorator decorator, final boolean performAttributeValidation) {
         this.decorator = decorator;
         this.performAttributeValidation = performAttributeValidation;
 
@@ -124,7 +124,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
 
     }
 
-    public GroovyNodeBuilder(NodeBuilderDecorator decorator) {
+    public GroovyNodeBuilder(final NodeBuilderDecorator decorator) {
         this(decorator, SKIP_ATTRIBUTE_VALIDATION);
     }
 
@@ -135,10 +135,12 @@ public class GroovyNodeBuilder extends BuilderSupport {
         this(new NullNodeBuilderDecorator(), SKIP_ATTRIBUTE_VALIDATION);
     }
 
-    protected void setParent(Object parent, Object child) {
+    @Override
+	protected void setParent(final Object parent, final Object child) {
     }
 
-    protected Object doInvokeMethod(String s, Object name, Object args) {
+    @Override
+	protected Object doInvokeMethod(final String s, final Object name, final Object args) {
         // TODO use setDelegate() from Groovy JSR
         Object answer = super.doInvokeMethod(s, name, args);
         List list = InvokerHelper.asList(args);
@@ -152,11 +154,13 @@ public class GroovyNodeBuilder extends BuilderSupport {
         return answer;
     }
 
-    protected Object createNode(Object name) {
+    @Override
+	protected Object createNode(final Object name) {
         return createNode(name, Collections.EMPTY_MAP);
     }
 
-    protected Object createNode(Object name, Object value) {
+    @Override
+	protected Object createNode(final Object name, final Object value) {
         Map attributes = new HashMap();
         attributes.put(CLASS, value);
         return createNode(name, attributes);
@@ -166,14 +170,15 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * Override of create node. Called by BuilderSupport. It examines the
      * current state of the builder and the given parameters and dispatches the
      * code to one of the create private functions in this object.
-     * 
+     *
      * @param name The name of the groovy node we're building. Examples are
      *            'container', and 'grant',
      * @param attributes Map attributes of the current invocation.
      * @param value A closure passed into the node. Currently unused.
      * @return Object the created object.
      */
-    protected Object createNode(Object name, Map attributes, Object value) {
+    @Override
+	protected Object createNode(final Object name, final Map attributes, final Object value) {
         Object current = getCurrent();
         if (current != null && current instanceof GroovyObject) {
             GroovyObject groovyObject = (GroovyObject) current;
@@ -195,7 +200,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
 
     }
 
-    private Object registerBuilder(Map attributes) {
+    private Object registerBuilder(final Map attributes) {
         String builderName = (String) attributes.remove("name");
         Object clazz = attributes.remove("class");
         try {
@@ -209,7 +214,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
         return clazz;
     }
 
-    private Object handleNode(Object name, Map attributes, Object current) {
+    private Object handleNode(final Object name, Map attributes, final Object current) {
 
         attributes = new HashMap(attributes);
 
@@ -242,7 +247,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
     /**
      * Pulls the scripted container from the 'current' method or possibly
      * creates a new blank one if needed.
-     * 
+     *
      * @param attributes Map the attributes of the current node.
      * @return ScriptedPicoContainer, never null.
      * @throws ScriptedPicoContainerMarkupException
@@ -269,7 +274,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
 
     /**
      * Returns the current decorator
-     * 
+     *
      * @return A NodeBuilderDecorator, should never be <code>null</code>.
      */
     public NodeBuilderDecorator getDecorator() {
@@ -278,7 +283,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
 
     /**
      * Returns an appropriate node handler for a given node and
-     * 
+     *
      * @param tagName String
      * @return BuilderNode the appropriate node builder for the given tag name,
      *         or null if no handler exists. (In which case, the Delegate
@@ -293,7 +298,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * Add's a groovy node handler to the table of possible handlers. If a node
      * handler with the same node name already exists in the map of handlers,
      * then the <tt>GroovyNode</tt> replaces the existing node handler.
-     * 
+     *
      * @param newGroovyNode CustomGroovyNode
      * @return GroovyNodeBuilder to allow for method chaining.
      */
@@ -302,7 +307,8 @@ public class GroovyNodeBuilder extends BuilderSupport {
         return this;
     }
 
-    protected Object createNode(Object name, Map attributes) {
+    @Override
+	protected Object createNode(final Object name, final Map attributes) {
         return createNode(name, attributes, null);
     }
 

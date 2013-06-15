@@ -57,13 +57,13 @@ public interface LifecycleState {
      * is finished.
      */
     void disposed();
-    
+
     /**
      * Checks if the current lifecycle is disposed.
      * @return true if the current state is DISPOSED.
      */
     boolean isDisposed();
-    
+
     /**
      * Checks if the current lifecyle is stopped.
      * @return true if the current state is STOPPED;

@@ -18,5 +18,5 @@ public interface PostBuildContainerAction {
 	 * of the container
 	 */
 	PicoContainer onNewContainer(PicoContainer container);
-	
+
 }

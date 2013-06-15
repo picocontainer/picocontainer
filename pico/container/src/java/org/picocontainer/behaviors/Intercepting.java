@@ -8,6 +8,13 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -17,25 +24,19 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 /**
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
 public class Intercepting extends AbstractBehavior {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                          LifecycleStrategy lifecycle,
-                                                          Properties componentProps,
-                                                          Object key,
-                                                          Class<T> impl,
-                                                          ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                          final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps,
+                                                          final Object key,
+                                                          final Class<T> impl,
+                                                          final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         return monitor.changedBehavior(new Intercepted<T>(super.createComponentAdapter(monitor,
                 lifecycle, componentProps, key,
                 impl, constructorParams, fieldParams, methodParams)));
@@ -49,22 +50,22 @@ public class Intercepting extends AbstractBehavior {
 
         private final Map<Class, Object> pres = new HashMap<Class, Object>();
         private final Map<Class, Object> posts = new HashMap<Class, Object>();
-        private Controller controller = new ControllerWrapper(new InterceptorThreadLocal());
+        private final Controller controller = new ControllerWrapper(new InterceptorThreadLocal());
 
-        public Intercepted(ComponentAdapter<T> delegate) {
+        public Intercepted(final ComponentAdapter<T> delegate) {
             super(delegate);
         }
 
-        public void addPreInvocation(Class type, Object interceptor) {
+        public void addPreInvocation(final Class type, final Object interceptor) {
             pres.put(type, interceptor);
         }
 
-        public void addPostInvocation(Class type, Object interceptor) {
+        public void addPostInvocation(final Class type, final Object interceptor) {
             posts.put(type, interceptor);
         }
 
         @Override
-        protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
+        protected Object invokeMethod(final Object componentInstance, final Method method, final Object[] args, final PicoContainer container) throws Throwable {
             try {
                 controller.clear();
                 controller.instance(componentInstance);
@@ -94,14 +95,16 @@ public class Intercepting extends AbstractBehavior {
             return controller;
         }
 
-        public String getDescriptor() {
+        @Override
+		public String getDescriptor() {
             return "Intercepted";
         }
     }
 
     public static class InterceptorThreadLocal extends ThreadLocal<Controller> implements Serializable {
 
-        protected Controller initialValue() {
+        @Override
+		protected Controller initialValue() {
             return new ControllerImpl();
         }
     }
@@ -147,7 +150,7 @@ public class Intercepting extends AbstractBehavior {
             return vetoed;
         }
 
-        public void setOriginalRetVal(Object retVal) {
+        public void setOriginalRetVal(final Object retVal) {
             this.retVal = retVal;
         }
 
@@ -159,7 +162,7 @@ public class Intercepting extends AbstractBehavior {
             return overridden;
         }
 
-        public void instance(Object instance) {
+        public void instance(final Object instance) {
             this.instance = instance;
         }
 
@@ -175,7 +178,7 @@ public class Intercepting extends AbstractBehavior {
     public static class ControllerWrapper implements Controller {
         private final ThreadLocal<Controller> threadLocal;
 
-        public ControllerWrapper(ThreadLocal<Controller> threadLocal) {
+        public ControllerWrapper(final ThreadLocal<Controller> threadLocal) {
             this.threadLocal = threadLocal;
         }
 
@@ -191,7 +194,7 @@ public class Intercepting extends AbstractBehavior {
             return threadLocal.get().isVetoed();
         }
 
-        public void setOriginalRetVal(Object retVal) {
+        public void setOriginalRetVal(final Object retVal) {
             threadLocal.get().setOriginalRetVal(retVal);
         }
 
@@ -203,7 +206,7 @@ public class Intercepting extends AbstractBehavior {
             return threadLocal.get().isOverridden();
         }
 
-        public void instance(Object instance) {
+        public void instance(final Object instance) {
             threadLocal.get().instance(instance);
 
         }

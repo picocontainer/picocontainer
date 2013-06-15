@@ -3,14 +3,14 @@
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 
-import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.script.util.ClassPathElementHelper;
 
 
@@ -38,12 +38,12 @@ public class ClasspathNode extends AbstractBuilderNode {
 
 
     @SuppressWarnings("unchecked")
-    public Object createNewNode(Object current, Map attributes) {
+    public Object createNewNode(final Object current, final Map attributes) {
         return createClassPathElementNode(attributes, (ClassLoadingPicoContainer) current);
     }
 
     @SuppressWarnings("unchecked")
-    private ClassPathElement createClassPathElementNode(Map attributes, ClassLoadingPicoContainer container) {
+    private ClassPathElement createClassPathElementNode(final Map attributes, final ClassLoadingPicoContainer container) {
 
         final String path = (String) attributes.remove(PATH);
         return ClassPathElementHelper.addClassPathElement(path, container);

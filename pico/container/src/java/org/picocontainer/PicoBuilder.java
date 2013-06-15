@@ -9,6 +9,22 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.injectors.Injectors.CDI;
+import static org.picocontainer.injectors.Injectors.SDI;
+import static org.picocontainer.injectors.Injectors.adaptiveDI;
+import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
+import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
+import static org.picocontainer.injectors.Injectors.namedField;
+import static org.picocontainer.injectors.Injectors.namedMethod;
+import static org.picocontainer.injectors.Injectors.typedFieldDI;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 import org.picocontainer.behaviors.Automating;
 import org.picocontainer.behaviors.Locking;
 import org.picocontainer.behaviors.PropertyApplying;
@@ -23,22 +39,6 @@ import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implementationHiding;
-import static org.picocontainer.injectors.Injectors.CDI;
-import static org.picocontainer.injectors.Injectors.SDI;
-import static org.picocontainer.injectors.Injectors.adaptiveDI;
-import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
-import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
-import static org.picocontainer.injectors.Injectors.namedField;
-import static org.picocontainer.injectors.Injectors.namedMethod;
-import static org.picocontainer.injectors.Injectors.typedFieldDI;
 
 /**
  * Helps assembles the myriad items available to a picocontainer.
@@ -56,7 +56,7 @@ public class PicoBuilder {
     private PicoContainer parentContainer;
     private Class<? extends MutablePicoContainer> mpcClass = DefaultPicoContainer.class;
     private ComponentMonitor monitor;
-    private List<Object> containerComps = new ArrayList<Object>();
+    private final List<Object> containerComps = new ArrayList<Object>();
     private boolean addChildToParent;
     private LifecycleStrategy lifecycle;
     private final Stack<Object> behaviors = new Stack<Object>();
@@ -65,7 +65,7 @@ public class PicoBuilder {
     private Class<? extends LifecycleStrategy> lifecycleClass = NullLifecycleStrategy.class;
 
 
-    public PicoBuilder(PicoContainer parentContainer, InjectionType injectionType) {
+    public PicoBuilder(final PicoContainer parentContainer, final InjectionType injectionType) {
         this(parentContainer);
         addInjector(injectionType);
     }
@@ -73,10 +73,10 @@ public class PicoBuilder {
     /**
      * Constructs a PicoBuilder using the specified PicoContainer as an argument.  Note
      * that this only creates child -&gt; parent references.  You must use  parentContainer.addChildContainer()
-     * to the instance built here if you require child  &lt;-&gt; parent references. 
+     * to the instance built here if you require child  &lt;-&gt; parent references.
      * @param parentContainer
      */
-    public PicoBuilder(PicoContainer parentContainer) {
+    public PicoBuilder(final PicoContainer parentContainer) {
         if (parentContainer != null) {
             this.parentContainer = parentContainer;
         } else {
@@ -84,7 +84,7 @@ public class PicoBuilder {
         }
     }
 
-    public PicoBuilder(InjectionType injectionType) {
+    public PicoBuilder(final InjectionType injectionType) {
         this(new EmptyPicoContainer(), injectionType);
     }
 
@@ -116,7 +116,7 @@ public class PicoBuilder {
      * @param lifecycleClass lifecycle strategy type.
      * @return <em>this</em> to allow for method chaining.
      */
-    public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> lifecycleClass) {
+    public PicoBuilder withLifecycle(final Class<? extends LifecycleStrategy> lifecycleClass) {
         this.lifecycleClass = lifecycleClass;
         lifecycle = null;
         return this;
@@ -132,7 +132,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withLifecycle(LifecycleStrategy lifecycle) {
+    public PicoBuilder withLifecycle(final LifecycleStrategy lifecycle) {
         this.lifecycle = lifecycle;
         lifecycleClass = null;
         return this;
@@ -150,7 +150,7 @@ public class PicoBuilder {
      * @param cmClass the component monitor class to use
      * @return <em>this</em> to allow for method chaining.
      */
-    public PicoBuilder withMonitor(Class<? extends ComponentMonitor> cmClass) {
+    public PicoBuilder withMonitor(final Class<? extends ComponentMonitor> cmClass) {
         if (cmClass == null) {
             throw new NullPointerException("monitor class cannot be null");
         }
@@ -178,9 +178,9 @@ public class PicoBuilder {
         } else {
             componentFactory = new CompositeInjection(injectors.toArray(new InjectionType[injectors.size()]));
         }
-        
+
         Stack<Object> clonedBehaviors = (Stack< Object >) behaviors.clone();
-        while (!clonedBehaviors.empty()) {  
+        while (!clonedBehaviors.empty()) {
         	componentFactory = buildComponentFactory(tempContainer, componentFactory, clonedBehaviors);
         }
 
@@ -202,7 +202,7 @@ public class PicoBuilder {
         return newContainer;
     }
 
-    private void buildComponentMonitor(DefaultPicoContainer tempContainer) {
+    private void buildComponentMonitor(final DefaultPicoContainer tempContainer) {
         if (monitorClass == null) {
             tempContainer.addComponent(ComponentMonitor.class, monitor);
         } else {
@@ -210,7 +210,7 @@ public class PicoBuilder {
         }
     }
 
-    private void addChildToParent(MutablePicoContainer newContainer) {
+    private void addChildToParent(final MutablePicoContainer newContainer) {
         if (addChildToParent) {
             if (parentContainer instanceof MutablePicoContainer) {
                 ((MutablePicoContainer)parentContainer).addChildContainer(newContainer);
@@ -220,13 +220,13 @@ public class PicoBuilder {
         }
     }
 
-    private void addContainerComponents(DefaultPicoContainer temp) {
+    private void addContainerComponents(final DefaultPicoContainer temp) {
         for (Object containerComp : containerComps) {
             temp.addComponent(containerComp);
         }
     }
 
-    private ComponentFactory buildComponentFactory(DefaultPicoContainer container, final ComponentFactory lastCaf, final Stack<Object> clonedBehaviors) {
+    private ComponentFactory buildComponentFactory(final DefaultPicoContainer container, final ComponentFactory lastCaf, final Stack<Object> clonedBehaviors) {
         Object componentFactory = clonedBehaviors.pop();
         DefaultPicoContainer tmpContainer = new TransientPicoContainer(container);
         tmpContainer.addComponent("componentFactory", componentFactory);
@@ -250,7 +250,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withAnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation) {
+    public PicoBuilder withAnnotatedMethodInjection(final Class<? extends Annotation> injectionAnnotation) {
         addInjector(annotatedMethodDI(injectionAnnotation));
         return this;
     }
@@ -260,7 +260,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withAnnotatedFieldInjection(Class<? extends Annotation> injectionAnnotation) {
+    public PicoBuilder withAnnotatedFieldInjection(final Class<? extends Annotation> injectionAnnotation) {
         addInjector(annotatedFieldDI(injectionAnnotation));
         return this;
     }
@@ -295,7 +295,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withComponentFactory(ComponentFactory componentFactory) {
+    public PicoBuilder withComponentFactory(final ComponentFactory componentFactory) {
         if (componentFactory == null) {
             throw new NullPointerException("CAF cannot be null");
         }
@@ -313,30 +313,30 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withBehaviors(Behavior... factories) {
+    public PicoBuilder withBehaviors(final Behavior... factories) {
         for (Behavior componentFactory : factories) {
             behaviors.push(componentFactory);
         }
         return this;
     }
 
-    public PicoBuilder implementedBy(Class<? extends MutablePicoContainer> containerClass) {
+    public PicoBuilder implementedBy(final Class<? extends MutablePicoContainer> containerClass) {
         mpcClass = containerClass;
         return this;
     }
 
-    public PicoBuilder withMonitor(ComponentMonitor monitor) {
+    public PicoBuilder withMonitor(final ComponentMonitor monitor) {
         this.monitor = monitor;
         monitorClass = null;
         return this;
     }
 
-    public PicoBuilder withComponentFactory(Class<? extends ComponentFactory> componentFactoryClass) {
+    public PicoBuilder withComponentFactory(final Class<? extends ComponentFactory> componentFactoryClass) {
         behaviors.push(componentFactoryClass);
         return this;
     }
 
-    public PicoBuilder withCustomContainerComponent(Object containerDependency) {
+    public PicoBuilder withCustomContainerComponent(final Object containerDependency) {
         containerComps.add(containerDependency);
         return this;
     }
@@ -361,7 +361,7 @@ public class PicoBuilder {
         return this;
     }
 
-    protected void addInjector(InjectionType injectionType) {
+    protected void addInjector(final InjectionType injectionType) {
         injectors.add(injectionType);
     }
 }

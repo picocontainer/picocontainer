@@ -8,16 +8,16 @@
  *****************************************************************************/
 package org.picocontainer.gems.util;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.DefaultPicoContainer;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
 
 
 public class PicoMap implements Map {

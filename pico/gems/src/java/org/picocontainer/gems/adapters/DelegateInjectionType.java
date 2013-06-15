@@ -1,7 +1,9 @@
 /**
- * 
+ *
  */
 package org.picocontainer.gems.adapters;
+
+import java.util.Properties;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -13,8 +15,6 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.util.Properties;
-
 /**
  * Mirrored InjectionType for handling delegate methods.
  * @author Michael Rimov
@@ -22,18 +22,18 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class DelegateInjectionType extends AbstractInjectionType {
 
-    
+
 	/**
 	 * DelegateMethod instance key.
 	 */
     private static final String DELEGATE = "delegateInstance";
-    
-    
+
+
     /**
      * Delegate target instance key.
      */
     private static final String INSTANCE = "targetInstance";
-    
+
 	/**
 	 * Default constructor.
 	 */
@@ -44,17 +44,17 @@ public class DelegateInjectionType extends AbstractInjectionType {
 
     /**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 */
 	public <T> ComponentAdapter<T> createComponentAdapter(
 			final ComponentMonitor monitor,
 			final LifecycleStrategy lifecycle,
 			final Properties componentProps, final Object key,
-			final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams)
+			final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
 			throws PicoCompositionException {
-		
+
 		DelegateMethod<?, T> method =  cast(componentProps.remove(DELEGATE));
-		
+
 		//TODO: what to do since if there is no method, the delegate adapter won't work.
 		if (method == null) {
 			throw new IllegalArgumentException("Component properties must have a "
@@ -66,7 +66,7 @@ public class DelegateInjectionType extends AbstractInjectionType {
 			throw new IllegalArgumentException("Property 'instance' must exist.");
 		}
 
-		
+
 
 		return new DelegateMethodAdapter<T>(key, monitor, instance, method);
 	}
@@ -89,10 +89,10 @@ public class DelegateInjectionType extends AbstractInjectionType {
 	 * <pre>
 	 * 		DelegateAdapterFactory factory = new DelegateAdapterFactory();
 	 * 		HttpServletRequest request = .....;
-	 * 
+	 *
 	 *      //When object is instantiated will lazily call:   request.getSession(false);
 	 * 		Properties props = createDelegateProperties(request, &quot;getSession&quot;, false);
-	 * 
+	 *
 	 * 		DelegateMethodAdapter adapter = createComponentAdapter(new ConsoleComponentMonitor(), new DefaultLifecycleStrategy(),
 	 * 				 props, HttpSession.class, HttpSession.class);
 	 * </pre>
@@ -105,10 +105,10 @@ public class DelegateInjectionType extends AbstractInjectionType {
 		Properties props = new Properties();
 		props.put(INSTANCE, targetObject);
 		props.put(DELEGATE, createDelegate(targetObject.getClass(), methodName, parameters));
-		
+
 		return props;
 	}
-	
+
 	/**
 	 * Generic-friendly instantiation.  If you have control of your own code, you can also just use the DelegateMethod constructors.
 	 * @param <INSTANCE>

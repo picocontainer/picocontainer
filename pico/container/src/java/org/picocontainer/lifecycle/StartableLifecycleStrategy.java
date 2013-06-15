@@ -30,7 +30,7 @@ import org.picocontainer.Startable;
 @SuppressWarnings("serial")
 public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
- 
+
 	private transient Method start, stop, dispose;
 
     public StartableLifecycleStrategy(final ComponentMonitor monitor) {
@@ -61,7 +61,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     /**
-     * Retrieve the lifecycle method name that represents the stop method. 
+     * Retrieve the lifecycle method name that represents the stop method.
      * @return the stop method name ('stop')
      */
     protected String getStopMethodName() {
@@ -69,7 +69,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     /**
-     * Retrieve the lifecycle method name that represents the start method. 
+     * Retrieve the lifecycle method name that represents the start method.
      * @return the stop method name ('start')
      */
     protected String getStartMethodName() {
@@ -96,7 +96,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         doLifecycleMethod(component, start);
     }
 
-    private void doLifecycleMethod(Object component, Method lifecycleMethod) {
+    private void doLifecycleMethod(final Object component, final Method lifecycleMethod) {
         try {
             lifecycleMethod.invoke(component);
         } catch (IllegalAccessException e) {

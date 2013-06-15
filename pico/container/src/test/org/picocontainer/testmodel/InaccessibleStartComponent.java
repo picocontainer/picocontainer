@@ -18,7 +18,7 @@ import java.util.List;
 public final class InaccessibleStartComponent {
     private final List<String> messages;
 
-    public InaccessibleStartComponent(List<String> messages) {
+    public InaccessibleStartComponent(final List<String> messages) {
         this.messages = messages;
     }
 

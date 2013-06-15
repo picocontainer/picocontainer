@@ -14,7 +14,7 @@ public class InjectInto implements Type {
     private final Type intoType;
     private final Object intoKey;
 
-    public InjectInto(Type intoType, Object intoKey) {
+    public InjectInto(final Type intoType, final Object intoKey) {
         this.intoType = intoType;
         this.intoKey = intoKey;
     }

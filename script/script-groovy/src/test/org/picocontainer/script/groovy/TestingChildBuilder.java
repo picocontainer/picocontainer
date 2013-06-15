@@ -23,12 +23,13 @@ public final class TestingChildBuilder extends NodeBuilder {
 
     final MutablePicoContainer toOperateOn;
 
-    public TestingChildBuilder(MutablePicoContainer toOperateOn) {
+    public TestingChildBuilder(final MutablePicoContainer toOperateOn) {
         this.toOperateOn = toOperateOn;
     }
 
-    @SuppressWarnings("unchecked")
-    protected Object createNode(Object name, Map map) {
+    @Override
+	@SuppressWarnings("unchecked")
+    protected Object createNode(final Object name, final Map map) {
         if (name.equals("component")) {
             return toOperateOn.addComponent(map.remove("key"), map.remove("class"));
         } else {

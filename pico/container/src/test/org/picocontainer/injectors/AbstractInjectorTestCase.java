@@ -50,10 +50,11 @@ public class AbstractInjectorTestCase {
         final EmptyPicoContainer epc = new EmptyPicoContainer();
         final IllegalAccessException iae = new IllegalAccessException("foo");
         NullComponentMonitor ncm = new NullComponentMonitor() {
-            public void instantiationFailed(PicoContainer container,
-                                            ComponentAdapter componentAdapter,
-                                            Constructor constructor,
-                                            Exception e) {
+            @Override
+			public void instantiationFailed(final PicoContainer container,
+                                            final ComponentAdapter componentAdapter,
+                                            final Constructor constructor,
+                                            final Exception e) {
                 assertSame(epc, container);
                 assertSame(ai, componentAdapter);
                 assertSame(ctor, constructor);
@@ -71,10 +72,11 @@ public class AbstractInjectorTestCase {
         final EmptyPicoContainer epc = new EmptyPicoContainer();
         final InstantiationException ie = new InstantiationException("foo");
         NullComponentMonitor ncm = new NullComponentMonitor() {
-            public void instantiationFailed(PicoContainer container,
-                                            ComponentAdapter componentAdapter,
-                                            Constructor constructor,
-                                            Exception e) {
+            @Override
+			public void instantiationFailed(final PicoContainer container,
+                                            final ComponentAdapter componentAdapter,
+                                            final Constructor constructor,
+                                            final Exception e) {
                 assertSame(epc, container);
                 assertSame(ai, componentAdapter);
                 assertSame(ctor, constructor);
@@ -91,7 +93,8 @@ public class AbstractInjectorTestCase {
     @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsRuntimeIfRuntimeInTheFirstPlace() {
         final InvocationTargetException ite = new InvocationTargetException(new RuntimeException("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
-            public void invocationFailed(Member member, Object instance, Exception e) {
+            @Override
+			public void invocationFailed(final Member member, final Object instance, final Exception e) {
                 assertSame(ctor, member);
                 assertSame("bar", instance);
                 assertSame(ite, e);
@@ -107,7 +110,8 @@ public class AbstractInjectorTestCase {
     @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsErrorIfErrorInTheFirstPlace() {
         final InvocationTargetException ite = new InvocationTargetException(new Error("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
-            public void invocationFailed(Member member, Object instance, Exception e) {
+            @Override
+			public void invocationFailed(final Member member, final Object instance, final Exception e) {
                 assertSame(ctor, member);
                 assertSame("bar", instance);
                 assertSame(ite, e);
@@ -123,7 +127,8 @@ public class AbstractInjectorTestCase {
     @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsAsCompositionIfNotRuntimeOrError() {
         final InvocationTargetException ite = new InvocationTargetException(new Exception("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
-            public void invocationFailed(Member member, Object instance, Exception e) {
+            @Override
+			public void invocationFailed(final Member member, final Object instance, final Exception e) {
                 assertSame(ctor, member);
                 assertSame("bar", instance);
                 assertSame(ite, e);
@@ -139,37 +144,39 @@ public class AbstractInjectorTestCase {
     @SuppressWarnings("rawtypes")
     private static class MyAbstractInjector extends AbstractInjector {
 
-        public MyAbstractInjector(Object key,
-                                   Class impl,
-                                  Parameter[] parameters,
-                                  ComponentMonitor monitor,
-                                  boolean useNames) {
+        public MyAbstractInjector(final Object key,
+                                   final Class impl,
+                                  final Parameter[] parameters,
+                                  final ComponentMonitor monitor,
+                                  final boolean useNames) {
             super(key, impl, monitor, useNames, new ConstructorParameters(parameters));
         }
 
         @Override
-        public void verify(PicoContainer container) throws PicoCompositionException {
+        public void verify(final PicoContainer container) throws PicoCompositionException {
                 }
 
-        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        @Override
+		public Object getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return null;
         }
 
-        public String getDescriptor() {
+        @Override
+		public String getDescriptor() {
             return null;
         }
     }
 
-    
+
     public static class TestObject {
     	public String someField;
-    	
-    	public TestObject(String someValue) {
-    		
+
+    	public TestObject(final String someValue) {
+
     	}
-    	
-    	public void setSomething(String value) {
-    		
+
+    	public void setSomething(final String value) {
+
     	}
     }
 
@@ -182,7 +189,7 @@ public class AbstractInjectorTestCase {
     			acre.getMessage().contains("<not-specified> needs a 'java.lang.String' injected through : <unknown>'," +
     					" but there are too many choices to inject. These:[class java.lang.String, fwibble, fribbit]"));
     }
-    
+
     @Test
     public void testAmbiguousComponentExceptionMessageWithComponentButNoAccessibleObject() {
     	Generic<String> generic = Generic.get(String.class);
@@ -193,73 +200,73 @@ public class AbstractInjectorTestCase {
     			acre.getMessage().contains("org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String' injected through : <unknown>'," +
     					" but there are too many choices to inject. These:[class java.lang.String, fwibble, fribbit]"));
     }
-    
-    
+
+
     @Test
     public void testAmbiguousComponentExceptionMessageWithConstructorAccessibleObject() {
     	Generic<String> generic = Generic.get(String.class);
     	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
     	AccessibleObject accessibleObject = TestObject.class.getConstructors()[0];
-    	
+
     	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
     	acre.setComponent(TestObject.class);
     	acre.setMember(accessibleObject);
-    	
+
     	assertTrue("Got " + acre.getMessage(),
     			acre.getMessage().contains("class org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String' injected into constructor " +
     					"'public org.picocontainer.injectors.AbstractInjectorTestCase$TestObject(java.lang.String)'"));
-    	
+
     }
-    
+
     @Test
     public void testAmbiguousComponentExceptionMessageWithConstructorAccessibleObjectAndParameterNumber() {
     	Generic<String> generic = Generic.get(String.class);
     	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
     	AccessibleObject accessibleObject = TestObject.class.getConstructors()[0];
-    	
+
     	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
     	acre.setComponent(TestObject.class);
     	acre.setMember(accessibleObject);
     	acre.setParameterNumber(0);
-    	
+
     	assertTrue("Got " + acre.getMessage(),
     			acre.getMessage().contains("class org.picocontainer.injectors.AbstractInjectorTestCase$TestObject needs a 'java.lang.String'" +
     					" injected into parameter #0 (zero based index) of constructor " +
     					"'public org.picocontainer.injectors.AbstractInjectorTestCase$TestObject(java.lang.String)'"));
-    	
+
     }
-    
+
     @Test
     public void testAmbiguousComponentExceptionMessageWithFieldAccessibleObject() throws NoSuchFieldException, SecurityException {
     	Generic<String> generic = Generic.get(String.class);
     	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
     	AccessibleObject accessibleObject = TestObject.class.getField("someField");
-    	
+
     	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
     	acre.setComponent(TestObject.class);
     	acre.setMember(accessibleObject);
-    	
-    	
+
+
     	assertTrue("Got " + acre.getMessage(),
     			acre.getMessage().contains("needs a 'java.lang.String' injected into field " +
     					"'public java.lang.String org.picocontainer.injectors.AbstractInjectorTestCase$TestObject.someField'"));
     }
-    
+
     @Test
     public void testAmbiguousComponentExceptionMessageWithMethodAccessibleObject() throws SecurityException, NoSuchMethodException {
     	Generic<String> generic = Generic.get(String.class);
     	Object[] keys = new Object[] {String.class, "fwibble", "fribbit"};
     	AccessibleObject accessibleObject = TestObject.class.getMethod("setSomething", String.class);
-    	
+
     	AmbiguousComponentResolutionException acre = new AmbiguousComponentResolutionException(generic, keys);
     	acre.setComponent(TestObject.class);
     	acre.setMember(accessibleObject);
-    	
-    	
+
+
     	assertTrue("Got " + acre.getMessage(),
     			acre.getMessage().contains("needs a 'java.lang.String' injected into method " +
     					"'public void org.picocontainer.injectors.AbstractInjectorTestCase$TestObject.setSomething(java.lang.String)'"));
     }
-       
+
 
 }

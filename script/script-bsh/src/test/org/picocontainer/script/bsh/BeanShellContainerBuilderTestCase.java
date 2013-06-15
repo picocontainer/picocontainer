@@ -32,7 +32,7 @@ import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.script.NoOpPostBuildContainerAction;
 import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.X;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -63,7 +63,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
     		"import org.picocontainer.script.*;\n" +
     		"Class clazz;\n"+
-            "try {\n" + 
+            "try {\n" +
             "    clazz = getClass(\"TestComp\");\n" +
             "} catch (ClassNotFoundException ex) {\n" +
             "     ClassLoader current = this.getClass().getClassLoader(); \n" +
@@ -77,7 +77,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().withClassLoader(cl).build();\n" +
             "pico.addComponent(\"TestComp\", clazz, org.picocontainer.Parameter.ZERO);\n");
 
-        
+
 
         File testCompJar = TestHelper.getTestCompJarFile();
         assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
@@ -99,9 +99,9 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(testComp.getName(),testCompInstance.getClass().getName());
 
     }
-    
+
 	@Test public void testAutoStartingContainerBuilderStarts() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.*;\n" +
                 "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().build();\n" +
@@ -111,12 +111,12 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("<A",A.componentRecorder);		
-        A.reset();
+        assertEquals("<A",X.componentRecorder);
+        X.reset();
 	}
-	
+
 	@Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
-        A.reset();
+        X.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.*;\n" +
                 "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().build();\n" +
@@ -127,8 +127,8 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
-        assertEquals("",A.componentRecorder);
-        A.reset();
+        assertEquals("",X.componentRecorder);
+        X.reset();
     }
 
 	@Test
@@ -145,9 +145,9 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         URL compJarURL = testCompJar.toURI().toURL();
         final URLClassLoader cl  = new URLClassLoader(new URL[] {compJarURL}, getClass().getClassLoader());
         assertNotNull(cl.loadClass("TestComp"));
-        
+
         ContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, cl);
-        
+
         PicoContainer pico = buildContainer(containerBuilder, null, null);
         assertNotNull(pico.getComponent("TestComp"));
         assertEquals("TestComp", pico.getComponent("TestComp").getClass().getName());

@@ -7,9 +7,6 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,10 +14,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+
 
 /**
  * A PicoVisitor implementation, that calls methods on the components of a specific type.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
@@ -36,14 +36,14 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
 
     /**
      * Construct a MethodCallingVisitor for a method with arguments.
-     * 
+     *
      * @param method the {@link Method} to invoke
      * @param ofType the type of the components, that will be invoked
      * @param visitInInstantiationOrder <code>true</code> if components are visited in instantiation order
      * @param arguments the arguments for the method invocation (may be <code>null</code>)
      * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
      */
-    public MethodCallingVisitor(Method method, Class<?> ofType, Object[] arguments, boolean visitInInstantiationOrder) {
+    public MethodCallingVisitor(final Method method, final Class<?> ofType, final Object[] arguments, final boolean visitInInstantiationOrder) {
         if (method == null) {
             throw new NullPointerException();
         }
@@ -56,17 +56,18 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
 
     /**
      * Construct a MethodCallingVisitor for standard methods visiting the component in instantiation order.
-     * 
+     *
      * @param method the method to invoke
      * @param ofType the type of the components, that will be invoked
      * @param arguments the arguments for the method invocation (may be <code>null</code>)
      * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
      */
-    public MethodCallingVisitor(Method method, Class ofType, Object[] arguments) {
+    public MethodCallingVisitor(final Method method, final Class ofType, final Object[] arguments) {
         this(method, ofType, arguments, true);
     }
 
-    public Object traverse(Object node) {
+    @Override
+	public Object traverse(final Object node) {
         componentInstances.clear();
         try {
             super.traverse(node);
@@ -82,7 +83,8 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
         return Void.TYPE;
     }
 
-    public boolean visitContainer(PicoContainer pico) {
+    @Override
+	public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         componentInstances.addAll(pico.getComponents(type));
         return CONTINUE_TRAVERSAL;

@@ -21,7 +21,7 @@ import org.picocontainer.LifecycleStrategy;
 @SuppressWarnings("serial")
 public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
- 
+
     /** {@inheritDoc} **/
 	public void start(final Object component) {
 		//Does nothing
@@ -42,7 +42,7 @@ public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
         return false;
     }
 
-    public boolean isLazy(ComponentAdapter<?> adapter) {
+    public boolean isLazy(final ComponentAdapter<?> adapter) {
         return false;
     }
 }

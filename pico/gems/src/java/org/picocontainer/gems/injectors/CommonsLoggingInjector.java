@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.picocontainer.gems.injectors;
 
-import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.injectors.InjectInto;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
+import java.lang.reflect.Type;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.lang.reflect.Type;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.InjectInto;
 
 /**
  * This will Inject a Commons-Logging Logger for the injectee's class name

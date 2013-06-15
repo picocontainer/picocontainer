@@ -34,7 +34,7 @@ import org.picocontainer.testmodel.Touchable;
 
 /**
  * Test the InstanceAdapter.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest {
@@ -115,7 +115,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
             assertEquals("componentInstance cannot be null", e.getMessage());
         }
     }
-    
+
     @Test
     public void testFindAdapterOfType() {
     	ComponentAdapter adapter = new InstanceAdapter("test", "test");
@@ -127,7 +127,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
      */
-    protected Class getComponentAdapterType() {
+    @Override
+	protected Class getComponentAdapterType() {
         return InstanceAdapter.class;
     }
 
@@ -135,7 +136,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
      */
-    protected int getComponentAdapterNature() {
+    @Override
+	protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
@@ -143,7 +145,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
@@ -152,8 +155,9 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
-            MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
+            final MutablePicoContainer picoContainer) {
         return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
@@ -162,7 +166,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
-    protected ComponentAdapter prepDEF_visitable() {
+    @Override
+	protected ComponentAdapter prepDEF_visitable() {
         return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
@@ -171,7 +176,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
@@ -180,7 +186,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }

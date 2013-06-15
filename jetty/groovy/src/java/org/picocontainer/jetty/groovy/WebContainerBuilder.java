@@ -10,11 +10,11 @@
 
 package org.picocontainer.jetty.groovy;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.groovy.nodes.AbstractBuilderNode;
-import org.picocontainer.jetty.PicoJettyServer;
-
 import java.util.Map;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.jetty.PicoJettyServer;
+import org.picocontainer.script.groovy.nodes.AbstractBuilderNode;
 
 public class WebContainerBuilder extends AbstractBuilderNode {
 
@@ -23,7 +23,7 @@ public class WebContainerBuilder extends AbstractBuilderNode {
         super("webContainer");
     }
 
-    public Object createNewNode(Object current, Map map) {
+    public Object createNewNode(final Object current, final Map map) {
         int port = 0;
         if (map.containsKey("port")) {
             port = (Integer)map.remove("port");

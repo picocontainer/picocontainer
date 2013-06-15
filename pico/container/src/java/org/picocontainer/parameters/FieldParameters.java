@@ -4,11 +4,11 @@ import org.picocontainer.Parameter;
 
 public class FieldParameters extends AccessibleObjectParameterSet {
 
-	public FieldParameters(Class<?> targetType, String name, Parameter... params) {
+	public FieldParameters(final Class<?> targetType, final String name, final Parameter... params) {
 		super(targetType, name, params);
 	}
 
-	public FieldParameters(String name, Parameter... params) {
+	public FieldParameters(final String name, final Parameter... params) {
 		super(name, params);
 	}
 

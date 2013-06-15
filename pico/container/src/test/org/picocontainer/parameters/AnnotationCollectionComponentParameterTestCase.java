@@ -11,8 +11,6 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -23,40 +21,40 @@ public class AnnotationCollectionComponentParameterTestCase {
 
 	@Singleton
 	public static class A {
-		
+
 	}
-	
+
 	@Singleton
 	public static class B {
-		
+
 	}
-	
+
 	public static class C {
-		
+
 	}
-	
+
 	@Singleton
 	public static class D {
-		
+
 	}
-	
+
 	public static class SingletonRegistryWithArray {
 		public Object[] singletons;
-		public SingletonRegistryWithArray(Object[] allSingletons) {
+		public SingletonRegistryWithArray(final Object[] allSingletons) {
 			this.singletons = allSingletons;
 		}
 	}
-	
+
 	public static class SingletonRegistryWithList {
 		public List<Object> singletons;
-		public SingletonRegistryWithList(List<Object> allSingletons) {
+		public SingletonRegistryWithList(final List<Object> allSingletons) {
 			this.singletons = allSingletons;
 		}
 	}
-	
+
 	public static class SingletonRegistryWithMap {
 		public Map singletons;
-		public SingletonRegistryWithMap(Map allSingletons) {
+		public SingletonRegistryWithMap(final Map allSingletons) {
 			this.singletons = allSingletons;
 		}
 	}
@@ -66,23 +64,23 @@ public class AnnotationCollectionComponentParameterTestCase {
 		pico.addComponent(A.class)
 			.addComponent(B.class)
 			.addComponent(C.class);
-		
+
 		MutablePicoContainer child = pico.makeChildContainer();
 		child.addComponent(D.class)
-			 .addComponent(SingletonRegistryWithArray.class, SingletonRegistryWithArray.class, 
+			 .addComponent(SingletonRegistryWithArray.class, SingletonRegistryWithArray.class,
 					 	new AnnotationCollectionComponentParameter(Singleton.class))
 			 .addComponent(SingletonRegistryWithList.class, SingletonRegistryWithList.class,
 					 	new AnnotationCollectionComponentParameter(Singleton.class))
-			 .addComponent(SingletonRegistryWithMap.class, SingletonRegistryWithMap.class,					
+			 .addComponent(SingletonRegistryWithMap.class, SingletonRegistryWithMap.class,
 							 new ComponentParameter(new AnnotationCollectionComponentParameter(Singleton.class,
-									 Object.class, 
+									 Object.class,
 									 Generic.get(Object.class),false))
 							 );
-		
+
 		return child;
-		
+
 	}
-	
+
 	@Test
 	public void testPrimitiveArrayCollecting() {
 		MutablePicoContainer pico = buildContainer();
@@ -96,9 +94,9 @@ public class AnnotationCollectionComponentParameterTestCase {
 		assertFalse(names.contains(C.class.getName()));
 		assertTrue(names.contains(D.class.getName()));
 	}
-	
-	
-	
+
+
+
 	@Test
 	public void testCollectionCollecting() {
 		MutablePicoContainer pico = buildContainer();
@@ -111,9 +109,9 @@ public class AnnotationCollectionComponentParameterTestCase {
 		assertTrue(names.contains(B.class.getName()));
 		assertFalse(names.contains(C.class.getName()));
 		assertTrue(names.contains(D.class.getName()));
-	
+
 	}
-	
+
 	@Test
 	public void testMapCollecting() {
 		MutablePicoContainer pico = buildContainer();
@@ -126,7 +124,7 @@ public class AnnotationCollectionComponentParameterTestCase {
 		assertTrue(names.contains(B.class.getName()));
 		assertFalse(names.contains(C.class.getName()));
 		assertTrue(names.contains(D.class.getName()));
-		
+
 	}
 
 }

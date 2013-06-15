@@ -22,7 +22,7 @@ import org.picocontainer.PicoVisitor;
 
 /**
  * Visitor to verify {@link PicoContainer} instances. The visitor walks down the logical container hierarchy.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 public class VerifyingVisitor extends TraversalCheckingVisitor {
@@ -45,11 +45,12 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
 
     /**
      * Traverse through all components of the {@link PicoContainer} hierarchy and verify the components.
-     * 
+     *
      * @throws PicoVerificationException if some components could not be verified.
      * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
      */
-    public Object traverse(Object node) throws PicoVerificationException {
+    @Override
+	public Object traverse(final Object node) throws PicoVerificationException {
         nestedVerificationExceptions.clear();
         verifiedComponentAdapters.clear();
         try {
@@ -64,13 +65,15 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
         return Void.TYPE;
     }
 
-    public boolean visitContainer(PicoContainer pico) {
+    @Override
+	public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         currentPico = pico;
         return CONTINUE_TRAVERSAL;
     }
 
-    public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
+    @Override
+	public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
         super.visitComponentAdapter(componentAdapter);
         if (!verifiedComponentAdapters.contains(componentAdapter)) {
             try {
@@ -83,7 +86,8 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
 
     }
 
-    public void visitComponentFactory(ComponentFactory componentFactory) {
+    @Override
+	public void visitComponentFactory(final ComponentFactory componentFactory) {
         super.visitComponentFactory(componentFactory);
 
         if (!verifiedComponentFactories.contains(componentFactory)) {
@@ -101,25 +105,25 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
 
     private class ComponentAdapterCollector implements PicoVisitor {
         // /CLOVER:OFF
-        public Object traverse(Object node) {
+        public Object traverse(final Object node) {
             return null;
         }
 
-        public boolean visitContainer(PicoContainer pico) {
+        public boolean visitContainer(final PicoContainer pico) {
             return CONTINUE_TRAVERSAL;
         }
 
         // /CLOVER:ON
 
-        public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        public void visitComponentAdapter(final ComponentAdapter componentAdapter) {
             verifiedComponentAdapters.add(componentAdapter);
         }
 
-        public void visitComponentFactory(ComponentFactory componentFactory) {
+        public void visitComponentFactory(final ComponentFactory componentFactory) {
             verifiedComponentFactories.add(componentFactory);
         }
 
-        public void visitParameter(Parameter parameter) {
+        public void visitParameter(final Parameter parameter) {
 
         }
     }

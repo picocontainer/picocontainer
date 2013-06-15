@@ -1,5 +1,9 @@
 package org.picocontainer.converters;
 
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
 import org.picocontainer.Converters;
 import org.picocontainer.DefaultPicoContainer;
@@ -7,12 +11,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.CompositePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 public class ConverterTestCase {
-    
+
     @Test
     public void builtInConversionByDefault() {
         DefaultPicoContainer dpc = new DefaultPicoContainer();
@@ -114,10 +114,10 @@ public class ConverterTestCase {
          * @see org.picocontainer.converters.BooleanConverter#convert(java.lang.String)
          */
         @Override
-        public Boolean convert(String paramValue) {
+        public Boolean convert(final String paramValue) {
             invocationCount++;
             return super.convert(paramValue);
-        }        
+        }
     }
 
 }

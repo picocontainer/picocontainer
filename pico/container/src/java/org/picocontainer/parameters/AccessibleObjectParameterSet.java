@@ -1,7 +1,6 @@
 package org.picocontainer.parameters;
 
 import java.io.Serializable;
-import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 
 import org.picocontainer.Parameter;
@@ -17,23 +16,23 @@ public class AccessibleObjectParameterSet implements Serializable {
 
 
 	public static final AccessibleObjectParameterSet[] EMPTY = new AccessibleObjectParameterSet[]{};
-	
+
 	/**
 	 * Can't be serialized
 	 */
 	private transient Class<?> targetType;
 
 	private final Parameter[] params;
-	
-	private final String name;
-	
 
-	public AccessibleObjectParameterSet(String name, Parameter... params) {
+	private final String name;
+
+
+	public AccessibleObjectParameterSet(final String name, final Parameter... params) {
 		this.name = name;
 		this.params = params;
 	}
-	
-	public AccessibleObjectParameterSet(Class<?> targetType, String name, Parameter... params) {
+
+	public AccessibleObjectParameterSet(final Class<?> targetType, final String name, final Parameter... params) {
 		this.targetType = targetType;
 		this.name = name;
 		this.params = params;
@@ -43,7 +42,7 @@ public class AccessibleObjectParameterSet implements Serializable {
 		return targetType;
 	}
 
-	public void setTargetType(Class<?> targetType) {
+	public void setTargetType(final Class<?> targetType) {
 		this.targetType = targetType;
 	}
 

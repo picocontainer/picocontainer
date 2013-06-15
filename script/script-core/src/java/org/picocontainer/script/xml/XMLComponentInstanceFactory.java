@@ -12,14 +12,14 @@ import org.w3c.dom.Element;
 
 /**
  * Factory that creates instances from DOM Elements
- * 
+ *
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
 public interface XMLComponentInstanceFactory {
     /**
      * Creates an instance of an Object from a DOM Element
-     * 
+     *
      * @param container the PicoContainer
      * @param element the DOM Element
      * @param classLoader the ClassLoader

@@ -9,6 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.io.StringReader;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
@@ -16,14 +24,6 @@ import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.SetterInjection;
-
-import java.io.IOException;
-import java.io.StringReader;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 public class CommandLinePicoContainerTestCase {
 
@@ -50,7 +50,7 @@ public class CommandLinePicoContainerTestCase {
 
     public static class NeedsString {
         public String val;
-        public NeedsString(String b) {
+        public NeedsString(final String b) {
             val = b;
         }
     }
@@ -114,7 +114,7 @@ public class CommandLinePicoContainerTestCase {
         private final String a;
         private final int b;
         private final boolean c;
-        public NeedsAFew(String a, int b, boolean c) {
+        public NeedsAFew(final String a, final int b, final boolean c) {
             this.a = a;
             this.b = b;
             this.c = c;
@@ -138,15 +138,15 @@ public class CommandLinePicoContainerTestCase {
         private int b;
         private boolean c;
 
-        public void setA(String a) {
+        public void setA(final String a) {
             this.a = a;
         }
 
-        public void setB(int b) {
+        public void setB(final int b) {
             this.b = b;
         }
 
-        public void setC(boolean c) {
+        public void setC(final boolean c) {
             this.c = c;
         }
     }

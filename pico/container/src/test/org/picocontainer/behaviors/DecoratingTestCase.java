@@ -9,16 +9,16 @@
 
 package org.picocontainer.behaviors;
 
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.ConstructorInjection;
-
-import java.lang.reflect.Field;
-
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class DecoratingTestCase {
 
@@ -30,7 +30,7 @@ public class DecoratingTestCase {
         Swede swede;
         private final String foo;
 
-        public Turnip(String foo) {
+        public Turnip(final String foo) {
             this.foo = foo;
         }
 
@@ -63,7 +63,8 @@ public class DecoratingTestCase {
                 new FieldDecorating(Swede.class) {
                     public Object decorate(final Object instance) {
                         return new Swede() {
-                            public String toString() {
+                            @Override
+							public String toString() {
                                 return "Swede:" + instance.getClass().getName();
                             }
                         };
@@ -85,7 +86,8 @@ public class DecoratingTestCase {
             for (Field field : fields) {
                 if (field.getType() == Swede.class) {
                     Swede value = new Swede() {
-                        public String toString() {
+                        @Override
+						public String toString() {
                             return "Swede:" + instance.getClass().getName();
                         }
                     };

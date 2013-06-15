@@ -9,6 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -26,12 +32,6 @@ import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 @SuppressWarnings("serial")
 public class AdaptingBehavior extends AbstractBehavior implements Behavior, Serializable {
 
@@ -41,17 +41,18 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
 		this(null);
 	}
 
-    public AdaptingBehavior(StaticsInitializedReferenceSet referenceSet) {
+    public AdaptingBehavior(final StaticsInitializedReferenceSet referenceSet) {
 		this.referenceSet = referenceSet;
 	}
 
 
-	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycle,
-                                                   Properties componentProps,
-                                                   Object key,
-                                                   Class<T> impl,
-                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+	@Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                   final LifecycleStrategy lifecycle,
+                                                   final Properties componentProps,
+                                                   final Object key,
+                                                   final Class<T> impl,
+                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         List<Behavior> list = new ArrayList<Behavior>();
         ComponentFactory lastFactory = makeInjectionFactory();
         processSynchronizing(componentProps, list);
@@ -61,7 +62,7 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         processImplementationHiding(componentProps, list);
         processCaching(componentProps, impl, list);
         processGuarding(componentProps, impl, list);
-        
+
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
@@ -72,7 +73,7 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         }
 
         ComponentFactory completedFactory = createStaticInjection(lastFactory);
-        
+
         return completedFactory.createComponentAdapter(monitor,
                                                   lifecycle,
                                                   componentProps,
@@ -87,14 +88,15 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
 	 * @param lastFactory
 	 * @return
 	 */
-    protected ComponentFactory createStaticInjection(ComponentFactory lastFactory) {
+    protected ComponentFactory createStaticInjection(final ComponentFactory lastFactory) {
         return new AnnotatedStaticInjection(referenceSet).wrap(lastFactory);
 	}
 
-	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycle,
-                                                Properties componentProps,
-                                                ComponentAdapter<T> adapter) {
+	@Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
+                                                final LifecycleStrategy lifecycle,
+                                                final Properties componentProps,
+                                                final ComponentAdapter<T> adapter) {
         List<Behavior> list = new ArrayList<Behavior>();
         processSynchronizing(componentProps, list);
         processImplementationHiding(componentProps, list);
@@ -118,33 +120,35 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         return lastFactory.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
     }
 
-    public void verify(PicoContainer container) {
+    @Override
+	public void verify(final PicoContainer container) {
     }
 
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
-        
+
     }
 
     protected AdaptingInjection makeInjectionFactory() {
         return new AdaptingInjection();
     }
 
-    protected void processSynchronizing(Properties componentProps, List<Behavior> list) {
+    protected void processSynchronizing(final Properties componentProps, final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE)) {
             list.add(new Synchronizing());
         }
     }
 
-    protected void processLocking(Properties componentProps, List<Behavior> list) {
+    protected void processLocking(final Properties componentProps, final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.LOCK)) {
             list.add(new Locking());
         }
     }
 
-    protected void processCaching(Properties componentProps,
-                                       Class<?> impl,
-                                       List<Behavior> list) {
+    protected void processCaching(final Properties componentProps,
+                                       final Class<?> impl,
+                                       final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE) ||
             impl.getAnnotation(Cache.class) != null) {
             list.add(new Caching());
@@ -152,41 +156,41 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
     }
 
-    protected  void processGuarding(Properties componentProps, Class<?> impl, List<Behavior> list) {
+    protected  void processGuarding(final Properties componentProps, final Class<?> impl, final List<Behavior> list) {
         if (AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.GUARD, false)) {
             list.add(new Guarding());
         }
     }
 
-    protected void processImplementationHiding(Properties componentProps, List<Behavior> list) {
+    protected void processImplementationHiding(final Properties componentProps, final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHiding());
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL);
     }
 
-    protected void processPropertyApplying(Properties componentProps, List<Behavior> list) {
+    protected void processPropertyApplying(final Properties componentProps, final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.PROPERTY_APPLYING)) {
             list.add(new PropertyApplying());
         }
     }
 
-    protected void processAutomatic(Properties componentProps, List<Behavior> list) {
+    protected void processAutomatic(final Properties componentProps, final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC)) {
             list.add(new Automating());
         }
     }
-    
-    private void writeObject(java.io.ObjectOutputStream stream)
+
+    private void writeObject(final java.io.ObjectOutputStream stream)
             throws IOException {
     	stream.defaultWriteObject();
     }
-    
-    private void readObject(java.io.ObjectInputStream stream)
+
+    private void readObject(final java.io.ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-    
+
     	stream.defaultReadObject();
     	referenceSet = new StaticsInitializedReferenceSet();
     }
-    
+
 }

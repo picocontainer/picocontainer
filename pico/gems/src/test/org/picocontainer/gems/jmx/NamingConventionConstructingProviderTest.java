@@ -32,9 +32,9 @@ import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 @RunWith(JMock.class)
 public class NamingConventionConstructingProviderTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
-    private ObjectNameFactory nameFactory = mockery.mock(ObjectNameFactory.class);
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
+    private final ObjectNameFactory nameFactory = mockery.mock(ObjectNameFactory.class);
 
     @Test public void testObjectNameFactoryMustNotBeNull() {
         try {

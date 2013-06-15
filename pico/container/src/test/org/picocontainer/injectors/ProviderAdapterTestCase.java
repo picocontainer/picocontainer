@@ -9,17 +9,17 @@ import org.picocontainer.JTypeHelper;
 import com.googlecode.jtype.Generic;
 
 public class ProviderAdapterTestCase {
-	
+
 	public static class A {
-		
+
 	}
-	
+
 	public static class ProviderA implements javax.inject.Provider<A> {
 
 		public A get() {
 			return new A();
 		}
-		
+
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class ProviderAdapterTestCase {
 		ProviderAdapter providerAdapter = new ProviderAdapter(new ProviderA());
 		assertEquals(A.class, providerAdapter.getComponentKey());
 	}
-	
+
 	@Test
 	public void testImplementationType() {
 		ProviderAdapter providerAdapter = new ProviderAdapter(new ProviderA());

@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Collection of immutable properties, holding behaviour characteristics.  See 
+ * Collection of immutable properties, holding behaviour characteristics.  See
  * <a href="http://www.picocontainer.org/behaviors.html">The PicoContainer Website</a> for details on the usage
  * of Characteristics.
- * 
+ *
  * @author Paul Hammant
  * @see org.picocontainer.ComponentAdapter
  * @see ChangedBehavior
@@ -35,7 +35,7 @@ public final class Characteristics {
     private static final String _HIDE_IMPL = "hide-impl";
     private static final String _PROPERTY_APPLYING = "property-applying";
     private static final String _AUTOMATIC = "automatic";
-    private static final String _USE_NAMES = "use-parameter-names";  
+    private static final String _USE_NAMES = "use-parameter-names";
     private static final String  _USE_ALL_PARAMETERS = "use-all-parameters";
     private static final String _ENABLE_CIRCULAR = "enable-circular";
     private static final String _GUARD = "guard";
@@ -68,22 +68,22 @@ public final class Characteristics {
      * Turns on Method Injection.
      */
     public static final Properties METHOD_INJECTION = immutable(_INJECTION, _METHOD);
-    
-    
+
+
     /**
      * Turn on static injection.
      */
     public static final Properties STATIC_INJECTION = immutable(_STATIC_INJECTION, TRUE);
-    
+
     /**
      * Turn off static injection.
      */
     public static final Properties NO_STATIC_INJECTION = immutable(_STATIC_INJECTION, FALSE);
-    
+
 
     /**
      * Turns off Caching of component instances.  (Often referred to in other circles
-     * as singleton). 
+     * as singleton).
      * @see org.picocontainer.behaviors.Caching
      */
     public static final Properties NO_CACHE = immutable(_CACHE, FALSE);
@@ -102,13 +102,13 @@ public final class Characteristics {
      */
     public static final Properties SYNCHRONIZE = immutable(_SYNCHRONIZING, TRUE);
 
-    
+
     /**
      * Turns off synchronized access to the component instance.
      * @see org.picocontainer.behaviors.Synchronizing
      */
     public static final Properties NO_SYNCHRONIZE = immutable(_SYNCHRONIZING, FALSE);
-    
+
     /**
      * Uses a java.util.concurrent.Lock to provide faster access than synchronized.
      * @see org.picocontainer.behaviors.Locking
@@ -120,7 +120,7 @@ public final class Characteristics {
      * @see org.picocontainer.behaviors.Locking
      */
     public static final Properties NO_LOCK = immutable(_LOCKING, FALSE);
-    
+
     /**
      * Synonym for {@link #CACHE CACHE}.
      * @see org.picocontainer.behaviors.Caching
@@ -132,7 +132,7 @@ public final class Characteristics {
      * @see org.picocontainer.behaviors.Caching
      */
     public static final Properties NO_SINGLE = NO_CACHE;
-    
+
     /**
      * Turns on implementation hiding.  You may use the JDK Proxy implementation included
      * in this version, <strong>or</strong> the ASM-based implementation hiding method
@@ -148,7 +148,7 @@ public final class Characteristics {
     public static final Properties NO_HIDE_IMPL = immutable(_HIDE_IMPL, FALSE);
 
     public static final Properties ENABLE_CIRCULAR = immutable(_ENABLE_CIRCULAR, TRUE);
-    
+
     public static final Properties NONE = immutable(_NONE, "");
 
     /**
@@ -156,7 +156,7 @@ public final class Characteristics {
      * after the object is created based.
      */
     public static final Properties PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, TRUE);
-    
+
     /**
      * Turns off bean-setting property applications.
      * @see org.picocontainer.behaviors.PropertyApplying
@@ -166,14 +166,14 @@ public final class Characteristics {
     public static final Properties AUTOMATIC = immutable(_AUTOMATIC, TRUE);
 
     public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
-    
+
     public static final Properties ALLOW_UNUSED_PARAMETERS = immutable(_USE_ALL_PARAMETERS, FALSE);
 
     public static final Properties EMJECTION_ENABLED = immutable(_EMJECTION, TRUE);
 
     public static final Properties GUARD = immutable(_GUARD, "guard");
 
-    public static final Properties GUARD(String with) {
+    public static final Properties GUARD(final String with) {
         return immutable(_GUARD, with);
     };
 
@@ -189,29 +189,29 @@ public final class Characteristics {
      * @param value the property value.
      * @return Read Only properties instance.
      */
-    public static Properties immutable(String name, String value) {
+    public static Properties immutable(final String name, final String value) {
         return new ImmutableProperties(name, value);
     }
-    
+
     /**
      * Read only property set.  Once constructed, all methods that modify state will
      * throw UnsupportedOperationException.
      * @author Paul Hammant.
      */
     public static class ImmutableProperties extends Properties {
-        
+
         private boolean sealed = false;
 
-        public ImmutableProperties(String name, String value) {
+        public ImmutableProperties(final String name, final String value) {
             super.setProperty(name, value);
             sealed = true;
         }
-        
+
         /**
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
-        public Object remove(Object o) {
+        public Object remove(final Object o) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 
@@ -219,7 +219,7 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
-        public synchronized Object setProperty(String string, String string1) {
+        public synchronized Object setProperty(final String string, final String string1) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 
@@ -236,13 +236,13 @@ public final class Characteristics {
 		 * this class is a read only wrapper.
 		 */
 		@Override
-		public synchronized Object put(Object key, Object value) {
+		public synchronized Object put(final Object key, final Object value) {
 			if (!sealed) {
-				//setProperty calls put, so until the object is fully constructed, we 
+				//setProperty calls put, so until the object is fully constructed, we
 				//cannot seal it.
 				return super.put(key, value);
 			}
-			
+
             throw new UnsupportedOperationException("immutable properties are read only");
 		}
 
@@ -250,11 +250,11 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
 		@Override
-		public synchronized void putAll(Map<? extends Object, ? extends Object> t) {
+		public synchronized void putAll(final Map<? extends Object, ? extends Object> t) {
             throw new UnsupportedOperationException("immutable properties are read only");
 		}
-        
-        
+
+
     }
 
 }

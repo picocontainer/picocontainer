@@ -1,16 +1,16 @@
 package org.picocontainer.adapters;
 
+import java.lang.reflect.Type;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
-import java.lang.reflect.Type;
-
 public class NullCA implements ComponentAdapter {
 
-    private Object key;
+    private final Object key;
 
-    public NullCA(Object key) {
+    public NullCA(final Object key) {
         this.key = key;
     }
 
@@ -22,21 +22,21 @@ public class NullCA implements ComponentAdapter {
         return NOTHING.class;
     }
 
-    public Object getComponentInstance(PicoContainer container, Type into)  {
+    public Object getComponentInstance(final PicoContainer container, final Type into)  {
         return null;
     }
 
-    public void verify(PicoContainer container)  {
+    public void verify(final PicoContainer container)  {
     }
 
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
     }
 
     public ComponentAdapter getDelegate() {
         return null;
     }
 
-    public ComponentAdapter findAdapterOfType(Class adapterType) {
+    public ComponentAdapter findAdapterOfType(final Class adapterType) {
         return null;
     }
 

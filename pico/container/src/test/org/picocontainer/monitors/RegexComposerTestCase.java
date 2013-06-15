@@ -1,7 +1,14 @@
 package org.picocontainer.monitors;
 
-import com.googlecode.jtype.Generic;
+import static org.picocontainer.Characteristics.USE_NAMES;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -13,17 +20,12 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.composers.RegexComposer;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.picocontainer.Characteristics.USE_NAMES;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+import com.googlecode.jtype.Generic;
 
 @RunWith(JMock.class)
 public class RegexComposerTestCase extends TestCase {
 
-    private Mockery mockery = mockeryWithCountingNamingScheme();
+    private final Mockery mockery = mockeryWithCountingNamingScheme();
 
     @Test
     public void regexWorksInGetComponentCalls() {
@@ -80,17 +82,17 @@ public class RegexComposerTestCase extends TestCase {
     }
 
     public static class NeedsApples {
-        private List<String> apples;
+        private final List<String> apples;
 
-        public NeedsApples(List<String> apples) {
+        public NeedsApples(final List<String> apples) {
             this.apples = apples;
         }
     }
 
     public static class NeedsPlums {
-        private List<String> plums;
+        private final List<String> plums;
 
-        public NeedsPlums(List<String> plums) {
+        public NeedsPlums(final List<String> plums) {
             this.plums = plums;
         }
     }

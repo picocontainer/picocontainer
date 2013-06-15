@@ -1,15 +1,16 @@
 package org.picocontainer.converters;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
-import javax.swing.JPanel;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import javax.swing.JPanel;
+
+import org.junit.Test;
 
 public class BuiltInConverterTestCase {
     BuiltInConverters bic = new BuiltInConverters();
@@ -51,7 +52,7 @@ public class BuiltInConverterTestCase {
         assertEquals(true, bic.convert("TRUE", Boolean.TYPE));
     }
 
-    
+
     @Test
     public void canConvertFileAndURL() throws MalformedURLException {
         assertTrue(bic.canConvert(File.class));
@@ -84,10 +85,10 @@ public class BuiltInConverterTestCase {
     }
 
     private static class JPanelConverter implements Converter<JPanel> {
-        public JPanel convert(String paramValue) {
+        public JPanel convert(final String paramValue) {
             return new JPanel();
         }
     }
-    
-    
+
+
 }

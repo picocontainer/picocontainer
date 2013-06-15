@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.io.xml.DomReader;
 /**
  * Implementation of XMLComponentInstanceFactory that uses XStream to unmarshal
  * DOM elements.
- * 
+ *
  * @author Paul Hammant
  * @author Marcos Tarruella
  * @author Mauro Talevi
@@ -37,14 +37,14 @@ public class XStreamComponentInstanceFactory implements XMLComponentInstanceFact
     /**
      * Creates an XStreamComponentInstanceFactory for a given instance of
      * XStream
-     * 
+     *
      * @param xstream the XStream instance
      */
-    public XStreamComponentInstanceFactory(XStream xstream) {
+    public XStreamComponentInstanceFactory(final XStream xstream) {
         this.xstream = xstream;
     }
 
-    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) {
+    public Object makeInstance(final PicoContainer pico, final Element element, final ClassLoader classLoader) {
         return xstream.unmarshal(new DomReader(element));
     }
 }

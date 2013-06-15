@@ -9,28 +9,28 @@
  *****************************************************************************/
 package org.picocontainer.gems.behaviors;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Characteristics;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.parameters.ConstructorParameters;
-import org.picocontainer.parameters.FieldParameters;
-import org.picocontainer.parameters.MethodParameters;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.parameters.ConstructorParameters;
+import org.picocontainer.parameters.FieldParameters;
+import org.picocontainer.parameters.MethodParameters;
 
 /**
  * Because AsmImplementationHiding is the same type of behavior as HiddenImplementation, we use the same
@@ -48,7 +48,7 @@ public class AsmImplementationHiding extends AbstractBehavior {
                                                    final Properties componentProps,
                                                    final Object key,
                                                    final Class<T> impl,
-                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_HIDE_IMPL)) {
             return super.createComponentAdapter(monitor, lifecycle,
                                                 componentProps, key, impl, constructorParams, fieldParams, methodParams);

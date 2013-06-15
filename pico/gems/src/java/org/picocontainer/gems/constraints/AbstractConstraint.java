@@ -8,7 +8,11 @@
 
 package org.picocontainer.gems.constraints;
 
-import com.googlecode.jtype.Generic;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.Map;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
@@ -17,10 +21,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.Map;
+import com.googlecode.jtype.Generic;
 
 /**
  * Base class for parameter constraints.
@@ -37,14 +38,14 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     @Override
 	public Resolver resolve(final PicoContainer container,
                          final ComponentAdapter<?> forAdapter,
-                         ComponentAdapter<?> injecteeAdapter, final Type expectedType,
+                         final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
                          final NameBinding expectedNameBinding, final boolean useNames,
                          final Annotation binding) throws PicoCompositionException {
         final Resolver resolver;
         return new Parameter.DelegateResolver(super.resolve(container, forAdapter,
                 null, getArrayType((Class) expectedType), expectedNameBinding, useNames, binding)) {
             @Override
-            public Object resolveInstance(Type into) {
+            public Object resolveInstance(final Type into) {
                 final Object[] array = (Object[]) super.resolveInstance(into);
                 if (array.length == 1) {
                     return array[0];

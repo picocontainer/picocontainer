@@ -457,13 +457,13 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
     public static class TestFactory implements XMLComponentInstanceFactory {
-        public Object makeInstance(PicoContainer pico, Element elem, ClassLoader classLoader) {
+        public Object makeInstance(final PicoContainer pico, final Element elem, final ClassLoader classLoader) {
             return "Hello";
         }
     }
 
     public static class ContainerTestFactory implements XMLComponentInstanceFactory {
-        public Object makeInstance(PicoContainer pico, Element elem, ClassLoader classLoader) {
+        public Object makeInstance(final PicoContainer pico, final Element elem, final ClassLoader classLoader) {
             return "ContainerHello";
         }
     }
@@ -745,13 +745,13 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
     @SuppressWarnings("serial")
     public static class MyComponentFactory2 extends AbstractBehavior {
-        public MyComponentFactory2(ComponentFactory delegate) {
+        public MyComponentFactory2(final ComponentFactory delegate) {
             wrap(delegate);
         }
     }
     @SuppressWarnings("serial")
     public static class MyComponentFactory3 extends AbstractBehavior {
-        public MyComponentFactory3(ComponentFactory delegate) {
+        public MyComponentFactory3(final ComponentFactory delegate) {
             wrap(delegate);
         }
     }
@@ -836,48 +836,48 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         // decorators are fairly dirty - they replace a very select implementation in this TestCase.
         assertNotNull(pico.getComponent(Touchable.class));
     }
-    
+
     @Test
     public void testInheritanceOfBehaviorsFromParentContainer() {
     	Reader comparison = new StringReader("" +
         		"<container inheritBehaviors=\"false\">\n" +
                 "  <component class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>"
-        	);    	
+        	);
 
     	MutablePicoContainer parent = new PicoBuilder().withLocking().build();
     	PicoContainer comparisonPico = buildContainer(new XMLContainerBuilder(comparison, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	//Verify not locking by default
     	//assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));
     	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
-    	
+
     	//Verify parent caching propagates to child.
     	Reader script = new StringReader("" +
     		"<container inheritBehaviors=\"true\">\n" +
             "  <component class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
             "</container>"
     	);
-    	
+
     	parent = new PicoBuilder().withLocking().build();
     	PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
-    	
+
     	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locking.Locked.class));
     }
-    
-    
+
+
     @Test public void testListSupport() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
                 "   <component-implementation class='"+ListSupport.class.getName()+"'>" +
                 "       <parameter empty-collection='false' component-value-type='"+Entity.class.getName()+"'/>" +
-                "   </component-implementation>" +               
+                "   </component-implementation>" +
                 "   <component-implementation class=\'"+CustomerEntityImpl.class.getName()+"\'/>" +
                 "   <component-implementation class=\'"+OrderEntityImpl.class.getName()+"\'/>" +
                  "</container>");
 
          PicoContainer pico = buildContainer(script);
-         
+
          ListSupport listSupport = pico.getComponent(ListSupport.class);
 
          assertNotNull(listSupport);
@@ -886,27 +886,27 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
          Entity entity1 = listSupport.getAListOfEntityObjects().get(0);
          Entity entity2 = listSupport.getAListOfEntityObjects().get(1);
-         
+
          assertNotNull(entity1);
          assertEquals(CustomerEntityImpl.class, entity1.getClass());
-         
+
          assertNotNull(entity2);
          assertEquals(OrderEntityImpl.class, entity2.getClass());
      }
-    
+
     @Test public void testMapSupport() {
-        
+
         Reader script = new StringReader("" +
                 "<container>\n" +
                "   <component-implementation class='"+ MapSupport.class.getName()+ "'>" +
                "       <parameter empty-collection='false' component-value-type='"+Entity.class.getName()+"'/>" +
-               "   </component-implementation>" +               
+               "   </component-implementation>" +
                "   <component-implementation key='customer' class=\'"+CustomerEntityImpl.class.getName()+"\'/>" +
                "   <component-implementation key='order' class=\'"+OrderEntityImpl.class.getName()+"\'/>" +
                 "</container>");
-        
+
         PicoContainer pico = buildContainer(script);
-        
+
         MapSupport mapSupport = pico.getComponent(MapSupport.class);
 
         assertNotNull(mapSupport);
@@ -914,24 +914,24 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(2, mapSupport.getAMapOfEntities().size());
 
         Map<String, Entity> aMapOfEntities = mapSupport.getAMapOfEntities();
-        
+
         Entity entity1 = aMapOfEntities.get("customer");
         Entity entity2 = aMapOfEntities.get("order");
-        
+
         assertNotNull(entity1);
         assertEquals(CustomerEntityImpl.class, entity1.getClass());
-        
+
         assertNotNull(entity2);
-        assertEquals(OrderEntityImpl.class, entity2.getClass()); 
+        assertEquals(OrderEntityImpl.class, entity2.getClass());
     }
-    
+
     @Test public void testNoEmptyCollectionWithComponentKeyTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
                 "   <component-implementation class='"+ MapSupport.class.getName()+ "'>" +
                 "       <parameter empty-collection='false' component-key-type='"+Entity.class.getName()+"'/>" +
-                "   </component-implementation>" +               
+                "   </component-implementation>" +
                 "   <component-implementation key='customer' class=\'"+CustomerEntityImpl.class.getName()+"\'/>" +
                 "   <component-implementation key='order' class=\'"+OrderEntityImpl.class.getName()+"\'/>" +
                  "</container>");
@@ -943,14 +943,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
             assertTrue(e.getMessage().indexOf("one or both of the emptyCollection")>0);
         }
      }
-    
+
     @Test public void testNoComponentValueTypeWithComponentKeyTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
                 "   <component-implementation class='"+ MapSupport.class.getName()+ "'>" +
                 "       <parameter component-value-type='"+Entity.class.getName()+"' component-key-type='"+Entity.class.getName()+"'/>" +
-                "   </component-implementation>" +               
+                "   </component-implementation>" +
                 "   <component-implementation key='customer' class=\'"+CustomerEntityImpl.class.getName()+"\'/>" +
                 "   <component-implementation key='order' class=\'"+OrderEntityImpl.class.getName()+"\'/>" +
                  "</container>");
@@ -961,15 +961,15 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         } catch (final PicoException e) {
             assertTrue(e.getMessage().indexOf("but one or both of the emptyCollection")>0);
         }
-     }   
-    
+     }
+
     @Test public void testNoEmptyCollectionWithComponentValueTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
                 "   <component-implementation class='"+ MapSupport.class.getName()+ "'>" +
                 "       <parameter component-value-type='"+Entity.class.getName()+"'/>" +
-                "   </component-implementation>" +               
+                "   </component-implementation>" +
                 "   <component-implementation key='customer' class=\'"+CustomerEntityImpl.class.getName()+"\'/>" +
                 "   <component-implementation key='order' class=\'"+OrderEntityImpl.class.getName()+"\'/>" +
                  "</container>");
@@ -979,16 +979,16 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
             fail("Thrown " + PicoException.class.getName() + " expected");
         } catch (final PicoException e) {
             System.out.println(e);
-            
+
             assertTrue(e.getMessage().indexOf("but the emptyCollection () was empty or null")>0);
         }
      }
-    
+
     @Test
     public void testParameterZero() {
-    	Reader script = new StringReader("" + 
+    	Reader script = new StringReader("" +
                 "<container>\n" +
-	    			"<component key='java.util.List' class='java.util.ArrayList'> \n" +	
+	    			"<component key='java.util.List' class='java.util.ArrayList'> \n" +
 	    			"    <parameter-zero/>\n" +
 	    			"</component> \n" +
 	    			"<component key='java.util.Set' class='java.util.HashSet'> \n" +
@@ -1001,7 +1001,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     	assertNotNull(pico.getComponent(java.util.Set.class));
     }
 
-    private PicoContainer buildContainer(Reader script) {
+    private PicoContainer buildContainer(final Reader script) {
         return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
     }
 
@@ -1014,10 +1014,10 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     }
 
-    // TODO: Move this into pico-tck 
+    // TODO: Move this into pico-tck
     public static class WrapsTouchable implements Touchable {
         private final Touchable wrapped;
-        
+
         public WrapsTouchable(final Touchable wrapped) {
             this.wrapped = wrapped;
         }

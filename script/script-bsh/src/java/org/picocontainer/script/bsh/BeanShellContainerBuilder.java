@@ -25,16 +25,17 @@ import bsh.Interpreter;
  */
 public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
 
-    public BeanShellContainerBuilder(Reader script, ClassLoader classLoader) {
+    public BeanShellContainerBuilder(final Reader script, final ClassLoader classLoader) {
         super(script, classLoader);
     }
 
-    public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {
+    public BeanShellContainerBuilder(final URL script, final ClassLoader classLoader) {
     	super(script, classLoader);
     }
 
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    @Override
+	protected PicoContainer createContainerFromScript(final PicoContainer parentContainer, final Object assemblyScope) {
         Interpreter i = new Interpreter();
         try {
             i.set("parent", parentContainer);

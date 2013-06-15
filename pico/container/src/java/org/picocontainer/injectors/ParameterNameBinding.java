@@ -8,14 +8,10 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import java.lang.reflect.AccessibleObject;
+
 import org.picocontainer.NameBinding;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Member;
-
-import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 public class ParameterNameBinding implements NameBinding {
@@ -25,7 +21,7 @@ public class ParameterNameBinding implements NameBinding {
 
     private String name;
 
-    public ParameterNameBinding(Paranamer paranamer, AccessibleObject member, int index) {
+    public ParameterNameBinding(final Paranamer paranamer, final AccessibleObject member, final int index) {
         this.member = member;
         this.paranamer = paranamer;
         this.index = index;

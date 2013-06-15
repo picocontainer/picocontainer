@@ -9,7 +9,6 @@ package org.picocontainer.lifecycle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import org.picocontainer.monitors.NullComponentMonitor;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.io.Serializable;
@@ -31,6 +30,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * @author Paul Hammant
@@ -40,7 +40,7 @@ import org.picocontainer.Startable;
 @RunWith(JMock.class)
 public class ReflectionLifecycleStrategyTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
 	private ReflectionLifecycleStrategy strategy;
 	private ComponentMonitor monitor;
@@ -179,7 +179,7 @@ public class ReflectionLifecycleStrategyTestCase {
 		public int startCount = 0;
 		public int stopCount = 0;
 		public int disposeCount = 0;
-		
+
 		public void start() {
 			startCount++;
 		}
@@ -191,9 +191,9 @@ public class ReflectionLifecycleStrategyTestCase {
 		public void dispose() {
 			disposeCount++;
 		}
-		
+
 	}
-	
+
 	/**
 	 * <a href="http://jira.codehaus.org/browse/PICO-379">PICO-379</a>
 	 */
@@ -209,7 +209,7 @@ public class ReflectionLifecycleStrategyTestCase {
 		assertEquals(1, dummyTest.stopCount);
 		strategy.dispose(dummyTest);
 		assertEquals(1, dummyTest.disposeCount);
-		
+
 		//What we want test.
 		strategy = new ReflectionLifecycleStrategy(monitor, null, "stop", null);
 		dummyTest = new DummyLifecycle();
@@ -227,10 +227,10 @@ public class ReflectionLifecycleStrategyTestCase {
 		strategy.stop(dummyTest);
 		assertEquals(0, dummyTest.stopCount);
 		strategy.dispose(dummyTest);
-		assertEquals(1, dummyTest.disposeCount);	
+		assertEquals(1, dummyTest.disposeCount);
 	}
 
-	private Object mockComponent(boolean startable, boolean disposable) {
+	private Object mockComponent(final boolean startable, final boolean disposable) {
 		final Matcher<Member> isStartMember = new IsMember("start");
 		final Matcher<Method> isStartMethod = new IsMethod("start");
 		final Matcher<Member> isStopMember = new IsMember("stop");
@@ -294,34 +294,34 @@ public class ReflectionLifecycleStrategyTestCase {
 	}
 
 	static class IsMember extends BaseMatcher<Member> {
-		private String name;
+		private final String name;
 
-		public IsMember(String name) {
+		public IsMember(final String name) {
 			this.name = name;
 		}
 
-		public boolean matches(Object item) {
+		public boolean matches(final Object item) {
 			return ((Member) item).getName().equals(name);
 		}
 
-		public void describeTo(Description description) {
+		public void describeTo(final Description description) {
 			description.appendText("Should have been a member of name ");
 			description.appendText(name);
 		}
 	};
 
 	static class IsMethod extends BaseMatcher<Method> {
-		private String name;
+		private final String name;
 
-		public IsMethod(String name) {
+		public IsMethod(final String name) {
 			this.name = name;
 		}
 
-		public boolean matches(Object item) {
+		public boolean matches(final Object item) {
 			return ((Method) item).getName().equals(name);
 		}
 
-		public void describeTo(Description description) {
+		public void describeTo(final Description description) {
 			description.appendText("Should have been a method of name ");
 			description.appendText(name);
 		}

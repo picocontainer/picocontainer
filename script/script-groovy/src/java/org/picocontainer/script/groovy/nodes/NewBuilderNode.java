@@ -7,18 +7,18 @@
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
-import java.util.Map;
-
 import groovy.lang.GroovyObject;
+
+import java.util.Map;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 
 /**
  * Handles the child of container 'newBuilder' node.
- * 
+ *
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -42,7 +42,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
      * Supported attribute 'validating'. Indicates that attributes should be
      * validated and ScriptedPicoContainerMarkupException should be thrown if
      * invalid attributes are found.
-     * 
+     *
      * @todo Not yet implemented. How do we get PicoContainer to register a
      *       component instance? -MR
      */

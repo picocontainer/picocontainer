@@ -32,7 +32,7 @@ public class PicoCompositionException extends PicoException {
 
     /**
      * Construct a new exception with the specified cause and no detail message.
-     * 
+     *
      * @param cause the exception that caused this one.
      */
     public PicoCompositionException(final Throwable cause) {

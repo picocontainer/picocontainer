@@ -35,8 +35,8 @@ import org.picocontainer.testmodel.Touchable;
 @RunWith(JMock.class)
 public class MethodCallingVisitorTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     private Method add;
     private Method touch;
 
@@ -68,13 +68,13 @@ public class MethodCallingVisitorTest {
     @Test public void testVisitsInInstantiationOrder() throws Exception {
     	final Touchable touchable1 = mockery.mock(Touchable.class);
     	final Touchable touchable2 = mockery.mock(Touchable.class);
-    	
+
     	final Sequence sequence = mockery.sequence("touching");
         mockery.checking(new Expectations() {{
             one(touchable1).touch(); inSequence(sequence);
             one(touchable2).touch(); inSequence(sequence);
         }});
-    	
+
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
@@ -88,7 +88,7 @@ public class MethodCallingVisitorTest {
     @Test public void testVisitsInReverseInstantiationOrder() throws Exception {
     	final Touchable touchable1 = mockery.mock(Touchable.class);
     	final Touchable touchable2 = mockery.mock(Touchable.class);
-    	
+
     	final Sequence sequence = mockery.sequence("touching");
         mockery.checking(new Expectations() {{
             one(touchable2).touch(); inSequence(sequence);

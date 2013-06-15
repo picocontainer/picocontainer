@@ -9,6 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
 import org.picocontainer.ChangedBehavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -20,26 +34,12 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.format;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
-
 /**
  * A {@link org.picocontainer.ComponentMonitor} which writes to a Slf4j
  * {@link org.slf4j.Logger} instance. The Logger instance can either be injected
  * or, if not set, the {@link org.slf4j.LoggerFactory} will be used to retrieve
  * it at every invocation of the monitor.
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Michael Rimov
@@ -71,7 +71,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Logger instance class. The
 	 * class name is used to retrieve the Logger instance.
-	 * 
+	 *
 	 * @param loggerClass
 	 *            the class of the Logger
 	 */
@@ -82,7 +82,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Logger instance name. It
 	 * uses the {@link org.slf4j.LoggerFactory} to create the Logger instance.
-	 * 
+	 *
 	 * @param loggerName
 	 *            the name of the Log
 	 */
@@ -92,7 +92,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Logger instance
-	 * 
+	 *
 	 * @param logger
 	 *            the Logger to write to
 	 */
@@ -104,7 +104,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Logger instance class. The
 	 * class name is used to retrieve the Logger instance.
-	 * 
+	 *
 	 * @param loggerClass
 	 *            the class of the Logger
 	 * @param delegate
@@ -118,7 +118,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Logger instance name. It
 	 * uses the {@link org.slf4j.LoggerFactory} to create the Logger instance.
-	 * 
+	 *
 	 * @param loggerName
 	 *            the name of the Log
 	 * @param delegate
@@ -131,7 +131,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/**
 	 * Creates a Slf4jComponentMonitor with a given Slf4j Logger instance
-	 * 
+	 *
 	 * @param logger
 	 *            the Logger to write to
 	 * @param delegate
@@ -146,7 +146,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/**
 	 * Similar to default constructor behavior, but this version wraps a
 	 * delegate ComponentMonitor.
-	 * 
+	 *
 	 * @param delegate
 	 *            The next component monitor in the chain.
 	 */
@@ -197,7 +197,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/** {@inheritDoc} * */
 	public Object invoking(final PicoContainer container,
 			final ComponentAdapter<?> componentAdapter, final Member member,
-			final Object instance, Object... args) {
+			final Object instance, final Object... args) {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKING,
@@ -209,7 +209,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/** {@inheritDoc} * */
 	public void invoked(final PicoContainer container,
                         final ComponentAdapter<?> componentAdapter, final Member member,
-                        final Object instance, final long duration, Object retVal, Object[] args) {
+                        final Object instance, final long duration, final Object retVal, final Object[] args) {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKED,
@@ -266,14 +266,14 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(ChangedBehavior changedBehavior) {
+    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
 
 
     /**
 	 * Retrieves the logger factory based class being instantiated.
-	 * 
+	 *
 	 * @param member
 	 *            Source method/constructor, etc being instantiated.
 	 * @return an appropriate logger instance for this callback.
@@ -287,7 +287,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/**
 	 * Serializes the monitor.
-	 * 
+	 *
 	 * @param oos
 	 *            object output stream.
 	 * @throws IOException
@@ -304,7 +304,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	/**
 	 * Manually creates a new logger instance if it was defined earlier.
-	 * 
+	 *
 	 * @param ois
 	 * @throws IOException
 	 * @throws ClassNotFoundException

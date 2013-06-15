@@ -1,11 +1,11 @@
 package org.picocontainer;
 
-import com.googlecode.jtype.Generic;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+
+import com.googlecode.jtype.Generic;
 
 @SuppressWarnings("rawtypes")
 public class JTypeHelper {
@@ -21,7 +21,7 @@ public class JTypeHelper {
     public static final Generic VOID = Generic.get(Void.TYPE);
 
     /**
-     * 
+     *
      * @param generic
      * @param aClass
      * @return
@@ -33,14 +33,14 @@ public class JTypeHelper {
         if (type instanceof ParameterizedType) {
             //Generic g = Generic.get(aClass);
         	//Recursively look for first super class that has a a parameterized type argument.
-        	
+
         	ParameterizedType castType = (ParameterizedType)type;
         	boolean isWildcardType = false;
         	if (castType.getActualTypeArguments()[0] instanceof WildcardType) {
         		isWildcardType= true;
         	}
-        	
-        	
+
+
             Type[] types = typeToCompare.getGenericInterfaces();
             while (types.length == 0 && canGetSuperClass(typeToCompare)) {
             	typeToCompare = typeToCompare.getSuperclass();
@@ -53,17 +53,17 @@ public class JTypeHelper {
             }
             Generic aClassGeneric = Generic.get(types[0]);
             boolean b = generic.equals(aClassGeneric);
-            
-            
+
+
             //boolean from = generic.getRawType().isAssignableFrom(aClass);
             boolean from = false;
             if (isWildcardType || isRawType(aClass)) {
             	from = generic.getRawType().isAssignableFrom(aClass);
             }
-            
+
             return b || from;
         } else if (type instanceof Class) {
-            return ((Class) type).isAssignableFrom(typeToCompare);        	
+            return ((Class) type).isAssignableFrom(typeToCompare);
         }
         return false;
     }
@@ -75,13 +75,13 @@ public class JTypeHelper {
      * @param aClass
      * @return
      */
-    public static boolean isRawType(Class<?> aClass) {
+    public static boolean isRawType(final Class<?> aClass) {
 		Class<?> typeToCompare = aClass;
 	    Type[] types = typeToCompare.getGenericInterfaces();
 	    while (types.length == 0 && canGetSuperClass(typeToCompare)) {
 	    	typeToCompare = typeToCompare.getSuperclass();
 	        types = typeToCompare.getGenericInterfaces();
-	    }    	
+	    }
 
 	    if (types.length == 0) {
         	return true;
@@ -102,13 +102,13 @@ public class JTypeHelper {
 	    			return true;
 	    		}
 	    	}
-	    	
-	    		
-	    	return false;
-	    } 
 
-	    
-	    
+
+	    	return false;
+	    }
+
+
+
 		return true;
 	}
 
@@ -118,22 +118,22 @@ public class JTypeHelper {
      * <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/lang/Class.html#getSuperclass()">
      * Referring Javadocs
      * </a>
-     * <p>Todo: check for void</p>  
+     * <p>Todo: check for void</p>
      */
-    private static boolean canGetSuperClass(Class<?> aClass) {
-    	
+    private static boolean canGetSuperClass(final Class<?> aClass) {
+
     	if (aClass.isInterface()) {
     		return false;
     	}
-    	
+
     	if (aClass.getSuperclass() == Object.class) {
     		return false;
     	}
-    	
+
     	if (aClass.isPrimitive()) {
     		return false;
     	}
-    	
+
 		return true;
 	}
 
@@ -144,14 +144,14 @@ public class JTypeHelper {
      * @param aClass the type to check for compatibility/
      * @return
      */
-	public static boolean isAssignableTo(Generic<?> generic, Class<?> aClass) {
+	public static boolean isAssignableTo(final Generic<?> generic, final Class<?> aClass) {
         if (generic.getType() instanceof Class) {
             return aClass.isAssignableFrom((Class<?>) generic.getType());
         }
         return false;
     }
 
-    public static boolean isPrimitive(Generic<?> generic) {
+    public static boolean isPrimitive(final Generic<?> generic) {
         return generic.getType() instanceof Class && ((Class) generic.getType()).isPrimitive();
     }
 

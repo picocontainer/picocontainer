@@ -9,43 +9,44 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.Characteristics.USE_NAMES;
+
+import java.util.Properties;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection.ConstructorInjector;
-import org.picocontainer.injectors.ConstructorInjectionTestCase.ClassAsConstructor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.picocontainer.Characteristics.USE_NAMES;
-
 /**
  * @author Mauro Talevi
  */
 public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
 
+	@Override
 	@Before
     public void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new ConstructorInjection();
     }
 
     public static class ClassA {
-        private int x;
-        public ClassA(int x) {
+        private final int x;
+        public ClassA(final int x) {
             this.x = x;
         }
     }
@@ -57,8 +58,8 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
     }
 
     public static class ClassB {
-        private float x;
-        public ClassB(float x) {
+        private final float x;
+        public ClassB(final float x) {
             this.x = x;
         }
     }
@@ -68,47 +69,47 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
         assertNotNull(picoContainer.getComponent(ClassB.class));
         assertEquals(1.2,picoContainer.getComponent(ClassB.class).x, 0.0001);
     }
-    
-    
+
+
     /**
      * Test class to verify the CICA can handle
-     * a constant parameter class type. 
+     * a constant parameter class type.
      *
      */
     @SuppressWarnings({"unused"})
     public static class ClassAsConstructor {
 		private final Class<?> type;
 
-		public ClassAsConstructor(Class<?> type) {
-			this.type = type;    		
+		public ClassAsConstructor(final Class<?> type) {
+			this.type = type;
     	}
     }
-    
-	@Test 
+
+	@Test
     public void allowClassTypesForComponentAdapter() {
         ConstructorInjection componentFactory = new ConstructorInjection();
-        
+
         ConstructorInjection.ConstructorInjector<ClassAsConstructor> cica =  (ConstructorInjection.ConstructorInjector<ClassAsConstructor>)
-        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, 
-        		new ConstructorParameters(new ConstantParameter(String.class)), 
-        		null, 
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
+        		new ConstructorParameters(new ConstantParameter(String.class)),
+        		null,
         		null);
-        
-        ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
+
+        ClassAsConstructor instance = cica.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
         assertNotNull(instance);
-    	
+
     }
-	
+
 	@Test
 	public void testOnlyParametersWithNullTargetNameAreUsed() {
         ConstructorInjection componentFactory = new ConstructorInjection();
-        
+
         ConstructorInjection.ConstructorInjector<ClassAsConstructor> cica =  (ConstructorInjector<ClassAsConstructor>)
-        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, 
-        		new ConstructorParameters(new ConstantParameter(String.class)), 
-        		null, 
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
+        		new ConstructorParameters(new ConstantParameter(String.class)),
+        		null,
         		null);
-		
+
         assertTrue(cica.parameters.length == 1);
         assertEquals(String.class, ((ConstantParameter)cica.parameters[0].getParams()[0]).getValue());
 	}

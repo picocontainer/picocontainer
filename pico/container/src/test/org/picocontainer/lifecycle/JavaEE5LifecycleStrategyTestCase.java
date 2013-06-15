@@ -33,7 +33,7 @@ public class JavaEE5LifecycleStrategyTestCase {
 
     	protected final StringBuilder sb;
 
-        public ProPostAnnotationJava5Startable(StringBuilder sb) {
+        public ProPostAnnotationJava5Startable(final StringBuilder sb) {
             this.sb = sb;
         }
 
@@ -51,7 +51,7 @@ public class JavaEE5LifecycleStrategyTestCase {
 
     public static class ProPostAnnotationJava5Startable2 extends ProPostAnnotationJava5Startable {
 
-        public ProPostAnnotationJava5Startable2(StringBuilder sb) {
+        public ProPostAnnotationJava5Startable2(final StringBuilder sb) {
             super(sb);
         }
 
@@ -65,7 +65,7 @@ public class JavaEE5LifecycleStrategyTestCase {
             sb.append("subPre()");
         }
 
-    }    
+    }
 
     private LifecycleStrategy strategy;
 
@@ -100,13 +100,13 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.start();
         pico.dispose();
         assertEquals("post()subPost()subPre()pre()", pico.getComponent(StringBuilder.class).toString());
-    }    
+    }
     @Test public void testSerializable() {
     }
-    
+
     public static class ProPostAnnotationJava5Startable3 extends ProPostAnnotationJava5Startable {
 
-        public ProPostAnnotationJava5Startable3(StringBuilder sb) {
+        public ProPostAnnotationJava5Startable3(final StringBuilder sb) {
             super(sb);
         }
 
@@ -129,18 +129,18 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.start();
         pico.dispose();
         assertEquals("subPost3()subPre3()pre()", pico.getComponent(StringBuilder.class).toString());
-    }    
-    
-    
-    
-    public static class PrivateMethodAnnotations {
-    	private StringBuilder sb;
+    }
 
-		public PrivateMethodAnnotations(StringBuilder sb) {
+
+
+    public static class PrivateMethodAnnotations {
+    	private final StringBuilder sb;
+
+		public PrivateMethodAnnotations(final StringBuilder sb) {
 			this.sb = sb;
-    		
+
     	}
-		
+
         @PostConstruct
         private void post() {
             sb.append("post()");
@@ -149,10 +149,10 @@ public class JavaEE5LifecycleStrategyTestCase {
         @PreDestroy
         private void pre() {
             sb.append("pre()");
-        }		
+        }
     }
-    
-    
+
+
     @Test
     public void testPrivateMethodInvocationWithJavaeelifecycle(){
         pico.removeComponent(ProPostAnnotationJava5Startable.class);
@@ -160,6 +160,6 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.start();
         pico.dispose();
         assertEquals("post()pre()", pico.getComponent(StringBuilder.class).toString());
-    }       
+    }
 
 }

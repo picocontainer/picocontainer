@@ -10,31 +10,31 @@
 
 package org.picocontainer.gems.behaviors;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Properties;
 
-import com.thoughtworks.proxy.toys.delegate.Delegating;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.parameters.ConstructorParameters;
 import org.picocontainer.parameters.FieldParameters;
 import org.picocontainer.parameters.MethodParameters;
-import org.picocontainer.ComponentFactory;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Properties;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 
 
 /**
  * Factory for the Assimilated. This factory will create {@link Assimilated} instances for all
  * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
  * (TODO Since assimilating is taking types that are not the result type, does this mean that we cannot use generics)
- * 
+ *
  * @author J&ouml;rg Schaible
  * for this type?  I've been unable to actually get it working.
  */
@@ -47,7 +47,7 @@ public class Assimilating extends AbstractBehavior {
     /**
      * Construct an Assimilating. The instance will use the {@link StandardProxyFactory} using the JDK
      * implementation.
-     * 
+     *
      * @param type The assimilated type.
      */
     public Assimilating(final Class type) {
@@ -56,7 +56,7 @@ public class Assimilating extends AbstractBehavior {
 
     /**
      * Construct an Assimilating using a special {@link ProxyFactory}.
-     * 
+     *
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
@@ -68,12 +68,12 @@ public class Assimilating extends AbstractBehavior {
     /**
      * Create a {@link Assimilated}. This adapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentFactory}.
-     * 
+     *
      * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,ConstructorParameters, FieldParameters[], MethodParameters[])
      */
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                       final Object key, final Class<T> impl, ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException {
+                                       final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         ComponentAdapter<T> delegate1 = super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         return monitor.changedBehavior(new Assimilated<T>(assimilationType, delegate1, proxyFactory));
     }

@@ -7,10 +7,11 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.ComponentMonitorHelper;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -25,11 +26,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.ComponentMonitorHelper;
 
 /**
  * @author Paul Hammant
@@ -41,7 +41,7 @@ public abstract class ComponentMonitorHelperTestCase {
     private ComponentMonitor monitor;
     private Constructor constructor;
     private Method method;
-    
+
     @Before
     public void setUp() throws Exception {
         constructor = getConstructor();
@@ -50,11 +50,11 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
     protected abstract ComponentMonitor makeComponentMonitor();
-    
+
     protected abstract Constructor<?> getConstructor() throws NoSuchMethodException;
 
     protected abstract Method getMethod() throws NoSuchMethodException;
-    
+
     protected abstract String getLogPrefix();
 
     protected void tearDown() throws Exception {
@@ -68,7 +68,7 @@ public abstract class ComponentMonitorHelperTestCase {
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
     }
 
-    @Test 
+    @Test
     @SuppressWarnings("unchecked")
     public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
@@ -79,7 +79,7 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
 
-    @Test 
+    @Test
     @SuppressWarnings("unchecked")
     public void testShouldTraceInstantiationFailed() throws IOException {
         monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
@@ -111,25 +111,25 @@ public abstract class ComponentMonitorHelperTestCase {
     	ObjectOutputStream oos = new ObjectOutputStream(bos);
     	oos.writeObject(monitor);
     	oos.close();
-    	
+
     	byte[] savedBytes = bos.toByteArray();
     	assertNotNull(savedBytes);
     	ByteArrayInputStream bis = new ByteArrayInputStream(savedBytes);
     	ObjectInputStream ois = new ObjectInputStream(bis);
     	this.monitor = (ComponentMonitor) ois.readObject();
     	assertNotNull(monitor);
-    	//Run through a couple of other tests so we know that the delegate logger internally 
-    	//appears to be working.    
+    	//Run through a couple of other tests so we know that the delegate logger internally
+    	//appears to be working.
     	testShouldTraceInstantiatedWithInjected();
     }
-    
+
 
     protected void assertFileContent(final String line) throws IOException{
         List lines = toLines(new StringReader(ForTestSakeAppender.CONTENT ));
         String s = lines.toString();
         assertTrue("Line '" + line + "' not found.  Instead got: " + line, s.indexOf(line) > 0);
     }
-    
+
     protected List toLines(final Reader resource) throws IOException {
         BufferedReader br = new BufferedReader(resource);
         List lines = new ArrayList();
@@ -139,6 +139,6 @@ public abstract class ComponentMonitorHelperTestCase {
             line = br.readLine();
         }
         return lines;
-    } 
+    }
 
 }

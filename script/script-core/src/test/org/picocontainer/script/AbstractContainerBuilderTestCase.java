@@ -26,29 +26,29 @@ import org.picocontainer.visitors.TraversalCheckingVisitor;
 @RunWith(JMock.class)
 public class AbstractContainerBuilderTestCase {
 
-	private Mockery context = new JUnit4Mockery();
-	
+	private final Mockery context = new JUnit4Mockery();
+
 	private MutablePicoContainer simpleContainer = null;
-	
+
 	private AbstractContainerBuilder toTest = null;
-	
+
 	private MutablePicoContainer parentContainer = null;
-	
+
 	private ContainerCountingVistor containerCountingVisitor = null;
 
-	
+
 	static class ContainerCountingVistor extends TraversalCheckingVisitor {
 		public int count = 0;
-		
-		
+
+
 		@Override
-		public boolean visitContainer(PicoContainer pico) {
+		public boolean visitContainer(final PicoContainer pico) {
 			count++;
 			return super.visitContainer(pico);
 		}
-		
+
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		parentContainer = new PicoBuilder().withCaching().withLifecycle().build();
@@ -56,14 +56,14 @@ public class AbstractContainerBuilderTestCase {
 		toTest = new AbstractContainerBuilder() {
 			@Override
 			protected PicoContainer createContainer(
-					PicoContainer parentContainer, Object assemblyScope) {
+					final PicoContainer parentContainer, final Object assemblyScope) {
 				return simpleContainer;
-			}			
+			}
 		};
-		
-				
+
+
 		containerCountingVisitor = new ContainerCountingVistor();
-		
+
 		//Verify
 		containerCountingVisitor.traverse(parentContainer);
 		assertEquals(2, containerCountingVisitor.count);
@@ -87,11 +87,11 @@ public class AbstractContainerBuilderTestCase {
 		assertTrue(simpleContainer.getLifecycleState().isDisposed());
 		assertFalse(parentContainer.getLifecycleState().isStopped());
 		assertFalse(parentContainer.getLifecycleState().isDisposed());
-		
+
 	}
-	
+
 	@Test
-	@Ignore	
+	@Ignore
 	/**
 	 * FAILURE!  Marked in JIRA under PICO-376
 	 */
@@ -100,11 +100,11 @@ public class AbstractContainerBuilderTestCase {
 		toTest.killContainer(simpleContainer);
 
 		containerCountingVisitor.traverse(parentContainer);
-	
+
 		//Parent only
-		assertEquals(1, containerCountingVisitor.count);				
+		assertEquals(1, containerCountingVisitor.count);
 	}
-	
+
 	@Test
 	public void testKillContainerWithReadOnlyPicoContainerDoesntInvokeLifecycleOrParents() {
 		final PicoContainer pico = context.mock(PicoContainer.class);
@@ -115,7 +115,7 @@ public class AbstractContainerBuilderTestCase {
 
 		toTest.killContainer(pico);
 	}
-	
+
 	@Test
 	public void testKillContainerAttemptsToProceedEvenOnErrorsButThrowsAfterwards() {
 		final MutablePicoContainer parentPico = context.mock(MutablePicoContainer.class, "parentPico");
@@ -123,17 +123,17 @@ public class AbstractContainerBuilderTestCase {
 		context.checking(new Expectations() {{
 			oneOf(mutablePico).getParent();
 			will(returnValue(parentPico));
-			
+
 			oneOf(mutablePico).stop();
 			will(throwException(new IllegalStateException("Epic Fail")));
-			
+
 			oneOf(mutablePico).dispose();
 			will(throwException(new IllegalStateException("Yup, another failure")));
-			
+
 			oneOf(parentPico).removeChildContainer(mutablePico);
 			will(throwException(new NullPointerException("mutablePico")));
 		}});
-		
+
 		try {
 			toTest.killContainer(mutablePico);
 		} catch (MultiException ex) {
@@ -152,10 +152,10 @@ public class AbstractContainerBuilderTestCase {
 		context.checking(new Expectations() {{
 			oneOf(action).onNewContainer(simpleContainer);
 		}});
-		
+
 		PicoContainer pico = toTest.setPostBuildAction(action)
 			.buildContainer(this.parentContainer, "SOME_SCOPE", false);
-		
+
 		assertNotNull(pico);
 	}
 }

@@ -29,7 +29,7 @@ public class BeanShellComponentAdapterTestCase {
 
     private MutablePicoContainer pico;
 
-    ComponentAdapter<?> setupComponentAdapter(Class<?> implementation) {
+    ComponentAdapter<?> setupComponentAdapter(final Class<?> implementation) {
         pico = new DefaultPicoContainer();
         pico.addComponent("whatever", ArrayList.class);
 

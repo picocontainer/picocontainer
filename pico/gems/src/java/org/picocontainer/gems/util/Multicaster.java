@@ -9,13 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.gems.util;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.Multicasting;
-import org.picocontainer.PicoContainer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.picocontainer.PicoContainer;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.multicast.Multicasting;
 
 /**
  * Factory for creating a multicaster object that multicasts calls to all
@@ -28,13 +29,13 @@ import java.util.List;
 public class Multicaster {
     /**
      * Create a {@link Multicasting} proxy for the components of a {@link PicoContainer}.
-     * 
+     *
      * @param pico the container
      * @param callInInstantiationOrder <code>true</code> if the components will be called in instantiation order
      * @param proxyFactory the ProxyFactory to use
      * @return the Multicasting proxy
      */
-    public static Object object(final PicoContainer pico, boolean callInInstantiationOrder, final ProxyFactory proxyFactory) {
+    public static Object object(final PicoContainer pico, final boolean callInInstantiationOrder, final ProxyFactory proxyFactory) {
         List<Object> copy = new ArrayList<Object>(pico.getComponents());
 
         if (!callInInstantiationOrder) {

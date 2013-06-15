@@ -64,7 +64,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	 * the container each time it is stopped.
 	 */
     private final List<ComponentAdapter<?>> adapterRegistrations = new ArrayList<ComponentAdapter<?>>();
-	
+
 	private final Map<ComponentAdapter<?>, Storing.Stored<?>> storedReferences = new HashMap<ComponentAdapter<?>, Storing.Stored<?>>();
 
 	/**
@@ -120,25 +120,25 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	public MutablePicoContainer addComponent(final Object key,
 			final Object implOrInstance,
 			final Parameter... parameters) throws PicoCompositionException {
-		
+
 		if (key == null) {
 			throw new NullPointerException("key");
 		}
-		
+
 		if (implOrInstance == null) {
 			throw new NullPointerException("implOrInstance");
 		}
-		
+
 		super.addComponent(key,
 				implOrInstance,
 				parameters);
-		
+
 		if (! (implOrInstance instanceof Class)) {
 			instanceRegistrations.add(super.getComponentAdapter(key));
 		} else {
 			addStoredReference(key);
 		}
-		
+
 		return this;
 	}
 
@@ -167,30 +167,30 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
     }
 
 	@Override
-	public synchronized void stop() {	    
+	public synchronized void stop() {
 		super.stop();
-		flushInstances();       
+		flushInstances();
 	}
 
     /**
      * Automatically called by {@link #stop() stop()}, this method clears all instantiated
-     * instances and readies the picocontainer for reuse. 
+     * instances and readies the picocontainer for reuse.
      */
     public void flushInstances() {
         //Remove all instance registrations.
 		for (ComponentAdapter<?> eachAdapter : this.instanceRegistrations) {
 			this.removeComponent(eachAdapter.getComponentKey());
-		}		
+		}
 		instanceRegistrations.clear();
-		
+
 		for (ComponentAdapter<?> eachAdapter : this.adapterRegistrations) {
 		    this.removeComponent(eachAdapter.getComponentKey());
 		}
 		adapterRegistrations.clear();
-		
+
 		//Flush all remaining objects.
 		for (Storing.Stored<?> eachStoredBehavior : this.storedReferences.values()) {
-			eachStoredBehavior.flush();			
+			eachStoredBehavior.flush();
 		}
     }
 
@@ -202,7 +202,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		} else {
 			this.addStoredReference(componentAdapter.getComponentKey());
 		}
-		
+
 		return this;
     }
 
@@ -218,7 +218,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	    addAdapter(componentAdapter);
 	    return this;
 	}
-	
+
 	@Override
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
 		super.addAdapter(componentAdapter);
@@ -227,10 +227,10 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		} else {
 			this.addStoredReference(componentAdapter.getComponentKey());
 		}
-		
+
 		return this;
     }
-	
+
 	private void removeLocalReferences(final ComponentAdapter<?> ca) {
 		this.storedReferences.remove(ca);
 	}
@@ -248,7 +248,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
         if (result != null) {
 			removeLocalReferences(result);
 		}
-		
+
 		return result;
     }
 
@@ -258,7 +258,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		if (result != null) {
 			removeLocalReferences(result);
 		}
-		
+
 		return result;
     }
 

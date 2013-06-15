@@ -10,11 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class DependencyInjectionTestServlet2 extends HttpServlet {
 
-    public DependencyInjectionTestServlet2(StringBuffer buffer) {
+    public DependencyInjectionTestServlet2(final StringBuffer buffer) {
         buffer.append("-Servlet");
     }
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+	protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(200);
         resp.getOutputStream().print("!");
     }

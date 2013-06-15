@@ -11,12 +11,12 @@ package org.picocontainer;
 
 public interface NameBinding {
     String getName();
-    
+
     /**
      * <em>Special Case</em> of name binding that represents a null NameBinding argument.
      */
     NameBinding NULL = new NameBinding() {
-    	
+
  		public String getName() {
 			return null;
 		}
@@ -27,7 +27,7 @@ public interface NameBinding {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			return this == obj;
 		}
 
@@ -35,8 +35,8 @@ public interface NameBinding {
 		public String toString() {
 			return "Null Name Binding";
 		}
-		
-		
+
+
     };
-    
+
 }

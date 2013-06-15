@@ -9,13 +9,13 @@ import java.lang.reflect.InvocationTargetException;
 public class NewInstanceConverter implements Converter<Object> {
     private Constructor<?> c;
 
-    public NewInstanceConverter(Class<?> clazz) {
+    public NewInstanceConverter(final Class<?> clazz) {
         try {
             c = clazz.getConstructor(String.class);
         } catch (NoSuchMethodException e) {
         }
     }
-    public Object convert(String paramValue) {
+    public Object convert(final String paramValue) {
         if (c == null) {
             return null;
         }

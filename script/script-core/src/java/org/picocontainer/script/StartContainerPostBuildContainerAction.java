@@ -6,7 +6,7 @@ import org.picocontainer.Startable;
 public class StartContainerPostBuildContainerAction implements
 		PostBuildContainerAction {
 
-	public PicoContainer onNewContainer(PicoContainer container) {
+	public PicoContainer onNewContainer(final PicoContainer container) {
         if (container instanceof Startable) {
             ((Startable) container).start();
         }

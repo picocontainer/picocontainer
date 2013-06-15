@@ -24,7 +24,8 @@ public class CoupleBeanEditor extends PropertyEditorSupport {
         super();
     }
 
-    public void setAsText(String s) throws IllegalArgumentException {
+    @Override
+	public void setAsText(final String s) throws IllegalArgumentException {
         int startA = s.indexOf(PREFIX_A);
         int stopA = s.indexOf(SEPARATOR, startA+PREFIX_A.length());
         int startB = s.indexOf(PREFIX_B, stopA + SEPARATOR.length());

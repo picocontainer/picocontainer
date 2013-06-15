@@ -9,11 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import org.picocontainer.*;
+import java.lang.reflect.Type;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentLifecycle;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.lang.reflect.Type;
 
 /**
  * <p>
@@ -45,51 +50,51 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     private boolean started;
 
 
-    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycle, ComponentMonitor monitor) throws PicoCompositionException {
+    public InstanceAdapter(final Object key, final T componentInstance, final LifecycleStrategy lifecycle, final ComponentMonitor monitor) throws PicoCompositionException {
         super(key, getInstanceClass(componentInstance), monitor);
         this.componentInstance = componentInstance;
         this.lifecycle = lifecycle;
     }
 
-    public InstanceAdapter(Object key, T componentInstance) {
+    public InstanceAdapter(final Object key, final T componentInstance) {
         this(key, componentInstance, new NullLifecycleStrategy(), new NullComponentMonitor());
     }
 
-    public InstanceAdapter(Object key, T componentInstance, LifecycleStrategy lifecycle) {
+    public InstanceAdapter(final Object key, final T componentInstance, final LifecycleStrategy lifecycle) {
         this(key, componentInstance, lifecycle, new NullComponentMonitor());
     }
 
-    public InstanceAdapter(Object key, T componentInstance, ComponentMonitor monitor) {
+    public InstanceAdapter(final Object key, final T componentInstance, final ComponentMonitor monitor) {
         this(key, componentInstance, new NullLifecycleStrategy(), monitor);
     }
 
-    private static Class getInstanceClass(Object componentInstance) {
+    private static Class getInstanceClass(final Object componentInstance) {
         if (componentInstance == null) {
             throw new NullPointerException("componentInstance cannot be null");
         }
         return componentInstance.getClass();
     }
 
-    public T getComponentInstance(PicoContainer container, Type into) {
+    public T getComponentInstance(final PicoContainer container, final Type into) {
         return componentInstance;
     }
 
-    public void verify(PicoContainer container) {
+    public void verify(final PicoContainer container) {
     }
 
     public String getDescriptor() {
         return "Instance-";
     }
 
-    public void start(PicoContainer container) {
+    public void start(final PicoContainer container) {
         start(componentInstance);
     }
 
-    public void stop(PicoContainer container) {
+    public void stop(final PicoContainer container) {
         stop(componentInstance);
     }
 
-    public void dispose(PicoContainer container) {
+    public void dispose(final PicoContainer container) {
         dispose(componentInstance);
     }
 
@@ -103,25 +108,25 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
 
     // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
-    public void start(Object component) {
+    public void start(final Object component) {
         lifecycle.start(componentInstance);
         started = true;
     }
 
-    public void stop(Object component) {
+    public void stop(final Object component) {
         lifecycle.stop(componentInstance);
         started = false;
     }
 
-    public void dispose(Object component) {
+    public void dispose(final Object component) {
         lifecycle.dispose(componentInstance);
     }
 
-    public boolean hasLifecycle(Class<?> type) {
+    public boolean hasLifecycle(final Class<?> type) {
         return lifecycle.hasLifecycle(type);
     }
 
-    public boolean isLazy(ComponentAdapter<?> adapter) {
+    public boolean isLazy(final ComponentAdapter<?> adapter) {
         return lifecycle.isLazy(adapter);
     }
 }

@@ -36,15 +36,15 @@ import org.picocontainer.testmodel.Touchable;
 @RunWith(JMock.class)
 @SuppressWarnings("serial")
 public class BehaviorAdapterTestCase {
-	
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+
+	private final Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapterThatDoesSupportStrategy());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         assertNotNull(adapter.currentMonitor());
     }
-    
+
     @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapter());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
@@ -55,7 +55,7 @@ public class BehaviorAdapterTestCase {
             assertEquals("No component monitor found in delegate", e.getMessage());
         }
     }
-    
+
     @Test public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapterThatCanManageLifecycle());
         PicoContainer pico = new DefaultPicoContainer();
@@ -79,7 +79,7 @@ public class BehaviorAdapterTestCase {
         adapter.stop(touchable);
         adapter.dispose(touchable);
     }
-    
+
     ComponentMonitor mockMonitorWithNoExpectedMethods() {
         return mockery.mock(ComponentMonitor.class);
     }
@@ -97,7 +97,7 @@ public class BehaviorAdapterTestCase {
     private ComponentAdapter mockComponentAdapter() {
     	 return mockery.mock(ComponentAdapter.class);
     }
-    
+
     public static interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
     }
 
@@ -119,7 +119,7 @@ public class BehaviorAdapterTestCase {
 
     static class FooAbstractChangedBehavior extends AbstractBehavior.AbstractChangedBehavior {
 
-        public FooAbstractChangedBehavior(ComponentAdapter delegate) {
+        public FooAbstractChangedBehavior(final ComponentAdapter delegate) {
             super(delegate);
         }
 

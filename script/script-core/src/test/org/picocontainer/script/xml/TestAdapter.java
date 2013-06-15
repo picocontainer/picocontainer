@@ -25,17 +25,17 @@ public final class TestAdapter extends AbstractAdapter {
     final String blurge;
     final int bar;
 
-    public TestAdapter(String foo, int bar, String blurge) {
+    public TestAdapter(final String foo, final int bar, final String blurge) {
         super(TestAdapter.class, TestAdapter.class);
         this.foo = foo;
         this.bar = bar;
         this.blurge = blurge;
     }
 
-    public void verify(PicoContainer pico) {
+    public void verify(final PicoContainer pico) {
     }
 
-    public Object getComponentInstance(PicoContainer pico, Type into) {
+    public Object getComponentInstance(final PicoContainer pico, final Type into) {
         return null;
     }
 

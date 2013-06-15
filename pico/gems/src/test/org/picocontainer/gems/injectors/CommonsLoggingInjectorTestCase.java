@@ -1,16 +1,18 @@
 package org.picocontainer.gems.injectors;
 
-import com.thoughtworks.xstream.XStream;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+
 import org.apache.commons.logging.Log;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
+import com.thoughtworks.xstream.XStream;
+
 public class CommonsLoggingInjectorTestCase {
 
     public static class Foo {
-        private Log log;
+        private final Log log;
         public Foo(final Log log) {
             this.log = log;
         }
@@ -23,7 +25,7 @@ public class CommonsLoggingInjectorTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new CommonsLoggingInjector());
         pico.addComponent(Foo.class);
-        
+
         Foo foo = pico.getComponent(Foo.class);
 
         assertNotNull(foo);

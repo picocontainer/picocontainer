@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
+import java.io.Serializable;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -17,8 +19,6 @@ import org.picocontainer.injectors.Provider;
 import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.io.Serializable;
 
 /**
  * Base class for a ComponentAdapter with general functionality.
@@ -42,7 +42,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @param key the search key for this implementation
      * @param impl the concrete implementation
      */
-    public AbstractAdapter(Object key, Class impl) {
+    public AbstractAdapter(final Object key, final Class impl) {
         this(key, impl, new AbstractComponentMonitor());
         this.monitor = new NullComponentMonitor();
     }
@@ -53,7 +53,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @param impl the concrete implementation
      * @param monitor the component monitor used by this ComponentAdapter
      */
-    public AbstractAdapter(Object key, Class impl, ComponentMonitor monitor) {
+    public AbstractAdapter(final Object key, final Class impl, final ComponentMonitor monitor) {
         if (monitor == null) {
             throw new NullPointerException("ComponentMonitor==null");
         }
@@ -100,7 +100,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         }
     }
 
-    private ClassCastException newCCE(Class<?> componentType) {
+    private ClassCastException newCCE(final Class<?> componentType) {
         return new ClassCastException(impl.getName() + " is not a " + componentType.getName());
     }
 
@@ -108,15 +108,16 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @return Returns the ComponentAdapter's class name and the component's key.
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return getDescriptor() + getComponentKey();
     }
 
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
     }
 
-    public void changeMonitor(ComponentMonitor monitor) {
+    public void changeMonitor(final ComponentMonitor monitor) {
         this.monitor = monitor;
     }
 
@@ -132,7 +133,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         return null;
     }
 
-    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+    public final <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
         if (adapterType.isAssignableFrom(this.getClass())) {
             return (U) this;
         } else if (getDelegate() != null) {

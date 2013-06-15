@@ -14,7 +14,7 @@ import org.picocontainer.PicoException;
 /**
  * Runtime Exception version of
  * {@link java.lang.reflect.InvocationTargetException}.
- * 
+ *
  * @author Michael Rimov
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,7 @@ public class InvocationTargetRuntimeException extends PicoException {
 
 
 	/**
-	 * 
+	 *
 	 */
 	public InvocationTargetRuntimeException() {
 		super();

@@ -10,18 +10,17 @@
 
 package org.picocontainer.monitors;
 
-import java.text.MessageFormat;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
-import java.lang.reflect.Type;
+import java.lang.reflect.Method;
+import java.text.MessageFormat;
 
 import org.picocontainer.ComponentMonitor;
 
 /**
  * An abstract {@link ComponentMonitor} which supports all the message formats.
- * 
+ *
  * @author Mauro Talevi
  */
 public final class ComponentMonitorHelper  {
@@ -35,11 +34,11 @@ public final class ComponentMonitorHelper  {
     public final static String LIFECYCLE_INVOCATION_FAILED = "PicoContainer: lifecycle invocation failed: {0} on {1}, reason: {2}";
     public final static String NO_COMPONENT = "PicoContainer: No component for key: {0}";
 
-    public static String format(String template, Object... arguments) {
+    public static String format(final String template, final Object... arguments) {
         return MessageFormat.format(template, arguments);
     }
 
-    public static String parmsToString(Object[] injected) {
+    public static String parmsToString(final Object[] injected) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < injected.length; i++) {
             String s = injected[i].getClass().getName();
@@ -51,7 +50,7 @@ public final class ComponentMonitorHelper  {
         return sb.toString();
     }
 
-    public static String ctorToString(Constructor constructor) {
+    public static String ctorToString(final Constructor constructor) {
         Class[] params = constructor.getParameterTypes();
         StringBuffer sb = new StringBuffer(constructor.getName());
         sb.append("(");
@@ -66,9 +65,9 @@ public final class ComponentMonitorHelper  {
         return sb.toString();
     }
 
-    public static String methodToString(Member member) {
+    public static String methodToString(final Member member) {
     	StringBuilder sb = new StringBuilder(member.getName());
-    	    	
+
         if (member instanceof Method) {
             Class<?>[] params = ((Method) member).getParameterTypes();
             sb.append("(");
@@ -79,29 +78,29 @@ public final class ComponentMonitorHelper  {
                     sb.append(", ");
                 }
             }
-            sb.append(")");            
+            sb.append(")");
         }
         return sb.toString();
     }
 
-    public static String getDeclaringTypeString(Member m) {
+    public static String getDeclaringTypeString(final Member m) {
     	if (m == null) {
     		return " null ";
     	}
-    	
-    	
+
+
     	return m.getDeclaringClass().getName();
     }
-    
-    public static String memberToString(Member m) {
+
+    public static String memberToString(final Member m) {
         if (m instanceof Field) {
             return getDeclaringTypeString(m) + "." +  toString((Field) m);
         } else {
-            return getDeclaringTypeString(m) + "." +  methodToString((Method) m);
+            return getDeclaringTypeString(m) + "." +  methodToString(m);
         }
     }
 
-    public static String toString(Field field) {
+    public static String toString(final Field field) {
         StringBuffer sb = new StringBuffer(field.getName());
         sb.append("(").append(field.getName()).append(")");
         return sb.toString();

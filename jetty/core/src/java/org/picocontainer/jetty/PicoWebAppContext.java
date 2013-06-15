@@ -27,9 +27,9 @@ import org.picocontainer.containers.TransientPicoContainer;
 
 public class PicoWebAppContext extends WebAppContext {
     private final PicoContainer parentContainer;
-    
 
-    public PicoWebAppContext(PicoContainer parentContainer) {
+
+    public PicoWebAppContext(final PicoContainer parentContainer) {
              super(new SessionHandler(),new ConstraintSecurityHandler(),new ServletHandler(),null);
         this.parentContainer = parentContainer;
         _scontext = new PicoConstructionContext();
@@ -48,7 +48,7 @@ public class PicoWebAppContext extends WebAppContext {
         }
         doSuperIsRunning = false;
         setConfigurations(configurations);
-        doSuperIsRunning = true; 
+        doSuperIsRunning = true;
     }
 
     @Override
@@ -61,70 +61,70 @@ public class PicoWebAppContext extends WebAppContext {
     }
 
 
-    
+
     public class PicoConstructionContext extends WebAppContext.Context {
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public <T extends Filter> T createFilter(Class<T> c) throws ServletException {
+		public <T extends Filter> T createFilter(final Class<T> c) throws ServletException {
 			T f = PicoWebAppContext.this.parentContainer.getComponent(c);
 			if (f == null) {
 				f = (T) createFromTransientPico(c);
 			}
-			
-			
+
+
 			for (int i=_decorators.size()-1; i>=0; i--)
             {
-				
+
                 Decorator decorator = _decorators.get(i);
                 f=decorator.decorateFilterInstance(f);
             }
-			
+
 			return f;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public <T extends Servlet> T createServlet(Class<T> c) throws ServletException {
+		public <T extends Servlet> T createServlet(final Class<T> c) throws ServletException {
 			T f = PicoWebAppContext.this.parentContainer.getComponent(c);
 			if (f == null) {
 				f = (T) createFromTransientPico(c);
 			}
-			
-			
+
+
 			for (int i=_decorators.size()-1; i>=0; i--)
             {
                 Decorator decorator = _decorators.get(i);
                 f=decorator.decorateServletInstance(f);
             }
-			
+
 			return f;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException {
+		public <T extends EventListener> T createListener(final Class<T> clazz) throws ServletException {
 			T f = PicoWebAppContext.this.parentContainer.getComponent(clazz);
 			if (f == null) {
 				f = (T) createFromTransientPico(clazz);
 			}
-			
-			
+
+
 			for (int i=_decorators.size()-1; i>=0; i--)
             {
-				
+
                 Decorator decorator = _decorators.get(i);
                 f=decorator.decorateListenerInstance(f);
             }
-			
+
 			return f;
 		}
 
-		private Object createFromTransientPico(Class<?> clazz) {
+		private Object createFromTransientPico(final Class<?> clazz) {
 			MutablePicoContainer child = new TransientPicoContainer(PicoWebAppContext.this.parentContainer);
 			child.addComponent("component", clazz);
 			return child.getComponent("component");
 		}
-    
+
 	}
 }

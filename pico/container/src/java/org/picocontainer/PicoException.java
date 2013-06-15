@@ -13,7 +13,7 @@ package org.picocontainer;
  * Superclass for all Exceptions in PicoContainer. You can use this if you want to catch all exceptions thrown by
  * PicoContainer. Be aware that some parts of the PicoContainer API will also throw {@link NullPointerException} when
  * <code>null</code> values are provided for method arguments, and this is not allowed.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
@@ -39,7 +39,7 @@ public abstract class PicoException extends RuntimeException {
 
     /**
      * Construct a new exception with the specified cause and no detail message.
-     * 
+     *
      * @param cause the exception that caused this one.
      */
     protected PicoException(final Throwable cause) {

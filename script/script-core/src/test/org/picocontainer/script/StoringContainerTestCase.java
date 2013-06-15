@@ -27,13 +27,13 @@ import org.picocontainer.script.xml.XMLContainerBuilder;
 
 /**
  * Test case to prove that the DefaultContainerRecorder can be replaced by use of Storing behaviours.
- * 
+ *
  * @author Konstantin Pribluda
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
 public class StoringContainerTestCase {
-    
+
     @Test public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
 
         // This test case is not testing Storing. Its just testing that a Caching parent does so.
@@ -64,7 +64,7 @@ public class StoringContainerTestCase {
         assertEquals("apple", b1);
         assertEquals("apple239", b2.getValue());
 
-        assertSame("cache of 'recording' parent container should be caching", a1,b1); 
+        assertSame("cache of 'recording' parent container should be caching", a1,b1);
         assertSame("cache of 'recording' parent container should be caching", a2,b2);
     }
 
@@ -76,7 +76,7 @@ public class StoringContainerTestCase {
         assertEquals("apple", serializedReplayed.getComponent("fruit"));
     }
 
-    private Object serializeAndDeserialize(Object o) throws IOException, ClassNotFoundException {
+    private Object serializeAndDeserialize(final Object o) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
 
