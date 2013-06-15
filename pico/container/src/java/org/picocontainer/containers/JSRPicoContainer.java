@@ -12,7 +12,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AdaptingBehavior;
@@ -119,7 +118,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 			throw new NullPointerException("implOrInstance");
 		}
 		
-		Class<?> instanceClass =  (implOrInstance instanceof Class) ? (Class)implOrInstance : implOrInstance.getClass();
+		Class<?> instanceClass =  (implOrInstance instanceof Class) ? (Class<?>)implOrInstance : implOrInstance.getClass();
 		
 		//Determine the key based on the provider's return type
 		Object key;

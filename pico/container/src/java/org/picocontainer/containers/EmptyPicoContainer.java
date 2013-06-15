@@ -35,37 +35,30 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
-    @SuppressWarnings("unused")
     public Object getComponent(Object keyOrType) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public Object getComponentInto(Object keyOrType, Type into) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> T getComponent(Class<T> componentType) {
         return null;
     }    
 
-    @SuppressWarnings("unused")
     public <T> T getComponent(Generic<T> componentType) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> T getComponentInto(Class<T> componentType, Type into) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> T getComponentInto(Generic<T> componentType, Type into) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding, Type into) {
         return null;
     }
@@ -74,15 +67,14 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return null;
     }
 
-    public List getComponents() {
-        return Collections.EMPTY_LIST;
+    public List<Object> getComponents() {
+        return Collections.emptyList();
     }
 
     public PicoContainer getParent() {
         return null;
     }
 
-    @SuppressWarnings("unused") 
     public ComponentAdapter<?> getComponentAdapter(Object key) {
         return null;
     }
@@ -91,17 +83,14 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding) {
         return null;
     }
 
-    @SuppressWarnings("unused") 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
 
-    @SuppressWarnings("unused")
     public <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
@@ -110,22 +99,18 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused") 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused")
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType) {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused")
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused")
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
@@ -133,13 +118,11 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     /**
      * we do not have anything to do here. 
      */
-    @SuppressWarnings("unused") 
     public void accept(PicoVisitor visitor) {
         //Does nothing.
     }
 
     /** {@inheritDoc} **/
-    @SuppressWarnings("unused") 
     public <T> List<T> getComponents(Class<T> componentType) {
         return Collections.emptyList();
     }
