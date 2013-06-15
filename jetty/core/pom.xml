@@ -12,11 +12,11 @@
             <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId><version>3.0-SNAPSHOT</version>
+            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <!-- test scoped dependencies -->
         <dependency>
-            <groupId>org.picocontainer</groupId><artifactId>picocontainer-gems</artifactId><version>3.0-SNAPSHOT</version>
+            <groupId>org.picocontainer</groupId><artifactId>picocontainer-gems</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -27,26 +27,32 @@
             <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-testmodel</artifactId><version>3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- 
         <dependency>
-            <groupId>org.mortbay.jetty</groupId><artifactId>servlet-api</artifactId><version>2.5-20081211</version>
+            <groupId>${jetty.group}</groupId><artifactId>servlet-api</artifactId><version>2.5-20081211</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId><artifactId>jsp-2.1-glassfish</artifactId><version>2.1.v20091210</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--dependency>
-          <groupId>org.mortbay.jetty</groupId><artifactId>jsp-api-2.1-glassfish</artifactId><version>2.1.v20091210</version>
-          <scope>provided</scope>
-        </dependency-->
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId><artifactId>jetty</artifactId><version>6.1.24</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId><artifactId>jetty-util</artifactId><version>6.1.24</version>
-            <scope>provided</scope>
-        </dependency>
+        -->
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jsp-2.1-glassfish</artifactId>
+			<version>2.1.v20100127</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<!--
+		Straight up from the docs http://wiki.eclipse.org/Jetty/Starting/Porting_to_Jetty_7
+		Haven't taken the time to figure out which of these jars we actually need for tests to run.
+		-->
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-server</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-deploy</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-io</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-security</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-servlet</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-servlets</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-webapp</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
+        <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-xml</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
         <dependency>
             <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId><version>1.1.1</version>
             <scope>provided</scope>

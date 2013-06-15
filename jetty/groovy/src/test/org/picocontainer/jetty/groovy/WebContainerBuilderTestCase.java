@@ -23,7 +23,7 @@ import java.net.URL;
 
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.util.IO;
+import org.eclipse.jetty.util.IO;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;

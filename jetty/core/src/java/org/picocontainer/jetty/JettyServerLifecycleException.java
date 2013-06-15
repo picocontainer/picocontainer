@@ -11,6 +11,7 @@ package org.picocontainer.jetty;
 
 /**
  */
+@SuppressWarnings("serial")
 public class JettyServerLifecycleException extends RuntimeException {
     public JettyServerLifecycleException(String string, Throwable throwable) {
         super(string, throwable);

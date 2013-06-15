@@ -15,8 +15,8 @@ import java.util.Map;
 import javax.servlet.Servlet;
 
 import groovy.util.NodeBuilder;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.jetty.groovy.adapters.NodeBuilderAdapter;
 import org.picocontainer.jetty.groovy.adapters.WaffleAdapter;

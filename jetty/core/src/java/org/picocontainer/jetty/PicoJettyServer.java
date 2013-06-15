@@ -9,28 +9,31 @@
 
 package org.picocontainer.jetty;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.RequestLog;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ErrorHandler;
-import org.mortbay.jetty.handler.HandlerList;
-import org.mortbay.jetty.handler.RequestLogHandler;
-import org.mortbay.jetty.nio.BlockingChannelConnector;
-import org.mortbay.jetty.servlet.Context;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.RequestLog;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.RequestLogHandler;
+import org.eclipse.jetty.server.nio.BlockingChannelConnector;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.containers.EmptyPicoContainer;
 
+@SuppressWarnings("serial")
 public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer, Startable {
 
     private final Server server;
     private final PicoContainer parentContainer;
-    private ErrorHandler errorHandler;
+    
+    private final HandlerList handlerList;
 
     public PicoJettyServer(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
         server = new Server();
-        server.setHandler(new HandlerList());
+        //server.setHandler(new HandlerList());
+        handlerList = new HandlerList();
+        server.setHandler(handlerList);
     }
 
     public PicoJettyServer(String host, int port, PicoContainer parentContainer) {
@@ -50,14 +53,17 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         BlockingChannelConnector connector = new BlockingChannelConnector();
         connector.setHost(host);
         connector.setPort(port);
-        connector.setLowResourceMaxIdleTime(timeout);
+        connector.setLowResourcesMaxIdleTime(timeout);
         server.addConnector(connector);
         return connector;
     }
 
     public PicoContext createContext(String contextPath, boolean withSessionHandler) {
-        Context context = new Context(server, contextPath, Context.SESSIONS);
-        return new PicoContext(context, parentContainer, withSessionHandler);
+        ServletContextHandler context = new PicoServletContextHandler(parentContainer, server, contextPath, ServletContextHandler.SESSIONS);
+        PicoContext picoContext =  new PicoContext(context, parentContainer, withSessionHandler);
+        //?
+        handlerList.addHandler(context);
+        return picoContext;
     }
 
 
@@ -67,7 +73,8 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         wah.setExtractWAR(true);
         wah.setWar(warFile);
         wah.setParentLoaderPriority(true);
-        server.addHandler(wah);
+
+        handlerList.addHandler(wah);
         return wah;
     }
 
@@ -92,7 +99,7 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
     public void addRequestLog(RequestLog requestLog) {
         RequestLogHandler requestLogHandler = new RequestLogHandler();
         requestLogHandler.setRequestLog(requestLog);
-        server.addHandler(requestLogHandler);
+        handlerList.addHandler(requestLogHandler);
 
     }
 

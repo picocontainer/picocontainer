@@ -2,8 +2,8 @@ package org.picocontainer.jetty;
 
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.jetty.webapp.WebAppContext;
-import org.mortbay.util.IO;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 
 import java.io.File;

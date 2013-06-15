@@ -16,7 +16,8 @@ import java.net.URL;
 
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.util.IO;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 
@@ -37,8 +38,8 @@ public class DependencyInjectionServletTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        Class servletClass = DependencyInjectionTestServlet.class;
-        PicoServletHolder holder = barContext.addServletWithMapping(servletClass, "/foo");
+        Class<DependencyInjectionTestServlet> servletClass = DependencyInjectionTestServlet.class;
+        ServletHolder holder = barContext.addServletWithMapping(servletClass, "/foo");
         holder.setInitParameter("foo", "bar");
 
         server.start();

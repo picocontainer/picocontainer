@@ -1,6 +1,5 @@
 package org.picocontainer.jetty;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -14,10 +13,10 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.util.IO;
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.jetty.handler.ErrorHandler;
-import org.mortbay.util.IO;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.testhelper.PlatformAssert;
 
@@ -84,22 +83,26 @@ public class JspTestCase {
 
 
         Socket socket = new Socket("localhost", 8080);
-        PrintWriter writer = new PrintWriter(socket.getOutputStream());
-        writer.write("GET /bar/barfs.jsp HTTP/1.0\n\n\n");
-        writer.flush();
-        LineNumberReader lnr = new LineNumberReader(new InputStreamReader(socket.getInputStream()));
-        String line = lnr.readLine();
-        String result = "";
-        while(line != null) {
-            result = result + line + "\n";
-            line = lnr.readLine();
+        try {
+	        PrintWriter writer = new PrintWriter(socket.getOutputStream());
+	        writer.write("GET /bar/barfs.jsp HTTP/1.0\n\n\n");
+	        writer.flush();
+	        LineNumberReader lnr = new LineNumberReader(new InputStreamReader(socket.getInputStream()));
+	        String line = lnr.readLine();
+	        String result = "";
+	        while(line != null) {
+	            result = result + line + "\n";
+	            line = lnr.readLine();
+	        }
+	
+	        assertTrue(result.indexOf("Banzai") != -1);
+	        assertTrue(result.indexOf("HTTP/1.1 500") != -1);
+	
+	        Thread.sleep(1000);
+
+        } finally {
+        	socket.close();
         }
-
-        assertTrue(result.indexOf("Banzai") != -1);
-        assertTrue(result.indexOf("HTTP/1.1 500") != -1);
-
-        Thread.sleep(1000);
-
 
     }
     private static class MyErrorHandler extends ErrorHandler {

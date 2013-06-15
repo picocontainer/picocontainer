@@ -9,6 +9,10 @@
     <module>core</module>
     <module>groovy</module>
   </modules>
+  <properties>
+	  <jetty.version>7.2.2.v20101205</jetty.version>
+	  <jetty.group>org.eclipse.jetty</jetty.group>
+  </properties>
   <organization>
     <name>Codehaus</name>
     <url>http://codehaus.org/</url>

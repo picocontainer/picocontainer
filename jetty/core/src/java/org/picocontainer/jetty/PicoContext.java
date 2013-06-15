@@ -10,25 +10,22 @@
 package org.picocontainer.jetty;
 
 import java.util.EventListener;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Arrays;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 
-import org.mortbay.jetty.handler.ErrorHandler;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.DefaultServlet;
-import org.mortbay.jetty.servlet.ErrorPageErrorHandler;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.picocontainer.PicoContainer;
+import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 public class PicoContext {
 
-    private final Context context;
+    private final ServletContextHandler context;
     private final PicoContainer parentContainer;
 
     public static final int DEFAULT = 0;
@@ -38,13 +35,13 @@ public class PicoContext {
     public static final int ERROR = 8;
     public static final int ALL = 15;
 
-    public PicoContext(Context context, PicoContainer parentContainer, boolean withSessionHandler) {
+    public PicoContext(ServletContextHandler context, PicoContainer parentContainer, boolean withSessionHandler) {
         this.context = context;
         this.parentContainer = parentContainer;
     }
 
-    public PicoServletHolder addServletWithMapping(Class servletClass, String pathMapping) {
-        PicoServletHolder holder = new PicoServletHolder(servletClass, parentContainer);
+    public ServletHolder addServletWithMapping(Class<? extends Servlet> servletClass, String pathMapping) {
+    	ServletHolder holder = new ServletHolder(servletClass);
         context.addServlet(holder, pathMapping);
         return holder;
     }
@@ -55,14 +52,14 @@ public class PicoContext {
         return servlet;
     }
 
-    public PicoFilterHolder addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
-        PicoFilterHolder filterHolder = new PicoFilterHolder(filterClass, parentContainer);
+    public FilterHolder addFilterWithMapping(Class<? extends Filter> filterClass, String pathMapping, int dispatchers) {
+    	FilterHolder filterHolder = new FilterHolder(filterClass);
         context.addFilter(filterHolder, pathMapping, dispatchers);
         return filterHolder;
     }
 
-    public PicoFilterHolder addFilterWithMappings(Class filterClass, String[] pathMappings, int dispatchers) {
-        PicoFilterHolder filterHolder = new PicoFilterHolder(filterClass, parentContainer);
+    public FilterHolder addFilterWithMappings(Class<? extends Filter> filterClass, String[] pathMappings, int dispatchers) {
+    	FilterHolder filterHolder = new FilterHolder(filterClass);
         for (String pathMapping : pathMappings) {
             context.addFilter(filterHolder, pathMapping, dispatchers);
         }
@@ -75,13 +72,11 @@ public class PicoContext {
     }
 
     public void addInitParam(String param, String value) {
-        Map params = new HashMap(context.getInitParams());
-        params.put(param, value);
-        context.setInitParams(params);
+    	context.setInitParameter(param, value);
     }
 
 
-    public EventListener addListener(Class listenerClass) {
+    public EventListener addListener(Class<?> listenerClass) {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
         child.addComponent(EventListener.class, listenerClass);
         EventListener instance = child.getComponent(EventListener.class);
@@ -125,7 +120,7 @@ public class PicoContext {
 
     public void setDefaultHandling(final String absolutePath, String scratchDir, String pageSuffix) {
         context.setResourceBase(absolutePath);
-        ServletHolder jspHolder = new PicoServletHolder(parentContainer);
+        ServletHolder jspHolder = new ServletHolder();
         jspHolder.setName("jsp");
         jspHolder.setClassName("org.apache.jasper.servlet.JspServlet");
         jspHolder.setInitParameter("scratchdir", scratchDir);

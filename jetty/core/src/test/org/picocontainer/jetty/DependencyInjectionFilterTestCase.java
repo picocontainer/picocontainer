@@ -7,7 +7,9 @@ import java.net.URL;
 
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.util.IO;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 
 public class DependencyInjectionFilterTestCase {
@@ -29,7 +31,7 @@ public class DependencyInjectionFilterTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        PicoFilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
+        FilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
         filterHolder.setInitParameter("foo", "bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         server.start();
@@ -75,7 +77,7 @@ public class DependencyInjectionFilterTestCase {
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
         barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
-        PicoServletHolder holder = barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
+        ServletHolder holder = barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         holder.setInitParameter("foo", "bau");
         server.start();
 

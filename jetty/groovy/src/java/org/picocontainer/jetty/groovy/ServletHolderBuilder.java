@@ -4,7 +4,7 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public final class ServletHolderBuilder extends NodeBuilder {
     

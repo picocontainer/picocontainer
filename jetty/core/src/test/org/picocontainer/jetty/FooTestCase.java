@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 public class FooTestCase {
 
     @Test public void testFoo() throws Exception {
         Server server = new Server(8080);
-        Context context = new Context(server, "/", Context.SESSIONS);
+        ServletContextHandler context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
         context.addFilter(new FilterHolder(HelloFilter.class), "/*", 0);
         context.addServlet(new ServletHolder(HelloServlet.class), "/*");
 
@@ -43,7 +43,8 @@ public class FooTestCase {
         }
     }
 
-    public static class HelloServlet extends HttpServlet {
+    @SuppressWarnings("serial")
+	public static class HelloServlet extends HttpServlet {
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);

@@ -28,7 +28,7 @@ public class DependencyInjectionListenerTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        Class listenerClass = DependencyInjectionTestListener.class;
+        Class<?> listenerClass = DependencyInjectionTestListener.class;
         barContext.addListener(listenerClass);
 
         server.start();
@@ -49,7 +49,7 @@ public class DependencyInjectionListenerTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        Class listenerClass = DependencyInjectionTestListener.class;
+        Class<?> listenerClass = DependencyInjectionTestListener.class;
         barContext.addListener(listenerClass);
         barContext.addServletWithMapping(DependencyInjectionTestServlet2.class, "/foo");
         barContext.addFilterWithMapping(DependencyInjectionTestFilter2.class, "/foo", 0);

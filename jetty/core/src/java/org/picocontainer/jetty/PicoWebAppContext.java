@@ -9,28 +9,41 @@
 
 package org.picocontainer.jetty;
 
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.webapp.Configuration;
-import org.mortbay.jetty.webapp.WebAppContext;
-import org.mortbay.jetty.webapp.WebXmlConfiguration;
+import java.util.EventListener;
+
+import javax.servlet.Filter;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.webapp.Configuration;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebXmlConfiguration;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.TransientPicoContainer;
 
 public class PicoWebAppContext extends WebAppContext {
     private final PicoContainer parentContainer;
+    
 
     public PicoWebAppContext(PicoContainer parentContainer) {
-             super(null,null,new PicoServletHandler(parentContainer),null);
+             super(new SessionHandler(),new ConstraintSecurityHandler(),new ServletHandler(),null);
         this.parentContainer = parentContainer;
+        _scontext = new PicoConstructionContext();
     }
 
     boolean doSuperIsRunning = true;
 
+    @Override
     protected void loadConfigurations() throws Exception {
         super.loadConfigurations();
         Configuration[]  configurations = getConfigurations();
         for (int i = 0; i < configurations.length; i++) {
             if (configurations[i] instanceof WebXmlConfiguration) {
-                configurations[i] = new PicoWebXmlConfiguration(parentContainer);
+                configurations[i] = new WebXmlConfiguration();
             }
         }
         doSuperIsRunning = false;
@@ -46,8 +59,72 @@ public class PicoWebAppContext extends WebAppContext {
             return false;
         }
     }
-    /* ------------------------------------------------------------ */
-    public ServletHandler getServletHandler() {
-        return super.getServletHandler();
-    }
+
+
+    
+    public class PicoConstructionContext extends WebAppContext.Context {
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <T extends Filter> T createFilter(Class<T> c) throws ServletException {
+			T f = PicoWebAppContext.this.parentContainer.getComponent(c);
+			if (f == null) {
+				f = (T) createFromTransientPico(c);
+			}
+			
+			
+			for (int i=_decorators.size()-1; i>=0; i--)
+            {
+				
+                Decorator decorator = _decorators.get(i);
+                f=decorator.decorateFilterInstance(f);
+            }
+			
+			return f;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <T extends Servlet> T createServlet(Class<T> c) throws ServletException {
+			T f = PicoWebAppContext.this.parentContainer.getComponent(c);
+			if (f == null) {
+				f = (T) createFromTransientPico(c);
+			}
+			
+			
+			for (int i=_decorators.size()-1; i>=0; i--)
+            {
+                Decorator decorator = _decorators.get(i);
+                f=decorator.decorateServletInstance(f);
+            }
+			
+			return f;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException {
+			T f = PicoWebAppContext.this.parentContainer.getComponent(clazz);
+			if (f == null) {
+				f = (T) createFromTransientPico(clazz);
+			}
+			
+			
+			for (int i=_decorators.size()-1; i>=0; i--)
+            {
+				
+                Decorator decorator = _decorators.get(i);
+                f=decorator.decorateListenerInstance(f);
+            }
+			
+			return f;
+		}
+
+		private Object createFromTransientPico(Class<?> clazz) {
+			MutablePicoContainer child = new TransientPicoContainer(PicoWebAppContext.this.parentContainer);
+			child.addComponent("component", clazz);
+			return child.getComponent("component");
+		}
+    
+	}
 }

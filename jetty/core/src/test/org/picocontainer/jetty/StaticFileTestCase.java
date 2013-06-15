@@ -1,6 +1,5 @@
 package org.picocontainer.jetty;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -8,9 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
+import org.eclipse.jetty.util.IO;
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.util.IO;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.testhelper.PlatformAssert;
 

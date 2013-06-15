@@ -2,7 +2,7 @@ package org.picocontainer.jetty.groovy;
 
 import java.util.Map;
 
-import org.mortbay.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterHolder;
 
 import groovy.util.NodeBuilder;
 
