@@ -40,7 +40,7 @@ public class ServerBuilder extends NodeBuilder {
 
     protected Object createBlockingChannelConnector(Map map) {
         int port = (Integer)map.remove("port");
-        return server.createBlockingChannelConnector((String) map.remove("host"), port);
+        return server.createServerConnector((String) map.remove("host"), port);
     }
 
     protected Object createContext(Map map) {

@@ -10,7 +10,7 @@
     <module>groovy</module>
   </modules>
   <properties>
-	  <jetty.version>8.1.9.v20130131</jetty.version>
+	  <jetty.version>9.0.3.v20130506</jetty.version>
 	  <jetty.group>org.eclipse.jetty</jetty.group>
   </properties>
   <organization>

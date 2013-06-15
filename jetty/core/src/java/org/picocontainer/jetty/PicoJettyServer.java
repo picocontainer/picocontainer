@@ -12,9 +12,9 @@ package org.picocontainer.jetty;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
-import org.eclipse.jetty.server.nio.BlockingChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
@@ -38,22 +38,49 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
 
     public PicoJettyServer(String host, int port, PicoContainer parentContainer) {
         this(parentContainer);
-        createBlockingChannelConnector(host, port);
+        createServerConnector(host, port);
     }
     public PicoJettyServer(String host, int port, PicoContainer parentContainer, int timeout) {
         this(parentContainer);
-        createBlockingChannelConnector(host, port, timeout);
+        createServerConnector(host, port, timeout);
     }
 
+
+    /**
+     * Use {@link #createBlockingChannelConnector(String, int)} instead.
+     * @param host
+     * @param port
+     * @return
+     * @deprecated
+     */
+    @Deprecated
     public Connector createBlockingChannelConnector(String host, int port) {
-        return createBlockingChannelConnector(host, port, 10*1000);
+    	return createServerConnector(host, port);
+    }
+    
+    
+    public Connector createServerConnector(String host, int port) {
+        return createServerConnector(host, port, 10*1000);
+    }
+    
+    /**
+     * Use {@link #createServerConnector(String, int, int)} instead.
+     * @param host
+     * @param port
+     * @param timeout
+     * @return
+     * @deprecated
+     */
+    @Deprecated
+    public Connector createBlockingChannelConnector(String host, int port, int timeout) {
+    	return this.createServerConnector(host, port, timeout);
     }
 
-    public Connector createBlockingChannelConnector(String host, int port, int timeout) {
-        BlockingChannelConnector connector = new BlockingChannelConnector();
+    public Connector createServerConnector(String host, int port, int timeout) {
+    	ServerConnector connector = new ServerConnector(server);
         connector.setHost(host);
         connector.setPort(port);
-        connector.setLowResourcesMaxIdleTime(timeout);
+        connector.setIdleTimeout(timeout);
         server.addConnector(connector);
         return connector;
     }
