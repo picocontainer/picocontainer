@@ -12,6 +12,8 @@ package org.picocontainer.jetty.groovy;
 import org.picocontainer.MutablePicoContainer;
 
 import java.util.Map;
+
+import javax.servlet.DispatcherType;
 import javax.servlet.Servlet;
 
 import groovy.util.NodeBuilder;
@@ -20,6 +22,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.jetty.groovy.adapters.NodeBuilderAdapter;
 import org.picocontainer.jetty.groovy.adapters.WaffleAdapter;
+import java.util.EnumSet;
 
 public class ContextBuilder extends NodeBuilder {
     private final MutablePicoContainer parentContainer;
@@ -121,13 +124,13 @@ public class ContextBuilder extends NodeBuilder {
         return paths;
     }
 
-    private int extractDispatchers(Map map) {
+    private EnumSet<DispatcherType> extractDispatchers(Map map) {
         Object dispatchers = map.remove("dispatchers");
         if (dispatchers != null) {
-            return (Integer)dispatchers;
+            return (EnumSet<DispatcherType>)dispatchers;
         }
         // default value
-        return 0;
+        return PicoContext.DEFAULT_DISPATCH;
     }
 
 }

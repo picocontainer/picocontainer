@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
 
 import org.junit.After;
 import org.junit.Test;
@@ -31,7 +34,7 @@ public class DependencyInjectionFilterTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        FilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
+        FilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         filterHolder.setInitParameter("foo", "bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         server.start();
@@ -54,7 +57,7 @@ public class DependencyInjectionFilterTestCase {
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
         DependencyInjectionTestFilter filter = (DependencyInjectionTestFilter) barContext.addFilterWithMapping(new DependencyInjectionTestFilter(
-            5), "/*", 0);
+            5), "/*", EnumSet.of(DispatcherType.REQUEST));
         filter.setFoo("bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         server.start();
@@ -76,7 +79,7 @@ public class DependencyInjectionFilterTestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
+        barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         ServletHolder holder = barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         holder.setInitParameter("foo", "bau");
         server.start();

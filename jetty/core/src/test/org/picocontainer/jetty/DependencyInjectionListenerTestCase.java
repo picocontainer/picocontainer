@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
 
 import org.junit.After;
 import org.junit.Test;
@@ -52,7 +55,7 @@ public class DependencyInjectionListenerTestCase {
         Class<?> listenerClass = DependencyInjectionTestListener.class;
         barContext.addListener(listenerClass);
         barContext.addServletWithMapping(DependencyInjectionTestServlet2.class, "/foo");
-        barContext.addFilterWithMapping(DependencyInjectionTestFilter2.class, "/foo", 0);
+        barContext.addFilterWithMapping(DependencyInjectionTestFilter2.class, "/foo", EnumSet.of(DispatcherType.REQUEST));
 
         server.start();
 

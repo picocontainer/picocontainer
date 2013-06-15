@@ -54,7 +54,7 @@ public final class WebContainerBuilderTestCase {
                 "        context(path:'/bar') {\n" +
                 "            initParam(name:'a', value:'b')\n" +
                 "            filter(path:'/*', class:org.picocontainer.jetty.groovy.DependencyInjectionTestFilter," +
-                "                   dispatchers: new Integer(0)) {\n" +
+                "                   dispatchers: org.picocontainer.jetty.PicoContext.DEFAULT_DISPATCH) {\n" +
                 "               initParam(name:'foo', value:'bau')\n" +
                 "            }\n" +
                 "            servlet(path:'/foo2', class:org.picocontainer.jetty.groovy.DependencyInjectionTestServlet)\n" +

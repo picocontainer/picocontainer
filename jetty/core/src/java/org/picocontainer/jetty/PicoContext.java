@@ -9,8 +9,10 @@
 
 package org.picocontainer.jetty;
 
+import java.util.EnumSet;
 import java.util.EventListener;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 
@@ -28,13 +30,9 @@ public class PicoContext {
     private final ServletContextHandler context;
     private final PicoContainer parentContainer;
 
-    public static final int DEFAULT = 0;
-    public static final int REQUEST = 1;
-    public static final int FORWARD = 2;
-    public static final int INCLUDE = 4;
-    public static final int ERROR = 8;
-    public static final int ALL = 15;
 
+    public static final EnumSet<DispatcherType> DEFAULT_DISPATCH =  EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
+    
     public PicoContext(ServletContextHandler context, PicoContainer parentContainer, boolean withSessionHandler) {
         this.context = context;
         this.parentContainer = parentContainer;
@@ -52,13 +50,15 @@ public class PicoContext {
         return servlet;
     }
 
-    public FilterHolder addFilterWithMapping(Class<? extends Filter> filterClass, String pathMapping, int dispatchers) {
+    public FilterHolder addFilterWithMapping(Class<? extends Filter> filterClass, String pathMapping, EnumSet<DispatcherType> dispatchers) {
     	FilterHolder filterHolder = new FilterHolder(filterClass);
-        context.addFilter(filterHolder, pathMapping, dispatchers);
+        context.addFilter(filterHolder, pathMapping,dispatchers);
+        
+        
         return filterHolder;
     }
 
-    public FilterHolder addFilterWithMappings(Class<? extends Filter> filterClass, String[] pathMappings, int dispatchers) {
+    public FilterHolder addFilterWithMappings(Class<? extends Filter> filterClass, String[] pathMappings, EnumSet<DispatcherType> dispatchers) {
     	FilterHolder filterHolder = new FilterHolder(filterClass);
         for (String pathMapping : pathMappings) {
             context.addFilter(filterHolder, pathMapping, dispatchers);
@@ -66,7 +66,7 @@ public class PicoContext {
         return filterHolder;
     }
 
-    public Filter addFilterWithMapping(Filter filter, String pathMapping, int dispatchers) {
+    public Filter addFilterWithMapping(Filter filter, String pathMapping, EnumSet<DispatcherType> dispatchers) {
         context.addFilter(new FilterHolder(filter), pathMapping, dispatchers);
         return filter;
     }

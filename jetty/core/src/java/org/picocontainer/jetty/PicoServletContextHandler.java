@@ -24,30 +24,35 @@ public class PicoServletContextHandler extends ServletContextHandler {
 		super();
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico,int options) {
 		super(options);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico, HandlerContainer parent, String contextPath) {
 		super(parent, contextPath);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico, HandlerContainer parent, String contextPath, int options) {
 		super(parent, contextPath, options);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico, HandlerContainer parent, String contextPath, boolean sessions, boolean security) {
 		super(parent, contextPath, sessions, security);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico, HandlerContainer parent, SessionHandler sessionHandler,
@@ -55,6 +60,7 @@ public class PicoServletContextHandler extends ServletContextHandler {
 		super(parent, sessionHandler, securityHandler, servletHandler, errorHandler);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public PicoServletContextHandler(PicoContainer pico, HandlerContainer parent, String contextPath, SessionHandler sessionHandler,
@@ -62,6 +68,7 @@ public class PicoServletContextHandler extends ServletContextHandler {
 		super(parent, contextPath, sessionHandler, securityHandler, servletHandler, errorHandler);
 		this.pico = pico;
 		_scontext = new PicoConstructionContext();
+        setClassLoader(this.getClass().getClassLoader());
 	}
 
 	public class PicoConstructionContext extends ServletContextHandler.Context {

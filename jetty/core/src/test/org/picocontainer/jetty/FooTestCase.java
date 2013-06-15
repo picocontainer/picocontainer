@@ -1,7 +1,9 @@
 package org.picocontainer.jetty;
 
 import java.io.IOException;
+import java.util.EnumSet;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -23,7 +25,7 @@ public class FooTestCase {
     @Test public void testFoo() throws Exception {
         Server server = new Server(8080);
         ServletContextHandler context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
-        context.addFilter(new FilterHolder(HelloFilter.class), "/*", 0);
+        context.addFilter(new FilterHolder(HelloFilter.class), "/*", EnumSet.of(DispatcherType.REQUEST));
         context.addServlet(new ServletHolder(HelloServlet.class), "/*");
 
 //        server.start();
