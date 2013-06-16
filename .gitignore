@@ -3,5 +3,6 @@
 *.ipr
 .classpath
 .project
+.idea
 .settings
 target
