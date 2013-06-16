@@ -7,18 +7,6 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.xstream.XStream;
@@ -26,6 +14,19 @@ import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Arrays;
 
 /**
  * Servlet that uses Ruby as the form of the reply.
@@ -50,6 +51,13 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             }
 
             public HierarchicalStreamReader createReader(InputStream inputStream) {
+                throw new UnsupportedOperationException();
+            }
+
+            public HierarchicalStreamReader createReader(URL url) {
+                throw new UnsupportedOperationException();            }
+
+            public HierarchicalStreamReader createReader(File file) {
                 throw new UnsupportedOperationException();
             }
 
@@ -146,7 +154,7 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
     /**
      * Some parameter types are excluded from being published in Ruby classdef fragments
-     * @param pType the type that is possibly excluded
+     * @param type the type that is possibly excluded
      * @param name the name of the param that is possibly excluded
      * @return is or is not excluded
      */

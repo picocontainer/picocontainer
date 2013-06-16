@@ -15,7 +15,6 @@ import javax.management.MBeanInfo;
 
 import org.picocontainer.testmodel.PersonBean;
 
-
 /**
  * @author J&ouml;rg Schaible
  */

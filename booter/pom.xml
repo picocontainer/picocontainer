@@ -36,7 +36,7 @@
             <scope>integration-test</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId><artifactId>groovy-all-minimal</artifactId><version>1.5.6</version>
+            <groupId>org.codehaus.groovy</groupId><artifactId>groovy-all-minimal</artifactId><version>1.5.8</version>
             <scope>integration-test</scope>
         </dependency>
         <dependency>

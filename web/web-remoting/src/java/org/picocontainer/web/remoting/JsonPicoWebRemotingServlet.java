@@ -7,17 +7,19 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
 import com.thoughtworks.xstream.io.json.JsonWriter;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.net.URL;
 
 /**
  * Servlet that uses JSON as the form of the reply.
@@ -39,6 +41,14 @@ public class JsonPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             }
 
             public HierarchicalStreamReader createReader(InputStream inputStream) {
+                throw new UnsupportedOperationException();
+            }
+
+            public HierarchicalStreamReader createReader(File file) {
+                throw new UnsupportedOperationException();
+            }
+
+            public HierarchicalStreamReader createReader(URL url) {
                 throw new UnsupportedOperationException();
             }
 

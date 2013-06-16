@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jsp-2.1-glassfish</artifactId>
-			<version>2.1.v20100127</version>
+			<version>9.1.1.B60.25.p2</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -54,7 +54,7 @@
         <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-webapp</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
         <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-xml</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
         <dependency>
-            <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId><version>1.1.1</version>
+            <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId><version>1.1.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
