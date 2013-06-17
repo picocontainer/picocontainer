@@ -32,6 +32,7 @@ import java.io.Serializable;
  *	}  
  * </pre>
  */
+@SuppressWarnings("serial")
 public class StringFromHeader extends ProviderAdapter implements Serializable {
 
 	/**
@@ -60,7 +61,7 @@ public class StringFromHeader extends ProviderAdapter implements Serializable {
 	}
 
     @Override
-    public Class getComponentImplementation() {
+    public Class<String> getComponentImplementation() {
         return String.class;
     }
 
@@ -89,7 +90,6 @@ public class StringFromHeader extends ProviderAdapter implements Serializable {
 		return "String from header.  Component Key " + headerKey + " Servlet Request Header Name: " + headerName;
     }    
     
-    @SuppressWarnings("serial")
     public static class HeaderNotFound extends PicoContainerWebException {
         private HeaderNotFound(String name) {
             super("'" + name + "' not found in header");

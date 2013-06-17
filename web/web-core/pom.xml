@@ -12,10 +12,6 @@
             <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId><version>1</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.thoughtworks.xstream</groupId><artifactId>xstream</artifactId>
             <optional>true</optional>
         </dependency>
@@ -34,5 +30,13 @@
             <groupId>jcache</groupId><artifactId>jcache</artifactId><version>1.0-dev-2</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>jstl</groupId><artifactId>jstl</artifactId><version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId><artifactId>jsp-api</artifactId><version>2.1</version>
+            <scope>provided</scope>
+        </dependency>                
     </dependencies>
 </project>

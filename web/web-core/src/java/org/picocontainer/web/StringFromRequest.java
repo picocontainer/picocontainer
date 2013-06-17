@@ -19,6 +19,7 @@ import java.io.Serializable;
  * of the request.  If a parameter of the supplied name is not available for the current
  * request path, then an exception will be thrown.
  */
+@SuppressWarnings("serial")
 public class StringFromRequest extends ProviderAdapter implements Serializable {
     private final String paramName;
 
@@ -26,7 +27,8 @@ public class StringFromRequest extends ProviderAdapter implements Serializable {
         this.paramName = paramName;
     }
 
-    @Override
+	@Override
+    @SuppressWarnings("rawtypes")
     public Class getComponentImplementation() {
         return String.class;
     }
@@ -55,7 +57,6 @@ public class StringFromRequest extends ProviderAdapter implements Serializable {
         }
     }
 
-    @SuppressWarnings("serial")
     public static class ParameterNotFound extends PicoContainerWebException {
         private ParameterNotFound(String name) {
             super(name + " not found in request parameters");

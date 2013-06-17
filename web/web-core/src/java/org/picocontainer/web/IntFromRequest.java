@@ -17,6 +17,7 @@ import java.io.Serializable;
  * of the request.  If a parameter of the supplied name is not available for the current
  * request path, then an exception will be thrown. An exception will also be thrown, if the number format is bad.
  */
+@SuppressWarnings("serial")
 public class IntFromRequest extends StringFromRequest implements Serializable {
 
     public IntFromRequest(String paramName) {
@@ -24,7 +25,7 @@ public class IntFromRequest extends StringFromRequest implements Serializable {
     }
 
     @Override
-    public Class getComponentImplementation() {
+    public Class<Integer> getComponentImplementation() {
         return Integer.class;
     }
 

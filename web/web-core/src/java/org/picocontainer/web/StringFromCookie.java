@@ -19,6 +19,7 @@ import java.io.Serializable;
  * the browser.  If a cookie of the supplied name is not available for the current
  * request path, then a NotFound exception will be thrown.
  */
+@SuppressWarnings("serial")
 public class StringFromCookie extends ProviderAdapter implements Serializable {
 
     private final String name;
@@ -28,7 +29,7 @@ public class StringFromCookie extends ProviderAdapter implements Serializable {
     }
 
     @Override
-    public Class getComponentImplementation() {
+    public Class<String> getComponentImplementation() {
         return String.class;
     }
 

@@ -12,7 +12,7 @@
             <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-core</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.faces</groupId><artifactId>jsf-api</artifactId><version>1.2_02</version>
+            <groupId>javax.faces</groupId><artifactId>jsf-api</artifactId><version>2.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -20,7 +20,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>jstl</groupId><artifactId>jstl</artifactId><version>1.1.2</version>
+            <groupId>jstl</groupId><artifactId>jstl</artifactId><version>1.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
