@@ -18,7 +18,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>3.6.9.Final</version>
+				<version>3.6.10.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.transaction</groupId>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.9.0.GA</version>
+			<version>3.12.1.GA</version>
 		</dependency>				
     </dependencies>
 </project>

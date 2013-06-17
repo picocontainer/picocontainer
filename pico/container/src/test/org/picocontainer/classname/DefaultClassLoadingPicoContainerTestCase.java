@@ -10,13 +10,6 @@
 
 package org.picocontainer.classname;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Properties;
-
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -29,6 +22,13 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer.CannotListClassesInAJarException;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTest;
+
+import java.util.List;
+import java.util.Properties;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Paul Hammant
@@ -239,13 +239,14 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.append(clazz.getName()).append("\n");
             }
         });
-        assertEquals("com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
+        assertEquals("com.thoughtworks.xstream.io.xml.xppdom.XppDom\n" +
+                "com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
                 "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
                 "com.thoughtworks.xstream.core.util.CustomObjectInputStream\n" +
                 "com.thoughtworks.xstream.core.util.CustomObjectOutputStream\n" +
                 "com.thoughtworks.xstream.XStream\n",
                 sb.toString());
-        assertEquals(5, found);
+        assertEquals(6, found);
     }
 
 
