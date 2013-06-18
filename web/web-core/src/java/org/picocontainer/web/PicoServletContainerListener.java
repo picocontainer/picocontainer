@@ -207,8 +207,10 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public void contextDestroyed(ServletContextEvent event) {
         ScopedContainers scopedContainers = getScopedContainers(event.getServletContext());
-        stop(scopedContainers.getApplicationContainer());
-        dispose(scopedContainers.getApplicationContainer());
+        if (scopedContainers != null && scopedContainers.getApplicationContainer() != null) {
+	        stop(scopedContainers.getApplicationContainer());
+	        dispose(scopedContainers.getApplicationContainer());
+        }
     }
 
     private void start(MutablePicoContainer container) {
