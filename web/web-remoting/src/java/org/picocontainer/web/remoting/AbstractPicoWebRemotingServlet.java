@@ -21,7 +21,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -62,7 +62,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
     
-    public static class ServletFilter extends PicoServletContainerFilter {
+    public static class ServletFilter extends AbstractPicoServletContainerFilter {
 
         @Override
         protected void setAppContainer(MutablePicoContainer container) {

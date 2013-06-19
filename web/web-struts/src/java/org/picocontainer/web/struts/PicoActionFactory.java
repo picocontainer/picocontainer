@@ -17,7 +17,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 /**
  * Uses PicoContainer to produce Actions and inject dependencies into them. If
@@ -36,7 +36,7 @@ public final class PicoActionFactory {
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
     @SuppressWarnings("serial")
-    public static class ServletFilter extends PicoServletContainerFilter {
+    public static class ServletFilter extends AbstractPicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }

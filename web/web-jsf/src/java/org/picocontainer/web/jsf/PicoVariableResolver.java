@@ -15,7 +15,7 @@ import javax.faces.el.VariableResolver;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 /**
  * This is a variable resolver implementation for Java ServerFaces.
@@ -114,7 +114,7 @@ import org.picocontainer.web.PicoServletContainerFilter;
  */
 public class PicoVariableResolver extends VariableResolver {
 
-    public static class ServletFilter extends PicoServletContainerFilter {
+    public static class ServletFilter extends AbstractPicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
         private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();

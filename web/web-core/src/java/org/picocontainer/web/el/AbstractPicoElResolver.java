@@ -4,6 +4,7 @@
 package org.picocontainer.web.el;
 
 import java.beans.FeatureDescriptor;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,6 +23,12 @@ import org.picocontainer.containers.JSRPicoContainer;
  */
 abstract public class AbstractPicoElResolver extends ELResolver {
 	
+    private final String NAME = "picoELResolver";
+    private final String DISPLAYNAME = "PicoContainer ELResolver";
+    private final String DESCRIPTION = "ELResolver To PicoContainer Bridge";
+    private final boolean EXPERT = false;
+    private final boolean HIDDEN = true;
+    private final boolean PREFERRED = true;
 
 	/**
 	 * 
@@ -72,8 +79,19 @@ abstract public class AbstractPicoElResolver extends ELResolver {
 
 	@Override
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
-		return null;
-	}
+	    if (base != null) return null;
+	    ArrayList<FeatureDescriptor> list = new ArrayList<FeatureDescriptor>(14);
+	    FeatureDescriptor descriptor = new FeatureDescriptor();
+	    descriptor.setName(NAME);
+	    descriptor.setDisplayName(DISPLAYNAME);
+	    descriptor.setShortDescription(DESCRIPTION);
+	    descriptor.setExpert(EXPERT);
+	    descriptor.setHidden(HIDDEN);
+	    descriptor.setPreferred(PREFERRED);
+	    list.add(descriptor);
+	    
+	    return list.iterator();
+	  }
 
 	@Override
 	public Class<?> getCommonPropertyType(ELContext context, Object base) {

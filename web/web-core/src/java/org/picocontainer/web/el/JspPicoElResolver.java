@@ -18,7 +18,7 @@ public class JspPicoElResolver extends AbstractPicoElResolver {
 	}
 
 	
-	private static class PicoHook extends org.picocontainer.web.PicoServletContainerFilter.ServletFilter {
+	private static class PicoHook extends org.picocontainer.web.PicoServletFilter {
 		
 		/**
 		 * 

@@ -75,7 +75,7 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>javax.servlet</groupId><artifactId>servlet-api</artifactId><version>2.3</version>
+        <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><version>3.1.0</version>
         <scope>provided</scope>
       </dependency>
       <!-- Test scoped depedencies -->
@@ -109,13 +109,19 @@
       </dependency>
       <dependency>
         <groupId>httpunit</groupId><artifactId>httpunit</artifactId><version>1.6.2</version>
-        <scope>test</scope>
+        <scope>provided</scope>
+        <exclusions>
+			<exclusion>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+			</exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId><artifactId>servlet-api</artifactId>
+      <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId>
     </dependency>
     <!-- test time only -->
     <dependency>

@@ -1,7 +1,7 @@
 package org.picocontainer.web.sample.stub;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -19,7 +19,7 @@ public class StubServlet extends HttpServlet {
 
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
-    public static class ServletFilter extends PicoServletContainerFilter {
+    public static class ServletFilter extends AbstractPicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
         }
         protected void setSessionContainer(MutablePicoContainer container) {

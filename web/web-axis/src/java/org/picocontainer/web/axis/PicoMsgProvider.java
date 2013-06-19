@@ -10,7 +10,7 @@ package org.picocontainer.web.axis;
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.utils.cache.ClassCache;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 /**
  * Axis provider for message-style services that uses the
@@ -28,7 +28,7 @@ public class PicoMsgProvider extends MsgProvider {
         ClassCache cache = msgContext.getAxisEngine().getClassCache();
         Class<?> svcClass = cache.lookup(clsName, cl).getJavaClass();
 
-        return PicoServletContainerFilter.getRequestComponentForThread(svcClass);
+        return AbstractPicoServletContainerFilter.getRequestComponentForThread(svcClass);
     }
 
 }

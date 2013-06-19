@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 import com.opensymphony.xwork2.ObjectFactory;
 import com.opensymphony.xwork2.config.ConfigurationException;
@@ -36,7 +36,7 @@ public class PicoObjectFactory extends ObjectFactory {
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
-    public static class ServletFilter extends PicoServletContainerFilter {
+    public static class ServletFilter extends AbstractPicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
