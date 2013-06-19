@@ -15,7 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 
 public class AjaxEmailScenario extends JUnitScenario {
 
-    private Selenium selenium = new DefaultSelenium("localhost", 4444, "*safari", "http://localhost:8080");
+    private final Selenium selenium;
 	private AjaxEmailSteps ajaxEmailSteps;
 
     public AjaxEmailScenario() {
@@ -48,7 +48,15 @@ public class AjaxEmailScenario extends JUnitScenario {
                 };
 			}
         });
-
+        
+        
+        
+		String browser = System.getProperty("selenium.browser", "*googlechrome");
+		if ("${selenium.browser}".equals(browser)) {
+			browser = "*googlechrome";
+		} 
+        
+		selenium = new DefaultSelenium("localhost", 4444, browser, "http://localhost:8080");
         ajaxEmailSteps = new AjaxEmailSteps(selenium, seleniumContext);
 		super.addSteps(ajaxEmailSteps);
     }

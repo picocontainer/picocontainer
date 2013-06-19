@@ -17,6 +17,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
         container.addComponent(UserStore.class);
         container.addComponent(Persister.class, InMemoryPersister.class);
         container.addComponent(QueryStore.class);
+        container.addComponent(SampleData.class);
 //        container.addAdapter(new FallbackCacheProvider());
     }
 
@@ -30,7 +31,6 @@ public class AjaxEmailWebappComposer implements WebappComposer {
         container.as(USE_NAMES).addComponent(Auth.class);
         container.as(USE_NAMES).addComponent(Inbox.class);
         container.as(USE_NAMES).addComponent(Sent.class);
-        container.addComponent(SampleData.class);
 
     }
 

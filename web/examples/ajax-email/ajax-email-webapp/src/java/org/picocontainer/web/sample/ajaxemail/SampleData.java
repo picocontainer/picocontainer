@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.picocontainer.Startable;
 import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
-public class SampleData {
+public class SampleData implements Startable {
 
     private final Persister persister;
     private final UserStore userStore;
@@ -73,4 +74,13 @@ public class SampleData {
     private void makePersistent(Object obj) {
         persister.makePersistent(obj);
     }
+
+	public void start() {
+		load();
+		
+	}
+
+	public void stop() {
+		//No-op
+	}
 }
