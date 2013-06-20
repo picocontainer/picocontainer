@@ -37,7 +37,8 @@ import org.picocontainer.references.ThreadLocalMapObjectReference;
 @SuppressWarnings("serial")
 public class Storing extends AbstractBehavior {
 
-    private StoreThreadLocal mapThreadLocalObjectReference;
+    @SuppressWarnings("rawtypes")
+	private StoreThreadLocal mapThreadLocalObjectReference;
     
     
 
@@ -46,8 +47,10 @@ public class Storing extends AbstractBehavior {
 		try {
 			super.dispose();
 		} finally {
-			mapThreadLocalObjectReference.remove();
-			mapThreadLocalObjectReference = null;
+			if (mapThreadLocalObjectReference != null) {
+				mapThreadLocalObjectReference.remove();
+				mapThreadLocalObjectReference = null;
+			}
 		}
 	}
 

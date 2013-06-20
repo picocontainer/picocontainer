@@ -260,6 +260,12 @@ public class StoringTestCase {
         } catch (InterruptedException e) {
         }
     }
+    
+    @Test
+    public void testDisposingWithoutInstantiatingDoesntThrowNPE() {
+    	Storing storing = new Storing();
+    	storing.dispose();
+    }
 
 
 }
