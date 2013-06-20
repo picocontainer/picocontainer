@@ -43,7 +43,13 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
+
         ScopedContainers scopedContainers = getScopedContainers(context);
+        if (scopedContainers == null) {
+        	throw new IllegalStateException("Scoped containers have not been set by the WebappComposer as defined in your web.xml ?");
+        }
+
+        
         setAppContainer(scopedContainers.getApplicationContainer());
 
         isStateless = Boolean.parseBoolean(context.getInitParameter(PicoServletContainerListener.STATELESS_WEBAPP));
@@ -54,9 +60,18 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
             exposeServletInfrastructure = true;
         }
 
-        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
-        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
-        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
+        MutablePicoContainer requestContainer = scopedContainers.getRequestContainer();
+        if (requestContainer.getComponentAdapter(HttpSession.class) == null ) {
+        	requestContainer.as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
+        } 
+        
+        if (requestContainer.getComponentAdapter(HttpServletRequest.class) == null) {
+        	requestContainer.as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
+        }
+        
+        if (requestContainer.getComponentAdapter(HttpServletResponse.class) == null) {
+        	requestContainer.as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
+        }
 
         initAdditionalScopedComponents(scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer());
 
@@ -124,8 +139,14 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
             setSessionContainer(null);
         }
 
-        scopedContainers.getRequestContainer().stop();
-        scopedContainers.getRequestContainer().dispose();
+        if (scopedContainers.getRequestContainer() != null) {
+        	scopedContainers.getRequestContainer().stop();
+        }
+        
+        if (scopedContainers.getRequestContainer() != null) {
+        	scopedContainers.getRequestContainer().dispose();
+        }
+        
         setRequestContainer(null);
 
         if (!isStateless) {

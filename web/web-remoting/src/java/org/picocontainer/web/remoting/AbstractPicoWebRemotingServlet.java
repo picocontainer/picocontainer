@@ -10,6 +10,7 @@ package org.picocontainer.web.remoting;
 import java.io.IOException;
 import java.lang.reflect.Member;
 
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,6 +67,12 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     
     public static class ServletFilter extends AbstractPicoServletContainerFilter {
 
+
+		@Override
+		public void init(FilterConfig filterConfig) throws ServletException {
+			super.init(filterConfig);
+		}    	
+    	
         @Override
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
@@ -106,6 +113,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 			}
 			return currentRequestContainer.get();
 		}
+
     }
 
     private boolean initialized;

@@ -14,6 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Guarding;
 import org.picocontainer.behaviors.Storing;
@@ -32,18 +33,29 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
         super.contextInitialized(event);
     }
 
+    @Override
     protected ScopedContainers makeScopedContainers(boolean stateless) {
-
-        //NullLifecycleStrategy ls = new NullLifecycleStrategy();
-
         DefaultPicoContainer appCtnr = new DefaultPicoContainer(makeParentContainer(), makeLifecycleStrategy(), makeAppComponentMonitor(), new Guarding().wrap(new Caching()));
-        Storing sessStoring = new Storing();
-        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(appCtnr, makeLifecycleStrategy(), makeSessionComponentMonitor(), new Guarding().wrap(sessStoring));
-        Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(sessCtnr, makeLifecycleStrategy(), makeRequestComponentMonitor(), new Guarding().wrap(addRequestBehaviors(reqStoring)));
-        ThreadLocalLifecycleState sessionState = new ThreadLocalLifecycleState();
+        Storing sessStoring;
+        ThreadLocalLifecycleState sessionState;
+        DefaultPicoContainer sessCtnr;
+        PicoContainer parentOfRequestContainer;
+        if (stateless) {
+        	  sessionState = null;
+              sessStoring = null;
+              sessCtnr = null;
+              parentOfRequestContainer = appCtnr;
+        } else {
+        	sessStoring = new Storing();
+        	sessionState = new ThreadLocalLifecycleState();
+        	sessCtnr = new DefaultPicoContainer(appCtnr, makeLifecycleStrategy(), makeSessionComponentMonitor(), new Guarding().wrap(sessStoring));
+        	parentOfRequestContainer = sessCtnr;
+            sessCtnr.setLifecycleState(sessionState);
+        }
+        
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
-        sessCtnr.setLifecycleState(sessionState);
+        Storing reqStoring = new Storing();
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(parentOfRequestContainer, makeLifecycleStrategy(), makeRequestComponentMonitor(), new Guarding().wrap(addRequestBehaviors(reqStoring)));
         reqCtnr.setLifecycleState(requestState);
 
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring, sessionState, requestState);

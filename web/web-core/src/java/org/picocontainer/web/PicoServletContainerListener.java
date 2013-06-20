@@ -211,6 +211,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 	        stop(scopedContainers.getApplicationContainer());
 	        dispose(scopedContainers.getApplicationContainer());
         }
+        
+        removeScopedContainersFromContext(event.getServletContext());
     }
 
     private void start(MutablePicoContainer container) {
@@ -233,6 +235,10 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     private ScopedContainers getScopedContainers(ServletContext context) {
         return (ScopedContainers) context.getAttribute(ScopedContainers.class.getName());
+    }
+    
+    private void removeScopedContainersFromContext(ServletContext context) {
+    	context.removeAttribute(ScopedContainers.class.getName());
     }
 
     public void sessionCreated(HttpSessionEvent event) {

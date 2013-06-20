@@ -6,6 +6,7 @@ Maven (http://maven.apache.org) required: 2.0.9+
 Build profiles:  
 
 - default: builds all releasable modules
+- examples:  Builds all example webapps
 - reporting:  builds reports and javadoc/source attachment of artifacts
 - distribution:  builds distribution
 - nt: no-test, builds skipping unit tests 

@@ -10,6 +10,9 @@ package org.picocontainer.web.struts2;
 
 import java.util.Map;
 
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
@@ -28,39 +31,79 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 @SuppressWarnings("serial")
 public class PicoObjectFactory extends ObjectFactory {
 	
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentRequestContainer;
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer;
+    private static ThreadLocal<MutablePicoContainer> currentAppContainer;
 
     public static class ServletFilter extends AbstractPicoServletContainerFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
+		@Override
+		public void init(FilterConfig filterConfig) throws ServletException {
+			synchronized(PicoObjectFactory.class) {
+				if (currentAppContainer == null) {
+					currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+				}
+				
+				if (currentSessionContainer == null) {
+					currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+				}
+				if (currentRequestContainer == null) {
+					currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+				}
+			}
+			super.init(filterConfig);
+		}    	
+    	
+        protected synchronized void setAppContainer(MutablePicoContainer container) {
+        	if (currentAppContainer == null) {
+        		currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+        	}
             currentAppContainer.set(container);
         }
-        protected void setRequestContainer(MutablePicoContainer container) {
+        protected synchronized void setRequestContainer(MutablePicoContainer container) {
+        	if (currentRequestContainer == null) {
+        		currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        	}
             currentRequestContainer.set(container);
         }
-        protected void setSessionContainer(MutablePicoContainer container) {
+        protected synchronized void setSessionContainer(MutablePicoContainer container) {
+        	if (currentSessionContainer == null) {
+        		currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        	}
             currentSessionContainer.set(container);
         }
         
 		public void destroy() {
-			// TODO Auto-generated method stub
+			if (currentRequestContainer != null) {
+				currentRequestContainer.remove();
+				currentRequestContainer = null;
+			}
+			
+			if (currentSessionContainer != null) {
+				currentSessionContainer.remove();
+				currentSessionContainer = null;
+			}
+			
+			if (currentAppContainer != null) {
+				currentAppContainer.remove();
+				currentAppContainer = null;
+			}
 			
 		}
 		@Override
 		protected final MutablePicoContainer getRequestContainer() {
 			if (currentRequestContainer == null || currentRequestContainer.get() == null) {
-				throw new IllegalStateException("currentRequestContainer has not yet been set.  Is " + ServletFilter.class.getName() + " properly installed in your web.xml?");
+				throw newListenerNotInstalledRightIllegalStateException();
 			}
 			return currentRequestContainer.get();
 		}
+
     }
 
     @SuppressWarnings({ "rawtypes" })
     public Class getClassInstance(String name) throws ClassNotFoundException {
         Class clazz = super.getClassInstance(name);
         synchronized (this) {
-            MutablePicoContainer reqContainer = currentRequestContainer.get();
+        	MutablePicoContainer reqContainer = currentRequestContainer != null ? currentRequestContainer.get() : null;
             if (reqContainer != null) {
                 // forces a registration via noComponentFound()
                 reqContainer.getComponentAdapter(clazz);
@@ -69,12 +112,27 @@ public class PicoObjectFactory extends ObjectFactory {
         return clazz;
     }
 
+	
+	private MutablePicoContainer getAppContainer() {
+		if (currentAppContainer == null || currentAppContainer.get() == null) {
+			throw newListenerNotInstalledRightIllegalStateException();
+		}
+		return currentAppContainer.get();		
+	}
+	
+	
+	private static IllegalStateException newListenerNotInstalledRightIllegalStateException() {
+		return new IllegalStateException("Container have not been set up correctly.  Is " 
+				+ Struts2PicoServletContainerListener.class.getName() 
+				+ " properly installed in your web.xml (and before struts filters)?");
+	}
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
 
-        MutablePicoContainer requestContainer = currentRequestContainer.get();
+        MutablePicoContainer requestContainer = currentRequestContainer != null ? currentRequestContainer.get() : null;
         if (requestContainer == null) {
-            MutablePicoContainer appContainer = currentAppContainer.get();
+            MutablePicoContainer appContainer = getAppContainer();
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {
                 appContainer.addComponent(clazz);

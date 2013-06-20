@@ -3,7 +3,8 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
         
 <struts>
-
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.excludePattern" value="/pwr/*"/>	
     <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.picocontainer.web.struts2.PicoObjectFactory" />
 
     <package name="default" extends="struts-default">
