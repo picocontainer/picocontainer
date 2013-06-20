@@ -9,4 +9,12 @@
     </parent>
     <artifactId>picocontainer-web-test</artifactId>
     <name>PicoContainer Web Testing</name>
+    <dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.9</version>
+			<scope>provided</scope>
+		</dependency>
+    </dependencies>
 </project>

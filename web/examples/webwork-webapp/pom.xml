@@ -52,6 +52,8 @@
                         </connector>
                     </connectors>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
+					<stopKey>stopJetty</stopKey>
+					<stopPort>9966</stopPort>                    
                 </configuration>
                 <executions>
                     <execution>
