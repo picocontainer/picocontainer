@@ -57,7 +57,9 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
     public void verify(final PicoContainer container) {
-        delegate.verify(container);
+    	if (delegate != null) {
+    		delegate.verify(container);
+    	}
     }
 
     public void accept(final PicoVisitor visitor) {
@@ -137,6 +139,13 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
 
     }
 
+
+	public void dispose() {
+		if (delegate != null) {
+			delegate.dispose();
+		}
+	}    
+    
     /**
      * <p>
      * Component adapter which decorates another adapter.
@@ -319,4 +328,5 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
             return getDescriptor() + ":" + delegate.toString();
         }
     }
+
 }

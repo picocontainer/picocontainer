@@ -37,8 +37,28 @@ import org.picocontainer.references.ThreadLocalMapObjectReference;
 @SuppressWarnings("serial")
 public class Storing extends AbstractBehavior {
 
-    private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
+    private StoreThreadLocal mapThreadLocalObjectReference;
+    
+    
 
+	@Override
+	public void dispose() {
+		try {
+			super.dispose();
+		} finally {
+			mapThreadLocalObjectReference.remove();
+			mapThreadLocalObjectReference = null;
+		}
+	}
+
+	protected StoreThreadLocal getThreadLocalStore() {
+		if (mapThreadLocalObjectReference == null) {
+			mapThreadLocalObjectReference = new StoreThreadLocal();
+		}
+		
+		return mapThreadLocalObjectReference;
+	}
+	
     @Override
 	public <T> ComponentAdapter<T>  createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
                                        final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
@@ -46,7 +66,7 @@ public class Storing extends AbstractBehavior {
             return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
-        ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, key);
+        ThreadLocalMapObjectReference threadLocalMapObjectReference = new ThreadLocalMapObjectReference(getThreadLocalStore(), key);
 
         return monitor.changedBehavior(new Stored<T>(
                 super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams), threadLocalMapObjectReference));
@@ -62,33 +82,33 @@ public class Storing extends AbstractBehavior {
         removePropertiesIfPresent(componentProps, Characteristics.CACHE);
 
         return monitor.changedBehavior(new Stored<T>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter),
-                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey())));
+                          new ThreadLocalMapObjectReference(getThreadLocalStore(), adapter.getComponentKey())));
     }
 
     public StoreWrapper getCacheForThread() {
         StoreWrapper wrappedMap = new StoreWrapper();
-        wrappedMap.wrapped = (Map)mapThreadLocalObjectReference.get();
+        wrappedMap.wrapped = (Map)getThreadLocalStore().get();
         return wrappedMap;
     }
 
     public void putCacheForThread(final StoreWrapper wrappedMap) {
-        mapThreadLocalObjectReference.set(wrappedMap.wrapped);
+    	getThreadLocalStore().set(wrappedMap.wrapped);
     }
 
     public StoreWrapper resetCacheForThread() {
         Map map = new HashMap();
-        mapThreadLocalObjectReference.set(map);
+        getThreadLocalStore().set(map);
         StoreWrapper storeWrapper = new StoreWrapper();
         storeWrapper.wrapped = map;
         return storeWrapper;
     }
 
     public void invalidateCacheForThread() {
-        mapThreadLocalObjectReference.set(Collections.unmodifiableMap(Collections.emptyMap()));
+    	getThreadLocalStore().set(Collections.unmodifiableMap(Collections.emptyMap()));
     }
 
     public int getCacheSize() {
-        return ((Map)mapThreadLocalObjectReference.get()).size();
+        return ((Map)getThreadLocalStore().get()).size();
     }
 
     public static class StoreThreadLocal<T> extends ThreadLocal<Map<Object, T>> implements Serializable {
@@ -102,7 +122,6 @@ public class Storing extends AbstractBehavior {
         private Map wrapped;
     }
 
-    @SuppressWarnings("serial")
     public static class Stored<T> extends AbstractChangedBehavior<T> {
 
         private final ObjectReference<Instance<T>> instanceReference;
@@ -297,4 +316,5 @@ public class Storing extends AbstractBehavior {
         }
 
     }
+
 }

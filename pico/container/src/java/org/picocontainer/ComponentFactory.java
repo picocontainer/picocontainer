@@ -75,4 +75,6 @@ public interface ComponentFactory {
      * @param visitor the visitor.
      */
     void accept(PicoVisitor visitor);
+    
+    void dispose();
 }

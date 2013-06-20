@@ -320,6 +320,10 @@ public class PicoBuilderTestCase {
             return null;
         }
 
+		public void dispose() {
+			
+		}
+        
         public void verify(final PicoContainer container) {
         }
 

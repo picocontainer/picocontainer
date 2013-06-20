@@ -32,6 +32,11 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return new LifecycleAdapter<T>(injector, lifecycle);
         }
     }
+    
+
+	public void dispose() {
+		
+	}    
 
 	private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
         private final Injector<T> delegate;
@@ -122,4 +127,5 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
 			return delegate.partiallyDecorateComponentInstance(container, into, instance, superclassPortion);
 		}
     }
+
 }

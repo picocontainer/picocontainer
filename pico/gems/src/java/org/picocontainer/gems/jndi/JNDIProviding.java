@@ -45,4 +45,8 @@ public class JNDIProviding implements ComponentFactory {
     public void accept(final PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
     }
+
+	public void dispose() {
+		
+	}
 }

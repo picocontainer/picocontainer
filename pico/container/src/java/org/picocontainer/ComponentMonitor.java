@@ -85,13 +85,13 @@ public interface ComponentMonitor {
     /**
      * Event thrown after the component method has been invoked on the given instance
      *
-     * @param container
-     * @param componentAdapter
-     * @param member
+     * @param container current container that the invoking component adapter has access to.
+     * @param componentAdapter the component adapter making the invocation.
+     * @param member Method/Field/etc being invoked
      * @param instance the component instance
-     * @param duration
-     * @param retVal
-     * @param args
+     * @param duration duration of the invocation
+     * @param retVal the returnvalue from the invocation, most often null, may be non-null if a method was invoked.
+     * @param args Arguments invoked on the member
      */
     void invoked(PicoContainer container,
                  ComponentAdapter<?> componentAdapter,

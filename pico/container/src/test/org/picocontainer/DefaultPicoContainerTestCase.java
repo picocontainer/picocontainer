@@ -411,6 +411,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public void accept(final PicoVisitor visitor) {
             visitor.visitComponentFactory(this);
         }
+
+		public void dispose() {
+			
+		}
     }
 
 	private static final class ComponentAdapterWithNoMonitor implements

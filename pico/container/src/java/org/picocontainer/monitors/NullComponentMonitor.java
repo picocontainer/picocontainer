@@ -61,7 +61,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
                         final ComponentAdapter<?> componentAdapter,
                         final Member member,
                         final Object instance,
-                        final long duration, final Object retVal, final Object[] args) {
+                        final long duration, final Object retVal, final Object... args) {
     }
 
     public void invocationFailed(final Member member, final Object instance, final Exception e) {
@@ -81,12 +81,12 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
         return null;
     }
 
-    public Injector newInjector(final Injector injector) {
+    public <T> Injector<T> newInjector(final Injector<T> injector) {
         return injector;
     }
 
     /** {@inheritDoc} **/
-    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
+    public <T> ChangedBehavior<T> changedBehavior(final ChangedBehavior<T> changedBehavior) {
         return changedBehavior;
     }
 

@@ -1019,6 +1019,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         disposeAdapters();
 
         lifecycleState.disposed();
+        
+        componentFactory.dispose();
     }
 
     /** {@inheritDoc} **/
