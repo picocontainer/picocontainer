@@ -16,6 +16,11 @@
             <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.picocontainer.web</groupId>
+			<artifactId>picocontainer-web-test</artifactId>
+			<version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.myfaces.core</groupId><artifactId>myfaces-api</artifactId><version>2.1.9</version>
             <scope>compile</scope>
         </dependency>

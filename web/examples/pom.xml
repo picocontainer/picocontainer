@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+		<module>web-test</module>
         <module>ajax-email</module>
         <module>jsf-webapp</module>
         <module>struts-webapp</module>

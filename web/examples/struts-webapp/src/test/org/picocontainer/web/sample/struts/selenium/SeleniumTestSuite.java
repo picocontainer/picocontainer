@@ -1,4 +1,4 @@
-package org.picocontaienr.web.samples;
+package org.picocontainer.web.sample.struts.selenium;
 
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -16,9 +16,7 @@ public class SeleniumTestSuite {
 	@ClassRule
 	public static SeleniumResource seleniumResource = new SeleniumResource();
 	
-	
 	public static Selenium selenium() {
 		return seleniumResource.getSelenium();
-	}
-
+	}	
 }
