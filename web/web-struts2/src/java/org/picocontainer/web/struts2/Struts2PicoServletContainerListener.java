@@ -24,6 +24,7 @@ import org.picocontainer.web.ThreadLocalLifecycleState;
 
 import javax.servlet.ServletContextEvent;
 
+@SuppressWarnings("serial")
 public class Struts2PicoServletContainerListener extends PicoServletContainerListener {
 
     public void contextInitialized(ServletContextEvent event) {
@@ -58,14 +59,14 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
         return new StrutsActionInstantiatingComponentMonitor();
     }
 
-    public static class StrutsActionInstantiatingComponentMonitor extends NullComponentMonitor {
+	public static class StrutsActionInstantiatingComponentMonitor extends NullComponentMonitor {
         public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object o) {
             return noComponent(mutablePicoContainer, o);
         }
 
         private Object noComponent(MutablePicoContainer mutablePicoContainer, Object o) {
             if (o instanceof Class) {
-                Class clazz = (Class) o;
+                Class<?> clazz = (Class<?>) o;
                 if (Action.class.isAssignableFrom(clazz) || Result.class.isAssignableFrom(clazz)) {
                     try {
                         mutablePicoContainer.addComponent(clazz);

@@ -10,7 +10,7 @@ package org.picocontainer.web.axis;
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.RPCProvider;
 import org.apache.axis.utils.cache.ClassCache;
-import org.picocontainer.web.AbstractPicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 /**
  * Axis provider for RPC-style services that uses the PicoServletContainerFilter
@@ -20,6 +20,8 @@ import org.picocontainer.web.AbstractPicoServletContainerFilter;
  */
 @SuppressWarnings("serial")
 public class PicoRPCProvider extends RPCProvider {
+	
+	private PicoHook picoHook = new PicoHook();
 
     protected Object makeNewServiceObject(MessageContext msgContext, String clsName) throws Exception {
 
@@ -27,7 +29,11 @@ public class PicoRPCProvider extends RPCProvider {
         ClassCache cache = msgContext.getAxisEngine().getClassCache();
         Class<?> svcClass = cache.lookup(clsName, cl).getJavaClass();
 
-        return AbstractPicoServletContainerFilter.getRequestComponentForThread(svcClass);
+        return picoHook.getRequestComponentForThread(svcClass);
     }
 
+    
+    private static final class PicoHook extends PicoServletFilter {
+    	
+    }
 }

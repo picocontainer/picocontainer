@@ -10,7 +10,12 @@
 	  <param-name>webapp-composer-class</param-name>
 	  <param-value>org.picocontainer.web.samples.jsf.JsfDemoComposer</param-value>
 	</context-param>	
-	
+    <listener>
+        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+    </listener>	
+    <listener>
+    	<listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>	
 	<!--  
 			Filter to build the request container with each request to the faces servlet.
 	 -->
@@ -24,10 +29,6 @@
         <url-pattern>*.jsf</url-pattern>
 	</filter-mapping>
   
-    <listener>
-        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
-    </listener>	
-    
     <!-- 
     	JSF Installation.
      -->
@@ -39,6 +40,7 @@
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
+		<url-pattern>cheese.jsf</url-pattern>
 	</servlet-mapping>	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

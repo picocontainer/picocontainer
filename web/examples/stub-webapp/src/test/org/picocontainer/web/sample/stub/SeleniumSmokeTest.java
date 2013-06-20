@@ -1,7 +1,6 @@
 package org.picocontainer.web.sample.stub;
 
 import com.thoughtworks.selenium.DefaultSelenium;
-import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
 import org.junit.Test;import static junit.framework.Assert.assertTrue;
 
 public class SeleniumSmokeTest {

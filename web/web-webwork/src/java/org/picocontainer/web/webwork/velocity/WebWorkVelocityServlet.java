@@ -11,10 +11,10 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 import webwork.action.ServletActionContext;
 import webwork.util.ServletValueStack;
@@ -32,30 +32,13 @@ import webwork.view.velocity.WebWorkUtil;
 @SuppressWarnings("serial")
 public final class WebWorkVelocityServlet extends VelocityViewServlet {
 
-    public static class ServletFilter extends PicoServletContainerFilter {
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
-
-        protected static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
-        }
-        protected static MutablePicoContainer getSessionContainerForThread() {
-            return currentSessionContainer.get();
-        }
-        protected static MutablePicoContainer getApplicationContainerForThread() {
-            return currentAppContainer.get();
-        }
+	private final PicoHook picoHook = new PicoHook();
+	
+    public static class PicoHook extends PicoServletFilter {
+      
+		protected MutablePicoContainer getRequestContainerForThread() {
+			return super.getRequestContainer();
+		}
     }
 
     static final String WEBWORK_UTIL = "webwork";
@@ -68,7 +51,7 @@ public final class WebWorkVelocityServlet extends VelocityViewServlet {
 
     protected Context createContext(javax.servlet.http.HttpServletRequest request,
             javax.servlet.http.HttpServletResponse response) {
-        Context ctx = new NanocontainerVelocityContext(ServletFilter.getRequestContainerForThread(),
+        Context ctx = new PicoContainerVelocityContext(picoHook.getRequestContainerForThread(),
                 ServletValueStack.getStack(request));
         ctx.put(REQUEST, request);
         ctx.put(RESPONSE, response);
@@ -91,11 +74,11 @@ public final class WebWorkVelocityServlet extends VelocityViewServlet {
         return getTemplate(servletPath);
     }
 
-    static final class NanocontainerVelocityContext extends VelocityContext {
+    static final class PicoContainerVelocityContext extends VelocityContext {
         final PicoContainer container;
         final ServletValueStack stack;
 
-        NanocontainerVelocityContext(PicoContainer container, ServletValueStack stack) {
+        PicoContainerVelocityContext(PicoContainer container, ServletValueStack stack) {
             this.container = container != null ? container : emptyContainer;
             this.stack = stack;
         }

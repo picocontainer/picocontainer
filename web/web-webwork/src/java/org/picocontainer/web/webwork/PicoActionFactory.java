@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 import webwork.action.Action;
 import webwork.action.factory.ActionFactory;
@@ -26,21 +26,14 @@ import webwork.action.factory.ActionFactory;
  */
 public final class PicoActionFactory extends ActionFactory {
 
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+	private PicoHook picoHook = new PicoHook();
 
     @SuppressWarnings("serial")
-    public static class ServletFilter extends PicoServletContainerFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
+    private static class PicoHook extends PicoServletFilter {
+    	
+    	protected MutablePicoContainer getRequestContainerForThread() {
+    		return super.getRequestContainer();
+    	}
     }
 
     private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
@@ -61,7 +54,7 @@ public final class PicoActionFactory extends ActionFactory {
     }
 
     protected Action instantiateAction(Class<?> actionClass) {
-        MutablePicoContainer actionsContainer = currentRequestContainer.get();
+        MutablePicoContainer actionsContainer =  picoHook.getRequestContainerForThread();
         Action action = (Action) actionsContainer.getComponent(actionClass);
 
         if (action == null) {

@@ -58,6 +58,11 @@
 				<artifactId>selenium-safari-driver</artifactId>
 				<version>${selenium.version}</version>
             </dependency>
+            <dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-server</artifactId>
+				<version>${selenium.version}</version>
+            </dependency>            
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -65,6 +70,7 @@
             <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-core</artifactId>
         </dependency>
         <dependency>
+				<!-- Selenium Stuff is provided because it doesn't need to go into the webapps -->
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-java</artifactId>	
 				<scope>provided</scope>
@@ -74,6 +80,11 @@
 				<artifactId>selenium-safari-driver</artifactId>
 				<scope>provided</scope>
             </dependency>
+            <dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-server</artifactId>
+				<scope>provided</scope>
+            </dependency>            
     </dependencies>
     <profiles>
         <profile>

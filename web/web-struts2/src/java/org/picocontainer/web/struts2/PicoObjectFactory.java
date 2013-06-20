@@ -9,12 +9,8 @@
 package org.picocontainer.web.struts2;
 
 import java.util.Map;
-import java.util.Collection;
-import java.util.Iterator;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.web.AbstractPicoServletContainerFilter;
 
 import com.opensymphony.xwork2.ObjectFactory;
@@ -31,7 +27,7 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
  */
 @SuppressWarnings("serial")
 public class PicoObjectFactory extends ObjectFactory {
-
+	
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
@@ -46,9 +42,21 @@ public class PicoObjectFactory extends ObjectFactory {
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
+        
+		public void destroy() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		protected final MutablePicoContainer getRequestContainer() {
+			if (currentRequestContainer == null || currentRequestContainer.get() == null) {
+				throw new IllegalStateException("currentRequestContainer has not yet been set.  Is " + ServletFilter.class.getName() + " properly installed in your web.xml?");
+			}
+			return currentRequestContainer.get();
+		}
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public Class getClassInstance(String name) throws ClassNotFoundException {
         Class clazz = super.getClassInstance(name);
         synchronized (this) {
@@ -61,7 +69,7 @@ public class PicoObjectFactory extends ObjectFactory {
         return clazz;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
 
         MutablePicoContainer requestContainer = currentRequestContainer.get();
@@ -78,7 +86,7 @@ public class PicoObjectFactory extends ObjectFactory {
         return requestContainer.getComponent(clazz);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Interceptor buildInterceptor(InterceptorConfig config, Map params) throws ConfigurationException {
         return super.buildInterceptor(config, params);
     }

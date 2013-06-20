@@ -37,11 +37,13 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private static final String EMPTY = "";
 	private static final String DOT = ".";
+	/*
 	private static final String COLON = ":";
 	private static final String SPACE = " ";
 	private static final String GET = "GET";
 	private static final String CLOSE = "].";
 	private static final String OPEN = "[";
+	*/
 	private static final String SLASH = "/";
     private static final String APPLICATION_SCOPE = "application";
     private static final String SESSION_SCOPE = "session";
@@ -78,6 +80,32 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
+
+		public final void destroy() {
+			if (currentRequestContainer != null) {
+				currentRequestContainer.remove();
+				currentRequestContainer = null;
+			}	
+			
+			if (currentSessionContainer != null) {
+				currentSessionContainer.remove();
+				currentSessionContainer = null;
+			}			
+			
+			if (currentAppContainer != null) {
+				currentAppContainer.remove();
+				currentAppContainer = null;
+			}
+		}
+
+		@Override
+		protected MutablePicoContainer getRequestContainer() {
+			if (currentRequestContainer == null) {
+				throw new IllegalStateException("Request container hasn't been set yet.  Is " 
+							+ ServletFilter.class.getName() + " properly installed in your web.xml?");
+			}
+			return currentRequestContainer.get();
+		}
     }
 
     private boolean initialized;
@@ -121,12 +149,6 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
     }
 
-    private void appendArgsAsString(StringBuilder sb, Object[] args) {
-        for (int i = 0; i < args.length; i++) {
-            Object arg = args[i];
-            sb.append(SPACE).append(i).append(COLON).append(arg == null ? "**null**" : arg.toString());
-        }
-    }
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {

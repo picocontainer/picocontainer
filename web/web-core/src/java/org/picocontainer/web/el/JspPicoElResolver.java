@@ -13,7 +13,7 @@ public class JspPicoElResolver extends AbstractPicoElResolver {
 	}
 
 	@Override
-	protected PicoContainer getPicoContainer(ELContext context) {
+	protected final PicoContainer getPicoContainer(final ELContext context) {
 		return picoHook.getCurrentRequestPico();
 	}
 

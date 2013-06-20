@@ -14,7 +14,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 import com.opensymphony.xwork.ObjectFactory;
 
@@ -31,22 +31,17 @@ import com.opensymphony.xwork.ObjectFactory;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
-    @SuppressWarnings("serial")
-    public static class ServletFilter extends PicoServletContainerFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
-    }
+  
+	private final PicoHook picoHook = new PicoHook();
+	
+	@SuppressWarnings("serial")
+	private static class PicoHook extends PicoServletFilter {
+		
+		public MutablePicoContainer getRequestPicoForThread() {
+			return super.getRequestContainer();
+		}
+	}
+	
 
     private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
@@ -54,18 +49,18 @@ public class PicoObjectFactory extends ObjectFactory {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
         return buildBean(clazz);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public Object buildBean(String className, Map extraContext) throws Exception {
         return buildBean(className);
     }
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public Class getClassInstance(String className) {
         return getActionClass(className);
     }
@@ -78,7 +73,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
     public Object buildBean(Class<?> actionClass) throws Exception {
-        PicoContainer actionsContainer = currentRequestContainer.get();
+        PicoContainer actionsContainer = picoHook.getRequestPicoForThread();
         Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {

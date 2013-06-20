@@ -5,32 +5,33 @@ import org.picocontainer.MutablePicoContainer;
 @SuppressWarnings("serial")
 public class PicoServletFilter extends AbstractPicoServletContainerFilter {
 
-    static transient ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-    static transient ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    static transient ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+    private static transient ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+    private static transient ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+    private static transient ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
-    protected void setAppContainer(MutablePicoContainer container) {
+
+    protected final void setAppContainer(MutablePicoContainer container) {
          if (currentRequestContainer == null) {
             currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         }
         currentAppContainer.set(container);
     }
 
-    protected void setRequestContainer(MutablePicoContainer container) {
+    protected final void setRequestContainer(MutablePicoContainer container) {
         if (currentRequestContainer == null) {
             currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         }
         currentRequestContainer.set(container);
     }
 
-    protected void setSessionContainer(MutablePicoContainer container) {
+    protected final void setSessionContainer(MutablePicoContainer container) {
         if (currentSessionContainer == null) {
             currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
         }
         currentSessionContainer.set(container);
     }
     
-    protected MutablePicoContainer getRequestContainer() {
+    protected final MutablePicoContainer getRequestContainer() {
     	MutablePicoContainer result = currentRequestContainer != null ? currentRequestContainer.get() : null;
     	if (result == null) {
     		throw new PicoContainerWebException("No request container has been set.  Is PicoServletContainerFilter installed in your web.xml?  " +
@@ -39,4 +40,23 @@ public class PicoServletFilter extends AbstractPicoServletContainerFilter {
     	
     	return result;
     }
+
+	public void destroy() {
+		if (currentRequestContainer != null) {
+			currentRequestContainer.remove();
+			currentRequestContainer = null;
+		}
+		
+		if (currentSessionContainer != null) {
+			currentSessionContainer.remove();
+			currentSessionContainer = null;
+		}
+		
+		if (currentAppContainer != null) {
+			currentAppContainer.remove();
+			currentAppContainer = null;
+		}
+		
+	}
+
 }

@@ -17,7 +17,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.web.AbstractPicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 /**
  * Uses PicoContainer to produce Actions and inject dependencies into them. If
@@ -31,21 +31,16 @@ import org.picocontainer.web.AbstractPicoServletContainerFilter;
  */
 public final class PicoActionFactory {
 
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+	
+	private final PicoHook filter = new PicoHook();
 
     @SuppressWarnings("serial")
-    public static class ServletFilter extends AbstractPicoServletContainerFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
+    private static class PicoHook extends PicoServletFilter {
+    	
+    	public MutablePicoContainer getRequestPicoForThread() {
+    		return super.getRequestContainer();
+    	}
+
     }
 
     private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
@@ -77,7 +72,7 @@ public final class PicoActionFactory {
     public Action getAction(HttpServletRequest request, ActionMapping mapping, ActionServlet servlet)
             throws PicoCompositionException {
 
-        MutablePicoContainer actionsContainer = currentRequestContainer.get();
+        MutablePicoContainer actionsContainer = filter.getRequestPicoForThread();
         Object actionKey = mapping.getPath();
         Class<?> actionType = getActionClass(mapping.getType());
 

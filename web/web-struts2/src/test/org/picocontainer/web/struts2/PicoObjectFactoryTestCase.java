@@ -18,7 +18,8 @@ import org.picocontainer.web.struts2.PicoObjectFactory;
  */
 public final class PicoObjectFactoryTestCase {
 
-    @Test(expected = ClassNotFoundException.class)
+    @SuppressWarnings("unchecked")
+	@Test(expected = ClassNotFoundException.class)
     public void testActionInstantiationWithInvalidClassName() throws Exception {
         PicoObjectFactory factory = new PicoObjectFactory();
         factory.buildBean("invalidAction", Collections.EMPTY_MAP);

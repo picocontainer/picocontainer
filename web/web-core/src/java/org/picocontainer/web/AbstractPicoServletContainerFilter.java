@@ -9,6 +9,7 @@ package org.picocontainer.web;
 
 import org.picocontainer.*;
 import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 
 import javax.servlet.*;
@@ -21,11 +22,24 @@ import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
 public abstract class AbstractPicoServletContainerFilter implements Filter, Serializable {
-
+	
     private boolean exposeServletInfrastructure;
     private boolean isStateless;
     private boolean printSessionSize;
 	private boolean debug = false;
+
+    private static ThreadLocal<HttpSession> currentSession = new ThreadLocal<HttpSession>();
+    private static ThreadLocal<ServletRequest> currentRequest = new ThreadLocal<ServletRequest>();
+    private static ThreadLocal<ServletResponse> currentResponse = new ThreadLocal<ServletResponse>();
+    
+    abstract protected MutablePicoContainer getRequestContainer();
+    
+    protected abstract void setAppContainer(MutablePicoContainer container);
+
+    protected abstract void setSessionContainer(MutablePicoContainer container);
+
+    protected abstract void setRequestContainer(MutablePicoContainer container);
+
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
@@ -48,12 +62,6 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
 
     }
 
-    public void destroy() {
-    	if (PicoServletFilter.currentRequestContainer != null)  PicoServletFilter.currentRequestContainer.remove(); 
-    	if (PicoServletFilter.currentSessionContainer != null)  PicoServletFilter.currentSessionContainer.remove(); 
-    	if (PicoServletFilter.currentAppContainer != null)  PicoServletFilter.currentAppContainer.remove(); 
-    }
-
     private ScopedContainers getScopedContainers(ServletContext context) {
         return (ScopedContainers) context.getAttribute(ScopedContainers.class.getName());
     }
@@ -61,9 +69,9 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
     protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
     }
 
-    public static Object getRequestComponentForThread(Class<?> type) {
-        MutablePicoContainer requestContainer = PicoServletFilter.currentRequestContainer.get();
-        MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
+    public Object getRequestComponentForThread(Class<?> type) {
+        MutablePicoContainer requestContainer = getRequestContainer();
+        MutablePicoContainer container = new TransientPicoContainer(requestContainer);
         container.addComponent(type);
         return container.getComponent(type);
     }
@@ -151,15 +159,6 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
                                              MutablePicoContainer requestContainer, ServletRequest req, ServletResponse resp) {
     }
 
-    private static ThreadLocal<HttpSession> currentSession = new ThreadLocal<HttpSession>();
-    private static ThreadLocal<ServletRequest> currentRequest = new ThreadLocal<ServletRequest>();
-    private static ThreadLocal<ServletResponse> currentResponse = new ThreadLocal<ServletResponse>();
-
-    protected abstract void setAppContainer(MutablePicoContainer container);
-
-    protected abstract void setSessionContainer(MutablePicoContainer container);
-
-    protected abstract void setRequestContainer(MutablePicoContainer container);
 
     public static class HttpSessionInjector extends AbstractAdapter<HttpSession> {
 

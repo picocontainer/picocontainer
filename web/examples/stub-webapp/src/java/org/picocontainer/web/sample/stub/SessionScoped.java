@@ -2,6 +2,7 @@ package org.picocontainer.web.sample.stub;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class SessionScoped implements Serializable {
 
     private AppScoped appScopeComp;

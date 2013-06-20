@@ -61,11 +61,89 @@
             </testResource>
         </testResources>
         <plugins>
-			<plugin>
+            <plugin>
 			  <groupId>org.eclipse.jetty</groupId>
 			  <artifactId>jetty-maven-plugin</artifactId>
 			  <version>9.0.3.v20130506</version>
-			</plugin>
+                <configuration>
+                    <webAppConfig>
+                        <contextPath>/${project.artifactId}</contextPath>
+                    </webAppConfig>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.ServerConnector">
+                            <port>8080</port>
+                            <maxIdleTime>3600000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run-war</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <configuration>
+                            <stopKey>stopJetty</stopKey>
+                            <stopPort>9966</stopPort>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+					<dependency>
+						<groupId>org.apache.myfaces.core</groupId><artifactId>myfaces-api</artifactId><version>2.1.9</version>
+						<scope>compile</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.myfaces.core</groupId><artifactId>myfaces-impl</artifactId><version>2.1.9</version>
+						<scope>runtime</scope>
+						<exclusions>
+							<exclusion>
+								<groupId>javax.servlet</groupId><artifactId>jstl</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--
+                      Skip the normal tests, we'll run them in the
+                      integration-test phase
+                    -->
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                        	<junitArtifactName>junit:junit-dep</junitArtifactName>
+							<skip>${maven.test.skip}</skip>
+							<includes>
+								<include>**/SeleniumTestSuite.java</include>
+							</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

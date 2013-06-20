@@ -6,15 +6,12 @@ package org.picocontainer.web.el;
 import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.containers.JSRPicoContainer;
 
 /**
  * Generic component resolution into a PicoContainer resolver.
@@ -80,7 +77,7 @@ abstract public class AbstractPicoElResolver extends ELResolver {
 	@Override
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
 	    if (base != null) return null;
-	    ArrayList<FeatureDescriptor> list = new ArrayList<FeatureDescriptor>(14);
+	    ArrayList<FeatureDescriptor> list = new ArrayList<FeatureDescriptor>(1);
 	    FeatureDescriptor descriptor = new FeatureDescriptor();
 	    descriptor.setName(NAME);
 	    descriptor.setDisplayName(DISPLAYNAME);

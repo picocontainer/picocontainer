@@ -10,7 +10,7 @@ package org.picocontainer.web.axis;
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.utils.cache.ClassCache;
-import org.picocontainer.web.AbstractPicoServletContainerFilter;
+import org.picocontainer.web.PicoServletFilter;
 
 /**
  * Axis provider for message-style services that uses the
@@ -22,13 +22,20 @@ import org.picocontainer.web.AbstractPicoServletContainerFilter;
 @SuppressWarnings("serial")
 public class PicoMsgProvider extends MsgProvider {
 
+	private PicoHook picoHook = new PicoHook();
+	
     protected Object makeNewServiceObject(MessageContext msgContext, String clsName) throws Exception {
 
         ClassLoader cl = msgContext.getClassLoader();
         ClassCache cache = msgContext.getAxisEngine().getClassCache();
         Class<?> svcClass = cache.lookup(clsName, cl).getJavaClass();
 
-        return AbstractPicoServletContainerFilter.getRequestComponentForThread(svcClass);
+        return picoHook.getRequestComponentForThread(svcClass);
+    }
+    
+    
+    private static class PicoHook extends PicoServletFilter {
+    	
     }
 
 }

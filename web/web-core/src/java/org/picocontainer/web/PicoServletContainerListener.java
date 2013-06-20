@@ -222,7 +222,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     }
 
     private void stop(MutablePicoContainer container) {
-        container.stop();
+    	try {
+	    	if (container.getLifecycleState().isStarted()) {
+	    		container.stop();
+	    	}
+    	} catch (IllegalStateException ex) {
+    		//swallow it, we still want dispose to try to go.
+    	}
     }
 
     private ScopedContainers getScopedContainers(ServletContext context) {

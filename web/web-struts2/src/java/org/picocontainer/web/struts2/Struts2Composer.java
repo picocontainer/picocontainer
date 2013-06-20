@@ -7,16 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.web.struts2;
 
-import com.opensymphony.xwork2.interceptor.AliasInterceptor;
-import com.opensymphony.xwork2.interceptor.ChainingInterceptor;
-import com.opensymphony.xwork2.interceptor.DefaultWorkflowInterceptor;
-import com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor;
-import com.opensymphony.xwork2.interceptor.I18nInterceptor;
-import com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor;
-import com.opensymphony.xwork2.interceptor.ParametersInterceptor;
-import com.opensymphony.xwork2.interceptor.PrepareInterceptor;
-import com.opensymphony.xwork2.interceptor.ScopedModelDrivenInterceptor;
-import com.opensymphony.xwork2.interceptor.StaticParametersInterceptor;
+import javax.servlet.ServletContext;
+
 import org.apache.struts2.interceptor.CheckboxInterceptor;
 import org.apache.struts2.interceptor.ExecuteAndWaitInterceptor;
 import org.apache.struts2.interceptor.FileUploadInterceptor;
@@ -28,9 +20,16 @@ import org.apache.struts2.interceptor.validation.AnnotationValidationInterceptor
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 
-import javax.servlet.ServletContext;
-
-import ognl.OgnlRuntime;
+import com.opensymphony.xwork2.interceptor.AliasInterceptor;
+import com.opensymphony.xwork2.interceptor.ChainingInterceptor;
+import com.opensymphony.xwork2.interceptor.DefaultWorkflowInterceptor;
+import com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor;
+import com.opensymphony.xwork2.interceptor.I18nInterceptor;
+import com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor;
+import com.opensymphony.xwork2.interceptor.ParametersInterceptor;
+import com.opensymphony.xwork2.interceptor.PrepareInterceptor;
+import com.opensymphony.xwork2.interceptor.ScopedModelDrivenInterceptor;
+import com.opensymphony.xwork2.interceptor.StaticParametersInterceptor;
 
 public abstract class Struts2Composer implements WebappComposer {
 

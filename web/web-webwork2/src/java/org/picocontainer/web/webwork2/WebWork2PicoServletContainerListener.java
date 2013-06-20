@@ -2,9 +2,10 @@ package org.picocontainer.web.webwork2;
 
 import org.picocontainer.web.PicoServletContainerListener;
 
+import com.opensymphony.xwork.ObjectFactory;
+
 import javax.servlet.ServletContextEvent;
 
-import com.opensymphony.xwork.ObjectFactory;
 import ognl.OgnlRuntime;
 
 @SuppressWarnings("serial")

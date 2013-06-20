@@ -59,7 +59,7 @@ public class JsonPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         startNode(name, null);
                     }
 
-                    @SuppressWarnings("unchecked")
+                    @SuppressWarnings({ "rawtypes" })
 					public void startNode(String name, Class clazz) {
                         ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
                     }
