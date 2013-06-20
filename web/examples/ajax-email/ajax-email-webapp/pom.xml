@@ -141,6 +141,7 @@
                         <id>run-scenarios-found</id>
                         <phase>integration-test</phase>
                         <configuration>
+							<skip>${maven.test.skip}</skip>                        
                             <scenarioIncludes>
                                 <scenarioInclude>${scenarios.include}</scenarioInclude>
                             </scenarioIncludes>
