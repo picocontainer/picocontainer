@@ -29,9 +29,11 @@
 			  <artifactId>jetty-maven-plugin</artifactId>
 			  <version>9.0.3.v20130506</version>
                 <configuration>
+					<!-- Have to have both webappconfig  AND contextPath to support jetty:run and jetty:run-forked-->                
                     <webAppConfig>
                         <contextPath>/${project.artifactId}</contextPath>
                     </webAppConfig>
+                    <contextPath>/${project.artifactId}</contextPath>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.ServerConnector">
                             <port>8080</port>
@@ -47,11 +49,11 @@
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run-war</goal>
+                            <goal>run-forked</goal>
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
+							<waitForChild>false</waitForChild>                            
                         </configuration>
                     </execution>
                     <execution>

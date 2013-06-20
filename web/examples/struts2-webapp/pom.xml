@@ -32,6 +32,7 @@
                     <webAppConfig>
                         <contextPath>/${project.artifactId}</contextPath>
                     </webAppConfig>
+                    <contextPath>/${project.artifactId}</contextPath>                    
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.ServerConnector">
                             <port>8080</port>
@@ -47,11 +48,11 @@
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run-war</goal>
+                            <goal>run-forked</goal>
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
+							<waitForChild>false</waitForChild>                            
                         </configuration>
                     </execution>
                     <execution>
