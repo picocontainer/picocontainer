@@ -9,7 +9,6 @@
   <groupId>org.picocontainer.modules</groupId>
   <artifactId>picocontainer-modules-parent</artifactId>
   <name>PicoContainer Modules Parent</name>
-  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
 	<pico-version>3.0-SNAPSHOT</pico-version>
