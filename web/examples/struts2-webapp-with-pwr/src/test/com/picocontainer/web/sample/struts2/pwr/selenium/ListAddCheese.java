@@ -16,8 +16,10 @@ public class ListAddCheese {
 		assertTrue(selenium.isTextPresent("Brie"));
 		assertTrue(selenium.isTextPresent("France"));
 		assertTrue(selenium.isElementPresent("css=input[type=\"submit\"]"));
+		
+		
 		assertTrue(selenium.isElementPresent("name=count"));
-		assertEquals("4", selenium.getValue("name=count"));
+		selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.countForm.count.value == 4", "10");
 	}
 	
 	
