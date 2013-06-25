@@ -10,7 +10,7 @@
 
 package foo.bar;
 
-import org.picocontainer.Startable;
+import com.picocontainer.Startable;
 
 /**
  * @author Aslak Helles&oslash;y

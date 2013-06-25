@@ -1,4 +1,4 @@
-import org.picocontainer.*;
+import com.picocontainer.*;
 
 
 pico = new PicoBuilder().withCaching().withLifecycle().build();

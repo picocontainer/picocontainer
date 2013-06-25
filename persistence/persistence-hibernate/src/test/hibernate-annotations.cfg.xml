@@ -13,6 +13,6 @@
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
 		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>		
-        <mapping class="org.picocontainer.persistence.hibernate.annotations.AnnotatedPojo"/>
+        <mapping class="com.picocontainer.persistence.hibernate.annotations.AnnotatedPojo"/>
     </session-factory>
 </hibernate-configuration>

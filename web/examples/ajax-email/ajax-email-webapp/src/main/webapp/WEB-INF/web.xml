@@ -8,7 +8,7 @@
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
-        <param-value>org.picocontainer.web.sample.ajaxemail.AjaxEmailWebappComposer</param-value>
+        <param-value>com.picocontainer.web.sample.ajaxemail.AjaxEmailWebappComposer</param-value>
     </context-param>
 
     <context-param>
@@ -23,7 +23,7 @@
 
     <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$ServletFilter</filter-class>
+        <filter-class>com.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$ServletFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -33,12 +33,12 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>org.picocontainer.web.remoting.PWRServletContainerListener</listener-class>
+        <listener-class>com.picocontainer.web.remoting.PWRServletContainerListener</listener-class>
     </listener>
 
     <servlet>
         <servlet-name>json</servlet-name>
-        <servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
+        <servlet-class>com.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
             <param-name>scopes_to_publish</param-name>
@@ -46,13 +46,13 @@
         </init-param>
         <init-param>
             <param-name>package_prefix_to_strip</param-name>
-            <param-value>org.picocontainer.web.sample.ajaxemail</param-value>
+            <param-value>com.picocontainer.web.sample.ajaxemail</param-value>
         </init-param>
     </servlet>
 
     <servlet>
         <servlet-name>ruby</servlet-name>
-        <servlet-class>org.picocontainer.web.remoting.RubyPicoWebRemotingServlet</servlet-class>
+        <servlet-class>com.picocontainer.web.remoting.RubyPicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
             <param-name>scopes_to_publish</param-name>
@@ -60,7 +60,7 @@
         </init-param>
         <init-param>
             <param-name>package_prefix_to_strip</param-name>
-            <param-value>org.picocontainer.web.sample.ajaxemail</param-value>
+            <param-value>com.picocontainer.web.sample.ajaxemail</param-value>
         </init-param>
     </servlet>
 

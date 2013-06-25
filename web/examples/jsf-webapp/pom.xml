@@ -3,20 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-examples</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-examples</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>jsf-webapp</artifactId>
     <name>JSF Webapp</name>
     <packaging>war</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-jsf</artifactId><version>${project.version}</version>
+            <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-jsf</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId>
         </dependency>
         <dependency>
-			<groupId>org.picocontainer.web</groupId>
+			<groupId>com.picocontainer.web</groupId>
 			<artifactId>picocontainer-web-test</artifactId>
 			<version>${project.version}</version>
         </dependency>

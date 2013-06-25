@@ -5,20 +5,20 @@
 <struts>
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.action.excludePattern" value="/pwr/*"/>	
-    <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.picocontainer.web.struts2.PicoObjectFactory" />
+    <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="com.picocontainer.web.struts2.PicoObjectFactory" />
 
     <package name="default" extends="struts-default">
 
-        <action name="cheeses" class="org.picocontainer.web.sample.struts2.pwr.CheeseInventory">
+        <action name="cheeses" class="com.picocontainer.web.sample.struts2.pwr.CheeseInventory">
             <result>cheeses.jsp</result>
         </action>
 
-        <action name="addcheese" class="org.picocontainer.web.sample.struts2.pwr.AddCheese">
+        <action name="addcheese" class="com.picocontainer.web.sample.struts2.pwr.AddCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>
 
-        <action name="removecheese" class="org.picocontainer.web.sample.struts2.pwr.RemoveCheese">
+        <action name="removecheese" class="com.picocontainer.web.sample.struts2.pwr.RemoveCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>

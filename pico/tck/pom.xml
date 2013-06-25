@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-tck</artifactId>
     <name>PicoContainer TCK</name>
@@ -47,8 +47,8 @@
                 <groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>org/picocontainer/tck/**/*.java</include>
-                        <include>org/picocontainer/testmodel/**/*.java</include>
+                        <include>com/picocontainer/tck/**/*.java</include>
+                        <include>com/picocontainer/testmodel/**/*.java</include>
                     </includes>
                     <source>1.5</source>
                     <target>1.5</target>

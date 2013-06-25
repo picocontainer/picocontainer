@@ -1,5 +1,5 @@
 
-public class TestComp2 implements org.picocontainer.Startable {
+public class TestComp2 implements com.picocontainer.Startable {
 
 	public TestComp2(TestComp tc, StringBuffer sb) {
         sb.append("-TestComp2");

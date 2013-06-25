@@ -8,7 +8,7 @@
         <classpath>
             <element file="test-comps/honeyimpl.jar"/>
         </classpath>
-        <component key="org.picocontainer.booter.Honey" class="org.picocontainer.booter.BeeHiveHoney"/>
+        <component key="com.picocontainer.booter.Honey" class="com.picocontainer.booter.BeeHiveHoney"/>
     </classloader>
     <classloader>
         <classpath>
@@ -16,7 +16,7 @@
                 <grant classname="java.net.SocketPermission" context="yahoo.com:80" value="connect"/>
             </element>
         </classpath>
-        <component class="org.picocontainer.booter.BrownBear"/>
+        <component class="com.picocontainer.booter.BrownBear"/>
     </classloader>
 
 </container>

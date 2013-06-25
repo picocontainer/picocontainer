@@ -13,7 +13,7 @@
  */
 package foo.bar;
 
-import org.picocontainer.Startable;
+import com.picocontainer.Startable;
 
 
 public class Zap implements Startable {

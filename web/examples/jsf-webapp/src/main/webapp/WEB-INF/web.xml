@@ -8,10 +8,10 @@
   	<description>Demonstrates hooking JSF pages into PicoContainer web core.</description>
 	<context-param>
 	  <param-name>webapp-composer-class</param-name>
-	  <param-value>org.picocontainer.web.samples.jsf.JsfDemoComposer</param-value>
+	  <param-value>com.picocontainer.web.samples.jsf.JsfDemoComposer</param-value>
 	</context-param>	
     <listener>
-        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+        <listener-class>com.picocontainer.web.PicoServletContainerListener</listener-class>
     </listener>	
     <listener>
     	<listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
@@ -21,7 +21,7 @@
 	 -->
    <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.picocontainer.web.PicoServletFilter</filter-class>
+        <filter-class>com.picocontainer.web.PicoServletFilter</filter-class>
     </filter>
 
   	<filter-mapping>

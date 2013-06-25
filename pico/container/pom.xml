@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer</groupId><artifactId>picocontainer-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer</artifactId>
     <name>PicoContainer Core</name>
@@ -13,7 +13,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId><version>1</version>
+            <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -84,7 +84,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.thoughtworks.paranamer</pattern>
-                                    <shadedPattern>org.picocontainer.paranamer</shadedPattern>
+                                    <shadedPattern>com.picocontainer.paranamer</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

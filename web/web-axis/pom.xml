@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-web-axis</artifactId>
     <name>PicoContainer Web Axis</name>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-core</artifactId><version>${project.version}</version>
+            <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-core</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.axis</groupId><artifactId>axis</artifactId><version>1.4</version>

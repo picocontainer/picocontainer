@@ -3,8 +3,9 @@
  */
 package foo.bar;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.modules.deployer.AbstractPicoComposer;
+import com.picocontainer.modules.deployer.AbstractPicoComposer;
+
+import com.picocontainer.MutablePicoContainer;
 
 /**
  * @author Mike

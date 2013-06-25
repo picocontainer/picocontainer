@@ -70,7 +70,7 @@
 
         var xhReq = createXMLHttpRequest();
         xhReq.open("get",
-                "pwr/org/picocontainer/web/sample/struts2/pwr/CheeseInventory/ajaxCheeseCount", true);
+                "pwr/com/picocontainer/web/sample/struts2/pwr/CheeseInventory/ajaxCheeseCount", true);
         xhReq.onreadystatechange = function() {
             if (xhReq.readyState != 4) {
                 return;

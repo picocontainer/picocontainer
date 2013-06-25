@@ -1,4 +1,4 @@
-import org.picocontainer.*;
+import com.picocontainer.*;
 println("Assembly Scope: " + assemblyScope);
 
 pico = new PicoBuilder().withCaching().withLifecycle().build();

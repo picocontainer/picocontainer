@@ -5,7 +5,7 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.stub.StubAppComposer</param-value>
+    <param-value>com.picocontainer.web.sample.stub.StubAppComposer</param-value>
   </context-param>
   
   <context-param>
@@ -20,7 +20,7 @@
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.sample.stub.StubServlet$ServletFilter</filter-class>
+    <filter-class>com.picocontainer.web.sample.stub.StubServlet$ServletFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -29,12 +29,12 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+    <listener-class>com.picocontainer.web.PicoServletContainerListener</listener-class>
   </listener>
 
   <servlet>
     <servlet-name>svt</servlet-name>
-    <servlet-class>org.picocontainer.web.sample.stub.StubServlet</servlet-class>
+    <servlet-class>com.picocontainer.web.sample.stub.StubServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

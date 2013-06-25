@@ -3,27 +3,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-web-core</artifactId>
     <name>PicoContainer Web Core</name>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId>
+            <groupId>com.picocontainer</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId><artifactId>xstream</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-testmodel</artifactId>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-testmodel</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

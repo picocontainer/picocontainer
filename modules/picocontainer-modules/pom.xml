@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.modules</groupId><artifactId>picocontainer-modules-parent</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.modules</groupId><artifactId>picocontainer-modules-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-modules</artifactId>
     <name>PicoContainer Modules</name>
@@ -13,21 +13,21 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer</groupId><artifactId>picocontainer</artifactId><version>${pico-version}</version>
+            <groupId>com.picocontainer</groupId><artifactId>picocontainer</artifactId><version>${pico-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer</groupId><artifactId>picocontainer-tck</artifactId><version>${pico-version}</version>
+            <groupId>com.picocontainer</groupId><artifactId>picocontainer-tck</artifactId><version>${pico-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${pico-script-version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${pico-script-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId><version>${pico-script-version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-groovy</artifactId><version>${pico-script-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-rhino</artifactId><version>${pico-script-version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-rhino</artifactId><version>${pico-script-version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -188,17 +188,17 @@
                                 <mkdir dir="${project.build.directory}/deployer/modules"/>
                                 <copy todir="${project.build.directory}/deployer/modules">
                                     <fileset dir="${project.basedir}/src/test/modules">
-                                        <include name="org.picocontainer.testmodules.*/**"/>
+                                        <include name="com.picocontainer.testmodules.*/**"/>
                                     </fileset>
                                 </copy>
-                                <move todir="${project.build.directory}/deployer/modules/org.picocontainer.testmodules.moduleOne">
+                                <move todir="${project.build.directory}/deployer/modules/com.picocontainer.testmodules.moduleOne">
                                     <fileset dir="${project.build.directory}/test-classes">
-                                        <include name="org/picocontainer/testmodules/moduleOne/**/*"/>
+                                        <include name="com/picocontainer/testmodules/moduleOne/**/*"/>
                                     </fileset>
                                 </move>
-                                <move todir="${project.build.directory}/deployer/modules/org.picocontainer.testmodules.moduleTwo">
+                                <move todir="${project.build.directory}/deployer/modules/com.picocontainer.testmodules.moduleTwo">
                                     <fileset dir="${project.build.directory}/test-classes">
-                                        <include name="org/picocontainer/testmodules/moduleTwo/**/*"/>
+                                        <include name="com/picocontainer/testmodules/moduleTwo/**/*"/>
                                     </fileset>
                                 </move>
                             </tasks>

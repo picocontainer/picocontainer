@@ -21,7 +21,7 @@ Syntax:
 
 <container-parent> ::= { <scripted-container> | <null> }
 
-<scripted-container> ::= org.picocontainer.script.ScriptedPicoContainer reference
+<scripted-container> ::= com.picocontainer.script.ScriptedPicoContainer reference
 
 <null> ::= Null reference
 

@@ -3,19 +3,19 @@
 	<display-name>Struts 2 + Pico Web Remoting Webapp</display-name>
 	<context-param>
 		<param-name>webapp-composer-class</param-name>
-		<param-value>org.picocontainer.web.sample.struts2.pwr.Struts2PwrComposer</param-value>
+		<param-value>com.picocontainer.web.sample.struts2.pwr.Struts2PwrComposer</param-value>
 	</context-param>
 	<listener>
-		<listener-class>org.picocontainer.web.struts2.Struts2PicoServletContainerListener</listener-class>
+		<listener-class>com.picocontainer.web.struts2.Struts2PicoServletContainerListener</listener-class>
 	</listener>
 	
 	<filter>
 	  <filter-name>picoFilter</filter-name>
-	  <filter-class>org.picocontainer.web.struts2.PicoObjectFactory$ServletFilter</filter-class>
+	  <filter-class>com.picocontainer.web.struts2.PicoObjectFactory$ServletFilter</filter-class>
 	</filter>
 	<filter>
 	  <filter-name>picoPwrFilter</filter-name>
-	  <filter-class>org.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$ServletFilter</filter-class>
+	  <filter-class>com.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$ServletFilter</filter-class>
 	</filter>	
 	<filter>
 		<filter-name>strutsFilter</filter-name>
@@ -37,7 +37,7 @@
 	
 	<servlet>
 		<servlet-name>PWR</servlet-name>
-		<servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
+		<servlet-class>com.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
 		<init-param>
 			<param-name>scopes_to_publish</param-name>
 			<param-value>request</param-value>

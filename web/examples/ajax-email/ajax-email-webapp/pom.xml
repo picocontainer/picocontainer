@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.web</groupId><artifactId>ajaxemail-parent</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.web</groupId><artifactId>ajaxemail-parent</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>ajaxemail-webapp</artifactId>
     <name>Ajax Email Webapp</name>
@@ -11,7 +11,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer.web</groupId><artifactId>picocontainer-web-remoting</artifactId>
+            <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-remoting</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jbehave</groupId><artifactId>jbehave-core</artifactId>

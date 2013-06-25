@@ -2,14 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script</artifactId><version>3.0-SNAPSHOT</version>
+        <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script</artifactId><version>3.0-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-script-groovy</artifactId>
     <name>PicoContainer Script Groovy</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${project.version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-core</artifactId><version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -23,11 +23,11 @@
         </dependency>
         <!-- test scoped dependencies -->
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-tck</artifactId><version>${project.version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-tck</artifactId><version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer.script</groupId><artifactId>picocontainer-script-testmodel</artifactId><version>${project.version}</version>
+            <groupId>com.picocontainer.script</groupId><artifactId>picocontainer-script-testmodel</artifactId><version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

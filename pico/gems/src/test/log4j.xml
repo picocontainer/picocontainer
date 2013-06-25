@@ -3,7 +3,7 @@
 
 <log4j:configuration debug="false" threshold="null" xmlns:log4j="http://jakarta.apache.org/log4j/">
 	
-	<appender class="org.picocontainer.gems.monitors.ForTestSakeAppender" name="FILE">
+	<appender class="com.picocontainer.gems.monitors.ForTestSakeAppender" name="FILE">
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
 		</layout>
@@ -15,7 +15,7 @@
 		</layout>
 	</appender>
 
-	<logger additivity="true" name="org.picocontainer">
+	<logger additivity="true" name="com.picocontainer">
 		<level value="DEBUG"/>
 		<appender-ref ref="FILE"/>
 	</logger>

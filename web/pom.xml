@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.picocontainer.web</groupId>
+	<groupId>com.picocontainer.web</groupId>
 	<artifactId>picocontainer-web</artifactId>
 	<name>PicoContainer Web</name>
 	<version>3.0-SNAPSHOT</version>
@@ -42,23 +42,23 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.picocontainer</groupId>
+				<groupId>com.picocontainer</groupId>
 				<artifactId>picocontainer</artifactId>
 				<version>3.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.picocontainer</groupId>
+				<groupId>com.picocontainer</groupId>
 				<artifactId>picocontainer-gems</artifactId>
 				<version>3.0-SNAPSHOT</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>
-				<groupId>org.picocontainer.script</groupId>
+				<groupId>com.picocontainer.script</groupId>
 				<artifactId>picocontainer-script-core</artifactId>
 				<version>3.0-SNAPSHOT</version>
 				<exclusions>
 					<exclusion>
-						<groupId>org.picocontainer</groupId>
+						<groupId>com.picocontainer</groupId>
 						<artifactId>picocontainer</artifactId>
 					</exclusion>
 					<exclusion>
@@ -98,19 +98,19 @@
 			</dependency>
 			<!-- Test scoped depedencies -->
 			<dependency>
-				<groupId>org.picocontainer</groupId>
+				<groupId>com.picocontainer</groupId>
 				<artifactId>picocontainer-tck</artifactId>
 				<version>3.0-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.picocontainer.script</groupId>
+				<groupId>com.picocontainer.script</groupId>
 				<artifactId>picocontainer-script-testmodel</artifactId>
 				<version>3.0-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.picocontainer.script</groupId>
+				<groupId>com.picocontainer.script</groupId>
 				<artifactId>picocontainer-script-groovy</artifactId>
 				<version>3.0-SNAPSHOT</version>
 				<scope>test</scope>
@@ -166,7 +166,7 @@
 		</dependency>
 		<!-- test time only -->
 		<dependency>
-			<groupId>org.picocontainer</groupId>
+			<groupId>com.picocontainer</groupId>
 			<artifactId>picocontainer-tck</artifactId>
 		</dependency>
 		<dependency>

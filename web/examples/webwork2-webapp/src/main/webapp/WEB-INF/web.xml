@@ -5,12 +5,12 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.webwork2.WebWork2DemoComposer</param-value>
+    <param-value>com.picocontainer.web.sample.webwork2.WebWork2DemoComposer</param-value>
   </context-param>
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.PicoServletFilter</filter-class>
+    <filter-class>com.picocontainer.web.PicoServletFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -19,7 +19,7 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>org.picocontainer.web.webwork2.WebWork2PicoServletContainerListener</listener-class>
+    <listener-class>com.picocontainer.web.webwork2.WebWork2PicoServletContainerListener</listener-class>
   </listener>
 
   <servlet>

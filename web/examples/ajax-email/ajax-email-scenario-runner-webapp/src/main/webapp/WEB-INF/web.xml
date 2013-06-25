@@ -8,7 +8,7 @@
   <!-- Waffle Registrar and custom components -->
   <context-param>
     <param-name>org.codehaus.waffle.registrar.Registrar</param-name>
-    <param-value>org.picocontainer.web.sample.ajaxemail.runner.AjaxEmailRegistrar</param-value>
+    <param-value>com.picocontainer.web.sample.ajaxemail.runner.AjaxEmailRegistrar</param-value>
   </context-param>
   <context-param>
     <param-name>register:DateValueConverter</param-name>

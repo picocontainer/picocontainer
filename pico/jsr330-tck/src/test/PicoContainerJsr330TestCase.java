@@ -18,19 +18,21 @@ import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.JSRPicoContainer;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.injectors.AnnotatedMethodInjection;
-import org.picocontainer.injectors.Jsr330ConstructorInjection;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.JSR330ComponentParameter;
-import static org.picocontainer.Characteristics.*;
+
+import com.picocontainer.DefaultPicoContainer;
+import com.picocontainer.MutablePicoContainer;
+import com.picocontainer.Parameter;
+import com.picocontainer.behaviors.AdaptingBehavior;
+import com.picocontainer.behaviors.Caching;
+import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.injectors.AdaptingInjection;
+import com.picocontainer.injectors.AnnotatedMethodInjection;
+import com.picocontainer.injectors.Jsr330ConstructorInjection;
+import com.picocontainer.monitors.ConsoleComponentMonitor;
+import com.picocontainer.monitors.NullComponentMonitor;
+import com.picocontainer.parameters.JSR330ComponentParameter;
+
+import static com.picocontainer.Characteristics.*;
 
 public class PicoContainerJsr330TestCase extends TestCase {
 

@@ -10,22 +10,22 @@
 
         <default-interceptor-ref name="defaultStack"/>
 
-        <action name="cheeses" class="org.picocontainer.web.sample.webwork2.CheeseInventory">
+        <action name="cheeses" class="com.picocontainer.web.sample.webwork2.CheeseInventory">
             <result name="success">cheeses.jsp</result>
         </action>
 
-        <action name="addcheese" class="org.picocontainer.web.sample.webwork2.AddCheese">
+        <action name="addcheese" class="com.picocontainer.web.sample.webwork2.AddCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>
 
-        <action name="removecheese" class="org.picocontainer.web.sample.webwork2.RemoveCheese">
+        <action name="removecheese" class="com.picocontainer.web.sample.webwork2.RemoveCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>
         
         <!--
-        <action name="cheese" class="org.picocontainer.web.sample.webwork2.CheeseAction">
+        <action name="cheese" class="com.picocontainer.web.sample.webwork2.CheeseAction">
 	        <result name="input" type="dispatcher">
 		        <param name="location">/index.jsp</param>
 	        </result>

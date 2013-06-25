@@ -5,12 +5,12 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.webwork1.WebWork1DemoComposer</param-value>
+    <param-value>com.picocontainer.web.sample.webwork1.WebWork1DemoComposer</param-value>
   </context-param>
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.PicoServletFilter</filter-class>
+    <filter-class>com.picocontainer.web.PicoServletFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -19,7 +19,7 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>org.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
+    <listener-class>com.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
   </listener>
 
   <servlet>
@@ -30,7 +30,7 @@
 
   <servlet>
     <servlet-name>velocity</servlet-name>
-    <servlet-class>org.picocontainer.web.webwork.velocity.WebWorkVelocityServlet</servlet-class>
+    <servlet-class>com.picocontainer.web.webwork.velocity.WebWorkVelocityServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

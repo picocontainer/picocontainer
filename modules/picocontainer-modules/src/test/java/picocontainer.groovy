@@ -1,4 +1,4 @@
-pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
+pico = new com.picocontainer.defaults.DefaultPicoContainer(parent)
 
 // Set up and configure VFS
 manager = new org.apache.commons.vfs.impl.DefaultFileSystemManager()
@@ -15,8 +15,8 @@ root = manager.resolveFile(rootPath)
 
 pico.registerComponentInstance(manager)
 pico.registerComponentInstance(root)
-pico.registerComponentImplementation(org.nanocontainer.deployer.FolderContentPoller)
-pico.registerComponentImplementation(org.nanocontainer.deployer.DifferenceAnalysingFolderContentHandler)
-pico.registerComponentImplementation(org.nanocontainer.deployer.DeployingFolderListener)
-pico.registerComponentImplementation(org.nanocontainer.deployer.NanoContainerDeployer)
+pico.registerComponentImplementation(com.picocontainer.deployer.FolderContentPoller)
+pico.registerComponentImplementation(com.picocontainer.deployer.DifferenceAnalysingFolderContentHandler)
+pico.registerComponentImplementation(com.picocontainer.deployer.DeployingFolderListener)
+pico.registerComponentImplementation(com.picocontainer.deployer.NanoContainerDeployer)
 return pico

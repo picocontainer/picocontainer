@@ -7,16 +7,16 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.struts2.Struts2DemoComposer</param-value>
+    <param-value>com.picocontainer.web.sample.struts2.Struts2DemoComposer</param-value>
   </context-param>
   <listener>
-    <listener-class>org.picocontainer.web.struts2.Struts2PicoServletContainerListener</listener-class>
+    <listener-class>com.picocontainer.web.struts2.Struts2PicoServletContainerListener</listener-class>
   </listener>
 
 
 	<filter>
 	  <filter-name>picoFilter</filter-name>
-	  <filter-class>org.picocontainer.web.struts2.PicoObjectFactory$ServletFilter</filter-class>
+	  <filter-class>com.picocontainer.web.struts2.PicoObjectFactory$ServletFilter</filter-class>
 	</filter>
 
 	<filter>

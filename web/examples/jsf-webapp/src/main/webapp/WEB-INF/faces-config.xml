@@ -6,14 +6,14 @@
         version="2.0">
 	<application>
 		<el-resolver>
-            org.picocontainer.web.el.JspPicoElResolver
+            com.picocontainer.web.el.JspPicoElResolver
 		</el-resolver>
 	</application>
 	<managed-bean>
 		<description>CDI Injected Bean</description>
 		<managed-bean-name>cheeseBean</managed-bean-name>
 		<managed-bean-class>
-			org.picocontainer.web.samples.jsf.CheeseController
+			com.picocontainer.web.samples.jsf.CheeseController
 		</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
@@ -21,7 +21,7 @@
 		<description>Adds Cheeses</description>
 		<managed-bean-name>addCheeseBean</managed-bean-name>
 		<managed-bean-class>
-			org.picocontainer.web.samples.jsf.AddCheeseController
+			com.picocontainer.web.samples.jsf.AddCheeseController
 		</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
