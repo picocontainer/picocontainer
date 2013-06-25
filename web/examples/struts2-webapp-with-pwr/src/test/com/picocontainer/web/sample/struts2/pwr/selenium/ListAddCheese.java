@@ -19,7 +19,8 @@ public class ListAddCheese {
 		
 		
 		assertTrue(selenium.isElementPresent("name=count"));
-		selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.countForm.count.value == 4", "10");
+		selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.countForm.count.value == '4'", "10000");
+		assertEquals("4", selenium.getValue("name=count"));
 	}
 	
 	
