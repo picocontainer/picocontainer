@@ -5,6 +5,7 @@
 		<artifactId>maven-plugins</artifactId>
 		<groupId>org.apache.maven.plugins</groupId>
 		<version>24</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.picocontainer.modules</groupId>
 	<artifactId>pico-module-maven-plugin</artifactId>
@@ -181,16 +182,16 @@
 											</fileset>
 										</copy>
 										<jar destfile="${project.build.directory}/modules/com.picocontainer.testmodules.moduleOne.pico-module">
-												<fileset dir="${project.build.directory}/test-modules/com.picocontainer.testmodules.moduleOne"/>
-												<fileset dir="${project.build.directory}/test-classes">
-													<include name="**/testmodules/moduleOne/**/*"/>
-												</fileset>														
+											<fileset dir="${project.build.directory}/test-modules/com.picocontainer.testmodules.moduleOne"/>
+											<fileset dir="${project.build.directory}/test-classes">
+												<include name="**/testmodules/moduleOne/**/*"/>
+											</fileset>
 										</jar>
 										<jar destfile="${project.build.directory}/modules/com.picocontainer.testmodules.moduleTwo.pico-module">
-												<fileset dir="${project.build.directory}/test-modules/com.picocontainer.testmodules.moduleOne"/>
-												<fileset dir="${project.build.directory}/test-classes">
-													<include name="**/testmodules/moduleTwo/**/*"/>
-												</fileset>																												
+											<fileset dir="${project.build.directory}/test-modules/com.picocontainer.testmodules.moduleOne"/>
+											<fileset dir="${project.build.directory}/test-classes">
+												<include name="**/testmodules/moduleTwo/**/*"/>
+											</fileset>
 										</jar>
 										<!-- Finally Make Local Repo for installing modules into -->
 										<mkdir dir="${project.build.directory}/local-repo"/>
@@ -244,20 +245,18 @@
 										<argument>-Dfile=${project.build.directory}/modules/com.picocontainer.testmodules.moduleTwo.pico-module</argument>
 									</arguments>
 								</configuration>
-							</execution>							
+							</execution>
 						</executions>
 					</plugin>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-invoker-plugin</artifactId>
 						<version>
-							<!--  Overridden Version --> 1.8</version>					
+							<!--  Overridden Version --> 1.8</version>
 						<configuration>
 							<projectsDirectory>src/it</projectsDirectory>
 							<settingsFile>src/it/settings.xml</settingsFile>
 							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-							<postBuildHookScript>verify-integration-tests.groovy</postBuildHookScript>
 							<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
 							<debug>true</debug>
 						</configuration>
@@ -267,18 +266,18 @@
 								<goals>
 									<goal>install</goal>
 									<goal>integration-test</goal>
-								</goals>										
+								</goals>
 								<configuration>
 									<!-- Make First Execution a Clean of target Directory -->
 									<cloneClean>true</cloneClean>
 									<pomIncludes>
 										<pomInclude>basic-module-package-test/pom.xml</pomInclude>
 										<pomInclude>war-package-copy-test/pom.xml</pomInclude>
-									</pomIncludes>								
+									</pomIncludes>
 									<goals>
 										<goal>clean</goal>
 										<goal>install</goal>
-									</goals>										
+									</goals>
 								</configuration>
 							</execution>
 							<execution>
@@ -286,33 +285,48 @@
 								<goals>
 									<goal>install</goal>
 									<goal>integration-test</goal>
-								</goals>		
+								</goals>
 								<configuration>
 									<pomIncludes>
-										<pomInclude>inplace-module-copy-test/pom.xml</pomInclude>									
-									</pomIncludes>								
+										<pomInclude>inplace-module-copy-test/pom.xml</pomInclude>
+									</pomIncludes>
 									<goals>
 										<goal>pico-module:clean</goal>
 										<goal>pico-module:inplace</goal>
-									</goals>										
-								</configuration>								
+									</goals>
+								</configuration>
 							</execution>
 							<execution>
 								<id>inplace clean test</id>
 								<goals>
 									<goal>install</goal>
 									<goal>integration-test</goal>
-								</goals>		
+								</goals>
 								<configuration>
 									<pomIncludes>
-										<pomInclude>inplace-module-clean-test/pom.xml</pomInclude>									
-									</pomIncludes>								
+										<pomInclude>inplace-module-clean-test/pom.xml</pomInclude>
+									</pomIncludes>
 									<goals>
 										<goal>pico-module:inplace</goal>
 										<goal>pico-module:clean</goal>
-									</goals>										
-								</configuration>								
-							</execution>							
+									</goals>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>gmaven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<source>${pom.basedir}/VerifyIntegrationTests.groovy</source>
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
