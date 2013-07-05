@@ -24,7 +24,7 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Build a JAR from the current project.
+ * Build a Pico-Module from the current project.
  *
  * @author <a href="evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id: PicoModuleMojo.java 1211837 2011-12-08 11:23:22Z bimargulies $
@@ -35,7 +35,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @requiresDependencyResolution runtime
  */
 public class PicoModuleMojo
-    extends AbstractJarMojo
+    extends AbstractModuleMojo
 {
     /**
      * Directory containing the classes and resource files that should be packaged into the JAR.

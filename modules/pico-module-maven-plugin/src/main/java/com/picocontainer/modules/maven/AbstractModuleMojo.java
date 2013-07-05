@@ -36,9 +36,9 @@ import org.codehaus.plexus.util.FileUtils;
  * Base class for creating a module from project classes.
  *
  * @author <a href="evenisse@apache.org">Emmanuel Venisse</a>
- * @version $Id: AbstractJarMojo.java 1235468 2012-01-24 20:22:30Z krosenvold $
+ * @version $Id: AbstractModuleMojo.java 1235468 2012-01-24 20:22:30Z krosenvold $
  */
-public abstract class AbstractJarMojo
+public abstract class AbstractModuleMojo
     extends AbstractMojo
 {
 
@@ -147,7 +147,8 @@ public abstract class AbstractJarMojo
     protected boolean skipIfEmpty;
     
     /**
-     * Composition File (class or composition script)
+     * Composition Script:  If not set, then its assumed
+     * that a composition java class is used.
      * @parameter
      */
     private String compositionFile;
@@ -219,15 +220,20 @@ public abstract class AbstractJarMojo
             FileUtils.copyDirectoryStructure(contentDirectory, explodedDirectory);
         }
     	
-        
-        
-        File metaInfDir = new File(explodedDirectory, "META-INF");
-        getLog().debug("Copying " + getCompositionFileAsFile().getAbsolutePath() + " to " + metaInfDir.getAbsolutePath());
-        if (!metaInfDir.exists() &&  !metaInfDir.mkdirs()) {
-        	getLog().error("Unable to create target directory " + metaInfDir.getAbsolutePath());
+        if (this.compositionFile != null) {
+            File metaInfDir = new File(explodedDirectory, "META-INF");
+            getLog().debug("Copying " + getCompositionFileAsFile().getAbsolutePath() + " to " + metaInfDir.getAbsolutePath());
+            if (!metaInfDir.exists() &&  !metaInfDir.mkdirs()) {
+            	getLog().error("Unable to create target directory " + metaInfDir.getAbsolutePath());
+            }
+            File compositionFile = getCompositionFileAsFile();
+            FileUtils.copyFile(compositionFile, new File(metaInfDir, compositionFile.getName()) );
+        } else {
+        	getLog().info("'compositionFile' has not been set.  Assuming that you are composition the module with a class named " 
+        				+ getProject().getGroupId() + "." 
+        				+ getProject().getArtifactId() + ".Composition");
         }
-        File compositionFile = getCompositionFileAsFile();
-        FileUtils.copyFile(compositionFile, new File(metaInfDir, compositionFile.getName()) );
+        
         
     	return explodedDirectory;
     }
