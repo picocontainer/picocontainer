@@ -16,8 +16,7 @@ public class ModuleSystemDeploymentRegistry {
 	}
 	
 	public static void deploymentComplete() {
-		//No clearing yet for JDK 1.5 :(  This is the best we can do for now.
-		currentDeployingModule.set(null);
+		currentDeployingModule.remove();
 	}
 	
 	public static PicoModuleSystemSPI getDeployingModuleSystem() {

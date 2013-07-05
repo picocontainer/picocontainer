@@ -49,7 +49,7 @@ public interface ModuleLayout {
 	FileExtensionMapper getFileExtensionMapper();
 
 	/**
-	 * Retrieve the espected &quot;base name&quot; for scripts. For example, if
+	 * Retrieve the expected &quot;base name&quot; for scripts. For example, if
 	 * the base name is &quot;picocontainer&quot;, then the deployment script
 	 * will be (for example): &quot;picocontainer.js&quot;, or
 	 * &quot;picocontainer.groovy&quot;
