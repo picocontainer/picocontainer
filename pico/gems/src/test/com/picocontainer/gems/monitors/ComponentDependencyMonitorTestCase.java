@@ -32,7 +32,7 @@ public class ComponentDependencyMonitorTestCase implements ComponentDependencyLi
     }
 
     @Test public void testShouldDependOnList() throws Exception {
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
         DependsOnList dol = new DependsOnList(list);
         monitor.instantiated(null, null, DependsOnList.class.getConstructors()[0], dol, new Object[] { list }, 10);
         assertEquals(new Dependency(DependsOnList.class, ArrayList.class), dependency);

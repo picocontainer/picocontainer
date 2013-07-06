@@ -43,4 +43,10 @@ public class SingleLoggerLog4JComponentMonitorTestCase extends ComponentMonitorH
 	public void testShouldTraceNoComponent() throws IOException {
         super.testShouldTraceNoComponent();
     }
+    
+
+	@Override
+	protected ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate) {
+		return new Log4JComponentMonitor(delegate);
+	}    
 }

@@ -12,6 +12,7 @@ import static com.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static com.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -28,9 +29,17 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.picocontainer.ChangedBehavior;
 import com.picocontainer.ComponentMonitor;
+import com.picocontainer.PicoLifecycleException;
 import com.picocontainer.monitors.ComponentMonitorHelper;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
 
 /**
  * @author Paul Hammant
@@ -38,19 +47,27 @@ import com.picocontainer.monitors.ComponentMonitorHelper;
  * @author Mauro Talevi
  * @author Juze Peleteiro
  */
+@RunWith(JMock.class)
 public abstract class ComponentMonitorHelperTestCase {
     private ComponentMonitor monitor;
-    private Constructor constructor;
+    private Constructor<?> constructor;
     private Method method;
+    
+    private Mockery context = new JUnit4Mockery();
+    
+    private ComponentMonitor delegate;
 
     @Before
     public void setUp() throws Exception {
         constructor = getConstructor();
         method = getMethod();
         monitor = makeComponentMonitor();
+        delegate = context.mock(ComponentMonitor.class);
     }
 
     protected abstract ComponentMonitor makeComponentMonitor();
+    
+    protected abstract ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate);
 
     protected abstract Constructor<?> getConstructor() throws NoSuchMethodException;
 
@@ -63,14 +80,12 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
 	@Test
-    @SuppressWarnings("unchecked")
 	public void testShouldTraceInstantiating() throws IOException {
         monitor.instantiating(null, null, constructor);
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
@@ -81,7 +96,6 @@ public abstract class ComponentMonitorHelperTestCase {
 
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testShouldTraceInstantiationFailed() throws IOException {
         monitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), "doh"));
@@ -126,14 +140,14 @@ public abstract class ComponentMonitorHelperTestCase {
 
 
     protected void assertFileContent(final String line) throws IOException{
-        List lines = toLines(new StringReader(ForTestSakeAppender.CONTENT ));
+        List<String> lines = toLines(new StringReader(ForTestSakeAppender.CONTENT ));
         String s = lines.toString();
         assertTrue("Line '" + line + "' not found.  Instead got: " + line, s.indexOf(line) > 0);
     }
 
-    protected List toLines(final Reader resource) throws IOException {
+    protected List<String> toLines(final Reader resource) throws IOException {
         BufferedReader br = new BufferedReader(resource);
-        List lines = new ArrayList();
+        List<String> lines = new ArrayList<String>();
         String line = br.readLine();
         while (line != null) {
             lines.add(line);
@@ -141,5 +155,42 @@ public abstract class ComponentMonitorHelperTestCase {
         }
         return lines;
     }
+    
+	@Test
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void testAllMethodsCallDelegatesAndAllMethodsCanHandleNullArgs() {
+		monitor = makeComponentMonitorWithDelegate(delegate);
+    	context.checking(new Expectations() {{
+    		oneOf(delegate).changedBehavior(with(same((ChangedBehavior)null)));
+    		oneOf(delegate).instantiated(null, null, null, null, null, 0);
+    		oneOf(delegate).instantiating(null, null, null);
+    		oneOf(delegate).instantiationFailed(null, null, null, null);
+    		oneOf(delegate).invoked(null, null, null, null, 0, null);
+    		oneOf(delegate).invoking(null, null, null, null);
+
+    		oneOf(delegate).lifecycleInvocationFailed(null, null, null, null, null);
+    		will(throwException(new PicoLifecycleException(null, null, null)));
+
+    		oneOf(delegate).newInjector(null);
+    		oneOf(delegate).noComponentFound(null, null);
+    	}});
+    	
+    	monitor.changedBehavior(null);
+    	monitor.instantiated(null, null, null, null, null, 0);
+    	monitor.instantiating(null, null, null);
+    	monitor.instantiationFailed(null, null, null, null);
+    	monitor.invoked(null, null, null, null, 0, null);
+    	monitor.invoking(null, null, null, null);
+    	try {
+			monitor.lifecycleInvocationFailed(null, null, null, null, null);
+			fail("Should have thrown PicoLifecycleException");
+		} catch (PicoLifecycleException e) {
+			//a-ok
+		}
+    	monitor.newInjector(null);
+    	monitor.noComponentFound(null, null);    	
+    	
+    }
+    
 
 }

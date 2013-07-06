@@ -42,4 +42,9 @@ public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends Compon
         logPrefixName = ComponentMonitor.class.getName();
         super.testShouldTraceNoComponent();
     }
+
+	@Override
+	protected ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate) {
+		return new CommonsLoggingComponentMonitor(delegate);
+	}
 }

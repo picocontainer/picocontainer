@@ -175,8 +175,9 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 		Logger logger = getLogger(constructor);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INSTANTIATED,
-					ctorToString(constructor), duration, instantiated
-							.getClass().getName(), parmsToString(parameters)));
+					ctorToString(constructor), duration,
+					instantiated != null ? instantiated.getClass().getName() : "null",
+							parmsToString(parameters)));
 		}
 		delegate.instantiated(container, componentAdapter, constructor,
 				instantiated, parameters, duration);
@@ -189,7 +190,8 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 		Logger logger = getLogger(constructor);
 		if (logger.isWarnEnabled()) {
 			logger.warn(format(ComponentMonitorHelper.INSTANTIATION_FAILED,
-					ctorToString(constructor), cause.getMessage()), cause);
+					ctorToString(constructor), 
+					cause != null ? cause.getMessage() : "null"), cause);
 		}
 		delegate.instantiationFailed(container, componentAdapter, constructor,
 				cause);
@@ -210,7 +212,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	/** {@inheritDoc} * */
 	public void invoked(final PicoContainer container,
                         final ComponentAdapter<?> componentAdapter, final Member member,
-                        final Object instance, final long duration, final Object retVal, final Object[] args) {
+                        final Object instance, final long duration, final Object retVal, final Object... args) {
 		Logger logger = getLogger(member);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format(ComponentMonitorHelper.INVOKED,
@@ -240,7 +242,7 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 		if (logger.isWarnEnabled()) {
 			logger.warn(format(
 					ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED,
-					methodToString(method), instance, cause.getMessage()),
+					methodToString(method), instance, cause != null ? cause.getMessage() : "null"),
 					cause);
 		}
 		delegate.lifecycleInvocationFailed(container, componentAdapter, method,
@@ -261,12 +263,14 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 	}
 
 	/** {@inheritDoc} */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
 	public Injector newInjector(
 			final Injector injector) {
 		return delegate.newInjector(injector);
 	}
 
     /** {@inheritDoc} **/
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
@@ -283,6 +287,10 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 		if (logger != null) {
 			return logger;
 		}
+		if (member == null) {
+			return LoggerFactory.getLogger("");
+		}
+		
 		return LoggerFactory.getLogger(member.getDeclaringClass());
 	}
 

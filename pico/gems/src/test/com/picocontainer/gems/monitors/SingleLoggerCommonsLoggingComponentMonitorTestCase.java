@@ -20,7 +20,7 @@ public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends Componen
     }
 
     @Override
-	protected Constructor getConstructor() throws NoSuchMethodException {
+	protected Constructor<?> getConstructor() throws NoSuchMethodException {
         return getClass().getConstructor((Class[])null);
     }
 
@@ -34,4 +34,9 @@ public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends Componen
         return "[" + CommonsLoggingComponentMonitor.class.getName() + "] ";
     }
 
+
+	@Override
+	protected ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate) {
+		return new CommonsLoggingComponentMonitor(delegate);
+	}    
 }

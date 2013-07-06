@@ -32,7 +32,7 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends ComponentMonito
     }
 
     @Override
-	protected Constructor getConstructor() {
+	protected Constructor<?> getConstructor() {
         return String.class.getConstructors()[0];
     }
 
@@ -46,4 +46,10 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends ComponentMonito
         logPrefixName = ComponentMonitor.class.getName();
         super.testShouldTraceNoComponent();
     }
+    
+
+	@Override
+	protected ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate) {
+		return new Log4JComponentMonitor(delegate);
+	}
 }

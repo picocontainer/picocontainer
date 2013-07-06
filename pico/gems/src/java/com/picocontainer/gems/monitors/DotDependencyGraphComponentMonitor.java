@@ -22,7 +22,7 @@ import com.picocontainer.ComponentMonitor;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.monitors.AbstractComponentMonitor;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "unchecked" })
 public final class DotDependencyGraphComponentMonitor extends AbstractComponentMonitor implements ComponentMonitor {
 
 
@@ -42,7 +42,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
                              final Object[] injected,
                              final long duration) {
 
-        this.allInstantiated.add(new Instantiation(constructor, instantiated, injected, duration));
+        this.allInstantiated.add(new Instantiation(constructor, instantiated, injected));
 
         super.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
@@ -116,13 +116,11 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         final Constructor<?> constructor;
         final Object instantiated;
         final Object[] injected;
-        final long duration;
 
-        public Instantiation(final Constructor<?> constructor, final Object instantiated, final Object[] injected, final long duration) {
+        public Instantiation(final Constructor<?> constructor, final Object instantiated, final Object[] injected) {
             this.constructor = constructor;
             this.instantiated = instantiated;
             this.injected = injected;
-            this.duration = duration;
         }
 
         public Constructor<?> getConstructor() {
@@ -135,5 +133,6 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         public Object[] getInjected() {
             return injected;
         }
+
     }
 }

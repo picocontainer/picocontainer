@@ -25,7 +25,7 @@ public class SingleLoggerSlf4JComponentMonitorTestCase extends ComponentMonitorH
     }
 
     @Override
-	protected Constructor getConstructor() throws NoSuchMethodException {
+	protected Constructor<?> getConstructor() throws NoSuchMethodException {
         return getClass().getConstructor((Class[])null);
     }
 
@@ -44,4 +44,9 @@ public class SingleLoggerSlf4JComponentMonitorTestCase extends ComponentMonitorH
         super.testShouldTraceNoComponent();
     }
 
+
+	@Override
+	protected ComponentMonitor makeComponentMonitorWithDelegate(ComponentMonitor delegate) {
+		return new Slf4jComponentMonitor(delegate);
+	}    
 }

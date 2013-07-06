@@ -68,6 +68,15 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     public CommonsLoggingComponentMonitor() {
         delegate = new NullComponentMonitor();
     }
+    
+    /**
+     * Allows the commons logging component monitor to log the information and then delegate to
+     * another component monitor that is doing interception.
+     * @param delegate
+     */
+    public CommonsLoggingComponentMonitor(ComponentMonitor delegate) {
+    	this.delegate = delegate;
+    }
 
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance class.
@@ -149,7 +158,9 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                              final long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, 
+            		instantiated != null ? instantiated.getClass().getName() : " null "
+            		, parmsToString(parameters)));
         }
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
@@ -161,7 +172,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                                     final Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), 
+            		cause != null ? cause.getMessage() : "null"), cause);
         }
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
@@ -185,7 +197,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                         final Member member,
                         final Object instance,
                         final long duration,
-                        final Object retVal, final Object[] args) {
+                        final Object retVal, final Object... args) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, memberToString(member), instance, duration));
@@ -209,7 +221,9 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                                           final RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, 
+            		cause != null ? cause.getMessage() : "null"
+            		), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
@@ -224,11 +238,13 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public Injector newInjector(final Injector injector) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public Injector newInjector(final Injector injector) {
         return delegate.newInjector(injector);
     }
 
     /** {@inheritDoc} **/
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
         return delegate.changedBehavior(changedBehavior);
     }
@@ -242,6 +258,10 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         if (log != null) {
             return log;
         }
+        if (member == null) {
+        	return LogFactory.getLog("");
+        }
+        
         return LogFactory.getLog(member.getDeclaringClass());
     }
 
