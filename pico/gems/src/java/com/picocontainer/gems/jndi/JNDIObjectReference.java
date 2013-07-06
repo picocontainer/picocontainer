@@ -31,9 +31,9 @@ import com.picocontainer.PicoCompositionException;
 public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable{
 
 
-	String name;
+	private String name;
 
-	transient Context context;
+	private transient Context context;
 
 	public JNDIObjectReference(final String name, final Context ctx) {
 		super();
@@ -48,6 +48,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	/**
 	 * retrieve object from JNDI if possible
 	 */
+	@SuppressWarnings("unchecked")
 	public T get() {
 		try {
 			return (T) context.lookup(name);

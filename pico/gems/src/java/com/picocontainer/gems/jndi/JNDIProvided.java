@@ -66,16 +66,14 @@ public class JNDIProvided<T> implements ComponentAdapter<T>, Serializable {
 	 * @throws NamingException will be thrown if something goes
 	 * wrong in JNDI
 	 */
-	@SuppressWarnings("unchecked")
 	public JNDIProvided(final String jndiName, final Class<T> type) throws NamingException {
-		this(new JNDIObjectReference(jndiName), type);
+		this(new JNDIObjectReference<T>(jndiName), type);
 	}
 
 	public Object getComponentKey() {
 		return key;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Class<? extends T> getComponentImplementation() {
 		return type;
 	}

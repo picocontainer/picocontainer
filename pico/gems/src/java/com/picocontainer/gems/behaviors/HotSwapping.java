@@ -80,7 +80,6 @@ public class HotSwapping extends AbstractBehavior {
      *
      * @author Paul Hammant
      */
-    @SuppressWarnings("serial")
     public static class HotSwappable<T> extends AsmImplementationHiding.AsmHiddenImplementation<T> {
 
         private final Swappable swappable = new Swappable();

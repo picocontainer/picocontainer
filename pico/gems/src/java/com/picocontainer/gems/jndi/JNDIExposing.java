@@ -68,7 +68,6 @@ public class JNDIExposing extends AbstractBehavior {
      * @author Konstantin Pribluda
      *
      */
-    @SuppressWarnings("serial")
     public static class JNDIExposed<T> extends Storing.Stored<T> {
 
 

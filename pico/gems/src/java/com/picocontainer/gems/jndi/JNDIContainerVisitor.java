@@ -32,7 +32,7 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 	 * done.
 	 */
 	@Override
-	public void visitComponentAdapter(final ComponentAdapter componentAdapter)
+	public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter)
 	{
 		super.visitComponentAdapter(componentAdapter);
 

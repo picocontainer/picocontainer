@@ -42,14 +42,14 @@ import com.thoughtworks.proxy.toys.pool.SerializationMode;
 @SuppressWarnings("serial")
 public class Pooling extends AbstractBehavior {
 
- 	private final Pooled.Context poolContext;
+ 	private final Pooled.Context<?> poolContext;
 
-    public Pooling(final Pooled.Context poolContext) {
+    public Pooling(final Pooled.Context<?> poolContext) {
         this.poolContext = poolContext;
     }
 
     public Pooling() {
-        poolContext = new Pooled.DefaultContext();
+        poolContext = new Pooled.DefaultContext<Object>();
     }
 
     @Override
@@ -115,7 +115,6 @@ public class Pooling extends AbstractBehavior {
      * @author J&ouml;rg Schaible
      * @author Aslak Helles&oslash;y
      */
-    @SuppressWarnings("serial")
     public static final class Pooled<T> extends AbstractChangedBehavior<T> {
 
         /**
