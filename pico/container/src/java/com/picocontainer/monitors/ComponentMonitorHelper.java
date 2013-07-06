@@ -39,7 +39,11 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String parmsToString(final Object[] injected) {
-        StringBuffer sb = new StringBuffer();
+    	if (injected == null) {
+    		return "";
+    	}
+
+    	StringBuffer sb = new StringBuffer();
         for (int i = 0; i < injected.length; i++) {
             String s = injected[i].getClass().getName();
             sb.append(s);
@@ -51,6 +55,10 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String ctorToString(final Constructor constructor) {
+    	if (constructor == null) {
+    		return "null";
+    	}
+    	
         Class[] params = constructor.getParameterTypes();
         StringBuffer sb = new StringBuffer(constructor.getName());
         sb.append("(");
@@ -66,6 +74,10 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String methodToString(final Member member) {
+    	if (member == null) {
+    		return "null";
+    	}
+    	
     	StringBuilder sb = new StringBuilder(member.getName());
 
         if (member instanceof Method) {
@@ -93,6 +105,10 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String memberToString(final Member m) {
+    	if (m == null) {
+    		return "null";
+    	}
+    	
         if (m instanceof Field) {
             return getDeclaringTypeString(m) + "." +  toString((Field) m);
         } else {
@@ -101,6 +117,9 @@ public final class ComponentMonitorHelper  {
     }
 
     public static String toString(final Field field) {
+    	if (field == null) {
+    		return "null";
+    	}
         StringBuffer sb = new StringBuffer(field.getName());
         sb.append("(").append(field.getName()).append(")");
         return sb.toString();
