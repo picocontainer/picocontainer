@@ -12,6 +12,10 @@
             <groupId>com.picocontainer</groupId><artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
+        	<groupId>com.picocontainer</groupId><artifactId>picocontainer-gems</artifactId>
+        	<scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.thoughtworks.xstream</groupId><artifactId>xstream</artifactId>
             <optional>true</optional>
         </dependency>
@@ -35,8 +39,28 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet.jsp</groupId><artifactId>jsp-api</artifactId><version>2.1</version>
+            <groupId>javax.servlet.jsp</groupId><artifactId>jsp-api</artifactId>
             <scope>provided</scope>
-        </dependency>                
+        </dependency> 
+         <dependency>
+            <groupId>javax.el</groupId><artifactId>javax.el-api</artifactId>
+            <scope>provided</scope>
+        </dependency> 
+        <dependency>
+            <groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId><artifactId>slf4j-log4j12</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId><artifactId>log4j</artifactId>
+            <scope>provided</scope>
+        </dependency>  
+        <dependency>
+            <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>             
     </dependencies>
 </project>

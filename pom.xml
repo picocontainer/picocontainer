@@ -1,12 +1,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.codehaus</groupId>
+		<artifactId>codehaus-parent</artifactId>
+		<version>3</version>
+		<relativePath></relativePath>
+	</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.picocontainer</groupId><artifactId>picocontainer-root</artifactId>
     <name>PicoContainer Root</name>
     <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>http://www.picocontainer.org</url>
-    
+    <properties>
+		<paranamer-version>2.5.1</paranamer-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
+	</properties>
+	<organization>
+		<name>Codehaus</name>
+		<url>http://codehaus.org/</url>
+	</organization>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.codehaus.org/browse/PICO</url>
+	</issueManagement>
+	<scm>
+		<connection>scm:git:git@git.codehaus.org/picocontainer-git.git</connection>
+		<developerConnection>scm:git:git@git.codehaus.org/picocontainer-git.git</developerConnection>
+		<url>scm:git:git@git.codehaus.org/picocontainer-git.git</url>
+	</scm>	    
+	<licenses>
+		<license>
+			<name>BSD</name>
+			<url>LICENSE.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>devs</id>
+			<name>Developers</name>
+			<email>dev@picocontainer.codehaus.org</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>    	
     <dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -51,6 +90,87 @@
 				<version>1.7.5</version>
 				<optional>true</optional>
 			</dependency>	  
+			<!-- For JavaEE5 annotations -->
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+				<optional>true</optional>
+			</dependency>
+			<!-- For Inject annotations -->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+				<optional>true</optional>
+			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject-tck</artifactId>
+				<version>1</version>
+			</dependency>
+			<!-- For proxy -->
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>3.3.1</version>
+				<optional>true</optional>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.proxytoys</groupId>
+				<artifactId>proxytoys</artifactId>
+				<version>1.0</version>
+				<optional>true</optional>
+			</dependency>
+			<!-- For monitors -->		
+			<dependency>
+				<groupId>org.prefuse</groupId>
+				<artifactId>prefuse</artifactId>
+				<version>beta-20071021</version>
+				<optional>true</optional>
+			</dependency>
+			<!-- For test -->
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-junit4</artifactId>
+				<version>2.5.1</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit-dep</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit-dep</artifactId>
+				<version>4.9</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.9.5</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.4.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>xpp3</groupId>
+				<artifactId>xpp3_min</artifactId>
+				<version>1.1.3.4.O</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>2.2.2</version>
+				<scope>test</scope>
+			</dependency>		
 		</dependencies>  
     </dependencyManagement>
     <modules>
@@ -63,7 +183,5 @@
         <module>jetty</module>
         <module>booter</module>
     </modules>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
 </project>
