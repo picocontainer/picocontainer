@@ -155,8 +155,8 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         return getDelegate().getName();
     }
 
-    public void changeMonitor(final ComponentMonitor monitor) {
-        getDelegate().changeMonitor(monitor);
+    public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+        return getDelegate().changeMonitor(monitor);
     }
 
 

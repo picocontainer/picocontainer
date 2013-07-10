@@ -117,8 +117,10 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         visitor.visitComponentAdapter(this);
     }
 
-    public void changeMonitor(final ComponentMonitor monitor) {
+    public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+    	ComponentMonitor returnValue = this.monitor;
         this.monitor = monitor;
+        return returnValue;
     }
 
     /**

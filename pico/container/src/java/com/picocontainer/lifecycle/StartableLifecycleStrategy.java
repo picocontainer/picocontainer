@@ -37,7 +37,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         super(monitor);
     }
 
-    private void doMethodsIfNotDone() {
+    @SuppressWarnings("unchecked")
+	private void doMethodsIfNotDone() {
         try {
             if (start == null) {
                 start = getStartableInterface().getMethod(getStartMethodName());
@@ -78,7 +79,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
 
     /** {@inheritDoc} **/
-    public void start(final Object component) {
+    @SuppressWarnings("unchecked")
+	public void start(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -117,7 +119,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     /** {@inheritDoc} **/
-    public void stop(final Object component) {
+    @SuppressWarnings("unchecked")
+	public void stop(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -132,7 +135,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     /** {@inheritDoc} **/
-    public void dispose(final Object component) {
+    @SuppressWarnings("unchecked")
+	public void dispose(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -147,7 +151,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     /** {@inheritDoc} **/
-    public boolean hasLifecycle(final Class<?> type) {
+    @SuppressWarnings("unchecked")
+	public boolean hasLifecycle(final Class<?> type) {
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 

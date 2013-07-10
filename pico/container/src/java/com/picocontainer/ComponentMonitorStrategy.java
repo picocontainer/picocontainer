@@ -28,8 +28,9 @@ public interface ComponentMonitorStrategy {
     /**
      * Changes the component monitor used
      * @param monitor the new ComponentMonitor to use
+     * @return the old monitor
      */
-    void changeMonitor(ComponentMonitor monitor);
+	ComponentMonitor changeMonitor(ComponentMonitor monitor);
 
     /**
      * Returns the monitor currently used

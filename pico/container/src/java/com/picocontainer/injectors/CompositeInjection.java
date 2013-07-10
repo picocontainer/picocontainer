@@ -174,13 +174,14 @@ public class CompositeInjection extends AbstractInjectionType {
         }
 
 		@Override
-		public void changeMonitor(final ComponentMonitor monitor) {
-			super.changeMonitor(monitor);
+		public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+			ComponentMonitor result = super.changeMonitor(monitor);
 			for (Injector<?> eachInjector : injectors) {
 				if (eachInjector instanceof ComponentMonitorStrategy) {
 					((ComponentMonitorStrategy)eachInjector).changeMonitor(monitor);
 				}
 			}
+			return result;
 		}
 
     }

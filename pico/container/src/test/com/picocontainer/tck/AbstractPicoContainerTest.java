@@ -35,16 +35,17 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
+
 import com.picocontainer.testmodel.DependsOnTouchable;
 import com.picocontainer.testmodel.SimpleTouchable;
 import com.picocontainer.testmodel.Touchable;
 import com.picocontainer.testmodel.Washable;
 import com.picocontainer.testmodel.WashableTouchable;
-
 import com.picocontainer.ChangedBehavior;
 import com.picocontainer.Characteristics;
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentFactory;
+import com.picocontainer.ComponentMonitor;
 import com.picocontainer.Converting;
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.Disposable;
@@ -65,6 +66,7 @@ import com.picocontainer.injectors.ConstructorInjection;
 import com.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
 import com.picocontainer.injectors.MultiArgMemberInjector.ParameterCannotBeNullException;
 import com.picocontainer.lifecycle.NullLifecycleStrategy;
+import com.picocontainer.monitors.ConsoleComponentMonitor;
 import com.picocontainer.monitors.NullComponentMonitor;
 import com.picocontainer.parameters.BasicComponentParameter;
 import com.picocontainer.parameters.ComponentParameter;
@@ -1046,5 +1048,35 @@ public abstract class AbstractPicoContainerTest {
 		mpc.as(Characteristics.NO_CACHE).dispose();
 	}
 
+	@Test
+	public void testSwappingMonitorBasedOnOldValue() {
+		ComponentMonitor consoleMonitor = new ConsoleComponentMonitor();
+		MutablePicoContainer mpc = createPicoContainer(null);
+		ComponentMonitor oldMonitor = mpc.changeMonitor(consoleMonitor);
+		assertNotNull(oldMonitor);
+		
+		ComponentMonitor oldMonitor2 = mpc.changeMonitor(oldMonitor);
+		assertSame(oldMonitor2, consoleMonitor);
+	}
+
+	
+	public static class ErrorProne implements Startable, Disposable {
+		
+
+		public void start() {
+			System.out.println("Got Here");
+		}
+
+		public void stop() {
+			throw new IllegalArgumentException("Because I say it is");
+		}			
+
+		public void dispose() {
+			throw new IllegalArgumentException("'Cause this class is a brat");
+			
+		}
+		
+	}
+	
 
 }

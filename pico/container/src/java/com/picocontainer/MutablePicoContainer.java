@@ -269,8 +269,9 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      * @since 3.0
+     * @return the old component monitor
      */
-    void changeMonitor(final ComponentMonitor monitor);
+    ComponentMonitor changeMonitor(final ComponentMonitor monitor);
 
 
 }

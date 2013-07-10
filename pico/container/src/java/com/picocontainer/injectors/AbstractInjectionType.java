@@ -13,6 +13,7 @@ import com.picocontainer.PicoCompositionException;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.PicoVisitor;
 import com.picocontainer.lifecycle.NullLifecycleStrategy;
+import com.picocontainer.monitors.NullComponentMonitor;
 
 @SuppressWarnings("serial")
 public abstract class AbstractInjectionType implements InjectionType, Serializable {
@@ -105,10 +106,12 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return lifecycle.isLazy(adapter);
         }
 
-        public void changeMonitor(final ComponentMonitor monitor) {
+        public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
             if (delegate instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
+                return ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
             }
+            
+            return new NullComponentMonitor();
         }
 
         public ComponentMonitor currentMonitor() {

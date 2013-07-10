@@ -25,6 +25,7 @@ import com.picocontainer.PicoCompositionException;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.PicoVisitor;
 import com.picocontainer.injectors.AdaptingInjection;
+import com.picocontainer.monitors.NullComponentMonitor;
 import com.picocontainer.parameters.ConstructorParameters;
 import com.picocontainer.parameters.FieldParameters;
 import com.picocontainer.parameters.MethodParameters;
@@ -212,10 +213,11 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * a component monitor strategy.
          * {@inheritDoc}
          */
-        public void changeMonitor(final ComponentMonitor monitor) {
+        public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
             if (delegate instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
+                return ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
             }
+            return new NullComponentMonitor();
         }
 
         /**

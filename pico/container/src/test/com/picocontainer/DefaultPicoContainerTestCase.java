@@ -41,12 +41,13 @@ import javax.inject.Provider;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
 import com.picocontainer.tck.AbstractPicoContainerTest;
+import com.picocontainer.tck.AbstractPicoContainerTest.ErrorProne;
 import com.picocontainer.testmodel.DecoratedTouchable;
 import com.picocontainer.testmodel.DependsOnTouchable;
 import com.picocontainer.testmodel.SimpleTouchable;
 import com.picocontainer.testmodel.Touchable;
-
 import com.googlecode.jtype.Generic;
 import com.picocontainer.ChangedBehavior;
 import com.picocontainer.Characteristics;
@@ -62,10 +63,12 @@ import com.picocontainer.PicoCompositionException;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.PicoVisitor;
 import com.picocontainer.Startable;
+import com.picocontainer.behaviors.AdaptingBehavior;
 import com.picocontainer.behaviors.Caching;
 import com.picocontainer.containers.EmptyPicoContainer;
 import com.picocontainer.injectors.AbstractInjector;
 import com.picocontainer.injectors.ConstructorInjection;
+import com.picocontainer.lifecycle.StartableLifecycleStrategy;
 import com.picocontainer.monitors.NullComponentMonitor;
 import com.picocontainer.monitors.WriterComponentMonitor;
 import com.picocontainer.parameters.ConstantParameter;
@@ -84,7 +87,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Override
 	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
-		return new DefaultPicoContainer(parent);
+		return new DefaultPicoContainer(parent, new StartableLifecycleStrategy(new NullComponentMonitor()), new AdaptingBehavior() );
 	}
 
 	@Override
@@ -1011,5 +1014,29 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     }
 
+	@Test
+	public void testNoMatterWhatHappensInChildContainersThatLifecycleStateIsSetProperly() {
+		MutablePicoContainer mpc = new PicoBuilder().withCaching().withLifecycle().build();
+		mpc.addComponent(ErrorProne.class);
+		
+		mpc.start();
+		
+		try {
+			mpc.stop();
+			fail("Error should have been thrown by component");
+		} catch (PicoLifecycleException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		assertTrue(mpc.getLifecycleState().isStopped());
+		
+		try {
+			mpc.dispose();
+		} catch (PicoLifecycleException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		assertTrue(mpc.getLifecycleState().isDisposed());
+	}    
 
 }

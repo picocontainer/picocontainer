@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.inject.Provider;
 
 
+
 import com.googlecode.jtype.Generic;
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.Converters;
@@ -112,20 +113,27 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             public boolean isResolved() {
                 return componentAdapter != null;
             }
-            public Object resolveInstance(final Type into) {
+            @SuppressWarnings("rawtypes")
+			public Object resolveInstance(final Type into) {
             	final Generic<?> targetType = targetClassType;
                 if (componentAdapter == null) {
                     return null;
                 }
 
-                if (componentAdapter.findAdapterOfType(DefaultPicoContainer.LateInstance.class) != null) {
-                    return convert(getConverters(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
+                
+                //Use instanceof instead of findAdapterOfType since we're iterating through the component adapters.
+                
+                if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
+                	return convert(getConverters(container), ((DefaultPicoContainer.LateInstance)componentAdapter).getComponentInstance(), expectedType);
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
 //                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
                     //We don't examine perfect match here, that's all been determined by the time we get here.
-                } else if(componentAdapter.findAdapterOfType(ProviderAdapter.class) != null && !(targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
+                } else if(componentAdapter instanceof ProviderAdapter && !(targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
                     return convert(getConverters(container), container.getComponentInto(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                     //We don't examine perfect match here, that's all been determined by the time we get here.
+                    
+                   //DO use findAdapterOfType here since we're injecting a raw provider, we
+                    //can't go through all the processing we normally do.
                 } else if(componentAdapter.findAdapterOfType(ProviderAdapter.class) != null && (targetType.getRawType().isAssignableFrom(javax.inject.Provider.class))) {
                 	//Target requires Provideradapter
                 	ProviderAdapter providerAdapter = componentAdapter.findAdapterOfType(ProviderAdapter.class);

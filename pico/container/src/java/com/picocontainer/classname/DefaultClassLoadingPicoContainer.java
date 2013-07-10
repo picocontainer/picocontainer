@@ -156,13 +156,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
      * @param monitor the monitor to swap.
      */
     @Override
-	public void changeMonitor(final ComponentMonitor monitor) {
+	public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
 
     	MutablePicoContainer picoDelegate = getDelegate();
     	while (picoDelegate != null) {
     		if (picoDelegate instanceof ComponentMonitorStrategy) {
+    			ComponentMonitor result = ((ComponentMonitorStrategy)picoDelegate).currentMonitor();
     			((ComponentMonitorStrategy)picoDelegate).changeMonitor(monitor);
-    			return;
+    			return result;
     		}
 
     		if (picoDelegate instanceof AbstractDelegatingMutablePicoContainer) {
@@ -655,8 +656,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this.getName();
         }
 
-        public void changeMonitor(final ComponentMonitor monitor) {
-            DefaultClassLoadingPicoContainer.this.changeMonitor(monitor);
+        public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+            return DefaultClassLoadingPicoContainer.this.changeMonitor(monitor);
         }
 
 

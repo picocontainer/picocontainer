@@ -19,6 +19,7 @@ import com.picocontainer.LifecycleStrategy;
  *
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
 
 	/**
@@ -38,14 +39,17 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
 
     /**
      * Swaps the current monitor with a replacement.
-     * @param monitor The new monitor.
+     * @param newMonitor The new monitor.
      * @throws NullPointerException if the passed in monitor is null.
      */
-    public void changeMonitor(final ComponentMonitor monitor) {
-        if (monitor == null) {
+    public ComponentMonitor changeMonitor(final ComponentMonitor newMonitor) {
+        if (newMonitor == null) {
             throw new NullPointerException("Monitor is null");
         }
-        this.monitor = monitor;
+        ComponentMonitor oldValue = monitor;
+        this.monitor = newMonitor;
+        
+        return oldValue;
     }
 
     public ComponentMonitor currentMonitor() {

@@ -126,13 +126,17 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
      * Else the delegate is replaced by the new monitor.
      * {@inheritDoc}
      */
-    public void changeMonitor(final ComponentMonitor monitor) {
+    public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+    	ComponentMonitor result;
         checkMonitor(monitor);
         if (delegate instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
+        	result = ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
         } else {
+        	result = delegate;
             delegate = monitor;
         }
+        
+        return result;
     }
 
     public ComponentMonitor currentMonitor() {

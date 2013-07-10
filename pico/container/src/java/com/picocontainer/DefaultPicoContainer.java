@@ -27,6 +27,8 @@ import java.util.Set;
 import javax.inject.Provider;
 
 
+
+
 import com.googlecode.jtype.Generic;
 import com.picocontainer.adapters.AbstractAdapter;
 import com.picocontainer.adapters.InstanceAdapter;
@@ -296,7 +298,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * {@inheritDoc}
      */
-    public final ComponentAdapter<?> getComponentAdapter (Object key) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public final ComponentAdapter<?> getComponentAdapter (Object key) {
         if (key instanceof Generic) {
             key = ((Generic) key).getType();
         }
@@ -316,19 +319,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return adapter;
     }
 
-    public static class LateInstance extends AbstractAdapter {
-        private final Object instance;
+    /**
+     * <tt>Special Case</tt> class that is an adapter instantiated when a component monitor
+     * returns a &quot;late resolution&quot; to finding a container.
+     * @param <T>
+     */
+    public static class LateInstance<T> extends AbstractAdapter<T> {
+        private final T instance;
 
-        private LateInstance(final Object key, final Object instance) {
+        private LateInstance(final Object key, final T instance) {
             super(key, instance.getClass());
             this.instance = instance;
         }
 
-        public Object getComponentInstance() {
+        public T getComponentInstance() {
             return instance;
         }
 
-        public Object getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return instance;
         }
 
@@ -340,6 +348,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
     }
 
+    /**
+     * <code>Decorator</code> that binds an adapter to a particular PicoContainer instance.  
+     * @param <T>
+     */
     public static class KnowsContainerAdapter<T> implements ComponentAdapter<T> {
         private final ComponentAdapter<T> ca;
         private final PicoContainer ctr;
@@ -373,7 +385,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             ca.accept(visitor);
         }
 
-        public ComponentAdapter getDelegate() {
+        public ComponentAdapter<T> getDelegate() {
             return ca.getDelegate();
         }
 
@@ -938,7 +950,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                 ((Startable) child).start();
             }
         }
-    }
+   }
 
     /**
      * Stop the components of this PicoContainer and all its logical child containers.
@@ -956,18 +968,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @see #removeChildContainer(PicoContainer)
      */
     public synchronized void stop() {
-
         lifecycleState.stopping(getName());
-
-        for (PicoContainer child : children) {
-            if (childStarted(child)) {
-                if (child instanceof Startable) {
-                    ((Startable) child).stop();
-                }
-            }
+        try {
+	        for (PicoContainer child : children) {
+	            if (childStarted(child)) {
+	                if (child instanceof Startable) {
+	                    ((Startable) child).stop();
+	                }
+	            }
+	        }
+	        
+        } finally {
+        	try {
+        		stopAdapters();
+        	} finally {
+        		lifecycleState.stopped();
+        	}
         }
-        stopAdapters();
-        lifecycleState.stopped();
     }
 
     /**
@@ -1011,16 +1028,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
         lifecycleState.disposing(getName());
 
-        for (PicoContainer child : children) {
-            if (child instanceof MutablePicoContainer) {
-                ((Disposable) child).dispose();
-            }
-        }
-        disposeAdapters();
+        try {
+	        for (PicoContainer child : children) {
+	            if (child instanceof MutablePicoContainer) {
+	                ((Disposable) child).dispose();
+	            }
+	        }
+        } finally {
+        	try {
+        		disposeAdapters();
+                componentFactory.dispose();
+        	} finally {
+                lifecycleState.disposed();
+        	}
 
-        lifecycleState.disposed();
+        }
+
         
-        componentFactory.dispose();
     }
 
     /** {@inheritDoc} **/
@@ -1141,21 +1165,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      */
-    public void changeMonitor(final ComponentMonitor monitor) {
-        this.monitor = monitor;
+    public ComponentMonitor changeMonitor(final ComponentMonitor newMonitor) {
+    	ComponentMonitor returnValue = this.monitor;
+        this.monitor = newMonitor;
         if (lifecycle instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) lifecycle).changeMonitor(monitor);
+            ((ComponentMonitorStrategy) lifecycle).changeMonitor(newMonitor);
         }
         for (ComponentAdapter<?> adapter : getModifiableComponentAdapterList()) {
             if (adapter instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) adapter).changeMonitor(monitor);
+                ((ComponentMonitorStrategy) adapter).changeMonitor(newMonitor);
             }
         }
         for (PicoContainer child : children) {
             if (child instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) child).changeMonitor(monitor);
+                ((ComponentMonitorStrategy) child).changeMonitor(newMonitor);
             }
         }
+        
+        return returnValue;
     }
 
     /**
@@ -1383,8 +1410,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         @Override
-		public void changeMonitor(final ComponentMonitor monitor) {
-            DefaultPicoContainer.this.changeMonitor(monitor);
+		public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
+            return DefaultPicoContainer.this.changeMonitor(monitor);
         }
 
         @Override

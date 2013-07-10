@@ -35,6 +35,40 @@
         </dependency>
     </dependencies>
     <build>
+    	<pluginManagement>
+    		<plugins>
+				<plugin>
+				<!--  For Eclipse Handling Integration -->
+				 <groupId>org.eclipse.m2e</groupId>
+				 <artifactId>lifecycle-mapping</artifactId>
+				 <version>1.0.0</version>
+				 <configuration>
+				   <lifecycleMappingMetadata>
+				     <pluginExecutions>
+				       <pluginExecution>
+				         <pluginExecutionFilter>
+				           <groupId>org.apache.maven.plugins</groupId>
+				           <artifactId>maven-shade-plugin</artifactId>
+				           <versionRange>[1.3,)</versionRange>
+				           <goals>
+				             <goal>shade</goal>
+				           </goals>
+				         </pluginExecutionFilter>
+				         <action>
+				         	<!-- 
+				           <execute >
+				             <runOnIncremental>true</runOnIncremental>
+				           </execute >
+				            -->
+				            <ignore/>
+				         </action>
+				       </pluginExecution>
+				     </pluginExecutions>
+				   </lifecycleMappingMetadata>
+				 </configuration>
+				</plugin>            		
+    		</plugins>
+    	</pluginManagement>
         <plugins>
             <plugin>
                 <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>${paranamer-version}</version>
@@ -52,8 +86,13 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId><version>1.3</version>
+			<plugin>
+				<!--  Force generation of the jar before the shading takes effect. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId><version>2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
