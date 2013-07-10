@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * @author Stephen Molitor
  */
+@SuppressWarnings("serial")
 public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
     private final Map cheeses;

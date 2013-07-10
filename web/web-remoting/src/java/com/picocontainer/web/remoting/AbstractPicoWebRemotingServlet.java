@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.picocontainer.web.AbstractPicoServletContainerFilter;
+import com.picocontainer.web.PicoServletFilter;
 
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
@@ -35,6 +36,8 @@ import com.thoughtworks.xstream.XStream;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
+	
+	private PicoHook picoHook = new PicoHook();
 
     private static final String EMPTY = "";
 	private static final String DOT = ".";
@@ -56,79 +59,33 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String LOWER_CASE_PATH = "lower_case_path";
     private static final String USE_METHOD_NAME_PREFIXES_FOR_VERBS = "use_method_name_prefixes_for_verbs";
 
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
 
 	private XStream xstream;
     private PicoWebRemoting pwr;
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
-    
-    public static class ServletFilter extends AbstractPicoServletContainerFilter {
 
-
-		@Override
-		public void init(FilterConfig filterConfig) throws ServletException {
-			super.init(filterConfig);
-		}    	
-    	
-        @Override
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-
-        @Override
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-
-        @Override
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
-
-		public final void destroy() {
-			if (currentRequestContainer != null) {
-				currentRequestContainer.remove();
-				currentRequestContainer = null;
-			}	
-			
-			if (currentSessionContainer != null) {
-				currentSessionContainer.remove();
-				currentSessionContainer = null;
-			}			
-			
-			if (currentAppContainer != null) {
-				currentAppContainer.remove();
-				currentAppContainer = null;
-			}
-		}
-
-		@Override
-		protected MutablePicoContainer getRequestContainer() {
-			if (currentRequestContainer == null) {
-				throw new IllegalStateException("Request container hasn't been set yet.  Is " 
-							+ ServletFilter.class.getName() + " properly installed in your web.xml?");
-			}
-			return currentRequestContainer.get();
-		}
-
-    }
-
-    private boolean initialized;
+    private volatile boolean initialized;
 
     protected abstract XStream createXStream();
     
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    	if (!initialized) {
+    		initialize();
+    	}
+        respond(request, response, request.getPathInfo());
+    }
+    
+    /**
+     * Synchronized with double-lock checking before calling.
+     */
+    private synchronized void initialize() {
         if (!initialized) {
             publishAdapters();
             initialized = true;
         }
-
-        respond(request, response, request.getPathInfo());
     }
 
     protected void respond(final HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
@@ -138,7 +95,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         //final Cache cache = currentAppContainer.get().getComponent(Cache.class);
 
-        String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
+        String result = pwr.processRequest(pathInfo, picoHook.getCurrentRequestContainer(), httpMethod, new NullComponentMonitor() {
                             @Override
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object... args) {
                                 return ComponentMonitor.KEEP;
@@ -201,14 +158,14 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     }
 
     private void publishAdapters() {
-        pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), REQUEST_SCOPE);
-        MutablePicoContainer sessionContainer = currentSessionContainer.get();
+        pwr.publishAdapters(picoHook.getCurrentRequestContainer().getComponentAdapters(), REQUEST_SCOPE);
+        MutablePicoContainer sessionContainer = picoHook.getCurrentSessionContainer();
         if (sessionContainer != null) {
             pwr.publishAdapters(sessionContainer.getComponentAdapters(), SESSION_SCOPE);
         }
-        pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
+        pwr.publishAdapters(picoHook.getAppContainer().getComponentAdapters(), APPLICATION_SCOPE);
 
-        monitor = currentAppContainer.get().getComponent(PicoWebRemotingMonitor.class);
+        monitor = picoHook.getAppContainer().getComponent(PicoWebRemotingMonitor.class);
         if (monitor == null) {
             monitor = new NullPicoWebRemotingMonitor();
         }
@@ -216,7 +173,22 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     }
 
     protected void visitClass(String clazz, MethodVisitor mapv) throws IOException {
-        pwr.visitClass(clazz, currentRequestContainer.get(), mapv);
+        pwr.visitClass(clazz, picoHook.getCurrentRequestContainer(), mapv);
     }
 
+    private static class PicoHook extends PicoServletFilter {
+    	
+    	MutablePicoContainer getAppContainer() {
+    		return super.getApplicationContainer();
+    	}
+    	
+    	MutablePicoContainer getCurrentSessionContainer() {
+    		return super.getSessionContainer();
+    	}
+    	
+    	MutablePicoContainer getCurrentRequestContainer() {
+    		return super.getRequestContainer();
+    	}
+    	
+    }
 }

@@ -18,6 +18,7 @@ import java.util.Collection;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class DefaultCheeseService implements CheeseService, Serializable {
 
     private final CheeseDao dao;

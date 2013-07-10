@@ -9,14 +9,22 @@
     <param-name>webapp-composer-class</param-name>
     <param-value>com.picocontainer.web.sample.struts2.Struts2DemoComposer</param-value>
   </context-param>
+  
+  <!-- 
+  	This is the important parameter to hook up PicoContainer + Struts2
+   -->
+  <context-param>
+  	<param-name>pico.request-component-monitor</param-name>  	
+  	<param-value>com.picocontainer.web.struts2.Struts2MonitorProvider</param-value>
+  </context-param>
   <listener>
-    <listener-class>com.picocontainer.web.struts2.Struts2PicoServletContainerListener</listener-class>
+    <listener-class>com.picocontainer.web.PicoServletContainerListener</listener-class>
   </listener>
 
 
 	<filter>
 	  <filter-name>picoFilter</filter-name>
-	  <filter-class>com.picocontainer.web.struts2.PicoObjectFactory$ServletFilter</filter-class>
+	  <filter-class>com.picocontainer.web.PicoServletFilter</filter-class>
 	</filter>
 
 	<filter>
