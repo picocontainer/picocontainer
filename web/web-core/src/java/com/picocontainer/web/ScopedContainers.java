@@ -59,5 +59,34 @@ public final class ScopedContainers {
         return requestState;
     }
     
-   
+    void dispose() {
+    	if (requestStoring != null) {
+    		requestStoring.dispose();
+    	}
+
+    	if (this.requestState != null) {
+    		requestState.invalidateStateModelForThread();
+    	}
+
+    	if (sessionStoring != null) {
+    		sessionStoring.dispose();
+    	}
+    	
+    	if (this.sessionState != null) {
+    		sessionState.invalidateStateModelForThread();
+    	}
+    	
+    	
+    }
+
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			dispose();
+		} finally {
+			super.finalize();
+		}
+	}
+    
+    
 }

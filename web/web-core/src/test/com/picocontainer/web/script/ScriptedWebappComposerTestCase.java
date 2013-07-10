@@ -10,14 +10,12 @@ package com.picocontainer.web.script;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import com.picocontainer.script.groovy.GroovyContainerBuilder;
-import com.picocontainer.script.xml.XStreamContainerBuilder;
 
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoCompositionException;
-
-import javax.servlet.ServletContext;
+import com.picocontainer.script.groovy.GroovyContainerBuilder;
+import com.picocontainer.script.xml.XStreamContainerBuilder;
 
 /**
  * @author Mauro Talevi

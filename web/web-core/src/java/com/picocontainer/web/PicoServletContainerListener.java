@@ -20,6 +20,8 @@ import com.picocontainer.behaviors.Storing;
 import com.picocontainer.containers.EmptyPicoContainer;
 import com.picocontainer.lifecycle.StartableLifecycleStrategy;
 import com.picocontainer.monitors.NullComponentMonitor;
+import com.picocontainer.web.providers.AbstractScopedContainerBuilder;
+import com.picocontainer.web.providers.PicoServletParameterProcessor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -64,12 +66,17 @@ import java.io.Serializable;
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Konstantin Pribluda
+ * @author Michael Rimov
  */
 @SuppressWarnings("serial")
 public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, Serializable {
 
     public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
 
+    /**
+     * Use {@link com.picocontainer.web.ContextParameters#STATELESS_WEBAPP instead}
+     */
+    @Deprecated    
     public static final String STATELESS_WEBAPP = "stateless-webapp";
 
     public static final String PRINT_SESSION_SIZE = "print-session-size";
@@ -83,13 +90,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public void contextInitialized(final ServletContextEvent event) {
         ServletContext context = event.getServletContext();
-        isStateless = Boolean.parseBoolean(context.getInitParameter(STATELESS_WEBAPP));        
-        ScopedContainers scopedContainers = makeScopedContainers(isStateless);
-        scopedContainers.getApplicationContainer().setName("application");
-        if (!isStateless) {
-            scopedContainers.getSessionContainer().setName("session");
-        }
-        scopedContainers.getRequestContainer().setName("request");
+        //isStateless = Boolean.parseBoolean(context.getInitParameter(STATELESS_WEBAPP));        
+        ScopedContainers scopedContainers = makeScopedContainers(context);
+
         compose(loadComposer(context), context, scopedContainers);
         start(scopedContainers.getApplicationContainer());
         context.setAttribute(ScopedContainers.class.getName(), scopedContainers);
@@ -125,8 +128,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @param stateless
      * @return
      */
-    protected ScopedContainers makeScopedContainers(boolean stateless) {
-        DefaultPicoContainer appCtnr = new DefaultPicoContainer(makeParentContainer(), makeLifecycleStrategy(), makeAppComponentMonitor(), new Guarding().wrap(new Caching()));
+    protected ScopedContainers makeScopedContainers(ServletContext servletContext) {
+/*        DefaultPicoContainer appCtnr = new DefaultPicoContainer(makeParentContainer(), makeLifecycleStrategy(), makeAppComponentMonitor(), new Guarding().wrap(new Caching()));
         DefaultPicoContainer sessCtnr;
         PicoContainer parentOfRequestContainer;
         ThreadLocalLifecycleState sessionState;
@@ -148,6 +151,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
         reqCtnr.setLifecycleState(requestState);
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring, sessionState, requestState);
+        */
+		PicoServletParameterProcessor paramProcessor = new PicoServletParameterProcessor();
+		AbstractScopedContainerBuilder containerBuilder = paramProcessor.processContextParameters(servletContext);
+		ScopedContainers containers =  containerBuilder.makeScopedContainers(paramProcessor.isStateless());
+    	
+    	return containers;
     }
 
     protected PicoContainer makeParentContainer() {
@@ -212,6 +221,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 	        dispose(scopedContainers.getApplicationContainer());
         }
         
+        scopedContainers.dispose();
         removeScopedContainersFromContext(event.getServletContext());
     }
 
@@ -259,11 +269,15 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
             SessionStoreHolder ssh = (SessionStoreHolder) session.getAttribute(SessionStoreHolder.class.getName());
             scopedContainers.getSessionStoring().putCacheForThread(ssh.getStoreWrapper());
             scopedContainers.getSessionState().putLifecycleStateModelForThread(ssh.getLifecycleState());
-            stop(sessionCtr);
-            dispose(sessionCtr);
-            scopedContainers.getSessionStoring().invalidateCacheForThread();
-            scopedContainers.getSessionState().invalidateStateModelForThread();
-            session.setAttribute(SessionStoreHolder.class.getName(), null);
+            try {
+	            stop(sessionCtr);
+	            dispose(sessionCtr);
+            } finally {
+            	//No matter what else happens, clear the memory.
+	            scopedContainers.getSessionStoring().invalidateCacheForThread();
+	            scopedContainers.getSessionState().invalidateStateModelForThread();
+	            session.removeAttribute(SessionStoreHolder.class.getName());
+            }
         }
     }
 

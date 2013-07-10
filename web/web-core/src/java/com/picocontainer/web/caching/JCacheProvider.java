@@ -1,11 +1,11 @@
 package com.picocontainer.web.caching;
 
-import javax.cache.*;
-import javax.cache.Cache;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import com.picocontainer.web.*;
+import javax.cache.CacheException;
+import javax.cache.CacheFactory;
+import javax.cache.CacheManager;
 
 import com.picocontainer.injectors.ProviderAdapter;
 
