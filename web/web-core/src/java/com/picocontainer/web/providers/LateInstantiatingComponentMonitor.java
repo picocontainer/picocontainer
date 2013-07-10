@@ -14,7 +14,7 @@ import com.picocontainer.web.StringFromRequest;
 @SuppressWarnings("serial")
 public class LateInstantiatingComponentMonitor extends NullComponentMonitor implements Serializable {
 	
-	private ComponentMonitor delegate;
+	private final ComponentMonitor delegate;
 
 	public LateInstantiatingComponentMonitor(ComponentMonitor delegate) {
 		this.delegate = delegate;

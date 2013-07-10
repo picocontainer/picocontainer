@@ -221,7 +221,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 	        dispose(scopedContainers.getApplicationContainer());
         }
         
-        scopedContainers.dispose();
+        if (scopedContainers != null) {
+            scopedContainers.dispose();        	
+        }
         removeScopedContainersFromContext(event.getServletContext());
     }
 
