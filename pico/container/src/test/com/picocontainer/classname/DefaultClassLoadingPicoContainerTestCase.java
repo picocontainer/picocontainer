@@ -154,11 +154,12 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 "com.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
                 "com.picocontainer.DefaultPicoContainer\n" +
                 "com.picocontainer.MutablePicoContainer\n" +
-                "com.picocontainer.PicoContainer\n",
+                "com.picocontainer.PicoContainer\n"+
+                "com.picocontainer.security.SecurityWrappingPicoContainer\n",
                 sb.toString());
 
         //Same here.
-        assertEquals(18, found);
+        assertEquals(19, found);
     }
 
     @Test()

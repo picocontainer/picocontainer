@@ -1,0 +1,10 @@
+/* AUTOMATICALLY GENERATED ON Tue Jul 16 15:06:43 PDT 2013*/
+/* DO NOT EDIT */
+
+grant {
+
+  permission com.picocontainer.security.PicoAccessPermission "readOnly", "read";  
+  permission com.picocontainer.security.PicoAccessPermission "readwriteScope", "read,write";
+ 
+};
+

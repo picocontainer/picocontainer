@@ -18,6 +18,7 @@
 		<!-- JSR-330 isn't dependent on gems -->
 		<module>jsr330-tck</module>
 		<module>gems</module>
+		<module>examples</module>
 	</modules>
 	<inceptionYear>2003</inceptionYear>
 	<description>A small Java embeddable Dependency Injection container</description>
