@@ -62,13 +62,4 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
 		return containers;
     }
-
-    /**
-     * Struts2 handles whole value objects in some configurations.
-     * This enables lazy instantiation of them    
-     */
-    @Override
-    protected ComponentMonitor makeRequestComponentMonitor() {
-        return new StrutsActionInstantiatingComponentMonitor();
-    }
 }

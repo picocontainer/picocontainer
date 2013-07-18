@@ -1,5 +1,7 @@
 package com.picocontainer.web.struts2;
 
+import static com.picocontainer.Characteristics.NO_CACHE;
+
 import java.lang.reflect.Modifier;
 
 import com.opensymphony.xwork2.Action;
@@ -7,7 +9,6 @@ import com.opensymphony.xwork2.Result;
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoCompositionException;
-import com.picocontainer.containers.TransientPicoContainer;
 import com.picocontainer.monitors.NullComponentMonitor;
 
 @SuppressWarnings("serial")
@@ -44,7 +45,7 @@ public class StrutsActionInstantiatingComponentMonitor extends NullComponentMoni
 	            //and return that.
 	            if (Action.class.isAssignableFrom(clazz) || Result.class.isAssignableFrom(clazz)) {
 	                try {
-	                	mutablePicoContainer.addComponent(clazz);
+	                	mutablePicoContainer.as(NO_CACHE).addComponent(clazz);
 	                } catch (NoClassDefFoundError e) {
 	                    if (e.getMessage().equals("org/apache/velocity/context/Context")) {
 	                        // half expected. XWork seems to setup stuff that cannot

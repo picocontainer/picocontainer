@@ -44,6 +44,10 @@ public class PicoObjectFactory extends ObjectFactory {
 	
 	
     private  class PicoHook extends PicoServletFilter {
+    	/**
+    	 * Returns the raw picocontainer.
+    	 * @return
+    	 */
 		public PicoContainer getCurrentRequestPico() {
 			return super.getRequestContainerWithoutException();
 		}
@@ -58,6 +62,8 @@ public class PicoObjectFactory extends ObjectFactory {
     public Class getClassInstance(String name) throws ClassNotFoundException {
         final Class clazz = super.getClassInstance(name);
         synchronized (this) {
+        	//We run this in a privileged block to minimize the duplication
+        	//of struts permissions that we're being bombarded with. :)
         	
         	AccessController.doPrivileged(new PrivilegedAction<Void>() {
 				public Void run() {
