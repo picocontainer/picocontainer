@@ -11,11 +11,14 @@ import com.picocontainer.*;
 import com.picocontainer.adapters.AbstractAdapter;
 import com.picocontainer.containers.TransientPicoContainer;
 import com.picocontainer.lifecycle.DefaultLifecycleState;
+import com.picocontainer.security.PicoAccessPermission;
+import com.picocontainer.security.SecurityWrappingPicoContainer;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -50,7 +53,7 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
         }
 
         
-        setAppContainer(scopedContainers.getApplicationContainer());
+        setAppContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.APP_SCOPE,scopedContainers.getApplicationContainer()));
 
         isStateless = Boolean.parseBoolean(context.getInitParameter(PicoServletContainerListener.STATELESS_WEBAPP));
         printSessionSize = Boolean.parseBoolean(context.getInitParameter(PicoServletContainerListener.PRINT_SESSION_SIZE));
@@ -124,11 +127,11 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
 
         scopedContainers.getRequestContainer().start();
 
-        setAppContainer(scopedContainers.getApplicationContainer());
+        setAppContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.APP_SCOPE,scopedContainers.getApplicationContainer()));
         if (!isStateless) {
-            setSessionContainer(scopedContainers.getSessionContainer());
+            setSessionContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.SESSION_SCOPE,scopedContainers.getSessionContainer()));
         }
-        setRequestContainer(scopedContainers.getRequestContainer());
+        setRequestContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.REQUEST_SCOPE,scopedContainers.getRequestContainer()));
         
         containersSetupForRequest(scopedContainers.getApplicationContainer(), scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer(), req, resp);
 

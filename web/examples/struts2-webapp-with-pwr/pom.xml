@@ -1,103 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-examples</artifactId><version>3.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>struts2-webapp-with-remoting</artifactId>
-    <name>Struts 2 Webapp with Remoting</name>
-    <packaging>war</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-struts2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.picocontainer.web</groupId><artifactId>picocontainer-web-remoting</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>opensymphony</groupId><artifactId>oscore</artifactId><version>2.2.4</version>
-        </dependency>
-        <dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.picocontainer.web</groupId>
+		<artifactId>picocontainer-web-examples</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>struts2-webapp-with-remoting</artifactId>
+	<name>Struts 2 Webapp with Remoting</name>
+	<packaging>war</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>com.picocontainer.web</groupId>
+			<artifactId>picocontainer-web-struts2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.picocontainer.web</groupId>
+			<artifactId>picocontainer-web-remoting</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>oscore</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		<dependency>
 			<groupId>com.picocontainer.web</groupId>
 			<artifactId>picocontainer-web-test</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
-        </dependency>        
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-			  <groupId>org.eclipse.jetty</groupId>
-			  <artifactId>jetty-maven-plugin</artifactId>
-			  <version>9.0.3.v20130506</version>
-                <configuration>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.0.3.v20130506</version>
+				<configuration>
 					<!-- Have to have both webappconfig  AND contextPath to support jetty:run and jetty:run-forked-->
-                    <webAppConfig>
-                        <contextPath>/${project.artifactId}</contextPath>
-                    </webAppConfig>
-                    <contextPath>/${project.artifactId}</contextPath>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.ServerConnector">
-                            <port>8080</port>
-                            <maxIdleTime>3600000</maxIdleTime>
-                        </connector>
-                    </connectors>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
+					<webAppConfig>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webAppConfig>
+					<contextPath>/${project.artifactId}</contextPath>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.ServerConnector">
+							<port>8080</port>
+							<maxIdleTime>3600000</maxIdleTime>
+						</connector>
+					</connectors>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<stopKey>stopJetty</stopKey>
-					<stopPort>9966</stopPort>                    
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run-forked</goal>
-                        </goals>
-                        <configuration>
-							 <waitForChild>false</waitForChild>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <stopKey>stopJetty</stopKey>
-                            <stopPort>9966</stopPort>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!--
+					<stopPort>9966</stopPort>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run-forked</goal>
+						</goals>
+						<configuration>
+							<waitForChild>false</waitForChild>
+							<scanIntervalSeconds>0</scanIntervalSeconds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+						<configuration>
+							<stopKey>stopJetty</stopKey>
+							<stopPort>9966</stopPort>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!--
                       Skip the normal tests, we'll run them in the
                       integration-test phase
                     -->
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                        	<junitArtifactName>junit:junit-dep</junitArtifactName>
+					<skip>true</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<junitArtifactName>junit:junit-dep</junitArtifactName>
 							<skip>${maven.test.skip}</skip>
 							<includes>
 								<include>**/SeleniumTestSuite.java</include>
 							</includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>		
-        </plugins>
-    </build>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<!-- Example showing running within a security manager -->
+			<id>run-secure</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run-forked</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+								<configuration>
+									<stopKey>stopJetty</stopKey>
+									<stopPort>9966</stopPort>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+						<!-- Use instead if you want to debug security policy 
+						-->
+						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.debug=access,failure -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
+						<!--
+						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
+						-->
+							<dependencies>
+								<dependency>
+									<groupId>com.picocontainer.web</groupId>
+									<artifactId>picocontainer-web-core</artifactId>
+									<version>${project.version}</version>
+								</dependency>
+							</dependencies>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

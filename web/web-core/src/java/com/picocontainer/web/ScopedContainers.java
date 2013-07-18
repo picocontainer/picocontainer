@@ -9,8 +9,11 @@ package com.picocontainer.web;
 
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.behaviors.Storing;
+import com.picocontainer.security.PicoAccessPermission;
+import com.picocontainer.security.SecurityWrappingPicoContainer;
 
 public final class ScopedContainers {
+	
 
     private final MutablePicoContainer applicationContainer;
     private final MutablePicoContainer sessionContainer;
@@ -23,7 +26,8 @@ public final class ScopedContainers {
     public ScopedContainers(MutablePicoContainer applicationContainer, MutablePicoContainer sessionContainer, MutablePicoContainer requestContainer, Storing sessionStoring, Storing requestStoring, ThreadLocalLifecycleState sessionState, ThreadLocalLifecycleState requestState) {
         this.applicationContainer = applicationContainer;
         this.sessionContainer = sessionContainer;
-        this.requestContainer = requestContainer;
+        this.requestContainer = requestContainer;    		
+
         this.sessionStoring = sessionStoring;
         this.requestStoring = requestStoring;
         this.sessionState = sessionState;

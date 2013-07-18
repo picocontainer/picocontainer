@@ -2,6 +2,8 @@ package com.picocontainer.web;
 
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoContainer;
+import com.picocontainer.security.PicoAccessPermission;
+import com.picocontainer.security.SecurityWrappingPicoContainer;
 
 @SuppressWarnings("serial")
 public class PicoServletFilter extends AbstractPicoServletContainerFilter {
@@ -13,23 +15,24 @@ public class PicoServletFilter extends AbstractPicoServletContainerFilter {
 
     protected final void setAppContainer(MutablePicoContainer container) {
          if (currentRequestContainer == null) {
+        	 
             currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         }
-        currentAppContainer.set(container);
+        currentAppContainer.set( container );
     }
 
     protected final void setRequestContainer(MutablePicoContainer container) {
         if (currentRequestContainer == null) {
             currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         }
-        currentRequestContainer.set(container);
+        currentRequestContainer.set( container );
     }
 
     protected final void setSessionContainer(MutablePicoContainer container) {
         if (currentSessionContainer == null) {
             currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
         }
-        currentSessionContainer.set(container);
+        currentSessionContainer.set( container );
     }
     
     protected final MutablePicoContainer getApplicationContainer() {

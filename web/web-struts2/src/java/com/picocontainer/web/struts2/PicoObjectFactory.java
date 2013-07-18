@@ -8,6 +8,8 @@
 
 package com.picocontainer.web.struts2;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Map;
 
 import javax.servlet.FilterConfig;
@@ -15,7 +17,6 @@ import javax.servlet.ServletException;
 
 import com.picocontainer.web.AbstractPicoServletContainerFilter;
 import com.picocontainer.web.PicoServletFilter;
-
 import com.opensymphony.xwork2.ObjectFactory;
 import com.opensymphony.xwork2.config.ConfigurationException;
 import com.opensymphony.xwork2.config.entities.InterceptorConfig;
@@ -55,33 +56,45 @@ public class PicoObjectFactory extends ObjectFactory {
 
     @SuppressWarnings({ "rawtypes" })
     public Class getClassInstance(String name) throws ClassNotFoundException {
-        Class clazz = super.getClassInstance(name);
+        final Class clazz = super.getClassInstance(name);
         synchronized (this) {
-        	PicoContainer reqContainer = picoHook.getCurrentRequestPico();
-            if (reqContainer != null) {
-                // forces a registration via noComponentFound()
-                reqContainer.getComponentAdapter(clazz);
-            }
+        	
+        	AccessController.doPrivileged(new PrivilegedAction<Void>() {
+				public Void run() {
+					PicoContainer reqContainer = picoHook.getCurrentRequestPico();
+		            if (reqContainer != null) {
+		                // forces a registration via noComponentFound()
+		                reqContainer.getComponentAdapter(clazz);
+		            }
+		            return null;
+				}
+        	});
         }
         return clazz;
     }
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Object buildBean(Class clazz, Map extraContext) throws Exception {
+    public Object buildBean(final Class clazz, final Map extraContext) throws Exception {
 
-        PicoContainer requestContainer = picoHook.getCurrentRequestPico();
-        if (requestContainer == null) {
-            MutablePicoContainer appContainer = picoHook.getAppContainer();
-            Object comp = appContainer.getComponent(clazz);
-            if (comp == null) {
-                appContainer.addComponent(clazz);
-                comp = appContainer.getComponent(clazz);
-            }
-            return comp;
+    	return AccessController.doPrivileged(new PrivilegedAction<Object>() {
 
-        }
-        return requestContainer.getComponent(clazz);
+			public Object run() {
+		        PicoContainer requestContainer = picoHook.getCurrentRequestPico();
+		        if (requestContainer == null) {
+		            MutablePicoContainer appContainer = picoHook.getAppContainer();
+		            Object comp = appContainer.getComponent(clazz);
+		            if (comp == null) {
+		                appContainer.addComponent(clazz);
+		                comp = appContainer.getComponent(clazz);
+		            }
+		            return comp;
+
+		        }
+		        return requestContainer.getComponent(clazz);			}
+    		
+    	});
+
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

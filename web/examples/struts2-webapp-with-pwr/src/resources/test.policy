@@ -1,0 +1,164 @@
+/**
+(c) PicoContainer Organization.
+
+This sample policy file was created for running jetty via jetty-maven-plguin:run-forked goal.
+
+If you were to this example in a web server, you will need to modify all references to ${user.home}/.m2/repository/ to
+point to your WEB-INF/lib directory.
+
+**/
+
+/**
+ * Required to compile JSPs
+ */
+grant codeBase "file:${java.home}/lib/tools.jar" {
+	permission java.security.AllPermission;   
+};
+
+/**
+ * Java libraries have to be trusted for this example.
+ */
+grant codeBase "file:${java.home}/lib/-" {
+  permission java.security.AllPermission;
+};
+
+/**
+ * Java libraries have to be trusted for this example.
+ */
+grant codeBase "file:${java.home}/jre/lib/ext/-" {
+  permission java.security.AllPermission;
+};
+
+/**
+ * Java libraries have to be trusted for this example.
+ */
+grant codeBase "file:${java.home}/../lib/-" {
+  permission java.security.AllPermission;
+};
+
+/**
+ * We'll trust Jetty for this example.
+ */
+grant codeBase "file:${user.home}/.m2/repository/org/eclipse/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/com/picocontainer/picocontainer/-" {
+	/** 
+		Pico has to be able to read and write to itself.
+	*/
+   permission  com.picocontainer.security.PicoAccessPermission "application", "read,write";
+   permission  com.picocontainer.security.PicoAccessPermission "session", "read,write";
+   permission  com.picocontainer.security.PicoAccessPermission "request", "read,write";
+   
+   /**
+    * Classloading PIcoContainer needs this.
+	*/
+   permission  java.lang.RuntimePermission "createClassLoader", "";
+
+   /**
+    * Field injection and JSR-330 Injection will require these.
+	*/
+	permission  java.lang.reflect.ReflectPermission "suppressAccessChecks", "";
+	permission  java.lang.RuntimePermission "accessDeclaredMembers", "";
+   
+};
+
+/**
+ * We could limit web core, but Struts2 isn't very security manager friendly
+ * and doesn't use priv. code blocks.  The result is almost all the struts
+ * permissions have to be copied her verbatim.
+ */
+grant codeBase "file:${user.home}/.m2/repository/com/picocontainer/web/picocontainer-web-core/-" {
+	permission java.security.AllPermission; 
+};
+
+
+/*
+ * JSP Code Base
+ */
+grant codeBase "file:/${baseDir}/src/main/webapp/-" {
+	/* 
+		These are all OGNL and Struts requirements for their EL to work.
+	 */
+	permission  java.lang.reflect.ReflectPermission "suppressAccessChecks", "";
+	permission  java.lang.RuntimePermission "accessDeclaredMembers", "";
+	permission	java.security.SecurityPermission "getPolicy";
+	
+	//Let ognl do its thing for now
+    permission  ognl.OgnlInvokePermission "*", "";
+};  
+  
+
+grant codeBase "file:${user.home}/.m2/repository/com/picocontainer/web/picocontainer-web-struts2/-" {
+ /**
+  * Struts insists on reading everything to check for modification. 
+  */
+  permission java.security.AllPermission;
+  /*
+  permission com.picocontainer.security.PicoAccessPermission "application","read";
+  permission com.picocontainer.security.PicoAccessPermission "request","read";
+   permission  com.picocontainer.security.PicoAccessPermission "application", "";
+   permission  com.picocontainer.security.PicoAccessPermission "application", "read,write";
+   permission  com.picocontainer.security.PicoAccessPermission "request", "read,write";
+   permission  java.io.FilePermission "${user.home}/.m2/repository/-", "read";
+   permission  java.io.FilePermission "${baseDir}/src/main/-", "read";
+   permission  java.io.FilePermission "${baseDir}/src/target/classes/-", "read";
+   permission  java.lang.RuntimePermission "accessDeclaredMembers", "";
+   permission  java.lang.reflect.ReflectPermission "suppressAccessChecks", "";
+   permission  java.util.PropertyPermission "*", "read";
+   permission  ognl.OgnlInvokePermission "invoke.com.opensymphony.xwork2.interceptor.MethodFilterInterceptor.setExcludeMethods", "";
+   permission  ognl.OgnlInvokePermission "invoke.com.opensymphony.xwork2.interceptor.ParametersInterceptor.setExcludeParams", "";  
+   */
+};
+
+grant codeBase "file:${user.home}/.m2/repository/com/picocontainer/web/picocontainer-web-remoting/-" {
+  permission com.picocontainer.security.PicoAccessPermission "application","read";
+  permission com.picocontainer.security.PicoAccessPermission "session","read";
+  permission com.picocontainer.security.PicoAccessPermission "request","read,write";
+   permission  java.lang.RuntimePermission "accessClassInPackage.sun.misc", "";
+   permission  java.lang.RuntimePermission "accessClassInPackage.sun.reflect", "";
+   permission  java.lang.RuntimePermission "accessDeclaredMembers", "";
+   permission  java.lang.RuntimePermission "createClassLoader", "";
+   permission  java.lang.RuntimePermission "reflectionFactoryAccess", "";
+   permission  java.lang.reflect.ReflectPermission "suppressAccessChecks", "";
+   permission  java.util.PropertyPermission "java.*", "read";  
+};
+
+/**
+ * Used by PWR for sending content
+ */
+grant codeBase "file:${user.home}/.m2/repository/com/thoughtworks/xstream/xstream/-" {
+  permission java.security.AllPermission;
+};
+
+/**
+  * Struts 2 Related Entries, we'll keep 'em open for now.
+  */
+grant codeBase "file:${user.home}/.m2/repository/opensymphony/oscore/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/com/opensymphony/xwork/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/org/apache/struts/struts2-core/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/org/apache/struts/xwork/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/ognl/ognl/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/javassist/javassist/-" {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.m2/repository/org/freemarker/freemarker/-" {
+  permission java.security.AllPermission;
+};

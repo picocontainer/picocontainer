@@ -89,6 +89,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     }
 
     public void contextInitialized(final ServletContextEvent event) {
+    	
+    	//System.setSecurityManager(new ProfilingSecurityManager());
+    	
         ServletContext context = event.getServletContext();
         //isStateless = Boolean.parseBoolean(context.getInitParameter(STATELESS_WEBAPP));        
         ScopedContainers scopedContainers = makeScopedContainers(context);
