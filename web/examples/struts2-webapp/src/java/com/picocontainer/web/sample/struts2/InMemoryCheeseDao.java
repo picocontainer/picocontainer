@@ -9,9 +9,10 @@
 package com.picocontainer.web.sample.struts2;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Stephen Molitor
@@ -19,16 +20,17 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
-    private final Map cheeses;
+    private final Map<String,Cheese> cheeses;
 
     public InMemoryCheeseDao() {
-        cheeses = new HashMap();
+        cheeses = new ConcurrentHashMap<String,Cheese>();
         cheeses.put("Cheddar", new Cheese("Cheddar","England"));
         cheeses.put("Brie", new Cheese("Brie","France"));
         cheeses.put("Dolcelatte", new Cheese("Dolcelatte","Italy"));
         cheeses.put("Manchego", new Cheese("Manchego","Spain"));
     }
 
+    
     public void save(Cheese cheese) {
         cheeses.put(cheese.getName(), cheese);
     }
@@ -39,9 +41,10 @@ public class InMemoryCheeseDao implements CheeseDao, Serializable {
     public Cheese get(String name) {
         return (Cheese) cheeses.get(name);
     }
-
-    public Collection all() {
-        return cheeses.values();
+    
+    public Collection<Cheese> all() {
+    	//Clone for best thread safety
+        return new ArrayList<Cheese>(cheeses.values());
     }
 
 }

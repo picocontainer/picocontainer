@@ -27,7 +27,7 @@ public class DefaultCheeseService implements CheeseService, Serializable {
         this.dao = dao;
     }
 
-    public Collection getCheeses() {
+    public Collection<Cheese> getCheeses() {
         return dao.all();
     }
 

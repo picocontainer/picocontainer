@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 public interface CheeseService {
 
-    public Collection getCheeses();
+    public Collection<Cheese> getCheeses();
 
     public Cheese find(Cheese example);
 

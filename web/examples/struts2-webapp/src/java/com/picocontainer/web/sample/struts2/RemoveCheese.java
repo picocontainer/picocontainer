@@ -4,7 +4,12 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class RemoveCheese extends ActionSupport {
 
-    private Cheese cheese = new Cheese();
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 2799187906608128771L;
+	
+	private Cheese cheese = new Cheese();
     private CheeseService cheeseService;
 
     public RemoveCheese(CheeseService cheeseService) {
