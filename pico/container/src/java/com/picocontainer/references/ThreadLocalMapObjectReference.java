@@ -25,12 +25,10 @@ public class ThreadLocalMapObjectReference<T> implements ObjectReference<T> {
         this.key = key;
     }
 
-    @SuppressWarnings("unchecked")
     public T get() {
         return threadLocal.get().get(key) ;
     }
 
-    @SuppressWarnings("unchecked")
     public void set(final T item) {
         threadLocal.get().put(key, item) ;
 
