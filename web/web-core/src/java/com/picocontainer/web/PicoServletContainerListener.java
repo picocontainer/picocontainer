@@ -166,25 +166,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         return new EmptyPicoContainer();
     }
 
-    protected LifecycleStrategy makeLifecycleStrategy() {
-        return new StartableLifecycleStrategy(makeRequestComponentMonitor());
-    }
-
-    protected ComponentMonitor makeAppComponentMonitor() {
-        return new NullComponentMonitor();
-    }
-
-    protected ComponentMonitor makeSessionComponentMonitor() {
-        return new NullComponentMonitor();
-    }
-
-    protected ComponentMonitor makeRequestComponentMonitor() {
-        return new NullComponentMonitor();
-    }
-
-    protected Behavior addRequestBehaviors(Behavior beforeThisBehavior) {
-        return beforeThisBehavior;
-    }
 
     /**
      * Get the class to do compostition with - from a "webapp-composer-class" config param
