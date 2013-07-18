@@ -1,9 +1,6 @@
 package com.picocontainer.web;
 
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.PicoContainer;
-import com.picocontainer.security.PicoAccessPermission;
-import com.picocontainer.security.SecurityWrappingPicoContainer;
 
 @SuppressWarnings("serial")
 public class PicoServletFilter extends AbstractPicoServletContainerFilter {
@@ -96,7 +93,6 @@ public class PicoServletFilter extends AbstractPicoServletContainerFilter {
 			currentAppContainer.remove();
 			currentAppContainer = null;
 		}
-		
 	}
 
 }

@@ -44,7 +44,8 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
     protected abstract void setRequestContainer(MutablePicoContainer container);
 
 
-    public void init(FilterConfig filterConfig) throws ServletException {
+    @SuppressWarnings("deprecation")
+	public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
 
         ScopedContainers scopedContainers = getScopedContainers(context);
@@ -97,14 +98,19 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest servletRequest = (HttpServletRequest) req;
-        HttpSession sess = servletRequest.getSession();
+        HttpSession sess = null;
+        
+        if (!isStateless) {
+        	sess = servletRequest.getSession();
+        }
+        
         if (exposeServletInfrastructure) {
             currentSession.set(sess);
             currentRequest.set(req);
             currentResponse.set(resp);
         }
 
-        ScopedContainers scopedContainers = getScopedContainers(sess.getServletContext());
+        ScopedContainers scopedContainers = getScopedContainers(req.getServletContext());
 
         SessionStoreHolder ssh = null;
         if (!isStateless) {
@@ -127,56 +133,56 @@ public abstract class AbstractPicoServletContainerFilter implements Filter, Seri
 
         scopedContainers.getRequestContainer().start();
 
-        setAppContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.APP_SCOPE,scopedContainers.getApplicationContainer()));
-        if (!isStateless) {
-            setSessionContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.SESSION_SCOPE,scopedContainers.getSessionContainer()));
+        try {
+	        
+	        setAppContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.APP_SCOPE,scopedContainers.getApplicationContainer()));
+	        if (!isStateless) {
+	            setSessionContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.SESSION_SCOPE,scopedContainers.getSessionContainer()));
+	        }
+	        setRequestContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.REQUEST_SCOPE,scopedContainers.getRequestContainer()));
+	        
+	        containersSetupForRequest(scopedContainers.getApplicationContainer(), scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer(), req, resp);
+	
+	        filterChain.doFilter(req, resp);
+        } finally {
+	
+	        if (scopedContainers.getRequestContainer() != null) {
+	        	scopedContainers.getRequestContainer().stop();
+	        }
+	        
+	        if (scopedContainers.getRequestContainer() != null) {
+	        	scopedContainers.getRequestContainer().dispose();
+	        }
+	        
+	        setRequestContainer(null);
+	
+	        if (!isStateless) {
+	            if (printSessionSize) {
+	                PrintSessionSizeDetailsForDebugging.printItIfDebug(debug, ssh);
+	            }
+	            try {
+	                sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
+	            }
+	            catch (IllegalStateException ex) {
+	                // catalina can report 'Session already invalidated'
+	            }
+	            setSessionContainer(null);
+	        }
+	        scopedContainers.getRequestStoring().invalidateCacheForThread();
+	        scopedContainers.getRequestState().invalidateStateModelForThread();
+	
+	        if (!isStateless) {
+	            scopedContainers.getSessionStoring().invalidateCacheForThread();
+	            scopedContainers.getSessionState().invalidateStateModelForThread();
+	        }
+	
+	        setAppContainer(null);
+	        if (exposeServletInfrastructure) {
+	            currentSession.set(null);
+	            currentRequest.set(null);
+	            currentResponse.set(null);
+	        }
         }
-        setRequestContainer(new SecurityWrappingPicoContainer(PicoAccessPermission.REQUEST_SCOPE,scopedContainers.getRequestContainer()));
-        
-        containersSetupForRequest(scopedContainers.getApplicationContainer(), scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer(), req, resp);
-
-        filterChain.doFilter(req, resp);
-
-        setAppContainer(null);
-        if (!isStateless) {
-            setSessionContainer(null);
-        }
-
-        if (scopedContainers.getRequestContainer() != null) {
-        	scopedContainers.getRequestContainer().stop();
-        }
-        
-        if (scopedContainers.getRequestContainer() != null) {
-        	scopedContainers.getRequestContainer().dispose();
-        }
-        
-        setRequestContainer(null);
-
-        if (!isStateless) {
-            if (printSessionSize) {
-                PrintSessionSizeDetailsForDebugging.printItIfDebug(debug, ssh);
-            }
-            try {
-                sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
-            }
-            catch (IllegalStateException ex) {
-                // catalina can report 'Session already invalidated'
-            }
-        }
-        scopedContainers.getRequestStoring().invalidateCacheForThread();
-        scopedContainers.getRequestState().invalidateStateModelForThread();
-
-        if (!isStateless) {
-            scopedContainers.getSessionStoring().invalidateCacheForThread();
-            scopedContainers.getSessionState().invalidateStateModelForThread();
-        }
-
-        if (exposeServletInfrastructure) {
-            currentSession.set(null);
-            currentRequest.set(null);
-            currentResponse.set(null);
-        }
-
     }
 
     protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,
