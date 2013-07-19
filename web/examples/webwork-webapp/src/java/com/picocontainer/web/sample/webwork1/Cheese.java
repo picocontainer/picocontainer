@@ -14,6 +14,7 @@ import java.io.Serializable;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class Cheese implements Serializable {
 
     private String name;
@@ -23,7 +24,7 @@ public class Cheese implements Serializable {
         // default constructor used by some frameworks
     }
 
-    public Cheese(String name, String country) {
+    public Cheese(final String name, final String country) {
         this.name = name;
         this.country = country;
         if (name == null) {
@@ -38,7 +39,7 @@ public class Cheese implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -46,11 +47,12 @@ public class Cheese implements Serializable {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "[Cheese name=" + name + ", country=" + country + "]";
     }
 

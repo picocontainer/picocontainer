@@ -21,18 +21,18 @@ import java.util.ArrayList;
 public class CheeseInventory implements Action {
 
     private final CheeseService cheeseService;
-    private List cheeses;
+    private List<Cheese> cheeses;
 
     public CheeseInventory(CheeseService cheeseService) {
         this.cheeseService = cheeseService;
     }
 
-    public List getCheeses() {
+    public List<Cheese> getCheeses() {
         return cheeses;
     }
 
     public String execute() throws Exception {
-        cheeses = new ArrayList(cheeseService.getCheeses());
+        cheeses = new ArrayList<Cheese>(cheeseService.getCheeses());
         return SUCCESS;
     }
 

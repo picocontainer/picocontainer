@@ -23,6 +23,6 @@ public interface CheeseDao {
 
     Cheese get(String name);
 
-    Collection all();
+    Collection<Cheese> all();
 
 }

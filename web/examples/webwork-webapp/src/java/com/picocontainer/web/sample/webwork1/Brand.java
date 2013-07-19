@@ -3,9 +3,9 @@ package com.picocontainer.web.sample.webwork1;
 import javax.servlet.http.HttpServletRequest;
 
 public class Brand {
-    private String name;
+    private final String name;
 
-    public Brand(String name) {
+    public Brand(final String name) {
         this.name = name;
     }
 
@@ -15,11 +15,11 @@ public class Brand {
 
     public static class FromRequest extends Brand {
 
-        public FromRequest(HttpServletRequest req) {
+        public FromRequest(final HttpServletRequest req) {
             super(fromRequest(req));
         }
 
-        private static String fromRequest(HttpServletRequest req) {
+        private static String fromRequest(final HttpServletRequest req) {
             String name = req.getRemoteHost().toUpperCase();
             if (name == null) {
                 name = "";

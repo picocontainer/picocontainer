@@ -14,6 +14,7 @@ import java.io.Serializable;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class Cheese implements Serializable {
 
     private String name;

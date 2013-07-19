@@ -2,6 +2,7 @@ package com.picocontainer.web.sample.webwork2;
 
 import com.opensymphony.xwork.ActionSupport;
 
+@SuppressWarnings("serial")
 public class AddCheese extends ActionSupport {
 
     private Cheese cheese = new Cheese();

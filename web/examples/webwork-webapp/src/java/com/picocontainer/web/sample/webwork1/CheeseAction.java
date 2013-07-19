@@ -15,26 +15,27 @@ import webwork.action.CommandDriven;
 
 /**
  * Example of a WebWork1 action that relies on constructor injection.
- * 
+ *
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public final class CheeseAction extends ActionSupport implements CommandDriven {
 
     private final CheeseService cheeseService;
     private final Cheese cheese = new Cheese();
 
-    public CheeseAction(CheeseService cheeseService) {
+    public CheeseAction(final CheeseService cheeseService) {
         this.cheeseService = cheeseService;
     }
-    
+
     public Cheese getCheese() {
         return cheese;
     }
-    
-    public Collection getCheeses() {
+
+    public Collection<Cheese> getCheeses() {
         return cheeseService.getCheeses();
     }
-        
+
     public String doSave() {
         try {
             cheeseService.save(cheese);
@@ -56,8 +57,8 @@ public final class CheeseAction extends ActionSupport implements CommandDriven {
             return ERROR;
         }
     }
-    
-    
+
+
     public String doRemove() {
         try {
         cheeseService.remove(cheeseService.find(cheese));

@@ -7,14 +7,11 @@
  ******************************************************************************/
 package com.picocontainer.web.sample.webwork2;
 
-import com.picocontainer.web.WebappComposer;
+import javax.servlet.ServletContext;
 
 import com.picocontainer.Characteristics;
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.injectors.ProviderAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
+import com.picocontainer.web.WebappComposer;
 
 public class WebWork2DemoComposer implements WebappComposer {
 

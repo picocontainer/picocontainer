@@ -7,26 +7,23 @@
  ******************************************************************************/
 package com.picocontainer.web.sample.webwork1;
 
-import com.picocontainer.web.WebappComposer;
+import javax.servlet.ServletContext;
 
 import com.picocontainer.Characteristics;
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.injectors.ProviderAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
+import com.picocontainer.web.WebappComposer;
 
 public class WebWork1DemoComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer container, ServletContext context) {
+    public void composeApplication(final MutablePicoContainer container, final ServletContext context) {
         container.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
     }
 
-    public void composeSession(MutablePicoContainer container) {
+    public void composeSession(final MutablePicoContainer container) {
         container.addComponent(CheeseService.class, DefaultCheeseService.class);
     }
 
-    public void composeRequest(MutablePicoContainer container) {
+    public void composeRequest(final MutablePicoContainer container) {
         container.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
 
     }

@@ -9,19 +9,21 @@
 package com.picocontainer.web.sample.webwork2;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Stephen Molitor
  */
+@SuppressWarnings("serial")
 public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
-    private final Map cheeses;
+    private final Map<String,Cheese> cheeses;
 
     public InMemoryCheeseDao() {
-        cheeses = new HashMap();
+        cheeses = new ConcurrentHashMap<String,Cheese>();
         cheeses.put("Cheddar", new Cheese("Cheddar","England"));
         cheeses.put("Brie", new Cheese("Brie","France"));
         cheeses.put("Dolcelatte", new Cheese("Dolcelatte","Italy"));
@@ -39,8 +41,8 @@ public class InMemoryCheeseDao implements CheeseDao, Serializable {
         return (Cheese) cheeses.get(name);
     }
 
-    public Collection all() {
-        return cheeses.values();
+    public Collection<Cheese> all() {
+        return new ArrayList<Cheese>(cheeses.values());
     }
 
 }

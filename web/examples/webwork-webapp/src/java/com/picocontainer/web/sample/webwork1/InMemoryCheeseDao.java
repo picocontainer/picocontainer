@@ -9,38 +9,40 @@
 package com.picocontainer.web.sample.webwork1;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Stephen Molitor
  */
+@SuppressWarnings("serial")
 public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
-    private final Map cheeses;
+    private final Map<String,Cheese> cheeses;
 
     public InMemoryCheeseDao() {
-        cheeses = new HashMap();
+        cheeses = new ConcurrentHashMap<String,Cheese>();
         cheeses.put("Cheddar", new Cheese("Cheddar","England"));
         cheeses.put("Brie", new Cheese("Brie","France"));
         cheeses.put("Dolcelatte", new Cheese("Dolcelatte","Italy"));
         cheeses.put("Manchego", new Cheese("Manchego","Spain"));
     }
 
-    public void save(Cheese cheese) {
+    public void save(final Cheese cheese) {
         cheeses.put(cheese.getName(), cheese);
     }
 
-    public void remove(Cheese cheese) {
+    public void remove(final Cheese cheese) {
         cheeses.remove(cheese.getName());
     }
-    public Cheese get(String name) {
-        return (Cheese) cheeses.get(name);
+    public Cheese get(final String name) {
+        return cheeses.get(name);
     }
 
-    public Collection all() {
-        return cheeses.values();
+    public Collection<Cheese> all() {
+        return new ArrayList<Cheese>(cheeses.values());
     }
 
 }

@@ -18,27 +18,28 @@ import java.util.Collection;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class DefaultCheeseService implements CheeseService, Serializable {
 
     private final CheeseDao dao;
 
-    public DefaultCheeseService(CheeseDao dao) {
+    public DefaultCheeseService(final CheeseDao dao) {
         this.dao = dao;
     }
 
-    public Collection getCheeses() {
+    public Collection<Cheese> getCheeses() {
         return dao.all();
     }
 
-    public Cheese find(Cheese example) {
+    public Cheese find(final Cheese example) {
         return dao.get(example.getName());
     }
 
-    public void save(Cheese cheese) {
+    public void save(final Cheese cheese) {
         dao.save(cheese);
     }
 
-    public void remove(Cheese cheese) {
+    public void remove(final Cheese cheese) {
         dao.remove(cheese);
     }
 }
