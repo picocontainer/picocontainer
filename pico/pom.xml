@@ -103,6 +103,7 @@
 						<optimize>false</optimize>
 						<debug>true</debug>
 						<showDeprecation>true</showDeprecation>
+						<fork>true</fork>
 					</configuration>
 				</plugin>
 				<plugin>

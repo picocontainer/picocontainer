@@ -87,7 +87,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>2.3.1</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.1</version>
                     <configuration>
                         <source>1.5</source>
                         <target>1.5</target>
@@ -95,6 +97,7 @@
                         <optimize>false</optimize>
                         <debug>true</debug>
                         <showDeprecation>true</showDeprecation>
+                        <fork>true</fork>
                     </configuration>
                 </plugin>
                 <plugin>
