@@ -79,7 +79,10 @@ public class MethodInjectionTestCase {
         assertEquals("MethodInjector[inject]-class com.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
         verify(cm).invoking(any(PicoContainer.class), any(MethodInjection.MethodInjector.class), any(Method.class), any(Foo.class), any(Bar.class), same(123));
         //Can't quite test the arguments passed yet since we're using a variable arg array.
-        verify(cm).invoked(any(PicoContainer.class), any(MethodInjection.MethodInjector.class), any(Method.class), any(Foo.class), eq(0L), isNull(), anyVararg() );
+        //Have to have any value because debug container might end up injecting a millisecond into
+        //the invocation from time to time and cause
+        //spurius test failures.
+        verify(cm).invoked(any(PicoContainer.class), any(MethodInjection.MethodInjector.class), any(Method.class), any(Foo.class), any(Long.class), isNull(), anyVararg() );
     }
 
     @Test public void testMethodInjectionViaMethodDef() {
