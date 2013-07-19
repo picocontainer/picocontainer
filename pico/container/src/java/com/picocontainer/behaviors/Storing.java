@@ -10,6 +10,7 @@
 
 package com.picocontainer.behaviors;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -37,10 +38,8 @@ import com.picocontainer.references.ThreadLocalMapObjectReference;
 public class Storing extends AbstractBehavior {
 
     @SuppressWarnings("rawtypes")
-	private StoreThreadLocal mapThreadLocalObjectReference;
+	private StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
     
-    
-
 	@Override
 	public void dispose() {
 		try {
@@ -48,16 +47,13 @@ public class Storing extends AbstractBehavior {
 		} finally {
 			if (mapThreadLocalObjectReference != null) {
 				mapThreadLocalObjectReference.remove();
-				mapThreadLocalObjectReference = null;
+
 			}
 		}
 	}
 
-	protected StoreThreadLocal getThreadLocalStore() {
-		if (mapThreadLocalObjectReference == null) {
-			mapThreadLocalObjectReference = new StoreThreadLocal();
-		}
-		
+	protected <T> StoreThreadLocal<T> getThreadLocalStore() {
+	
 		return mapThreadLocalObjectReference;
 	}
 	
@@ -106,12 +102,24 @@ public class Storing extends AbstractBehavior {
     }
 
     public void invalidateCacheForThread() {
-    	getThreadLocalStore().set(Collections.unmodifiableMap(Collections.emptyMap()));
+    	getThreadLocalStore().set(Collections.emptyMap());
     }
 
     public int getCacheSize() {
         return ((Map)getThreadLocalStore().get()).size();
     }
+    
+    private void writeObject(final java.io.ObjectOutputStream stream)
+            throws IOException {
+    	stream.defaultWriteObject();
+    }
+
+    private void readObject(final java.io.ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+
+    	stream.defaultReadObject();
+    	mapThreadLocalObjectReference = new StoreThreadLocal();;
+    }    
 
     public static class StoreThreadLocal<T> extends ThreadLocal<Map<Object, T>> implements Serializable {
         @Override
@@ -119,6 +127,9 @@ public class Storing extends AbstractBehavior {
             return new HashMap<Object, T>();
         }
     }
+    
+    
+    
 
     public static class StoreWrapper implements Serializable {
         private Map wrapped;
