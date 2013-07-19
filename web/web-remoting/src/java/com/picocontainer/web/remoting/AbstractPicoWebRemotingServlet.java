@@ -10,21 +10,18 @@ package com.picocontainer.web.remoting;
 import java.io.IOException;
 import java.lang.reflect.Member;
 
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.picocontainer.web.AbstractPicoServletContainerFilter;
-import com.picocontainer.web.PicoServletFilter;
-
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.monitors.NullComponentMonitor;
+import com.picocontainer.web.PicoServletFilter;
 import com.thoughtworks.xstream.XStream;
 
 /**
