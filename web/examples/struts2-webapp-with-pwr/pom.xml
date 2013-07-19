@@ -137,10 +137,10 @@
 						<configuration>
 						<!-- Use instead if you want to debug security policy 
 						-->
-						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.debug=access,failure -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
 						<!--
-						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
+						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.debug=access,failure -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
 						-->
+						<jvmArgs>-DbaseDir=${project.basedir} -Djava.security.manager -Djava.security.policy=${project.basedir}/src/resources/test.policy</jvmArgs>
 							<dependencies>
 								<dependency>
 									<groupId>com.picocontainer.web</groupId>

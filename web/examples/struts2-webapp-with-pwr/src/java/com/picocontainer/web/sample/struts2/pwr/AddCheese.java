@@ -2,6 +2,7 @@ package com.picocontainer.web.sample.struts2.pwr;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+@SuppressWarnings("serial")
 public class AddCheese extends ActionSupport {
 
     private Cheese cheese = new Cheese();

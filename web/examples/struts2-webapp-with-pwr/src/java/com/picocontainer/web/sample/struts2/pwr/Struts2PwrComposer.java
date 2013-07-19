@@ -9,8 +9,9 @@ package com.picocontainer.web.sample.struts2.pwr;
 
 import com.picocontainer.web.struts2.Struts2Composer;
 
-import com.picocontainer.Characteristics;
+import static com.picocontainer.Characteristics.*;
 import com.picocontainer.MutablePicoContainer;
+
 
 import javax.servlet.ServletContext;
 
@@ -26,7 +27,7 @@ public class Struts2PwrComposer extends Struts2Composer {
     }
 
     public void composeRequest(MutablePicoContainer container) {
-        container.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
+        container.as(NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
 
     }
 

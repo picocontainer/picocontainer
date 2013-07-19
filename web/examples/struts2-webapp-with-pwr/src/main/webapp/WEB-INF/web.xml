@@ -24,7 +24,7 @@
 		<filter-name>picoFilter</filter-name>
 		<url-pattern>/pwr/*</url-pattern>
 		<url-pattern>*.action</url-pattern>
-		<dispatcher>REQUEST</dispatcher>		
+		<dispatcher>REQUEST</dispatcher>	
 	</filter-mapping>
 
 	<filter>

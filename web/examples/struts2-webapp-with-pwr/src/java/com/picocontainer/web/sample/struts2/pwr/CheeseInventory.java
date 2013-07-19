@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class CheeseInventory implements Action {
 
     private final CheeseService cheeseService;
-    private List cheeses;
+    private List<Cheese> cheeses;
     private Brand brand;
 
     public CheeseInventory(CheeseService cheeseService, Brand brand) {
@@ -29,7 +29,7 @@ public class CheeseInventory implements Action {
         this.brand = brand;
     }
 
-    public List getCheeses() {
+    public synchronized List<Cheese> getCheeses() {
         return cheeses;
     }
 
@@ -37,8 +37,8 @@ public class CheeseInventory implements Action {
         return "Brand:" + brand.getName();
     }
 
-    public String execute() throws Exception {
-        cheeses = new ArrayList(cheeseService.getCheeses());
+    public synchronized String execute() throws Exception {
+        cheeses = new ArrayList<Cheese>(cheeseService.getCheeses());
         return SUCCESS;
     }
 
