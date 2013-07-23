@@ -7,21 +7,7 @@
  ******************************************************************************/
 package com.picocontainer.web;
 
-import com.picocontainer.Behavior;
-import com.picocontainer.ComponentMonitor;
-import com.picocontainer.DefaultPicoContainer;
-import com.picocontainer.LifecycleStrategy;
-import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.PicoCompositionException;
-import com.picocontainer.PicoContainer;
-import com.picocontainer.behaviors.Caching;
-import com.picocontainer.behaviors.Guarding;
-import com.picocontainer.behaviors.Storing;
-import com.picocontainer.containers.EmptyPicoContainer;
-import com.picocontainer.lifecycle.StartableLifecycleStrategy;
-import com.picocontainer.monitors.NullComponentMonitor;
-import com.picocontainer.web.providers.AbstractScopedContainerBuilder;
-import com.picocontainer.web.providers.PicoServletParameterProcessor;
+import java.io.Serializable;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -29,7 +15,13 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.io.Serializable;
+
+import com.picocontainer.MutablePicoContainer;
+import com.picocontainer.PicoCompositionException;
+import com.picocontainer.PicoContainer;
+import com.picocontainer.containers.EmptyPicoContainer;
+import com.picocontainer.web.providers.AbstractScopedContainerBuilder;
+import com.picocontainer.web.providers.PicoServletParameterProcessor;
 
 /**
  * Servlet listener class that hooks into the underlying servlet container and

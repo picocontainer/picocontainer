@@ -9,8 +9,6 @@ package com.picocontainer.web;
 
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.behaviors.Storing;
-import com.picocontainer.security.PicoAccessPermission;
-import com.picocontainer.security.SecurityWrappingPicoContainer;
 
 public final class ScopedContainers {
 	

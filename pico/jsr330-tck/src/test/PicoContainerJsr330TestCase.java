@@ -1,3 +1,5 @@
+import static com.picocontainer.Characteristics.STATIC_INJECTION;
+
 import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Named;
@@ -5,6 +7,7 @@ import javax.inject.Provider;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
@@ -19,20 +22,9 @@ import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
 
-import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.Parameter;
-import com.picocontainer.behaviors.AdaptingBehavior;
-import com.picocontainer.behaviors.Caching;
 import com.picocontainer.containers.JSRPicoContainer;
-import com.picocontainer.injectors.AdaptingInjection;
-import com.picocontainer.injectors.AnnotatedMethodInjection;
-import com.picocontainer.injectors.Jsr330ConstructorInjection;
 import com.picocontainer.monitors.ConsoleComponentMonitor;
-import com.picocontainer.monitors.NullComponentMonitor;
-import com.picocontainer.parameters.JSR330ComponentParameter;
-
-import static com.picocontainer.Characteristics.*;
 
 public class PicoContainerJsr330TestCase extends TestCase {
 

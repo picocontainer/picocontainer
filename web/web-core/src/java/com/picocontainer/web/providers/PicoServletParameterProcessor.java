@@ -1,17 +1,11 @@
 package com.picocontainer.web.providers;
 
-import static com.picocontainer.web.ContextParameters.APP_BEHAVIORS;
-import static com.picocontainer.web.ContextParameters.APP_COMPONENT_MONITORS;
-import static com.picocontainer.web.ContextParameters.LIFECYCLE_STRATEGY;
-import static com.picocontainer.web.ContextParameters.REQUEST_BEHAVIORS;
-import static com.picocontainer.web.ContextParameters.REQUEST_COMPONENT_MONITORS;
-import static com.picocontainer.web.ContextParameters.SESSION_BEHAVIORS;
-import static com.picocontainer.web.ContextParameters.SESSION_COMPONENT_MONITORS;
-import static com.picocontainer.web.ContextParameters.STATELESS_WEBAPP;
+import static com.picocontainer.web.ContextParameters.*;
 
 import javax.servlet.ServletContext;
 
 import com.picocontainer.web.PicoServletContainerListener;
+import com.picocontainer.web.ProfilingSecurityManager;
 
 public class PicoServletParameterProcessor {
 
@@ -20,6 +14,13 @@ public class PicoServletParameterProcessor {
 	
 
 	public AbstractScopedContainerBuilder processContextParameters(ServletContext context) {
+		
+		final String turnOnSecurityProfiling = context.getInitParameter(SECURITY_PROFILING);
+		if (turnOnSecurityProfiling != null && Boolean.parseBoolean(turnOnSecurityProfiling)) {
+			System.setSecurityManager(new ProfilingSecurityManager());
+		}
+			
+		
 		@SuppressWarnings("deprecation")
 		String statelessAsString = context.getInitParameter(PicoServletContainerListener.STATELESS_WEBAPP);
 		if (statelessAsString != null) {
@@ -54,6 +55,10 @@ public class PicoServletParameterProcessor {
 		String lifecycleStrategy = context.getInitParameter(LIFECYCLE_STRATEGY);
 		returnResult.setLifecycleStrategy(new LifecycleProviderFactory(returnResult.getApplicationMonitor()).constructProvider(context, lifecycleStrategy) );
 
+		String parentProviderFactory = context.getInitParameter(PARENT_PICO);
+		returnResult.setParentContainer(new ParentPicoProviderFactory().constructProvider(context, parentProviderFactory).getParentPicoContainer(context));
+		
+		
 		return returnResult;
 	}
 	

@@ -6,7 +6,6 @@ import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.LifecycleStrategy;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoContainer;
-import com.picocontainer.containers.EmptyPicoContainer;
 import com.picocontainer.lifecycle.StartableLifecycleStrategy;
 import com.picocontainer.monitors.NullComponentMonitor;
 
@@ -27,7 +26,7 @@ public abstract class AbstractScopedContainerBuilder implements ScopedContainerP
 	private ComponentFactory[] appComponentFactories = new ComponentFactory[0];
 	
 	
-	private PicoContainer parentContainer = new EmptyPicoContainer();
+	private PicoContainer parentContainer = null;
 	
 	private Class<? extends MutablePicoContainer> picoImplementation = DefaultPicoContainer.class;
 	

@@ -54,7 +54,7 @@
         <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-webapp</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
         <dependency> <groupId>${jetty.group}</groupId><artifactId>jetty-xml</artifactId><version>${jetty.version}</version> <scope>provided</scope></dependency>
         <dependency>
-            <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId><version>1.1.3</version>
+            <groupId>commons-logging</groupId><artifactId>commons-logging</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

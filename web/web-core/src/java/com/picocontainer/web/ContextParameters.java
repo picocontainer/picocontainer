@@ -57,4 +57,22 @@ public interface ContextParameters {
 	 * One value only.  Example:  <code>com.picocontainer.lifecycle.StartableLifecycleStrategy</code>
 	 */
 	String LIFECYCLE_STRATEGY = "pico.lifecycle-strategy";
+	
+	
+	/**
+	 * Classname of a provider class to hook in a parent PicoContainer.
+	 */
+	String PARENT_PICO = "pico.parent-container-provider";
+	
+	/**
+	 * Set to true if you wish to turn on the ProfilingSecurityManager to
+	 * get a good list of permissions that the different code bases need to execute properly
+	 * inside a security manager.
+	 * <p>The profiler will be turned on at first chance for initialization, but it might miss a few 
+	 * permissions if a context listener executes before {@link com.picocontainer.web.PicoServletContainerListener} (which, in some
+	 * cases, such as PicoModules cannot be avoided).
+	 * <p><strong>NOTE!</strong> There must be no security manager running at the time for this to work, this turns on its own mock 
+	 * security manager</p>
+	 */
+	String SECURITY_PROFILING = "pico.profileSecurity";
 }

@@ -14,6 +14,7 @@ import com.picocontainer.classname.ClassName;
 import com.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import com.picocontainer.lifecycle.StartableLifecycleStrategy;
 import com.picocontainer.monitors.NullComponentMonitor;
+import com.picocontainer.web.ContextParameters;
 
 /**
  * @author Mike
@@ -36,7 +37,7 @@ public class LifecycleProviderFactory extends AbstractProviderFactory<LifecycleS
 		}
 		
 		if (providers.size() > 1) {
-			throw new IllegalArgumentException("pico.lifecycleStrategy can only have 1 strategy listed");
+			throw new IllegalArgumentException(ContextParameters.LIFECYCLE_STRATEGY +  " can only have 1 strategy listed");
 		}
 		
 		MutablePicoContainer picoServices = buildParentPico(context);
