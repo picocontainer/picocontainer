@@ -7,7 +7,7 @@
     </parent>
 	<groupId>com.picocontainer.examples</groupId>
     <artifactId>picocontainer-examples</artifactId>
-    <name>Core PicoContainer Examples</name>
+    <name>PicoContainer Core Examples</name>
     <packaging>pom</packaging>
     <dependencies>
         <dependency>

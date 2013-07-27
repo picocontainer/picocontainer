@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer</artifactId><version>${paranamer-version}-debug</version>
+            <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-debug</artifactId><version>${paranamer-version}</version>
         </dependency>
         <dependency>
             <groupId>asm</groupId><artifactId>asm</artifactId>
@@ -53,7 +53,7 @@
         </testResources>
         <plugins>
             <plugin>
-                <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>2.3</version>
+                <groupId>com.thoughtworks.paranamer</groupId><artifactId>paranamer-maven-plugin</artifactId><version>${paranamer-version}</version>
                 <configuration>
                     <sourceDirectory>src/test</sourceDirectory>
                     <outputDirectory>target/test-classes</outputDirectory>

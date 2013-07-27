@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <url>http://www.picocontainer.org</url>
     <properties>
-		<paranamer-version>2.5.1</paranamer-version>
+		<paranamer-version>2.5.5</paranamer-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
 	<organization>
