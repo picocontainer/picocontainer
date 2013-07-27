@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>com.googlecode.jtype</groupId>
 			<artifactId>jtype</artifactId>
-			<version>0.1.1</version>
+			<version>${jtype-version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

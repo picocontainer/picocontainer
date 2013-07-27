@@ -23,7 +23,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>0.1.1</version>
+            <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>${jtype-version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
