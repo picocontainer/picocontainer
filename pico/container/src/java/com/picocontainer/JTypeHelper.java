@@ -1,11 +1,11 @@
 package com.picocontainer;
 
+import com.googlecode.jtype.Generic;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-
-import com.googlecode.jtype.Generic;
 
 @SuppressWarnings("rawtypes")
 public class JTypeHelper {
@@ -63,7 +63,25 @@ public class JTypeHelper {
 
             return b || from;
         } else if (type instanceof Class) {
-            return ((Class) type).isAssignableFrom(typeToCompare);
+            Class clazz = (Class) type;
+            if (clazz.isPrimitive()) {
+                if (clazz == int.class && typeToCompare == Integer.class) {
+                    return true;
+                } else if (clazz == long.class && typeToCompare == Long.class) {
+                    return true;
+                } else if (clazz == float.class && typeToCompare == Float.class) {
+                    return true;
+                } else if (clazz == double.class && typeToCompare == Double.class) {
+                    return true;
+                } else if (clazz == boolean.class && typeToCompare == Boolean.class) {
+                    return true;
+                } else if (clazz == short.class && typeToCompare == Short.class) {
+                    return true;
+                } else if (clazz == byte.class && typeToCompare == Byte.class) {
+                    return true;
+                }
+            }
+            return clazz.isAssignableFrom(typeToCompare);
         }
         return false;
     }

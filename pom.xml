@@ -14,7 +14,7 @@
     <url>http://www.picocontainer.org</url>
     <properties>
 		<paranamer-version>2.5.5</paranamer-version>
-		<jtype-version>0.1.1</jtype-version>		
+		<jtype-version>0.1.3</jtype-version>		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
 	<organization>
