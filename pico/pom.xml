@@ -19,6 +19,7 @@
 		<module>jsr330-tck</module>
 		<module>gems</module>
 		<module>examples</module>
+		<module>mockpico</module>		
 	</modules>
 	<inceptionYear>2003</inceptionYear>
 	<description>A small Java embeddable Dependency Injection container</description>
