@@ -1,4 +1,4 @@
-package com.thoughtworks.mockpico;
+package com.picocontainer.mockpico;
 /**
  * Copyright (c) 2010 ThoughtWorks
  *
@@ -46,10 +46,10 @@ import java.util.regex.Pattern;
 
 import static com.picocontainer.injectors.Injectors.CDI;
 import static com.picocontainer.injectors.Injectors.SDI;
+import static com.picocontainer.mockpico.Mockpico.makePicoContainer;
+import static com.picocontainer.mockpico.Mockpico.mockDepsFor;
+import static com.picocontainer.mockpico.Mockpico.resetAll;
 import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
-import static com.thoughtworks.mockpico.Mockpico.makePicoContainer;
-import static com.thoughtworks.mockpico.Mockpico.mockDepsFor;
-import static com.thoughtworks.mockpico.Mockpico.resetAll;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
@@ -182,10 +182,10 @@ public class MockpicoTestCase {
         String journalString = replaceNumbericObjectIDsSoThatStringComparisonCanWork(journal);
 
         assertEquals("Constructor being injected:\n" +
-                "  arg[0] type:class com.thoughtworks.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
-                "  arg[1] type:class com.thoughtworks.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
+                "  arg[0] type:class com.picocontainer.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
+                "  arg[1] type:class com.picocontainer.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
                 "Method 'setIt' being injected: \n" +
-                "  arg[0] type:class com.thoughtworks.mockpico.MockpicoTestCase$D, with: Mock for D, hashCode: <HC#2>\n" +
+                "  arg[0] type:class com.picocontainer.mockpico.MockpicoTestCase$D, with: Mock for D, hashCode: <HC#2>\n" +
                 "Field being injected: 'b1' with: Mock for B, hashCode: <HC#1>\n" +
                 "Field being injected: 'b2' with: Mock for B, hashCode: <HC#1>\n", journalString);
     }
@@ -233,10 +233,10 @@ public class MockpicoTestCase {
         String journalString = replaceNumbericObjectIDsSoThatStringComparisonCanWork(journal);
 
         assertThat(journalString, equalTo("Constructor being injected:\n" +
-                "  arg[0] type:class com.thoughtworks.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
-                "  arg[1] type:class com.thoughtworks.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
+                "  arg[0] type:class com.picocontainer.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
+                "  arg[1] type:class com.picocontainer.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
                 "Method 'inj3ct' being injected: \n" +
-                "  arg[0] type:class com.thoughtworks.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
+                "  arg[0] type:class com.picocontainer.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
                 "Method 'foobar' being injected: \n" +
                 "  arg[0] type:class java.lang.String, with: \n" +
                 "  arg[1] type:int, with: 0\n" +
@@ -268,8 +268,8 @@ public class MockpicoTestCase {
         String journalString = replaceNumbericObjectIDsSoThatStringComparisonCanWork(journal);
 
         assertThat(journalString, equalTo("Constructor being injected:\n" +
-                "  arg[0] type:class com.thoughtworks.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
-                "  arg[1] type:class com.thoughtworks.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
+                "  arg[0] type:class com.picocontainer.mockpico.MockpicoTestCase$C, with: Mock for C, hashCode: <HC#0>\n" +
+                "  arg[1] type:class com.picocontainer.mockpico.MockpicoTestCase$B, with: Mock for B, hashCode: <HC#1>\n" +
                 "Method 'shoveIt' being injected: \n" +
                 "  arg[0] type:interface java.util.List, with: Mock for List, hashCode: <HC#2>\n"));
     }
@@ -321,7 +321,7 @@ public class MockpicoTestCase {
     @Test
     public void nonsenseAnnotationDoesntUpsetMockPico() {
         Class<? extends Annotation> ann = Mockpico.getInjectionAnnotation("foo.Bar");
-        assertThat(ann.getName(), equalTo("com.thoughtworks.mockpico.Mockpico$AnnotationNotFound"));
+        assertThat(ann.getName(), equalTo("com.picocontainer.mockpico.Mockpico$AnnotationNotFound"));
     }
 
     public static class NeedsList {
