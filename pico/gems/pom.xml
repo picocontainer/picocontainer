@@ -16,7 +16,7 @@
             <groupId>javax.inject</groupId><artifactId>javax.inject</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>0.1.1</version>
+            <groupId>com.googlecode.jtype</groupId><artifactId>jtype</artifactId><version>${jtype-version}</version>
         </dependency>
         <!-- For proxy -->
         <dependency>

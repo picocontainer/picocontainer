@@ -6,7 +6,7 @@
 		<artifactId>picocontainer-examples</artifactId>
 		<version>3.0-SNAPSHOT</version>
 	</parent>
-	<name>Security Manager Example</name>
+	<name>PicoContainer Security Manager Example</name>
 	<description>Glorified Integration Test for com.picocontainer.security.SecurityWrappingPicoContainer</description>
 	<artifactId>security-manager-example</artifactId>
 	<packaging>jar</packaging>
