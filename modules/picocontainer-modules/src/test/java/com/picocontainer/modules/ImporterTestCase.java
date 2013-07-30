@@ -8,11 +8,10 @@ import org.apache.commons.vfs.VFS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import com.picocontainer.modules.testing.InMemoryModuleFolder;
-import com.picocontainer.script.util.MultiException;
-import com.picocontainer.testmodel.DependsOnTouchable;
 
 import com.picocontainer.PicoContainer;
+import com.picocontainer.modules.testing.InMemoryModuleFolder;
+import com.picocontainer.testmodel.DependsOnTouchable;
 
 public class ImporterTestCase {
 	
@@ -112,7 +111,7 @@ public class ImporterTestCase {
 		
 		moduleFolder.addModule("moduleA", moduleA);
 		moduleFolder.addModule("moduleB", moduleB);
-		moduleFolder.addModule("moduleC", moduleB);
+		moduleFolder.addModule("moduleC", moduleC);
 		
 		try {
 			PicoContainer pico = moduleSystem.deploy().getPico();

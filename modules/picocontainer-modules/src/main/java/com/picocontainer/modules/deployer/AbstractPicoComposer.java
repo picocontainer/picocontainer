@@ -3,8 +3,6 @@
  */
 package com.picocontainer.modules.deployer;
 
-import com.picocontainer.modules.Publisher;
-
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoBuilder;
 

@@ -9,29 +9,26 @@
  *****************************************************************************/
 package com.picocontainer.parameters;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import junit.framework.TestCase;
-
-import org.junit.Test;
-import com.picocontainer.adapters.NullCA;
-import com.picocontainer.testmodel.DependsOnTouchable;
-import com.picocontainer.testmodel.SimpleTouchable;
-import com.picocontainer.testmodel.Touchable;
-
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.NameBinding;
 import com.picocontainer.Parameter;
 import com.picocontainer.PicoCompositionException;
-import com.picocontainer.parameters.ComponentParameter;
-import com.picocontainer.parameters.ConstantParameter;
+import com.picocontainer.adapters.NullCA;
+import com.picocontainer.testmodel.DependsOnTouchable;
+import com.picocontainer.testmodel.SimpleTouchable;
+import com.picocontainer.testmodel.Touchable;
 import com.picocontainer.visitors.VerifyingVisitor;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -96,8 +93,10 @@ public final class ParameterTestCase {
         ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).getComponentAdapter("glarch");
         assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
-		assertNotNull(parameter.resolve(picoContainer,adapter, null, Integer.TYPE, pn, false, null).resolveInstance(ComponentAdapter.NOTHING.class));
-		assertEquals(239, ((Integer)parameter.resolve(picoContainer,adapter, null, Integer.TYPE, pn, false, null).resolveInstance(ComponentAdapter.NOTHING.class)).intValue());
+        Parameter.Resolver resolve = parameter.resolve(picoContainer, adapter, null, Integer.TYPE, pn, false, null);
+        Object object = resolve.resolveInstance(ComponentAdapter.NOTHING.class);
+        assertNotNull(object);
+		assertEquals(239, ((Integer) object).intValue());
 	}
 
     @Test public void testConstantParameterRespectsExpectedType() {

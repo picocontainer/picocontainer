@@ -13,7 +13,6 @@ import java.util.Arrays;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.NameScope;
 import org.apache.commons.vfs.impl.DefaultFileReplicator;
 import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
