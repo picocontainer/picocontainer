@@ -11,7 +11,7 @@
 	<name>PicoContainer Root</name>
 	<version>3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<url>http://www.picocontainer.org</url>
+	<url>http://www.picocontainer.com</url>
 	<properties>
 		<paranamer-version>2.5.5</paranamer-version>
 		<jtype-version>0.1.3</jtype-version>		
@@ -271,8 +271,8 @@
 							<link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
 							<link>http://paranamer.codehaus.org/javadoc/</link>
 						</links>
-						<stylesheet>maven</stylesheet>
-						<header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
+						<stylesheetfile>site-resources/src/main/resources/style/pico-javadoc.css</stylesheetfile>
+						<header><![CDATA[<img class="logo" src="http://picocontainer.com/images/pico-logo.png"></img>]]></header>
 						<linksource>true</linksource>
 					</configuration>
 				</plugin>
