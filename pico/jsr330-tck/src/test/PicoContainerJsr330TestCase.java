@@ -23,7 +23,7 @@ import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
 
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.monitors.ConsoleComponentMonitor;
 
 public class PicoContainerJsr330TestCase extends TestCase {
@@ -117,7 +117,7 @@ public class PicoContainerJsr330TestCase extends TestCase {
 	
 	
 	public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
-    	final MutablePicoContainer pico = new JSRPicoContainer(new ConsoleComponentMonitor());
+    	final MutablePicoContainer pico = new JSR330PicoContainer(new ConsoleComponentMonitor());
     	
     	DriverSeatProvider driversSeatProvider = new DriverSeatProvider(pico);
     	PlainTireProvider plainTireProvider = new PlainTireProvider(pico);

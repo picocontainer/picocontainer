@@ -146,7 +146,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 "com.picocontainer.containers.CompositePicoContainer\n" +
                 "com.picocontainer.containers.EmptyPicoContainer\n" +
                 "com.picocontainer.containers.ImmutablePicoContainer\n" +
-                "com.picocontainer.containers.JSRPicoContainer\n"+
+                "com.picocontainer.containers.JSR330PicoContainer\n"+
                 "com.picocontainer.containers.PropertiesPicoContainer\n" +
                 "com.picocontainer.containers.SystemPropertiesPicoContainer\n" +
                 "com.picocontainer.containers.TieringPicoContainer\n" +

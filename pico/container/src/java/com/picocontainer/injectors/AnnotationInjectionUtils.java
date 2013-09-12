@@ -13,7 +13,7 @@ import javax.inject.Named;
 
 import com.picocontainer.Parameter;
 import com.picocontainer.PicoCompositionException;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.parameters.ComponentParameter;
 import com.picocontainer.parameters.JSR330ComponentParameter;
 
@@ -50,7 +50,7 @@ public class AnnotationInjectionUtils {
     		if (namedAnnotation != null) {
     			returnValue[i] = new JSR330ComponentParameter(namedAnnotation.value());
     		} else {
-        		Annotation qualifier = JSRPicoContainer.getQualifier(allAnnotations[i]);
+        		Annotation qualifier = JSR330PicoContainer.getQualifier(allAnnotations[i]);
         		if (qualifier != null) {
         			returnValue[i] = new JSR330ComponentParameter(qualifier.annotationType().getName());
         		}

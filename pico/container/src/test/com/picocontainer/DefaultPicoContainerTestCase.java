@@ -988,7 +988,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	    	}
 
 
-	    	Class<?> defaultPico = cl.loadClass("com.picocontainer.containers.JSRPicoContainer");
+	    	Class<?> defaultPico = cl.loadClass("com.picocontainer.containers.JSR330PicoContainer");
 
 	    	Method addComponent = defaultPico.getMethod("addComponent", Object.class);
 	    	Method getComponent = defaultPico.getMethod("getComponent", Object.class);

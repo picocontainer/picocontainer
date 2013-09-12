@@ -129,7 +129,7 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
         }
 
         //Sort for injection.
-        Collections.sort(injectionMembers, new JSRAccessibleObjectOrderComparator());
+        Collections.sort(injectionMembers, new JSR330AccessibleObjectOrderComparator());
 
         for (AccessibleObject eachMember : injectionMembers) {
         	Field field = (Field)eachMember;

@@ -158,7 +158,7 @@ public class MethodInjection extends AbstractInjectionType {
             recursiveCheckInjectorMethods(toIntrospect, toIntrospect, methodz, allMethodsAnalyzed);
 
             //Inject in JSR330 compliant order.
-            Collections.sort(methodz, new JSRAccessibleObjectOrderComparator());
+            Collections.sort(methodz, new JSR330AccessibleObjectOrderComparator());
 
             return methodz;
         }

@@ -31,7 +31,7 @@ import com.picocontainer.ComponentFactory;
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoCompositionException;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.injectors.AnnotatedMethodInjection;
 import com.picocontainer.injectors.AnnotatedMethodInjection.AnnotatedMethodInjector;
 import com.picocontainer.monitors.NullComponentMonitor;
@@ -125,7 +125,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     @Test
     public void testAnnotationsOnParametersForMethodInjection() {
 
-    	MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
+    	MutablePicoContainer pico = new JSR330PicoContainer(new DefaultPicoContainer());
 
     	pico
     		.addComponent(String.class, "This is A test")
@@ -213,7 +213,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
 
     @Test
     public void testStaticsAreOnlyInjectedOneTime() {
-    	JSRPicoContainer pico = new JSRPicoContainer()
+    	JSR330PicoContainer pico = new JSR330PicoContainer()
     			.addComponent(StaticOneTime.class)
     			.addComponent(Apple.class, AppleImpl1.class);
 

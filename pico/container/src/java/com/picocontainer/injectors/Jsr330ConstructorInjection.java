@@ -8,7 +8,7 @@ import javax.inject.Named;
 
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.Parameter;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.parameters.ComponentParameter;
 import com.picocontainer.parameters.ConstructorParameters;
 import com.picocontainer.parameters.JSR330ComponentParameter;
@@ -62,7 +62,7 @@ public class Jsr330ConstructorInjection extends ConstructorInjection {
 				}
 
 				// Search for a qualifier that isn't @Named annotation.
-				Annotation qualifier = JSRPicoContainer
+				Annotation qualifier = JSR330PicoContainer
 						.getQualifier(constructorToExamine.getParameterAnnotations()[constructorParameterIndex]);
 				if (qualifier != null) {
 					return new ComponentParameter(qualifier.annotationType().getName());

@@ -16,9 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 import com.picocontainer.injectors.packageseparatetests.PackageSeparateDerivedTestModel;
 
-import com.picocontainer.injectors.JSRAccessibleObjectOrderComparator;
+import com.picocontainer.injectors.JSR330AccessibleObjectOrderComparator;
 
-public class JSRAccessibleObjectOrderComparatorTestCase {
+public class JSR330AccessibleObjectOrderComparatorTestCase {
 
 	public static class Base {
 
@@ -81,7 +81,7 @@ public class JSRAccessibleObjectOrderComparatorTestCase {
 
 	private Method fiveMethod;
 
-	private JSRAccessibleObjectOrderComparator comparator;
+	private JSR330AccessibleObjectOrderComparator comparator;
 
 
 	@Before
@@ -98,7 +98,7 @@ public class JSRAccessibleObjectOrderComparatorTestCase {
 		threeMethod = Base.class.getMethod("three");
 		fourMethod = Derived.class.getMethod("four");
 		fiveMethod = Derived.class.getMethod("five");
-		comparator = new JSRAccessibleObjectOrderComparator();
+		comparator = new JSR330AccessibleObjectOrderComparator();
 	}
 
 	@Test

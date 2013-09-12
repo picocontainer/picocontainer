@@ -28,7 +28,7 @@ import com.picocontainer.PicoCompositionException;
  * @author Michael Rimov
  *
  */
-public class JSRAccessibleObjectOrderComparator implements Comparator<AccessibleObject> {
+public class JSR330AccessibleObjectOrderComparator implements Comparator<AccessibleObject> {
 
 	public int compare(final AccessibleObject o1, final AccessibleObject o2) {
 		if (o1 == o2) {

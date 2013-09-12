@@ -33,24 +33,24 @@ import com.picocontainer.parameters.MethodParameters;
  *
  */
 @SuppressWarnings("serial")
-public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
+public class JSR330PicoContainer extends AbstractDelegatingMutablePicoContainer{
 
 	/**
 	 * Wraps a {@link com.picocontainer.DefaultPicoContainer DefaultPicoContainer} with Opt-in caching
 	 */
-	public JSRPicoContainer() {
+	public JSR330PicoContainer() {
 		this(new NullComponentMonitor());
 	}
 
-	public JSRPicoContainer(final PicoContainer parent) {
+	public JSR330PicoContainer(final PicoContainer parent) {
 		this(parent, new NullComponentMonitor(), new StaticsInitializedReferenceSet());
 	}
 
-	public JSRPicoContainer(final ComponentMonitor monitor) {
+	public JSR330PicoContainer(final ComponentMonitor monitor) {
 		this(null, monitor, new StaticsInitializedReferenceSet());
 	}
 
-	public JSRPicoContainer(final PicoContainer parent, final ComponentMonitor monitor, final StaticsInitializedReferenceSet referenceSet) {
+	public JSR330PicoContainer(final PicoContainer parent, final ComponentMonitor monitor, final StaticsInitializedReferenceSet referenceSet) {
 		super(new DefaultPicoContainer(parent, new JavaEE5LifecycleStrategy(monitor), monitor, new OptInCaching(), new AdaptingBehavior(referenceSet)));
 	}
 
@@ -58,7 +58,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * Allows you to wrap automatic-key generation and
 	 * @param delegate
 	 */
-	public JSRPicoContainer(final MutablePicoContainer delegate) {
+	public JSR330PicoContainer(final MutablePicoContainer delegate) {
 		super(delegate);
 	}
 
@@ -66,7 +66,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * Necessary adapter to fit MutablePicoContainer interface.
 	 */
 	@Override
-	public JSRPicoContainer addComponent(final Object implOrInstance) {
+	public JSR330PicoContainer addComponent(final Object implOrInstance) {
 		Object key = determineKey(implOrInstance);
 
 		addComponent(key, implOrInstance);
@@ -82,7 +82,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * @param parameters
 	 * @return
 	 */
-	public JSRPicoContainer addComponent(final Object implOrInstance, final Parameter... parameters) {
+	public JSR330PicoContainer addComponent(final Object implOrInstance, final Parameter... parameters) {
 		Object key = determineKey(implOrInstance);
 
 		addComponent(key, implOrInstance, parameters);
@@ -97,7 +97,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * @param methodParams
 	 * @return
 	 */
-	public JSRPicoContainer addComponent(final Object implOrInstance, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
+	public JSR330PicoContainer addComponent(final Object implOrInstance, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
 		Object key = determineKey(implOrInstance);
 
 		addComponent(key, implOrInstance, constructorParams, fieldParams, methodParams);
@@ -162,7 +162,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	@Override
 	public MutablePicoContainer makeChildContainer() {
 		MutablePicoContainer childDelegate = getDelegate().makeChildContainer();
-		return new JSRPicoContainer(childDelegate);
+		return new JSR330PicoContainer(childDelegate);
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class JSRPicoContainer extends AbstractDelegatingMutablePicoContainer{
 	 * Covariant return override;
 	 */
 	@Override
-	public JSRPicoContainer addComponent(final Object key,
+	public JSR330PicoContainer addComponent(final Object key,
             final Object implOrInstance,
             final Parameter... parameters) throws PicoCompositionException {
 		if (key == null) {

@@ -13,10 +13,10 @@ import javax.inject.Provider;
 
 import org.junit.Test;
 import com.picocontainer.adapters.SimpleNamedBindingAnnotationTestCase.Apple;
-import com.picocontainer.containers.JSRPicoContainerTestCase.A;
-import com.picocontainer.containers.JSRPicoContainerTestCase.C;
-import com.picocontainer.containers.JSRPicoContainerTestCase.ThreeAProvider;
-import com.picocontainer.containers.JSRPicoContainerTestCase.ThreeCProvider;
+import com.picocontainer.containers.JSR330PicoContainerTestCase.A;
+import com.picocontainer.containers.JSR330PicoContainerTestCase.C;
+import com.picocontainer.containers.JSR330PicoContainerTestCase.ThreeAProvider;
+import com.picocontainer.containers.JSR330PicoContainerTestCase.ThreeCProvider;
 import com.picocontainer.defaults.issues.Issue0382TestCase.AcceptsParameterized;
 import com.picocontainer.defaults.issues.Issue0382TestCase.StringParameterized;
 

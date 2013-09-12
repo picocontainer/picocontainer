@@ -11,7 +11,7 @@ import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.DefaultPicoContainer.LateInstance;
 import com.picocontainer.DefaultPicoContainer.KnowsContainerAdapter;
 import com.picocontainer.Parameter.Resolver;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 public class BasicComponentParameterTestCase {
 
 	private DefaultPicoContainer pico;
@@ -40,7 +40,7 @@ public class BasicComponentParameterTestCase {
 	public void testLateInstanceWrappedInsideKnowsContainersDoesntCauseClassCastException() {
 		
 		//Hack: Make use of JSRPicoCOntainer calling private constructors.
-		JSRPicoContainer temp = new JSRPicoContainer();
+		JSR330PicoContainer temp = new JSR330PicoContainer();
 		temp.addComponent(LateInstance.class, LateInstance.class, new ConstantParameter(String.class), new ConstantParameter("Testing"));
 		
 		LateInstance adapter = temp.getComponent(LateInstance.class);

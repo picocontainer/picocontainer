@@ -29,7 +29,7 @@ import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoBuilder;
 import com.picocontainer.PicoContainer;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.parameters.BeanParameters;
 import com.picocontainer.parameters.ComponentParameter;
 import com.picocontainer.parameters.ConstantParameter;
@@ -39,7 +39,7 @@ import com.picocontainer.parameters.JSR330ComponentParameter;
 import com.picocontainer.parameters.MethodParameters;
 import com.picocontainer.visitors.TraversalCheckingVisitor;
 
-public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
+public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
 
 
 	/**
@@ -66,7 +66,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
 	@Override
 	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
-		return new JSRPicoContainer(parent);
+		return new JSR330PicoContainer(parent);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
 	@Test
 	public void testJSR330KeyDetermination() {
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
 
 		mpc.addComponent(A.class)
 			.addComponent(B.class)
@@ -141,7 +141,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
 		};
 
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
 		mpc.addProvider("provider1", provider1);
 		mpc.addProvider("provider2", provider2);
 		assertTrue(mpc.getComponentAdapter("provider1") != null);
@@ -175,7 +175,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 		Provider<B> provider2 = new Provider2();
 
 
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
 		mpc.addProvider(provider1);
 		mpc.addProvider(provider2);
 		assertTrue(mpc.getComponentAdapter("provider1") != null);
@@ -220,7 +220,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	public static class CProvider implements Provider<C> {
 
 		public C get() {
-			C returnValue = new JSRPicoContainerTestCase.C();
+			C returnValue = new JSR330PicoContainerTestCase.C();
 			return returnValue;
 		}
 
@@ -237,7 +237,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 	@Test
 	public void testConstructorInjectionAndMixedProviders() {
 
-		MutablePicoContainer mpc = new JSRPicoContainer();
+		MutablePicoContainer mpc = new JSR330PicoContainer();
 
 
 		 mpc
@@ -315,7 +315,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	StaticProviderTest.four = null;
     	StaticProviderTest.five = null;
 
-    	MutablePicoContainer mpc = new JSRPicoContainer()
+    	MutablePicoContainer mpc = new JSR330PicoContainer()
     					.as(Characteristics.STATIC_INJECTION).addComponent(StaticProviderTest.class)
     					.addProvider(new CProvider())
     					.addProvider(new NamedCProvider())
@@ -344,7 +344,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	StaticProviderTest.four = null;
     	StaticProviderTest.five = null;
 
-    	MutablePicoContainer mpc = new JSRPicoContainer()
+    	MutablePicoContainer mpc = new JSR330PicoContainer()
     	//No as(Characteristics.STATIC_INJECTION)
 		.addComponent(StaticProviderTest.class)
 		.addProvider(new CProvider())
@@ -384,7 +384,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
 	@Test
 	public void testConstructorInjectionCanDifferentiateDifferentGenericTypesOnProviders() {
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
 
 
 		 mpc.addComponent(ProvderTestThree.class, ProvderTestThree.class,
@@ -420,7 +420,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
     	ProviderTestFour.injectMethodCalled = false;
     	ProviderTestFour.anotherValue = null;
 
-		MutablePicoContainer mpc = new JSRPicoContainer();
+		MutablePicoContainer mpc = new JSR330PicoContainer();
 		 mpc.as(Characteristics.STATIC_INJECTION).addComponent(ProviderTestFour.class, ProviderTestFour.class)  //The Test
 		.addProvider(new ThreeCProvider())  //No Qualifier
 		.addProvider(new ThreeAProvider()) //No Qualifier  Generic type provided should short it out
@@ -462,7 +462,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testConstructorAndFieldParametersGetTheAppropriateParameters() {
-		MutablePicoContainer mpc = new JSRPicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
+		MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
 		mpc.addComponent(ParameterTest.class, ParameterTest.class,
 				new ConstructorParameters(new ConstantParameter(new Integer(3))),
 				new FieldParameters[] {
@@ -482,7 +482,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testCachingIsTurnedOffByDefault() {
-    	MutablePicoContainer mpc = new JSRPicoContainer();
+    	MutablePicoContainer mpc = new JSR330PicoContainer();
     	mpc.addComponent(Provider1.class);
 
     	assertNotSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
@@ -490,7 +490,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testYouMayOptInCachingWithDefaultContainer() {
-    	MutablePicoContainer mpc = new JSRPicoContainer();
+    	MutablePicoContainer mpc = new JSR330PicoContainer();
     	mpc.as(Characteristics.CACHE).addComponent(Provider1.class);
 
     	assertSame(mpc.getComponent(Provider1.class), mpc.getComponent(Provider1.class));
@@ -507,7 +507,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testSingletonAnnotationResultsInCacheProperty() {
-    	MutablePicoContainer mpc = new JSRPicoContainer()
+    	MutablePicoContainer mpc = new JSR330PicoContainer()
     		.addComponent(TestSingletonAnnotation.class);
 
     	assertSame(mpc.getComponent(TestSingletonAnnotation.class),
@@ -518,7 +518,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testSingletonWithDefinedPredefinedKey() {
-    	MutablePicoContainer mpc = new JSRPicoContainer()
+    	MutablePicoContainer mpc = new JSR330PicoContainer()
 		.addComponent("test",TestSingletonAnnotation.class)
 		.addComponent("test2", TestSingletonAnnotation.class);
 
@@ -565,11 +565,11 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testMakeChildContainerPropagatesAdapterFactories() {
-    	JSRPicoContainer pico = new JSRPicoContainer();
+    	JSR330PicoContainer pico = new JSR330PicoContainer();
     	MutablePicoContainer child = pico.makeChildContainer();
 
     	assertTrue(child != null);
-    	assertTrue(child instanceof JSRPicoContainer);
+    	assertTrue(child instanceof JSR330PicoContainer);
 
     	List<Object> parentList = new ArrayList<Object>();
     	List<Object> childList = new ArrayList<Object>();
@@ -619,7 +619,7 @@ public class JSRPicoContainerTestCase extends AbstractPicoContainerTest {
 
     @Test
     public void testParentStaticJSRMethodsAreInjectedBeforeChildJSRFields() {
-    	JSRPicoContainer pico = new JSRPicoContainer();
+    	JSR330PicoContainer pico = new JSR330PicoContainer();
 
     	pico.addComponent("Test", "This is a test")
     		.as(Characteristics.STATIC_INJECTION).addComponent(InjectionOrder2Child.class);

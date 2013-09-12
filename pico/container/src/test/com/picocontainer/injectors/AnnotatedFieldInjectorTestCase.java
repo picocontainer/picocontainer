@@ -32,7 +32,7 @@ import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoBuilder;
 import com.picocontainer.ComponentAdapter.NOTHING;
 import com.picocontainer.annotations.Inject;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.injectors.AbstractInjector;
 import com.picocontainer.injectors.AnnotatedFieldInjection;
 import com.picocontainer.injectors.SetterInjection;
@@ -238,7 +238,7 @@ public class AnnotatedFieldInjectorTestCase {
 
     @Test
     public void testFieldInjectionWithNamedQualifier() {
-        JSRPicoContainer container = new JSRPicoContainer(new PicoBuilder().withAnnotatedFieldInjection().build());
+        JSR330PicoContainer container = new JSR330PicoContainer(new PicoBuilder().withAnnotatedFieldInjection().build());
 
         container.addComponent("b3", B3.class)
         		.addComponent("c3", C3.class)
@@ -284,7 +284,7 @@ public class AnnotatedFieldInjectorTestCase {
 
     @Test
     public void testPartialDecorationOnBaseClassDoesntPropagateToChildren() {
-    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
+    	JSR330PicoContainer pico = new JSR330PicoContainer().addComponent(String.class, "Testing");
 
     	OrderChild child = new OrderChild();
     	OrderChild.reset();
@@ -304,7 +304,7 @@ public class AnnotatedFieldInjectorTestCase {
 
     @Test
     public void testPartialDecorationOnChildClassDoesntPropagateToParent() {
-    	JSRPicoContainer pico = new JSRPicoContainer().addComponent(String.class, "Testing");
+    	JSR330PicoContainer pico = new JSR330PicoContainer().addComponent(String.class, "Testing");
 
     	OrderChild child = new OrderChild();
     	OrderChild.reset();
@@ -345,7 +345,7 @@ public class AnnotatedFieldInjectorTestCase {
 
     @Test
     public void staticMembersAreOnlyInjectedOneTimeUponFirstInitialization() {
-    	JSRPicoContainer pico = new JSRPicoContainer()
+    	JSR330PicoContainer pico = new JSR330PicoContainer()
     			.addComponent(Multi.class)
     			.addComponent(Single.class);
 

@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.PicoBuilder;
-import com.picocontainer.containers.JSRPicoContainer;
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.injectors.AbstractInjector.AmbiguousComponentResolutionException;
 import com.picocontainer.parameters.JSR330ComponentParameter;
 
@@ -73,7 +73,7 @@ public class JSR330ComponentParameterTestCase {
 
 	@Test
 	public void testHappyPathTrimmingOfMatches() {
-		MutablePicoContainer pico = new JSRPicoContainer(new PicoBuilder().build());
+		MutablePicoContainer pico = new JSR330PicoContainer(new PicoBuilder().build());
 		pico.addComponent(AmbiguousTest.class, AmbiguousTest.class, new JSR330ComponentParameter())
 			.addProvider("test", new Provider1()) // <-- Should be skipped
 			.addProvider("test2", new Provider2()) // <-- Should be skipped
@@ -86,7 +86,7 @@ public class JSR330ComponentParameterTestCase {
 
 	@Test(expected=AmbiguousComponentResolutionException.class)
 	public void testMoreThanOnePossibleResultAmbiguousComponentResolutionException() {
-		MutablePicoContainer pico = new JSRPicoContainer(new PicoBuilder().build());
+		MutablePicoContainer pico = new JSR330PicoContainer(new PicoBuilder().build());
 		pico.addComponent(AmbiguousTest.class, AmbiguousTest.class, new JSR330ComponentParameter())
 			.addProvider("test", new Provider1())
 			.addProvider("test2", new Provider2())
@@ -107,7 +107,7 @@ public class JSR330ComponentParameterTestCase {
 
 	@Test
 	public void testSortingByProviderBaseClass() {
-		MutablePicoContainer pico = new JSRPicoContainer(new DefaultPicoContainer());
+		MutablePicoContainer pico = new JSR330PicoContainer(new DefaultPicoContainer());
 
 		Provider2 provider2 = new Provider2();
 		pico.addComponent(MultiProviderBaseTest.class)
