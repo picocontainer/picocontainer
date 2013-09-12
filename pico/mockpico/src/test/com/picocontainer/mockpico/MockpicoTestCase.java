@@ -49,13 +49,14 @@ import static com.picocontainer.injectors.Injectors.SDI;
 import static com.picocontainer.mockpico.Mockpico.makePicoContainer;
 import static com.picocontainer.mockpico.Mockpico.mockDepsFor;
 import static com.picocontainer.mockpico.Mockpico.resetAll;
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+
 
 public class MockpicoTestCase {
 
