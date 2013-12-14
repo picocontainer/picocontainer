@@ -1,0 +1,6 @@
+[
+	{key: baseProcessor, impl: com.picocontainer.gems.containers.SumProcessor},
+	{key: processor, impl: com.picocontainer.gems.containers.AbsProcessor, parameters: [{key: baseProcessor}]},
+	{key: handler, impl: com.picocontainer.gems.containers.SeriesHandler, parameters: [{key: processor}, {key: multiplier}]},
+	{key: multiplier, value: 4, type: int},
+]
