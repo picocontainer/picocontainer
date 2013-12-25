@@ -1,5 +1,0 @@
-[
-	{impl: com.picocontainer.gems.containers.SumProcessor},
-	{key: handler, impl: com.picocontainer.gems.containers.SeriesHandler, parameters: [{value: com.picocontainer.gems.containers.SumProcessor, type: class}, {key: multiplier}]},
-	{key: multiplier, value: 3, type: int},
-]

@@ -1,0 +1,4 @@
+[
+	{key: processor, impl: com.picocontainer.gems.containers.json.SumProcessor},
+	{key: handler, impl: com.picocontainer.gems.containers.json.SeriesHandler, parameters: [{key: processor}, {value: 2, type: int}]},
+]

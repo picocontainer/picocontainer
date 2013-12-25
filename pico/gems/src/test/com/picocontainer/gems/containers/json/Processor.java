@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers;
+package com.picocontainer.gems.containers.json;
 
 public interface Processor {
 	void startProcessing();

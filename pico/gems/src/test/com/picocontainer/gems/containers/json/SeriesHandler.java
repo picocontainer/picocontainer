@@ -7,29 +7,32 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers;
+package com.picocontainer.gems.containers.json;
 
-public class SumProcessor implements Processor {
-	private int result;
+import com.picocontainer.gems.containers.json.Processor;
 
-	@Override
-	public void startProcessing() {
-		result = 0;
+public class SeriesHandler {
+	private final Processor processor;
+	private final int multiplier;
+
+	public SeriesHandler(Processor processor) {
+		this(processor, 1);
 	}
 
-	@Override
-	public void processElement(int element) {
-		result += element;
+	public SeriesHandler(Processor processor, int multiplier) {
+		this.processor = processor;
+		this.multiplier = multiplier;
 	}
 
-	@Override
+	public void handleSeries(int... elements) {
+		processor.startProcessing();
+		for(int element : elements) {
+			processor.processElement(element);
+		}
+		processor.terminateProcessing();
+	}
+
 	public int getResult() {
-		return result;
+		return multiplier * processor.getResult();
 	}
-
-	@Override
-	public void terminateProcessing() {
-		// Empty implementation
-	}
-
 }
