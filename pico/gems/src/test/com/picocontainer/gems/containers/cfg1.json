@@ -1,0 +1,4 @@
+[
+	{impl: com.picocontainer.gems.containers.SumProcessor},
+	{key: handler, impl: com.picocontainer.gems.containers.SeriesHandler},
+]
