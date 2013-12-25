@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers;
+package com.picocontainer.script.json;
 
 import com.google.gson.Gson;
 import com.picocontainer.DefaultPicoContainer;

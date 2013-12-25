@@ -7,31 +7,26 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers.json;
+package com.picocontainer.script.json;
 
-import com.picocontainer.gems.containers.json.Processor;
+import com.picocontainer.PicoException;
 
-public class SumProcessor implements Processor {
-	private int result;
+public class PicoJsonException extends PicoException {
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void startProcessing() {
-		result = 0;
+	public PicoJsonException() {
+		super();
 	}
 
-	@Override
-	public void processElement(int element) {
-		result += element;
+	public PicoJsonException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
-	@Override
-	public int getResult() {
-		return result;
+	public PicoJsonException(String message) {
+		super(message);
 	}
 
-	@Override
-	public void terminateProcessing() {
-		// Empty implementation
+	public PicoJsonException(Throwable cause) {
+		super(cause);
 	}
-
 }

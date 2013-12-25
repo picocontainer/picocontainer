@@ -7,26 +7,11 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers;
+package com.picocontainer.script.json;
 
-import com.picocontainer.PicoException;
-
-public class PicoJsonException extends PicoException {
-	private static final long serialVersionUID = 1L;
-
-	public PicoJsonException() {
-		super();
-	}
-
-	public PicoJsonException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public PicoJsonException(String message) {
-		super(message);
-	}
-
-	public PicoJsonException(Throwable cause) {
-		super(cause);
-	}
+public interface Processor {
+	void startProcessing();
+	void processElement(int element);
+	void terminateProcessing();
+	int getResult();
 }

@@ -1,0 +1,6 @@
+[
+	{key: baseProcessor, impl: com.picocontainer.script.json.SumProcessor},
+	{key: processor, impl: com.picocontainer.script.json.AbsProcessor, parameters: [{key: baseProcessor}]},
+	{key: handler, impl: com.picocontainer.script.json.SeriesHandler, parameters: [{key: processor}, {key: multiplier}]},
+	{key: multiplier, value: 4, type: int},
+]

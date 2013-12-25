@@ -18,6 +18,7 @@
         <module>script-bsh</module>
         <module>script-groovy</module>
         <module>script-jruby</module>
+        <module>script-json</module>
         <module>script-jython</module>
         <module>script-rhino</module>
     </modules>

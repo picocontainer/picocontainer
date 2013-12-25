@@ -7,32 +7,33 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers.json;
+package com.picocontainer.script.json;
 
-import com.picocontainer.gems.containers.json.Processor;
+public class AbsProcessor implements Processor {
+	private final Processor delegate;
 
-public class SeriesHandler {
-	private final Processor processor;
-	private final int multiplier;
-
-	public SeriesHandler(Processor processor) {
-		this(processor, 1);
+	public AbsProcessor(Processor delegate) {
+		this.delegate = delegate;
 	}
 
-	public SeriesHandler(Processor processor, int multiplier) {
-		this.processor = processor;
-		this.multiplier = multiplier;
+	@Override
+	public void startProcessing() {
+		delegate.startProcessing();
 	}
 
-	public void handleSeries(int... elements) {
-		processor.startProcessing();
-		for(int element : elements) {
-			processor.processElement(element);
-		}
-		processor.terminateProcessing();
+	@Override
+	public void processElement(int element) {
+		delegate.processElement(Math.abs(element));
 	}
 
+	@Override
+	public void terminateProcessing() {
+		delegate.terminateProcessing();
+	}
+
+	@Override
 	public int getResult() {
-		return multiplier * processor.getResult();
+		return delegate.getResult();
 	}
+
 }

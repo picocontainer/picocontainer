@@ -7,11 +7,30 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers.json;
+package com.picocontainer.script.json;
 
-public interface Processor {
-	void startProcessing();
-	void processElement(int element);
-	void terminateProcessing();
-	int getResult();
+public class SeriesHandler {
+	private final Processor processor;
+	private final int multiplier;
+
+	public SeriesHandler(Processor processor) {
+		this(processor, 1);
+	}
+
+	public SeriesHandler(Processor processor, int multiplier) {
+		this.processor = processor;
+		this.multiplier = multiplier;
+	}
+
+	public void handleSeries(int... elements) {
+		processor.startProcessing();
+		for(int element : elements) {
+			processor.processElement(element);
+		}
+		processor.terminateProcessing();
+	}
+
+	public int getResult() {
+		return multiplier * processor.getResult();
+	}
 }

@@ -7,10 +7,10 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers;
+package com.picocontainer.script.json;
 
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.gems.containers.json.SeriesHandler;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 
 public class JsonPicoContainerTest {
 
-    private static final String PKG_DIR =  JsonPicoContainerTest.class.getProtectionDomain().getCodeSource().getLocation().getFile() + "com/picocontainer/gems/containers/";
+    private static final String PKG_DIR =  JsonPicoContainerTest.class.getProtectionDomain().getCodeSource().getLocation().getFile() + "com/picocontainer/script/json/";
 
     private int getResult(String jsonFileName) {
         // InputStreamReader reader = new InputStreamReader(JsonPicoContainerTest.class.getResourceAsStream(jsonFileName));
@@ -37,42 +37,42 @@ public class JsonPicoContainerTest {
 
     @Test
     public void test1() {
-        assertEquals(3, getResult("json/cfg1.json"));
+        assertEquals(3, getResult("cfg1.json"));
     }
 
     @Test
     public void test_missing_file() {
         try {
-            getResult("json/missing.json");
+            getResult("missing.json");
             fail("should have barfed");
         } catch (PicoJsonException e) {
             assertThat(e.getCause(), is(FileNotFoundException.class));
-            assertThat(e.getMessage(), containsString("containers/json/missing.json"));
+            assertThat(e.getMessage(), containsString("script/json/missing.json"));
         }
     }
 
     @Test
     public void test2() {
-        assertEquals(6, getResult("json/cfg2.json"));
+        assertEquals(6, getResult("cfg2.json"));
     }
 
     @Test
     public void test3() {
-        assertEquals(9, getResult("json/cfg3.json"));
+        assertEquals(9, getResult("cfg3.json"));
     }
 
     @Test
     public void test4() {
-        assertEquals(60, getResult("json/cfg4.json"));
+        assertEquals(60, getResult("cfg4.json"));
     }
 
     @Test
     public void test_bad_classname_in_json_throws_exception() {
         try {
-            getResult("json/bad_classname_inside.json");
+            getResult("bad_classname_inside.json");
             fail("should have barfed");
         } catch (PicoJsonException e) {
-            assertEquals("java.lang.ClassNotFoundException: com.picocontainer.gems.Blahhhhhhhhh", e.getMessage());
+            Assert.assertEquals("java.lang.ClassNotFoundException: com.picocontainer.script.json.Blahhhhhhhhh", e.getMessage());
         }
     }
 }

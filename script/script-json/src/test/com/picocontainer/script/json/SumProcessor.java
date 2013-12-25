@@ -7,33 +7,29 @@
  *                                                                           *
  * Original code by Serban Iordache                                          *
  *****************************************************************************/
-package com.picocontainer.gems.containers.json;
+package com.picocontainer.script.json;
 
-public class AbsProcessor implements Processor {
-	private final Processor delegate;
-
-	public AbsProcessor(Processor delegate) {
-		this.delegate = delegate;
-	}
+public class SumProcessor implements Processor {
+	private int result;
 
 	@Override
 	public void startProcessing() {
-		delegate.startProcessing();
+		result = 0;
 	}
 
 	@Override
 	public void processElement(int element) {
-		delegate.processElement(Math.abs(element));
-	}
-
-	@Override
-	public void terminateProcessing() {
-		delegate.terminateProcessing();
+		result += element;
 	}
 
 	@Override
 	public int getResult() {
-		return delegate.getResult();
+		return result;
+	}
+
+	@Override
+	public void terminateProcessing() {
+		// Empty implementation
 	}
 
 }
