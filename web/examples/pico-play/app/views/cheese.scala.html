@@ -1,0 +1,63 @@
+@(cheeseForm: Form[model.Cheese])(cheeses: java.util.Collection[model.Cheese])
+@import helper._
+
+
+@main(title = "Cheese!") {
+	<h1>Cheeses of the World</h1>
+	
+	
+	@if(!flash.isEmpty()) {
+		<ul class="ui-state-highlight">
+			@for(eachItem <- flash.entrySet()) {
+				<li><span class="ui-icon ui-icon-info"></span>@eachItem.getValue()</li>			
+			}
+		
+		</ul>	
+	}
+	<table class="ui-widget" style="margin: 1em auto; width: 75%; border: 1px solid black;">
+		<thead class="ui-widget-header">
+			<tr>
+				<td>Name</td>
+				<td>Country</td>
+				<td>&nbsp;</td>
+			</tr>
+		</thead>
+		<tbody class="ui-widget-content">
+			@for(eachCheese <- cheeses) {
+				<tr>
+					<td>
+						@eachCheese.getName()
+					</td>
+					<td>
+						@eachCheese.getCountry()
+					</td>
+					<td>
+						<form action="@routes.CheeseController.deleteCheese(eachCheese.getName())" method="post">
+							<input class="ui-button" type="submit" value="Delete" name="delete"/>
+						</form>
+					</td>
+					
+				</tr>
+			}
+			
+			@if(cheeses.isEmpty()) {
+				<tr>
+					<td colspan="2">No Cheeses Found</td>
+				</tr>
+			}
+		</tbody>	
+	</table>
+	<div style="width: 60%; margin: 0 auto; padding-top: 1em;">
+		<h2><span class="ui-icon ui-icon-circle-plus"></span>&nbsp; Add a Cheese</h2>
+	    @form(routes.CheeseController.addCheese()) {
+			<fieldset>
+				@inputText(cheeseForm("name"), '_label -> "Cheese Name")
+				@inputText(cheeseForm("country"), '_label -> "Country Name")
+				<div class="formactions">
+					<input class="ui-button" type="submit" name="save" value="Add Cheese"/>
+				</div>
+			</fieldset>
+		}
+	</div>
+}
+	

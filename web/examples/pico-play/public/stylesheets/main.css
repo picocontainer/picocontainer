@@ -1,0 +1,9 @@
+body {font-size: 80%;}
+
+span, span.ui-icon {display: inline-block;}
+
+.error {color: red;}
+.info {color: green;}
+
+.row-even {background-color: white;}
+.row-odd {background-color: #eeeeee;}

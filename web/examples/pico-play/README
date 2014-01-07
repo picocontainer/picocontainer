@@ -1,0 +1,16 @@
+This is a Play 2.2 exmple application demonstrating integration of the controller with PicoContainer. 
+=====================================================================================================
+
+Requirements: 
+	Scala 2.1.0
+	http://scala-lang.org/
+	
+	
+	Play 2.2.0 
+	http://www.playframework.com/download
+
+Once you have the requirements installed you can run by typing:
+
+play run		or 		play debug run
+
+Then open your browsr to http://localhost:9000/
