@@ -1,4 +1,6 @@
 This is a Play 2.2 exmple application demonstrating integration of the controller with PicoContainer. 
+
+This does not integrate all the Pico-Web scoping capabilities (yet)
 =====================================================================================================
 
 Requirements: 
