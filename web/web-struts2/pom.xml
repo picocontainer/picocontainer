@@ -16,7 +16,7 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>org.apache.struts</groupId><artifactId>struts2-core</artifactId><version>2.3.14.3</version>
+            <groupId>org.apache.struts</groupId><artifactId>struts2-core</artifactId><version>2.3.35</version>
         </dependency>
     </dependencies>
     <build>
