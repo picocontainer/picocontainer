@@ -16,8 +16,8 @@ import java.lang.reflect.Type;
  * instance. Each <code>ComponentAdapter</code> instance has to have a key
  * which is unique within that container. The key itself is either a class type
  * (normally an interface) or an identifier.
- * <p>In a overly simplistic sense, the ComponentAdapter can be thought of us a type of
- * an object factory.  If you need to modify how your object is constructed, use and appropriate
+ * <p>In a overly simplistic sense, the ComponentAdapter can be thought of as a type of
+ * an object factory.  If you need to modify how your object is constructed, use an appropriate
  * ComponentAdapter or roll your own since the API is purposely kept rather simple.  See
  * <a href="http://www.picocontainer.org/adapters.html">http://www.picocontainer.org/adapters.html</a>
  * for more information.</p>
