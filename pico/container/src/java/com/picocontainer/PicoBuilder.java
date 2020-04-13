@@ -95,6 +95,10 @@ public class PicoBuilder {
         this(new EmptyPicoContainer());
     }
 
+    /**
+     * Constructed PicoContainer will use {@linkplain com.picocontainer.lifecycle.StartableLifecycleStrategy StartableLifecycleStrategy}.
+     * @return <em>this</em> to allow for method chaining.
+     */
     public PicoBuilder withLifecycle() {
         lifecycleClass = StartableLifecycleStrategy.class;
         lifecycle = null;
