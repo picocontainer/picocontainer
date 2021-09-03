@@ -10,10 +10,10 @@ The major piece that's taking a while to do is [JSR 330](http://jcp.org/en/jsr/d
 
 ## 2.x
 
-If you want the previous PicoContainer (2.x), it is still at Codehaus in Subversion:
+If you want the previous PicoContainer (2.x), it is still available on GitHub.
 
-   Source here: [https://svn.codehaus.org/picocontainer/java/2.x/trunk](https://svn.codehaus.org/picocontainer/java/2.x/trunk)
-   Binaries here: [https://nexus.codehaus.org/content/repositories/releases/org/picocontainer/picocontainer/](https://nexus.codehaus.org/content/repositories/releases/org/picocontainer/picocontainer/)
+* Source here: <https://github.com/picocontainer/PicoContainer2>
+* Binaries here: <https://nexus.codehaus.org/content/repositories/releases/org/picocontainer/picocontainer/>
 
 ## Web Site
 
